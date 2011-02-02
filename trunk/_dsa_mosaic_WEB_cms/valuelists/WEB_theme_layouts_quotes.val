@@ -1,0 +1,11 @@
+addEmptyValue:1,
+dataProviderID1:"layout_name",
+dataProviderID2:"id_layout",
+name:"WEB_theme_layouts_quotes",
+relationName:"web_site_to_layout__quotes",
+returnDataProviders:2,
+separator:" ",
+showDataProviders:1,
+typeid:34,
+uuid:"50FFE9EC-08C8-4E32-9BFE-A7B274E55312",
+valueListType:1

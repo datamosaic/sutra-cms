@@ -1,0 +1,8 @@
+foreignDataSource:"db:/sutra_cms/web_site",
+items:[
+{foreignColumnName:"id_site",primaryDataProviderID:"id_site",typeid:23,uuid:"40011B62-3BE8-4C81-BFDA-40F58F70FB1F"}
+],
+name:"web_event_site_to_site",
+primaryDataSource:"db:/sutra_cms/web_event_site",
+typeid:22,
+uuid:"E5BB3DEF-15DE-4571-8192-B1BD436E53A8"

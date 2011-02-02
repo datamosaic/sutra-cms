@@ -1,0 +1,10 @@
+addEmptyValue:1,
+customValues:"everywhere|0
+beneath this page|1
+beneath another page|2",
+name:"WEB_search_path",
+returnDataProviders:1,
+separator:" ",
+showDataProviders:1,
+typeid:34,
+uuid:"5D6F5AFE-CC80-4894-B960-F14B241F5DA4"

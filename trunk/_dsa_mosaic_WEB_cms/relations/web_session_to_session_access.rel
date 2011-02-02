@@ -1,0 +1,12 @@
+allowCreationRelatedRecords:true,
+deleteRelatedRecords:true,
+foreignDataSource:"db:/sutra_cms/web_session_access",
+initialSort:"",
+items:[
+{foreignColumnName:"id_session",primaryDataProviderID:"id_session",typeid:23,uuid:"D8682600-E439-4556-AAC2-2DB85AC0FE6A"}
+],
+joinType:1,
+name:"web_session_to_session_access",
+primaryDataSource:"db:/sutra_cms/web_session",
+typeid:22,
+uuid:"C75E72A7-CC8A-41D1-A09C-F75DF29537C3"

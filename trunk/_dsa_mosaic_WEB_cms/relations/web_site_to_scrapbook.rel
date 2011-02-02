@@ -1,0 +1,10 @@
+allowCreationRelatedRecords:true,
+deleteRelatedRecords:true,
+foreignDataSource:"db:/sutra_cms/web_scrapbook",
+items:[
+{foreignColumnName:"id_site",primaryDataProviderID:"id_site",typeid:23,uuid:"45942E38-7E86-4849-A373-ECF1A597602B"}
+],
+name:"web_site_to_scrapbook",
+primaryDataSource:"db:/sutra_cms/web_site",
+typeid:22,
+uuid:"70EE34B3-5A56-4446-B294-51C9FE05C728"

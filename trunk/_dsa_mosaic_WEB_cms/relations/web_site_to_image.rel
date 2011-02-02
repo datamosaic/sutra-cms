@@ -1,0 +1,10 @@
+allowCreationRelatedRecords:true,
+deleteRelatedRecords:true,
+foreignDataSource:"db:/sutra_cms/web_image",
+items:[
+{foreignColumnName:"id_site",primaryDataProviderID:"id_site",typeid:23,uuid:"E0A5D85A-5884-41C1-BE49-4B1F1F8C0A9A"}
+],
+name:"web_site_to_image",
+primaryDataSource:"db:/sutra_cms/web_site",
+typeid:22,
+uuid:"EDA980DA-11BF-4F57-8B11-FC40346B5157"
