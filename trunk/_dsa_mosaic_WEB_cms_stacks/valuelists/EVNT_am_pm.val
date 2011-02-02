@@ -1,0 +1,9 @@
+addEmptyValue:1,
+customValues:"AM
+PM",
+name:"EVNT_am_pm",
+returnDataProviders:1,
+separator:" ",
+showDataProviders:1,
+typeid:34,
+uuid:"E5D838E0-A3CF-406C-9969-FD749BD2BDAE"

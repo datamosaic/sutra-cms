@@ -1,0 +1,19 @@
+addEmptyValue:1,
+customValues:"01
+02
+03
+04
+05
+06
+07
+08
+09
+10
+11
+12",
+name:"EVNT_months",
+returnDataProviders:1,
+separator:" ",
+showDataProviders:1,
+typeid:34,
+uuid:"72C9C51D-E4B9-48CC-81E9-F6C217D0AD18"
