@@ -1,0 +1,11 @@
+addEmptyValue:1,
+dataProviderID1:"layout_name",
+dataProviderID2:"id_layout",
+name:"WEB_layouts",
+relationName:"web_theme_to_layout",
+returnDataProviders:2,
+separator:" ",
+showDataProviders:1,
+typeid:34,
+uuid:"171F9E82-11B2-4FE2-BD1C-D82E60C4FC01",
+valueListType:1

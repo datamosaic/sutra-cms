@@ -1,0 +1,8 @@
+foreignDataSource:"db:/sutra_cms/web_attribute",
+items:[
+{foreignColumnName:"id_site_attribute",primaryDataProviderID:"id_site_attribute",typeid:23,uuid:"38146C43-A714-4746-8E55-5A841DE23610"}
+],
+name:"web_site_attribute_to_attribute",
+primaryDataSource:"db:/sutra_cms/web_site_attribute",
+typeid:22,
+uuid:"EC70EAC5-BF04-4BF4-A781-CB1B1290D1D7"

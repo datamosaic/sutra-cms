@@ -1,0 +1,10 @@
+allowCreationRelatedRecords:true,
+deleteRelatedRecords:true,
+foreignDataSource:"db:/sutra_cms/web_testimonial_site",
+items:[
+{foreignColumnName:"id_testimonial",primaryDataProviderID:"id_testimonial",typeid:23,uuid:"42C53F1A-3269-4D3B-BA54-D09DB49CA23D"}
+],
+name:"web_testimonial_to_testimonial_site",
+primaryDataSource:"db:/sutra_cms/web_testimonial",
+typeid:22,
+uuid:"A9C89534-8EAC-46EC-B86C-5D236F3ADCBF"

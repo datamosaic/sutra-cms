@@ -1,0 +1,9 @@
+deleteRelatedRecords:true,
+foreignDataSource:"db:/sutra_cms/web_blog_category",
+items:[
+{foreignColumnName:"id_category",primaryDataProviderID:"id_category",typeid:23,uuid:"EB36C55E-66C8-42C4-BA09-3801B5009C98"}
+],
+name:"web_category_to_blog_category",
+primaryDataSource:"db:/sutra_cms/web_category",
+typeid:22,
+uuid:"F63C6E01-404E-45D4-92FB-430048348398"

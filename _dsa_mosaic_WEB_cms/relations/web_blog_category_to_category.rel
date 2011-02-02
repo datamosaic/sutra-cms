@@ -1,0 +1,8 @@
+foreignDataSource:"db:/sutra_cms/web_category",
+items:[
+{foreignColumnName:"id_category",primaryDataProviderID:"id_category",typeid:23,uuid:"7BADE768-BA84-4D40-8F6A-960EA4BF5674"}
+],
+name:"web_blog_category_to_category",
+primaryDataSource:"db:/sutra_cms/web_blog_category",
+typeid:22,
+uuid:"AA43830B-D84B-426E-AFF3-AA00836F16B7"

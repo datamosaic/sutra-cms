@@ -1,0 +1,12 @@
+allowCreationRelatedRecords:true,
+deleteRelatedRecords:true,
+foreignDataSource:"db:/sutra_cms/web_page",
+initialSort:"order_by asc",
+items:[
+{foreignColumnName:"parent_id_page",primaryDataProviderID:"id_page",typeid:23,uuid:"B8CB89EA-FC80-494B-83FB-DB30233E5767"}
+],
+joinType:1,
+name:"web_page_to_page__child",
+primaryDataSource:"db:/sutra_cms/web_page",
+typeid:22,
+uuid:"3E81153B-2AEC-4430-B50E-DA0CEB07D59E"

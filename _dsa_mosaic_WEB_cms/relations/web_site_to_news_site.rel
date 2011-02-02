@@ -1,0 +1,9 @@
+deleteRelatedRecords:true,
+foreignDataSource:"db:/sutra_cms/web_news_site",
+items:[
+{foreignColumnName:"id_site",primaryDataProviderID:"id_site",typeid:23,uuid:"F1BCF7E3-D83F-4B5A-B3CD-5A442526D80E"}
+],
+name:"web_site_to_news_site",
+primaryDataSource:"db:/sutra_cms/web_site",
+typeid:22,
+uuid:"2D12DFDD-75BA-48BB-96BC-F8A87DA22782"
