@@ -74,7 +74,7 @@ function BLOCK_import()
 	fileOBJ.height		= imageTemp.getHeight()
 	fileOBJ.width_original		= imageTemp.getWidth()
 	fileOBJ.height_original		= imageTemp.getHeight()
-	fileOBJ.directory	= "sites/" + forms.WEB_0F_site.directory + "/images/"
+	fileOBJ.directory	= "images/"
 	fileOBJ.rec_created = new Date()
 	
 	/* copy image details to block data points
