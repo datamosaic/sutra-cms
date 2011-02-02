@@ -1,0 +1,183 @@
+dataSource:"db:/sutra_cms/web_page",
+items:[
+{
+anchors:6,
+borderType:"EmptyBorder,0,0,0,0",
+formIndex:10900,
+imageMediaID:"95a43c06-8988-440c-a759-e453d5712411",
+location:"78,146",
+mediaOptions:6,
+mnemonic:"",
+name:"btn_scale",
+onActionMethodID:"E89CB4D9-077B-46A0-AD01-F24C9E8F3444",
+rolloverCursor:12,
+rolloverImageMediaID:"2f6dee3a-854c-47a6-9e15-3f7660c783e4",
+showClick:false,
+showFocus:false,
+size:"62,22",
+transparent:true,
+typeid:7,
+uuid:"1CF6E57C-2303-4A59-9544-1DE9E6F2EAD4"
+},
+{
+anchors:6,
+formIndex:11800,
+location:"220,147",
+mediaOptions:14,
+mnemonic:"",
+name:"lbl_import",
+rolloverCursor:12,
+showClick:false,
+showFocus:false,
+size:"58,20",
+styleClass:"button",
+tabSeq:-1,
+text:"Import",
+transparent:true,
+typeid:7,
+uuid:"1FF2F699-4F94-45B3-92C2-C4E0A6C572C8"
+},
+{
+anchors:15,
+dataProviderID:"htmlPageList",
+displayType:1,
+formIndex:11801,
+location:"0,0",
+scrollbars:32,
+size:"300,145",
+styleClass:"textareanoborder",
+typeid:4,
+uuid:"2379CA02-C1FD-4D95-9DFA-F33612A73DCD"
+},
+{
+anchors:6,
+formIndex:11800,
+location:"78,147",
+mediaOptions:14,
+mnemonic:"",
+name:"lbl_scale",
+rolloverCursor:12,
+showClick:false,
+showFocus:false,
+size:"60,20",
+styleClass:"button",
+tabSeq:-1,
+text:"Scale",
+transparent:true,
+typeid:7,
+uuid:"2858170D-EAF3-4509-AF38-7D7686207B69"
+},
+{
+anchors:6,
+borderType:"EmptyBorder,0,0,0,0",
+formIndex:10900,
+imageMediaID:"95a43c06-8988-440c-a759-e453d5712411",
+location:"150,146",
+mediaOptions:6,
+mnemonic:"",
+name:"btn_choose",
+onActionMethodID:"CC99E026-BAFE-49C1-B737-C704F5BADC34",
+rolloverCursor:12,
+rolloverImageMediaID:"2f6dee3a-854c-47a6-9e15-3f7660c783e4",
+showClick:false,
+showFocus:false,
+size:"62,22",
+transparent:true,
+typeid:7,
+uuid:"33DFFABF-DD3F-472D-907C-285C57236831"
+},
+{
+anchors:15,
+beanClassName:"net.stuff.servoy.browser.beans.ServoyBrowser",
+beanXML:"<?xml version=\"1.0\" encoding=\"UTF-8\"?> 
+<java version=\"1.5.0_20\" class=\"java.beans.XMLDecoder\"> 
+ <object class=\"net.stuff.servoy.browser.beans.ServoyBrowser\"> 
+  <void property=\"allowDownloads\"> 
+   <boolean>false<\/boolean> 
+  <\/void> 
+  <void property=\"buttonBarVisible\"> 
+   <boolean>false<\/boolean> 
+  <\/void> 
+  <void property=\"confirmCancelDownload\"> 
+   <boolean>false<\/boolean> 
+  <\/void> 
+  <void property=\"downloadManagerVisible\"> 
+   <boolean>false<\/boolean> 
+  <\/void> 
+  <void property=\"enablePopup\"> 
+   <boolean>false<\/boolean> 
+  <\/void> 
+  <void property=\"locationBarVisible\"> 
+   <boolean>false<\/boolean> 
+  <\/void> 
+  <void property=\"menuBarVisible\"> 
+   <boolean>false<\/boolean> 
+  <\/void> 
+  <void property=\"trapStatusMessages\"> 
+   <boolean>false<\/boolean> 
+  <\/void> 
+ <\/object> 
+<\/java> 
+",
+location:"0,170",
+name:"bn_browser",
+printable:false,
+size:"300,145",
+typeid:12,
+uuid:"665F8D13-5620-4A46-A16F-9E04D4BCB022"
+},
+{
+height:145,
+partType:5,
+typeid:19,
+uuid:"75E96E48-9621-4B63-8B1D-6B6A6450804D"
+},
+{
+anchors:6,
+borderType:"EmptyBorder,0,0,0,0",
+formIndex:10900,
+imageMediaID:"95a43c06-8988-440c-a759-e453d5712411",
+location:"220,146",
+mediaOptions:6,
+mnemonic:"",
+name:"btn_import",
+onActionMethodID:"5251C43C-0317-4C14-ADEE-E023FC7F262A",
+rolloverCursor:12,
+rolloverImageMediaID:"2f6dee3a-854c-47a6-9e15-3f7660c783e4",
+showClick:false,
+showFocus:false,
+size:"60,22",
+transparent:true,
+typeid:7,
+uuid:"825568A9-A01D-4720-86BC-B2A917A987E6"
+},
+{
+anchors:6,
+formIndex:11800,
+location:"150,147",
+mediaOptions:14,
+mnemonic:"",
+name:"lbl_choose",
+rolloverCursor:12,
+showClick:false,
+showFocus:false,
+size:"60,20",
+styleClass:"button",
+tabSeq:-1,
+text:"Choose",
+transparent:true,
+typeid:7,
+uuid:"96591A24-DDE1-449C-A1EC-DA81EEBD6F6E"
+}
+],
+name:"WEB_0B_page__page_list__editor",
+navigatorID:"-1",
+onLoadMethodID:"-1",
+onRecordSelectionMethodID:"-1",
+onShowMethodID:"-1",
+paperPrintScale:100,
+scrollbars:36,
+size:"300,145",
+styleName:"_DATASUTRA_",
+typeid:3,
+uuid:"D98201CD-E972-42B4-9E83-1ED93D2E2B9F"
