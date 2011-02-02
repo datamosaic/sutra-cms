@@ -333,7 +333,24 @@ function REC_new() {
 			}
 	
 			// 2) get block init() and associated meta data to build data object
-			var obj = forms[_formName].INIT_block()
+			if ( forms[_formName] ) {
+				//form not loaded yet, get solution model to check for method existence
+				if (forms[_formName] == '<Form ' + _formName + ' not loaded yet>' && solutionModel.getForm(_formName).getFormMethod('LOADER_init')) {
+					var hasInit = true
+				}
+				//check for method existence on form
+				else if (forms[_formName].LOADER_init) {
+					var hasInit = true
+				}
+				if ( hasInit ) {
+					var obj = forms[_formName].INIT_block()
+				}
+				else {
+					plugins.dialogs.showErrorDialog( "Error", "Selected block does not have an INIT_block method")
+					return
+				}
+			}
+			
 	
 			// 3) create block and related data from data object
 			var block = foundset.getRecord(foundset.newRecord())
