@@ -380,6 +380,7 @@ function REC_new() {
 					}	
 				}
 				view.method_name = obj.views[i]
+				view.flag_default = ( obj.views[i] == "VIEW_default") ? 1 : null
 			}
 			// block data
 			for (var i in obj.data) {
