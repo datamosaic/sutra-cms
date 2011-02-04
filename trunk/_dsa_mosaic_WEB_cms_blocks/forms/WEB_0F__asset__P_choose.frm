@@ -118,7 +118,7 @@ typeid:7,
 uuid:"D4308EEB-B282-4B2C-83DB-868E2415D0C4"
 }
 ],
-name:"WEB_0F__image__P_choose",
+name:"WEB_0F__asset__P_choose",
 namedFoundSet:"separate",
 navigatorID:"-1",
 onDeleteAllRecordsCmdMethodID:"-1",

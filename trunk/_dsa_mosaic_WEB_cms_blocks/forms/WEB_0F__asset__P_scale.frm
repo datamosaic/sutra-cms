@@ -230,7 +230,7 @@ typeid:7,
 uuid:"FD1B32A5-5975-47A8-AA00-A1E02E7582CD"
 }
 ],
-name:"WEB_0F__image__P_scale",
+name:"WEB_0F__asset__P_scale",
 namedFoundSet:"separate",
 navigatorID:"-1",
 onDeleteAllRecordsCmdMethodID:"-1",
