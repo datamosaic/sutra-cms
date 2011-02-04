@@ -4,7 +4,7 @@
  */
 function BLOCK_choose()
 {
-	application.showFormInDialog(forms.WEB_0F__image__P_choose,-1,-1,-1,-1,"Image", false, false, "chooseImage")
+	application.showFormInDialog(forms.WEB_0F__asset__P_choose,-1,-1,-1,-1,"Image", false, false, "chooseImage")
 	
 	//update display
 	if (forms.WEB_0F_page.TRIGGER_mode_set() == "DESIGN") {
@@ -21,7 +21,7 @@ function BLOCK_choose()
  */
 function BLOCK_scale()
 {
-	application.showFormInDialog(forms.WEB_0F__image__P_scale,-1,-1,-1,-1,"Image", false, false, "imageScale")
+	application.showFormInDialog(forms.WEB_0F__asset__P_scale,-1,-1,-1,-1,"Image", false, false, "imageScale")
 	
 	//update display
 	if (forms.WEB_0F_page.TRIGGER_mode_set() == "DESIGN") {
@@ -226,12 +226,12 @@ function LOADER_init(recBlock,flagEdit) {
 					'</body></html>'
 	}
 	
-	forms.WEB_0F__image.elements.bn_browser.html = html
+	forms.WEB_0F__asset.elements.bn_browser.html = html
 	forms.WEB_0F_page__design__content_1F_block_data.elements.tab_detail.removeTabAt(2)
-	forms.WEB_0F_page__design__content_1F_block_data.elements.tab_detail.addTab(forms.WEB_0F__image)
+	forms.WEB_0F_page__design__content_1F_block_data.elements.tab_detail.addTab(forms.WEB_0F__asset)
 	forms.WEB_0F_page__design__content_1F_block_data.elements.tab_detail.tabIndex = 2
 	
-	forms.WEB_0F__image.TOGGLE_buttons(flagEdit)
+	forms.WEB_0F__asset.TOGGLE_buttons(flagEdit)
 }
 
 /**
@@ -285,7 +285,7 @@ function INIT_block() {
 	block.record = {
 			block_name			: 'Image',
 			block_description	: 'Images resource library',		
-			form_name			: 'WEB_0F__image'
+			form_name			: 'WEB_0F__asset'
 		}
 	
 	// block views

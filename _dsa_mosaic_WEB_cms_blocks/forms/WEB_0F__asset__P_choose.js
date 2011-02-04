@@ -58,7 +58,7 @@ function ACTION_ok()
 {
 	
 	// choose image from FiD
-	var record = forms.WEB_0F__image__P_choose_1L.foundset.getRecord(forms.WEB_0F__image__P_choose_1L.foundset.getSelectedIndex())
+	var record = forms.WEB_0F__asset__P_choose_1L.foundset.getRecord(forms.WEB_0F__asset__P_choose_1L.foundset.getSelectedIndex())
 	
 	// set image details object
 	var fileOBJ = {}

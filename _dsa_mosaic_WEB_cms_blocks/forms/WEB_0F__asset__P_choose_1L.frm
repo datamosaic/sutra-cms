@@ -36,11 +36,11 @@ typeid:4,
 uuid:"7F501815-01E3-42FF-9DE1-726F89D4EBD3"
 }
 ],
-name:"WEB_0F__image__P_choose_1L",
+name:"WEB_0F__asset__P_choose_1L",
 onRecordSelectionMethodID:"3e1379c1-29b0-42bf-b7d8-fc5d178124ed",
 onShowMethodID:"-1",
 paperPrintScale:100,
-rowBGColorCalculation:"row_background",
+rowBGColorCalculation:"globals.CODE_row_background",
 scrollbars:33,
 size:"250,40",
 styleName:"_DATASUTRA_",
