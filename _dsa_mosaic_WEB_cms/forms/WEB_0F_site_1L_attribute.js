@@ -63,7 +63,7 @@ function REC_delete(event) {
  * @properties={typeid:24,uuid:"1E5F2F8A-95CE-45FA-B03D-18866F1BDAFC"}
  */
 function GOTO_page(event) {
-	globals.TRIGGER_navigation_set('pages')
+	globals.TRIGGER_navigation_set('CMS_page')
 	
 	forms.WEB_0T_page.SET_page(id_page)
 }
