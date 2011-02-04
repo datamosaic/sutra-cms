@@ -1,8 +1,8 @@
-dataSource:"db:/sutra_cms/web_image",
+dataSource:"db:/sutra_cms/web_asset",
 items:[
 {
 borderType:"EmptyBorder,0,0,0,0",
-dataProviderID:"f_image_name",
+dataProviderID:"_image_name",
 displayType:10,
 editable:false,
 formIndex:11300,
@@ -18,7 +18,7 @@ uuid:"00359495-8172-4691-BC48-4C224DF2CC2C",
 valuelistID:"17f852c6-f27a-4872-87eb-23b90af6fd03"
 },
 {
-dataProviderID:"f_image_height",
+dataProviderID:"_image_height",
 formIndex:10700,
 format:"###########",
 location:"100,148",
@@ -131,7 +131,7 @@ uuid:"85F287D7-68D1-4E30-BFA1-D3D5FF53D126"
 },
 {
 borderType:"EmptyBorder,0,0,0,0",
-dataProviderID:"f_image_width_original",
+dataProviderID:"_image_width_original",
 editable:false,
 formIndex:10600,
 location:"10,102",
@@ -159,7 +159,7 @@ typeid:7,
 uuid:"89125D49-D31F-4CA0-86C6-54C53CC3597C"
 },
 {
-dataProviderID:"f_image_width",
+dataProviderID:"_image_width",
 formIndex:10600,
 format:"###########",
 location:"100,102",
@@ -174,7 +174,7 @@ uuid:"8C2E68ED-E361-47DF-A221-A2592ACCE245"
 },
 {
 borderType:"EmptyBorder,0,0,0,0",
-dataProviderID:"f_image_height_original",
+dataProviderID:"_image_height_original",
 editable:false,
 formIndex:10700,
 location:"10,148",
@@ -230,7 +230,7 @@ typeid:7,
 uuid:"FD1B32A5-5975-47A8-AA00-A1E02E7582CD"
 }
 ],
-name:"WEB_0F__asset__P_scale",
+name:"WEB_0F_asset__image__P_scale",
 namedFoundSet:"separate",
 navigatorID:"-1",
 onDeleteAllRecordsCmdMethodID:"-1",

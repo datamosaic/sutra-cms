@@ -1,27 +1,27 @@
 /**
  * @properties={typeid:35,uuid:"D4E60991-9F57-42B2-8E66-2B63EA7EEF04",variableType:4}
  */
-var f_image_height;
+var _image_height;
 
 /**
  * @properties={typeid:35,uuid:"2991B6CB-D41C-4CE1-B24A-A66E60FBF67F",variableType:4}
  */
-var f_image_height_original;
+var _image_height_original;
 
 /**
  * @properties={typeid:35,uuid:"5C8E4E38-9353-4E2F-A6B9-8FC41BA12C4E"}
  */
-var f_image_name = '';
+var _image_name = '';
 
 /**
  * @properties={typeid:35,uuid:"2191C8D1-055C-4E69-AFF4-7953605E048A",variableType:4}
  */
-var f_image_width;
+var _image_width;
 
 /**
  * @properties={typeid:35,uuid:"52C49500-DF07-4FC2-BC40-B098120B0353",variableType:4}
  */
-var f_image_width_original;
+var _image_width_original;
 
 /**
  *
@@ -36,7 +36,7 @@ if (!globals.CODE_hide_form) {
 	//enaable closing the form
 	globals.CODE_hide_form = 1
 	
-	application.closeFormDialog('imageScale')
+	application.closeFormDialog('CMS_imageScale')
 }
 }
 
@@ -57,10 +57,10 @@ function ACTION_ok()
 		var record = data.getRecord(i + 1)
 		switch (record.data_key) {
 				case "width":
-					record.data_value = f_image_width
+					record.data_value = _image_width
 					break;
 				case "height":
-					record.data_value = f_image_height
+					record.data_value = _image_height
 				default:
 			break;
 		}
@@ -70,7 +70,7 @@ function ACTION_ok()
 	globals.CODE_hide_form = 1
 	
 	//close the form
-	application.closeFormDialog('imageScale')
+	application.closeFormDialog('CMS_imageScale')
 
 }
 
@@ -81,8 +81,8 @@ function ACTION_ok()
 function ACTION_reset()
 {
 	// reset to original image sizes
-	f_image_height = f_image_height_original
-	f_image_width = f_image_width_original
+	_image_height = _image_height_original
+	_image_width = _image_width_original
 }
 
 /**
@@ -92,7 +92,7 @@ function ACTION_reset()
 function FLD_change_height()
 {
 	databaseManager.saveData()
-	f_image_width = (f_image_height * f_image_width_original)/f_image_height_original
+	_image_width = (_image_height * _image_width_original)/_image_height_original
 	databaseManager.saveData()
 	application.updateUI()
 }
@@ -104,7 +104,7 @@ function FLD_change_height()
 function FLD_change_width()
 {
 	databaseManager.saveData()
-	f_image_height = (f_image_width * f_image_height_original)/f_image_width_original
+	_image_height = (_image_width * _image_height_original)/_image_width_original
 	databaseManager.saveData()
 	application.updateUI()
 }
@@ -136,18 +136,18 @@ function FORM_on_show()
 		var record = data.getRecord(i + 1)
 		switch (record.data_key) {
 				case "image_name":
-					f_image_name = record.data_value
+					_image_name = record.data_value
 					break;
 				case "width":
-					f_image_width = record.data_value
+					_image_width = record.data_value
 					break;
 				case "width_original":
-					f_image_width_original = record.data_value
+					_image_width_original = record.data_value
 					break;
 				case "height":
-					f_image_height = record.data_value
+					_image_height = record.data_value
 				case "height_original":
-					f_image_height_original = record.data_value
+					_image_height_original = record.data_value
 				default:
 			break;
 		}

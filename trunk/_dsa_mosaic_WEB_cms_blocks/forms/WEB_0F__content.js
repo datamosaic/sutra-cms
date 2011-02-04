@@ -35,6 +35,7 @@ function FORM_on_load() {
 	//set combobox to be square on os x
 	globals.CODE_property_combobox(true)
 	
+	//load up easy tinymce
 	elements.bn_tinymce.setCustomConfiguration(TINYMCE_init("simple"))
 }
 
@@ -59,7 +60,7 @@ function TINYMCE_init(mode) {
 		js.theme_advanced_buttons3 = '""'
 		js.theme_advanced_buttons4 = '""'
 			
-		
+		//set pop-up forms to be small enough to fit in smallest instance where used
 		js.theme_advanced_source_editor_width = '400'	
 		js.theme_advanced_source_editor_height = '160' 
 		
@@ -177,6 +178,7 @@ function BLOCK_save() {
 	recBlockData.data_value = elements.bn_tinymce.html
 	databaseManager.saveData()
 	elements.bn_tinymce.clearDirtyState()
+	
 	TOGGLE_buttons(false)
 	
 	//called from browser bean, hide form
@@ -299,12 +301,9 @@ function BLOCK_reset(event) {
  * @properties={typeid:24,uuid:"55863A61-FD4C-4238-8DFF-BED3877F72C3"}
  */
 function ACTION_internal_link(event) {
-//	var js = //"tinyMCE.execCommand('mceFocus', false, tinyMCE.selectedInstance.editorId);" +
-//	"tinyMCE.execCommand('mceInsertLink', false, 'http://www.servoy-stuff.net/');"
-//	
-//	var x = elements.bn_tinymce.executeJavaScriptWithResult(js)
+
 	globals.WEB_page_tree_to_popup(forms.WEB_0F__content.ACTION_add_token)
-	//forms.WEB_0F_site.SITE_tree(forms.WEB_0F__content.BLOCK_add_token)
+
 }
 
 /**
@@ -346,43 +345,29 @@ function ACTION_pop_toolbar(event) {
  *
  * @properties={typeid:24,uuid:"E285B1BC-2924-477D-8F4C-D8B94FCF01A6"}
  */
-function BLOCK_insert_image(event) {
-	forms.WEB_0F__asset__P_choose.linkImage = 1
+function ACTION_insert_image(event) {
+	forms.WEB_0F_asset__image__P_choose.linkImage = 1
 	
 	application.showFormInDialog(
-				forms.WEB_0F__asset__P_choose,
+				forms.WEB_0F_asset__image__P_choose,
 				-1,-1,-1,-1,
 				"Image",
 				false,
 				false,
-				"chooseImage"
+				"CMS_imageChoose"
 			)
 	
 	//something chosen, insert image link at cursor location
-	if (forms.WEB_0F__asset__P_choose.recImage) {
-		var recImage = forms.WEB_0F__asset__P_choose.recImage
-		var token = "'{DS:IMG_" + recImage.id_image + "}'"
+	if (forms.WEB_0F_asset__image__P_choose.recImage) {
+		var recImage = forms.WEB_0F_asset__image__P_choose.recImage
+		var token = "'{DS:IMG_" + recImage.id_asset + "}'"
 		
-		var html = '<img src="' + token + '" width="' + recImage.width + '" height="' + recImage.height + '" alt="' + recImage.image_title +'">'
+		var html = '<img src="' + token + '" width="' + recImage.width + '" height="' + recImage.height + '" alt="' + recImage.asset_title +'">'
 		
 		var js = "tinyMCE.execCommand('mceImage', false, " + html + ");"
 		elements.bn_tinymce.executeJavaScript(js)
 		
 	}
-}
-
-/**
- * @properties={typeid:24,uuid:"DE349F3D-A03C-4F2C-A617-75DB7A458328"}
- */
-function PAGE_popup_test(event) {
-	plugins.dialogs.showInfoDialog('Pop up','Hello, I am a test!')
-}
-
-/**
- * @properties={typeid:24,uuid:"FE4821FE-F672-4AFE-9C21-E1F4971B6185"}
- */
-function WEB_test(event) {
-	// no web methods yet...
 }
 
 /**
@@ -401,45 +386,6 @@ function INIT_block() {
 	// main data object to build
 	var block = {}
 	
-	// function to read methods on this form. naming conventions supply method categories and names
-	function getMethods(type) {
-		var methods = allmethods
-		var clientActionsBlock = {}
-		var clientActionsPage = {}
-		var webActions = {}
-		var views = {}
-		for (var i in methods) {
-			if ( methods[i].substr(0,5) == "BLOCK" ) {
-				clientActionsBlock[methods[i].substr(6,100)] = methods[i]
-			}
-			if ( methods[i].substr(0,4) == "PAGE" ) {
-				clientActionsPage[methods[i].substr(5,100)] = methods[i]
-			}
-			else if ( methods[i].substr(0,3) == "WEB" ) {
-				webActions[methods[i].substr(4,100)] = methods[i]
-			}
-			else if ( methods[i].substr(0,4) == "VIEW" ) {
-				views[methods[i].substr(5,100)] = methods[i]
-			}
-		}	
-		switch (type) {
-			case "BLOCK":
-				return clientActionsBlock
-				break
-			case "PAGE":
-				return clientActionsPage
-			case "WEB":
-				return webActions
-				break
-			case "VIEW":
-				return views
-				break
-			default:
-				return null
-				break
-		}
-	}
-	
 	// block record data
 	block.record = {
 			block_name			: 'Content',
@@ -448,28 +394,27 @@ function INIT_block() {
 			form_name_display	: 'WEB_0F__content_view'
 		}
 	
-	// block views
-	block.views = getMethods("VIEW")
-	
-	
 	// block data points
 	block.data = {
 		Content : 'TEXT'            
 	}
 	
+	// block views
+	block.views = globals.WEB_block_methods(controller.getName(),"VIEW")
+	
 	// block client actions - Block
-	block.clientActionsBlock = getMethods("BLOCK")
+	block.clientActionsBlock = globals.WEB_block_methods(controller.getName(),"BLOCK")
 	
 	// block client actions - Page
-	block.clientActionsPage = getMethods("PAGE")
+	block.clientActionsPage = globals.WEB_block_methods(controller.getName(),"PAGE")
 	
 	// block web actions
-	block.webActions = getMethods("WEB")
+	block.webActions = globals.WEB_block_methods(controller.getName(),"WEB")
 	
 	// block configure data points
 	block.blockConfigure = {
-		Test : 'TEXT'            
-	}   
+		
+	}
 	
 	return block
 	
@@ -492,11 +437,6 @@ function LOADER_init(recBlock,flagEdit) {
 	//show browser bean
 	else {
 		var html = '<html><body>'
-		/*'<html><head>' +
-		'<link rel="stylesheet" type="text/css" href="' +
-		host + '/' + directory + globals.WEB_CONSTANT_DIRECTORY_THEMES + directory + 
-		'/css/layout.css" />' +
-		'</head><body>'	*/
 		html += recBlock.web_block_to_block_data.data_value
 		html += '</body></html>'
 		
@@ -506,11 +446,4 @@ function LOADER_init(recBlock,flagEdit) {
 		forms.WEB_0F_page__design__content_1F_block_data.elements.tab_detail.addTab(forms.WEB_0F__content_view)
 		forms.WEB_0F_page__design__content_1F_block_data.elements.tab_detail.tabIndex = 2
 	}
-}
-
-/**
- * @properties={typeid:24,uuid:"77AE9102-D653-42CE-B026-A6212E3A5160"}
- */
-function ztest() {
-	application.setStatusText('test')
 }
