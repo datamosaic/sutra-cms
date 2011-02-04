@@ -9,8 +9,7 @@ var _license_dsa_mosaic_WEB_cms = 'Module: _dsa_mosaic_WEB_cms \
  *
  * @properties={typeid:24,uuid:"FCCF12F4-B862-4400-A801-4CB29CBBFD3F"}
  */
-function DISPLAY_new_record()
-{
+function DISPLAY_new_record() {
 	web_block_type_to_block_display.newRecord()
 	databaseManager.saveData()
 }
@@ -314,8 +313,11 @@ function REC_new() {
 							'cmsBlockNew'
 						)
 		
+		//this should be forms.WEB_P__block_new._formName...some scoping issue
+		var formName = _formName
+						
 		//a form picked and it exists in the solution
-		if (_formName && forms[_formName]) {
+		if (formName && forms[formName]) {
 			
 			function uniqueNameCheck(name) {  // returns true if duplicate name detected
 				var nameArray = []
@@ -333,17 +335,17 @@ function REC_new() {
 			}
 	
 			// 2) get block init() and associated meta data to build data object
-			if ( forms[_formName] ) {
+			if ( forms[formName] ) {
 				//form not loaded yet, get solution model to check for method existence
-				if (forms[_formName] == '<Form ' + _formName + ' not loaded yet>' && solutionModel.getForm(_formName).getFormMethod('LOADER_init')) {
+				if (forms[formName] == '<Form ' + formName + ' not loaded yet>' && solutionModel.getForm(formName).getFormMethod('LOADER_init')) {
 					var hasInit = true
 				}
 				//check for method existence on form
-				else if (forms[_formName].LOADER_init) {
+				else if (forms[formName].LOADER_init) {
 					var hasInit = true
 				}
 				if ( hasInit ) {
-					var obj = forms[_formName].INIT_block()
+					var obj = forms[formName].INIT_block()
 				}
 				else {
 					plugins.dialogs.showErrorDialog( "Error", "Selected block does not have an INIT_block method")
@@ -355,18 +357,22 @@ function REC_new() {
 			// 3) create block and related data from data object
 			var block = foundset.getRecord(foundset.newRecord())
 			block.id_site = forms.WEB_0F_site.id_site
+			
 			// ensure block name is unique
 			var name = obj.record.block_name
 			var incrementer = 1
+			
 			while ( uniqueNameCheck(name) ) {
 				// increment name by 1 until unique name is found
 				name = obj.record.block_name + " " + incrementer
 				incrementer += 1
 			}
+			
 			block.block_name = name
 			block.block_description = obj.record.block_description
 			block.form_name = obj.record.form_name
 			block.form_name_display = obj.record.form_name_display
+			
 			// block displays
 			for (var i in obj.views) {
 				var view = block.web_block_type_to_block_display.getRecord(block.web_block_type_to_block_display.newRecord())
@@ -380,6 +386,7 @@ function REC_new() {
 					}	
 				}
 				view.method_name = obj.views[i]
+				//flag default method as default
 				view.flag_default = ( obj.views[i] == "VIEW_default") ? 1 : null
 			}
 			// block data

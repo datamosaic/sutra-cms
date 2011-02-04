@@ -34,7 +34,7 @@ function REC_on_select(event) {
 	}
 	
 	//find site-specific stuff
-	forms.WEB_0F_image.FORM_on_load()
+	forms.WEB_0F_asset.FORM_on_load()
 	forms.WEB_0F_block_type.FORM_on_load()
 	forms.WEB_0F_scrapbook.FORM_on_load()
 	forms.WEB_0F_theme.FORM_on_load()
@@ -447,7 +447,6 @@ function FORM_on_load(event) {
  * @properties={typeid:24,uuid:"A6977F22-63A1-4823-AE8D-C43D5A7A6B16"}
  */
 function FIELD_directory_onLost(event) {
-	
 	// don't allow trailing "/"
 	databaseManager.saveData()
 	var provider = elements[event.getElementName()].getDataProviderID()
@@ -458,8 +457,8 @@ function FIELD_directory_onLost(event) {
 	// don't allow trailing "\\"
 	if ( event.getElementName() == "fld_directory_windows") {
 		this[provider] = this[provider].replace(/\\*$/, "")
-		databaseManager.saveData()		
-	}	
+		databaseManager.saveData()
+	}
 }
 
 /**

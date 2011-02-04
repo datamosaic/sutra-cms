@@ -112,7 +112,6 @@ uuid:"23D04E0C-BBC1-4D0C-9CF1-8AF4F5C51F31"
 },
 {
 anchors:11,
-dataProviderID:"news_id_parent",
 formIndex:10500,
 horizontalAlignment:2,
 location:"630,150",
@@ -127,7 +126,6 @@ uuid:"282BAD2F-752F-49E2-A81C-299ED6EE9BF1"
 },
 {
 anchors:11,
-dataProviderID:"news_id_parent",
 formIndex:10500,
 horizontalAlignment:2,
 location:"630,104",
@@ -142,7 +140,6 @@ uuid:"2A3D7C9C-F68B-4088-87F9-F13F5BDCD739"
 },
 {
 anchors:11,
-dataProviderID:"news_id_parent",
 formIndex:10500,
 horizontalAlignment:2,
 location:"630,81",
@@ -276,7 +273,6 @@ uuid:"5275A521-B993-4769-8D90-F4983E2810FD"
 },
 {
 anchors:11,
-dataProviderID:"news_id_parent",
 formIndex:10500,
 horizontalAlignment:2,
 location:"630,127",
@@ -506,7 +502,6 @@ uuid:"93770E59-24A7-4626-B09F-88FE5823D9CA"
 },
 {
 anchors:11,
-dataProviderID:"news_id_parent",
 formIndex:10500,
 horizontalAlignment:2,
 location:"630,58",
