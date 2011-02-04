@@ -282,10 +282,10 @@ function ACTION_pop_toolbar(event) {
  * @properties={typeid:24,uuid:"3919065E-BA94-44B7-A51E-50F7D20BA65A"}
  */
 function ACTION_insert_image(event) {
-	forms.WEB_0F__image__P_choose.linkImage = 1
+	forms.WEB_0F__asset__P_choose.linkImage = 1
 	
 	application.showFormInDialog(
-				forms.WEB_0F__image__P_choose,
+				forms.WEB_0F__asset__P_choose,
 				-1,-1,-1,-1,
 				"Image",
 				false,
@@ -294,14 +294,13 @@ function ACTION_insert_image(event) {
 			)
 	
 	//something chosen, insert image link at cursor location
-	if (forms.WEB_0F__image__P_choose.recImage) {
-		var recImage = forms.WEB_0F__image__P_choose.recImage
+	if (forms.WEB_0F__asset__P_choose.recImage) {
+		var recImage = forms.WEB_0F__asset__P_choose.recImage
 		var token = "'{DS:IMG_" + recImage.id_image + "}'"
 		
 		var html = '<img src="' + token + '" width="' + recImage.width + '" height="' + recImage.height + '" alt="' + recImage.image_title +'">'
 		
 		var js = "tinyMCE.execCommand('mceImage', false, " + html + ");"
 		elements.bn_tinymce.executeJavaScript(js)
-		
 	}
 }
