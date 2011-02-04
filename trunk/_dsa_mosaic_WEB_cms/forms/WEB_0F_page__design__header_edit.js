@@ -386,12 +386,15 @@ function TOGGLE_fields(pageType) {
 	linkHeader.text = headerText
 	linkHeader.toolTipText = headerToolTip
 	
-	elements.lbl_id_theme.visible = page
-	elements.fld_id_theme.visible = page
-	elements.lbl_id_theme_layout.visible = page
-	elements.fld_id_theme_layout.visible = page
-	elements.lbl_page_link.visible = link
-	elements.fld_page_link.visible = link
+	if ( utils.hasRecords(foundset) ) {
+		elements.lbl_id_theme.visible = page
+		elements.fld_id_theme.visible = page
+		elements.lbl_id_theme_layout.visible = page
+		elements.fld_id_theme_layout.visible = page
+		elements.lbl_page_link.visible = link
+		elements.fld_page_link.visible = link
+	}
+
 	
 	//folder or link type of page
 	if (!page) {
