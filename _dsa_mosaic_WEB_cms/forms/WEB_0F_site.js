@@ -447,12 +447,19 @@ function FORM_on_load(event) {
  * @properties={typeid:24,uuid:"A6977F22-63A1-4823-AE8D-C43D5A7A6B16"}
  */
 function FIELD_directory_onLost(event) {
+	
 	// don't allow trailing "/"
 	databaseManager.saveData()
-	if ( this[provider] && directory.search(/\/*$/) > 0 ) {
-		directory = directory.replace(/\/*$/, "")
+	var provider = elements[event.getElementName()].getDataProviderID()
+	if ( this[provider] && this[provider].search(/\/*$/) > 0 ) {
+		this[provider] = this[provider].replace(/\/*$/, "")
 		databaseManager.saveData()
 	}
+	// don't allow trailing "\\"
+	if ( event.getElementName() == "fld_directory_windows") {
+		this[provider] = this[provider].replace(/\\*$/, "")
+		databaseManager.saveData()		
+	}	
 }
 
 /**
