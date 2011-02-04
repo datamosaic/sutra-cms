@@ -360,11 +360,11 @@ function ACTION_insert_image(event) {
 	//something chosen, insert image link at cursor location
 	if (forms.WEB_0F_asset__image__P_choose.recImage) {
 		var recImage = forms.WEB_0F_asset__image__P_choose.recImage
-		var token = "'{DS:IMG_" + recImage.id_asset + "}'"
+		var token = "{DS:IMG_" + recImage.id_asset + "}"
 		
 		var html = '<img src="' + token + '" width="' + recImage.width + '" height="' + recImage.height + '" alt="' + recImage.asset_title +'">'
 		
-		var js = "tinyMCE.execCommand('mceImage', false, " + html + ");"
+		var js = "tinyMCE.execCommand('mceInsertContent', false, '" + html + "');"
 		elements.bn_tinymce.executeJavaScript(js)
 		
 	}
