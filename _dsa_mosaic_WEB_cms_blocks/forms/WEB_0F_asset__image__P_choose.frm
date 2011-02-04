@@ -1,4 +1,3 @@
-dataSource:"db:/sutra_cms/web_image",
 items:[
 {
 anchors:11,
@@ -72,6 +71,7 @@ location:"0,34",
 name:"tabs_210",
 printable:false,
 size:"250,260",
+tabOrientation:-1,
 typeid:16,
 uuid:"32699FAD-2DF3-4A0E-B9D9-B07A41D76ECE"
 },
@@ -118,7 +118,7 @@ typeid:7,
 uuid:"D4308EEB-B282-4B2C-83DB-868E2415D0C4"
 }
 ],
-name:"WEB_0F__asset__P_choose",
+name:"WEB_0F_asset__image__P_choose",
 namedFoundSet:"separate",
 navigatorID:"-1",
 onDeleteAllRecordsCmdMethodID:"-1",

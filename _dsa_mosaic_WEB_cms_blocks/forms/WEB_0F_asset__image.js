@@ -4,7 +4,14 @@
  */
 function BLOCK_choose()
 {
-	application.showFormInDialog(forms.WEB_0F__asset__P_choose,-1,-1,-1,-1,"Image", false, false, "chooseImage")
+	application.showFormInDialog(
+					forms.WEB_0F_asset__image__P_choose,
+					-1,-1,-1,-1,
+					"Image",
+					false,
+					false,
+					"CMS_imageChoose"
+				)
 	
 	//update display
 	if (forms.WEB_0F_page.TRIGGER_mode_set() == "DESIGN") {
@@ -21,7 +28,14 @@ function BLOCK_choose()
  */
 function BLOCK_scale()
 {
-	application.showFormInDialog(forms.WEB_0F__asset__P_scale,-1,-1,-1,-1,"Image", false, false, "imageScale")
+	application.showFormInDialog(
+					forms.WEB_0F_asset__image__P_scale,
+					-1,-1,-1,-1,
+					"Image", 
+					false, 
+					false, 
+					"CMS_imageScale"
+				)
 	
 	//update display
 	if (forms.WEB_0F_page.TRIGGER_mode_set() == "DESIGN") {
@@ -30,17 +44,6 @@ function BLOCK_scale()
 	else {
 		forms.WEB_0F_page__browser__editor.FORM_on_show()
 	}
-}
-
-/**
- * Perform the element default action.
- *
- * @param {JSEvent} event the event that triggered the action
- *
- * @properties={typeid:24,uuid:"A1AAE46C-FB9C-4B17-9F80-3684F7D8F81B"}
- */
-function ACTION_scale(event) {
-	forms.WEB_0B_image.ACTION_image_scale()
 }
 
 /**
@@ -86,15 +89,16 @@ function BLOCK_import()
 	*/
 	
 	// create image record
-	var record = forms.WEB_0F_image.foundset.getRecord(forms.WEB_0F_image.foundset.newRecord(true,true))
-	record.image_title		= fileOBJ.image_name
-	record.image_type		= fileOBJ.image_type
-	record.image_size		= plugins.file.getFileSize(file)
+	var record = forms.WEB_0F_asset.foundset.getRecord(forms.WEB_0F_asset.foundset.newRecord(true,true))
+	record.asset_type		= 'Image'
+	record.asset_title		= fileOBJ.image_name
+	record.asset_file_type	= fileOBJ.image_type
+	record.asset_size		= plugins.file.getFileSize(file)
 	record.directory		= fileOBJ.directory
-	record.image_extension	= fileExt
+	record.asset_extension	= fileOBJ.image_extension
 	record.width			= fileOBJ.width
 	record.height			= fileOBJ.height
-	record.thumbnail		= imageTemp.resize((40*fileOBJ.width)/fileOBJ.height, 40)  // scale to 40px height
+	record.asset_thumbnail	= imageTemp.resize((160*fileOBJ.width) / fileOBJ.height, 160)  // scale to 40px height
 	record.id_site			= forms.WEB_0F_site.id_site
 	
 	// save file
@@ -107,7 +111,7 @@ function BLOCK_import()
 	// application_server/server/webapps/ROOT/sutraCMS/sites/4community				
 				
 	if (forms.WEB_0F_install.ACTION_get_server() == "Windows"){
-		outputImage		= outputImage.replace(/\//g, "\\")
+		outputImage	= outputImage.replace(/\//g, "\\")
 	}
 	var success = plugins.file.copyFile(file, outputImage)
 	if ( !success ) {
@@ -120,8 +124,7 @@ function BLOCK_import()
  * param {} obj Data object passed to all markup methods
  * @properties={typeid:24,uuid:"5AABEBFD-5C92-42EA-9C3D-B0135AA33FC8"}
  */
-function VIEW_default(obj)
-{
+function VIEW_default(obj) {
 	
 	// template					
 	var markup = 	'<p id="data-<<id_block>>"><img width="<<width>>" height="<<height>>" border="0"' +
@@ -135,7 +138,6 @@ function VIEW_default(obj)
 	markup = markup.replace(/<<image_name>>/ig, obj.data.image_name)
 	markup = markup.replace(/<<directory>>/ig, obj.data.directory)
 	
-	
 	// return
 	return markup	
 }
@@ -143,28 +145,15 @@ function VIEW_default(obj)
 /**
  * @properties={typeid:24,uuid:"D177F9D8-57D4-4E9C-BC4B-D87BF04B1B00"}
  */
-function VIEW_download()
-{
+function VIEW_download() {
+	
 }
 
 /**
  * @properties={typeid:24,uuid:"FFB42F41-3AB3-4F26-A006-9FDF03BE1CF7"}
  */
-function VIEW_lightbox()
-{
-}
-
-/**
- *
- * @properties={typeid:24,uuid:"C3D50AA7-5A76-484F-BF22-E86C40042A94"}
- */
-function FORM_on_load() {
-
-	/* moved
-		var url = "http://localhost:8080" + directory + image_name
-		elements.bn_browser.navigateTo(url)
-	*/
-
+function VIEW_lightbox() {
+	
 }
 
 /**
@@ -226,12 +215,12 @@ function LOADER_init(recBlock,flagEdit) {
 					'</body></html>'
 	}
 	
-	forms.WEB_0F__asset.elements.bn_browser.html = html
+	forms.WEB_0F_asset__image.elements.bn_browser.html = html
 	forms.WEB_0F_page__design__content_1F_block_data.elements.tab_detail.removeTabAt(2)
-	forms.WEB_0F_page__design__content_1F_block_data.elements.tab_detail.addTab(forms.WEB_0F__asset)
+	forms.WEB_0F_page__design__content_1F_block_data.elements.tab_detail.addTab(forms.WEB_0F_asset__image)
 	forms.WEB_0F_page__design__content_1F_block_data.elements.tab_detail.tabIndex = 2
 	
-	forms.WEB_0F__asset.TOGGLE_buttons(flagEdit)
+	forms.WEB_0F_asset__image.TOGGLE_buttons(flagEdit)
 }
 
 /**
@@ -242,55 +231,12 @@ function INIT_block() {
 	// main data object to build
 	var block = {}
 	
-	// function to read methods on this form. naming conventions supply method categories and names
-	function getMethods(type) {
-		var methods = allmethods
-		var clientActionsBlock = {}
-		var clientActionsPage = {}
-		var webActions = {}
-		var views = {}
-		for (var i in methods) {
-			if ( methods[i].substr(0,5) == "BLOCK" ) {
-				clientActionsBlock[methods[i].substr(6,100)] = methods[i]
-			}
-			if ( methods[i].substr(0,4) == "PAGE" ) {
-				clientActionsPage[methods[i].substr(5,100)] = methods[i]
-			}
-			else if ( methods[i].substr(0,3) == "WEB" ) {
-				webActions[methods[i].substr(4,100)] = methods[i]
-			}
-			else if ( methods[i].substr(0,4) == "VIEW" ) {
-				views[methods[i].substr(5,100)] = methods[i]
-			}
-		}	
-		switch (type) {
-			case "BLOCK":
-				return clientActionsBlock
-				break
-			case "PAGE":
-				return clientActionsPage
-			case "WEB":
-				return webActions
-				break
-			case "VIEW":
-				return views
-				break
-			default:
-				return null
-				break
-		}
-	}
-	
 	// block record data
 	block.record = {
 			block_name			: 'Image',
 			block_description	: 'Images resource library',		
-			form_name			: 'WEB_0F__asset'
+			form_name			: 'WEB_0F_asset__image'
 		}
-	
-	// block views
-	block.views = getMethods("VIEW")
-	
 	
 	// block data points
 	block.data = {
@@ -304,18 +250,21 @@ function INIT_block() {
 		width_original : 'INTEGER'
 	}
 	
+	// block views
+	block.views = globals.WEB_block_methods(controller.getName(),"VIEW")
+	
 	// block client actions - Block
-	block.clientActionsBlock = getMethods("BLOCK")
+	block.clientActionsBlock = globals.WEB_block_methods(controller.getName(),"BLOCK")
 	
 	// block client actions - Page
-	block.clientActionsPage = getMethods("PAGE")
+	block.clientActionsPage = globals.WEB_block_methods(controller.getName(),"PAGE")
 	
 	// block web actions
-	block.webActions = getMethods("WEB")
+	block.webActions = globals.WEB_block_methods(controller.getName(),"WEB")
 	
 	// block configure data points
 	block.blockConfigure = {
-		Test : 'TEXT'
+		
 	}   
 	
 	return block
