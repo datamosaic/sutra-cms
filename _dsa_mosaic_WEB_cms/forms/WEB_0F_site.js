@@ -449,7 +449,7 @@ function FORM_on_load(event) {
 function FIELD_directory_onLost(event) {
 	// don't allow trailing "/"
 	databaseManager.saveData()
-	if ( directory.search(/\/*$/) > 0 ) {
+	if ( this[provider] && directory.search(/\/*$/) > 0 ) {
 		directory = directory.replace(/\/*$/, "")
 		databaseManager.saveData()
 	}
