@@ -116,7 +116,7 @@ if (globals.TRIGGER_registered_action_authenticate('cms site page update')) {
 		forms.WEB_0F_page.id_site = id_site
 		forms.WEB_0F_page.controller.search()
 		
-//		if (globals.TRIGGER_navigation_set('pages',true,web_site_to_page)) {
+//		if (globals.TRIGGER_navigation_set('CMS_page',true,web_site_to_page)) {
 			application.updateUI(4000)
 			
 			
