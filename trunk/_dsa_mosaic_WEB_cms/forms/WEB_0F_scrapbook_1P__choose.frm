@@ -67,7 +67,7 @@ typeid:7,
 uuid:"7D82B3EA-A9D4-4008-A64A-B8085A5B3F25"
 },
 {
-dataProviderID:"f_image_name",
+dataProviderID:"_image_name",
 displayType:10,
 editable:false,
 formIndex:11300,

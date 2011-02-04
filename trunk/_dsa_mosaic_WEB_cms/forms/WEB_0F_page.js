@@ -336,7 +336,7 @@ function TRIGGER_mode_set(mode) {
 				//custom block editor loaded on browser form, remove
 				if (forms.WEB_0F_page__browser.elements.tab_editor.getMaxTabIndex() && (
 					forms.WEB_0F_page__browser.elements.tab_editor.getTabFormNameAt(1) == 'WEB_0F__content' ||
-					forms.WEB_0F_page__browser.elements.tab_editor.getTabFormNameAt(1) == 'WEB_0F__asset'
+					forms.WEB_0F_page__browser.elements.tab_editor.getTabFormNameAt(1) == 'WEB_0F_asset__image'
 					)) {
 					
 					forms.WEB_0F_page__browser.elements.tab_editor.removeTabAt(1)
@@ -388,7 +388,7 @@ function FORM_on_show(firstShow, event) {
 			//remove possible heavyweight stuff
 			if (forms.WEB_0F_page__design__content_1F_block_data.elements.tab_detail.getMaxTabIndex() >= 2 && (
 				forms.WEB_0F_page__design__content_1F_block_data.elements.tab_detail.getTabFormNameAt(2) == 'WEB_0F__content' ||
-				forms.WEB_0F_page__design__content_1F_block_data.elements.tab_detail.getTabFormNameAt(2) == 'WEB_0F__asset' //||
+				forms.WEB_0F_page__design__content_1F_block_data.elements.tab_detail.getTabFormNameAt(2) == 'WEB_0F_asset__image' //||
 				)) {
 				
 				forms.WEB_0F_page__design__content_1F_block_data.elements.tab_detail.removeTabAt(2)

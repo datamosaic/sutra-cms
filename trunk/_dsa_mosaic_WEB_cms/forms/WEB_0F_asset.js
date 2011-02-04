@@ -11,10 +11,15 @@ var _license_dsa_mosaic_WEB_cms = 'Module: _dsa_mosaic_WEB_cms \
  */
 function REC_delete()
 {
-	var input = plugins.dialogs.showWarningDialog('Delete','Do you really want to delete this record?','Yes','No')
+	var input = plugins.dialogs.showWarningDialog(
+						'Delete',
+						'Do you really want to delete this record?',
+						'Yes',
+						'No'
+					)
 
 	if (input == 'Yes') {
-		controller.deleteRecord()	
+		controller.deleteRecord()
 	}
 }
 
@@ -47,7 +52,6 @@ function TAG_add(event) {
 						'There is no record to add tags to'
 					)
 	}
-
 }
 
 /**
@@ -58,7 +62,6 @@ function TAG_add(event) {
  * @properties={typeid:24,uuid:"8372B4E8-DA55-4B6A-8F4F-4B7C787F286C"}
  */
 function TAG_delete(event) {
-	
 	if (utils.hasRecords(foundset)) {
 		//turn autosave off
 		databaseManager.setAutoSave(false)
@@ -88,7 +91,7 @@ function TAG_delete(event) {
  * @properties={typeid:24,uuid:"FF5AF14C-E836-4D15-897E-FC174AA6C371"}
  */
 function REC_new() {
-	forms.WEB_0B_image.ACTION_import()
+	forms.WEB_0F_asset__image.BLOCK_import()
 }
 
 /**
