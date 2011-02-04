@@ -68,7 +68,7 @@ function TINYMCE_init(mode) {
 	
 		//styles
 		//get host from selected version
-		var thisSite = forms.WEB_0F_page.web_page_to_site.url
+		var thisSite = forms.WEB_0F_site.url
 		
 		//dataset is valid
 		if (thisSite && thisSite.length) {
