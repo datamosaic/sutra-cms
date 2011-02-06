@@ -318,6 +318,23 @@ function FORM_on_show()
 		elements.btn_up.enabled = reorderOK
 		elements.btn_down.enabled = reorderOK
 	}
+	
+	//set record navigator to blank
+	globals.TRIGGER_toolbar_record_navigator_set(false)
+}
+
+/**
+ * Handle hide window.
+ *
+ * @param {JSEvent} event the event that triggered the action
+ *
+ * @returns {Boolean}
+ *
+ * @properties={typeid:24,uuid:"E1532D38-9035-46A2-883B-DE91C0A13BD1"}
+ */
+function FORM_on_hide(event) {
+	//set record navigator to be enabled again
+	globals.TRIGGER_toolbar_record_navigator_set(true)
 }
 
 /**
@@ -1135,4 +1152,15 @@ function SET_page(pageID) {
 	if (results) {
 		elements.bean_tree.selectionPath = FIND_path(fsPage.getRecord(1))
 	}
+}
+
+/**
+ * Perform the element default action.
+ *
+ * @param {JSEvent} event the event that triggered the action
+ *
+ * @properties={typeid:24,uuid:"00D5F9DC-EFC1-45AD-8AB1-D7574EB41971"}
+ */
+function TABS_list(event) {
+	globals.TRIGGER_ul_tab_list(event)
 }
