@@ -381,6 +381,11 @@ function TRIGGER_mode_set(mode) {
  */
 function FORM_on_show(firstShow, event) {
 	
+	//first time go to sitemap view
+	if (firstShow) {
+		globals.TRIGGER_ul_tab_list('WEB_0T_page','Sitemap',0)
+	}
+	
 	//don't run in headless client
 	if (application.getApplicationType() != APPLICATION_TYPES.HEADLESS_CLIENT) {
 		//in workflow maximized view
@@ -429,4 +434,24 @@ function FORM_on_hide(event) {
 	}
 	
 	return true
+}
+
+/**
+ * @properties={typeid:24,uuid:"97CC07D0-6689-419F-B468-06786A53DBE0"}
+ */
+function FIND_post_process(count) {
+	//show correct list
+	var baseForm = solutionPrefs.config.formNameBase
+	
+	//something found as a result of this find, show flat view
+	if (count) {
+		forms[baseForm].elements.tab_content_B.tabIndex = (navigationPrefs.byNavItemID[solutionPrefs.config.currentFormID].listData.withButtons) ? 2 : 3
+	}
+	//show tree view
+	else {
+		forms[baseForm].elements.tab_content_B.tabIndex = navigationPrefs.byNavSetName.configPanes.itemsByName['Custom tab ' + solutionPrefs.config.currentFormID + ': WEB_0T_page'].listData.tabNumber
+		
+		//force to select correct record
+		forms.WEB_0T_page.elements.bean_tree.selectionPath = forms.WEB_0T_page.FIND_path(foundset.getSelectedRecord())
+	}
 }
