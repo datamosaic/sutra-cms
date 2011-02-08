@@ -31,7 +31,7 @@ function CONTROLLER()
 	
 	// initialize good dataset to return to jsp
 	var results = databaseManager.createEmptyDataSet(0,["key","value"])
-	results.addRow(["cmsVersion","Sutra CMS - 0.5.5.0"])
+	results.addRow(["cmsVersion","Sutra CMS - 2.0 alpha 1"])
 	
 	// STEP 1: Setup
 	var obj = CONTROLLER_setup(results, app, session, request, response, mode)
