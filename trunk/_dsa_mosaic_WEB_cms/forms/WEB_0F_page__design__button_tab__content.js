@@ -117,7 +117,7 @@ function TOGGLE_display(event) {
 		case 'btn_on':
 			
 			if (forms.WEB_0F_page__design__content_1F_block_data.elements.tab_detail.getTabFormNameAt(2) == 'WEB_0F__content') {
-				forms.WEB_0F__content.ACTION_cancel()
+//				forms.WEB_0F__content.ACTION_cancel()
 			}			
 			
 			elements.btn_on.visible = false
