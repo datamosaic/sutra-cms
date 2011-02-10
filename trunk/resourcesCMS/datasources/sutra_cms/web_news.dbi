@@ -11,8 +11,8 @@ name:"id_news"
 {
 allowNull:true,
 creationOrderIndex:9,
-dataType:12,
-length:10000,
+dataType:-1,
+length:16777215,
 name:"abstract_news"
 },
 {
@@ -52,8 +52,8 @@ name:"organization_id"
 {
 allowNull:true,
 creationOrderIndex:8,
-dataType:12,
-length:10000,
+dataType:-1,
+length:16777215,
 name:"overview"
 },
 {
