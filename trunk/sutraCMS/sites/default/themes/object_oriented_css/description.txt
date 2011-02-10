@@ -1,0 +1,4 @@
+Object Oriented CSS
+OOCSS allows you to write fast, maintainable, standards-based front end code. It adds much needed predictability to CSS so that even beginners can participate in writing beautiful websites.
+
+https://github.com/stubbornella/oocss/wiki
