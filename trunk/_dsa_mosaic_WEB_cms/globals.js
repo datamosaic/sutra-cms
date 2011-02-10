@@ -330,6 +330,13 @@ function WEB_simple_cancel() {
  */
 function WEB_MRKUP_link_page(pageID, siteURL, linkType) {
 	
+	var rewriteMode = forms.WEB_0F_install.rewrite_enabled
+	
+	//force to be index when rewrites disabled
+	if (!rewriteMode) {
+		linkType = 'Index'
+	}
+	
 	var page = databaseManager.getFoundSet("sutra_cms","web_page")
 	page.find()
 	page.id_page = pageID
@@ -381,8 +388,10 @@ function WEB_MRKUP_link_page(pageID, siteURL, linkType) {
 			siteURL += ':' + port
 		}
 		
-		//running off localhost or in edit mode
-		if (utils.stringPatternCount(siteURL,"localhost") || utils.stringPatternCount(siteURL,"127.0.0.1")) {
+		//no url rewrite OR running off localhost and site name not specified as localhost
+		if (!rewriteMode ||
+			(utils.stringPatternCount(siteURL,"localhost") && page.web_page_to_site.url != "localhost") || 
+			(utils.stringPatternCount(siteURL,"127.0.0.1") && page.web_page_to_site.url != "127.0.0.1")) {
 			siteURL += '/sutraCMS'
 		}
 		
