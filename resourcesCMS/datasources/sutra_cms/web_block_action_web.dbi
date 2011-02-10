@@ -18,8 +18,8 @@ name:"action_type"
 {
 allowNull:true,
 creationOrderIndex:5,
-dataType:12,
-length:10000,
+dataType:-1,
+length:16777215,
 name:"description"
 },
 {
@@ -39,7 +39,7 @@ name:"flag_default"
 allowNull:true,
 creationOrderIndex:9,
 dataType:12,
-length:1000,
+length:255,
 name:"form_name"
 },
 {
@@ -52,7 +52,7 @@ name:"id_block_type"
 allowNull:true,
 creationOrderIndex:2,
 dataType:12,
-length:10000,
+length:255,
 name:"method_name"
 },
 {

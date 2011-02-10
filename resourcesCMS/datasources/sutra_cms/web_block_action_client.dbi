@@ -26,7 +26,7 @@ name:"description"
 allowNull:true,
 creationOrderIndex:8,
 dataType:12,
-length:1000,
+length:255,
 name:"form_name"
 },
 {

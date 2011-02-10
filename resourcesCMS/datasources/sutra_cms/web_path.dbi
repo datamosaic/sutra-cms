@@ -37,8 +37,8 @@ name:"organization_id"
 {
 allowNull:true,
 creationOrderIndex:1,
-dataType:12,
-length:10000,
+dataType:-1,
+length:65535,
 name:"path"
 },
 {

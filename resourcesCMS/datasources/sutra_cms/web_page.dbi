@@ -11,8 +11,8 @@ name:"id_page"
 {
 allowNull:true,
 creationOrderIndex:9,
-dataType:12,
-length:10000,
+dataType:-1,
+length:16777215,
 name:"description"
 },
 {
@@ -50,8 +50,8 @@ name:"id_theme_layout"
 {
 allowNull:true,
 creationOrderIndex:14,
-dataType:12,
-length:10000,
+dataType:-1,
+length:16777215,
 name:"keywords"
 },
 {
@@ -119,7 +119,7 @@ name:"rec_modified"
 allowNull:true,
 creationOrderIndex:15,
 dataType:12,
-length:1000,
+length:255,
 name:"title_override"
 }
 ],

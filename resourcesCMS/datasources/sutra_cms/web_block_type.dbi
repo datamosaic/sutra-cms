@@ -11,8 +11,8 @@ name:"id_block_type"
 {
 allowNull:true,
 creationOrderIndex:3,
-dataType:12,
-length:10000,
+dataType:-1,
+length:16777215,
 name:"block_description"
 },
 {
@@ -26,7 +26,7 @@ name:"block_name"
 allowNull:true,
 creationOrderIndex:1,
 dataType:12,
-length:10000,
+length:255,
 name:"form_name"
 },
 {
