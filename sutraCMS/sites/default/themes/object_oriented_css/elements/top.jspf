@@ -1,0 +1,29 @@
+<div id="header_outer_left">
+  <div id="header_outer_right">
+    <div id="header_outer_mid">
+      <div class="layout">
+        <div id="header">
+          <div class="quick_link">
+            <p>1300 83 53 73</p>
+			<%=pageData.get("Navigation: Head")%>
+          </div>
+          <div class="search">
+            <form action="">
+              <fieldset>
+                <div class="text_bg">
+                  <input type="text" class="text" onblur="if(this.value=='')this.value='Search';" onfocus="if(this.value=='Search')this.value='';" value="Search" />
+                </div>
+                <input type="button" class="btn_search" value="" />
+              </fieldset>
+            </form>
+          </div>
+          <div class="logo"><a href="index.html"><img src="<%=(String)request.getAttribute("themeDirectory")%>/images/logo.png" alt="National College Australia" /></a></div>
+          <div class="menu">
+            <%=pageData.get("Navigation: Main")%>
+			<%=pageData.get("Navigation: Actions")%>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
