@@ -4,8 +4,14 @@
  */
 function VIEW_default(obj)
 {
-	// no markup with content data, just return data
-	var markup = obj.data.Content
+	// template
+	var markup = 	'<div id="data-<<id_block>>">\n' +
+						'\t<<content>>\n' +
+					'</div>'
+	
+	// replace
+	markup = markup.replace(/<<id_block>>/ig, obj.block.id)
+	markup = markup.replace(/<<content>>/ig, obj.data.Content)
 	
 	// return
 	return markup
