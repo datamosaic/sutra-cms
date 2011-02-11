@@ -27,21 +27,6 @@
 		hilite.unbind('click');
 		hilite.click(
 			function(e) {
-				// //turn off all areas
-				// 				editOff((domID.split('-')[0] + '-').substring(1));
-				// 				
-				// 				//highlight the selected area
-				// 				divObj.addClass("editable");
-				// 				divObj.css("display","block");
-				// 				
-				// 				hilite.css("width", divObj.outerWidth());
-				// 				hilite.css("height", divObj.outerHeight());
-				// 				hilite.css("top", offset.top);
-				// 				hilite.css("left", offset.left);
-				// 				hilite.css("display", "block");
-				// 
-				// 				hilite.unbind('click');
-				
 				//put secondary hover craft over the whole mothership
 				var hiliteTwo = $("#cmsOverlay");
 				hiliteTwo.css("display", "block");
@@ -84,31 +69,29 @@
 	}
 	
 	$(function() {
-        //on load method that attaches callback to every index_edit link
-		$("a[href^='index_edit.jsp']").click(function(event){
+			//on load method that attaches callback to every index_edit link
+			$("a[href*='index_edit.jsp']").click(function(event){
+				
+				//stop default browser behaviour
+				event.preventDefault();
 			
-			//stop default browser behaviour
-			event.preventDefault();
-			
-			//find pageID
-		    var hashes = this.href.slice(this.href.indexOf('?') + 1).split('&');
-			for (var i = 0; i < hashes.length; i++) {
-		        var hash = hashes[i].split('=');
-		        if (hash[0] == 'id') {
-		        	var pageID = hash[1];
-					break
+				//find pageID
+				var hashes = this.href.slice(this.href.indexOf('?') + 1).split('&');
+				for (var i = 0; i < hashes.length; i++) {
+					var hash = hashes[i].split('=');
+					if (hash[0] == 'id') {
+						var pageID = hash[1];
+						break
+					}
 				}
-		    }
-			
-			// alert(this.href + '\n' + pageID);
-			
-			//set page in Servoy, triggering refresh, etc
-			sendNSCommand("WEB_0T_page.SET_page",pageID);
-		});
+				
+				//set page in Servoy, triggering refresh, etc
+				sendNSCommand("WEB_0T_page.SET_page",pageID);
+			});
 		
 		//if flag set, auto-enter in edit mode
 		//<%=pageData.get("cmsTitle")%>
 		//editOn('data-');
-    });
+	});
 	
 </script>
