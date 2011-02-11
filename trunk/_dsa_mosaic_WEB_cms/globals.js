@@ -333,7 +333,7 @@ function WEB_MRKUP_link_page(pageID, siteURL, linkType) {
 	var rewriteMode = forms.WEB_0F_install.rewrite_enabled
 	
 	//force to be index when rewrites disabled
-	if (!rewriteMode) {
+	if (!rewriteMode && linkType != 'Edit') {
 		linkType = 'Index'
 	}
 	

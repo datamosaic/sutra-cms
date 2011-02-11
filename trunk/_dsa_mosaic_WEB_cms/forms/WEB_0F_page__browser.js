@@ -20,6 +20,7 @@ function REC_selected(event) {
 	for (var i = 0; i < vlReal.length; i++) {
 		if (globals.WEB_version_selected == vlReal[i]) {
 			var found = true
+			break
 		}
 	}
 	
@@ -46,7 +47,7 @@ function REC_selected(event) {
  */
 function EDIT_on() {
 	var prefix = 'data-'
-	var result = elements.bn_browser.executeJavaScriptWithResult("return editOn('" + prefix + "');")
+	elements.bn_browser.executeJavaScript("editOn('" + prefix + "');")
 }
 
 /**
@@ -90,7 +91,7 @@ function URL_update() {
  */
 function EDIT_off() {
 	var prefix = 'data-'
-	var result = elements.bn_browser.executeJavaScriptWithResult("return editOff('" + prefix + "');")
+	elements.bn_browser.executeJavaScript("editOff('" + prefix + "');")
 	
 	if (elements.bean_split.bottomComponent) {
 		SPLIT_set(false)
