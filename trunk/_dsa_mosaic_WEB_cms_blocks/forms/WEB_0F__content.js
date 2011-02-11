@@ -182,7 +182,7 @@ function BLOCK_save() {
 	
 	//called from browser bean, hide form
 	if (forms.WEB_0F_page.TRIGGER_mode_set() == "BROWSER") {
-		forms.WEB_0F_page__browser__editor.BLOCK_hide()
+		forms.WEB_0F_page__browser__editor.ACTION_hide()
 	}
 }
 
@@ -231,7 +231,7 @@ function BLOCK_cancel(event) {
 	
 	//called from browser bean, hide form
 	if (forms.WEB_0F_page.TRIGGER_mode_set() == "BROWSER") {
-		forms.WEB_0F_page__browser__editor.BLOCK_hide()
+		forms.WEB_0F_page__browser__editor.ACTION_hide()
 	}
 }
 
