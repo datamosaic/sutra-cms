@@ -215,9 +215,15 @@ function CONTROLLER_builder(results, obj) {
 			var count = display.search()
 			
 			// MARKUP CALL
-			areaMarkup += forms[type.form_name][display.method_name](obj)
-			areaMarkup += "\n"	
-				
+			if ( obj.type && obj.type == "Edit" ) { 		// edit mode (need div wrappers)
+				areaMarkup += '<div id="data-' + block.id_block + '">\n'
+				areaMarkup += forms[type.form_name][display.method_name](obj)
+				areaMarkup += "</div>\n"
+			}
+			else {			// deployed
+				areaMarkup += forms[type.form_name][display.method_name](obj)
+				areaMarkup += "\n"	
+			}	
 			
 			// obj: block...CLEAR
 			obj.block.record	= ''
