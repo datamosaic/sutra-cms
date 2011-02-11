@@ -1,9 +1,0 @@
-deleteRelatedRecords:true,
-foreignDataSource:"db:/sutra_cms/web_blog_site",
-items:[
-{foreignColumnName:"id_site",primaryDataProviderID:"id_site",typeid:23,uuid:"26F6E35E-78CC-4184-8D4C-D6D7ED891A69"}
-],
-name:"web_site_to_blog_site",
-primaryDataSource:"db:/sutra_cms/web_site",
-typeid:22,
-uuid:"F18372C1-CD4E-4035-80D8-875FA26B37BB"
