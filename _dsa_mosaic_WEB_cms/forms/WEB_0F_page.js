@@ -349,7 +349,7 @@ function TRIGGER_mode_set(mode) {
 				forms.WEB_0F_page__design__header_display.FLD_data_change__version_selected()
 				break;
 			case "BROWSER":	
-				forms.WEB_0F_page__browser.REC_selected()
+//				forms.WEB_0F_page__browser.REC_selected()
 				elements.tab_main.addTab( forms.WEB_0F_page__browser )
 				elements.tab_main.tabIndex = 2
 				break;

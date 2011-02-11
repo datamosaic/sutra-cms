@@ -10,11 +10,11 @@ beanXML:"<?xml version=\"1.0\" encoding=\"UTF-8\"?>
   <\/void> 
   <void property=\"borderType\"> 
    <object class=\"javax.swing.border.EmptyBorder\"> 
-    <int>0<\/int> 
-    <int>0<\/int> 
-    <int>0<\/int> 
-    <int>0<\/int> 
-   <\/object> 
+     <int>0<\/int> 
+     <int>0<\/int> 
+     <int>0<\/int> 
+     <int>0<\/int> 
+    <\/object> 
   <\/void> 
   <void property=\"buttonBarVisible\"> 
    <boolean>false<\/boolean> 

@@ -271,7 +271,7 @@ function ACTION_dashboard(event) {
 			elements.highlighter_dash.visible = true
 			elements.lbl_detail.visible = true
 			
-			forms.WEB_0F_page__browser.elements.bn_browser.reload()
+//			forms.WEB_0F_page__browser.elements.bn_browser.reload()
 			forms.WEB_0F_page.TRIGGER_mode_set("BROWSER")	
 			
 			//toggle edit, groups, snapshots
