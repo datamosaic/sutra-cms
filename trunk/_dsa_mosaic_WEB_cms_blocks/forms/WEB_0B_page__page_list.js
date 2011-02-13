@@ -7,7 +7,7 @@ function VIEW_default()
 	
 	var data 		= arguments[0] // data
 	var parentID	= arguments[1]	// params
-	var markup	= '<div id="data-<<id_block>>" class="module-archives module">'           	            
+	var markup	= '<div class="module-archives module">'           	            
 	markup		+= '<div class="module-content">'
 	markup		+= '<div class="page-list-outline">'
 	

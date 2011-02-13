@@ -127,9 +127,9 @@ function BLOCK_import()
 function VIEW_default(obj) {
 	
 	// template					
-	var markup = 	'<p id="data-<<id_block>>"><img width="<<width>>" height="<<height>>" border="0"' +
+	var markup = 	'<img width="<<width>>" height="<<height>>" border="0"' +
 					'src="<<directory>><<image_name>>"' +
-					'alt="" /></p>'
+					'alt="" />'
 	
 	// replace
 	markup = markup.replace(/<<id_block>>/ig, obj.block.id)
