@@ -10,14 +10,8 @@ function VIEW_default()
 	  
 	// 1) get data from map and filter if data not in map already
 	
-	// 2) build results
-	var markup = 	'<div id="data-<<id_block_data>>">\n' +
-						'\t<<content>>\n' +
-					'</div>'
-	
-	markup = markup.replace(/<<id_block_data>>/ig, data.id_block_data)
-	markup = markup.replace(/<<content>>/ig, data.Content)
-	
+	// template
+	var markup = data.Content	
 	
 	// return
 	return markup
