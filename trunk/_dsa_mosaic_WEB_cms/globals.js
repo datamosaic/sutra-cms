@@ -106,16 +106,6 @@ var WEB_version_name = null;
 var WEB_version_selected = null;
 
 /**
- *
- * @properties={typeid:24,uuid:"0F1400C1-BD99-489E-B073-2E99A49076C3"}
- */
-function globalTestFunction(msg,btnLabel) {
-
-	plugins.dialogs.showInfoDialog("Global callback",msg,btnLabel);
-
-}
-
-/**
  * Perform the element default action.
  *
  * @param {JSEvent} event the event that triggered the action
@@ -358,7 +348,7 @@ function WEB_MRKUP_link_page(pageID, siteURL, linkType) {
 		}
 		//fill localhost
 		else {
-			siteURL = accessURL //'localhost'
+			siteURL = accessURL
 			
 			//need to be going on index; edit always does this already
 			if (linkType != 'Edit') {
