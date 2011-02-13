@@ -440,3 +440,10 @@ function LOADER_init(recBlock,flagEdit) {
 		forms.WEB_0F_page__design__content_1F_block_data.elements.tab_detail.tabIndex = 2
 	}
 }
+
+/**
+ * @properties={typeid:24,uuid:"24C27F8E-25F9-4334-993A-389A21BE71E5"}
+ */
+function PAGE_popup_test() {
+	plugins.dialogs.showInfoDialog( "Demo", "Block page actions added to this menu")
+}
