@@ -319,131 +319,206 @@ function WEB_simple_cancel() {
  * @properties={typeid:24,uuid:"8D473D49-2039-49AC-B633-72E88E736CA9"}
  */
 function WEB_MRKUP_link_page(pageID, siteURL, linkType) {
+	//get url up to sutraCMS directory
+	var pageLink = globals.WEB_MRKUP_link_base(pageID, siteURL, linkType)
 	
-	var rewriteMode = forms.WEB_0F_install.rewrite_enabled
+	//get page requested
+	var fsPage = databaseManager.getFoundSet("sutra_cms","web_page")
+	fsPage.find()
+	fsPage.id_page = pageID
+	var count = fsPage.search()
 	
-	//force to be index when rewrites disabled
+	//this page exists, get its site
+	if (count && utils.hasRecords(fsPage.web_page_to_site)) {
+		var pageRec = fsPage.getRecord(1)
+		var siteRec = pageRec.web_page_to_site.getRecord(1)
+	}
+	//no site specified, try to fail gracefully
+	else {
+		var pageRec = new Object()
+		var siteRec = new Object()
+	}
+	
+	//this is a link type of page, pageLink == its link
+	if (pageRec.page_type == 2 && pageRec.page_link) {
+		pageLink = pageRec.page_link
+	}
+	//normal page, generate link
+	else {
+		//use default link type if none specified
+		if (!linkType) {
+			linkType = siteRec.pref_links
+		}
+		
+		switch (linkType) {
+			case "Index":
+				pageLink += 'index.jsp?id=' + pageID
+				break
+			case "Folder":
+				
+				break
+			case "Pretty":
+				//are there paths configured for this page?
+				if (pageRec && utils.hasRecords(pageRec.web_page_to_path)) {
+					//loop to find default
+					for (var i = 1; i <= pageRec.web_page_to_path.getSize(); i++) {
+						var pathRec = pageRec.web_page_to_path.getRecord(i)
+						
+						if (pathRec.flag_default == 1) {
+							break
+						}
+					}
+				}
+				
+				var urlString = (pathRec) ? pathRec.path : 'error'
+				
+				pageLink += urlString + '.html'
+				break
+			case "Edit":
+				//selection set in site tree which will trigger a loading in the main workflow
+				//jQuery changes index_edits to fire servoy callbacks on form load
+				pageLink += 'index_edit.jsp?id=' + pageID
+				break
+			default:
+				pageLink += 'index.jsp?id=' + pageID
+		}
+	}
+	
+	//full url for a page requested
+	return pageLink
+}
+
+/**
+ * @properties={typeid:24,uuid:"AFA318BF-7E29-4E7D-BE9D-CE4085851DF3"}
+ */
+function WEB_MRKUP_link_base(pageID, siteURL, linkType) {
+	//rewrite mode
+	var fsInstall = databaseManager.getFoundSet('sutra_cms','web_install')
+	fsInstall.loadAllRecords()
+	if (utils.hasRecords(fsInstall)) {
+		var rewriteMode = fsInstall.rewrite_enabled
+	}
+	
+	//force fsPages style to be index when rewrites disabled
 	if (!rewriteMode && linkType != 'Edit') {
 		linkType = 'Index'
 	}
 	
-	var page = databaseManager.getFoundSet("sutra_cms","web_page")
-	page.find()
-	page.id_page = pageID
-	var count = page.search()
+	//get page requested
+	var fsPage = databaseManager.getFoundSet("sutra_cms","web_page")
+	fsPage.find()
+	fsPage.id_page = pageID
+	var count = fsPage.search()
 	
-	if (count && utils.hasRecords(page.web_page_to_site)) {
-		
-		//how requested
-		var appServer = application.getServerURL()
-		appServer = appServer.split(':')
-		var accessURL = appServer[1].slice(2)
-		if (appServer.length > 2) {
-			var port = appServer[2]
-		}
-		
-		//siteURL to use
-		if (page.web_page_to_site.url) {
-			siteURL = page.web_page_to_site.url
-		}
-		//fill localhost
-		else {
-			siteURL = accessURL
-			
-			//need to be going on index; edit always does this already
-			if (linkType != 'Edit') {
-				linkType = 'Index'
-			}
-		}
-		
-		//advanced apache setup, reference by correct url
-		if (page.web_page_to_site.url_2) {
-			siteURL = page.web_page_to_site.url_2
-			port = null
-		}
-		//take port into consideration
-			//MEMO: obviously, the port (if non-standard) is entered in the url_2 column above
-		else {
-			
-		}
-		
-		if (page.flag_ssl) {
-			siteURL = 'https://' + siteURL
-		}
-		else {
-			siteURL = 'http://' + siteURL
-		}
-		
-		if (port) {
-			siteURL += ':' + port
-		}
-		
-		//no url rewrite OR running off localhost and site name not specified as localhost
-		if (!rewriteMode ||
-			(utils.stringPatternCount(siteURL,"localhost") && page.web_page_to_site.url != "localhost") || 
-			(utils.stringPatternCount(siteURL,"127.0.0.1") && page.web_page_to_site.url != "127.0.0.1")) {
-			siteURL += '/sutraCMS'
-		}
-		
-		var pageLink = siteURL + '/'
-		
-		//this is a link type of page, pageLink == its link
-		if (page.page_type == 2 && page.page_link) {
-			pageLink = page.page_link
-		}
-		//normal page, generate link
-		else {
-			if (!linkType) {
-				linkType = page.web_page_to_site.pref_links
-			}
-			switch (linkType) {
-				case "Index":
-					pageLink += 'index.jsp?id=' + pageID
-					break
-				case "Folder":
-					
-					break
-				case "Pretty":
-					var fsPath = databaseManager.getFoundSet('sutra_cms','web_path')
-					fsPath.find()
-					fsPath.id_page = pageID
-					fsPath.flag_default = 1
-					var results = fsPath.search()
-					
-					if (!results) {
-						fsPath.find()
-						fsPath.id_page = pageID
-						var results = fsPath.search()
-					}
-					
-					var urlString = (results) ? fsPath.path : 'error'
-					
-					pageLink += urlString + '.html'
-					break
-				case "Edit":
-					//selection set in site tree which will trigger a loading in the main workflow
-					//jQuery changes on load
-					pageLink += 'index_edit.jsp?id=' + pageID
-					break
-				default:
-					pageLink += 'index.jsp?id=' + pageID
-			}
-		}
+	//this page exists, get the site
+	if (count && utils.hasRecords(fsPage.web_page_to_site)) {
+		var pageRec = fsPage.getRecord(1)
+		var siteRec = pageRec.web_page_to_site.getRecord(1)
 	}
-	//TODO: call a general error page
+	//no site specified, try to fail gracefully
 	else {
-		//trap for http(s) and tack on here to for consistency
-		pageLink += 'error.html'
+		var pageRec = new Object()
+		var siteRec = new Object()
 	}
 	
-	return pageLink
+	//how requested
+	var appServer = application.getServerURL()
+	appServer = appServer.split(':')
+	var accessURL = appServer[1].slice(2)
+	if (appServer.length > 2) {
+		var port = appServer[2]
+	}
+	
+	//url specified
+	if (siteRec.url) {
+		siteURL = siteRec.url
+	}
+	//use whatever url the request came in on
+	else {
+		siteURL = accessURL
+		
+		//must use index (edit always does this already)
+		if (linkType != 'Edit') {
+			linkType = 'Index'
+		}
+	}
+	
+	//advanced apache setup, reference by correct url
+	if (siteRec.url_2) {
+		siteURL = siteRec.url_2
+		port = null
+	}
+	//take port into consideration
+		//MEMO: obviously, the port (if non-standard) is entered in the url_2 column above
+	else {
+		
+	}
+	
+	//force to be secure
+	if (pageRec.flag_ssl) {
+		siteURL = 'https://' + siteURL
+	}
+	//default non-secure
+	else {
+		siteURL = 'http://' + siteURL
+	}
+	
+	if (port) {
+		siteURL += ':' + port
+	}
+	
+	//no url rewrite OR running off localhost and site name not specified as localhost
+	if (!rewriteMode ||
+		(utils.stringPatternCount(siteURL,"localhost") && siteRec.url != "localhost") || 
+		(utils.stringPatternCount(siteURL,"127.0.0.1") && siteRec.url != "127.0.0.1")) {
+		
+		siteURL += '/sutraCMS'
+	}
+	
+	//returns url that will launch things in the sutraCMS directory
+	return siteURL + '/'
 }
 
 /**
  * @properties={typeid:24,uuid:"CF88AF63-45F2-4BC4-95BC-8E6D653A58BC"}
  */
-function WEB_MRKUP_link_resources(obj) {
-	//generate first part of url
+function WEB_MRKUP_link_resources(pageID, siteURL, linkType) {
+	var siteDirectory = ''
+	
+	//rewrite mode
+	var fsInstall = databaseManager.getFoundSet('sutra_cms','web_install')
+	fsInstall.loadAllRecords()
+	if (utils.hasRecords(fsInstall)) {
+		var rewriteMode = fsInstall.rewrite_enabled
+	}
+	
+	//get page requested
+	var fsPage = databaseManager.getFoundSet("sutra_cms","web_page")
+	fsPage.find()
+	fsPage.id_page = pageID
+	var count = fsPage.search()
+	
+	//this page exists, get its site
+	if (count && utils.hasRecords(fsPage.web_page_to_site)) {
+		var pageRec = fsPage.getRecord(1)
+		var siteRec = pageRec.web_page_to_site.getRecord(1)
+	}
+	//no site specified, try to fail gracefully
+	else {
+		var pageRec = new Object()
+		var siteRec = new Object()
+	}
+	
+	//no url rewrite OR running off localhost and site name not specified as localhost
+	if (!rewriteMode ||
+		(utils.stringPatternCount(siteURL,"localhost") && siteRec.url != "localhost") || 
+		(utils.stringPatternCount(siteURL,"127.0.0.1") && siteRec.url != "127.0.0.1")) {
+		
+		siteDirectory = 'sutraCMS/sites/' + siteRec.directory + '/'
+	}
+	
+	//url relative to default landing point for server
+	return siteDirectory
 }
 
 /**
@@ -479,7 +554,7 @@ function WEB_MRKUP_link_internal(markup,siteURL,linkType,areaID) {
 		var count = area.search()
 		
 		//this is linked up to a theme editable and set to allow records to be created
-		if (false && count && utils.hasRecords(area.web_area_to_editable) && area.web_area_to_editable.flag_new_block) {
+		if (count && utils.hasRecords(area.web_area_to_editable) && area.web_area_to_editable.flag_new_block) {
 			
 			var newBlock = '<!-- add new block -->'
 			newBlock += '<div id="add-' + areaID + '" class="block_new">'
