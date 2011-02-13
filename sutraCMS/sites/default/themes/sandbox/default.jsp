@@ -25,7 +25,6 @@
 		</div>
 	</div>
 	<div class="foot">
-		<h2>Footer</h2>
 		<%=pageData.get("Foot")%>
 	</div>
 </div>
