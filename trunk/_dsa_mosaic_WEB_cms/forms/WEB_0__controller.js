@@ -6,17 +6,6 @@ var _license_dsa_mosaic_WEB_cms = 'Module: _dsa_mosaic_WEB_cms \
 									MIT Licensed';
 
 /**
- * @properties={typeid:24,uuid:"C6673E65-C13F-4D0F-861B-10CADD042CC4"}
- */
-function license() {
-	/*!
-	 * Turing - Module Name
-	 * Copyright (C) 2010-2011 Alex R. Young 
-	 * MIT Licensed
-	 */
-}
-
-/**
  *
  * @properties={typeid:24,uuid:"4C8B4BD7-E187-4A00-9A77-C58FD3971691"}
  */
@@ -215,14 +204,15 @@ function CONTROLLER_builder(results, obj) {
 			var count = display.search()
 			
 			// MARKUP CALL
-			if ( obj.type && obj.type == "Edit" ) { 		// edit mode (need div wrappers)
-				areaMarkup += '<div id="data-' + block.id_block + '">\n'
-				areaMarkup += forms[type.form_name][display.method_name](obj)
+			// edit mode (needs div wrappers)
+			if ( obj.type == "Edit" ) {
+				areaMarkup += '<div id="sutra-block-data-' + block.id_block + '">\n'
+				areaMarkup += forms[type.form_name][display.method_name](obj) + '\n'
 				areaMarkup += "</div>\n"
 			}
-			else {			// deployed
-				areaMarkup += forms[type.form_name][display.method_name](obj)
-				areaMarkup += "\n"	
+			// deployed (no divs)
+			else {
+				areaMarkup += forms[type.form_name][display.method_name](obj) + '\n'
 			}	
 			
 			// obj: block...CLEAR
@@ -300,19 +290,6 @@ function CONTROLLER_setup(results, app, session, request, response, mode) {
 		// TODO: may add in ability to see snapshots on a live server
 	var groupID		= (request.getParameter("group")) ? utils.stringToNumber(request.getParameter("group")) : 0
 	var versionID	= (request.getParameter("snapshot")) ? utils.stringToNumber(request.getParameter("snapshot")) : 0
-			
-	
-	// set flag that we're in edit mode
-	if (mode && mode == 'Edit') {
-		//this makes all links go through index_edit.jsp
-		obj.type = 'Edit'
-		
-		//alert that we're in browser edit mode
-		results.addRow(["cmsMode","Browser Edit Mode"])
-		
-		//variable for easy access
-		var editMode = true
-	}
 			
 	// "get" form data (does not return "post" form data)
 	var getPairs	= {}
@@ -557,6 +534,26 @@ function CONTROLLER_setup(results, app, session, request, response, mode) {
 		test ++
 	}
 
+	
+	// set flag that we're in edit mode
+	if (mode && mode == 'Edit') {
+		//this makes all links go through index_edit.jsp
+		obj.type = 'Edit'
+		
+		//alert that we're in browser edit mode
+		results.addRow(["cmsMode","Browser Edit Mode"])
+		
+		//edit mode is turned on
+		if (getPairs.webmode == 'edit') {
+			results.addRow(["cmsModeStatus","1"])
+		}
+		else {
+			results.addRow(["cmsModeStatus","0"])
+		}
+		
+		//variable for easy access
+		var editMode = true
+	}
 	
 	// PAGE
 	if ( pageID ) {

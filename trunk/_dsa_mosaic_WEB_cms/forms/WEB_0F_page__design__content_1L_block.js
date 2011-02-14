@@ -83,7 +83,12 @@ function BLOCK_action_list_control() {
  *
  * @properties={typeid:24,uuid:"32ED93D4-CD10-47EF-B396-71C65FC962E7"}
  */
-function BLOCK_new() {
+function BLOCK_new(input) {
+	//method called not from a click on plus button; from web edit mode
+	if (!(input instanceof JSEvent)) {
+		var webEdit = true
+	}
+	
 	// get blocks
 	var dataset = databaseManager.getDataSetByQuery(
 				controller.getServerName(),
@@ -105,14 +110,18 @@ function BLOCK_new() {
 		valueListObj[values[i]] = IDs[i]
 	}
 	
-	// add scrapbook option
-	values.push("---", "Scrapbook copy...", "Scrapbook connect...")
+	// add scrapbook options
+		//scrapbook temporarily disabled on add block
+	if (!webEdit) {
+		values.push("---", "Scrapbook copy...", "Scrapbook connect...")
+	}
 	
 	// choose block type
 	var selection = plugins.dialogs.showSelectDialog(
-	"Select",
-	"Choose block type", 
-	values)
+							"Select",
+							"Choose block type", 
+							values
+						)
 	
 	// ERROR CHECK: NO SELECTED
 	if ( !selection ) {
@@ -123,11 +132,13 @@ function BLOCK_new() {
 	
 		// get block display
 		var dataset = databaseManager.getDataSetByQuery(
-		controller.getServerName(),
-		"select display_name, method_name, " +
-			"(select id_block_display from web_block_display where id_block_type = ? and flag_default = 1) as display " +
-		"from web_block_display where id_block_type = ?",
-		new Array(valueListObj[selection],valueListObj[selection]), -1)
+							controller.getServerName(),
+							"select display_name, method_name, " +
+								"(select id_block_display from web_block_display where id_block_type = ? and flag_default = 1) as display " +
+							"from web_block_display where id_block_type = ?",
+							new Array(valueListObj[selection],valueListObj[selection]), 
+							-1
+						)
 		
 		var display = dataset.getValue(1,3)
 		
@@ -138,16 +149,23 @@ function BLOCK_new() {
 			record.id_block_type = valueListObj[selection]
 			record.id_block_display = ( display ) ? display : null
 			record.row_order = count + 1
-			databaseManager.saveData()
+			databaseManager.saveData(record)
+		}
+		
+		// set global when in web edit mode
+		if (webEdit) {
+			globals.WEB_page_id_block_selected = record.id_block
 		}
 		
 		// get block data points
 		var dataset = databaseManager.getDataSetByQuery(
-		controller.getServerName(),
-		"select column_name, column_type, " +
-			"(select id_block_display from web_block_display where id_block_type = ? and flag_default = 1) as display " +
-		"from web_block_meta where id_block_type = ?",
-		new Array(valueListObj[selection],valueListObj[selection]), -1)
+							controller.getServerName(),
+							"select column_name, column_type, " +
+								"(select id_block_display from web_block_display where id_block_type = ? and flag_default = 1) as display " +
+							"from web_block_meta where id_block_type = ?",
+							new Array(valueListObj[selection],valueListObj[selection]), 
+							-1
+						)
 		
 		var dataNames = dataset.getColumnAsArray(1)
 		
@@ -155,13 +173,20 @@ function BLOCK_new() {
 		for (var i = 0; i < dataNames.length; i++) {
 			var record = web_page_to_block_data_by_area_by_block.getRecord(web_page_to_block_data_by_area_by_block.newRecord(false, true))
 			record.data_key = dataNames[i]
-			databaseManager.saveData()
+			databaseManager.saveData(record)
 		}
 		
 		// finish up
 		web_page_to_block_data_by_area_by_block.setSelectedIndex(1)
 		
-		forms.WEB_0F_page__design__content_1L_block.REC_selected()
+		// set global with first blockID of this set
+		if (webEdit) {
+			globals.WEB_page_id_block_selected = web_page_to_block_data_by_area_by_block.id_block
+		}
+		// update screen in non-web edit
+		else {
+			forms.WEB_0F_page__design__content_1L_block.REC_selected()
+		}
 	}
 	else {
 		forms.WEB_0F_scrapbook_1P__choose.f_source = "Page"
@@ -172,7 +197,14 @@ function BLOCK_new() {
 			forms.WEB_0F_scrapbook_1P__choose.f_type = 1
 		}
 		
-		application.showFormInDialog(forms.WEB_0F_scrapbook_1P__choose,-1,-1,-1,-1,"Scrapbook", false, false, "chooseScrapbook")
+		application.showFormInDialog(
+				forms.WEB_0F_scrapbook_1P__choose,
+				-1,-1,-1,-1,
+				"Scrapbook", 
+				false, 
+				false, 
+				"chooseScrapbook"
+			)
 
 	}
 }
