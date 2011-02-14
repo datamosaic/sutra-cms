@@ -283,6 +283,136 @@ function ACTION_dashboard(event) {
 }
 
 /**
+ * Perform the element default action.
+ *
+ * @param {JSEvent} event the event that triggered the action
+ *
+ * @properties={typeid:24,uuid:"A164DFE9-D04B-454E-B5B7-194AC642627F"}
+ */
+function ACTION_mode(event) {
+	
+	//don't enter if workflow form locked for some reason or not enough access
+	if (!solutionPrefs.design.statusLockWorkflow && globals.TRIGGER_registered_action_authenticate('cms page mode toggle')) {
+		
+		//what is the current mode
+		var currentMode = forms.WEB_0F_page.TRIGGER_mode_set()
+		
+		//in real mode with unsaved changes OR
+		if ((currentMode == 'BROWSER' && elements.btn_save.visible && forms.WEB_0F_page__browser__editor.GET_modify()) ||
+		//in gui mode with unsaved changes (//TODO: abstract to work with all content types)
+			(currentMode == 'DESIGN' && forms.WEB_0F_page__design__content_1F_block_data.elements.tab_detail.getTabFormNameAt(2) == 'WEB_0F__content' &&
+			forms.WEB_0F__content.elements.btn_save.enabled)) {
+			
+			var input = plugins.dialogs.showWarningDialog(
+						'Unsaved changes',
+						'There are unsaved changes.  Continue without saving?',
+						'Yes',
+						'No'
+				)
+			
+			//they want to keep their changes, abort
+			if (input != 'Yes') {
+				return
+			}
+		}
+		
+		//turn off all switches
+		elements.gfx_switch_1.visible = false
+		elements.gfx_switch_2.visible = false
+		elements.gfx_switch_3.visible = false
+		
+		var mode = event.getElementName()
+		
+		//light switch clicked on, remap to label below
+		if (utils.stringPatternCount(mode,'gfx')) {
+			var whereClick = event.getX()
+			if (whereClick > 73) {
+				mode = 'lbl_mode_real'
+			}
+			else if (whereClick < 37) {
+				mode = 'lbl_mode_data'
+			}
+			else {
+				mode = 'lbl_mode_gui'
+			}
+		}
+		
+		switch (mode) {
+			case 'lbl_mode_data':
+				elements.gfx_switch_1.visible = true
+				
+				globals.WEB_page_mode = 1
+				forms.WEB_0F_page__design__content.elements.tab_content.tabIndex = 2
+				
+				//go to non-real mode if not there already
+				if (currentMode != "DESIGN") {
+					forms.WEB_0F_page.TRIGGER_mode_set("DESIGN")
+					
+					elements.lbl_edit.visible = false
+					elements.btn_edit.visible = false
+					elements.btn_save.visible = false
+					
+					elements.highlighter.visible = false
+					elements.lbl_detail.visible = false
+					
+					TOGGLE_group(false)
+					TOGGLE_version(false)
+					
+					//refire toggle
+					forms.WEB_0F_page__design__header_display.FLD_data_change__version_selected()
+				}
+				break
+			case 'lbl_mode_gui':
+				elements.gfx_switch_2.visible = true
+				
+				//reset pretty form (//TODO: make work for all block types)
+				if (forms.WEB_0F_page__design__content_1F_block_data.elements.tab_detail.getTabFormNameAt(2) == 'WEB_0F__content') {
+					forms.WEB_0F__content.BLOCK_cancel()
+				}			
+				
+				globals.WEB_page_mode = 2
+				forms.WEB_0F_page__design__content.elements.tab_content.tabIndex = 1
+				
+				//refire toggle
+				forms.WEB_0F_page__design__header_display.FLD_data_change__version_selected()
+				
+				//go to non-real mode if not there already
+				if (currentMode != "DESIGN") {
+					forms.WEB_0F_page.TRIGGER_mode_set("DESIGN")
+					
+					elements.lbl_edit.visible = false
+					elements.btn_edit.visible = false
+					elements.btn_save.visible = false
+					
+					elements.highlighter.visible = false
+					elements.lbl_detail.visible = false
+					
+					TOGGLE_group(false)
+					TOGGLE_version(false)
+				}
+				break
+			case 'lbl_mode_real':
+				elements.gfx_switch_3.visible = true
+				
+				globals.WEB_page_mode == 3
+				
+				//go to real mode if not there already
+				if (currentMode != "BROWSER") {
+					elements.lbl_detail.visible = true
+					
+					forms.WEB_0F_page.TRIGGER_mode_set("BROWSER")
+					
+					//toggle edit, groups, snapshots
+					TOGGLE_edit()
+					TOGGLE_group()
+					TOGGLE_version()	
+				}
+				break
+		}	
+	}
+}
+
+/**
  *
  * @properties={typeid:24,uuid:"0E2D3D14-9796-4F16-880A-22F672A2E6A4"}
  */
@@ -358,16 +488,20 @@ function FORM_on_load() {
 	elements.btn_edit.visible = false
 	elements.lbl_edit.visible = false
 	
-	var modeToggle = globals.TRIGGER_registered_action_authenticate('cms page mode toggle')
-	elements.btn_dashboard.visible = modeToggle
-	elements.lbl_dashboard.visible = modeToggle
-	elements.btn_sitemap.visible = !modeToggle
-	elements.lbl_sitemap.visible = !modeToggle
-	elements.lbl_detail.visible = !modeToggle
+//	var modeToggle = globals.TRIGGER_registered_action_authenticate('cms page mode toggle')
+//	elements.btn_dashboard.visible = modeToggle
+//	elements.lbl_dashboard.visible = modeToggle
+//	elements.btn_sitemap.visible = !modeToggle
+//	elements.lbl_sitemap.visible = !modeToggle
+//	elements.lbl_detail.visible = !modeToggle
+	
+	elements.gfx_switch_1.visible = false
+	elements.gfx_switch_2.visible = true
+	elements.gfx_switch_3.visible = false
 	
 	//hide highlighter
 	elements.highlighter.visible = false
-	elements.highlighter_dash.visible = false
+//	elements.highlighter_dash.visible = false
 }
 
 /**

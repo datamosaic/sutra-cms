@@ -399,7 +399,7 @@ function REC_selected()
 	}
 	
 	//simple view
-	if (globals.WEB_page_mode == 1) {
+	if (globals.WEB_page_mode == 2) {
 		//switch tabpanel based on type of form
 		ACTION_set_simple_display()
 	}
