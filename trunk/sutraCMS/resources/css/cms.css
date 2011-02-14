@@ -24,9 +24,10 @@ div#cmsOverlay {
 
 div.editable, p.editable {
 	margin: 0px;
-	border: 1px dashed #D78153;
+	border: 1px dashed #AE0345;
 	padding: 2px;
 	margin-bottom: 4px;
+	margin-right: 2px;
 	overflow: hidden;
 /*	z-index: 2147483647;
     position: absolute;
@@ -34,12 +35,29 @@ div.editable, p.editable {
 }
 
 div.block_new {
-	font-weight: bold;
 	margin: 0px;
 	border: 1px dashed #7E8286;
-	padding: 2px;
+/*	padding: 2px;*/
 	margin-bottom: 4px;
-/*	text-align: center;*/
+	margin-right: 2px;
+	text-align: center;
 	overflow: hidden;
 	display: none;
+}
+
+div.block_new a, div.block_new a:visited, div.block_new a:active {
+	background-color: #F6F6F6;
+	color: #7E8286;
+	text-decoration: none;
+	display: block;
+	padding: 2px;
+}
+
+div.block_new a:hover {
+	background-color: #7E8286;
+	color: #FFFFFF;
+	font-weight: bold;
+	text-decoration: none;
+	display: block;
+	padding: 2px;
 }
