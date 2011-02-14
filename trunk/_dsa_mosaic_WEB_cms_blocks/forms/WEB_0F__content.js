@@ -127,7 +127,7 @@ function TINYMCE_init(mode) {
 		    js.plugins = 'safari,spellchecker,pagebreak,style,layer,advimage,advlink,emotions,iespell,inlinepopups,preview,media,searchreplace,print,contextmenu,paste,directionality,noneditable,visualchars,xhtmlxtras,template'//,imagemanager,filemanager'
 			
 		    js.paste_text_use_dialog = 'true'
-		    js.theme_advanced_blockformats = "h1,h2,h3,h4,h5,h6"
+		    js.theme_advanced_blockformats = "h1,h2,h3,h4,h5,h6,p"
 		}
 		else if (mode == 'advanced') {
 		    js.theme_advanced_buttons1 = 'bold,italic,underline,strikethrough,sub,sup,|,justifyleft,justifycenter,justifyright,justifyfull,|,forecolor,backcolor,|,formatselect'//,|,styleselect,styleprops',
