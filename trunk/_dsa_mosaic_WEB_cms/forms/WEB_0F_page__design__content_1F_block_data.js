@@ -33,14 +33,16 @@ function DATA_action_list(event) {
 
 	
 	// input method names for block type
-	var params = [typeID]
+	var params = [typeID,"Block"]
 	var sql =	"select input_name, method_name from web_block_action_client where " +
-					"web_block_action_client.id_block_type = ?"
+					"id_block_type = ? AND action_type = ?"
 	var dataset = databaseManager.getDataSetByQuery(
 					controller.getServerName(), sql, params, -1)
 
 	if ( dataset.getMaxRowIndex() ) {
-
+		//sort alphabetically
+		dataset.sort(1,true)
+		
 		//menu items
 		var valuelist 	= dataset.getColumnAsArray(1)
 		var methods		= dataset.getColumnAsArray(2)
