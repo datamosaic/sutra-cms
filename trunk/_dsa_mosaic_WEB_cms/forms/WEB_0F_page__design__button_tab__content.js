@@ -123,7 +123,7 @@ function TOGGLE_display(event) {
 			elements.btn_on.visible = false
 			elements.btn_off.visible = true
 			
-			globals.WEB_page_mode = 1
+			globals.WEB_page_mode = 2
 			forms.WEB_0F_page__design__content.elements.tab_content.tabIndex = 1
 			break
 		case 'btn_off':
@@ -147,7 +147,7 @@ function TOGGLE_display(event) {
 			elements.btn_on.visible = true
 			elements.btn_off.visible = false
 			
-			globals.WEB_page_mode = 2
+			globals.WEB_page_mode = 1
 			forms.WEB_0F_page__design__content.elements.tab_content.tabIndex = 2
 			
 			break			
@@ -163,7 +163,7 @@ function TOGGLE_display(event) {
  */
 function FORM_on_load(event) {
 	//hide advanced mode status
-	elements.btn_on.visible = false
+//	elements.btn_on.visible = false
 	
 	
 }
