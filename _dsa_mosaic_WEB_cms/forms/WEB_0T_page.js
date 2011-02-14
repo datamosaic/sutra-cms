@@ -960,6 +960,9 @@ if (!globals.TRIGGER_registered_action_authenticate('cms page add')) {
 	return
 }
 
+//how is this record getting added
+var webMode = forms.WEB_0F_page.TRIGGER_mode_set() == 'BROWSER'
+
 //set flag that a new record getting created
 addRecord = 1
 
@@ -1048,11 +1051,16 @@ if (utils.hasRecords(newRecord.web_page_to_site.web_site_to_theme__default)) {
 	}
 	
 	//set flag that theme has been set and all areas should be blown in
-	forms.WEB_0F_page__design__header_edit.themeSet = 1
+	if (webMode) {
+		forms.WEB_P_page.themeSet = 1
+	}
+	else {
+		forms.WEB_0F_page__design__header_edit.themeSet = 1
+	}
 }
 
 //if in browser mode, FiD to define page
-if (forms.WEB_0F_page.TRIGGER_mode_set() == 'BROWSER') {
+if (webMode) {
 	application.showFormInDialog(
 				forms.WEB_P_page,
 				-1,-1,-1,-1,
