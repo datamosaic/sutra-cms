@@ -15,9 +15,6 @@ var _license_dsa_mosaic_WEB_cms = 'Module: _dsa_mosaic_WEB_cms \
  */
 function FORM_on_show(firstShow, event) {
 	forms.WEB_0F_page__design__content_1L_area.REC_selected()
-	
-	//make sure on page toolbar
-//	globals.TRIGGER_toolbar_set('CMS Browser Mode')
 }
 
 /**
