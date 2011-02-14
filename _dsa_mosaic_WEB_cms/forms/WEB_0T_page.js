@@ -687,7 +687,6 @@ function REC_column_publish(pagePK)
 		if (!found) {
 			var record = fsPage.web_page_to_version.getRecord(1)
 			record.flag_active = 1
-			record.flag_edit = 0
 			
 			//re-draw the header area
 			forms.WEB_0F_page__design.SET_globals()
