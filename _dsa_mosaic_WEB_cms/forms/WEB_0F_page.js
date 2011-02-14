@@ -396,7 +396,7 @@ function FORM_on_show(firstShow, event) {
 	if (application.getApplicationType() != APPLICATION_TYPES.HEADLESS_CLIENT) {
 		//save down currently selected toolbar
 		if (application.__parent__.solutionPrefs && !solutionPrefs.config.lockStatus) {
-			lastToolbar = solutionPrefs.panel.toolbar[forms[baseForm + '__header__toolbar'].elements.tab_toolbar.tabIndex - 1].tabName
+			lastToolbar = solutionPrefs.panel.toolbar[forms[solutionPrefs.config.formNameBase + '__header__toolbar'].elements.tab_toolbar.tabIndex - 1].tabName
 			
 			//make sure on page toolbar
 			globals.TRIGGER_toolbar_set('Web Edit')
@@ -457,6 +457,13 @@ function FORM_on_hide(event) {
 	}
 	
 	return true
+}
+
+/**
+ * @properties={typeid:24,uuid:"6DF88FF6-B5B2-4C20-BECB-5199AA95F932"}
+ */
+function FIND_restrict_site() {
+	return forms.WEB_0F_site.id_site
 }
 
 /**
