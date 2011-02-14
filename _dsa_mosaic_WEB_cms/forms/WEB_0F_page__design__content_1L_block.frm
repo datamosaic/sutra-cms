@@ -1,4 +1,5 @@
 dataSource:"db:/sutra_cms/web_block",
+initialSort:"row_order asc",
 items:[
 {
 anchors:11,
