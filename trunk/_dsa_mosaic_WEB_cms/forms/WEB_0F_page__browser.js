@@ -30,12 +30,12 @@ function REC_selected(event) {
 	
 	//make sure edit button not showing if not supposed to be
 		//MEMO: probably don't want to force a save here...just need edit/save button reset to normal
-	forms.WEB_0TB_user_mode.ACTION_save()
-	forms.WEB_0TB_user_mode.TOGGLE_edit()
+	forms.WEB_TB__web_mode.ACTION_save()
+	forms.WEB_TB__web_mode.TOGGLE_edit()
 	
 	//only show snapshots and groups if there is more than one defined
-	forms.WEB_0TB_user_mode.TOGGLE_group()
-	forms.WEB_0TB_user_mode.TOGGLE_version()
+	forms.WEB_TB__web_mode.TOGGLE_group()
+	forms.WEB_TB__web_mode.TOGGLE_version()
 	
 	//fill the browser bean with url to load
 	URL_update()
@@ -77,7 +77,7 @@ function URL_update(webMode) {
 		
 		elements.bn_browser.navigateTo(globals.WEB_preview_url)
 		
-		forms.WEB_0TB_user_mode.BREAD_update()
+		forms.WEB_TB__web_mode.BREAD_update()
 		
 		/*	for debugging porpoises
 		application.setClipboardContent(globals.WEB_preview_url)
