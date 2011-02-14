@@ -12,7 +12,7 @@ var _license_dsa_mosaic_WEB_cms = 'Module: _dsa_mosaic_WEB_cms \
  *
  * @properties={typeid:24,uuid:"60C0F66F-9740-428F-8C64-BE5870650741"}
  */
-function REC_selected(event) {
+function REC_selected(event,webMode) {
 	//make sure variable set correctly
 	var vlReal = forms.WEB_0F_page__design.SET_globals()
 	
@@ -38,7 +38,12 @@ function REC_selected(event) {
 	forms.WEB_TB__web_mode.TOGGLE_version()
 	
 	//fill the browser bean with url to load
-	URL_update()
+	URL_update(webMode)
+	
+	//highlight edit mode
+	if (webMode) {
+		forms.WEB_TB__web_mode.ACTION_edit()
+	}
 }
 
 /**

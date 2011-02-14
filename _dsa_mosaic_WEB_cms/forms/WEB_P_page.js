@@ -205,9 +205,8 @@ function ACTION_ok()
 	
 	application.closeFormDialog('cmsNewPage')
 	
-
 	//refresh browser bean with new content
-	forms.WEB_0F_page__browser.REC_selected()	
+	forms.WEB_0F_page__browser.REC_selected(null,true)	
 
 }
 
