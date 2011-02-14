@@ -339,6 +339,9 @@ function TRIGGER_mode_set(mode) {
 					forms.WEB_0F_page__browser.elements.tab_editor.getTabFormNameAt(1) == 'WEB_0F_asset__image'
 					)) {
 					
+					//stop loading on main browser bean form to avoid race condition
+					forms.WEB_0F_page__browser.elements.bn_browser.stopLoading()
+					
 					forms.WEB_0F_page__browser.elements.tab_editor.removeTabAt(1)
 				}
 				
@@ -347,9 +350,12 @@ function TRIGGER_mode_set(mode) {
 				
 				//reset enabled/disabled, etc.
 				forms.WEB_0F_page__design__header_display.FLD_data_change__version_selected()
+				
 				break;
 			case "BROWSER":	
-//				forms.WEB_0F_page__browser.REC_selected()
+				//following line only needed when returning to web mode after not being in it fulltime
+				forms.WEB_0F_page__browser.REC_selected()
+				
 				elements.tab_main.addTab( forms.WEB_0F_page__browser )
 				elements.tab_main.tabIndex = 2
 				break;
