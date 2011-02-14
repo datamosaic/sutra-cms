@@ -119,20 +119,24 @@ function TINYMCE_init(mode) {
 				custom_format : {block : 'h1', attributes : {title : "Header"}, styles : {color : red}}
 			}*/
 		
+		
+		
 		if (mode == 'simple') {
-			js.theme_advanced_buttons1 = 'bold,italic,underline,strikethrough,|,justifyleft,justifycenter,justifyright,justifyfull,|,forecolor,backcolor,|,styleselect'
+			js.theme_advanced_buttons1 = 'bold,italic,underline,strikethrough,|,justifyleft,justifycenter,justifyright,justifyfull,|,forecolor,backcolor,|,formatselect'//,|,styleselect'
 		    js.theme_advanced_buttons2 = 'bullist,numlist,|,outdent,indent,blockquote,|,link,unlink,anchor,image,|,search,replace,|,spellchecker,|,pastetext'
 		    js.plugins = 'safari,spellchecker,pagebreak,style,layer,advimage,advlink,emotions,iespell,inlinepopups,preview,media,searchreplace,print,contextmenu,paste,directionality,noneditable,visualchars,xhtmlxtras,template'//,imagemanager,filemanager'
 			
 		    js.paste_text_use_dialog = 'true'
+		    js.theme_advanced_blockformats = "h1,h2,h3,h4,h5,h6"
 		}
 		else if (mode == 'advanced') {
-		    js.theme_advanced_buttons1 = 'bold,italic,underline,strikethrough,sub,sup,|,justifyleft,justifycenter,justifyright,justifyfull,|,forecolor,backcolor,|,styleselect,styleprops',
+		    js.theme_advanced_buttons1 = 'bold,italic,underline,strikethrough,sub,sup,|,justifyleft,justifycenter,justifyright,justifyfull,|,forecolor,backcolor,|,formatselect'//,|,styleselect,styleprops',
 	    	js.theme_advanced_buttons2 = 'bullist,numlist,|,outdent,indent,blockquote,|,link,unlink,anchor,image,|,search,replace,|,spellchecker,|,tablecontrols',
 	    	js.theme_advanced_buttons3 = 'pastetext,|,code,removeformat,cleanup,|,nonbreaking,charmap,insertdate,inserttime,hr',
 	    	js.plugins = 'safari,spellchecker,pagebreak,style,layer,table,save,advhr,advimage,advlink,emotions,iespell,inlinepopups,insertdatetime,preview,media,searchreplace,print,contextmenu,paste,directionality,noneditable,visualchars,nonbreaking,xhtmlxtras,template'//,imagemanager,filemanager'
 			
 		    js.paste_text_use_dialog = 'true'
+		    js.theme_advanced_blockformats = "h1,h2,h3,h4,h5,h6,p,div,blockquote,code"
 		}
 		else if (mode == 'all') {
 		    js.theme_advanced_buttons1 = 'save, |, bold,italic,underline,strikethrough,|,justifyleft,justifycenter,justifyright,justifyfull,|,styleselect,formatselect,fontselect,fontsizeselect'
