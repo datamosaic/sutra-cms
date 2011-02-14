@@ -1060,6 +1060,9 @@ if (utils.hasRecords(newRecord.web_page_to_site.web_site_to_theme__default)) {
 
 //if in browser mode, FiD to define page
 if (webMode) {
+	//let sleep for a second so doesn't crash
+	application.sleep(1000)
+	
 	application.showFormInDialog(
 				forms.WEB_P_page,
 				-1,-1,-1,-1,
