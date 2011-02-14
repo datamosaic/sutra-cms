@@ -318,6 +318,10 @@ function FORM_on_show()
 		elements.btn_up.enabled = reorderOK
 		elements.btn_down.enabled = reorderOK
 	}
+	//return to sitemap subsequently
+	else {
+		elements.bean_tree.selectionPath = FIND_path(forms.WEB_0F_page.foundset.getSelectedRecord())
+	}
 	
 	//set record navigator to blank
 	globals.TRIGGER_toolbar_record_navigator_set(false)
