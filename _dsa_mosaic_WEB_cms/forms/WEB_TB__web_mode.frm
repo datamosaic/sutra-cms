@@ -382,7 +382,7 @@ uuid:"FFE49966-3CB4-4016-B294-AB32680419B1",
 verticalAlignment:0
 }
 ],
-name:"WEB_0TB_user_mode",
+name:"WEB_TB__web_mode",
 navigatorID:"-1",
 onDeleteAllRecordsCmdMethodID:"-1",
 onDeleteRecordCmdMethodID:"-1",
