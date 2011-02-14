@@ -318,7 +318,7 @@ function WEB_simple_cancel() {
  * @param pageID ID of the page to link to
  * @properties={typeid:24,uuid:"8D473D49-2039-49AC-B633-72E88E736CA9"}
  */
-function WEB_MRKUP_link_page(pageID, siteURL, linkType) {
+function WEB_MRKUP_link_page(pageID, siteURL, linkType, webMode) {
 	//get url up to sutraCMS directory
 	var pageLink = globals.WEB_MRKUP_link_base(pageID, siteURL, linkType)
 	
@@ -378,6 +378,11 @@ function WEB_MRKUP_link_page(pageID, siteURL, linkType) {
 				//selection set in site tree which will trigger a loading in the main workflow
 				//jQuery changes index_edits to fire servoy callbacks on form load
 				pageLink += 'index_edit.jsp?id=' + pageID
+				
+				if (webMode) {
+					pageLink += '&webmode=edit'
+				}
+				
 				break
 			default:
 				pageLink += 'index.jsp?id=' + pageID
@@ -557,11 +562,8 @@ function WEB_MRKUP_link_internal(markup,siteURL,linkType,areaID) {
 		if (count && utils.hasRecords(area.web_area_to_editable) && area.web_area_to_editable.flag_new_block) {
 			
 			var newBlock = '<!-- add new block -->'
-			newBlock += '<div id="add-' + areaID + '" class="block_new">'
-			newBlock += '<a href="javascript:blockNew(\'' + areaID + '\')">Add block to ' + area.area_name + ' area</a>'
-//			newBlock += '<form>'
-//			newBlock += '<button onclick="blockNew(\'' + areaID + '\');return false;">New block</button>'
-//			newBlock += '</form>'
+			newBlock += '<div id="sutra-block-add-' + areaID + '" class="block_new">'
+			newBlock += '<a href="javascript:blockNew(\'' + areaID + '\')">' + area.area_name.toUpperCase() + ': Add block</a>'
 			newBlock += '</div>'
 				
 			markup += newBlock

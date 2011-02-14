@@ -149,30 +149,12 @@ function ACTION_hide(event) {
 	
 	plugins.sutra.busyCursor = true
 	
+	//split pane in main window
 	forms.WEB_0F_page__browser.SPLIT_set(false)	
 	elements.tab_edit.removeAllTabs()
-//	forms.WEB_0F_page__browser.elements.tab_editor.visible = false
-//	application.closeFormDialog('cmsEditHover')
 	
-	forms.WEB_0F_page__browser.elements.bn_browser.reload()
-	
-	//sleep until browser has loaded
-	application.sleep(1000)
-//	var x = 1
-//	while (!forms.WEB_0F_page__browser.elements.bn_browser.isLoaded()) {
-//		application.sleep(100)
-//		x++
-//	
-//	}
-	
-//	application.output(x)
-//	plugins.dialogs.showErrorDialog(
-//			'Error',
-//			x
-//	)	
-	
-	// turn on jquery edit stuff
-	forms.WEB_0F_page__browser.EDIT_on()
+	//refresh the browser bean
+	forms.WEB_0F_page__browser.URL_update(true)
 	
 	plugins.sutra.busyCursor = false
 	

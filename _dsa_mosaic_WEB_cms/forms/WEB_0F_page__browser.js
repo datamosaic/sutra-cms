@@ -46,7 +46,7 @@ function REC_selected(event) {
  * @properties={typeid:24,uuid:"CB9940A5-6AA6-4463-BB61-33DA0D5C4563"}
  */
 function EDIT_on() {
-	var prefix = 'data-'
+	var prefix = 'sutra-block-data-'
 	elements.bn_browser.executeJavaScript("editOn('" + prefix + "');")
 }
 
@@ -54,7 +54,7 @@ function EDIT_on() {
  *
  * @properties={typeid:24,uuid:"7A6EFE48-21A4-4505-AF8F-1A683DF96BD4"}
  */
-function URL_update() {
+function URL_update(webMode) {
 	//see forms.WEB_0F_page__design__buton_tab__content.VISIT_page
 	
 	//newly created page...show filler
@@ -70,7 +70,7 @@ function URL_update() {
 		//show selected group/snapshot
 		else {
 			globals.WEB_preview_url = 
-				globals.WEB_MRKUP_link_page(id_page,null,'Edit') + 
+				globals.WEB_MRKUP_link_page(id_page,null,'Edit',webMode) + 
 				"&group=" + globals.WEB_group_selected +
 				"&snapshot=" + globals.WEB_version_selected
 		}
@@ -80,7 +80,7 @@ function URL_update() {
 		forms.WEB_0TB_user_mode.BREAD_update()
 		
 		/*	for debugging porpoises
-		application.setClipboardContent(urlString)
+		application.setClipboardContent(globals.WEB_preview_url)
 		*/
 	}
 }
@@ -90,7 +90,7 @@ function URL_update() {
  * @properties={typeid:24,uuid:"81E6B9AF-45DE-4D47-A052-C92A8A013114"}
  */
 function EDIT_off() {
-	var prefix = 'data-'
+	var prefix = 'sutra-block-data-'
 	elements.bn_browser.executeJavaScript("editOff('" + prefix + "');")
 	
 	if (elements.bean_split.bottomComponent) {
@@ -104,11 +104,11 @@ function EDIT_off() {
  */
 function BLOCK_edit(idBlock) {
 	var blockID = idBlock.split("-")
-	forms.WEB_0F_page__browser__editor.dataID = blockID[1]
+	forms.WEB_0F_page__browser__editor.dataID = blockID[blockID.length - 1]
 	
 	var content = databaseManager.getFoundSet(controller.getServerName(),"web_block_data")
 	content.find()
-	content.id_block = blockID[1]
+	content.id_block = blockID[blockID.length - 1]
 	var count = content.search()
 	
 	if (count) {
@@ -225,14 +225,21 @@ function FORM_on_load(event) {
  * @properties={typeid:24,uuid:"FE79BE16-34CC-4556-8485-B6F9211A87D2"}
  */
 function BLOCK_new(areaID) {
+//	
+//	var area = databaseManager.getFoundSet("sutra_cms","web_area")
+//	area.find()
+//	area.id_area = areaID
+//	var count = area.search()
+//	
+	//set globals so that global relations work
+	globals.WEB_page_id_area_selected = areaID
 	
-	var area = databaseManager.getFoundSet("sutra_cms","web_area")
-	area.find()
-	area.id_area = areaID
-	var count = area.search()
-			
-	plugins.dialogs.showInfoDialog(
-					"Coming soon...",
-					"Add new block to the \"" + area.area_name + "\" area"
-				)
+	//show picker for type of block and create
+	//TODO: scrapbook doesn't work yet
+	forms.WEB_0F_page__design__content_1L_block.BLOCK_new()
+	
+	//add editor to the screen
+	BLOCK_edit('sutra-block-data-' + globals.WEB_page_id_block_selected)
+	
+	//MEMO: page will be redrawn if block saved after edit mode
 }
