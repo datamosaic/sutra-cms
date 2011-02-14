@@ -378,11 +378,11 @@ function TRIGGER_mode_set(mode) {
 }
 
 /**
- * Callback method for when form is shown.
- *
- * @param {Boolean} firstShow form is shown first time after load
- * @param {JSEvent} event the event that triggered the action
- *
+ * @properties={typeid:35,uuid:"41D49272-FB3B-4284-B2AB-C3233F1D9C3D"}
+ */
+var lastToolbar = null;
+
+/**
  * @properties={typeid:24,uuid:"10F5E463-15E2-4C0B-858D-F62E76FEDFBF"}
  */
 function FORM_on_show(firstShow, event) {
@@ -394,6 +394,15 @@ function FORM_on_show(firstShow, event) {
 	
 	//don't run in headless client
 	if (application.getApplicationType() != APPLICATION_TYPES.HEADLESS_CLIENT) {
+		//save down currently selected toolbar
+		if (application.__parent__.solutionPrefs && !solutionPrefs.config.lockStatus) {
+			lastToolbar = solutionPrefs.panel.toolbar[forms[baseForm + '__header__toolbar'].elements.tab_toolbar.tabIndex - 1].tabName
+			
+			//make sure on page toolbar
+			globals.TRIGGER_toolbar_set('Web Edit')
+		}
+		
+		
 		//in workflow maximized view
 		if (firstShow && solutionPrefs.config.activeSpace == 'workflow') {
 			//remove possible heavyweight stuff
@@ -437,6 +446,14 @@ function FORM_on_hide(event) {
 	//don't run in headless client
 	if (application.getApplicationType() != APPLICATION_TYPES.HEADLESS_CLIENT) {
 		globals.WEB_lock_workflow(false)
+		
+		//save down currently selected toolbar
+		if (application.__parent__.solutionPrefs && !solutionPrefs.config.lockStatus) {
+			//make sure on whatever last toolbar was
+			globals.TRIGGER_toolbar_set(lastToolbar)
+			
+			lastToolbar = null
+		}
 	}
 	
 	return true
