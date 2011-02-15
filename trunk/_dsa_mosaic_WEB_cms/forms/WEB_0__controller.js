@@ -6,17 +6,22 @@ var _license_dsa_mosaic_WEB_cms = 'Module: _dsa_mosaic_WEB_cms \
 									MIT Licensed';
 
 /**
- *
+ * 
+ * Entry point for all page requests. Returns all data and markup related to the 
+ * requested page.
+ * 
+ * @param {Javax.servlet.http.ServletContext} app Data for all pages
+ * @param {Javax.servlet.http.httpsession} session Data for user session
+ * @param {Javax.servlet.http.httpservletrequest} request Data for page request
+ * @param {Javax.servlet.http.httpservletresponse} response Data for page response
+ * @param {String} mode URL parameter denoting whether in edit mode or not
+ * 
+ * @return {JSDataSet} results JSDataSet is cast to an IDataSet at the jsp level
+ * 
  * @properties={typeid:24,uuid:"4C8B4BD7-E187-4A00-9A77-C58FD3971691"}
  */
-function CONTROLLER()
+function CONTROLLER(app, session, request, response, mode)
 {
-	// jsp implicit objects
-	var app			= arguments[0]
-	var session		= arguments[1]
-	var request		= arguments[2]
-	var response	= arguments[3]
-	var mode		= arguments[4]
 	
 	// initialize good dataset to return to jsp
 	var results = databaseManager.createEmptyDataSet(0,["key","value"])
@@ -52,6 +57,10 @@ function CONTROLLER()
 
 /**
  *
+ * Handles session management
+ * 
+ * @param {Object} obj Used to collect all data associated with the page record
+ * 
  * @properties={typeid:24,uuid:"BD755ACA-11CF-4E17-9041-42853B2E14E4"}
  */
 function CONTROLLER_session(obj) {
@@ -101,7 +110,12 @@ function CONTROLLER_session(obj) {
 }
 
 /**
- *
+ * 
+ * Collect all page data into "results" variable
+ * 
+ * @param {JSDataSet} results Object that will be returned to the jsp
+ * @param {Object} obj Used to collect all data associated with the page record
+ *   
  * @properties={typeid:24,uuid:"AFD23FBD-CE21-4C2C-BDA2-75C68969ACDB"}
  */
 function CONTROLLER_builder(results, obj) {
@@ -242,6 +256,10 @@ function CONTROLLER_builder(results, obj) {
 
 /**
  *
+ * Sets up the obj variable and gets all meta data for page.
+ * 
+ * @param {Object} obj Used to collect all data associated with the page record
+ * 
  * @properties={typeid:24,uuid:"251216CD-208E-4A2A-8237-1196E2032EC1"}
  */
 function CONTROLLER_setup(results, app, session, request, response, mode) {
@@ -864,6 +882,10 @@ function CONTROLLER_setup(results, app, session, request, response, mode) {
 
 /**
  *
+ * Gracefully handle page requests that don't resolve properly
+ * 
+ * @param {Object} obj Used to collect all data associated with the page record
+ * 
  * @properties={typeid:24,uuid:"2421EBCC-CD1C-4ACF-BE86-02167F1EA742"}
  */
 function CONTROLLER_error(obj) {
