@@ -27,9 +27,6 @@ var toolbarMode = 0;
 function FORM_on_load() {
 	//set combobox to be square on os x
 	globals.CODE_property_combobox(true)
-	
-	//load up easy tinymce
-	elements.bn_tinymce.setCustomConfiguration(TINYMCE_init("simple"))
 }
 
 /**
@@ -203,6 +200,11 @@ function ACTION_data_change() {
  */
 function FORM_on_show(firstShow, event) {
 	TOGGLE_buttons(false)
+	
+	if (firstShow) {
+		//load up easy tinymce
+		elements.bn_tinymce.setCustomConfiguration(TINYMCE_init("simple"))
+	}
 }
 
 /**
