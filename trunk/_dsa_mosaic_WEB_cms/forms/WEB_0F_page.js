@@ -404,7 +404,7 @@ function FORM_on_show(firstShow, event) {
 		
 		
 		//in workflow maximized view
-		if (firstShow && solutionPrefs.config.activeSpace == 'workflow') {
+		if (firstShow && application.__parent__.solutionPrefs && solutionPrefs.config.activeSpace == 'workflow') {
 			//remove possible heavyweight stuff
 			if (forms.WEB_0F_page__design__content_1F_block_data.elements.tab_detail.getMaxTabIndex() >= 2 && (
 				forms.WEB_0F_page__design__content_1F_block_data.elements.tab_detail.getTabFormNameAt(2) == 'WEB_0F__content' ||
