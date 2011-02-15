@@ -431,7 +431,7 @@ function WEB_MRKUP_link_base(pageID, siteURL, linkType) {
 	appServer = appServer.split(':')
 	var accessURL = appServer[1].slice(2)
 	if (appServer.length > 2) {
-		var port = appServer[2]
+		var port = utils.stringToNumber(appServer[2])
 	}
 	
 	//url specified
@@ -468,7 +468,7 @@ function WEB_MRKUP_link_base(pageID, siteURL, linkType) {
 		siteURL = 'http://' + siteURL
 	}
 	
-	if (port && port != '80') {
+	if (port && port != 80) {
 		siteURL += ':' + port
 	}
 	
