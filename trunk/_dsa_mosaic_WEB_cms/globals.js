@@ -468,7 +468,7 @@ function WEB_MRKUP_link_base(pageID, siteURL, linkType) {
 		siteURL = 'http://' + siteURL
 	}
 	
-	if (port) {
+	if (port && port != '80') {
 		siteURL += ':' + port
 	}
 	
