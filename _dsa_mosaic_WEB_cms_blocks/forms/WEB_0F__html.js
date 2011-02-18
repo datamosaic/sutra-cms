@@ -308,10 +308,12 @@ function INIT_block() {
  * @properties={typeid:24,uuid:"16312B6D-9AA1-465F-B962-79EAC114C412"}
  */
 function LOADER_init(recBlock,flagEdit) {
-	ACTION_colorize(recBlock.web_block_to_block_data)
+	recBlockData = recBlock.web_block_to_block_data.getRecord(1)
+	
+	ACTION_colorize()
 	
 	forms.WEB_0F_page__design__content_1F_block_data.elements.tab_detail.removeTabAt(2)
-	forms.WEB_0F_page__design__content_1F_block_data.elements.tab_detail.addTab(forms.WEB_0F__html)
+	forms.WEB_0F_page__design__content_1F_block_data.elements.tab_detail.addTab(forms.WEB_0F__html,null,null,null,null,null,null,'web_block_data_to_block_data')
 	forms.WEB_0F_page__design__content_1F_block_data.elements.tab_detail.tabIndex = 2
 	
 	editsAllowed = flagEdit
@@ -323,16 +325,16 @@ function LOADER_init(recBlock,flagEdit) {
 /**
  * @properties={typeid:24,uuid:"FB804749-0B28-485A-A528-4F10DE113301"}
  */
-function ACTION_colorize(fsBlockData) {
+function ACTION_colorize() {
 	var html = ''
 	var prefix = ''
 	
-	if (fsBlockData) {
-		var recBlockData = fsBlockData.getRecord(1)
-	}
-	else {
-		var recBlockData = foundset.getSelectedRecord()
-	}
+//	if (fsBlockData) {
+//		var recBlockData = fsBlockData.getRecord(1)
+//	}
+//	else {
+//		var recBlockData = foundset.getSelectedRecord()
+//	}
 	
 	//if there's data, color it
 	if (recBlockData.data_value) {
@@ -375,6 +377,7 @@ function ACTION_colorize(fsBlockData) {
 		<pre class="brush:html">' + 
 			colorize + 
 		'</pre>\n\
+	</body>\n\
 </html>'
 		
 	}
