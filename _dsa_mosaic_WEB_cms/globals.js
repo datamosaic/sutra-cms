@@ -210,40 +210,6 @@ else {
 }
 
 /**
- * Calculate the row background color.
- *
- * @param {Number} index row index
- * @param {Boolean} selected is the row selected
- * @param {String} elementType element type
- * @param {String} dataProviderID element data provider
- * @param {String} formName form name
- * @param {JSRecord} record selected record
- * @param {Boolean} edited is the record edited
- *
- * @returns {Color} row background color
- *
- * @properties={typeid:24,uuid:"100DFFE0-8CFA-4206-AE0C-51193FBFCE79"}
- */
-function WEB_row_background(index, selected, elementType, dataProviderID, formName, record, edited) {
-	//white/tan with medium blue highlighter
-
-	var index = arguments[0]
-	var selected = arguments[1]
-
-	if (selected) {
-		return '#BED7F7'
-	}
-	else {
-		if (index % 2 == 0) {
-			return '#F7F8EF'
-		}
-		else {
-			return '#FFFFFF'
-		}
-	}
-}
-
-/**
  *
  * @properties={typeid:24,uuid:"73565A5D-1041-4CB5-99AD-6F5263680E13"}
  */
