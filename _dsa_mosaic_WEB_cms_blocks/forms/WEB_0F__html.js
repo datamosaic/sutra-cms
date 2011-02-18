@@ -12,21 +12,7 @@ var recBlockData = null;
  * param {} obj Data object passed to all markup methods
  * @properties={typeid:24,uuid:"508D7857-762F-4C6F-9CAA-95EAB9C404F0"}
  */
-function VIEW_default(obj)
-{
-	// template
-	var markup = obj.data.HTML	
-	
-	// return
-	return markup
-}
-
-/**
- * @properties={typeid:24,uuid:"0894BE1D-6767-465F-816E-95A165B6F09A"}
- */
-function VIEW_code(obj) {
-	//TODO: either return the markup with styles inline or somehow figure how to pass what additional includes needed in the header so the same code can be used
-	
+function VIEW_default(obj) {
 	// template
 	var markup = obj.data.HTML	
 	
