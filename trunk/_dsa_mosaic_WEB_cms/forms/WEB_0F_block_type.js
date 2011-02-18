@@ -466,3 +466,25 @@ function REC_delete() {
 		controller.deleteRecord()
 	}
 }
+
+/**
+ * Perform the element default action.
+ *
+ * @param {JSEvent} event the event that triggered the action
+ *
+ * @properties={typeid:24,uuid:"7BD4A6A0-6B1F-44A7-B568-6DE0DE6B06E2"}
+ */
+function TAB_key_change(event) {
+	globals.TAB_change_grid(null,null,'tab_key','tab_k','btn_key_add','btn_key_actions','btn_key_help')
+}
+
+/**
+ * Perform the element default action.
+ *
+ * @param {JSEvent} event the event that triggered the action
+ *
+ * @properties={typeid:24,uuid:"BB3E7EFA-EE07-453A-8B1C-E4DEF897D44D"}
+ */
+function TAB_key_add(event) {
+	globals.TAB_btn_rec_new(null,'tab_key')
+}
