@@ -63,7 +63,7 @@ var WEB_page_id_block_selected = null;
 /**
  * @properties={typeid:35,uuid:"DD53BF5B-DD20-4B47-911A-41051101A010",variableType:4}
  */
-var WEB_page_mode = 1;
+var WEB_page_mode = 2;
 
 /**
  * @properties={typeid:35,uuid:"F5BD30C1-1A0F-436A-9320-9812076B6B72"}
