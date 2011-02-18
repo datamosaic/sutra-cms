@@ -19,30 +19,6 @@ function display_page_name() {
 
 /**
  *
- * @properties={type:12,typeid:36,uuid:"3257AD2C-5546-4C97-912B-F05249FB3038"}
- */
-function row_background()
-{
-	//white/tan with medium blue highlighter
-
-	var index = arguments[0]
-	var selected = arguments[1]
-
-	if (selected) {
-		return '#BED7F7'
-	}
-	else {
-		if (index % 2 == 0) {
-			return '#F7F8EF'
-		}
-		else {
-			return '#FFFFFF'
-		}
-	}
-}
-
-/**
- *
  * @properties={type:12,typeid:36,uuid:"505BDBD8-5168-446A-ACC0-0CB9531D07DC"}
  */
 function display_header_sub_right()

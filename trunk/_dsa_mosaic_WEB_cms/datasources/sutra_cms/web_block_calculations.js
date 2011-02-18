@@ -46,7 +46,7 @@ function params()
  */
 function row_background()
 {
-	//white/tan with medium blue highlighter
+	//white/tan with medium blue highlighter and green if a scrapbook
 	
 	var index = arguments[0]
 	var selected = arguments[1]
