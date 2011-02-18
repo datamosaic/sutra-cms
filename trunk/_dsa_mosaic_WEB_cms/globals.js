@@ -396,17 +396,12 @@ function WEB_MRKUP_link_page(pageID, siteURL, linkType, webMode) {
 /**
  * @properties={typeid:24,uuid:"AFA318BF-7E29-4E7D-BE9D-CE4085851DF3"}
  */
-function WEB_MRKUP_link_base(pageID, siteURL, linkType) {
+function WEB_MRKUP_link_base(pageID, siteURL) {
 	//rewrite mode
 	var fsInstall = databaseManager.getFoundSet('sutra_cms','web_install')
 	fsInstall.loadAllRecords()
 	if (utils.hasRecords(fsInstall)) {
 		var rewriteMode = fsInstall.rewrite_enabled
-	}
-	
-	//force fsPages style to be index when rewrites disabled
-	if (!rewriteMode && linkType != 'Edit') {
-		linkType = 'Index'
 	}
 	
 	//get page requested
@@ -441,11 +436,6 @@ function WEB_MRKUP_link_base(pageID, siteURL, linkType) {
 	//use whatever url the request came in on
 	else {
 		siteURL = accessURL
-		
-		//must use index (edit always does this already)
-		if (linkType != 'Edit') {
-			linkType = 'Index'
-		}
 	}
 	
 	//advanced apache setup, reference by correct url
@@ -604,7 +594,7 @@ function WEB_page_tree_to_popup(method,elem) {
 		}
 		else {
 			var item = plugins.popupmenu.createMenuItem(pageRec.page_name + "", method)
-			item.setMethodArguments(pageRec.id_page)
+			item.setMethodArguments(pageRec.id_page,pageRec)
 			
 			//disable dividers
 			if (item.text == '----') {
