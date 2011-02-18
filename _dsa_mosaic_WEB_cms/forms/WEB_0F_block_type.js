@@ -337,11 +337,11 @@ function REC_new() {
 			// 2) get block init() and associated meta data to build data object
 			if ( forms[formName] ) {
 				//form not loaded yet, get solution model to check for method existence
-				if (forms[formName] == '<Form ' + formName + ' not loaded yet>' && solutionModel.getForm(formName).getFormMethod('LOADER_init')) {
+				if (forms[formName] == '<Form ' + formName + ' not loaded yet>' && solutionModel.getForm(formName).getFormMethod('INIT_block')) {
 					var hasInit = true
 				}
 				//check for method existence on form
-				else if (forms[formName].LOADER_init) {
+				else if (forms[formName].INIT_block) {
 					var hasInit = true
 				}
 				if ( hasInit ) {
