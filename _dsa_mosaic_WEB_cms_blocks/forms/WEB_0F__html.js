@@ -15,7 +15,7 @@ var recBlockData = null;
 function VIEW_default(obj)
 {
 	// template
-	var markup = obj.data.Content	
+	var markup = obj.data.HTML	
 	
 	// return
 	return markup
@@ -28,7 +28,7 @@ function VIEW_code(obj) {
 	//TODO: either return the markup with styles inline or somehow figure how to pass what additional includes needed in the header so the same code can be used
 	
 	// template
-	var markup = obj.data.Content	
+	var markup = obj.data.HTML	
 	
 	// return
 	return markup
