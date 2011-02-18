@@ -110,8 +110,8 @@ function AREA_new(event) {
 			databaseManager.saveData()
 			
 			//create a block_data record for each editable_default
-			for (var k = 1; k <= tempEditableDefaultRec.web_editable_default_to_block_meta.getSize(); k++) {
-				var tempEditableDefaultDetailRec = tempEditableDefaultRec.web_editable_default_to_block_meta.getRecord(k)
+			for (var k = 1; k <= tempEditableDefaultRec.web_editable_default_to_block_input.getSize(); k++) {
+				var tempEditableDefaultDetailRec = tempEditableDefaultRec.web_editable_default_to_block_input.getRecord(k)
 				
 				var blockDataRec = blockRec.web_block_to_block_data.getRecord(blockRec.web_block_to_block_data.newRecord(false,true))
 				
@@ -222,8 +222,8 @@ function AREA_add_missing() {
 			
 			
 			//create a block_data record for each editable_default
-			for (var m = 1; m <= tempEditableDefaultRec.web_editable_default_to_block_meta.getSize(); m++) {
-				var tempEditableDefaultDetailRec = tempEditableDefaultRec.web_editable_default_to_block_meta.getRecord(m)
+			for (var m = 1; m <= tempEditableDefaultRec.web_editable_default_to_block_input.getSize(); m++) {
+				var tempEditableDefaultDetailRec = tempEditableDefaultRec.web_editable_default_to_block_input.getRecord(m)
 				
 				var blockDataRec = blockRec.web_block_to_block_data.getRecord(blockRec.web_block_to_block_data.newRecord(false,true))
 				

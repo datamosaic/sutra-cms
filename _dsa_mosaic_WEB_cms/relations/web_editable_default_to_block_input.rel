@@ -1,9 +1,9 @@
-foreignDataSource:"db:/sutra_cms/web_block_meta",
+foreignDataSource:"db:/sutra_cms/web_block_input",
 initialSort:"column_name asc",
 items:[
 {foreignColumnName:"id_block_type",primaryDataProviderID:"id_block_type",typeid:23,uuid:"8B22E9D0-3C74-4B53-8B11-5ECD1CCC8A18"}
 ],
-name:"web_editable_default_to_block_meta",
+name:"web_editable_default_to_block_input",
 primaryDataSource:"db:/sutra_cms/web_editable_default",
 typeid:22,
 uuid:"C9BC7A2C-95D1-4C56-A932-1BBEA6F1CE0C"

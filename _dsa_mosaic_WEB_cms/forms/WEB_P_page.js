@@ -140,8 +140,8 @@ function ACTION_ok()
 				blockRec.row_order = j
 				
 				//create a block_data record for each editable_default
-				for (var k = 1; k <= tempEditableDefaultRec.web_editable_default_to_block_meta.getSize(); k++) {
-					var tempEditableDefaultDetailRec = tempEditableDefaultRec.web_editable_default_to_block_meta.getRecord(k)
+				for (var k = 1; k <= tempEditableDefaultRec.web_editable_default_to_block_input.getSize(); k++) {
+					var tempEditableDefaultDetailRec = tempEditableDefaultRec.web_editable_default_to_block_input.getRecord(k)
 					
 					var blockDataRec = blockRec.web_block_to_block_data.getRecord(blockRec.web_block_to_block_data.newRecord(false,true))
 					
