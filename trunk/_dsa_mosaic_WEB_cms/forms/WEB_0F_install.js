@@ -78,6 +78,21 @@ function FORM_on_show(firstShow, event) {
 	}
 	
 	TOGGLE_sample_rewrite()
+	
+	globals.TRIGGER_toolbar_record_navigator_set(false)
+}
+
+/**
+ * Handle hide window.
+ *
+ * @param {JSEvent} event the event that triggered the action
+ *
+ * @returns {Boolean}
+ *
+ * @properties={typeid:24,uuid:"FF2B5DFA-942F-4BB5-A8C6-EAFF6672B439"}
+ */
+function FORM_on_hide(event) {
+	globals.TRIGGER_toolbar_record_navigator_set(true)
 }
 
 /**

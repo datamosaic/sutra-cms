@@ -50,6 +50,6 @@ function REC_delete()
  * @properties={typeid:24,uuid:"1D4CC972-6BFA-48E7-8792-CB26CBD5A9E3"}
  */
 function REC_new() {
-	forms.WEB_0F_block_type.web_block_type_to_block_action_client.newRecord(false,true)
+	controller.newRecord(false)
 	databaseManager.saveData()
 }

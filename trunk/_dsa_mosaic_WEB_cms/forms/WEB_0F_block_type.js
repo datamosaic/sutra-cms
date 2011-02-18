@@ -459,3 +459,32 @@ function TAB_key_change(event) {
 function TAB_key_add(event) {
 	globals.TAB_btn_rec_new(null,'tab_key')
 }
+
+/**
+ * Handle record selected.
+ *
+ * @param {JSEvent} event the event that triggered the action
+ *
+ * @properties={typeid:24,uuid:"4FE94177-EF8D-49B1-855F-D9F35D57EB6E"}
+ */
+function REC_selected(event) {
+	FLD_data_change__form_name()
+}
+
+/**
+ * Handle changed data.
+ *
+ * @param {Object} oldValue old value
+ * @param {Object} newValue new value
+ * @param {JSEvent} event the event that triggered the action
+ *
+ * @returns {Boolean}
+ *
+ * @properties={typeid:24,uuid:"0102A5D3-E8AA-4536-B8D8-89C1CDA3C67A"}
+ */
+function FLD_data_change__form_name(oldValue, newValue, event) {
+	//get methods for current form
+	var formMethods = (form_name && forms[form_name]) ? forms[form_name].allmethods : new Array()
+	
+	application.setValueListItems('WEB_block_type_method', formMethods)
+}
