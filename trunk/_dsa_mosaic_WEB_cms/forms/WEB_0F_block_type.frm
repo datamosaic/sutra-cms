@@ -376,7 +376,7 @@ uuid:"369E75AC-7482-41C3-836C-2700FAFCD3D9"
 {
 containsFormID:"AA2A4CF3-13BE-48F3-8F0B-BAB9F8CAAA2A",
 location:"70,305",
-relationName:"web_block_type_to_block_meta",
+relationName:"web_block_type_to_block_input",
 text:"WEB_0F_block_type_1L_block_input",
 typeid:15,
 uuid:"44A63C8B-C892-46DB-A90C-13E42B2CD771"

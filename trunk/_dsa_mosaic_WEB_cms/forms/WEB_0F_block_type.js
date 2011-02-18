@@ -30,7 +30,7 @@ function INPUT_new_record()
  */
 function META_new_record()
 {
-	web_block_type_to_block_meta.newRecord()
+	web_block_type_to_block_input.newRecord()
 	databaseManager.saveData()
 }
 
@@ -109,7 +109,7 @@ function BATCH_create() {
 						}
 						],
 				
-				web_block_type_to_block_meta	: [
+				web_block_type_to_block_input	: [
                                	   {
 							column_name	: 'Content',
 							column_type	: 'Text',
@@ -158,7 +158,7 @@ function BATCH_create() {
 						}
 						],	
 				
-				web_block_type_to_block_meta	: [
+				web_block_type_to_block_input	: [
                                	   {
 							column_name	: 'image_name',
 							column_type	: 'text',
@@ -391,7 +391,7 @@ function REC_new() {
 			}
 			// block data
 			for (var i in obj.data) {
-				var data = block.web_block_type_to_block_meta.getRecord(block.web_block_type_to_block_meta.newRecord())
+				var data = block.web_block_type_to_block_input.getRecord(block.web_block_type_to_block_input.newRecord())
 				data.column_name = i
 				data.column_type = obj.data[i]
 			}
