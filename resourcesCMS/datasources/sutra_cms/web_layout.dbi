@@ -12,7 +12,7 @@ name:"id_layout"
 allowNull:true,
 creationOrderIndex:5,
 dataType:-1,
-length:16777215,
+length:2147483647,
 name:"description"
 },
 {
@@ -37,8 +37,8 @@ name:"layout_name"
 {
 allowNull:true,
 creationOrderIndex:6,
-dataType:12,
-length:255,
+dataType:-1,
+length:65535,
 name:"layout_path"
 },
 {
