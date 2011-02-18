@@ -1,12 +1,12 @@
 /**
+ * @properties={typeid:35,uuid:"4F2AE698-F740-4F36-922D-ECD6DD2A4932",variableType:-4}
+ */
+var editsAllowed = null;
+
+/**
  * @properties={typeid:35,uuid:"4768DA43-4617-41AC-B2E7-77D8DC83E2DC",variableType:-4}
  */
 var recBlockData = null;
-
-/**
- * @properties={typeid:35,uuid:"111C89DA-3FC1-458D-8A94-0D7EEE7D6F75",variableType:4}
- */
-var toolbarMode = 0;
 
 /**
  * param {} obj Data object passed to all markup methods
@@ -70,6 +70,8 @@ function BLOCK_save() {
  */
 function ACTION_edit(event) {
 	if (utils.hasRecords(foundset.getSelectedRecord(),'web_block_data_to_block.web_block_to_area.web_area_to_version') && web_block_data_to_block.web_block_to_area.web_area_to_version.flag_edit) {
+		databaseManager.saveData()
+		databaseManager.setAutoSave(false)
 		TOGGLE_buttons(true)
 	}
 	else {
@@ -129,8 +131,14 @@ function BLOCK_cancel(event) {
  * @properties={typeid:24,uuid:"AFC38F1A-D4AE-49AE-8C7C-C6901CC9B030"}
  */
 function TOGGLE_buttons(state) {
-	elements.btn_edit.visible = !state
-	elements.lbl_edit.visible = !state
+	if (!editsAllowed) {
+		elements.btn_edit.visible = false
+		elements.lbl_edit.visible = false
+	}
+	else {
+		elements.btn_edit.visible = !state
+		elements.lbl_edit.visible = !state
+	}
 	elements.btn_save.enabled = state
 	elements.lbl_save.enabled = state
 	elements.btn_cancel.enabled = state
@@ -302,14 +310,14 @@ function INIT_block() {
 function LOADER_init(recBlock,flagEdit) {
 	ACTION_colorize(recBlock.web_block_to_block_data)
 	
-	if (!flagEdit) {
-		elements.btn_edit.visible = false
-		elements.lbl_edit.visible = false
-	}
-	
 	forms.WEB_0F_page__design__content_1F_block_data.elements.tab_detail.removeTabAt(2)
 	forms.WEB_0F_page__design__content_1F_block_data.elements.tab_detail.addTab(forms.WEB_0F__html)
 	forms.WEB_0F_page__design__content_1F_block_data.elements.tab_detail.tabIndex = 2
+	
+	editsAllowed = flagEdit
+	
+	elements.btn_edit.visible = flagEdit
+	elements.lbl_edit.visible = flagEdit
 }
 
 /**
