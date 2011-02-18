@@ -360,12 +360,7 @@ function REC_new() {
 				//flag default method as default
 				view.flag_default = ( obj.views[i] == "VIEW_default") ? 1 : null
 			}
-			// block data
-			for (var i in obj.data) {
-				var data = block.web_block_type_to_block_input.getRecord(block.web_block_type_to_block_input.newRecord())
-				data.column_name = i
-				data.column_type = obj.data[i]
-			}
+			
 			// block client actions - "Block"
 			for (var i in obj.clientActionsBlock) {
 				var actions = block.web_block_type_to_block_action_client.getRecord(block.web_block_type_to_block_action_client.newRecord())
@@ -381,6 +376,7 @@ function REC_new() {
 				}
 				actions.method_name = obj.clientActionsBlock[i]
 			}
+			
 			// block client actions - "Page"
 			for (var i in obj.clientActionsPage) {
 				var actions = block.web_block_type_to_block_action_client.getRecord(block.web_block_type_to_block_action_client.newRecord())
@@ -396,6 +392,7 @@ function REC_new() {
 				}
 				actions.method_name = obj.clientActionsPage[i]
 			}
+			
 			// block web actions
 			for (var i in obj.webActions) {
 				var actions = block.web_block_type_to_block_action_web.getRecord(block.web_block_type_to_block_action_web.newRecord())
@@ -410,12 +407,28 @@ function REC_new() {
 				}
 				actions.method_name = obj.webActions[i]
 			}
+			
+			// block data
+			for (var i in obj.data) {
+				var data = block.web_block_type_to_block_input.getRecord(block.web_block_type_to_block_input.newRecord())
+				data.column_name = i
+				data.column_type = obj.data[i]
+			}
+			
 			// block configuration
 			for (var i in obj.blockConfigure) {
 				var configure = block.web_block_type_to_block_configure.getRecord(block.web_block_type_to_block_configure.newRecord())
-				configure.data_key = i
-				configure.data_value = obj.blockConfigure[i]
+				configure.column_name = i
+				configure.column_type = obj.blockConfigure[i]
 			}
+			
+			// block response
+			for (var i in obj.blockResponse) {
+				var response = block.web_block_type_to_block_response.getRecord(block.web_block_type_to_block_response.newRecord())
+				response.column_name = i
+				response.column_type = obj.blockConfigure[i]
+			}
+			
 			databaseManager.saveData()
 		}
 	}
