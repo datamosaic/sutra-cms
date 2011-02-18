@@ -6,35 +6,6 @@ var _license_dsa_mosaic_WEB_cms = 'Module: _dsa_mosaic_WEB_cms \
 									MIT Licensed';
 
 /**
- *
- * @properties={typeid:24,uuid:"FCCF12F4-B862-4400-A801-4CB29CBBFD3F"}
- */
-function DISPLAY_new_record() {
-	web_block_type_to_block_display.newRecord()
-	databaseManager.saveData()
-}
-
-/**
- *
- * @properties={typeid:24,uuid:"49A1070B-839F-4794-BB2D-CF17E53C5C87"}
- */
-function INPUT_new_record()
-{
-	web_block_type_to_block_input.newRecord()
-	databaseManager.saveData()
-}
-
-/**
- *
- * @properties={typeid:24,uuid:"584F660B-4EC4-4F29-AFB2-2ACB0B23BE71"}
- */
-function META_new_record()
-{
-	web_block_type_to_block_input.newRecord()
-	databaseManager.saveData()
-}
-
-/**
  * Callback method when form is (re)loaded.
  *
  * @param {JSEvent} event the event that triggered the action
