@@ -51,6 +51,6 @@ controller.deleteRecord()
  * @properties={typeid:24,uuid:"B4F57706-28E9-452B-AC38-E364B22EA870"}
  */
 function REC_new() {
-	forms.WEB_0F_block_type.web_block_type_to_block_input.newRecord(false, true)
+	controller.newRecord(false)
 	databaseManager.saveData()
 }

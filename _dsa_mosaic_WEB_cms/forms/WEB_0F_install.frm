@@ -224,6 +224,7 @@ uuid:"F4585E1A-140D-423D-ACD4-E8C3656525D8"
 ],
 name:"WEB_0F_install",
 navigatorID:"-1",
+onHideMethodID:"FF2B5DFA-942F-4BB5-A8C6-EAFF6672B439",
 onLoadMethodID:"AA87953D-FECC-4DFD-A81E-783EBC4E875D",
 onRecordEditStopMethodID:"-1",
 onRecordSelectionMethodID:"-1",
