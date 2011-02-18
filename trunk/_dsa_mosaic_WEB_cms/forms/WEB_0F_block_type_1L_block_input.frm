@@ -1,4 +1,4 @@
-dataSource:"db:/sutra_cms/web_block_meta",
+dataSource:"db:/sutra_cms/web_block_input",
 items:[
 {
 borderType:"SpecialMatteBorder,0.0,0.0,1.0,0.0,#000000,#000000,#999999,#000000,0.0,1.0",
@@ -73,11 +73,11 @@ typeid:19,
 uuid:"FE1687D3-1711-437A-BA80-6D607FEA4358"
 }
 ],
-name:"WEB_0F_block_type_1L_block_meta",
+name:"WEB_0F_block_type_1L_block_input",
 onRecordSelectionMethodID:"-1",
 onShowMethodID:"-1",
 paperPrintScale:100,
-rowBGColorCalculation:"row_background",
+rowBGColorCalculation:"globals.CODE_row_background",
 scrollbars:33,
 size:"250,90",
 styleName:"_DATASUTRA_",
