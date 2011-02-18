@@ -309,19 +309,17 @@ function ACTION_internal_link(event) {
  * @param inputID page id to tokenize for internal link
  * @properties={typeid:24,uuid:"AC4E3BFF-07E7-4A72-A3C1-24F4D8E8C2C0"}
  */
-function ACTION_add_token(inputID) {
+function ACTION_add_token(inputID,pageRec) {
 	var token = "{DS:ID_" + inputID + "}"
 	
-	//set clipboard content if mac and pre java 1.6
-//	if (solutionPrefs.clientInfo.typeOS == 'Mac OS X' && utils.stringToNumber(solutionPrefs.clientInfo.verJava) < 1.6) {
-//		application.setClipboardContent(token)
-//	}
-//	else {
+	//set clipboard content if shift-key held
+	if (globals.CODE_key_pressed('shift')) {
+		application.setClipboardContent(token)
+	}
+	else {
 		var js = "tinyMCE.execCommand('mceInsertLink', false, '" + token + "');"
 		elements.bn_tinymce.executeJavaScript(js)
-//	}
-	
-//	application.setClipboardContent(token)
+	}
 	
 }
 
