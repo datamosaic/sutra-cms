@@ -238,17 +238,6 @@ function INIT_block() {
 			form_name			: 'WEB_0F_asset__image'
 		}
 	
-	// block data points
-	block.data = {
-		image_name : 'TEXT',
-		image_type : 'TEXT',
-		image_extension : 'TEXT',
-		height : 'INTEGER',
-		width : 'INTEGER',
-		directory : 'TEXT',
-		height_original : 'INTEGER',
-		width_original : 'INTEGER'
-	}
 	
 	// block views
 	block.views = globals.WEB_block_methods(controller.getName(),"VIEW")
@@ -262,10 +251,27 @@ function INIT_block() {
 	// block web actions
 	block.webActions = globals.WEB_block_methods(controller.getName(),"WEB")
 	
+	// block data points
+	block.data = {
+		image_name : 'TEXT',
+		image_type : 'TEXT',
+		image_extension : 'TEXT',
+		height : 'INTEGER',
+		width : 'INTEGER',
+		directory : 'TEXT',
+		height_original : 'INTEGER',
+		width_original : 'INTEGER'
+	}
+	
 	// block configure data points
 	block.blockConfigure = {
 		
-	}   
+	}
+	
+	// block response data points
+	block.blockResponse = {
+		
+	}
 	
 	return block
 	

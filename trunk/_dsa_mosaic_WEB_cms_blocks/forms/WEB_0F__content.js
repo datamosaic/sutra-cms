@@ -391,11 +391,6 @@ function INIT_block() {
 			form_name_display	: 'WEB_0F__content_view'
 		}
 	
-	// block data points
-	block.data = {
-		Content : 'TEXT'            
-	}
-	
 	// block views
 	block.views = globals.WEB_block_methods(controller.getName(),"VIEW")
 	
@@ -408,8 +403,18 @@ function INIT_block() {
 	// block web actions
 	block.webActions = globals.WEB_block_methods(controller.getName(),"WEB")
 	
+	// block data points
+	block.data = {
+		Content : 'TEXT'            
+	}
+	
 	// block configure data points
 	block.blockConfigure = {
+		
+	}
+	
+	// block response data points
+	block.blockResponse = {
 		
 	}
 	
