@@ -394,7 +394,7 @@ function ACTION_mode(event) {
 			case 'lbl_mode_real':
 				elements.gfx_switch_3.visible = true
 				
-				globals.WEB_page_mode == 3
+				globals.WEB_page_mode = 3
 				
 				//go to real mode if not there already
 				if (currentMode != "BROWSER") {
