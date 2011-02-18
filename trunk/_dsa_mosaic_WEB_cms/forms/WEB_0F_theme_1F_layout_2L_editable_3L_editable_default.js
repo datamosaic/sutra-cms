@@ -60,7 +60,7 @@ function BLOCK_new() {
 		"from web_block_display where id_block_type = ?",
 //		"select column_name, column_type, " +
 //			"(select id_block_display from web_block_display where id_block_type = ? and flag_default = 1) as display " +
-//		"from web_block_meta where id_block_type = ?",
+//		"from web_block_input where id_block_type = ?",
 		new Array(valueListObj[selection],valueListObj[selection]), -1)
 		
 //		var dataNames = dataset.getColumnAsArray(1)
