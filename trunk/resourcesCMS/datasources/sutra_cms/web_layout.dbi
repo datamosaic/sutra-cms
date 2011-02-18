@@ -12,7 +12,7 @@ name:"id_layout"
 allowNull:true,
 creationOrderIndex:5,
 dataType:-1,
-length:2147483647,
+length:16777215,
 name:"description"
 },
 {
