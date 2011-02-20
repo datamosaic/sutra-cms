@@ -9,7 +9,7 @@ uuid:"03F245F3-3274-4553-919B-C33D72B44AE2"
 {
 anchors:11,
 formIndex:11800,
-location:"0,3",
+location:"0,2",
 mediaOptions:14,
 showClick:false,
 showFocus:false,
@@ -48,7 +48,7 @@ anchors:3,
 formIndex:12900,
 horizontalAlignment:0,
 imageMediaID:"ca71eeeb-624d-461d-a4b3-41a387f1304a",
-location:"275,4",
+location:"275,3",
 mediaOptions:14,
 name:"btn_add",
 onActionMethodID:"EA28AB57-2A96-4E3A-A738-91F1E2A2B4E9",
@@ -110,7 +110,7 @@ valuelistID:"C0241618-8840-41F3-82E1-45C4C46AC401"
 },
 {
 anchors:14,
-borderType:"MatteBorder,1,0,0,0,#808080",
+borderType:"MatteBorder,1,0,0,0,#A1B0CF",
 formIndex:10600,
 location:"0,66",
 mediaOptions:14,
@@ -179,7 +179,7 @@ uuid:"C8425F9A-246B-46EE-8DAD-CB3CA945DB02",
 verticalAlignment:0
 },
 {
-height:21,
+height:20,
 partType:1,
 typeid:19,
 uuid:"F017785D-D052-437F-B51B-E6F0B5861134"
@@ -200,7 +200,7 @@ typeid:7,
 uuid:"FBCC1A67-5D30-4264-8B07-40AC2201AA92"
 }
 ],
-name:"WEB_0F_theme_1F_layout_2L_editable_3L_editable_default",
+name:"WEB_0F_theme_1L_editable_default",
 onLoadMethodID:"C48AE9E1-7CBD-4F5B-9B6A-8659F00365BC",
 onRecordSelectionMethodID:"15C247DE-D499-46CB-8652-7D7793F40B50",
 onShowMethodID:"-1",
@@ -210,5 +210,5 @@ scrollbars:33,
 size:"300,81",
 styleName:"_DATASUTRA_",
 typeid:3,
-uuid:"28FFA3DE-A5F3-46EE-B9FF-1956CE2501A5",
+uuid:"80CBD273-902F-47A8-9E61-F956D26EF9E9",
 view:3

@@ -1,40 +1,6 @@
 dataSource:"db:/sutra_cms/web_theme",
-initialSort:"name_last asc, name_first asc",
+initialSort:"theme_name asc",
 items:[
-{
-anchors:15,
-formIndex:12200,
-items:[
-{
-containsFormID:"E145CF1B-350B-401D-AE55-78FC50629080",
-location:"137,246",
-text:"WEB_0F_theme_1F",
-typeid:15,
-uuid:"F82657CF-5AFF-4A05-A3A1-A97C4D6A86DB"
-}
-],
-location:"137,216",
-name:"tab_action",
-printable:false,
-size:"632,154",
-tabOrientation:-1,
-typeid:16,
-uuid:"00330492-7713-4FB5-9F6F-8E3FBA1B10D7"
-},
-{
-anchors:11,
-formIndex:9998,
-location:"136,198",
-mediaOptions:14,
-showClick:false,
-showFocus:false,
-size:"633,18",
-styleClass:"standard_table_category",
-tabSeq:-1,
-transparent:true,
-typeid:7,
-uuid:"0BD11BA2-553C-4594-96F8-7AA7EE73459A"
-},
 {
 height:16,
 partType:1,
@@ -42,64 +8,131 @@ typeid:19,
 uuid:"12ECD7CB-523F-463A-A6D5-26EE3A8586A1"
 },
 {
-anchors:3,
-formIndex:13700,
-location:"570,40",
-mediaOptions:14,
-showClick:false,
-showFocus:false,
-size:"202,18",
-styleClass:"standard_table_category",
-tabSeq:-1,
-text:"Meta",
-transparent:true,
-typeid:7,
-uuid:"22E1922B-41D2-43BB-9003-185FF44D3286"
+anchors:11,
+background:"#d1d7e2",
+borderType:"MatteBorder,0,1,0,0,#A1B0CF",
+formIndex:10502,
+items:[
+{
+containsFormID:"88829481-86F5-4832-89BC-437A19F9EF71",
+location:"440,250",
+relationName:"web_layout_to_editable__selected",
+text:"WEB_0F_theme_1L_editable",
+typeid:15,
+uuid:"D086AAF1-9919-409C-B6BB-C4E765B95494"
+}
+],
+location:"440,230",
+name:"tab_editable",
+printable:false,
+size:"100,100",
+tabOrientation:-1,
+typeid:16,
+uuid:"14378C46-02FD-431F-AA28-00978E0EF7D7"
 },
 {
-anchors:3,
+anchors:15,
+formIndex:9997,
+location:"10,189",
+name:"tab_fake",
+printable:false,
+size:"760,184",
+styleClass:"grid_primary",
+tabOrientation:-1,
+typeid:16,
+uuid:"211789C9-B4A8-4878-8B8D-7FA5A6131801"
+},
+{
 dataProviderID:"flag_default",
 displayType:4,
 formIndex:15700,
-location:"656,58",
+location:"110,104",
 onDataChangeMethodID:"F0F3FB67-B1E6-4D1F-9AE5-940B22838CE7",
 scrollbars:36,
-size:"115,23",
+size:"440,23",
 styleClass:"standard_table",
 transparent:true,
 typeid:4,
-uuid:"25F4DAA3-911A-41D8-A740-54F32929698A"
+uuid:"25F4DAA3-911A-41D8-A740-54F32929698A",
+valuelistID:"4f6370be-de55-4992-a24f-57a43c0b25c3"
 },
 {
-anchors:3,
 dataProviderID:"activated",
 displayType:4,
 formIndex:15700,
-location:"656,81",
+location:"110,127",
 scrollbars:36,
-size:"115,23",
+size:"440,23",
 styleClass:"standard_table_bottom",
 tabSeq:-2,
 transparent:true,
 typeid:4,
-uuid:"2F18B8E4-6F49-4F56-B170-88BCCD6C3A22"
+uuid:"2F18B8E4-6F49-4F56-B170-88BCCD6C3A22",
+valuelistID:"4f6370be-de55-4992-a24f-57a43c0b25c3"
 },
 {
-formIndex:13000,
-horizontalAlignment:0,
-imageMediaID:"f27c82c9-3a7e-4b29-9d3d-38857a387710",
-location:"448,199",
-mediaOptions:14,
-name:"btn_actions",
-onActionMethodID:"896936DD-2542-4E87-8D01-3D058BCBC274",
-rolloverCursor:12,
-rolloverImageMediaID:"1dd5b54e-f2f1-408d-9591-2179f743386c",
-showClick:false,
-showFocus:false,
-size:"24,15",
-transparent:true,
-typeid:7,
-uuid:"44CFF7D4-C490-4154-B737-2AAD99ED55B8"
+anchors:15,
+beanClassName:"javax.swing.JSplitPane",
+beanXML:"<?xml version=\"1.0\" encoding=\"UTF-8\"?> 
+<java version=\"1.6.0_22\" class=\"java.beans.XMLDecoder\"> 
+ <object class=\"javax.swing.JSplitPane\"> 
+  <int>1<\/int> 
+  <void property=\"background\"> 
+   <object class=\"java.awt.Color\"> 
+    <int>209<\/int> 
+    <int>215<\/int> 
+    <int>226<\/int> 
+    <int>255<\/int> 
+   <\/object> 
+  <\/void> 
+  <void property=\"size\"> 
+   <object class=\"java.awt.Dimension\"> 
+    <int>170<\/int> 
+    <int>90<\/int> 
+   <\/object> 
+  <\/void> 
+  <void property=\"UI\"> 
+   <void property=\"continuousLayout\"> 
+    <boolean>true<\/boolean> 
+   <\/void> 
+  <\/void> 
+  <void property=\"border\"> 
+   <null/> 
+  <\/void> 
+  <void property=\"continuousLayout\"> 
+   <boolean>true<\/boolean> 
+  <\/void> 
+  <void property=\"dividerLocation\"> 
+   <int>0<\/int> 
+  <\/void> 
+  <void property=\"dividerSize\"> 
+   <int>0<\/int> 
+  <\/void> 
+  <void property=\"focusable\"> 
+   <boolean>false<\/boolean> 
+  <\/void> 
+  <void property=\"lastDividerLocation\"> 
+   <int>0<\/int> 
+  <\/void> 
+  <void property=\"name\"> 
+   <string>bean_split_2<\/string> 
+  <\/void> 
+  <void property=\"opaque\"> 
+   <boolean>false<\/boolean> 
+  <\/void> 
+  <void property=\"resizeWeight\"> 
+   <double>0.5<\/double> 
+  <\/void> 
+ <\/object> 
+<\/java> 
+",
+formIndex:9999,
+location:"40,220",
+name:"bean_split_2",
+size:"170,90",
+typeid:12,
+usesUI:true,
+uuid:"388951F2-E6E0-4B12-8FFC-FE0BD2C20127"
 },
 {
 anchors:11,
@@ -119,39 +152,32 @@ uuid:"4B15062C-5D60-4BB8-87B1-54FC58394328"
 },
 {
 anchors:11,
-dataProviderID:"description",
-displayType:1,
-displaysTags:true,
-formIndex:14600,
-location:"136,103",
-scrollbars:36,
-size:"415,73",
-styleClass:"standard_table_textarea_bottom",
-tabSeq:-2,
-transparent:true,
-typeid:4,
-uuid:"4E5D4443-C66F-4365-8BA6-220AA58C8034"
+background:"#d1d7e2",
+borderType:"MatteBorder,0,0,0,0,#A1B0CF",
+formIndex:10502,
+items:[
+{
+containsFormID:"80CBD273-902F-47A8-9E61-F956D26EF9E9",
+location:"560,260",
+relationName:"web_layout_to_editable__selected.web_editable_to_editable_default",
+text:"WEB_0F_theme_1L_editable_default",
+typeid:15,
+uuid:"7413E68A-7293-4352-A4B7-618FFF9A1AD9"
+}
+],
+location:"560,230",
+name:"tab_editable_default",
+printable:false,
+size:"100,100",
+tabOrientation:-1,
+typeid:16,
+uuid:"59362627-3371-4DC1-8CC5-9CAB1A7A2B88"
 },
 {
-formIndex:10400,
-location:"36,216",
-mediaOptions:14,
-showClick:false,
-showFocus:false,
-size:"100,23",
-styleClass:"standard_table_bottom",
-tabSeq:-1,
-text:"Layouts and",
-transparent:true,
-typeid:7,
-uuid:"5737AB94-3A80-4289-9E2C-B95E0B6EB36B"
-},
-{
-anchors:3,
 formIndex:11900,
 horizontalAlignment:0,
 imageMediaID:"a2e147c1-5027-45cb-abf0-ddf2d8588969",
-location:"531,40",
+location:"521,40",
 mediaOptions:1,
 name:"help_contact_details",
 onActionMethodID:"6a193823-8789-4ec3-a7bf-45d1238dc5bd",
@@ -166,8 +192,21 @@ typeid:7,
 uuid:"5A6978EA-EA2D-4BB3-A61E-4257E607DE45"
 },
 {
+anchors:11,
+formIndex:10000,
+location:"560,58",
+mediaOptions:14,
+showClick:false,
+showFocus:false,
+size:"210,92",
+styleClass:"color_light",
+tabSeq:-1,
+typeid:7,
+uuid:"6EA59864-724E-42BE-A669-B2D2CD14270D"
+},
+{
 formIndex:10400,
-location:"137,80",
+location:"111,80",
 mediaOptions:14,
 showClick:false,
 showFocus:false,
@@ -180,27 +219,12 @@ typeid:7,
 uuid:"7045FB85-7406-4897-8EC4-D65B76EDDA0D"
 },
 {
-formIndex:14500,
-location:"36,103",
-mediaOptions:14,
-showClick:false,
-showFocus:false,
-size:"100,23",
-styleClass:"standard_table_bottom",
-tabSeq:-1,
-text:"Description",
-transparent:true,
-typeid:7,
-uuid:"743FFA75-262D-45F4-903A-93E7BCA3D4BB"
-},
-{
-anchors:3,
 formIndex:13600,
-location:"589,81",
+location:"40,127",
 mediaOptions:14,
 showClick:false,
 showFocus:false,
-size:"67,23",
+size:"70,23",
 styleClass:"standard_table_bottom",
 tabSeq:-1,
 text:"Active",
@@ -209,37 +233,32 @@ typeid:7,
 uuid:"77398797-AC67-44A0-A86F-DD622A0A1F33"
 },
 {
+anchors:11,
+borderType:"EmptyBorder,0,0,0,0",
+dataProviderID:"description",
+displayType:1,
+formIndex:12700,
+location:"560,58",
+scrollbars:33,
+size:"210,93",
+styleClass:"standard_table_textarea",
+transparent:true,
+typeid:4,
+uuid:"82471B11-BC58-476E-AF43-E58DA32B8858"
+},
+{
 height:380,
 partType:5,
 typeid:19,
 uuid:"83DAA8FA-6F8C-4E36-8688-7EA67B012B75"
 },
 {
-formIndex:15702,
-horizontalAlignment:0,
-imageMediaID:"ca71eeeb-624d-461d-a4b3-41a387f1304a",
-location:"470,199",
-mediaOptions:14,
-onActionMethodID:"8F31151F-873E-4BA0-A904-7533753AB256",
-rolloverCursor:12,
-rolloverImageMediaID:"e5ed6909-0205-4660-b805-94edf9739179",
-showClick:false,
-showFocus:false,
-size:"20,15",
-tabSeq:-2,
-toolTipText:"New layout",
-transparent:true,
-typeid:7,
-uuid:"84B0AD32-D280-4867-B71A-E9D35D7CDE3F"
-},
-{
-anchors:3,
 formIndex:13600,
-location:"589,58",
+location:"40,104",
 mediaOptions:14,
 showClick:false,
 showFocus:false,
-size:"67,23",
+size:"70,23",
 styleClass:"standard_table",
 tabSeq:-1,
 text:"Default",
@@ -248,14 +267,13 @@ typeid:7,
 uuid:"8DE7927A-0091-48B2-986E-E35C79E0EDD1"
 },
 {
-anchors:11,
 dataProviderID:"theme_directory",
 formIndex:10500,
-location:"136,81",
+location:"110,81",
 margin:"0,120,0,0",
 onFocusLostMethodID:"E1AF70C2-4087-41C1-A588-5F413DD0FD5A",
 scrollbars:36,
-size:"415,23",
+size:"440,23",
 styleClass:"standard_table",
 tabSeq:2,
 transparent:true,
@@ -263,30 +281,12 @@ typeid:4,
 uuid:"8F4EFCC7-6D95-40C1-8C10-0571DB618FCC"
 },
 {
-anchors:3,
-formIndex:15702,
-horizontalAlignment:0,
-imageMediaID:"ca71eeeb-624d-461d-a4b3-41a387f1304a",
-location:"747,199",
-mediaOptions:14,
-onActionMethodID:"F2CB4A41-BEEE-4317-9FA2-4976302B50EA",
-rolloverCursor:12,
-rolloverImageMediaID:"e5ed6909-0205-4660-b805-94edf9739179",
-showClick:false,
-showFocus:false,
-size:"20,15",
-toolTipText:"New editable area",
-transparent:true,
-typeid:7,
-uuid:"926E8E6E-F2DF-413C-9037-4C43499D3173"
-},
-{
 formIndex:10700,
-location:"36,58",
+location:"40,58",
 mediaOptions:14,
 showClick:false,
 showFocus:false,
-size:"100,23",
+size:"70,23",
 styleClass:"standard_table",
 tabSeq:-1,
 text:"Theme",
@@ -295,59 +295,19 @@ typeid:7,
 uuid:"A28E2F00-E8DD-4280-8614-A7F843801C93"
 },
 {
-formIndex:10400,
-location:"36,193",
+anchors:11,
+formIndex:11500,
+location:"560,40",
 mediaOptions:14,
 showClick:false,
 showFocus:false,
-size:"100,23",
+size:"210,18",
 styleClass:"standard_table",
 tabSeq:-1,
+text:"Description",
 transparent:true,
 typeid:7,
-uuid:"A47B5224-B9A2-4D02-A7D8-0FA89CF97EDD"
-},
-{
-anchors:13,
-formIndex:9999,
-location:"136,216",
-mediaOptions:14,
-showClick:false,
-showFocus:false,
-size:"100,156",
-styleClass:"standard_table_check_bottom",
-tabSeq:-1,
-transparent:true,
-typeid:7,
-uuid:"AE49D331-805A-419E-871A-A16FAFB25078"
-},
-{
-formIndex:15703,
-location:"135,197",
-mediaOptions:14,
-showClick:false,
-showFocus:false,
-size:"80,18",
-styleClass:"tabpanel",
-tabSeq:-1,
-text:"Layouts",
-transparent:true,
-typeid:7,
-uuid:"B1D16C8D-AFFE-4B5C-8228-E2A30C400DE7"
-},
-{
-formIndex:15703,
-location:"493,197",
-mediaOptions:14,
-showClick:false,
-showFocus:false,
-size:"100,18",
-styleClass:"tabpanel",
-tabSeq:-1,
-text:"Editable areas",
-transparent:true,
-typeid:7,
-uuid:"B4D60112-F1CB-4B62-BC6E-9804259C4C8F"
+uuid:"B538475D-6A93-41F8-8060-DCC6B3ADB0D3"
 },
 {
 anchors:11,
@@ -363,32 +323,12 @@ typeid:7,
 uuid:"CBA8C3DE-ECFD-422E-85C6-6A407D9DDF4E"
 },
 {
-anchors:3,
-formIndex:13900,
-horizontalAlignment:0,
-imageMediaID:"a2e147c1-5027-45cb-abf0-ddf2d8588969",
-location:"751,40",
-mediaOptions:1,
-name:"help_contact_meta",
-onActionMethodID:"6a193823-8789-4ec3-a7bf-45d1238dc5bd",
-rolloverCursor:12,
-rolloverImageMediaID:"887d1bba-05d3-429c-9789-113b96279683",
-showClick:false,
-showFocus:false,
-size:"20,16",
-tabSeq:-2,
-transparent:true,
-typeid:7,
-uuid:"D466444A-B2E1-428E-ACA9-0E6D00BC60FC"
-},
-{
-anchors:11,
 dataProviderID:"theme_name",
 formIndex:10600,
-location:"136,58",
+location:"110,58",
 name:"fld_theme_name",
 scrollbars:36,
-size:"415,23",
+size:"440,23",
 styleClass:"standard_table",
 tabSeq:1,
 transparent:true,
@@ -396,13 +336,76 @@ typeid:4,
 uuid:"D4E98555-BDA8-4D3E-BC76-DD77EDC402EF"
 },
 {
-anchors:11,
+anchors:15,
+beanClassName:"javax.swing.JSplitPane",
+beanXML:"<?xml version=\"1.0\" encoding=\"UTF-8\"?> 
+<java version=\"1.6.0_22\" class=\"java.beans.XMLDecoder\"> 
+ <object class=\"javax.swing.JSplitPane\"> 
+  <int>1<\/int> 
+  <void property=\"background\"> 
+   <object class=\"java.awt.Color\"> 
+    <int>209<\/int> 
+    <int>215<\/int> 
+    <int>226<\/int> 
+    <int>255<\/int> 
+   <\/object> 
+  <\/void> 
+  <void property=\"size\"> 
+   <object class=\"java.awt.Dimension\"> 
+    <int>760<\/int> 
+    <int>190<\/int> 
+   <\/object> 
+  <\/void> 
+  <void property=\"UI\"> 
+   <void property=\"continuousLayout\"> 
+    <boolean>true<\/boolean> 
+   <\/void> 
+  <\/void> 
+  <void property=\"border\"> 
+   <null/> 
+  <\/void> 
+  <void property=\"continuousLayout\"> 
+   <boolean>true<\/boolean> 
+  <\/void> 
+  <void property=\"dividerLocation\"> 
+   <int>0<\/int> 
+  <\/void> 
+  <void property=\"dividerSize\"> 
+   <int>0<\/int> 
+  <\/void> 
+  <void property=\"focusable\"> 
+   <boolean>false<\/boolean> 
+  <\/void> 
+  <void property=\"lastDividerLocation\"> 
+   <int>0<\/int> 
+  <\/void> 
+  <void property=\"name\"> 
+   <string>bean_split_1<\/string> 
+  <\/void> 
+  <void property=\"opaque\"> 
+   <boolean>false<\/boolean> 
+  <\/void> 
+  <void property=\"resizeWeight\"> 
+   <double>0.5<\/double> 
+  <\/void> 
+ <\/object> 
+<\/java> 
+",
+formIndex:9998,
+location:"11,170",
+name:"bean_split_1",
+size:"758,200",
+typeid:12,
+usesUI:true,
+uuid:"D7F05C88-0D98-4DEC-9187-8CDACFF23D43"
+},
+{
 formIndex:11800,
-location:"16,40",
+location:"10,40",
 mediaOptions:14,
 showClick:false,
 showFocus:false,
-size:"535,18",
+size:"540,18",
 styleClass:"standard_table_category",
 tabSeq:-1,
 text:"Details",
@@ -412,11 +415,11 @@ uuid:"E25D85E3-CA8B-47EA-9F08-3B30076691BC"
 },
 {
 formIndex:10400,
-location:"36,81",
+location:"40,81",
 mediaOptions:14,
 showClick:false,
 showFocus:false,
-size:"100,23",
+size:"70,23",
 styleClass:"standard_table",
 tabSeq:-1,
 text:"Directory",
@@ -425,18 +428,27 @@ typeid:7,
 uuid:"E53B4E4B-EA53-4D31-8251-56EAC9C6AA3C"
 },
 {
-formIndex:10400,
-location:"36,234",
-mediaOptions:14,
-showClick:false,
-showFocus:false,
-size:"100,23",
-styleClass:"standard_table_bottom",
-tabSeq:-1,
-text:"editable areas",
-transparent:true,
-typeid:7,
-uuid:"EE525B6E-ABD4-4088-92F6-EEAB3A878288"
+anchors:11,
+background:"#d1d7e2",
+borderType:"MatteBorder,0,1,0,0,#A1B0CF",
+formIndex:10502,
+items:[
+{
+containsFormID:"B06F18D2-47EB-43CE-A8F2-58472E93951A",
+location:"320,240",
+relationName:"web_theme_to_layout",
+text:"WEB_0F_theme_1L_layout",
+typeid:15,
+uuid:"EF16BAAA-5527-43FF-88DD-5C05B95F2D60"
+}
+],
+location:"320,230",
+name:"tab_layout",
+printable:false,
+size:"100,100",
+tabOrientation:-1,
+typeid:16,
+uuid:"F230D07C-8544-4955-B0C4-2C8A60EE4F62"
 }
 ],
 name:"WEB_0F_theme",
@@ -444,7 +456,7 @@ navigatorID:"-1",
 onLoadMethodID:"7EC1827E-0F69-47EB-B222-2971B81C2728",
 onRecordEditStopMethodID:"-1",
 onRecordSelectionMethodID:"-1",
-onShowMethodID:"-1",
+onShowMethodID:"6A6517C7-831B-4579-A192-2ED134AEBB4C",
 paperPrintScale:100,
 size:"780,380",
 styleName:"_DATASUTRA_",

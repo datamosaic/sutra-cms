@@ -41,7 +41,7 @@ function ACTION_new_editable()
 		web_theme_to_layout.web_layout_to_editable__selected.newRecord(false, true)
 		databaseManager.saveData()
 		web_theme_to_layout.web_layout_to_editable__selected.editable_name = ''
-		forms.WEB_0F_theme_1F_layout_2L_editable.elements.fld_name.requestFocus()
+		forms.WEB_0F_theme_1L_editable.elements.fld_name.requestFocus()
 		application.updateUI()
 	}
 	else {
@@ -77,7 +77,7 @@ function ACTION_new_layout()
 			web_theme_to_layout.flag_default = 1
 		}
 		web_theme_to_layout.layout_name = ''
-		forms.WEB_0F_theme_1F_layout_1L.elements.fld_layout_name.requestFocus(false)
+		forms.WEB_0F_theme_1L_layout.elements.fld_layout_name.requestFocus(false)
 		application.updateUI()
 	}
 	else {
@@ -111,15 +111,15 @@ function ACTION_set_path()
  * @properties={typeid:24,uuid:"7EC1827E-0F69-47EB-B222-2971B81C2728"}
  */
 function FORM_on_load(event) {
-	//find stuff for the selected site
-	if (utils.hasRecords(forms.WEB_0F_site.foundset)) {
-		foundset.find()
-		foundset.id_site = forms.WEB_0F_site.id_site
-		var results = foundset.search()
-	}
-	else {
-		foundset.clear()
-	}
+	// set split 2
+	elements.bean_split_2.leftComponent = elements.tab_editable
+	elements.bean_split_2.rightComponent = elements.tab_editable_default
+	elements.bean_split_2.dividerLocation = 200	
+	
+	// set split 1
+	elements.bean_split_1.leftComponent = elements.tab_layout
+	elements.bean_split_1.rightComponent = elements.bean_split_2
+	elements.bean_split_1.dividerLocation = 300
 }
 
 /**
@@ -250,7 +250,7 @@ function LAYOUTS_action_list(event) {
 		}
 		
 		//popup
-		var elem = elements[event.getElementName()]
+		var elem = forms[event.getFormName()].elements[event.getElementName()]
 		if (elem != null && valuelist.length) {
 			plugins.popupmenu.showPopupMenu(elem, menu)
 		}
@@ -273,8 +273,10 @@ function LAYOUTS_action_list_control(selected) {
 				var record = web_theme_to_layout.getRecord(web_theme_to_layout.getSelectedIndex())	
 				var relations = new Array("web_layout_to_editable",
 											"web_layout_to_editable.web_editable_to_editable_default")
-	
-				globals.CODE_record_duplicate(record, relations)
+//				var override = new Array(null,['flag_new_block'],null)
+				
+				var dupRecord = globals.CODE_record_duplicate(record, relations)
+				dupRecord.flag_default = null
 				
 				plugins.dialogs.showInfoDialog("Complete", "Layout duplicated")
 			}
@@ -552,5 +554,32 @@ function FIELD_directory_onLost(event) {
 	if ( theme_directory.search(/\/*$/) > 0 ) {
 		theme_directory = theme_directory.replace(/\/*$/, "")
 		databaseManager.saveData()
+	}
+}
+
+/**
+ * Callback method for when form is shown.
+ *
+ * @param {Boolean} firstShow form is shown first time after load
+ * @param {JSEvent} event the event that triggered the action
+ *
+ * @properties={typeid:24,uuid:"6A6517C7-831B-4579-A192-2ED134AEBB4C"}
+ */
+function FORM_on_show(firstShow, event) {
+	if (firstShow) {
+		//find stuff for the selected site
+		if (utils.hasRecords(forms.WEB_0F_site.foundset)) {
+			foundset.find()
+			foundset.id_site = forms.WEB_0F_site.id_site
+			var results = foundset.search()
+		}
+		else {
+			foundset.clear()
+		}
+		
+		//set divider locations
+		var aThird = (controller.getFormWidth() - 22) / 3
+		elements.bean_split_1.dividerLocation = aThird
+		elements.bean_split_2.dividerLocation = aThird
 	}
 }

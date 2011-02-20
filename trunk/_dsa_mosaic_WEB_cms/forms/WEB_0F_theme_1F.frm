@@ -8,7 +8,7 @@ items:[
 containsFormID:"88829481-86F5-4832-89BC-437A19F9EF71",
 location:"355,30",
 relationName:"web_layout_to_editable__selected",
-text:"WEB_0F_theme_1F_layout_2L_editable",
+text:"WEB_0F_theme_1L_editable",
 typeid:15,
 uuid:"B94E60E8-84C5-4BDE-B33C-5F0EDB91490B"
 }
@@ -33,7 +33,7 @@ items:[
 containsFormID:"B06F18D2-47EB-43CE-A8F2-58472E93951A",
 location:"0,30",
 relationName:"web_theme_to_layout",
-text:"WEB_0F_theme_1F_layout_1L",
+text:"WEB_0F_theme_1L_layout",
 typeid:15,
 uuid:"35A32D9E-653F-4605-AFB5-D074279F242E"
 }
