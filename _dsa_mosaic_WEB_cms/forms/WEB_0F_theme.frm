@@ -16,7 +16,7 @@ items:[
 {
 containsFormID:"88829481-86F5-4832-89BC-437A19F9EF71",
 location:"440,250",
-relationName:"web_layout_to_editable__selected",
+relationName:"web_theme_to_layout.web_layout_to_editable",
 text:"WEB_0F_theme_1L_editable",
 typeid:15,
 uuid:"D086AAF1-9919-409C-B6BB-C4E765B95494"
@@ -159,7 +159,7 @@ items:[
 {
 containsFormID:"80CBD273-902F-47A8-9E61-F956D26EF9E9",
 location:"560,260",
-relationName:"web_layout_to_editable__selected.web_editable_to_editable_default",
+relationName:"web_theme_to_layout.web_layout_to_editable.web_editable_to_editable_default",
 text:"WEB_0F_theme_1L_editable_default",
 typeid:15,
 uuid:"7413E68A-7293-4352-A4B7-618FFF9A1AD9"
