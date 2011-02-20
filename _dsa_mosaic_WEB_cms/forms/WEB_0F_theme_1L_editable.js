@@ -45,3 +45,14 @@ controller.deleteRecord()
 }
 
 }
+
+/**
+ * Perform the element default action.
+ *
+ * @param {JSEvent} event the event that triggered the action
+ *
+ * @properties={typeid:24,uuid:"6F0AA1A4-48AE-4305-AFC1-CA4F8B4BDE1A"}
+ */
+function REC_new(event) {
+	forms.WEB_0F_theme.ACTION_new_editable()
+}

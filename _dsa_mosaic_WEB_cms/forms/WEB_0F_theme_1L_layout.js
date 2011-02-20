@@ -114,3 +114,25 @@ if (flag_default) {
 
 
 }
+
+/**
+ * Perform the element default action.
+ *
+ * @param {JSEvent} event the event that triggered the action
+ *
+ * @properties={typeid:24,uuid:"31537525-46DE-4A2A-ACC9-9A9125BFBD9A"}
+ */
+function REC_new(event) {
+	forms.WEB_0F_theme.ACTION_new_layout()
+}
+
+/**
+ * Perform the element default action.
+ *
+ * @param {JSEvent} event the event that triggered the action
+ *
+ * @properties={typeid:24,uuid:"86CB740F-CD69-4889-9F9A-70743385A0A2"}
+ */
+function ACTIONS_list(event) {
+	forms.WEB_0F_theme.LAYOUTS_action_list(event)
+}

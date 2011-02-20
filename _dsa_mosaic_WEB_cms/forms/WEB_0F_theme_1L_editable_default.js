@@ -11,7 +11,7 @@ var _license_dsa_mosaic_WEB_cms = 'Module: _dsa_mosaic_WEB_cms \
  */
 function BLOCK_new() {
 	// no editable area selected
-	if (!utils.hasRecords(forms.WEB_0F_theme_1F_layout_2L_editable.foundset)) {
+	if (!utils.hasRecords(forms.WEB_0F_theme_1L_editable.foundset)) {
 		return
 	}
 	
@@ -67,9 +67,9 @@ function BLOCK_new() {
 		var display = dataset.getValue(1,3)
 		
 		// create block record
-		if (utils.hasRecords(forms.WEB_0F_theme_1F_layout_2L_editable.foundset)) {
+		if (utils.hasRecords(forms.WEB_0F_theme_1L_editable.foundset)) {
 			var count = foundset.getSize()
-			var record = forms.WEB_0F_theme_1F_layout_2L_editable.web_editable_to_editable_default.getRecord(forms.WEB_0F_theme_1F_layout_2L_editable.web_editable_to_editable_default.newRecord(false, true))
+			var record = forms.WEB_0F_theme_1L_editable.web_editable_to_editable_default.getRecord(forms.WEB_0F_theme_1L_editable.web_editable_to_editable_default.newRecord(false, true))
 			record.id_block_type = valueListObj[selection]
 			record.id_block_display = ( display ) ? display : null
 			record.row_order = count + 1

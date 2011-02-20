@@ -108,10 +108,10 @@ function ACTION_ok()
 			// duplicate scrapbook to theme>layout>editable>new editable_default
 			var source 		= forms.WEB_0F_scrapbook_1P__choose_2L.foundset.getRecord(forms.WEB_0F_scrapbook_1P__choose_2L.foundset.getSelectedIndex())
 			//var destination	= forms.WEB_0F_page__design.web_page_to_block_by_area.getRecord(forms.WEB_0F_page__design.web_page_to_block_by_area.newRecord(false, true))
-			var destination	= forms.WEB_0F_theme_1F_layout_1L.web_layout_to_editable__selected.web_editable_to_editable_default.getRecord(forms.WEB_0F_theme_1F_layout_1L.web_layout_to_editable__selected.web_editable_to_editable_default.newRecord(false,true))
+			var destination	= forms.WEB_0F_theme_1L_layout.web_layout_to_editable__selected.web_editable_to_editable_default.getRecord(forms.WEB_0F_theme_1L_layout.web_layout_to_editable__selected.web_editable_to_editable_default.newRecord(false,true))
 			var success		= databaseManager.copyMatchingColumns(source, destination)
 			destination.id_scrapbook = source.id_scrapbook	
-			destination.row_order = forms.WEB_0F_theme_1F_layout_1L.web_layout_to_editable__selected.web_editable_to_editable_default.getSize()
+			destination.row_order = forms.WEB_0F_theme_1L_layout.web_layout_to_editable__selected.web_editable_to_editable_default.getSize()
 			databaseManager.saveData()
 		
 		}
@@ -120,9 +120,9 @@ function ACTION_ok()
 		else {
 			// duplicate scrapbook to page>area>new block
 			var source 		= forms.WEB_0F_scrapbook_1P__choose_2L.foundset.getRecord(forms.WEB_0F_scrapbook_1P__choose_2L.foundset.getSelectedIndex())
-			var destination	= forms.WEB_0F_theme_1F_layout_1L.web_layout_to_editable.web_editable_to_editable_default.getRecord(forms.WEB_0F_theme_1F_layout_1L.web_layout_to_editable.web_editable_to_editable_default.newRecord(false,true))
+			var destination	= forms.WEB_0F_theme_1L_layout.web_layout_to_editable.web_editable_to_editable_default.getRecord(forms.WEB_0F_theme_1L_layout.web_layout_to_editable.web_editable_to_editable_default.newRecord(false,true))
 			var success		= databaseManager.copyMatchingColumns(source, destination)
-			destination.row_order = forms.WEB_0F_theme_1F_layout_1L.web_layout_to_editable.web_editable_to_editable_default.getSize()
+			destination.row_order = forms.WEB_0F_theme_1L_layout.web_layout_to_editable.web_editable_to_editable_default.getSize()
 			
 			destination.id_scrapbook = null		
 			databaseManager.saveData()

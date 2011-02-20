@@ -291,11 +291,11 @@ uuid:"CF6E1665-5C2C-49D4-A125-0DEBEB62BFF7"
 },
 {
 formIndex:11800,
-location:"15,40",
+location:"10,40",
 mediaOptions:14,
 showClick:false,
 showFocus:false,
-size:"365,18",
+size:"370,18",
 styleClass:"standard_table_category",
 tabSeq:-1,
 text:"Columns",
