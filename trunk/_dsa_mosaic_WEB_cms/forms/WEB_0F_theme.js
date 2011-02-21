@@ -244,7 +244,7 @@ function LAYOUTS_action_list(event) {
 		
 			menu[i].setMethodArguments(valuelist[i])
 		
-			if (menu[i].text == '----') {
+			if (menu[i].text == '----' || i == 1) {
 				menu[i].setEnabled(false)
 			}
 		}
