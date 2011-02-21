@@ -25,7 +25,7 @@ borderType:"SpecialMatteBorder,0.0,0.0,1.0,0.0,#000000,#000000,#999999,#000000,0
 dataProviderID:"row_order",
 formIndex:10200,
 format:"#",
-location:"150,30",
+location:"140,110",
 selectOnEnter:true,
 size:"80,22",
 styleClass:"tableview",
