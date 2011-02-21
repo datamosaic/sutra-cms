@@ -116,36 +116,67 @@ function ACTION_ok()
 		}
 	
 		// create a page area record for each editable
-		var order = 1
-		for (var i = 1; i <= fsRegions.getSize(); i++) {
-			var tempEditableRec = fsRegions.getRecord(i)
+		if (fsRegions.getSize()) {
+			//sort
+			fsRegions.sort('row_order asc')
 			
-			var areaRec = fsArea.getRecord(fsArea.newRecord(false, true))
-			
-			areaRec.area_name = tempEditableRec.editable_name
-			areaRec.id_editable = tempEditableRec.id_editable			
-			areaRec.row_order = order ++ 
-			areaRec.id_group = recGroup.id_group
-			areaRec.id_version = web_page_to_version.id_version
-			
-			//create a block record for each editable default
-			for (var j = 1; j <= tempEditableRec.web_editable_to_editable_default.getSize(); j++ ) {
-				var tempEditableDefaultRec = tempEditableRec.web_editable_to_editable_default.getRecord(j)
+			//still manually set the order in case web_editable is out of sync (kind of likely)
+			var order = 1
+			for (var i = 1; i <= fsRegions.getSize(); i++) {
+				var tempEditableRec = fsRegions.getRecord(i)
 				
-				var blockRec = areaRec.web_area_to_block.getRecord(areaRec.web_area_to_block.newRecord(false, true))
+				var areaRec = fsArea.getRecord(fsArea.newRecord(false, true))
 				
-				blockRec.id_block_display = tempEditableDefaultRec.id_block_display
-				blockRec.id_block_type = tempEditableDefaultRec.id_block_type
-				blockRec.params = tempEditableDefaultRec.params
-				blockRec.row_order = j
+				areaRec.area_name = tempEditableRec.editable_name
+				areaRec.id_editable = tempEditableRec.id_editable
+				areaRec.row_order = order ++ 
+				areaRec.id_group = recGroup.id_group
+				areaRec.id_version = globals.WEB_version_selected			
 				
-				//create a block_data record for each editable_default
-				for (var k = 1; k <= tempEditableDefaultRec.web_editable_default_to_block_input.getSize(); k++) {
-					var tempEditableDefaultDetailRec = tempEditableDefaultRec.web_editable_default_to_block_input.getRecord(k)
+				//create a block record for each editable default
+				for (var j = 1; j <= tempEditableRec.web_editable_to_editable_default.getSize(); j++ ) {
+					var tempEditableDefaultRec = tempEditableRec.web_editable_to_editable_default.getRecord(j)
 					
-					var blockDataRec = blockRec.web_block_to_block_data.getRecord(blockRec.web_block_to_block_data.newRecord(false,true))
+					var blockRec = areaRec.web_area_to_block.getRecord(areaRec.web_area_to_block.newRecord(false, true))
 					
-					blockDataRec.data_key = tempEditableDefaultDetailRec.column_name	
+					blockRec.id_block_display = tempEditableDefaultRec.id_block_display
+					blockRec.id_block_type = tempEditableDefaultRec.id_block_type
+					blockRec.params = tempEditableDefaultRec.params
+					blockRec.id_scrapbook = tempEditableDefaultRec.id_scrapbook
+					blockRec.row_order = tempEditableDefaultRec.row_order
+					
+					// INPUT
+					//create a block_data record for each block_input
+					if ( tempEditableDefaultRec.web_editable_default_to_block_input ) {
+						for (var k = 1; k <= tempEditableDefaultRec.web_editable_default_to_block_input.getSize(); k++) {
+							var tempEditableDefaultDetailRec = tempEditableDefaultRec.web_editable_default_to_block_input.getRecord(k)
+	
+							var blockDataRec = blockRec.web_block_to_block_data.getRecord(blockRec.web_block_to_block_data.newRecord(false,true))
+							blockDataRec.data_key = tempEditableDefaultDetailRec.column_name
+						}
+					}
+					
+//					// CONFIG
+//					//create a ?? record for each block_configure
+//					if ( tempEditableDefaultRec.web_editable_default_to_block_input ) {
+//						for (var k = 1; k <= tempEditableDefaultRec.web_editable_default_to_block_input.getSize(); k++) {
+//							var tempEditableDefaultDetailRec = tempEditableDefaultRec.web_editable_default_to_block_input.getRecord(k)
+//	
+//							var blockDataRec = blockRec.web_block_to_block_data.getRecord(blockRec.web_block_to_block_data.newRecord(false,true))
+//							blockDataRec.data_key = tempEditableDefaultDetailRec.column_name
+//						}
+//					}
+//					
+//					// RESPONSE
+//					//create a block_data_response record for each block_response
+//					if ( tempEditableDefaultRec.web_editable_default_to_block_input ) {
+//						for (var k = 1; k <= tempEditableDefaultRec.web_editable_default_to_block_input.getSize(); k++) {
+//							var tempEditableDefaultDetailRec = tempEditableDefaultRec.web_editable_default_to_block_input.getRecord(k)
+//	
+//							var blockDataRec = blockRec.web_block_to_block_data.getRecord(blockRec.web_block_to_block_data.newRecord(false,true))
+//							blockDataRec.data_key = tempEditableDefaultDetailRec.column_name
+//						}
+//					}
 				}
 			}
 		}
