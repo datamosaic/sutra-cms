@@ -257,7 +257,7 @@ showClick:false,
 showFocus:false,
 size:"350,16",
 styleClass:"grid_pri_tab_select",
-text:"Page: %%id_page%%   %%globals.WEB_site_display%%",
+text:"%%globals.WEB_site_display%%   ID: %%id_page%%",
 transparent:true,
 typeid:7,
 uuid:"BDF22638-F531-44BC-B35C-DA717F9F8749"
