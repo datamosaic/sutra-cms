@@ -434,7 +434,9 @@ function FIELD_directory_onLost(event) {
 		databaseManager.saveData()
 	}
 	// don't allow trailing "\\"
-	if ( event.getElementName() == "fld_directory_windows") {
+	if ( event.getElementName() == "fld_directory_windows" &&
+		 this[provider] && this[provider].search(/\/*$/) > 0 ) {
+		
 		this[provider] = this[provider].replace(/\\*$/, "")
 		databaseManager.saveData()
 	}

@@ -192,6 +192,7 @@ function FIELD_directory_onLost(event) {
 	// don't allow trailing "/"
 	databaseManager.saveData()
 	var provider = elements[event.getElementName()].getDataProviderID()
+	
 	if ( this[provider] && this[provider].search(/\/*$/) > 0 ) {
 		this[provider] = this[provider].replace(/\/*$/, "")
 		databaseManager.saveData()
@@ -199,6 +200,7 @@ function FIELD_directory_onLost(event) {
 	// don't allow trailing "\\"
 	if ( event.getElementName() == "fld_directory_windows" &&
 		 this[provider] && this[provider].search(/\/*$/) > 0 ) {
+		
 		this[provider] = this[provider].replace(/\\*$/, "")
 		databaseManager.saveData()		
 	}
