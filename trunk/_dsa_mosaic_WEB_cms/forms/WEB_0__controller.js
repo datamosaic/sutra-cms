@@ -860,6 +860,7 @@ function CONTROLLER_setup(results, app, session, request, response, mode) {
 		obj.error.message = "No layout specified"
 		return obj
 	}
+	databaseManager.refreshRecordFromDatabase(layout, 1)
 	
 	// theme directory with rewrites
 	if (forms.WEB_0F_install.rewrite_enabled) {
