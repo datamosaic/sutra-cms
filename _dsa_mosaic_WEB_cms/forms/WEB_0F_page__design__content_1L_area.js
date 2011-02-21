@@ -502,8 +502,8 @@ var input = arguments[0]
 
 //menu items
 var valuelist = new Array(
-				'Add one-off area',
-				'-',
+//				'Add one-off area',
+//				'-',
 				'Add missing areas',
 				'Re-order areas',
 				'-',
@@ -534,28 +534,28 @@ if (typeof input != 'number') {
 //menu shown and item chosen
 else {
 	switch( input ) {
-		case 0:	//add one off area
-			var pageRec = forms.WEB_0F_page.foundset.getRecord(forms.WEB_0F_page.foundset.getSelectedIndex())
-			
-			var size = (utils.hasRecords(foundset)) ? foundset.getSize() : 0
-			var record = foundset.getRecord(foundset.newRecord(false, true))
-			record.row_order = size + 1
-			record.id_group = globals.WEB_group_selected
-			databaseManager.saveData(true)
-			
-			break
-			
-		case 2:	//add missing areas
+//		case 0:	//add one off area
+//			var pageRec = forms.WEB_0F_page.foundset.getRecord(forms.WEB_0F_page.foundset.getSelectedIndex())
+//			
+//			var size = (utils.hasRecords(foundset)) ? foundset.getSize() : 0
+//			var record = foundset.getRecord(foundset.newRecord(false, true))
+//			record.row_order = size + 1
+//			record.id_group = globals.WEB_group_selected
+//			databaseManager.saveData(true)
+//			
+//			break
+//			
+		case 0:	//add missing areas
 			AREA_add_missing()
 			
 			break
 			
-		case 3:	//re-order areas
+		case 1:	//re-order areas
 			AREA_reorder()
 			
 			break
 			
-		case 5:	//assign new layout
+		case 3:	//assign new layout
 			AREA_new()
 			
 			break
