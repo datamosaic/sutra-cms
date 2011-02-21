@@ -235,7 +235,7 @@ function FLD_data_change__flag_default(oldValue, newValue, event) {
 function LAYOUTS_action_list(event) {
 	if (utils.hasRecords(foundset)) {
 		//menu items
-		var valuelist = new Array('Duplicate layout','Refresh from directory...')
+		var valuelist = new Array('Duplicate layout','Refresh from directory...'/*,'-','Re-order editables on pages using selected layout'*/)
 		
 		//set up menu with arguments
 		var menu = new Array()
@@ -280,9 +280,49 @@ function LAYOUTS_action_list_control(selected) {
 				
 				plugins.dialogs.showInfoDialog("Complete", "Layout duplicated")
 			}
-			break;
-		default:
-			break;
+			break
+		case "Re-order editables on pages using selected layout":
+			if (utils.hasRecords(forms.WEB_0F_theme_1L_layout)) {
+				var fsPages = databaseManager.getFoundSet('sutra_cms','web_page')
+				
+				fsPages.find()
+				fsPages.id_site = forms.WEB_0F_site.id_site
+				fsPages.id_theme = id_theme
+				fsPages.id_theme_layout = forms.WEB_0F_theme_1L_layout.id_layout
+				var results = fsPages.search()
+				
+				//prompt to continue
+				if (results) {
+					var input = plugins.dialogs.showQuestionDialog(
+								'Re-order?',
+								results + ' pages will be updated in this site. Proceed?',
+								'Yes',
+								'No'
+						)
+					
+					if (input == 'Yes') {
+						for (var i = 1; i <= fsPages.getSize(); i++) {
+							var thePage = fsPages.getRecord(i)
+							
+							//TODO: set global variabls for group/version combo where id_version >= the active version
+//							forms.WEB_0F_page__design__content_1L_area.AREA_reorder(thePage)
+						}
+					}
+				}
+				else {
+					plugins.dialogs.showInfoDialog(
+									'Nothing to do',
+									'No pages found in current site using this layout'
+							)
+				}
+			}
+			else {
+				plugins.dialogs.showInfoDialog(
+							'No layouts',
+							'There are no layouts for the selected theme'
+					)
+			}
+			break
 	}
 }
 

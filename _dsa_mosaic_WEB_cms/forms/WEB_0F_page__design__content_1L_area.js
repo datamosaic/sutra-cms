@@ -241,6 +241,85 @@ function AREA_add_missing() {
 }
 
 /**
+ * @properties={typeid:24,uuid:"499F5682-D55C-4135-855C-EABBC4F57F95"}
+ */
+function AREA_reorder(pageRec) {
+	//MEMO: does not take into account groups...will break when more than one
+	
+	//this page not specified
+	if (!pageRec) {
+		pageRec = forms.WEB_0F_page.foundset.getSelectedRecord()
+	}
+	
+	//existing areas
+	var thisAreas = new Array()
+	for (var i = 1; i <= foundset.getSize(); i++) {
+		thisAreas.push(foundset.getRecord(i))
+	}
+	
+	// ERROR CHECK: THEME SELECTED FOR PAGE
+	if ( !pageRec.id_theme ) {
+		plugins.dialogs.showErrorDialog(
+						"Error",
+						"No theme selected for this page"
+					)
+		return
+	}
+	
+	// get editable regions based on layout selected
+	if (pageRec.id_theme_layout) {
+		if (utils.hasRecords(pageRec.web_page_to_layout)) {
+			if (utils.hasRecords(pageRec.web_page_to_layout.web_layout_to_editable)) {
+				
+			}
+			else {
+				var hitme = true
+			}
+		}
+		else {
+			var hitme = true
+		}
+		
+	}
+	else {
+		var hitme = true
+	}
+	
+	if (hitme) {
+		plugins.dialogs.showErrorDialog( 
+					"Error",
+					"No editable regions set up in layout selected."
+				)
+		return 'No editables for selected layout'
+	}
+	
+	var fsRegions = pageRec.web_page_to_layout.web_layout_to_editable
+	
+	// loop over existing areas and reset to default order
+	outer:
+	for (var i = 1; i <= fsRegions.getSize(); i++) {
+		
+		var tempEditableRec = fsRegions.getRecord(i)
+		
+		for (var j = 0; j < thisAreas.length; j++) {
+			//already exists, reset order, continue loop
+			if (thisAreas[j].area_name == tempEditableRec.editable_name) {
+				thisAreas[j].row_order = tempEditableRec.row_order
+				continue outer
+			}
+		}
+		
+	}
+
+	// finish up
+	foundset.sort( "row_order asc" )
+	foundset.setSelectedIndex(1)
+	
+	databaseManager.saveData()
+
+}
+
+/**
  *
  * @properties={typeid:24,uuid:"6C25A66F-39B1-4A07-BD1F-4FDA17C1BC38"}
  */
@@ -424,9 +503,11 @@ var input = arguments[0]
 //menu items
 var valuelist = new Array(
 				'Add one-off area',
-				'Change page layout',
 				'-',
-				'Add missing areas'
+				'Add missing areas',
+				'Re-order areas',
+				'-',
+				'Change page layout'
 			)
 
 //called to depress menu
@@ -464,15 +545,22 @@ else {
 			
 			break
 			
-		case 1:	//assign new layout
+		case 2:	//add missing areas
+			AREA_add_missing()
+			
+			break
+			
+		case 3:	//re-order areas
+			AREA_reorder()
+			
+			break
+			
+		case 5:	//assign new layout
 			AREA_new()
 			
 			break
 		
-		case 3:	//add missing areas
-			AREA_add_missing()
-			
-			break
+
 	}
 }
 
