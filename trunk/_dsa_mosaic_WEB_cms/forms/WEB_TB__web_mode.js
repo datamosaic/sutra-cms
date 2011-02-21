@@ -234,7 +234,7 @@ function BREAD_url_clipboard(event) {
  */
 function ACTION_dashboard(event) {
 	//don't enter if workflow form locked for some reason or not enough access
-	if (!solutionPrefs.design.statusLockWorkflow && globals.TRIGGER_registered_action_authenticate('cms page mode toggle')) {
+	if (application.__parent__.solutionPrefs && !solutionPrefs.design.statusLockWorkflow && globals.TRIGGER_registered_action_authenticate('cms page mode toggle')) {
 		
 		//in edit mode with unsaved changes
 		if (elements.btn_save.visible && forms.WEB_0F_page__browser__editor.GET_modify()) {
@@ -292,7 +292,7 @@ function ACTION_dashboard(event) {
 function ACTION_mode(event) {
 	
 	//don't enter if workflow form locked for some reason or not enough access
-	if (!solutionPrefs.design.statusLockWorkflow && globals.TRIGGER_registered_action_authenticate('cms page mode toggle')) {
+	if (application.__parent__.solutionPrefs && !solutionPrefs.design.statusLockWorkflow && globals.TRIGGER_registered_action_authenticate('cms page mode toggle')) {
 		
 		//what is the current mode
 		var currentMode = forms.WEB_0F_page.TRIGGER_mode_set()
@@ -513,7 +513,7 @@ function FORM_on_load() {
  */
 function ACTION_sitemap(event) {
 	//don't enter if workflow form locked for some reason or not enough access
-	if (!solutionPrefs.design.statusLockWorkflow) {// && globals.TRIGGER_registered_action_authenticate('cms page sitemap')) {
+	if (application.__parent__.solutionPrefs && !solutionPrefs.design.statusLockWorkflow) {// && globals.TRIGGER_registered_action_authenticate('cms page sitemap')) {
 		
 		//in edit mode with unsaved changes
 		if (elements.btn_save.visible && forms.WEB_0F_page__browser__editor.GET_modify()) {
