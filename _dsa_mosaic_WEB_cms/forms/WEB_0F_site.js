@@ -273,33 +273,12 @@ function SITE_tree(method) {
 			menu.push(GET_page(fsPages.getRecord(i)))
 		}
 		
-		/*
-		
-		//allow popup to approximately work even when solutionPrefs isn't defined
-		if (application.__parent__.solutionPrefs) {
-			var lineHeight = solutionPrefs.clientInfo.popupHack.lineHeight
-			var topShift = solutionPrefs.clientInfo.popupHack.topShift
-		}
-		else {
-			var lineHeight = 0
-			var topShift = 0
-		}
-		
-		var btnInvisible = application.getMethodTriggerElementName() + "_up"
-		var currentLocationX = elements[btnInvisible].getLocationX()
-		var currentLocationY = elements[btnInvisible].getLocationY()
-		
-		//move "up" button to correct location
-		elements[btnInvisible].setLocation(currentLocationX, currentLocationY - (topShift + (menu.length * lineHeight)))
-		*/
 		//pop up the popup menu
 		var elem = forms[application.getMethodTriggerFormName()].elements[application.getMethodTriggerElementName()]
 		if (elem != null) {
 		    plugins.popupmenu.showPopupMenu(elem, menu);
 		}
 		
-		//set invisible btn back to original location
-//		elements[btnInvisible].setLocation(currentLocationX, currentLocationY)
 	}
 }
 

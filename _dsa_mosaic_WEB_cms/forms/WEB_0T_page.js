@@ -1022,7 +1022,7 @@ else {
 	newRecord.order_by = 1
 	newRecord.id_site = forms.WEB_0F_site.id_site
 	
-	if (solutionPrefs.design.statusLockWorkflow) {
+	if (application.__parent__.solutionPrefs && solutionPrefs.design.statusLockWorkflow) {
 		globals.WEB_lock_workflow(false)
 	}
 	
