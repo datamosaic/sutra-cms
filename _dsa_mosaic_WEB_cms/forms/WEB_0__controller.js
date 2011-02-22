@@ -262,7 +262,7 @@ function CONTROLLER_builder(results, obj) {
  * 
  * @properties={typeid:24,uuid:"251216CD-208E-4A2A-8237-1196E2032EC1"}
  */
-function allmethods(results, app, session, request, response, mode) {
+function CONTROLLER_setup(results, app, session, request, response, mode) {
 	
 	/* response object notes: can be used for creating HTTP Headers, creating cookies, setting content type and redirecting workflow
 	* assign directly to response. ie:
