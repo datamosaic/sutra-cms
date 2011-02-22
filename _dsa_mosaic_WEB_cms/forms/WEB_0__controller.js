@@ -25,7 +25,7 @@ function CONTROLLER(app, session, request, response, mode)
 	
 	// initialize good dataset to return to jsp
 	var results = databaseManager.createEmptyDataSet(0,["key","value"])
-	results.addRow(["cmsVersion","Sutra CMS - 2.0 alpha 1"])
+	results.addRow(["cmsVersion","Sutra CMS - 2.0 alpha 2"])
 	
 	// STEP 1: Setup
 	var obj = CONTROLLER_setup(results, app, session, request, response, mode)
@@ -262,7 +262,7 @@ function CONTROLLER_builder(results, obj) {
  * 
  * @properties={typeid:24,uuid:"251216CD-208E-4A2A-8237-1196E2032EC1"}
  */
-function CONTROLLER_setup(results, app, session, request, response, mode) {
+function allmethods(results, app, session, request, response, mode) {
 	
 	/* response object notes: can be used for creating HTTP Headers, creating cookies, setting content type and redirecting workflow
 	* assign directly to response. ie:
