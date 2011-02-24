@@ -27,3 +27,4 @@
 <jsp:include page='<%= (String)request.getAttribute("footer") %>' />
 </body>
 </html>
+test
