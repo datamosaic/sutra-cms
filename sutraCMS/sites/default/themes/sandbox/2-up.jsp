@@ -9,7 +9,6 @@
 </head>
 <body>
 <div class="page">
-	<%=pageData.get("Title")%>
 	<div class="head">
 		<%=pageData.get("Head")%>
 	</div>
