@@ -458,3 +458,23 @@ function FORM_on_show(firstShow, event) {
 		elements.fld_pref_links.enabled = false
 	}
 }
+
+/**
+ * Handle changed data.
+ *
+ * @param {Object} oldValue old value
+ * @param {Object} newValue new value
+ * @param {JSEvent} event the event that triggered the action
+ *
+ * @returns {Boolean}
+ *
+ * @properties={typeid:24,uuid:"0407EBE6-09B2-4760-95D7-B1AE7491269A"}
+ */
+function FIELD_publish() {
+	databaseManager.saveData()
+	if ( site_name_publish_flag ) {
+		if ( !site_name_publish_separator ) {
+			site_name_publish_separator = " | "
+		}
+	}
+}
