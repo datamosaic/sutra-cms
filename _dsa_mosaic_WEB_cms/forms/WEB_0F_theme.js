@@ -1,4 +1,39 @@
 /**
+ * @properties={typeid:35,uuid:"A54A1570-67C0-4483-8297-257CFA07C7F5",variableType:-4}
+ */
+var _elements = {};
+
+/**
+ * @properties={typeid:35,uuid:"7AE439CD-9A40-42C7-93ED-C0E0A73DCD0A",variableType:-4}
+ */
+var _elementsLayoutSelected = [];
+
+/**
+ * @properties={typeid:35,uuid:"9C377FD4-9471-47A7-A964-5F92707A3478",variableType:-4}
+ */
+var _elementsSelected = [];
+
+/**
+ * @properties={typeid:35,uuid:"6C1C3646-D6BD-49D3-BF86-BFE0E9CA4F6F",variableType:4}
+ */
+var _elementsProgressTotal = 0;
+
+/**
+ * @properties={typeid:35,uuid:"A48A461A-64DF-4483-9E9B-3777231B95F6",variableType:4}
+ */
+var _elementsPathsIncrementer = 0;
+
+/**
+ * @properties={typeid:35,uuid:"0554ECE9-051E-4327-B18D-E2CAB4805CEB",variableType:4}
+ */
+var _themesPathsIncrementer = 0;
+
+/**
+ * @properties={typeid:35,uuid:"B6F9030C-6D6F-49E5-833C-84BA10D0C982",variableType:4}
+ */
+var _elementsDone = 0;
+
+/**
  * @properties={typeid:35,uuid:"04fde543-69cc-4de9-af47-7f7c22221f42"}
  */
 var _license_dsa_mosaic_WEB_cms = 'Module: _dsa_mosaic_WEB_cms \
@@ -401,6 +436,7 @@ function REC_newFromTheme(progress) {
 	}
 	
 	// *** STAGE #2: // get jsp files and build data object *** //
+	
 	else if ( progress == 2 ) { 
 	
 		var themes = []  // array for select dialog
@@ -411,12 +447,12 @@ function REC_newFromTheme(progress) {
 		// choose theme
 		var input =	plugins.dialogs.showSelectDialog("Themes", "Choose a theme to register", themes)
 		if ( !input ) {
-			return "No theme seleceted"
+			return "No theme selected"
 		}
 		
 		// get jsp files
 		var jspArray = plugins.file.getRemoteFolderContents(_themes[input].path, null, 1)
-		
+				
 		_themesDone = 0					// to determine last callback
 		_themesPathsIncrementer = 0		// increments each callback
 		_themesProgressTotal = 0		// max bytes to transfer for progress monitor
@@ -460,8 +496,66 @@ function REC_newFromTheme(progress) {
 		}		
 	}
 	
-	// *** STAGE #3: create theme, layouts and editable areas *** //
-	else if ( progress == 3 ) {
+	
+	// *** STAGE #3: // get jsp files from elements directory and build data object *** //
+	
+	else if ( progress == 3 ) { 
+		
+		//TODO: check if elemetns directory
+		if ( plugins.file.convertToRemoteJSFile(_themes[_themesSelected].path + "/elements").exists() ) {
+			var jspArray = plugins.file.getRemoteFolderContents(_themes[_themesSelected].path + "/elements", null, 1)	
+		}
+		else {
+			return "no elements directory"   // keep processing main method though
+		}
+		
+		_elements = {}						// reset elements object
+		_elementsDone = 0					// to determine last callback
+		_elementsPathsIncrementer = 0		// increments each callback
+		_elementsProgressTotal = 0			// max bytes to transfer for progress monitor
+		_elementsSelected = _themesSelected			// tracks selected element file
+		_elementsLayoutSelected = []		// tracks current jsp name being processed for callback
+		
+		// build data needed for streaming: file arrays, state variables
+		var incrementer = 0
+		var tempArray = []
+		var sourceArray = []
+		for (var i = 0; i < jspArray.length; i++) {
+			if ( jspArray[i].getName().search(/\.jspf$/) > 0 ) { // only get jsp files
+				_elementsLayoutSelected[incrementer] = jspArray[i].getName()
+				sourceArray[incrementer] = jspArray[i]
+				tempArray[incrementer] = plugins.file.createTempFile(jspArray[i].getName(),".txt")
+				_elementsProgressTotal += jspArray[i].size()
+				incrementer ++				
+			}
+		}
+		// set total number of themes so last callback can return control
+		_elementsDone = incrementer
+		
+		if ( incrementer > 0 ) {
+			// if in Data Sutra: stream files with progress bar for monitor
+			if ( application.__parent__.solutionPrefs ) {
+				globals.TRIGGER_progressbar_start(0, "Streaming files...", null, 0, _themesProgressTotal)
+				// callback method fires when streaming is done in separate thread
+				var monitor = plugins.file.streamFilesFromServer( tempArray, sourceArray, REC_newFromThemeCallbackElements )
+				if (monitor) {
+					// progress monitor
+					monitor.setProgressCallBack( REC_newFromThemeProgress, 1, (application.isInDeveloper() ? 100 : 0) )	
+				}
+			}
+			else { // not in Data Sutra: stream files without monitor
+				var monitor = plugins.file.streamFilesFromServer( tempArray, sourceArray, REC_newFromThemeCallbackElements )
+			}	
+		}
+		else {
+			plugins.dialogs.showErrorDialog( "Error", "No theme files defined in selected theme")
+			return "No theme files defined in selected theme"
+		}		
+	}	
+	
+	
+	// *** STAGE #4: create theme, layouts and editable areas *** //
+	else if ( progress == 4 ) {
 		// 1 create theme record 
 		var theme = foundset.getRecord(foundset.newRecord())
 		theme.theme_name = _themes[_themesSelected].name
@@ -484,6 +578,20 @@ function REC_newFromTheme(progress) {
 				editable.editable_name = _themes[_themesSelected].editables[i][j]
 				databaseManager.saveData(editable)                                                               
 			}
+			// _themes[_themesSelected].includes[i] <-- files that have additional editables in them
+			// _elements[_themesSelected].editables
+			// _elements[_themesSelected].editables["header_home.jspf"]
+			// _themes[_themesSelected].includes[i] = ["header_home","menu","footer"]
+			 for ( k in _themes[_themesSelected].includes[i] ) {
+				 // grap associated editable in that file
+				 for ( m in _elements[_themesSelected].editables[_themes[_themesSelected].includes[i][k] + ".jspf"]) {
+					 // create editable record
+					 // _elements[_themesSelected].editables[_themes[_themesSelected].includes[i][k] + ".jspf"][m] <-- name of editable
+					var editable = layout.web_layout_to_editable.getRecord(layout.web_layout_to_editable.newRecord())
+					editable.editable_name = _elements[_themesSelected].editables[_themes[_themesSelected].includes[i][k] + ".jspf"][m]
+				 }
+			 }			
+			
 		}
 	}
 }
@@ -545,18 +653,33 @@ function REC_newFromThemeCallbackJSP(result, e) {
 		var fileData = plugins.file.readTXTFile( result )
 		if (fileData) { 
 			
-			// find and store editable regions			                        		
+			// #1 find and store editable regions			                        		
 			var regexp = /pageData\.get\(\"(.*)\"/gi   // match: <%=pageData.get("Sidebar")%>, any combination of letters, numbers, spaces and undersores
 			var occurrence = null;
 			var editables = []
 			while (occurrence = regexp.exec( fileData )){	
 				editables.push(occurrence[1])
 			}
-			
+						
 			if ( !_themes[_themesSelected].editables ) {
 				_themes[_themesSelected].editables = {}
 			}
 			_themes[_themesSelected].editables[_themesLayoutSelected[_themesPathsIncrementer]] = editables	
+			
+			// #2 find and store includes			                        		
+			var regexp = /include file\=\"elements\/(.*)\.jspf/gi   // match: <%@ include file="elements/header_home.jspf" %>, any combination of letters, numbers, spaces and undersores
+			var occurrence = null;
+			var includes = []
+			while (occurrence = regexp.exec( fileData )){	
+				includes.push(occurrence[1])
+			}
+						
+			if ( !_themes[_themesSelected].includes ) {
+				_themes[_themesSelected].includes = {}
+			}
+			_themes[_themesSelected].includes[_themesLayoutSelected[_themesPathsIncrementer]] = includes				
+			
+			
 		}
 		_themesPathsIncrementer ++
 		// last callback: return control to orignator method
@@ -621,5 +744,41 @@ function FORM_on_show(firstShow, event) {
 		var aThird = (controller.getFormWidth() - 22) / 3
 		elements.bean_split_1.dividerLocation = aThird
 		elements.bean_split_2.dividerLocation = aThird
+	}
+}
+
+/**
+ * @properties={typeid:24,uuid:"39AFB15C-6F05-46BC-BA56-E5E999FADB99"}
+ */
+function REC_newFromThemeCallbackElements(result, e) {
+	if (e) {
+		//TODO: how to handle potential streaming error?
+	} else {			
+		// file stream done
+		var fileData = plugins.file.readTXTFile( result )
+		if (fileData) { 
+			
+			// #1 find and store editable regions			                        		
+			var regexp = /pageData\.get\(\"(.*)\"/gi   // match: <%=pageData.get("Sidebar")%>, any combination of letters, numbers, spaces and undersores
+			var occurrence = null;
+			var editables = []
+			while (occurrence = regexp.exec( fileData )){	
+				editables.push(occurrence[1])
+			}
+			
+			if ( !_elements[_elementsSelected] ) {
+				_elements[_elementsSelected] = {}
+				if ( !_elements[_elementsSelected].editables ) {
+					_elements[_elementsSelected].editables = {}
+				}				
+			}
+			_elements[_elementsSelected].editables[_elementsLayoutSelected[_elementsPathsIncrementer]] = editables	
+			
+		}
+		_elementsPathsIncrementer ++
+		// last callback: return control to orignator method
+		if ( _elementsPathsIncrementer == _elementsDone ) {
+			REC_newFromTheme( 4 )  // return to main method stage #3
+		}
 	}
 }
