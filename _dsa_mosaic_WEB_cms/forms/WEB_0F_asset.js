@@ -20,6 +20,11 @@ function REC_delete()
 
 	if (input == 'Yes') {
 		controller.deleteRecord()
+		
+		//dim out the lights
+		if (!utils.hasRecords(foundset)) {
+			FORM_on_show()
+		}
 	}
 }
 
@@ -91,7 +96,20 @@ function TAG_delete(event) {
  * @properties={typeid:24,uuid:"FF5AF14C-E836-4D15-897E-FC174AA6C371"}
  */
 function REC_new() {
-	forms.WEB_0F_asset__image.BLOCK_import()
+	if (utils.hasRecords(forms.WEB_0F_site.foundset)) {
+		//no records created yet and interface locked
+		if (application.__parent__.solutionPrefs && solutionPrefs.design.statusLockWorkflow) {
+			globals.WEB_lock_workflow(false)
+		}
+		
+		forms.WEB_0F_asset__image.BLOCK_import()
+	}
+	else {
+		plugins.dialogs.showErrorDialog(
+						'Error',
+						'You must add a site record first'
+				)
+	}
 }
 
 /**
@@ -111,4 +129,35 @@ function FORM_on_load(event) {
 	else {
 		foundset.clear()
 	}
+}
+
+/**
+ * Callback method for when form is shown.
+ *
+ * @param {Boolean} firstShow form is shown first time after load
+ * @param {JSEvent} event the event that triggered the action
+ *
+ * @properties={typeid:24,uuid:"16C7820E-528E-495C-A409-E0EA923E2429"}
+ */
+function FORM_on_show(firstShow, event) {
+	if (!utils.hasRecords(foundset)) {
+		globals.WEB_lock_workflow(true)
+	}
+}
+
+/**
+ * Handle hide window.
+ *
+ * @param {JSEvent} event the event that triggered the action
+ *
+ * @returns {Boolean}
+ *
+ * @properties={typeid:24,uuid:"6F9735E5-4802-4370-9526-80C07653820B"}
+ */
+function FORM_on_hide(event) {
+	if (application.__parent__.solutionPrefs && solutionPrefs.design.statusLockWorkflow) {
+		globals.WEB_lock_workflow(false)
+	}
+	
+	return true
 }

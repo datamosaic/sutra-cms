@@ -453,6 +453,7 @@ uuid:"F230D07C-8544-4955-B0C4-2C8A60EE4F62"
 ],
 name:"WEB_0F_theme",
 navigatorID:"-1",
+onHideMethodID:"C8199313-FD5E-49CD-BC36-6971DF267DAF",
 onLoadMethodID:"7EC1827E-0F69-47EB-B222-2971B81C2728",
 onRecordEditStopMethodID:"-1",
 onRecordSelectionMethodID:"-1",

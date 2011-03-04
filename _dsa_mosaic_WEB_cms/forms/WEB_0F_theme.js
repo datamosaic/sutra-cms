@@ -162,10 +162,23 @@ function FORM_on_load(event) {
  * @properties={typeid:24,uuid:"3122FF8C-55C6-4992-996F-81F3B34F8CDC"}
  */
 function REC_new() {
-	controller.newRecord(true)
-	id_site = forms.WEB_0F_site.id_site
-	activated = 1
-	elements.fld_theme_name.requestFocus(false)
+	if (utils.hasRecords(forms.WEB_0F_site.foundset)) {
+		//no records created yet and interface locked
+		if (application.__parent__.solutionPrefs && solutionPrefs.design.statusLockWorkflow) {
+			globals.WEB_lock_workflow(false)
+		}
+		
+		controller.newRecord(true)
+		id_site = forms.WEB_0F_site.id_site
+		activated = 1
+		elements.fld_theme_name.requestFocus(false)
+	}
+	else {
+		plugins.dialogs.showErrorDialog(
+						'Error',
+						'You must add a site record first'
+				)
+	}
 }
 
 /**
@@ -174,39 +187,21 @@ function REC_new() {
  */
 function REC_delete()
 {
+	var delRec = plugins.dialogs.showWarningDialog(
+				'Delete record',
+				'Do you really want to delete this record?',
+				'Yes',
+				'No'
+			)
 
-/*
- *	TITLE    :	REC_delete
- *			  	
- *	MODULE   :	start_CRM_mosaic
- *			  	
- *	ABOUT    :	prompts to delete the currently selected record
- *			  	
- *	INPUT    :	
- *			  	
- *	OUTPUT   :	
- *			  	
- *	REQUIRES :	
- *			  	
- *	USAGE    :	REC_delete()
- *			  	
- *	MODIFIED :	July 31, 2008 -- Troy Elliott, Data Mosaic
- *			  	
- */
-
-var delRec = plugins.dialogs.showWarningDialog(
-'Delete record',
-'Do you really want to delete this record?',
-'Yes',
-'No')
-
-if (delRec == 'Yes') {
-
-controller.deleteRecord()
-
-
-}
-
+	if (delRec == 'Yes') {
+		controller.deleteRecord()
+		
+		//dim out the lights
+		if (!utils.hasRecords(foundset)) {
+			FORM_on_show()
+		}
+	}
 }
 
 /**
@@ -436,7 +431,6 @@ function REC_newFromTheme(progress) {
 	}
 	
 	// *** STAGE #2: // get jsp files and build data object *** //
-	
 	else if ( progress == 2 ) { 
 	
 		var themes = []  // array for select dialog
@@ -452,7 +446,7 @@ function REC_newFromTheme(progress) {
 		
 		// get jsp files
 		var jspArray = plugins.file.getRemoteFolderContents(_themes[input].path, null, 1)
-				
+		
 		_themesDone = 0					// to determine last callback
 		_themesPathsIncrementer = 0		// increments each callback
 		_themesProgressTotal = 0		// max bytes to transfer for progress monitor
@@ -499,9 +493,9 @@ function REC_newFromTheme(progress) {
 	
 	// *** STAGE #3: // get jsp files from elements directory and build data object *** //
 	
-	else if ( progress == 3 ) { 
+	else if ( progress == 3 ) {
 		
-		//TODO: check if elemetns directory
+		//TODO: check if elements directory
 		if ( plugins.file.convertToRemoteJSFile(_themes[_themesSelected].path + "/elements").exists() ) {
 			var jspArray = plugins.file.getRemoteFolderContents(_themes[_themesSelected].path + "/elements", null, 1)	
 		}
@@ -590,8 +584,7 @@ function REC_newFromTheme(progress) {
 					var editable = layout.web_layout_to_editable.getRecord(layout.web_layout_to_editable.newRecord())
 					editable.editable_name = _elements[_themesSelected].editables[_themes[_themesSelected].includes[i][k] + ".jspf"][m]
 				 }
-			 }			
-			
+			}
 		}
 	}
 }
@@ -660,7 +653,7 @@ function REC_newFromThemeCallbackJSP(result, e) {
 			while (occurrence = regexp.exec( fileData )){	
 				editables.push(occurrence[1])
 			}
-						
+			
 			if ( !_themes[_themesSelected].editables ) {
 				_themes[_themesSelected].editables = {}
 			}
@@ -745,6 +738,27 @@ function FORM_on_show(firstShow, event) {
 		elements.bean_split_1.dividerLocation = aThird
 		elements.bean_split_2.dividerLocation = aThird
 	}
+	
+	if (!utils.hasRecords(foundset)) {
+		globals.WEB_lock_workflow(true)
+	}
+}
+
+/**
+ * Handle hide window.
+ *
+ * @param {JSEvent} event the event that triggered the action
+ *
+ * @returns {Boolean}
+ *
+ * @properties={typeid:24,uuid:"C8199313-FD5E-49CD-BC36-6971DF267DAF"}
+ */
+function FORM_on_hide(event) {
+	if (application.__parent__.solutionPrefs && solutionPrefs.design.statusLockWorkflow) {
+		globals.WEB_lock_workflow(false)
+	}
+	
+	return true
 }
 
 /**

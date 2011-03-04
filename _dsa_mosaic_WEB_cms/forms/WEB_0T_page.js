@@ -963,122 +963,130 @@ if (!globals.TRIGGER_registered_action_authenticate('cms page add')) {
 	return
 }
 
-//how is this record getting added
-var webMode = forms.WEB_0F_page.TRIGGER_mode_set() == 'BROWSER'
-
-//set flag that a new record getting created
-addRecord = 1
-
-//get current location in the stack
-if (utils.hasRecords(foundset)) {
+if (utils.hasRecords(forms.WEB_0F_site.foundset)) {
+	//how is this record getting added
+	var webMode = forms.WEB_0F_page.TRIGGER_mode_set() == 'BROWSER'
 	
-	var oldRecord = foundset.getRecord(foundset.getSelectedIndex())
+	//set flag that a new record getting created
+	addRecord = 1
 	
-	//find current syblings
-	var fsPeers = databaseManager.getFoundSet(controller.getServerName(),controller.getTableName())
-	fsPeers.find()
-	fsPeers.parent_id_page = oldRecord.parent_id_page
-	fsPeers.id_site = oldRecord.id_site
-	var results = fsPeers.search()
-	
-	if (results) {
-		fsPeers.sort('order_by asc')
-		fsPeers.selectRecord(oldRecord.id_page)
-	}
-	
-	//turn off autosave
-		//TODO: some kind of an error here
-	//databaseManager.setAutoSave(false)
-	
-	//re-order everybody below current record in old foundset
-	for (var i = oldRecord.order_by + 1; i <= fsPeers.getSize(); i++) {
-		var recReorder = fsPeers.getRecord(i)
+	//get current location in the stack
+	if (utils.hasRecords(foundset)) {
 		
-		recReorder.order_by ++
-	}
-	
-	//non-top level record
-	if (oldRecord.parent_id_page) {
-		var newRecord = foundset.getRecord(foundset.newRecord(false,true))
+		var oldRecord = foundset.getRecord(foundset.getSelectedIndex())
 		
-		newRecord.parent_id_page = oldRecord.parent_id_page
-		newRecord.order_by = oldRecord.order_by + 1
-		newRecord.id_site = oldRecord.id_site		
+		//find current syblings
+		var fsPeers = databaseManager.getFoundSet(controller.getServerName(),controller.getTableName())
+		fsPeers.find()
+		fsPeers.parent_id_page = oldRecord.parent_id_page
+		fsPeers.id_site = oldRecord.id_site
+		var results = fsPeers.search()
+		
+		if (results) {
+			fsPeers.sort('order_by asc')
+			fsPeers.selectRecord(oldRecord.id_page)
+		}
+		
+		//turn off autosave
+			//TODO: some kind of an error here
+		//databaseManager.setAutoSave(false)
+		
+		//re-order everybody below current record in old foundset
+		for (var i = oldRecord.order_by + 1; i <= fsPeers.getSize(); i++) {
+			var recReorder = fsPeers.getRecord(i)
+			
+			recReorder.order_by ++
+		}
+		
+		//non-top level record
+		if (oldRecord.parent_id_page) {
+			var newRecord = foundset.getRecord(foundset.newRecord(false,true))
+			
+			newRecord.parent_id_page = oldRecord.parent_id_page
+			newRecord.order_by = oldRecord.order_by + 1
+			newRecord.id_site = oldRecord.id_site		
+		}
+		//top level record
+		else {
+			var newRecord = foundset.getRecord(foundset.newRecord(false,true))
+			
+			newRecord.order_by = oldRecord.order_by + 1
+			newRecord.id_site = oldRecord.id_site
+			
+			FORM_on_load()
+		}
 	}
-	//top level record
+	//no records created yet
 	else {
 		var newRecord = foundset.getRecord(foundset.newRecord(false,true))
 		
-		newRecord.order_by = oldRecord.order_by + 1
-		newRecord.id_site = oldRecord.id_site
+		newRecord.order_by = 1
+		newRecord.id_site = forms.WEB_0F_site.id_site
+		
+		if (application.__parent__.solutionPrefs && solutionPrefs.design.statusLockWorkflow) {
+			globals.WEB_lock_workflow(false)
+		}
 		
 		FORM_on_load()
 	}
-}
-//no records created yet
-else {
-	var newRecord = foundset.getRecord(foundset.newRecord(false,true))
 	
-	newRecord.order_by = 1
-	newRecord.id_site = forms.WEB_0F_site.id_site
+	//create one version
+	var oneVersion = newRecord.web_page_to_version.getRecord(newRecord.web_page_to_version.newRecord(false,true))
+	oneVersion.version_number = 1
 	
-	if (application.__parent__.solutionPrefs && solutionPrefs.design.statusLockWorkflow) {
-		globals.WEB_lock_workflow(false)
+	//update valuelists
+	forms.WEB_0F_page__design.REC_on_select()
+	
+	databaseManager.saveData()
+	
+	var pageID = newRecord.id_page
+	elements.bean_tree.refresh()
+	REC_on_select(pageID)
+	elements.bean_tree.selectionPath = FIND_path(newRecord)
+	
+	//fill in defaults
+	if (utils.hasRecords(newRecord.web_page_to_site.web_site_to_theme__default)) {
+		//set theme
+		newRecord.id_theme = newRecord.web_page_to_site.web_site_to_theme__default.id_theme
+		
+		//set layout
+		if (utils.hasRecords(newRecord.web_page_to_site.web_site_to_theme__default.web_theme_to_layout__default)) {
+			newRecord.id_theme_layout = newRecord.web_page_to_site.web_site_to_theme__default.web_theme_to_layout__default.id_layout
+		}
+		
+		//set flag that theme has been set and all areas should be blown in
+		if (webMode) {
+			forms.WEB_P_page.themeSet = 1
+		}
+		else {
+			forms.WEB_0F_page__design__header_edit.themeSet = 1
+		}
 	}
 	
-	FORM_on_load()
-}
-
-//create one version
-var oneVersion = newRecord.web_page_to_version.getRecord(newRecord.web_page_to_version.newRecord(false,true))
-oneVersion.version_number = 1
-
-//update valuelists
-forms.WEB_0F_page__design.REC_on_select()
-
-databaseManager.saveData()
-
-var pageID = newRecord.id_page
-elements.bean_tree.refresh()
-REC_on_select(pageID)
-elements.bean_tree.selectionPath = FIND_path(newRecord)
-
-//fill in defaults
-if (utils.hasRecords(newRecord.web_page_to_site.web_site_to_theme__default)) {
-	//set theme
-	newRecord.id_theme = newRecord.web_page_to_site.web_site_to_theme__default.id_theme
-	
-	//set layout
-	if (utils.hasRecords(newRecord.web_page_to_site.web_site_to_theme__default.web_theme_to_layout__default)) {
-		newRecord.id_theme_layout = newRecord.web_page_to_site.web_site_to_theme__default.web_theme_to_layout__default.id_layout
-	}
-	
-	//set flag that theme has been set and all areas should be blown in
+	//if in browser mode, FiD to define page
 	if (webMode) {
-		forms.WEB_P_page.themeSet = 1
+		//let sleep for a second so doesn't crash
+		application.sleep(1000)
+		
+		application.showFormInDialog(
+					forms.WEB_P_page,
+					-1,-1,-1,-1,
+					' ',
+					true,
+					false,
+					'cmsNewPage'
+				)	
 	}
+	//design mode, show pop-down
 	else {
-		forms.WEB_0F_page__design__header_edit.themeSet = 1
+		globals.WEB_simple_edit('WEB_0F_page__design__button_tab')
 	}
 }
-
-//if in browser mode, FiD to define page
-if (webMode) {
-	//let sleep for a second so doesn't crash
-	application.sleep(1000)
-	
-	application.showFormInDialog(
-				forms.WEB_P_page,
-				-1,-1,-1,-1,
-				' ',
-				true,
-				false,
-				'cmsNewPage'
-			)	
-}
-//design mode, show pop-down
 else {
-	globals.WEB_simple_edit('WEB_0F_page__design__button_tab')
+	plugins.dialogs.showErrorDialog(
+					'Error',
+					'You must add a site record first'
+			)
 }
 }
 
