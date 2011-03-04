@@ -168,10 +168,21 @@ function REC_new() {
 			globals.WEB_lock_workflow(false)
 		}
 		
-		controller.newRecord(true)
-		id_site = forms.WEB_0F_site.id_site
-		activated = 1
-		elements.fld_theme_name.requestFocus(false)
+		
+		// OPT 1: create theme record for data entry by hand
+		if (globals.CODE_key_pressed('shift')) {
+			
+			controller.newRecord(true)
+			id_site = forms.WEB_0F_site.id_site
+			activated = 1
+			elements.fld_theme_name.requestFocus(false)
+			
+		}
+		// OPT 2: create theme record with meta data automatically
+		else {
+			REC_newFromTheme()
+		}
+		
 	}
 	else {
 		plugins.dialogs.showErrorDialog(
@@ -381,7 +392,13 @@ function REC_newFromTheme(progress) {
 		
 		// get theme directories and descriptor files
 		var themesArray = plugins.file.getRemoteFolderContents(directory, null, 2)
-		if (!themesArray) return;
+		if (!themesArray || (themesArray instanceof Array && !themesArray.length)) {
+			plugins.dialogs.showErrorDialog( 
+							"Error", 
+							'The directory specified does not exist\nCheck the installation and site directories.'
+						)
+			return 'The directory specified does not exist\nCheck the installation and site directories.'
+		}
 		
 		// form variables needed to keep track of state and data while streaming
 		_themes = {}					// main storage object
@@ -542,14 +559,19 @@ function REC_newFromTheme(progress) {
 			}	
 		}
 		else {
-			plugins.dialogs.showErrorDialog( "Error", "No theme files defined in selected theme")
-			return "No theme files defined in selected theme"
+			//jump to stage 4
+			REC_newFromTheme(4)
 		}		
 	}	
 	
 	
 	// *** STAGE #4: create theme, layouts and editable areas *** //
 	else if ( progress == 4 ) {
+		//no records created yet and interface locked
+		if (application.__parent__.solutionPrefs && solutionPrefs.design.statusLockWorkflow) {
+			globals.WEB_lock_workflow(false)
+		}
+		
 		// 1 create theme record 
 		var theme = foundset.getRecord(foundset.newRecord())
 		theme.theme_name = _themes[_themesSelected].name
