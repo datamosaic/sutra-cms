@@ -174,7 +174,12 @@ function TOGGLE_buttons(editStatus) {
  */
 function LOADER_init(recBlock,flagEdit) {
 	//foundset with image datapoints
-	var fsBlockData = recBlock.web_block_to_block_data
+	if (utils.hasRecords(recBlock.web_block_to_scrapbook)) {
+		var fsBlockData = recBlock.web_block_to_scrapbook.web_scrapbook_to_scrapbook_data
+	}
+	else {
+		var fsBlockData = recBlock.web_block_to_block_data
+	}
 	
 	//create object with all properties
 	var objImage = new Object()
