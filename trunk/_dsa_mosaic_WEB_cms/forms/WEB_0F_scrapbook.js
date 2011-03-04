@@ -20,6 +20,11 @@ function REC_delete()
 
 	if (delRec == 'Yes') {
 		controller.deleteRecord()
+		
+		//dim out the lights
+		if (!utils.hasRecords(foundset)) {
+			FORM_on_show()
+		}
 	}
 }
 
@@ -47,7 +52,51 @@ function FORM_on_load(event) {
  * @properties={typeid:24,uuid:"81BCE4C0-7411-4947-8D02-0A5025D053CD"}
  */
 function REC_new() {
-	controller.newRecord(true)
-	id_site = forms.WEB_0F_site.id_site
-	elements.fld_scrapbook_name.requestFocus(false)
+	if (utils.hasRecords(forms.WEB_0F_site.foundset)) {
+		//no records created yet and interface locked
+		if (application.__parent__.solutionPrefs && solutionPrefs.design.statusLockWorkflow) {
+			globals.WEB_lock_workflow(false)
+		}
+		
+		controller.newRecord(true)
+		id_site = forms.WEB_0F_site.id_site
+		elements.fld_scrapbook_name.requestFocus(false)
+	}
+	else {
+		plugins.dialogs.showErrorDialog(
+						'Error',
+						'You must add a site record first'
+				)
+	}
+}
+
+/**
+ * Callback method for when form is shown.
+ *
+ * @param {Boolean} firstShow form is shown first time after load
+ * @param {JSEvent} event the event that triggered the action
+ *
+ * @properties={typeid:24,uuid:"5281F4B0-6AF6-4782-A3D0-48C4F05F8828"}
+ */
+function FORM_on_show(firstShow, event) {
+	if (!utils.hasRecords(foundset)) {
+		globals.WEB_lock_workflow(true)
+	}
+}
+
+/**
+ * Handle hide window.
+ *
+ * @param {JSEvent} event the event that triggered the action
+ *
+ * @returns {Boolean}
+ *
+ * @properties={typeid:24,uuid:"35F6C3C6-F764-4864-8624-2F19A13FB579"}
+ */
+function FORM_on_hide(event) {
+	if (application.__parent__.solutionPrefs && solutionPrefs.design.statusLockWorkflow) {
+		globals.WEB_lock_workflow(false)
+	}
+	
+	return true
 }

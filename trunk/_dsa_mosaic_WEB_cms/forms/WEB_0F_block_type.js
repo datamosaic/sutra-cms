@@ -263,174 +263,186 @@ function BATCH_create() {
  * @properties={typeid:24,uuid:"98C31479-A1EE-4A13-9F2F-0752680E3428"}
  */
 function REC_new() {
-	
-	// OPT 1: create block record for data entry by hand
-	if (globals.CODE_key_pressed('shift')) {
-		
-		controller.newRecord(true)
-		id_site = forms.WEB_0F_site.id_site
-		elements.fld_block_name.requestFocus(false)
-		
-	}
-	// OPT 2: create block record with meta data automatically
-	else {
-		// 1) choose form to register as a block
-		application.showFormInDialog(
-							forms.WEB_P__block_new,
-							-1,-1,-1,-1,
-							' ',
-							false,
-							false,
-							'cmsBlockNew'
-						)
-		
-		//this should be forms.WEB_P__block_new._formName...some scoping issue
-		var formName = _formName
-						
-		//a form picked and it exists in the solution
-		if (formName && forms[formName]) {
-			
-			function uniqueNameCheck(name) {  // returns true if duplicate name detected
-				var nameArray = []
-				var result = false
-				for (var i = 0; i < foundset.getSize(); i++) {
-					nameArray.push(foundset.getRecord(i + 1).block_name)
-				}
-				for (var j in nameArray) {
-					if ( nameArray[j] == name ) {
-						result = true
-						break
-					}
-				}
-				return result
-			}
-	
-			// 2) get block init() and associated meta data to build data object
-			if ( forms[formName] ) {
-				//form not loaded yet, get solution model to check for method existence
-				if (forms[formName] == '<Form ' + formName + ' not loaded yet>' && solutionModel.getForm(formName).getFormMethod('INIT_block')) {
-					var hasInit = true
-				}
-				//check for method existence on form
-				else if (forms[formName].INIT_block) {
-					var hasInit = true
-				}
-				if ( hasInit ) {
-					var obj = forms[formName].INIT_block()
-				}
-				else {
-					plugins.dialogs.showErrorDialog( "Error", "Selected block does not have an INIT_block method")
-					return
-				}
-			}
-			
-	
-			// 3) create block and related data from data object
-			var block = foundset.getRecord(foundset.newRecord())
-			block.id_site = forms.WEB_0F_site.id_site
-			
-			// ensure block name is unique
-			var name = obj.record.block_name
-			var incrementer = 1
-			
-			while ( uniqueNameCheck(name) ) {
-				// increment name by 1 until unique name is found
-				name = obj.record.block_name + " " + incrementer
-				incrementer += 1
-			}
-			
-			block.block_name = name
-			block.block_description = obj.record.block_description
-			block.form_name = obj.record.form_name
-			block.form_name_display = obj.record.form_name_display
-			
-			// block displays
-			for (var i in obj.views) {
-				var view = block.web_block_type_to_block_display.getRecord(block.web_block_type_to_block_display.newRecord())
-				var name = i.split("_")
-				for (var j = 0; j < name.length; j++) {
-					if ( j == 0 ) {
-						view.display_name = utils.stringInitCap(name[j])
-					}
-					else {
-						view.display_name += " " + utils.stringInitCap(name[j])
-					}	
-				}
-				view.method_name = obj.views[i]
-				//flag default method as default
-				view.flag_default = ( obj.views[i] == "VIEW_default") ? 1 : null
-			}
-			
-			// block client actions - "Block"
-			for (var i in obj.clientActionsBlock) {
-				var actions = block.web_block_type_to_block_action_client.getRecord(block.web_block_type_to_block_action_client.newRecord())
-				actions.action_type = "Block"
-				var name = i.split("_")
-				for (var j = 0; j < name.length; j++) {
-					if ( j == 0 ) {
-						actions.input_name = utils.stringInitCap(name[j])
-					}
-					else {
-						actions.input_name += " " + utils.stringInitCap(name[j])
-					}
-				}
-				actions.method_name = obj.clientActionsBlock[i]
-			}
-			
-			// block client actions - "Page"
-			for (var i in obj.clientActionsPage) {
-				var actions = block.web_block_type_to_block_action_client.getRecord(block.web_block_type_to_block_action_client.newRecord())
-				actions.action_type = "Page"
-				var name = i.split("_")
-				for (var j = 0; j < name.length; j++) {
-					if ( j == 0 ) {
-						actions.input_name = utils.stringInitCap(name[j])
-					}
-					else {
-						actions.input_name += " " + utils.stringInitCap(name[j])
-					}
-				}
-				actions.method_name = obj.clientActionsPage[i]
-			}
-			
-			// block web actions
-			for (var i in obj.webActions) {
-				var actions = block.web_block_type_to_block_action_web.getRecord(block.web_block_type_to_block_action_web.newRecord())
-				var name = i.split("_")
-				for (var j = 0; j < name.length; j++) {
-					if ( j == 0 ) {
-						actions.display_name = utils.stringInitCap(name[j])
-					}
-					else {
-						actions.display_name += " " + utils.stringInitCap(name[j])
-					}
-				}
-				actions.method_name = obj.webActions[i]
-			}
-			
-			// block data
-			for (var i in obj.data) {
-				var data = block.web_block_type_to_block_input.getRecord(block.web_block_type_to_block_input.newRecord())
-				data.column_name = i
-				data.column_type = obj.data[i]
-			}
-			
-			// block configuration
-			for (var i in obj.blockConfigure) {
-				var configure = block.web_block_type_to_block_configure.getRecord(block.web_block_type_to_block_configure.newRecord())
-				configure.column_name = i
-				configure.column_type = obj.blockConfigure[i]
-			}
-			
-			// block response
-			for (var i in obj.blockResponse) {
-				var response = block.web_block_type_to_block_response.getRecord(block.web_block_type_to_block_response.newRecord())
-				response.column_name = i
-				response.column_type = obj.blockConfigure[i]
-			}
-			
-			databaseManager.saveData()
+	if (utils.hasRecords(forms.WEB_0F_site.foundset)) {
+		//no records created yet and interface locked
+		if (application.__parent__.solutionPrefs && solutionPrefs.design.statusLockWorkflow) {
+			globals.WEB_lock_workflow(false)
 		}
+		
+		// OPT 1: create block record for data entry by hand
+		if (globals.CODE_key_pressed('shift')) {
+			
+			controller.newRecord(true)
+			id_site = forms.WEB_0F_site.id_site
+			elements.fld_block_name.requestFocus(false)
+			
+		}
+		// OPT 2: create block record with meta data automatically
+		else {
+			// 1) choose form to register as a block
+			application.showFormInDialog(
+								forms.WEB_P__block_new,
+								-1,-1,-1,-1,
+								' ',
+								false,
+								false,
+								'cmsBlockNew'
+							)
+			
+			//this should be forms.WEB_P__block_new._formName...some scoping issue
+			var formName = _formName
+							
+			//a form picked and it exists in the solution
+			if (formName && forms[formName]) {
+				
+				function uniqueNameCheck(name) {  // returns true if duplicate name detected
+					var nameArray = []
+					var result = false
+					for (var i = 0; i < foundset.getSize(); i++) {
+						nameArray.push(foundset.getRecord(i + 1).block_name)
+					}
+					for (var j in nameArray) {
+						if ( nameArray[j] == name ) {
+							result = true
+							break
+						}
+					}
+					return result
+				}
+		
+				// 2) get block init() and associated meta data to build data object
+				if ( forms[formName] ) {
+					//form not loaded yet, get solution model to check for method existence
+					if (forms[formName] == '<Form ' + formName + ' not loaded yet>' && solutionModel.getForm(formName).getFormMethod('INIT_block')) {
+						var hasInit = true
+					}
+					//check for method existence on form
+					else if (forms[formName].INIT_block) {
+						var hasInit = true
+					}
+					if ( hasInit ) {
+						var obj = forms[formName].INIT_block()
+					}
+					else {
+						plugins.dialogs.showErrorDialog( "Error", "Selected block does not have an INIT_block method")
+						return
+					}
+				}
+				
+		
+				// 3) create block and related data from data object
+				var block = foundset.getRecord(foundset.newRecord())
+				block.id_site = forms.WEB_0F_site.id_site
+				
+				// ensure block name is unique
+				var name = obj.record.block_name
+				var incrementer = 1
+				
+				while ( uniqueNameCheck(name) ) {
+					// increment name by 1 until unique name is found
+					name = obj.record.block_name + " " + incrementer
+					incrementer += 1
+				}
+				
+				block.block_name = name
+				block.block_description = obj.record.block_description
+				block.form_name = obj.record.form_name
+				block.form_name_display = obj.record.form_name_display
+				
+				// block displays
+				for (var i in obj.views) {
+					var view = block.web_block_type_to_block_display.getRecord(block.web_block_type_to_block_display.newRecord())
+					var name = i.split("_")
+					for (var j = 0; j < name.length; j++) {
+						if ( j == 0 ) {
+							view.display_name = utils.stringInitCap(name[j])
+						}
+						else {
+							view.display_name += " " + utils.stringInitCap(name[j])
+						}	
+					}
+					view.method_name = obj.views[i]
+					//flag default method as default
+					view.flag_default = ( obj.views[i] == "VIEW_default") ? 1 : null
+				}
+				
+				// block client actions - "Block"
+				for (var i in obj.clientActionsBlock) {
+					var actions = block.web_block_type_to_block_action_client.getRecord(block.web_block_type_to_block_action_client.newRecord())
+					actions.action_type = "Block"
+					var name = i.split("_")
+					for (var j = 0; j < name.length; j++) {
+						if ( j == 0 ) {
+							actions.input_name = utils.stringInitCap(name[j])
+						}
+						else {
+							actions.input_name += " " + utils.stringInitCap(name[j])
+						}
+					}
+					actions.method_name = obj.clientActionsBlock[i]
+				}
+				
+				// block client actions - "Page"
+				for (var i in obj.clientActionsPage) {
+					var actions = block.web_block_type_to_block_action_client.getRecord(block.web_block_type_to_block_action_client.newRecord())
+					actions.action_type = "Page"
+					var name = i.split("_")
+					for (var j = 0; j < name.length; j++) {
+						if ( j == 0 ) {
+							actions.input_name = utils.stringInitCap(name[j])
+						}
+						else {
+							actions.input_name += " " + utils.stringInitCap(name[j])
+						}
+					}
+					actions.method_name = obj.clientActionsPage[i]
+				}
+				
+				// block web actions
+				for (var i in obj.webActions) {
+					var actions = block.web_block_type_to_block_action_web.getRecord(block.web_block_type_to_block_action_web.newRecord())
+					var name = i.split("_")
+					for (var j = 0; j < name.length; j++) {
+						if ( j == 0 ) {
+							actions.display_name = utils.stringInitCap(name[j])
+						}
+						else {
+							actions.display_name += " " + utils.stringInitCap(name[j])
+						}
+					}
+					actions.method_name = obj.webActions[i]
+				}
+				
+				// block data
+				for (var i in obj.data) {
+					var data = block.web_block_type_to_block_input.getRecord(block.web_block_type_to_block_input.newRecord())
+					data.column_name = i
+					data.column_type = obj.data[i]
+				}
+				
+				// block configuration
+				for (var i in obj.blockConfigure) {
+					var configure = block.web_block_type_to_block_configure.getRecord(block.web_block_type_to_block_configure.newRecord())
+					configure.column_name = i
+					configure.column_type = obj.blockConfigure[i]
+				}
+				
+				// block response
+				for (var i in obj.blockResponse) {
+					var response = block.web_block_type_to_block_response.getRecord(block.web_block_type_to_block_response.newRecord())
+					response.column_name = i
+					response.column_type = obj.blockConfigure[i]
+				}
+				
+				databaseManager.saveData()
+			}
+		}
+	}
+	else {
+		plugins.dialogs.showErrorDialog(
+						'Error',
+						'You must add a site record first'
+				)
 	}
 }
 
@@ -448,6 +460,11 @@ function REC_delete() {
 
 	if (delRec == 'Yes') {
 		controller.deleteRecord()
+		
+		//dim out the lights
+		if (!utils.hasRecords(foundset)) {
+			FORM_on_show()
+		}		
 	}
 }
 
@@ -500,4 +517,35 @@ function FLD_data_change__form_name(oldValue, newValue, event) {
 	var formMethods = (form_name && forms[form_name]) ? forms[form_name].allmethods : new Array()
 	
 	application.setValueListItems('WEB_block_type_method', formMethods)
+}
+
+/**
+ * Callback method for when form is shown.
+ *
+ * @param {Boolean} firstShow form is shown first time after load
+ * @param {JSEvent} event the event that triggered the action
+ *
+ * @properties={typeid:24,uuid:"1B080D9F-62BC-4987-B9AA-F6B22B1E65E2"}
+ */
+function FORM_on_show(firstShow, event) {
+	if (!utils.hasRecords(foundset)) {
+		globals.WEB_lock_workflow(true)
+	}
+}
+
+/**
+ * Handle hide window.
+ *
+ * @param {JSEvent} event the event that triggered the action
+ *
+ * @returns {Boolean}
+ *
+ * @properties={typeid:24,uuid:"F43028E6-9A22-4FBB-980A-B415493E4E9E"}
+ */
+function FORM_on_hide(event) {
+	if (application.__parent__.solutionPrefs && solutionPrefs.design.statusLockWorkflow) {
+		globals.WEB_lock_workflow(false)
+	}
+	
+	return true
 }

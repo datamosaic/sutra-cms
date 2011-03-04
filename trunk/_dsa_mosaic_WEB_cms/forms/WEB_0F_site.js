@@ -69,7 +69,29 @@ function REC_delete()
 	if (delRec == 'Yes') {
 		globals.WEB_site_display = null
 		controller.deleteRecord()
+		
+		//dim out the lights
+		if (!utils.hasRecords(foundset)) {
+			FORM_on_show()
+		}
 	}
+}
+
+/**
+ * Handle hide window.
+ *
+ * @param {JSEvent} event the event that triggered the action
+ *
+ * @returns {Boolean}
+ *
+ * @properties={typeid:24,uuid:"1F26A1AB-A7AB-4E89-92EA-4B3F4ADF38C4"}
+ */
+function FORM_on_hide(event) {
+	if (application.__parent__.solutionPrefs && solutionPrefs.design.statusLockWorkflow) {
+		globals.WEB_lock_workflow(false)
+	}
+	
+	return true
 }
 
 /**
@@ -77,6 +99,11 @@ function REC_delete()
  * @properties={typeid:24,uuid:"D99C1241-A9B8-4124-9279-7C04869AE230"}
  */
 function REC_new() {
+	//no records created yet and interface locked
+	if (application.__parent__.solutionPrefs && solutionPrefs.design.statusLockWorkflow) {
+		globals.WEB_lock_workflow(false)
+	}
+	
 	controller.newRecord(false)
 	
 	//create a group
@@ -451,6 +478,10 @@ function FIELD_directory_onLost(event) {
  * @properties={typeid:24,uuid:"8FE70347-AA8A-458C-B751-C0AE5E0B0254"}
  */
 function FORM_on_show(firstShow, event) {
+	if (!utils.hasRecords(foundset)) {
+		globals.WEB_lock_workflow(true)
+	}
+		
 	if (forms.WEB_0F_install.rewrite_enabled) {
 		elements.fld_pref_links.enabled = true
 	}
