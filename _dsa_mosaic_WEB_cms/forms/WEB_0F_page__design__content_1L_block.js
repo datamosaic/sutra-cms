@@ -374,20 +374,27 @@ function REC_selected()
 		// set relation
 		globals.WEB_page_id_block_selected = id_block
 		
-		// input method names for block type
-		var params = [id_block_type]
-		var sql =	"select input_name, method_name from web_block_action_client where " +
-						"web_block_action_client.id_block_type = ?"
-		var dataset = databaseManager.getDataSetByQuery(
-						controller.getServerName(), sql, params, -1)
-	
-		if ( dataset.getMaxRowIndex() ) {
-			forms.WEB_0F_page__design__content_1F_block_data__raw.elements.btn_data_actions.visible = true
-			forms.WEB_0F_page__design__content_1F_block_data.elements.btn_data_actions.visible = true
+		//normal non-linked items
+		if (!id_scrapbook) {
+			// input method names for block type
+			var params = [id_block_type]
+			var sql =	"select input_name, method_name from web_block_action_client where " +
+							"web_block_action_client.id_block_type = ?"
+			var dataset = databaseManager.getDataSetByQuery(
+							controller.getServerName(), sql, params, -1)
+		
+			if ( dataset.getMaxRowIndex() ) {
+				forms.WEB_0F_page__design__content_1F_block_data__raw.elements.btn_data_actions.visible = true
+				forms.WEB_0F_page__design__content_1F_block_data.elements.btn_data_actions.visible = true
+			}
+			else {
+				forms.WEB_0F_page__design__content_1F_block_data__raw.elements.btn_data_actions.visible = false
+				forms.WEB_0F_page__design__content_1F_block_data.elements.btn_data_actions.visible = false			
+			}
 		}
+		//this is a linked scrapbook
 		else {
-			forms.WEB_0F_page__design__content_1F_block_data__raw.elements.btn_data_actions.visible = false
-			forms.WEB_0F_page__design__content_1F_block_data.elements.btn_data_actions.visible = false			
+			
 		}
 	}
 	else {
@@ -415,37 +422,82 @@ function REC_selected()
  */
 function ACTION_set_simple_display() {
 	var recBlock = foundset.getSelectedRecord()
-	if (recBlock && utils.hasRecords(recBlock.web_block_to_block_type)) {
-		var recBlockType = recBlock.web_block_to_block_type.getRecord(1)
-	}
 	
-	//editable status
-	var flagEdit = (utils.hasRecords(forms.WEB_0F_page__design.web_page_to_version) && forms.WEB_0F_page__design.web_page_to_version.flag_edit) ? true : false
 	
-	//this block definition exists as does the form
-	if (recBlockType && forms[recBlockType.form_name]) {
-		//form not loaded yet, get solution model to check for method existence
-		if (forms[recBlockType.form_name] == '<Form ' + recBlockType.form_name + ' not loaded yet>' && solutionModel.getForm(recBlockType.form_name).getFormMethod('LOADER_init')) {
-			var hasInit = true
-		}
-		//check for method existence on form
-		else if (forms[recBlockType.form_name].LOADER_init) {
-			var hasInit = true
+	//no scrapbook
+	if (recBlock && !recBlock.id_scrapbook) {
+		if (recBlock && utils.hasRecords(recBlock.web_block_to_block_type)) {
+			var recBlockType = recBlock.web_block_to_block_type.getRecord(1)
 		}
 		
-		//there is a custom form to show
-		if (hasInit) {
-			forms[recBlockType.form_name].LOADER_init(recBlock,flagEdit)
+		//editable status
+		var flagEdit = (utils.hasRecords(forms.WEB_0F_page__design.web_page_to_version) && forms.WEB_0F_page__design.web_page_to_version.flag_edit) ? true : false
+		
+		//this block definition exists as does the form
+		if (recBlockType && forms[recBlockType.form_name]) {
+			//form not loaded yet, get solution model to check for method existence
+			if (forms[recBlockType.form_name] == '<Form ' + recBlockType.form_name + ' not loaded yet>' && solutionModel.getForm(recBlockType.form_name).getFormMethod('LOADER_init')) {
+				var hasInit = true
+			}
+			//check for method existence on form
+			else if (forms[recBlockType.form_name].LOADER_init) {
+				var hasInit = true
+			}
+			
+			//there is a custom form to show
+			if (hasInit) {
+				forms[recBlockType.form_name].LOADER_init(recBlock,flagEdit)
+			}
+			//something not right, show default form
+			else {
+				forms.WEB_0F_page__design__content_1F_block_data.elements.tab_detail.removeTabAt(2)
+				forms.WEB_0F_page__design__content_1F_block_data.elements.tab_detail.tabIndex = 1
+			}
 		}
-		//something not right, show default form
 		else {
 			forms.WEB_0F_page__design__content_1F_block_data.elements.tab_detail.removeTabAt(2)
 			forms.WEB_0F_page__design__content_1F_block_data.elements.tab_detail.tabIndex = 1
 		}
 	}
+	//scrapbook
 	else {
-		forms.WEB_0F_page__design__content_1F_block_data.elements.tab_detail.removeTabAt(2)
-		forms.WEB_0F_page__design__content_1F_block_data.elements.tab_detail.tabIndex = 1
+		if (recBlock && utils.hasRecords(recBlock,'web_block_to_scrapbook.web_scrapbook_to_block_type')) {
+			var recBlockType = recBlock.web_block_to_scrapbook.web_scrapbook_to_block_type.getRecord(1)
+		}
+		
+		//editable status
+		var flagEdit = false
+		
+		//this block definition exists as does the form
+		if (recBlockType && forms[recBlockType.form_name]) {
+			//form not loaded yet, get solution model to check for method existence
+			if (forms[recBlockType.form_name] == '<Form ' + recBlockType.form_name + ' not loaded yet>' && solutionModel.getForm(recBlockType.form_name).getFormMethod('LOADER_init')) {
+				var hasInit = true
+			}
+			//check for method existence on form
+			else if (forms[recBlockType.form_name].LOADER_init) {
+				var hasInit = true
+			}
+			
+			//there is a custom form to show
+			if (hasInit) {
+				var pseudoEvent = {}
+				pseudoEvent.getElementName = function() {
+						return 'lbl_mode_real'
+					}
+				forms.WEB_TB__web_mode.ACTION_mode(pseudoEvent)
+				forms[recBlockType.form_name].LOADER_init(recBlock,flagEdit)
+			}
+			//something not right, show default form
+			else {
+				forms.WEB_0F_page__design__content_1F_block_data.elements.tab_detail.removeTabAt(2)
+				forms.WEB_0F_page__design__content_1F_block_data.elements.tab_detail.tabIndex = 1
+			}
+		}
+		else {
+			forms.WEB_0F_page__design__content_1F_block_data.elements.tab_detail.removeTabAt(2)
+			forms.WEB_0F_page__design__content_1F_block_data.elements.tab_detail.tabIndex = 1
+		}
 	}
 }
 

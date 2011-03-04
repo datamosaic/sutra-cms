@@ -312,11 +312,10 @@ function LAYOUTS_action_list_control(selected) {
 		case "Duplicate layout":  // duplicate layout, areas and blocks
 			if (utils.hasRecords(web_theme_to_layout)) {
 				var record = web_theme_to_layout.getRecord(web_theme_to_layout.getSelectedIndex())	
-				var relations = new Array("web_layout_to_editable",
-											"web_layout_to_editable.web_editable_to_editable_default")
-//				var override = new Array(null,['flag_new_block'],null)
+				var relations = new Array("web_layout_to_editable.web_editable_to_editable_default")
+				var override = new Array(null,true,true)
 				
-				var dupRecord = globals.CODE_record_duplicate(record, relations)
+				var dupRecord = globals.CODE_record_duplicate(record, relations, override)
 				dupRecord.flag_default = null
 				
 				plugins.dialogs.showInfoDialog("Complete", "Layout duplicated")
