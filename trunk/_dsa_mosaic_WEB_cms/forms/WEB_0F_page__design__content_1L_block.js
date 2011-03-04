@@ -485,7 +485,7 @@ function ACTION_set_simple_display() {
 				pseudoEvent.getElementName = function() {
 						return 'lbl_mode_real'
 					}
-				forms.WEB_TB__web_mode.ACTION_mode(pseudoEvent)
+//				forms.WEB_TB__web_mode.ACTION_mode(pseudoEvent)
 				forms[recBlockType.form_name].LOADER_init(recBlock,flagEdit)
 			}
 			//something not right, show default form
