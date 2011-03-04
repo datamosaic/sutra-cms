@@ -749,6 +749,9 @@ if (utils.hasRecords(foundset) || typeof record == 'object') {
 	}
 	
 	if (delRec == 'Yes') {
+		//busy on
+		globals.CODE_cursor_busy(true)
+		
 		//where do we want to end up
 		var parentID = record.parent_id_page
 		var orderBy = record.order_by
@@ -797,6 +800,9 @@ if (utils.hasRecords(foundset) || typeof record == 'object') {
 		else {
 			forms.WEB_0F_page.FORM_on_show()
 		}
+		
+		//busy off
+		globals.CODE_cursor_busy(false)
 	}
 }
 else {
