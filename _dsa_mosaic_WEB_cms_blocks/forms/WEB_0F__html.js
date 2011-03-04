@@ -299,7 +299,13 @@ function INIT_block() {
  * @properties={typeid:24,uuid:"16312B6D-9AA1-465F-B962-79EAC114C412"}
  */
 function LOADER_init(recBlock,flagEdit) {
-	recBlockData = recBlock.web_block_to_block_data.getRecord(1)
+	
+	if (utils.hasRecords(recBlock.web_block_to_scrapbook)) {
+		var recBlockData = recBlock.web_block_to_scrapbook.web_scrapbook_to_scrapbook_data.getRecord(1)
+	}
+	else {
+		var recBlockData = recBlock.web_block_to_block_data.getRecord(1)
+	}
 	
 	ACTION_colorize()
 	
