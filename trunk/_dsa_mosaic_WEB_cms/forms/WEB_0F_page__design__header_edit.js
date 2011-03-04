@@ -314,7 +314,7 @@ function ACTION_save() {
 		var siteID = id_site
 		
 		//add in path for this page
-		var pathNameWanted = page_name
+		var pathNameWanted = page_name || 'untitled-page'
 		pathNameWanted = pathNameWanted.toLowerCase()
 		pathNameWanted = utils.stringReplace(pathNameWanted, ' ', '-')
 		
