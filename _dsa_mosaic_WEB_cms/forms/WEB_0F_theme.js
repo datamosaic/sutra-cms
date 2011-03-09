@@ -593,11 +593,6 @@ function REC_newFromTheme(progress) {
 		}
 		else {
 			var theme = foundset.getRecord(foundset.getSelectedIndex())
-			// delete related records to current
-			web_theme_to_layout.deleteAllRecords()
-			// reset flag
-			_flagRefresh = false
-			//TODO: store default blocks so can restore later
 		}
 		theme.theme_name = _themes[_themesSelected].name
 		theme.description = _themes[_themesSelected].description
@@ -624,7 +619,22 @@ function REC_newFromTheme(progress) {
 				globals.TRIGGER_progressbar_set(counter ++)
 			}
 			// 2 create layout record
-			var layout = theme.web_theme_to_layout.getRecord(theme.web_theme_to_layout.newRecord())
+			if ( !_flagRefresh ) {
+				var layout = theme.web_theme_to_layout.getRecord(theme.web_theme_to_layout.newRecord())				
+			}
+			else {
+				// see if layout with current name
+				theme.web_theme_to_layout.find()
+				theme.web_theme_to_layout.layout_name = i.split(".")[0]
+				var count = theme.web_theme_to_layout.search()
+				if ( count == 1 ) {
+					var layout = theme.web_theme_to_layout.getRecord(1)	
+					theme.web_theme_to_layout.loadAllRecords()
+				}
+				else {
+					var layout = theme.web_theme_to_layout.getRecord(theme.web_theme_to_layout.newRecord())
+				}
+			}
 			layout.layout_path = i
 			layout.layout_name = i.split(".")[0]
 			if (i == "default.jsp") layout.flag_default = 1                                  
@@ -632,18 +642,48 @@ function REC_newFromTheme(progress) {
 			var order = 0
 			for (var j in _themes[_themesSelected].editables[i] ) {
 				// 3 create editable area record
-				var editable = layout.web_layout_to_editable.getRecord(layout.web_layout_to_editable.newRecord())
+				if ( !_flagRefresh ) {
+					var editable = layout.web_layout_to_editable.getRecord(layout.web_layout_to_editable.newRecord())	
+				}
+				else {
+					// see if editable with current name
+					layout.web_layout_to_editable.find()
+					layout.web_layout_to_editable.editable_name = _themes[_themesSelected].editables[i][j]
+					var count = layout.web_layout_to_editable.search()
+					if ( count == 1 ) {
+						var editable = layout.web_layout_to_editable.getRecord(1)
+						layout.web_layout_to_editable.loadAllRecords()
+					}
+					else {
+						var editable = layout.web_layout_to_editable.getRecord(layout.web_layout_to_editable.newRecord())
+					}
+				}
 				editable.editable_name = _themes[_themesSelected].editables[i][j]
 				editable.row_order = order++
 				databaseManager.saveData(editable)                                                               
 			}
 			 for ( k in _themes[_themesSelected].includes[i] ) {
-				 // 4 create editable area record for all include files
-				 for ( m in _elements[_themesSelected].editables[_themes[_themesSelected].includes[i][k] + ".jspf"]) {
-					var editable = layout.web_layout_to_editable.getRecord(layout.web_layout_to_editable.newRecord())
+				// 4 create editable area record for all include files
+				for ( m in _elements[_themesSelected].editables[_themes[_themesSelected].includes[i][k] + ".jspf"]) {
+					if ( !_flagRefresh ) {
+						var editable = layout.web_layout_to_editable.getRecord(layout.web_layout_to_editable.newRecord())
+					}
+					else {
+						// see if editable with current name
+						layout.web_layout_to_editable.find()
+						layout.web_layout_to_editable.editable_name = _elements[_themesSelected].editables[_themes[_themesSelected].includes[i][k] + ".jspf"][m]
+						var count = layout.web_layout_to_editable.search()
+						if ( count == 1 ) {
+							var editable = layout.web_layout_to_editable.getRecord(1)
+							layout.web_layout_to_editable.loadAllRecords()
+						}
+						else {
+							var editable = layout.web_layout_to_editable.getRecord(layout.web_layout_to_editable.newRecord())
+						}
+					}
 					editable.editable_name = _elements[_themesSelected].editables[_themes[_themesSelected].includes[i][k] + ".jspf"][m]
-				 	editable.row_order = order++
-				 }
+					editable.row_order = order++
+				}
 			}
 			// sort editables by row_order
 			forms.WEB_0F_theme_1L_layout.web_layout_to_editable.sort( "row_order asc" )
@@ -652,6 +692,8 @@ function REC_newFromTheme(progress) {
 		if ( application.__parent__.solutionPrefs ) {	
 			globals.TRIGGER_progressbar_stop()	
 		}
+		// reset flag
+		_flagRefresh = false
 	}
 }
 
