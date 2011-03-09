@@ -1,4 +1,9 @@
 /**
+ * @properties={typeid:35,uuid:"A93B2937-07EF-4D98-900A-03670B87BE7F",variableType:-4}
+ */
+var _flagRefresh = false;
+
+/**
  * @properties={typeid:35,uuid:"A54A1570-67C0-4483-8297-257CFA07C7F5",variableType:-4}
  */
 var _elements = {};
@@ -368,6 +373,7 @@ function LAYOUTS_action_list_control(selected) {
 
 /**
  * @param {Integer} progress : used by streaming file callbacks to pass control back to this method
+ * @param {boolean} _flagRefresh : sudo-parameter/form variable tracks if creating new theme or refreshing current theme
  * 
  * @properties={typeid:24,uuid:"B757D4CF-18E5-4D51-8A9B-9E4D5686530D"}
  */
@@ -455,11 +461,15 @@ function REC_newFromTheme(progress) {
 		}
 	
 		// choose theme
-		var input =	plugins.dialogs.showSelectDialog("Themes", "Choose a theme to register", themes)
-		if ( !input ) {
-			return "No theme selected"
+		if ( !_flagRefresh ) {  // user choose theme
+			var input =	plugins.dialogs.showSelectDialog("Themes", "Choose a theme to register", themes)
+			if ( !input ) {
+				return "No theme selected"
+			}
 		}
-		
+		else { // refresh current theme record
+			var input = theme_name
+		}
 		// get jsp files
 		var jspArray = plugins.file.getRemoteFolderContents(_themes[input].path, null, 1)
 		
@@ -571,8 +581,18 @@ function REC_newFromTheme(progress) {
 			globals.WEB_lock_workflow(false)
 		}
 		
-		// 1 create theme record 
-		var theme = foundset.getRecord(foundset.newRecord())
+		// 1 get theme record 
+		if ( !_flagRefresh ) {
+			var theme = foundset.getRecord(foundset.newRecord())
+		}
+		else {
+			var theme = foundset.getRecord(foundset.getSelectedIndex())
+			// delete related records to current
+			web_theme_to_layout.deleteAllRecords()
+			// reset flag
+			_flagRefresh = false
+			//TODO: store default blocks so can restore later
+		}
 		theme.theme_name = _themes[_themesSelected].name
 		theme.description = _themes[_themesSelected].description
 		theme.id_site = forms.WEB_0F_site.id_site
@@ -816,4 +836,12 @@ function REC_newFromThemeCallbackElements(result, e) {
 			REC_newFromTheme( 4 )  // return to main method stage #3
 		}
 	}
+}
+
+/**
+ * @properties={typeid:24,uuid:"B7A53703-B978-4BE6-8A0F-DA32B03BE60F"}
+ */
+function REC_refreshFromTheme() {
+	_flagRefresh = true
+	REC_newFromTheme()
 }
