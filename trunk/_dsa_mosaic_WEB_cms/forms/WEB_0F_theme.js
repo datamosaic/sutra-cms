@@ -629,21 +629,24 @@ function REC_newFromTheme(progress) {
 			layout.layout_name = i.split(".")[0]
 			if (i == "default.jsp") layout.flag_default = 1                                  
 			databaseManager.saveData(layout)
+			var order = 0
 			for (var j in _themes[_themesSelected].editables[i] ) {
 				// 3 create editable area record
 				var editable = layout.web_layout_to_editable.getRecord(layout.web_layout_to_editable.newRecord())
 				editable.editable_name = _themes[_themesSelected].editables[i][j]
+				editable.row_order = order++
 				databaseManager.saveData(editable)                                                               
 			}
 			 for ( k in _themes[_themesSelected].includes[i] ) {
-				 // grap associated editable in that file
+				 // 4 create editable area record for all include files
 				 for ( m in _elements[_themesSelected].editables[_themes[_themesSelected].includes[i][k] + ".jspf"]) {
-					 // create editable record
-					 // _elements[_themesSelected].editables[_themes[_themesSelected].includes[i][k] + ".jspf"][m] <-- name of editable
 					var editable = layout.web_layout_to_editable.getRecord(layout.web_layout_to_editable.newRecord())
 					editable.editable_name = _elements[_themesSelected].editables[_themes[_themesSelected].includes[i][k] + ".jspf"][m]
+				 	editable.row_order = order++
 				 }
 			}
+			// sort editables by row_order
+			forms.WEB_0F_theme_1L_layout.web_layout_to_editable.sort( "row_order asc" )
 		}
 		// stop progress bar
 		if ( application.__parent__.solutionPrefs ) {	

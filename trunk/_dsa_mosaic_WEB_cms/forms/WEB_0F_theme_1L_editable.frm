@@ -1,4 +1,5 @@
 dataSource:"db:/sutra_cms/web_editable",
+initialSort:"row_order asc",
 items:[
 {
 borderType:"EmptyBorder,0,0,0,0",
