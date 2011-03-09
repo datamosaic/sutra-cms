@@ -44,22 +44,6 @@ typeid:19,
 uuid:"53DA1FEF-EB75-405F-AB75-00A2B2D47718"
 },
 {
-borderType:"SpecialMatteBorder,0.0,0.0,1.0,0.0,#000000,#000000,#999999,#000000,0.0,1.0",
-formIndex:14900,
-imageMediaID:"e838f55d-86d2-4582-9ea2-031a2143dbfa",
-location:"3,32",
-mediaOptions:1,
-onActionMethodID:"-1",
-rolloverCursor:12,
-showClick:false,
-showFocus:false,
-size:"20,22",
-tabSeq:-2,
-toolTipText:"Edit the details for this line item",
-typeid:7,
-uuid:"647C070D-FBB0-4663-B857-6FE4364A5A84"
-},
-{
 anchors:3,
 formIndex:13000,
 horizontalAlignment:0,
