@@ -749,13 +749,7 @@ function REC_newFromThemeCallbackJSP(result, e) {
  * @properties={typeid:24,uuid:"1B675F4D-34A2-48FC-9915-897C65DD3FDC"}
  */
 function REC_newFromThemeProgress(monitor) {
-
 	globals.TRIGGER_progressbar_set(monitor.getTotalTransferredBytes(), " Streaming " + monitor.getTotalTransferredBytes() + " of " + _themesProgressTotal)
-	
-	if ( monitor.isFinished() ) {
-		// Data Sutra callback function
-		globals.TRIGGER_progressbar_stop()
-	}
 }
 
 /**
