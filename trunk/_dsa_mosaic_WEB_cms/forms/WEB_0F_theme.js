@@ -468,7 +468,7 @@ function REC_newFromTheme(progress) {
 			}
 		}
 		else { // refresh current theme record
-			if( themes.toString().indexOf(theme_name) > -1 ) {
+			if( themes.indexOf(theme_name) > -1 ) {
 				var input = theme_name				
 			}
 			else {
