@@ -468,7 +468,13 @@ function REC_newFromTheme(progress) {
 			}
 		}
 		else { // refresh current theme record
-			var input = theme_name
+			if( themes.toString().indexOf(theme_name) > -1 ) {
+				var input = theme_name				
+			}
+			else {
+				plugins.dialogs.showErrorDialog( "Error", "No matching theme found")
+				return "No matching theme"
+			}
 		}
 		// get jsp files
 		var jspArray = plugins.file.getRemoteFolderContents(_themes[input].path, null, 1)
