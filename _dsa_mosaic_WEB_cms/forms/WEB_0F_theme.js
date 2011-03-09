@@ -606,7 +606,23 @@ function REC_newFromTheme(progress) {
 		var themeDirectory = _themes[_themesSelected].path.split("/")
 		theme.theme_directory = themeDirectory[themeDirectory.length - 1]
 		databaseManager.saveData(theme)
-		for (var i in  _themes[_themesSelected].editables ) {
+		
+		// progress bar
+		if ( application.__parent__.solutionPrefs ) {
+			var size = 0, key;
+			for (key in _themes[_themesSelected].editables) {
+				if (_themes[_themesSelected].editables.hasOwnProperty(key)) size++;
+			}	
+			application.sleep(200) // needed to clear other file streaming method threads that have progress bars
+			globals.TRIGGER_progressbar_start(0, "Creating records...", null, 0, size)
+		}		
+		
+		var counter = 0
+		for (var i in  _themes[_themesSelected].editables ) {			
+			// update progress monitor
+			if ( application.__parent__.solutionPrefs ) {
+				globals.TRIGGER_progressbar_set(counter ++)
+			}
 			// 2 create layout record
 			var layout = theme.web_theme_to_layout.getRecord(theme.web_theme_to_layout.newRecord())
 			layout.layout_path = i
@@ -619,10 +635,6 @@ function REC_newFromTheme(progress) {
 				editable.editable_name = _themes[_themesSelected].editables[i][j]
 				databaseManager.saveData(editable)                                                               
 			}
-			// _themes[_themesSelected].includes[i] <-- files that have additional editables in them
-			// _elements[_themesSelected].editables
-			// _elements[_themesSelected].editables["header_home.jspf"]
-			// _themes[_themesSelected].includes[i] = ["header_home","menu","footer"]
 			 for ( k in _themes[_themesSelected].includes[i] ) {
 				 // grap associated editable in that file
 				 for ( m in _elements[_themesSelected].editables[_themes[_themesSelected].includes[i][k] + ".jspf"]) {
@@ -632,6 +644,10 @@ function REC_newFromTheme(progress) {
 					editable.editable_name = _elements[_themesSelected].editables[_themes[_themesSelected].includes[i][k] + ".jspf"][m]
 				 }
 			}
+		}
+		// stop progress bar
+		if ( application.__parent__.solutionPrefs ) {	
+			globals.TRIGGER_progressbar_stop()	
 		}
 	}
 }
