@@ -423,24 +423,22 @@ function INIT_block() {
 }
 
 /**
+ * 
+ * @param {JSFoundset} fsBlockData block data points
+ * @param {Boolean} flagEdit page version is editable or not
+ * @param {Boolean} flagScrapbook true if showing scrapbook
+ * 
  * @properties={typeid:24,uuid:"8947A3D9-5C5E-4766-9C2C-C2F1BE5D6B8A"}
  */
-function LOADER_init(recBlock,flagEdit) {
-	if (utils.hasRecords(recBlock.web_block_to_scrapbook)) {
-		var recBlockData = recBlock.web_block_to_scrapbook.web_scrapbook_to_scrapbook_data.getRecord(1)
-	}
-	else {
-		var recBlockData = recBlock.web_block_to_block_data.getRecord(1)
-	}
+function LOADER_init(fsBlockData, flagEdit, flagScrapbook) {
+
+	var recBlockData = fsBlockData.getRecord(1)
 	
 	//show tinymce
 	if (flagEdit) {
 		forms.WEB_0F__content.recBlockData = recBlockData
-		
 		forms.WEB_0F__content.elements.bn_tinymce.clearHtml()
-		forms.WEB_0F_page__design__content_1F_block_data.elements.tab_detail.removeTabAt(2)
-		forms.WEB_0F_page__design__content_1F_block_data.elements.tab_detail.addTab(forms.WEB_0F__content)
-		forms.WEB_0F_page__design__content_1F_block_data.elements.tab_detail.tabIndex = 2
+		globals.WEB_block_form_loader("Content Block", "WEB_0F__content")		// set label and load form
 		forms.WEB_0F__content.elements.bn_tinymce.html = recBlockData.data_value
 	}
 	//show browser bean
@@ -449,10 +447,7 @@ function LOADER_init(recBlock,flagEdit) {
 		html += recBlockData.data_value
 		html += '</body></html>'
 		
-		
-		forms.WEB_0F_page__design__content_1F_block_data.elements.tab_detail.removeTabAt(2)
-		forms.WEB_0F_page__design__content_1F_block_data.elements.tab_detail.addTab(forms.WEB_0F__content_view)
-		forms.WEB_0F_page__design__content_1F_block_data.elements.tab_detail.tabIndex = 2
+		globals.WEB_block_form_loader((flagScrapbook) ? "Content Block (scrapbook)" : "Content Block", "WEB_0F__content_view")		// load form
 		
 		//next line may need to be moved....
 		forms.WEB_0F__content_view.elements.bn_browser.html = html
