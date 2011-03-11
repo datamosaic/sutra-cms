@@ -438,7 +438,10 @@ function LOADER_init(fsBlockData, flagEdit, flagScrapbook) {
 	if (flagEdit) {
 		forms.WEB_0F__content.recBlockData = recBlockData
 		forms.WEB_0F__content.elements.bn_tinymce.clearHtml()
-		globals.WEB_block_form_loader("Content Block", "WEB_0F__content")		// set label and load form
+		
+		// load form
+		globals.WEB_block_form_loader("WEB_0F__content", "Content Block")
+		
 		forms.WEB_0F__content.elements.bn_tinymce.html = recBlockData.data_value
 	}
 	//show browser bean
@@ -446,8 +449,9 @@ function LOADER_init(fsBlockData, flagEdit, flagScrapbook) {
 		var html = '<html><body>'
 		html += recBlockData.data_value
 		html += '</body></html>'
-		
-		globals.WEB_block_form_loader((flagScrapbook) ? "Content Block (scrapbook)" : "Content Block", "WEB_0F__content_view")		// load form
+			
+		// load form
+		globals.WEB_block_form_loader("WEB_0F__content_view", (flagScrapbook) ? "Content Block (scrapbook)" : "Content Block")	
 		
 		//next line may need to be moved....
 		forms.WEB_0F__content_view.elements.bn_browser.html = html
