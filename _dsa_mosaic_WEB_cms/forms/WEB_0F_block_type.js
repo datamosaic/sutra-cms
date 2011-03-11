@@ -290,8 +290,11 @@ function REC_new() {
 							)
 			
 			//this should be forms.WEB_P__block_new._formName...some scoping issue
+			if ( forms.WEB_0F_block_type._formName == undefined ) {
+				return "Action cancelled"
+			}	
 			var formName = _formName
-							
+			
 			//a form picked and it exists in the solution
 			if (formName && forms[formName]) {
 				

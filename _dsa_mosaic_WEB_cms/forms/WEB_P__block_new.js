@@ -9,18 +9,34 @@ var _formName = null;
 var _moduleName = null;
 
 /**
+ * Action to close FiD
+ * 
+ * @author Data Mosaic (C)
+ *
+ * @param {JSEvent} event the event that triggered the action
+ *
+ * @properties={typeid:24,uuid:"2ACC6C8F-7A32-47A3-94E9-09681D5308AB"}
+ */
+function ACTION_ok(event) {
+	globals.CODE_hide_form = 1
+	_formName = "yyy"
+	// punch form variable value into destination form as a "property" since can't access this form's vars from other form methods
+	forms.WEB_0F_block_type._formName = _formName
+
+	application.closeFormDialog('cmsBlockNew')
+}
+
+/**
  *
  * @properties={typeid:24,uuid:"63FC4059-3825-4293-80EF-64B099DE9F60"}
  */
 function ACTION_cancel()
 {
+	globals.CODE_hide_form = 1
+	_formName = null
+	_moduleName = null
 
-globals.CODE_hide_form = 1
-_formName = null
-_moduleName = null
-
-application.closeFormDialog('cmsBlockNew')
-
+	application.closeFormDialog('cmsBlockNew')
 }
 
 /**
@@ -34,25 +50,6 @@ globals.CODE_hide_form = 0
 _formName = null
 _moduleName = null
 
-}
-
-/**
- * Action to close FiD
- * 
- * @author Data Mosaic (C)
- *
- * @param {JSEvent} event the event that triggered the action
- *
- * @properties={typeid:24,uuid:"2ACC6C8F-7A32-47A3-94E9-09681D5308AB"}
- */
-function ACTION_ok(event) {
-	
-	globals.CODE_hide_form = 1
-	
-	// punch form variable value into destination form as a "property" since can't access this form's vars from other form methods
-	forms.WEB_0F_block_type._formName = _formName
-
-	application.closeFormDialog('cmsBlockNew')
 }
 
 /**
