@@ -289,11 +289,13 @@ function REC_new() {
 								'cmsBlockNew'
 							)
 			
-			//this should be forms.WEB_P__block_new._formName...some scoping issue
+			//this should be forms.WEB_P__block_new._formName...some scoping issue (fid cancel hack...)
 			if ( forms.WEB_0F_block_type._formName == undefined ) {
 				return "Action cancelled"
 			}	
 			var formName = _formName
+			//now delete _formName (.../fid cancel hack)
+			delete forms.WEB_0F_block_type._formName
 			
 			//a form picked and it exists in the solution
 			if (formName && forms[formName]) {

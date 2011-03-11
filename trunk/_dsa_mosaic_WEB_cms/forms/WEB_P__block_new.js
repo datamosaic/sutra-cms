@@ -32,9 +32,6 @@ function ACTION_ok(event) {
 function ACTION_cancel()
 {
 	globals.CODE_hide_form = 1
-	_formName = null
-	_moduleName = null
-
 	application.closeFormDialog('cmsBlockNew')
 }
 
@@ -47,7 +44,7 @@ function FORM_on_show()
 
 globals.CODE_hide_form = 0
 _formName = null
-_moduleName = null
+//_moduleName = null
 
 }
 
