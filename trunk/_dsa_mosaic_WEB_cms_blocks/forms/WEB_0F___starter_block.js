@@ -110,7 +110,7 @@ function INIT_block() {
 function LOADER_init(fsBlockData, flagEdit, flagScrapbook) {
 	
 	// set label and load form
-	globals.WEB_block_form_loader("WEB_0F__starter_block", (flagScrapbook) ? "Starter Block (scrapbook)" : "Starter Block")		
+	globals.WEB_block_form_loader("WEB_0F___starter_block", (flagScrapbook) ? "Starter Block (scrapbook)" : "Starter Block")		
 
 }
 
