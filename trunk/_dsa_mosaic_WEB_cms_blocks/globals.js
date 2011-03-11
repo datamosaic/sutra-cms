@@ -42,11 +42,22 @@ function WEB_block_methods(formName, type) {
 }
 
 /**
+ * 
+ * loads block form into page UI
+ * 
+ * @param {String} formName Name of form to load
+ * @param {String} [bannerName] Name of page block label
+ * 
  * @properties={typeid:24,uuid:"50261E32-F8E7-4BBB-8A93-A4202554C22A"}
  */
-function WEB_block_form_loader(bannerName, formName) {
+function WEB_block_form_loader(formName, bannerName) {
 	// change banner name
-	forms.WEB_0F_page__design__content_1F_block_data.elements.lbl_banner.text = bannerName
+	if (bannerName) {
+		forms.WEB_0F_page__design__content_1F_block_data.elements.lbl_banner.text = bannerName
+	}
+	else {
+		forms.WEB_0F_page__design__content_1F_block_data.elements.lbl_banner.text = "Content"
+	}
 	
 	// load form
 	forms.WEB_0F_page__design__content_1F_block_data.elements.tab_detail.removeTabAt(2)
