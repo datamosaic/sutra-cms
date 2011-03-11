@@ -40,3 +40,16 @@ function WEB_block_methods(formName, type) {
 			return {}
 	}
 }
+
+/**
+ * @properties={typeid:24,uuid:"50261E32-F8E7-4BBB-8A93-A4202554C22A"}
+ */
+function WEB_block_form_loader(bannerName, formName) {
+	// change banner name
+	forms.WEB_0F_page__design__content_1F_block_data.elements.lbl_banner.text = bannerName
+	
+	// load form
+	forms.WEB_0F_page__design__content_1F_block_data.elements.tab_detail.removeTabAt(2)
+	forms.WEB_0F_page__design__content_1F_block_data.elements.tab_detail.addTab(forms[formName])
+	forms.WEB_0F_page__design__content_1F_block_data.elements.tab_detail.tabIndex = 2
+}

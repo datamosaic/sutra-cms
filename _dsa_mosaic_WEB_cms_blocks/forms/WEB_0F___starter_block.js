@@ -100,12 +100,18 @@ function INIT_block() {
 }
 
 /**
+ * 
+ * @param {JSFoundset} fsBlockData block data points
+ * @param {Boolean} flagEdit page version is editable or not
+ * @param {Boolean} flagScrapbook true if showing scrapbook
+ * 
  * @properties={typeid:24,uuid:"66882D66-C9FB-4C36-B2DA-10D0B467E09C"}
  */
-function LOADER_init(recBlock,flagEdit) {
+function LOADER_init(fsBlockData, flagEdit, flagScrapbook) {
 	
-	// can handle block data, configuration data, scrapbook,
-	// editable view, non-editable view, etc
+	// set label and load form
+	globals.WEB_block_form_loader((flagScrapbook) ? "Starter Block (scrapbook)" : "Starter Block", "WEB_0F__starter_block")		
+	
 }
 
 /**
