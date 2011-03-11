@@ -260,9 +260,10 @@ function BATCH_create() {
  * @requires INIT_block() method on selected block form
  * @author Data Mosaic (C)
  * 
+ * @param {boolean} flagRefresh refresh current block if true
  * @properties={typeid:24,uuid:"98C31479-A1EE-4A13-9F2F-0752680E3428"}
  */
-function REC_new() {
+function REC_new(flagRefresh) {
 	if (utils.hasRecords(forms.WEB_0F_site.foundset)) {
 		//no records created yet and interface locked
 		if (application.__parent__.solutionPrefs && solutionPrefs.design.statusLockWorkflow) {
@@ -279,42 +280,50 @@ function REC_new() {
 		}
 		// OPT 2: create block record with meta data automatically
 		else {
-			// 1) choose form to register as a block
-			application.showFormInDialog(
-								forms.WEB_P__block_new,
-								-1,-1,-1,-1,
-								' ',
-								false,
-								false,
-								'cmsBlockNew'
-							)
 			
-			//this should be forms.WEB_P__block_new._formName...some scoping issue (fid cancel hack...)
-			if ( forms.WEB_0F_block_type._formName == undefined ) {
-				return "Action cancelled"
+			if (!flagRefresh) {			
+				// 1) choose form to register as a block
+				application.showFormInDialog(
+									forms.WEB_P__block_new,
+									-1,-1,-1,-1,
+									' ',
+									false,
+									false,
+									'cmsBlockNew'
+								)	
+				//this should be forms.WEB_P__block_new._formName...some scoping issue (fid cancel hack...)
+				if ( forms.WEB_0F_block_type._formName == undefined ) {
+					return "Action cancelled"
+				}	
+				var formName = _formName
+				//now delete _formName (.../fid cancel hack)
+				delete forms.WEB_0F_block_type._formName
 			}	
-			var formName = _formName
-			//now delete _formName (.../fid cancel hack)
-			delete forms.WEB_0F_block_type._formName
+			else {
+				// use current block type record
+				var formName = form_name
+			}
+
 			
 			//a form picked and it exists in the solution
 			if (formName && forms[formName]) {
 				
-				function uniqueNameCheck(name) {  // returns true if duplicate name detected
-					var nameArray = []
-					var result = false
-					for (var i = 0; i < foundset.getSize(); i++) {
-						nameArray.push(foundset.getRecord(i + 1).block_name)
-					}
-					for (var j in nameArray) {
-						if ( nameArray[j] == name ) {
-							result = true
-							break
+				if (!flagRefresh) {	
+					function uniqueNameCheck(name) {  // returns true if duplicate name detected
+						var nameArray = []
+						var result = false
+						for (var i = 0; i < foundset.getSize(); i++) {
+							nameArray.push(foundset.getRecord(i + 1).block_name)
 						}
+						for (var j in nameArray) {
+							if ( nameArray[j] == name ) {
+								result = true
+								break
+							}
+						}
+						return result
 					}
-					return result
 				}
-		
 				// 2) get block init() and associated meta data to build data object
 				if ( forms[formName] ) {
 					//form not loaded yet, get solution model to check for method existence
@@ -336,23 +345,33 @@ function REC_new() {
 				
 		
 				// 3) create block and related data from data object
-				var block = foundset.getRecord(foundset.newRecord())
+				var block = (!flagRefresh) ? foundset.getRecord(foundset.newRecord()) : foundset.getSelectedRecord()
 				block.id_site = forms.WEB_0F_site.id_site
+				var name = obj.record.block_name
 				
 				// ensure block name is unique
-				var name = obj.record.block_name
-				var incrementer = 1
-				
-				while ( uniqueNameCheck(name) ) {
-					// increment name by 1 until unique name is found
-					name = obj.record.block_name + " " + incrementer
-					incrementer += 1
+				if (!flagRefresh) {
+					var incrementer = 1
+					while ( uniqueNameCheck(name) ) {
+						// increment name by 1 until unique name is found
+						name = obj.record.block_name + " " + incrementer
+						incrementer += 1
+					}
 				}
-				
 				block.block_name = name
 				block.block_description = obj.record.block_description
 				block.form_name = obj.record.form_name
-				block.form_name_display = obj.record.form_name_display
+				block.form_name_display = obj.record.form_name_display	
+				
+				// remove related block records
+				if (flagRefresh) {
+					web_block_type_to_block_action_client.deleteAllRecords()
+					web_block_type_to_block_action_web.deleteAllRecords()
+					web_block_type_to_block_configure.deleteAllRecords()
+					web_block_type_to_block_display.deleteAllRecords()
+					web_block_type_to_block_input.deleteAllRecords()
+					web_block_type_to_block_response.deleteAllRecords()
+				}
 				
 				// block displays
 				for (var i in obj.views) {
@@ -553,4 +572,12 @@ function FORM_on_hide(event) {
 	}
 	
 	return true
+}
+
+/**
+ * @properties={typeid:24,uuid:"A7D084E6-19CD-4BC6-93F5-6BC9930B518B"}
+ */
+function REC_refresh() {
+	// call with refresh flag
+	REC_new(true)
 }
