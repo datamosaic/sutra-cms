@@ -1,8 +1,11 @@
 addEmptyValue:1,
-customValues:"Image",
+dataProviderID1:"id_asset_type",
+dataProviderID2:"asset_type",
+dataSource:"db:/sutra_cms/web_asset_type",
 name:"WEB_asset_type",
 returnDataProviders:1,
 separator:" ",
-showDataProviders:1,
+showDataProviders:2,
 typeid:34,
-uuid:"48A848FB-45E0-4D3C-978B-91C2C9C27CE7"
+uuid:"48A848FB-45E0-4D3C-978B-91C2C9C27CE7",
+valueListType:1

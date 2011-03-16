@@ -1,0 +1,10 @@
+allowCreationRelatedRecords:true,
+deleteRelatedRecords:true,
+foreignDataSource:"db:/sutra_cms/web_asset_type_meta",
+items:[
+{foreignColumnName:"id_asset_type",primaryDataProviderID:"id_asset_type",typeid:23,uuid:"7FE58D52-4006-43E0-A986-C8CD83F13961"}
+],
+name:"web_asset_type_to_asset_type_meta",
+primaryDataSource:"db:/sutra_cms/web_asset_type",
+typeid:22,
+uuid:"1B9DDD85-43BA-4BEF-91C5-ACBD96230B92"

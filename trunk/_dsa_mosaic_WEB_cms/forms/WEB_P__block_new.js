@@ -20,8 +20,14 @@ var _moduleName = null;
 function ACTION_ok(event) {
 	globals.CODE_hide_form = 1
 	// punch form variable value into destination form as a "property" since can't access this form's vars from other form methods
-	forms.WEB_0F_block_type._formName = _formName
-
+	if (application.__parent__.solutionPrefs && solutionPrefs.config.currentFormName) {
+		forms[solutionPrefs.config.currentFormName]._formName = _formName
+	}
+	// only work for new blocks....should also work for assets
+	else {
+		forms.WEB_0F_block_type._formName = _formName
+	}
+	
 	application.closeFormDialog('cmsBlockNew')
 }
 
@@ -42,7 +48,33 @@ function ACTION_cancel()
 function FORM_on_show()
 {
 
+//update label appropriately
+if (application.__parent__.solutionPrefs && solutionPrefs.config.currentFormName) {
+	switch (solutionPrefs.config.currentFormName) {
+		case 'WEB_0F_asset_type':
+			var labelName = 'New asset type'
+			break
+		case 'WEB_0F_block_type':
+			var labelName = 'New block'
+			break
+	}
+}
+else {
+	var labelName = 'New Block'
+}
+
+elements.lbl_header.text = labelName
+
 globals.CODE_hide_form = 0
+
+if (application.__parent__.solutionPrefs && solutionPrefs.config.currentFormName) {
+	forms[solutionPrefs.config.currentFormName]._formName = null
+}
+// only work for new blocks....should also work for assets
+else {
+	forms.WEB_0F_block_type._formName = null
+}
+
 _formName = null
 //_moduleName = null
 

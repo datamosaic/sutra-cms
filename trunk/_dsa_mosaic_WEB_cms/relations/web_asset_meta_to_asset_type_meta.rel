@@ -1,0 +1,8 @@
+foreignDataSource:"db:/sutra_cms/web_asset_type_meta",
+items:[
+{foreignColumnName:"id_asset_type_meta",primaryDataProviderID:"id_asset_type_meta",typeid:23,uuid:"7C06E923-7194-4996-86FC-0D2006832DC6"}
+],
+name:"web_asset_meta_to_asset_type_meta",
+primaryDataSource:"db:/sutra_cms/web_asset_meta",
+typeid:22,
+uuid:"9C93D7F3-0A1C-4FE5-B289-B3C06C49BD8C"
