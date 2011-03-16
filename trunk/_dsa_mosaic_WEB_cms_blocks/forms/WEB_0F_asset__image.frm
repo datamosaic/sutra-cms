@@ -1,4 +1,4 @@
-dataSource:"db:/sutra_cms/web_asset",
+dataSource:"db:/sutra_cms/web_asset_group",
 items:[
 {
 anchors:6,
