@@ -52,12 +52,79 @@ function BLOCK_scale()
  */
 function BLOCK_import()
 {
+	var fileOBJ = FILE_import()
+	
+	//an error in importing of file
+	if (typeof fileOBJ == 'string') {
+		plugins.dialogs.showErrorDialog(
+					'Error',
+					fileOBJ
+			)
+	}
+	// create new asset with one file
+	else {
+		
+		//find what type of asset this is in the system
+		var fsAssetType = databaseManager.getFoundSet('sutra_cms','web_asset_type')
+		fsAssetType.find()
+		fsAssetType.form_name = controller.getName()
+		var results = fsAssetType.search()
+		
+		if (!results) {
+			plugins.dialogs.showErrorDialog(
+					'Error',
+					'The complementary asset for this block has not been registered in the sytem'
+			)
+			return "Asset not configured"
+		}
+		
+		var assetGroupRecord = foundset.getRecord(foundset.newRecord(false,true))
+		assetGroupRecord.id_site = forms.WEB_0F_site.id_site
+		assetGroupRecord.id_asset_type = fsAssetType.id_asset_type
+		
+		//create asset
+		var assetRecord = assetGroupRecord.web_asset_group_to_asset.getRecord(assetGroupRecord.web_asset_group_to_asset.newRecord(false,true))
+		
+		//add all meta data rows
+		for (var i = 1; i <= assetGroupRecord.web_asset_group_to_asset_type.web_asset_type_to_asset_type_meta.getSize(); i++) {
+			var templateRec = assetGroupRecord.web_asset_group_to_asset_type.web_asset_type_to_asset_type_meta.getRecord(i)
+			var metaRec = assetRecord.web_asset_to_asset_meta.getRecord(assetRecord.web_asset_to_asset_meta.newRecord(false,true))
+			
+			databaseManager.copyMatchingColumns(templateRec,metaRec)
+			
+			databaseManager.saveData(metaRec)
+		}
+		
+		//pseudo-record
+		var asset = forms.WEB_0F_asset_group_1F_2L_asset.REC_on_select(assetRecord)
+		
+		assetGroupRecord.asset_file_type	= fileOBJ.image_type
+		assetGroupRecord.asset_extension	= fileOBJ.image_extension
+		assetGroupRecord.asset_group		= fileOBJ.image_name
+		assetGroupRecord.thumbnail			= fileOBJ.thumbnail
+		assetRecord.asset_title				= fileOBJ.image_name
+		assetRecord.asset_size				= fileOBJ.size
+		assetRecord.asset_directory			= fileOBJ.directory
+		
+		//create image asset meta data records
+		asset.width.data_value			= fileOBJ.width
+		asset.height.data_value			= fileOBJ.height
+//		asset.thumbnail.data_value_blob	= fileOBJ.thumbnail
+		
+		databaseManager.saveData()
+	}
+}
+
+/**
+ * @properties={typeid:24,uuid:"A71662D3-E6C1-4303-AD7D-BA3A465995EA"}
+ */
+function FILE_import() {
 	// TODO: handle reading text files
 	
 	// input file	  
 	var file = plugins.file.showFileOpenDialog()
 	if ( !file ) {
-		return "Selection cancelled"
+		return //"Selection cancelled"
 	}
 	
 	var imageTemp =  plugins.images.getImage(file)
@@ -77,47 +144,67 @@ function BLOCK_import()
 	fileOBJ.height		= imageTemp.getHeight()
 	fileOBJ.width_original		= imageTemp.getWidth()
 	fileOBJ.height_original		= imageTemp.getHeight()
-	fileOBJ.directory	= "images/"
+	fileOBJ.directory	= "images/"	//TODO: this will need to be customized significantly
 	fileOBJ.rec_created = new Date()
+	fileOBJ.thumbnail	= imageTemp.resize((200*fileOBJ.width) / fileOBJ.height, 200)
+	fileOBJ.size		= plugins.file.getFileSize(file)
 	
-	/* copy image details to block data points
-	var data = forms.WEB_0F_page__design.web_page_to_block_data_by_area_by_block
-	for (var i = 0; i < data.getSize(); i++) {
-		var record = data.getRecord(i + 1)
-		record.data_value = fileOBJ[record.data_key]
-	}
-	*/
-	
-	// create image record
-	var record = forms.WEB_0F_asset.foundset.getRecord(forms.WEB_0F_asset.foundset.newRecord(true,true))
-	record.asset_type		= 'Image'
-	record.asset_title		= fileOBJ.image_name
-	record.asset_file_type	= fileOBJ.image_type
-	record.asset_size		= plugins.file.getFileSize(file)
-	record.directory		= fileOBJ.directory
-	record.asset_extension	= fileOBJ.image_extension
-	record.width			= fileOBJ.width
-	record.height			= fileOBJ.height
-	record.asset_thumbnail	= imageTemp.resize((160*fileOBJ.width) / fileOBJ.height, 160)  // scale to 40px height
-	record.id_site			= forms.WEB_0F_site.id_site
 	
 	// save file
 	// TODO: stream image upload to server from client
 	
 	var outputImage			= forms.WEB_0F_install.ACTION_get_install() +
 							'/application_server/server/webapps/ROOT/sutraCMS/sites/' +
-							forms.WEB_0F_site.directory + '/images/' + fileOBJ.image_name
-				
-	// application_server/server/webapps/ROOT/sutraCMS/sites/4community				
+							forms.WEB_0F_site.directory + '/' + fileOBJ.directory + fileOBJ.image_name
 				
 	if (forms.WEB_0F_install.ACTION_get_server() == "Windows"){
 		outputImage	= outputImage.replace(/\//g, "\\")
 	}
+	
+	//TODO: make sure the directory requested exists; if not, create directory tree until all exist before saving file
+	
 	var success = plugins.file.copyFile(file, outputImage)
 	if ( !success ) {
 		return "File save error"
 	}
 	plugins.dialogs.showInfoDialog("Image",  "Image uploaded")
+	
+	return fileOBJ
+}
+
+/**
+ * @properties={typeid:24,uuid:"F7A5F36C-526B-4922-AE88-A6251CDF39C3"}
+ */
+function ASSET_import(asset) {
+	var fileOBJ = FILE_import()
+	
+	//an error in importing of file
+	if (typeof fileOBJ == 'string') {
+		plugins.dialogs.showErrorDialog(
+					'Error',
+					fileOBJ
+			)
+	}
+	// create image asset record
+	else {
+		var assetRecord = asset.parentRec
+		var assetGroupRecord = assetRecord.web_asset_to_asset_group
+		
+		assetGroupRecord.asset_file_type	= fileOBJ.image_type
+		assetGroupRecord.asset_extension	= fileOBJ.image_extension
+		assetGroupRecord.asset_group		= fileOBJ.image_name
+		assetGroupRecord.thumbnail			= fileOBJ.thumbnail
+		assetRecord.asset_title				= fileOBJ.image_name
+		assetRecord.asset_size				= fileOBJ.size
+		assetRecord.asset_directory			= fileOBJ.directory
+		
+		//create image asset meta data records
+		asset.width.data_value			= fileOBJ.width
+		asset.height.data_value			= fileOBJ.height
+//		asset.thumbnail.data_value_blob	= fileOBJ.thumbnail
+		
+		databaseManager.saveData()
+	}
 }
 
 /**
@@ -259,7 +346,6 @@ function INIT_block() {
 	// block data points
 	block.data = {
 		image_name : 'TEXT',
-		image_type : 'TEXT',
 		image_extension : 'TEXT',
 		height : 'INTEGER',
 		width : 'INTEGER',
@@ -279,5 +365,32 @@ function INIT_block() {
 	}
 	
 	return block
+	
+}
+
+/**
+ * @properties={typeid:24,uuid:"9F8D14EA-5B89-43EE-985B-89295B33936B"}
+ */
+function INIT_asset() {
+	
+	// main data object to build
+	var asset = {}
+	
+	// block record data
+	asset.record = {
+			asset_type			: 'Image',
+			asset_description	: 'Images resource library',		
+			form_name			: 'WEB_0F_asset__image'
+		}
+	
+	
+	// block data points
+	asset.data = {
+		height : 'INTEGER',
+		width : 'INTEGER'
+//		thumbnail : 'MEDIA'
+	}
+	
+	return asset
 	
 }
