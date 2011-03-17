@@ -113,3 +113,29 @@ function ACTIONS_list() {
 		}
 	}
 }
+
+/**
+ * Handle changed data.
+ *
+ * @param {Object} oldValue old value
+ * @param {Object} newValue new value
+ * @param {JSEvent} event the event that triggered the action
+ *
+ * @returns {Boolean}
+ *
+ * @properties={typeid:24,uuid:"5D8061CC-162E-40E1-9893-481EE26F9981"}
+ */
+function FLD_data_change__flag_initial(oldValue, newValue, event) {
+	var selected = foundset.getSelectedRecord()
+	
+	for (var i = 1; i <= foundset.getSize(); i++) {
+		var record = foundset.getRecord(i)
+		record.flag_initial = 0
+	}
+	
+	selected.flag_initial = newValue
+	
+	databaseManager.saveData()
+	
+	return true
+}
