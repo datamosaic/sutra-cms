@@ -105,6 +105,7 @@ function BLOCK_import()
 		assetRecord.asset_title				= fileOBJ.image_name
 		assetRecord.asset_size				= fileOBJ.size
 		assetRecord.asset_directory			= fileOBJ.directory
+		assetRecord.flag_initial			= 1
 		
 		//create image asset meta data records
 		asset.width.data_value			= fileOBJ.width
@@ -146,7 +147,12 @@ function FILE_import() {
 	fileOBJ.height_original		= imageTemp.getHeight()
 	fileOBJ.directory	= "images/"	//TODO: this will need to be customized significantly
 	fileOBJ.rec_created = new Date()
-	fileOBJ.thumbnail	= imageTemp.resize((200*fileOBJ.width) / fileOBJ.height, 200)
+	if (fileOBJ.width > 200 || fileOBJ.height > 200) {
+		fileOBJ.thumbnail	= imageTemp.resize((200*fileOBJ.width) / fileOBJ.height, 200)
+	}
+	else {
+		fileOBJ.thumbnail	= imageTemp
+	}
 	fileOBJ.size		= plugins.file.getFileSize(file)
 	
 	
@@ -197,6 +203,7 @@ function ASSET_import(asset) {
 		assetRecord.asset_title				= fileOBJ.image_name
 		assetRecord.asset_size				= fileOBJ.size
 		assetRecord.asset_directory			= fileOBJ.directory
+		assetRecord.flag_initial			= 1
 		
 		//create image asset meta data records
 		asset.width.data_value			= fileOBJ.width
@@ -393,4 +400,44 @@ function INIT_asset() {
 	
 	return asset
 	
+}
+
+/**
+ * @properties={typeid:24,uuid:"8C344BE2-23AF-477C-B545-9257A724366F"}
+ */
+function ASSET_actions(input) {
+	//menu items
+	var valuelist = new Array(
+					'Scale image'
+				)
+	
+	//called to depress menu
+	if (input instanceof JSEvent) {
+		//set up menu with arguments
+		var menu = new Array()
+		
+		for ( var i = 0 ; i < valuelist.length ; i++ ) {
+			menu[i] = plugins.popupmenu.createMenuItem(valuelist[i],ASSET_actions)
+			
+			menu[i].setMethodArguments(i)
+			
+			if (menu[i].text == '----') {
+				menu[i].setEnabled(false)
+			}
+		}
+		
+		//popup
+		var elem = forms[input.getFormName()].elements[input.getElementName()]
+		if (elem != null) {
+			plugins.popupmenu.showPopupMenu(elem, menu)
+		}
+	}
+	//menu shown and item chosen
+	else {
+		switch( input ) {
+			case 0:	//
+				
+				break
+		}
+	}
 }
