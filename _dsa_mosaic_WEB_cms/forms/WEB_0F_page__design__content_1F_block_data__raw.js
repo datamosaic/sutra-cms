@@ -27,8 +27,8 @@ function DATA_action_list(event) {
 	
 	// input method names for block type
 	var params = [typeID]
-	var sql =	"select input_name, method_name from web_block_input where " +
-					"web_block_input.id_block_type = ?"
+	var sql =	"select input_name, method_name from web_block_action_client where " +
+					"web_block_action_client.id_block_type = ?"
 	var dataset = databaseManager.getDataSetByQuery(
 					controller.getServerName(), sql, params, -1)
 
