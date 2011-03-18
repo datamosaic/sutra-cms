@@ -26,10 +26,11 @@ function BLOCK_choose()
  *
  * @properties={typeid:24,uuid:"43C94817-C701-46EF-809A-33BE2CFC738C"}
  */
-function BLOCK_scale()
-{
+function BLOCK_scale() {
+	var fidForm = 'WEB_0F_asset__image__P_scale'
+		
 	application.showFormInDialog(
-					forms.WEB_0F_asset__image__P_scale,
+					forms[fidForm],
 					-1,-1,-1,-1,
 					"Image", 
 					false, 
@@ -43,6 +44,72 @@ function BLOCK_scale()
 	}
 	else {
 		forms.WEB_0F_page__browser__editor.FORM_on_show()
+	}
+}
+
+/**
+ * @param	{JSRecord}	[assetGroupRecord] Record that we are working with
+ * 
+ * @properties={typeid:24,uuid:"928FC2D6-1135-4C64-B923-E2E92D7E3EBC"}
+ */
+function ASSET_scale(assetGroupRecord) {
+	var fidForm = 'WEB_0F_asset__image__P_scale'
+	
+	//save outstanding data and turn autosave off
+	databaseManager.saveData()
+	databaseManager.setAutoSave(false)
+	
+	if (!assetGroupRecord) {
+		assetGroupRecord = foundset.getSelectedRecord()
+	}
+	
+	//get default asset instance
+	var srcAsset = assetGroupRecord.web_asset_group_to_asset__initial.getRecord(1)
+	
+	//duplicate default asset
+	var asset = globals.CODE_record_duplicate(srcAsset,['web_asset_to_asset_meta'],null,true)
+	asset.flag_initial = 0
+	
+	//get meta data points we need
+	var metaRows = new Object()
+	for (var i = 1; i <= asset.web_asset_to_asset_meta.getSize(); i++) {
+		var record = asset.web_asset_to_asset_meta.getRecord(i)
+		metaRows[record.data_key] = record
+	}
+	
+	//pre-fill scale FiD
+	forms[fidForm]._asset = asset
+	forms[fidForm]._metaWidth = metaRows.width
+	forms[fidForm]._metaHeight = metaRows.height
+	
+	forms[fidForm]._image_height_original = 
+	forms[fidForm]._image_height = metaRows.height.data_value
+	
+	forms[fidForm]._image_width_original = 
+	forms[fidForm]._image_width = metaRows.width.data_value
+	
+	forms[fidForm]._image_name = asset.asset_title
+	
+	//show FiD
+	forms[fidForm].controller.show()
+//	application.showFormInDialog(
+//			forms[fidForm],
+//			-1,-1,-1,-1,
+//			" ", 
+//			false, 
+//			false, 
+//			"CMS_imageScale"
+//		)
+	
+	//FiD not cancelled, get values and create new instance
+	if (asset) {
+		var fileOBJ = FILE_import(origLocation, newLocation, metaRows.width.data_value, metaRows.height.data_value)
+		
+		//save down new information
+		asset.asset_size = fileOBJ.size
+		asset.asset_directory = fileOBJ.directory
+		
+		databaseManager.saveData()
 	}
 }
 
@@ -119,13 +186,28 @@ function BLOCK_import()
 /**
  * @properties={typeid:24,uuid:"A71662D3-E6C1-4303-AD7D-BA3A465995EA"}
  */
-function FILE_import() {
-	// TODO: handle reading text files
+function FILE_import(origLocation, newLocation, newWidth, newHeight) {
+	// TODO: handle reading text files //TROY NOTE: probably not here...this is only for images
+	// TODO: get file from server if passed in
 	
-	// input file	  
-	var file = plugins.file.showFileOpenDialog()
-	if ( !file ) {
-		return //"Selection cancelled"
+	// prompt for input file
+	if (!(origLocation && newLocation)) {
+		var file = plugins.file.showFileOpenDialog()
+		if ( !file ) {
+			return //"Selection cancelled"
+		}
+	}
+	// input file specified, get it
+	else {
+		var file = plugins.file.readFile(origLocation)
+		if ( !file ) {
+			return //"Source file not found"
+		}
+		
+		if (newLocation) {
+			var newName = newLocation.split('/')
+			newName = newName[newName.length - 1]
+		}
 	}
 	
 	var imageTemp =  plugins.images.getImage(file)
@@ -138,14 +220,12 @@ function FILE_import() {
 	
 	// set image details object
 	var fileOBJ = {}
-	fileOBJ.image_name	= file.getName().replace(/ /g, "_")
+	fileOBJ.image_name	= newName || file.getName().replace(/ /g, "_")
 	fileOBJ.image_type	= file.getContentType()
 	fileOBJ.image_extension	= fileExt
-	fileOBJ.width		= imageTemp.getWidth()
-	fileOBJ.height		= imageTemp.getHeight()
-	fileOBJ.width_original		= imageTemp.getWidth()
-	fileOBJ.height_original		= imageTemp.getHeight()
-	fileOBJ.directory	= "images/"	//TODO: this will need to be customized significantly
+	fileOBJ.width		= newWidth || imageTemp.getWidth()
+	fileOBJ.height		= newHeight || imageTemp.getHeight()
+	fileOBJ.directory	= "images/"	//TODO: this will need to be customizable
 	fileOBJ.rec_created = new Date()
 	if (fileOBJ.width > 200 || fileOBJ.height > 200) {
 		fileOBJ.thumbnail	= imageTemp.resize((200*fileOBJ.width) / fileOBJ.height, 200)
@@ -153,11 +233,15 @@ function FILE_import() {
 	else {
 		fileOBJ.thumbnail	= imageTemp
 	}
-	fileOBJ.size		= plugins.file.getFileSize(file)
 	
+	//resize image if new sizes past
+	if (newWidth || newHeight) {
+		file = imageTemp.resize(newWidth || imageTemp.getWidth(), newHeight || imageTemp.getHeight())
+	}
 	
 	// save file
 	// TODO: stream image upload to server from client
+	// TODO: if file already exists at location attempting to save into, abort
 	
 	var outputImage			= forms.WEB_0F_install.ACTION_get_install() +
 							'/application_server/server/webapps/ROOT/sutraCMS/sites/' +
@@ -173,6 +257,10 @@ function FILE_import() {
 	if ( !success ) {
 		return "File save error"
 	}
+	
+	//set file size now that we know it
+	fileOBJ.size		= plugins.file.getFileSize(file)
+	
 	plugins.dialogs.showInfoDialog("Image",  "Image uploaded")
 	
 	return fileOBJ
@@ -405,7 +493,7 @@ function INIT_asset() {
 /**
  * @properties={typeid:24,uuid:"8C344BE2-23AF-477C-B545-9257A724366F"}
  */
-function ASSET_actions(input) {
+function ASSET_actions(input,assetGroupRecord) {
 	//menu items
 	var valuelist = new Array(
 					'Scale image'
@@ -436,7 +524,7 @@ function ASSET_actions(input) {
 	else {
 		switch( input ) {
 			case 0:	//
-				
+				ASSET_scale(assetGroupRecord)
 				break
 		}
 	}
