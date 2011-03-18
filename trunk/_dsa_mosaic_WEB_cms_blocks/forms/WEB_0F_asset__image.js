@@ -89,20 +89,26 @@ function ASSET_scale(assetGroupRecord) {
 	forms[fidForm]._image_width = metaRows.width.data_value
 	
 	forms[fidForm]._image_name = asset.asset_title
+	forms[fidForm]._image_directory = asset.asset_directory
 	
 	//show FiD
-	forms[fidForm].controller.show()
-//	application.showFormInDialog(
-//			forms[fidForm],
-//			-1,-1,-1,-1,
-//			" ", 
-//			false, 
-//			false, 
-//			"CMS_imageScale"
-//		)
+	application.showFormInDialog(
+			forms[fidForm],
+			-1,-1,-1,-1,
+			" ", 
+			false, 
+			false, 
+			"CMS_imageScale"
+		)
 	
 	//FiD not cancelled, get values and create new instance
 	if (asset) {
+		var baseDirectory = forms.WEB_0F_install.ACTION_get_install() +
+							'/application_server/server/webapps/ROOT/sutraCMS/sites/' +
+							forms.WEB_0F_site.directory + '/'
+		var origLocation = 	baseDirectory + srcAsset.asset_directory + srcAsset.asset_title
+		var newLocation = 	baseDirectory + asset.asset_directory + asset.asset_title
+		
 		var fileOBJ = FILE_import(origLocation, newLocation, metaRows.width.data_value, metaRows.height.data_value)
 		
 		//save down new information
@@ -190,16 +196,29 @@ function FILE_import(origLocation, newLocation, newWidth, newHeight) {
 	// TODO: handle reading text files //TROY NOTE: probably not here...this is only for images
 	// TODO: get file from server if passed in
 	
+	//root directory for this site
+	var baseDirectory = forms.WEB_0F_install.ACTION_get_install() +
+						'/application_server/server/webapps/ROOT/sutraCMS/sites/' +
+						forms.WEB_0F_site.directory + '/'
+	
 	// prompt for input file
 	if (!(origLocation && newLocation)) {
 		var file = plugins.file.showFileOpenDialog()
+		
+		var ext = file.getName().split('.')
+		//file has an extension
+		if (ext && ext.length > 1) {
+			var fileExt = ext[ext.length-1].toLowerCase()
+		}
+		
 		if ( !file ) {
 			return //"Selection cancelled"
 		}
 	}
 	// input file specified, get it
 	else {
-		var file = plugins.file.readFile(origLocation)
+		var file = plugins.file.convertToJSFile(origLocation)
+		
 		if ( !file ) {
 			return //"Source file not found"
 		}
@@ -207,16 +226,16 @@ function FILE_import(origLocation, newLocation, newWidth, newHeight) {
 		if (newLocation) {
 			var newName = newLocation.split('/')
 			newName = newName[newName.length - 1]
+			
+			var newDir = newLocation.substr(baseDirectory.length)
+			newDir = newDir.substr(0,newDir.length - newName.length)
+			
+			var ext = newName.split('.')
+			var fileExt = ext[ext.length-1].toLowerCase()
 		}
 	}
 	
 	var imageTemp =  plugins.images.getImage(file)
-	
-	var ext = file.getName().split('.')
-	//file has an extension
-	if (ext && ext.length > 1) {
-		var fileExt = ext[ext.length-1].toLowerCase()
-	}
 	
 	// set image details object
 	var fileOBJ = {}
@@ -225,8 +244,9 @@ function FILE_import(origLocation, newLocation, newWidth, newHeight) {
 	fileOBJ.image_extension	= fileExt
 	fileOBJ.width		= newWidth || imageTemp.getWidth()
 	fileOBJ.height		= newHeight || imageTemp.getHeight()
-	fileOBJ.directory	= "images/"	//TODO: this will need to be customizable
+	fileOBJ.directory	= newDir || "images/"	//TODO: this will need to be more customizable
 	fileOBJ.rec_created = new Date()
+	fileOBJ.size		= plugins.file.getFileSize(file)
 	if (fileOBJ.width > 200 || fileOBJ.height > 200) {
 		fileOBJ.thumbnail	= imageTemp.resize((200*fileOBJ.width) / fileOBJ.height, 200)
 	}
@@ -234,32 +254,27 @@ function FILE_import(origLocation, newLocation, newWidth, newHeight) {
 		fileOBJ.thumbnail	= imageTemp
 	}
 	
-	//resize image if new sizes past
+	//resize image if new sizes passed in
 	if (newWidth || newHeight) {
-		file = imageTemp.resize(newWidth || imageTemp.getWidth(), newHeight || imageTemp.getHeight())
+		file = imageTemp.resize(newWidth || imageTemp.getWidth(), newHeight || imageTemp.getHeight()).getData()
+		fileOBJ.size = file.length
 	}
 	
 	// save file
 	// TODO: stream image upload to server from client
 	// TODO: if file already exists at location attempting to save into, abort
 	
-	var outputImage			= forms.WEB_0F_install.ACTION_get_install() +
-							'/application_server/server/webapps/ROOT/sutraCMS/sites/' +
-							forms.WEB_0F_site.directory + '/' + fileOBJ.directory + fileOBJ.image_name
-				
-	if (forms.WEB_0F_install.ACTION_get_server() == "Windows"){
-		outputImage	= outputImage.replace(/\//g, "\\")
-	}
+	//location to write to if nothing passed in
+	var outputImage	=	baseDirectory + fileOBJ.directory + fileOBJ.image_name
 	
 	//TODO: make sure the directory requested exists; if not, create directory tree until all exist before saving file
 	
-	var success = plugins.file.copyFile(file, outputImage)
+	var success = plugins.file.writeFile(plugins.file.convertToJSFile(newLocation || outputImage),file)
+		//plugins.file.copyFile(file, outputImage)
+	
 	if ( !success ) {
 		return "File save error"
 	}
-	
-	//set file size now that we know it
-	fileOBJ.size		= plugins.file.getFileSize(file)
 	
 	plugins.dialogs.showInfoDialog("Image",  "Image uploaded")
 	
@@ -507,7 +522,7 @@ function ASSET_actions(input,assetGroupRecord) {
 		for ( var i = 0 ; i < valuelist.length ; i++ ) {
 			menu[i] = plugins.popupmenu.createMenuItem(valuelist[i],ASSET_actions)
 			
-			menu[i].setMethodArguments(i)
+			menu[i].setMethodArguments(i,assetGroupRecord)
 			
 			if (menu[i].text == '----') {
 				menu[i].setEnabled(false)
