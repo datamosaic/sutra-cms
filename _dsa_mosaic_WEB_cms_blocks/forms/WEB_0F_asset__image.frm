@@ -1,4 +1,4 @@
-dataSource:"db:/sutra_cms/web_asset_group",
+dataSource:"db:/sutra_cms/web_asset",
 items:[
 {
 anchors:6,
@@ -162,7 +162,7 @@ name:"WEB_0F_asset__image",
 navigatorID:"-1",
 onLoadMethodID:"-1",
 onRecordSelectionMethodID:"-1",
-onShowMethodID:"-1",
+onShowMethodID:"6DABA0D5-F686-47B6-8F76-860D5D0B0209",
 paperPrintScale:100,
 scrollbars:36,
 size:"300,170",
