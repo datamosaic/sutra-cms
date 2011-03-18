@@ -1,4 +1,9 @@
 /**
+ * @properties={typeid:35,uuid:"2DA2A657-C15E-4410-88E3-70BEE678FCA6"}
+ */
+var _image_directory = null;
+
+/**
  * @properties={typeid:35,uuid:"4EFB8CEF-D85F-4F71-A3DD-AFD1EC625FFF",variableType:-4}
  */
 var _asset = null;
@@ -92,7 +97,10 @@ function ACTION_reset() {
  * @properties={typeid:24,uuid:"7302C8F5-4ADA-47F8-B6FA-DC5669422414"}
  */
 function FLD_change_height() {
-	_metaWidth.data_value = (_image_height * _image_width_original)/_image_height_original
+	_metaHeight.data_value = _image_height
+	_metaWidth.data_value = 
+	_image_width = 
+		(_image_height * _image_width_original)/_image_height_original
 }
 
 /**
@@ -107,7 +115,10 @@ function FLD_change_name(oldValue, newValue, event) {
  * @properties={typeid:24,uuid:"89BD1453-04D7-4224-8FBB-31659B9C35B1"}
  */
 function FLD_change_width() {
-	_metaHeight.data_value = (_image_width * _image_height_original) / _image_width_original
+	_metaWidth.data_value = _image_width
+	_metaHeight.data_value = 
+	_image_height =
+		(_image_width * _image_height_original) / _image_width_original
 }
 
 /**
@@ -126,4 +137,24 @@ function FORM_on_load() {
 function FORM_on_show() {
 	//disable closing the form
 	globals.CODE_hide_form = 0	
+}
+
+/**
+ * Handle changed data.
+ *
+ * @param {Object} oldValue old value
+ * @param {Object} newValue new value
+ * @param {JSEvent} event the event that triggered the action
+ *
+ * @returns {Boolean}
+ *
+ * @properties={typeid:24,uuid:"6986C6EB-E943-4C56-8C2C-D604BF35144F"}
+ */
+function FLD_change_directory(oldValue, newValue, event) {
+	//make sure that ends in a slash
+	if (newValue && newValue.charAt(newValue.length - 1) != '/') {
+		_image_directory += '/'
+	}
+	
+	_asset.asset_directory = _image_directory
 }
