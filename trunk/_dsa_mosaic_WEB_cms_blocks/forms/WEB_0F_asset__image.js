@@ -323,6 +323,10 @@ function FILE_import(origLocation, newLocation, newWidth, newHeight) {
 		file = imageTemp.resize(newWidth || imageTemp.getWidth(), newHeight || imageTemp.getHeight()).getData()
 		fileOBJ.size = file.length
 	}
+	//convert to byte array for initial import
+	else {
+		file = file.getBytes()
+	}
 	
 	// save file
 	// TODO: stream image upload to server from client
