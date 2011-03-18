@@ -15,7 +15,7 @@ function BLOCK_choose()
 	
 	//update display
 	if (forms.WEB_0F_page.TRIGGER_mode_set() == "DESIGN") {
-		forms.WEB_0F_page__design__content_1L_block.ACTION_set_simple_display()
+		forms.WEB_0F_page__design__content_1L_block.ACTION_load_gui_mode()
 	}
 	else {
 		forms.WEB_0F_page__browser__editor.FORM_on_show()
@@ -76,12 +76,12 @@ function BLOCK_scale() {
 		)
 	
 	//FiD not cancelled, get values and create new instance
-	if (asset) {
+	if (databaseManager.getFoundSetDataProviderAsArray(assetGroupRecord.web_asset_group_to_asset, 'id_asset').indexOf(asset.id_asset) >= 0) {
 		var baseDirectory = forms.WEB_0F_install.ACTION_get_install() +
 							'/application_server/server/webapps/ROOT/sutraCMS/sites/' +
 							forms.WEB_0F_site.directory + '/'
-		var origLocation = 	baseDirectory + srcAsset.asset_directory + srcAsset.asset_title
-		var newLocation = 	baseDirectory + asset.asset_directory + asset.asset_title
+		var origLocation = 	baseDirectory + srcAsset.asset_directory + '/' + srcAsset.asset_title
+		var newLocation = 	baseDirectory + asset.asset_directory + '/' + asset.asset_title
 		
 		var fileOBJ = FILE_import(origLocation, newLocation, metaRows.width.data_value, metaRows.height.data_value)
 		
@@ -93,7 +93,7 @@ function BLOCK_scale() {
 		
 		//update display
 		if (forms.WEB_0F_page.TRIGGER_mode_set() == "DESIGN") {
-			forms.WEB_0F_page__design__content_1L_block.ACTION_set_simple_display()
+			forms.WEB_0F_page__design__content_1L_block.ACTION_load_gui_mode()
 		}
 		else {
 			forms.WEB_0F_page__browser__editor.FORM_on_show()
