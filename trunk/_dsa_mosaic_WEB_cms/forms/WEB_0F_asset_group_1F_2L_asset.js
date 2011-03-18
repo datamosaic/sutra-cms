@@ -65,53 +65,11 @@ function REC_new() {
 	var srcRecord = foundset.getSelectedRecord()
 	var dupeRecord = globals.CODE_record_duplicate(srcRecord,['web_asset_to_asset_meta'])
 	
+	//make sure duped record is not flagged as base
+	dupeRecord.flag_initial = 0
+	databaseManager.saveData(dupeRecord)
+	
 	foundset.selectRecord(dupeRecord.id_asset)
-}
-
-/**
- * @properties={typeid:24,uuid:"61F10E56-04E0-47BF-BE2A-D316C5958D8B"}
- */
-function ACTIONS_list() {
-	var input = arguments[0]
-	
-	//menu items
-	var valuelist = new Array(
-					'Something 1'
-				)
-	
-	//called to depress menu
-	if (typeof input != 'number') {
-		//set up menu with arguments
-		var menu = new Array()
-		
-		for ( var i = 0 ; i < valuelist.length ; i++ ) {
-			menu[i] = plugins.popupmenu.createMenuItem(valuelist[i],ACTIONS_list)
-			
-			menu[i].setMethodArguments(i)
-			
-			if (menu[i].text == '----') {
-				menu[i].setEnabled(false)
-			}
-		}
-		
-		//popup
-		var elem = input
-		if (elem != null) {
-			plugins.popupmenu.showPopupMenu(elem, menu)
-		}
-	}
-	//menu shown and item chosen
-	else {
-		switch( input ) {
-			case 0:	//
-				plugins.dialogs.showInfoDialog('Coming soon','Abstract out to the asset level')
-				break
-				
-			case 1:	//
-				
-				break
-		}
-	}
 }
 
 /**
