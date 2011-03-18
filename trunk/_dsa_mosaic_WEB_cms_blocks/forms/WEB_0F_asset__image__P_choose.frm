@@ -102,7 +102,7 @@ uuid:"D1220E01-E94E-4019-9B23-1680865A984E"
 {
 anchors:12,
 formIndex:10400,
-location:"178,294",
+location:"170,294",
 mediaOptions:14,
 mnemonic:"o",
 onActionMethodID:"86FC5255-7DA5-47D5-BFD6-2CA7D2DEB7DD",
@@ -119,7 +119,6 @@ uuid:"D4308EEB-B282-4B2C-83DB-868E2415D0C4"
 }
 ],
 name:"WEB_0F_asset__image__P_choose",
-namedFoundSet:"separate",
 navigatorID:"-1",
 onDeleteAllRecordsCmdMethodID:"-1",
 onDeleteRecordCmdMethodID:"-1",

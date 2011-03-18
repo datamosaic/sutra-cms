@@ -8,7 +8,7 @@ function BLOCK_choose()
 					forms.WEB_0F_asset__image__P_choose,
 					-1,-1,-1,-1,
 					"Image",
-					false,
+					true,
 					false,
 					"CMS_imageChoose"
 				)
@@ -187,8 +187,7 @@ function ASSET_scale(assetGroupRecord) {
  *
  * @properties={typeid:24,uuid:"D5507344-C123-4997-A29D-32181865B93F"}
  */
-function BLOCK_import()
-{
+function BLOCK_import() {
 	var fileOBJ = FILE_import()
 	
 	//an error in importing of file
@@ -200,7 +199,6 @@ function BLOCK_import()
 	}
 	// create new asset with one file
 	else {
-		
 		//find what type of asset this is in the system
 		var fsAssetType = databaseManager.getFoundSet('sutra_cms','web_asset_type')
 		fsAssetType.find()
@@ -215,7 +213,8 @@ function BLOCK_import()
 			return "Asset not configured"
 		}
 		
-		var assetGroupRecord = foundset.getRecord(foundset.newRecord(false,true))
+		var fsAssetGroup = databaseManager.getFoundSet('sutra_cms','web_asset_group')
+		var assetGroupRecord = fsAssetGroup.getRecord(fsAssetGroup.newRecord(false,true))
 		assetGroupRecord.id_site = forms.WEB_0F_site.id_site
 		assetGroupRecord.id_asset_type = fsAssetType.id_asset_type
 		
@@ -328,7 +327,6 @@ function FILE_import(origLocation, newLocation, newWidth, newHeight) {
 		file = file.getBytes()
 	}
 	
-	// save file
 	// TODO: stream image upload to server from client
 	// TODO: if file already exists at location attempting to save into, abort
 	
@@ -337,6 +335,7 @@ function FILE_import(origLocation, newLocation, newWidth, newHeight) {
 	
 	//TODO: make sure the directory requested exists; if not, create directory tree until all exist before saving file
 	
+	// save file
 	var success = plugins.file.writeFile(plugins.file.convertToJSFile(newLocation || outputImage),file)
 	
 	if ( !success ) {
