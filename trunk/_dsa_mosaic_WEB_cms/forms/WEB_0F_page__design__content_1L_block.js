@@ -423,7 +423,6 @@ function REC_selected()
 function ACTION_set_simple_display() {
 	var recBlock = foundset.getSelectedRecord()
 	
-	
 	//no scrapbook
 	if (recBlock && !recBlock.id_scrapbook) {
 		if (recBlock && utils.hasRecords(recBlock.web_block_to_block_type)) {
@@ -447,9 +446,10 @@ function ACTION_set_simple_display() {
 			//there is a custom form to show
 			if (hasInit) {
 				forms[recBlockType.form_name].LOADER_init(
-					recBlock.web_block_to_block_data,
-					flagEdit,
-					false)
+													recBlock.web_block_to_block_data,
+													flagEdit,
+													false
+												)
 			}
 			//something not right, show default form
 			else {
@@ -484,15 +484,16 @@ function ACTION_set_simple_display() {
 			
 			//there is a custom form to show
 			if (hasInit) {
-				var pseudoEvent = {}
+				var pseudoEvent = new Object()
 				pseudoEvent.getElementName = function() {
 						return 'lbl_mode_real'
 					}
 //				forms.WEB_TB__web_mode.ACTION_mode(pseudoEvent)
 				forms[recBlockType.form_name].LOADER_init(
-					recBlock.web_block_to_scrapbook.getRecord(1).web_scrapbook_to_scrapbook_data, 
-					flagEdit,
-					true)
+													recBlock.web_block_to_scrapbook.getRecord(1).web_scrapbook_to_scrapbook_data, 
+													flagEdit,
+													true
+												)
 			}
 			//something not right, show default form
 			else {

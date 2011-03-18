@@ -478,7 +478,7 @@ function WEB_MRKUP_link_resources(pageID, siteURL, linkType) {
 		siteDirectory = 'sutraCMS/sites/' + siteRec.directory + '/'
 	}
 	
-	//url relative to default landing point for server
+	//url relative to server root (urlrewrite affect this)
 	return siteDirectory
 }
 
