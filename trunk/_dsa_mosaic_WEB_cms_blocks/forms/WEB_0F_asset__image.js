@@ -28,22 +28,76 @@ function BLOCK_choose()
  */
 function BLOCK_scale() {
 	var fidForm = 'WEB_0F_asset__image__P_scale'
-		
-	application.showFormInDialog(
-					forms[fidForm],
-					-1,-1,-1,-1,
-					"Image", 
-					false, 
-					false, 
-					"CMS_imageScale"
-				)
 	
-	//update display
-	if (forms.WEB_0F_page.TRIGGER_mode_set() == "DESIGN") {
-		forms.WEB_0F_page__design__content_1L_block.ACTION_set_simple_display()
+	//save outstanding data and turn autosave off
+	databaseManager.saveData()
+	databaseManager.setAutoSave(false)
+	
+	if (!assetGroupRecord) {
+		assetGroupRecord = foundset.getSelectedRecord()
 	}
-	else {
-		forms.WEB_0F_page__browser__editor.FORM_on_show()
+	
+	//get default asset instance
+	var srcAsset = assetGroupRecord.web_asset_group_to_asset__initial.getRecord(1)
+	
+	//duplicate default asset
+	var asset = globals.CODE_record_duplicate(srcAsset,['web_asset_to_asset_meta'],null,true)
+	asset.flag_initial = 0
+	
+	//get meta data points we need
+	var metaRows = new Object()
+	for (var i = 1; i <= asset.web_asset_to_asset_meta.getSize(); i++) {
+		var record = asset.web_asset_to_asset_meta.getRecord(i)
+		metaRows[record.data_key] = record
+	}
+	
+	//pre-fill scale FiD
+	forms[fidForm]._asset = asset
+	forms[fidForm]._metaWidth = metaRows.width
+	forms[fidForm]._metaHeight = metaRows.height
+	
+	forms[fidForm]._image_height_original = 
+	forms[fidForm]._image_height = metaRows.height.data_value
+	
+	forms[fidForm]._image_width_original = 
+	forms[fidForm]._image_width = metaRows.width.data_value
+	
+	forms[fidForm]._image_name = asset.asset_title
+	forms[fidForm]._image_directory = asset.asset_directory
+	
+	//show FiD
+	application.showFormInDialog(
+			forms[fidForm],
+			-1,-1,-1,-1,
+			" ", 
+			false, 
+			false, 
+			"CMS_imageScale"
+		)
+	
+	//FiD not cancelled, get values and create new instance
+	if (asset) {
+		var baseDirectory = forms.WEB_0F_install.ACTION_get_install() +
+							'/application_server/server/webapps/ROOT/sutraCMS/sites/' +
+							forms.WEB_0F_site.directory + '/'
+		var origLocation = 	baseDirectory + srcAsset.asset_directory + srcAsset.asset_title
+		var newLocation = 	baseDirectory + asset.asset_directory + asset.asset_title
+		
+		var fileOBJ = FILE_import(origLocation, newLocation, metaRows.width.data_value, metaRows.height.data_value)
+		
+		//save down new information
+		asset.asset_size = fileOBJ.size
+		asset.asset_directory = fileOBJ.directory
+		
+		databaseManager.saveData()
+		
+		//update display
+		if (forms.WEB_0F_page.TRIGGER_mode_set() == "DESIGN") {
+			forms.WEB_0F_page__design__content_1L_block.ACTION_set_simple_display()
+		}
+		else {
+			forms.WEB_0F_page__browser__editor.FORM_on_show()
+		}
 	}
 }
 
@@ -329,7 +383,6 @@ function VIEW_default(obj) {
 					'alt="" />'
 	
 	// replace
-	markup = markup.replace(/<<id_block>>/ig, obj.block.id)
 	markup = markup.replace(/<<width>>/ig, obj.data.width)
 	markup = markup.replace(/<<height>>/ig, obj.data.height)
 	markup = markup.replace(/<<image_name>>/ig, obj.data.image_name)
@@ -369,15 +422,7 @@ function TOGGLE_buttons(editStatus) {
 /**
  * @properties={typeid:24,uuid:"E9062B39-C69D-4841-A367-94BDC60849FF"}
  */
-function LOADER_init(recBlock,flagEdit) {
-	//foundset with image datapoints
-	if (utils.hasRecords(recBlock.web_block_to_scrapbook)) {
-		var fsBlockData = recBlock.web_block_to_scrapbook.web_scrapbook_to_scrapbook_data
-	}
-	else {
-		var fsBlockData = recBlock.web_block_to_block_data
-	}
-	
+function LOADER_init(fsBlockData,flagEdit,flagScrapbook) {
 	//create object with all properties
 	var objImage = new Object()
 	for (var i = 1; i <= fsBlockData.getSize(); i++) {
@@ -392,23 +437,9 @@ function LOADER_init(recBlock,flagEdit) {
 					'</body></html>'
 	}
 	// image is set
-	else { 
-		var siteURL = recBlock.web_block_to_area.web_area_to_version.web_version_to_page.web_page_to_site.url
-		
-		if (siteURL) {
-			siteURL = 'http://' + siteURL
-			
-			var port = application.getServerURL()
-			port = port.split(':')
-			if (port.length > 2) {
-				siteURL += ':' + port[2]
-			}
-		}
-		else {
-			var siteDirectory = recBlock.web_block_to_area.web_area_to_version.web_version_to_page.web_page_to_site.directory
-			
-			siteURL = application.getServerURL() + '/' + siteDirectory
-		}
+	else {
+		//both the base and resource url methods will return with "sutraCMS/"; need to remove from one so no doubling
+		var siteURL = utils.stringReplace(globals.WEB_MRKUP_link_base(forms.WEB_0F_page__design__content.id_page),'sutraCMS/','') + globals.WEB_MRKUP_link_resources(forms.WEB_0F_page__design__content.id_page)
 		
 		var html = 	'<html><head></head><body>' +
 					'<img src="' + siteURL + '/' + 
@@ -417,12 +448,11 @@ function LOADER_init(recBlock,flagEdit) {
 					'</body></html>'
 	}
 	
-	forms.WEB_0F_asset__image.elements.bn_browser.html = html
-	forms.WEB_0F_page__design__content_1F_block_data.elements.tab_detail.removeTabAt(2)
-	forms.WEB_0F_page__design__content_1F_block_data.elements.tab_detail.addTab(forms.WEB_0F_asset__image)
-	forms.WEB_0F_page__design__content_1F_block_data.elements.tab_detail.tabIndex = 2
+	// load form
+	globals.WEB_block_form_loader(controller.getName(), ((flagScrapbook) ? "SCRAPBOOK: Image block" : "Image block"))
 	
 	forms.WEB_0F_asset__image.TOGGLE_buttons(flagEdit)
+	forms.WEB_0F_asset__image.elements.bn_browser.html = html
 }
 
 /**
@@ -455,13 +485,11 @@ function INIT_block() {
 	
 	// block data points
 	block.data = {
+		directory : 'TEXT',
 		image_name : 'TEXT',
-		image_extension : 'TEXT',
 		height : 'INTEGER',
 		width : 'INTEGER',
-		directory : 'TEXT',
-		height_original : 'INTEGER',
-		width_original : 'INTEGER'
+		id_asset : 'INTEGER'
 	}
 	
 	// block configure data points

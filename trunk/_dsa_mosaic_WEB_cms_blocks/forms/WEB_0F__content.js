@@ -440,7 +440,7 @@ function LOADER_init(fsBlockData, flagEdit, flagScrapbook) {
 		forms.WEB_0F__content.elements.bn_tinymce.clearHtml()
 		
 		// load form
-		globals.WEB_block_form_loader("WEB_0F__content", "Content Block")
+		globals.WEB_block_form_loader("WEB_0F__content", "Content block")
 		
 		forms.WEB_0F__content.elements.bn_tinymce.html = recBlockData.data_value
 	}
@@ -451,9 +451,8 @@ function LOADER_init(fsBlockData, flagEdit, flagScrapbook) {
 		html += '</body></html>'
 			
 		// load form
-		globals.WEB_block_form_loader("WEB_0F__content_view", (flagScrapbook) ? "Content Block (scrapbook)" : "Content Block")	
+		globals.WEB_block_form_loader("WEB_0F__content_view", ((flagScrapbook) ? "SCRAPBOOK: Content block" : "Content block"))
 		
-		//next line may need to be moved....
 		forms.WEB_0F__content_view.elements.bn_browser.html = html
 	}
 }
