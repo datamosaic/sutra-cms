@@ -156,7 +156,7 @@ function ASSET_scale(assetGroupRecord) {
 		)
 	
 	//FiD not cancelled, get values and create new instance
-	if (asset) {
+	if (databaseManager.getFoundSetDataProviderAsArray(assetGroupRecord.web_asset_group_to_asset, 'id_asset').indexOf(asset.id_asset) >= 0) {
 		var baseDirectory = forms.WEB_0F_install.ACTION_get_install() +
 							'/application_server/server/webapps/ROOT/sutraCMS/sites/' +
 							forms.WEB_0F_site.directory + '/'
