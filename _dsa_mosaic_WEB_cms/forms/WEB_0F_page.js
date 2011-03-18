@@ -428,7 +428,7 @@ function FORM_on_show(firstShow, event) {
 		}
 		else {// if (TRIGGER_mode_set() != "BROWSER") {
 			// trigger correct block simple display
-			forms.WEB_0F_page__design__content_1L_block.ACTION_set_simple_display()
+			forms.WEB_0F_page__design__content_1L_block.ACTION_load_gui_mode()
 		}
 	}
 }
