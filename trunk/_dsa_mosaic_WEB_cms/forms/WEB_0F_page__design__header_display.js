@@ -63,7 +63,7 @@ function FLD_data_change__version_selected(oldValue, newValue, event) {
 	forms.WEB_0F_page__design__content_1L_block.TOGGLE_elements(editAllow)
 	forms.WEB_0F_page__design__content_1F_block_data__textarea.TOGGLE_elements(editAllow)
 	
-	forms.WEB_0F_page__design__content_1L_block.ACTION_set_simple_display()
+	forms.WEB_0F_page__design__content_1L_block.ACTION_load_gui_mode()
 	
 	return true
 }

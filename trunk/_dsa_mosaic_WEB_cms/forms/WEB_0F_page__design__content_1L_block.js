@@ -213,19 +213,7 @@ function BLOCK_new(input) {
  *
  * @properties={typeid:24,uuid:"08244641-DE34-4206-8FD6-CD1C1332B408"}
  */
-function DIR_down()
-{
-	/*
-	 *	TITLE:		DIR_down
-	 *
-	 *	MODULE:		fw_NAV_navigation_standard
-	 *
-	 *	ABOUT:		Move navigation_item down in list
-	 *
-	 *	MODIFIED:	Aug 27, 2007 - Troy Elliott, Data Mosaic
-	 *
-	 */
-
+function DIR_down() {
 	 //if max index, exit
 	 if (foundset.getSelectedIndex() == foundset.getSize()) {
 		 return
@@ -252,7 +240,7 @@ function DIR_down()
 	 recordCurr.row_order = recordNext.row_order
 	 recordNext.row_order --
 
-	 foundset.sort('row_order asc') //need to order by id_navigation_item and category first?
+	 foundset.sort('row_order asc')
 
 	 //TODO: find issue
 	 if (recOne) {
@@ -264,19 +252,7 @@ function DIR_down()
  *
  * @properties={typeid:24,uuid:"54708E3B-2B4E-4871-B2B6-D36A7FFFB9DC"}
  */
-function DIR_up()
-{
-	/*
-	 *	TITLE:		DIR_up
-	 *
-	 *	MODULE:		fw_NAV_navigation_standard
-	 *
-	 *	ABOUT:		Move navigation_item up in list
-	 *
-	 *	MODIFIED:	Aug 27, 2007 - Troy Elliott, Data Mosaic
-	 *
-	 */
-
+function DIR_up() {
 	 //if index = 1, exit
 	 if (foundset.getSelectedIndex() == 1) {
 		 return
@@ -311,65 +287,43 @@ function FORM_onLoad()
  *
  * @properties={typeid:24,uuid:"7E59BE92-3022-4690-94E5-0AC5FD663ABA"}
  */
-function REC_delete()
-{
-
-/*
- *	TITLE    :	REC_delete
- *			  	
- *	MODULE   :	start_CRM_mosaic
- *			  	
- *	ABOUT    :	prompts to delete the currently selected record
- *			  	
- *	INPUT    :	
- *			  	
- *	OUTPUT   :	
- *			  	
- *	REQUIRES :	
- *			  	
- *	USAGE    :	REC_delete()
- *			  	
- *	MODIFIED :	July 31, 2008 -- Troy Elliott, Data Mosaic
- *			  	
- */
-
-var delRec = plugins.dialogs.showWarningDialog(
-					'Delete record',
-					'Do you really want to delete this record?',
-					'Yes',
-					'No'
-				)
-
-if (delRec == 'Yes') {
+function REC_delete() {
 	
-	var recSelect = controller.getSelectedIndex()
-
-	controller.deleteRecord()
+	var delRec = plugins.dialogs.showWarningDialog(
+						'Delete record',
+						'Do you really want to delete this record?',
+						'Yes',
+						'No'
+					)
+	
+	if (delRec == 'Yes') {
 		
-	var loop = recSelect
-	while (loop <= controller.getMaxRecordIndex()) {
-		controller.setSelectedIndex(loop)
-		row_order--
-		loop++
-	}	
-	controller.sort('row_order asc')
-	controller.setSelectedIndex(recSelect)
+		var recSelect = controller.getSelectedIndex()
 	
-	if (!utils.hasRecords(foundset)) {
-		REC_selected()
+		controller.deleteRecord()
+			
+		var loop = recSelect
+		while (loop <= controller.getMaxRecordIndex()) {
+			controller.setSelectedIndex(loop)
+			row_order--
+			loop++
+		}
+		
+		controller.sort('row_order asc')
+		controller.setSelectedIndex(recSelect)
+		
+		if (!utils.hasRecords(foundset)) {
+			REC_selected()
+		}
+		
 	}
-	
-}
-
-
 }
 
 /**
  *
  * @properties={typeid:24,uuid:"BFBF2B28-E3BA-4CF7-807D-DADFF29D20F3"}
  */
-function REC_selected()
-{
+function REC_selected() {
 	if (utils.hasRecords(foundset)) {
 		// set relation
 		globals.WEB_page_id_block_selected = id_block
@@ -405,12 +359,12 @@ function REC_selected()
 		forms.WEB_0F_page__design__content_1F_block_data.elements.btn_data_actions.visible = false
 	}
 	
-	//simple view
+	//gui view
 	if (globals.WEB_page_mode == 2) {
 		//switch tabpanel based on type of form
-		ACTION_set_simple_display()
+		ACTION_load_gui_mode()
 	}
-	//complex view
+	//data view
 	else {
 		forms.WEB_0F_page__design__content_1F_block_data.elements.tab_detail.tabIndex = 1
 	}
@@ -420,7 +374,7 @@ function REC_selected()
  *
  * @properties={typeid:24,uuid:"39CC4D1D-2547-4F23-85E9-63C434B95F70"}
  */
-function ACTION_set_simple_display() {
+function ACTION_load_gui_mode() {
 	var recBlock = foundset.getSelectedRecord()
 	
 	//no scrapbook
