@@ -17,7 +17,7 @@ function ACTIONS_list(event) {
 	if (utils.hasRecords(web_asset_group_to_asset_type) && web_asset_group_to_asset_type.form_name &&
 		solutionModel.getForm(web_asset_group_to_asset_type.form_name).getFormMethod('ASSET_actions')) {
 		
-		forms[web_asset_group_to_asset_type.form_name].ASSET_actions(event)
+		forms[web_asset_group_to_asset_type.form_name].ASSET_actions(event,foundset.getSelectedRecord())
 	}
 	else {
 		plugins.dialogs.showInformationDialog(
