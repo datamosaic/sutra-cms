@@ -160,8 +160,8 @@ function ASSET_scale(assetGroupRecord) {
 		var baseDirectory = forms.WEB_0F_install.ACTION_get_install() +
 							'/application_server/server/webapps/ROOT/sutraCMS/sites/' +
 							forms.WEB_0F_site.directory + '/'
-		var origLocation = 	baseDirectory + srcAsset.asset_directory + srcAsset.asset_title
-		var newLocation = 	baseDirectory + asset.asset_directory + asset.asset_title
+		var origLocation = 	baseDirectory + srcAsset.asset_directory + '/' + srcAsset.asset_title
+		var newLocation = 	baseDirectory + asset.asset_directory + '/' + asset.asset_title
 		
 		var fileOBJ = FILE_import(origLocation, newLocation, metaRows.width.data_value, metaRows.height.data_value)
 		
@@ -170,6 +170,9 @@ function ASSET_scale(assetGroupRecord) {
 		asset.asset_directory = fileOBJ.directory
 		
 		databaseManager.saveData()
+		
+		//select correct record
+		forms.WEB_0F_asset_group_1F_2L_asset.foundset.selectRecord(asset.id_asset)
 	}
 }
 
@@ -282,7 +285,7 @@ function FILE_import(origLocation, newLocation, newWidth, newHeight) {
 			newName = newName[newName.length - 1]
 			
 			var newDir = newLocation.substr(baseDirectory.length)
-			newDir = newDir.substr(0,newDir.length - newName.length)
+			newDir = newDir.substr(0,newDir.length - newName.length - 1)
 			
 			var ext = newName.split('.')
 			var fileExt = ext[ext.length-1].toLowerCase()
@@ -298,7 +301,7 @@ function FILE_import(origLocation, newLocation, newWidth, newHeight) {
 	fileOBJ.image_extension	= fileExt
 	fileOBJ.width		= newWidth || imageTemp.getWidth()
 	fileOBJ.height		= newHeight || imageTemp.getHeight()
-	fileOBJ.directory	= newDir || "images/"	//TODO: this will need to be more customizable
+	fileOBJ.directory	= newDir || "images"	//TODO: this will need to be more customizable
 	fileOBJ.rec_created = new Date()
 	fileOBJ.size		= plugins.file.getFileSize(file)
 	if (fileOBJ.width > 200 || fileOBJ.height > 200) {
@@ -319,12 +322,11 @@ function FILE_import(origLocation, newLocation, newWidth, newHeight) {
 	// TODO: if file already exists at location attempting to save into, abort
 	
 	//location to write to if nothing passed in
-	var outputImage	=	baseDirectory + fileOBJ.directory + fileOBJ.image_name
+	var outputImage	=	baseDirectory + fileOBJ.directory + '/' + fileOBJ.image_name
 	
 	//TODO: make sure the directory requested exists; if not, create directory tree until all exist before saving file
 	
 	var success = plugins.file.writeFile(plugins.file.convertToJSFile(newLocation || outputImage),file)
-		//plugins.file.copyFile(file, outputImage)
 	
 	if ( !success ) {
 		return "File save error"

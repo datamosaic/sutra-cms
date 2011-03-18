@@ -152,8 +152,8 @@ function FORM_on_show() {
  */
 function FLD_change_directory(oldValue, newValue, event) {
 	//make sure that ends in a slash
-	if (newValue && newValue.charAt(newValue.length - 1) != '/') {
-		_image_directory += '/'
+	if (newValue && newValue.charAt(newValue.length - 1) == '/') {
+		_image_directory = newValue.substring(0, newValue.length - 1)
 	}
 	
 	_asset.asset_directory = _image_directory
