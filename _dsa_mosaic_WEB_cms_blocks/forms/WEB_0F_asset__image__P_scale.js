@@ -100,7 +100,7 @@ function FLD_change_height() {
 	_metaHeight.data_value = _image_height
 	_metaWidth.data_value = 
 	_image_width = 
-		(_image_height * _image_width_original)/_image_height_original
+		utils.numberFormat(((_image_height * _image_width_original)/_image_height_original),'#')
 }
 
 /**
@@ -118,7 +118,7 @@ function FLD_change_width() {
 	_metaWidth.data_value = _image_width
 	_metaHeight.data_value = 
 	_image_height =
-		(_image_width * _image_height_original) / _image_width_original
+		utils.numberFormat(((_image_width * _image_height_original) / _image_width_original),'#')
 }
 
 /**
