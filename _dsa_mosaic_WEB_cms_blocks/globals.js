@@ -60,7 +60,22 @@ function WEB_block_form_loader(formName, bannerName) {
 	}
 	
 	// load form
-	forms.WEB_0F_page__design__content_1F_block_data.elements.tab_detail.removeTabAt(2)
-	forms.WEB_0F_page__design__content_1F_block_data.elements.tab_detail.addTab(forms[formName])
-	forms.WEB_0F_page__design__content_1F_block_data.elements.tab_detail.tabIndex = 2
+	if (forms.WEB_0F_page__design__content_1F_block_data.elements.tab_detail.getTabFormNameAt(2) != formName) {
+		forms.WEB_0F_page__design__content_1F_block_data.elements.tab_detail.removeTabAt(2)
+		forms.WEB_0F_page__design__content_1F_block_data.elements.tab_detail.addTab(forms[formName])
+		forms.WEB_0F_page__design__content_1F_block_data.elements.tab_detail.tabIndex = 2
+	}
+}
+
+/**
+ * @properties={typeid:24,uuid:"2936E71A-50BF-4F06-A427-09EE918F273C"}
+ */
+function WEB_block_form_refresh() {
+	//update display
+	if (globals.WEB_page_mode == 2) {
+		forms.WEB_0F_page__design__content_1L_block.ACTION_load_gui_mode()
+	}
+	else if (globals.WEB_page_mode == 3) {
+		forms.WEB_0F_page__browser__editor.FORM_on_show()
+	}
 }

@@ -2,24 +2,21 @@
  *
  * @properties={typeid:24,uuid:"FFE14AC8-BECE-4D27-9AC1-0EE22A0032FF"}
  */
-function BLOCK_choose()
-{	//TODO: remember that the id_asset punched down is of the default
+function BLOCK_choose() {
+	//show image chooser
 	application.showFormInDialog(
 					forms.WEB_0F_asset__image__P_choose,
 					-1,-1,-1,-1,
-					"Image",
+					" ",
 					true,
 					false,
 					"CMS_imageChoose"
 				)
 	
+	//save down of what chosen happen in forms.WEB_0F_asset__image__P_choose.ACTION_ok
+	
 	//update display
-	if (forms.WEB_0F_page.TRIGGER_mode_set() == "DESIGN") {
-		forms.WEB_0F_page__design__content_1L_block.ACTION_load_gui_mode()
-	}
-	else {
-		forms.WEB_0F_page__browser__editor.FORM_on_show()
-	}
+	globals.WEB_block_form_refresh()
 }
 
 /**
@@ -102,12 +99,7 @@ function BLOCK_scale() {
 			databaseManager.saveData()
 			
 			//update display
-			if (globals.WEB_page_mode == 2) {
-				forms.WEB_0F_page__design__content_1L_block.ACTION_load_gui_mode()
-			}
-			else if (globals.WEB_page_mode == 3) {
-				forms.WEB_0F_page__browser__editor.FORM_on_show()
-			}
+			globals.WEB_block_form_refresh()
 		}
 	}
 }
@@ -249,6 +241,8 @@ function BLOCK_import() {
 //		asset.thumbnail.data_value_blob	= fileOBJ.thumbnail
 		
 		databaseManager.saveData()
+		
+		//select the file just imported
 	}
 }
 
