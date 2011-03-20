@@ -643,7 +643,9 @@ function REC_newFromTheme(progress) {
 			for (var j in _themes[_themesSelected].editables[i] ) {
 				// 3 create editable area record
 				if ( !_flagRefresh ) {
-					var editable = layout.web_layout_to_editable.getRecord(layout.web_layout_to_editable.newRecord())	
+					var editable = layout.web_layout_to_editable.getRecord(layout.web_layout_to_editable.newRecord())
+					editable.editable_name = _themes[_themesSelected].editables[i][j]
+					editable.row_order = order++
 				}
 				else {
 					// see if editable with current name
@@ -652,21 +654,25 @@ function REC_newFromTheme(progress) {
 					var count = layout.web_layout_to_editable.search()
 					if ( count == 1 ) {
 						var editable = layout.web_layout_to_editable.getRecord(1)
-						layout.web_layout_to_editable.loadAllRecords()
+						editable.editable_name = _themes[_themesSelected].editables[i][j]
 					}
 					else {
 						var editable = layout.web_layout_to_editable.getRecord(layout.web_layout_to_editable.newRecord())
+						editable.editable_name = _themes[_themesSelected].editables[i][j]
+						editable.row_order = order++
 					}
+					layout.web_layout_to_editable.loadAllRecords()
 				}
-				editable.editable_name = _themes[_themesSelected].editables[i][j]
-				editable.row_order = order++
 				databaseManager.saveData(editable)                                                               
 			}
+			var order = layout.web_layout_to_editable.getSize()
 			 for ( k in _themes[_themesSelected].includes[i] ) {
 				// 4 create editable area record for all include files
 				for ( m in _elements[_themesSelected].editables[_themes[_themesSelected].includes[i][k] + ".jspf"]) {
 					if ( !_flagRefresh ) {
 						var editable = layout.web_layout_to_editable.getRecord(layout.web_layout_to_editable.newRecord())
+						editable.editable_name = _elements[_themesSelected].editables[_themes[_themesSelected].includes[i][k] + ".jspf"][m]
+						editable.row_order = order++
 					}
 					else {
 						// see if editable with current name
@@ -675,14 +681,16 @@ function REC_newFromTheme(progress) {
 						var count = layout.web_layout_to_editable.search()
 						if ( count == 1 ) {
 							var editable = layout.web_layout_to_editable.getRecord(1)
-							layout.web_layout_to_editable.loadAllRecords()
+							editable.editable_name = _elements[_themesSelected].editables[_themes[_themesSelected].includes[i][k] + ".jspf"][m]
 						}
 						else {
 							var editable = layout.web_layout_to_editable.getRecord(layout.web_layout_to_editable.newRecord())
+							editable.editable_name = _elements[_themesSelected].editables[_themes[_themesSelected].includes[i][k] + ".jspf"][m]
+							editable.row_order = order++
 						}
+						layout.web_layout_to_editable.loadAllRecords()
 					}
-					editable.editable_name = _elements[_themesSelected].editables[_themes[_themesSelected].includes[i][k] + ".jspf"][m]
-					editable.row_order = order++
+					databaseManager.saveData(editable) 
 				}
 			}
 			// sort editables by row_order
