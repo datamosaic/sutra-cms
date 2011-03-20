@@ -612,6 +612,7 @@ function REC_newFromTheme(progress) {
 			globals.TRIGGER_progressbar_start(0, "Creating records...", null, 0, size)
 		}		
 		
+		var layoutList = []
 		var counter = 0
 		for (var i in  _themes[_themesSelected].editables ) {			
 			// update progress monitor
@@ -639,10 +640,12 @@ function REC_newFromTheme(progress) {
 			layout.layout_name = i.split(".")[0]
 			if (i == "default.jsp") layout.flag_default = 1                                  
 			databaseManager.saveData(layout)
+			layoutList.push(layout.layout_name)
+			
+			// 3 create editable area record			
 			var editablesList = []
 			var order = 1
 			for (var j in _themes[_themesSelected].editables[i] ) {
-				// 3 create editable area record
 				if ( !_flagRefresh ) {
 					var editable = layout.web_layout_to_editable.getRecord(layout.web_layout_to_editable.newRecord())
 					editable.editable_name = _themes[_themesSelected].editables[i][j]
@@ -668,7 +671,7 @@ function REC_newFromTheme(progress) {
 				editablesList.push(_themes[_themesSelected].editables[i][j])
 			}
 			var order = layout.web_layout_to_editable.getSize() + 1
-			 for ( k in _themes[_themesSelected].includes[i] ) {
+			for ( k in _themes[_themesSelected].includes[i] ) {
 				// 4 create editable area record for all include files
 				for ( m in _elements[_themesSelected].editables[_themes[_themesSelected].includes[i][k] + ".jspf"]) {
 					if ( !_flagRefresh ) {
@@ -696,8 +699,10 @@ function REC_newFromTheme(progress) {
 					databaseManager.saveData(editable) 
 				}
 			}
-			// remove editables no longer appearing in theme layout when refreshing
+			// remove editables no longer appearing in theme when refreshing
 			if ( _flagRefresh ) {
+				
+				// remove editables
 				for (var l = 0; l < layout.web_layout_to_editable.getSize(); l++) {
 					var tempEditable = layout.web_layout_to_editable.getRecord(l + 1)
 					if ( editablesList.indexOf(tempEditable.editable_name, 0) == -1 ) {
@@ -717,6 +722,18 @@ function REC_newFromTheme(progress) {
 			// sort editables by row_order
 			forms.WEB_0F_theme_1L_layout.web_layout_to_editable.sort( "row_order asc" )
 		}
+		
+		// remove editables no longer appearing in theme when refreshing
+		if ( _flagRefresh ) {
+			for (var l = 0; l < theme.web_theme_to_layout.getSize(); l++) {
+				var tempLayout = theme.web_theme_to_layout.getRecord(l + 1)
+				if ( layoutList.indexOf(tempLayout.layout_name, 0) == -1) {
+					tempLayout.foundset.deleteRecord(l + 1)
+					l--
+				}
+			}		
+		}
+		
 		// stop progress bar
 		if ( application.__parent__.solutionPrefs ) {	
 			globals.TRIGGER_progressbar_stop()	
