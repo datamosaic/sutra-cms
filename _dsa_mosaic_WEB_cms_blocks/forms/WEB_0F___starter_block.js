@@ -62,7 +62,7 @@ function INIT_block() {
 	
 	// block record data
 	block.record = {
-			block_name			: 'Starter block',
+	        block_name			: 'Starter block',
 			block_description	: 'Boiler template for creating a custom block',		
 			form_name			: 'WEB_0F___starter_block',
 			form_name_display	: 'WEB_0F___starter_block'
