@@ -201,7 +201,7 @@ function ACTION_add_token(inputID,pageRec) {
  * @properties={typeid:24,uuid:"1134822A-1145-4653-AFC5-9C08C58EDFDC"}
  */
 function ACTION_insert_image(event) {
-	forms.WEB_0F_asset__image__P_choose.linkImage = 1
+	forms.WEB_0F_asset__image__P_choose._imageLink = 1
 	
 	application.showFormInDialog(
 				forms.WEB_0F_asset__image__P_choose,
@@ -213,15 +213,15 @@ function ACTION_insert_image(event) {
 			)
 	
 	//something chosen, insert image link at cursor location
-	if (forms.WEB_0F_asset__image__P_choose.recImage) {
+	if (forms.WEB_0F_asset__image__P_choose._imageChosen) {
 		//wrap currently selected text with link
 		var elem = elements.fld_data_value
 	
-		var recImage = forms.WEB_0F_asset__image__P_choose.recImage
-		var token = "{DS:IMG_" + recImage.id_asset + "}"
+		var _imageChosen = forms.WEB_0F_asset__image__P_choose._imageChosen
+		var token = "{DS:IMG_" + _imageChosen.id_asset + "}"
 		
 		//insert image at current location
-		var html = '<img src="' + token + '" width="' + recImage.width + '" height="' + recImage.height + '" alt="' + recImage.asset_title +'">'
+		var html = '<img src="' + token + '" width="' + _imageChosen.width + '" height="' + _imageChosen.height + '" alt="' + _imageChosen.asset_title +'">'
 		
 		//length of tag
 		var offset = html.length
