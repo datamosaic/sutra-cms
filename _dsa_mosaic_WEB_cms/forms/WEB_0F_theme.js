@@ -639,7 +639,8 @@ function REC_newFromTheme(progress) {
 			layout.layout_name = i.split(".")[0]
 			if (i == "default.jsp") layout.flag_default = 1                                  
 			databaseManager.saveData(layout)
-			var order = 0
+			var editablesList = []
+			var order = 1
 			for (var j in _themes[_themesSelected].editables[i] ) {
 				// 3 create editable area record
 				if ( !_flagRefresh ) {
@@ -663,9 +664,10 @@ function REC_newFromTheme(progress) {
 					}
 					layout.web_layout_to_editable.loadAllRecords()
 				}
-				databaseManager.saveData(editable)                                                               
+				databaseManager.saveData(editable) 
+				editablesList.push(_themes[_themesSelected].editables[i][j])
 			}
-			var order = layout.web_layout_to_editable.getSize()
+			var order = layout.web_layout_to_editable.getSize() + 1
 			 for ( k in _themes[_themesSelected].includes[i] ) {
 				// 4 create editable area record for all include files
 				for ( m in _elements[_themesSelected].editables[_themes[_themesSelected].includes[i][k] + ".jspf"]) {
@@ -689,10 +691,29 @@ function REC_newFromTheme(progress) {
 							editable.row_order = order++
 						}
 						layout.web_layout_to_editable.loadAllRecords()
+						editablesList.push(_elements[_themesSelected].editables[_themes[_themesSelected].includes[i][k] + ".jspf"][m])
 					}
 					databaseManager.saveData(editable) 
 				}
 			}
+			// remove editables no longer appearing in theme layout when refreshing
+			if ( _flagRefresh ) {
+				for (var l = 0; l < layout.web_layout_to_editable.getSize(); l++) {
+					var tempEditable = layout.web_layout_to_editable.getRecord(l + 1)
+					if ( editablesList.indexOf(tempEditable.editable_name, 0) == -1 ) {
+						tempEditable.foundset.deleteRecord(l + 1)
+						var loop = l + 1
+						while (loop <= layout.web_layout_to_editable.getSize()) {
+							var nextRec = layout.web_layout_to_editable.getRecord(loop)				
+							nextRec.row_order--
+							loop++
+						}						
+						l--
+					}
+				}			
+			}
+			
+			
 			// sort editables by row_order
 			forms.WEB_0F_theme_1L_layout.web_layout_to_editable.sort( "row_order asc" )
 		}
