@@ -464,6 +464,7 @@ function REC_newFromTheme(progress) {
 		if ( !_flagRefresh ) {  // user choose theme
 			var input =	plugins.dialogs.showSelectDialog("Themes", "Choose a theme to register", themes)
 			if ( !input ) {
+				globals.TRIGGER_progressbar_stop()
 				return "No theme selected"
 			}
 			// can't import theme with same name
@@ -472,6 +473,7 @@ function REC_newFromTheme(progress) {
 			if ( names.lastIndexOf(input, 0) > -1 ) {
 				plugins.dialogs.showErrorDialog(
 					"Error",  "Theme with same name not allowed")
+				globals.TRIGGER_progressbar_stop()
 				return "Duplicate theme"
 			}
 		}
@@ -481,6 +483,7 @@ function REC_newFromTheme(progress) {
 			}
 			else {
 				plugins.dialogs.showErrorDialog( "Error", "No matching theme found")
+				globals.TRIGGER_progressbar_stop()
 				return "No matching theme"
 			}
 		}
@@ -526,6 +529,7 @@ function REC_newFromTheme(progress) {
 		}
 		else {
 			plugins.dialogs.showErrorDialog( "Error", "No theme files defined in selected theme")
+			globals.TRIGGER_progressbar_stop()
 			return "No theme files defined in selected theme"
 		}		
 	}
