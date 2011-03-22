@@ -107,7 +107,7 @@ function REC_new() {
 		databaseManager.setAutoSave(false)
 		controller.newRecord()
 		id_site = forms.WEB_0F_site.id_site
-		var assetID = id_asset_group
+		var assetID = id_asset
 		
 		//prompt for type of asset
 		application.showFormInDialog(
@@ -120,40 +120,41 @@ function REC_new() {
 				)
 		
 		//new record not cancelled
-		if (assetID == id_asset_group) {
+		if (assetID == id_asset) {
 			//create asset
-			var assetRecord = web_asset_group_to_asset.getRecord(web_asset_group_to_asset.newRecord(false,true))
+			var assetRecord = web_asset_to_asset_instance.getRecord(web_asset_to_asset_instance.newRecord(false,true))
+			
+			//get template for this type of asset
+			var template = globals.WEB_asset_map(asset_type)
 			
 			//add all meta data rows
-			for (var i = 1; i <= web_asset_group_to_asset_type.web_asset_type_to_asset_type_meta.getSize(); i++) {
-				var templateRec = web_asset_group_to_asset_type.web_asset_type_to_asset_type_meta.getRecord(i)
-				var metaRec = assetRecord.web_asset_to_asset_meta.getRecord(assetRecord.web_asset_to_asset_meta.newRecord(false,true))
+			for (var i in template.meta) {
+				var metaRec = assetRecord.web_asset_instance_to_asset_instance_meta.getRecord(assetRecord.web_asset_instance_to_asset_instance_meta.newRecord(false,true))
 				
-				databaseManager.copyMatchingColumns(templateRec,metaRec)
+				metaRec.data_key = i
+				metaRec.data_type = template.meta[i]
 				
 				databaseManager.saveData(metaRec)
 			}
 			
 			//pseudo-record
-			var assetMeta = forms.WEB_0F_asset_group_1F_2L_asset.REC_on_select(assetRecord)
+			var assetMeta = forms.WEB_0F_asset_1F_2L_asset_instance.REC_on_select(assetRecord)
 			
-			var formName = web_asset_group_to_asset_type.form_name
-			
-			//check to see if this form is available and we can run a BLOCK_import method on it
-			if ( formName && forms[formName] ) {
+			//check to see if this form is available and we can run an ASSET_import method on it
+			if ( template.formName && forms[template.formName] ) {
 				//form not loaded yet, get solution model to check for method existence
-				if (forms[formName] == '<Form ' + formName + ' not loaded yet>' && solutionModel.getForm(formName).getFormMethod('ASSET_import')) {
+				if (forms[template.formName] == '<Form ' + template.formName + ' not loaded yet>' && solutionModel.getForm(template.formName).getFormMethod('ASSET_import')) {
 					var hasInit = true
 				}
 				//check for method existence on form
-				else if (forms[formName].ASSET_import) {
+				else if (forms[template.formName].ASSET_import) {
 					var hasInit = true
 				}
 				
 				//show correct FiD for chosen asset type
 				if ( hasInit ) {
-					forms[formName].ASSET_import(assetMeta)
-					foundset.selectRecord(assetRecord.id_asset_group)
+					forms[template.formName].ASSET_import(assetMeta)
+					foundset.selectRecord(assetRecord.id_asset)
 				}
 				else {
 					plugins.dialogs.showErrorDialog( "Error", "Selected block does not have a ASSET_import method")
@@ -222,42 +223,4 @@ function FORM_on_hide(event) {
 	}
 	
 	return true
-}
-
-/**
- * Handle changed data.
- *
- * @param {Object} oldValue old value
- * @param {Object} newValue new value
- * @param {JSEvent} event the event that triggered the action
- *
- * @returns {Boolean}
- *
- * @properties={typeid:24,uuid:"AAB87F8E-63AD-4EA9-8331-1F2F24482CDD"}
- */
-function FLD_data_change__asset_type(oldValue, newValue, event) {
-	//if there are already meta records, prompt that they will be overwritten
-	if (utils.hasRecords(web_asset_to_asset_meta)) {
-		var input = plugins.dialogs.showQuestionDialog(
-					'Existing records',
-					'There are existing meta records.  Overwrite?',
-					'Yes',
-					'No'
-			)
-	}
-	else {
-		input = 'Yes'
-	}
-	
-	if (input == 'Yes') {
-		web_asset_to_asset_meta.deleteAllRecords()
-		
-		for (var i = 1; i <= web_asset_to_asset_type.web_asset_type_to_asset_type_meta.getSize(); i++) {
-			var templateRec = web_asset_to_asset_type.web_asset_type_to_asset_type_meta.getRecord()
-			
-			var metaRec = web_asset_to_asset_meta.getRecord(web_asset_to_asset_meta.newRecord(false,true))
-			
-			databaseManager.copyMatchingColumns(templateRec,metaRec)
-		}
-	}
 }

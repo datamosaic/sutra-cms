@@ -1,4 +1,4 @@
-dataSource:"db:/sutra_cms/web_asset",
+dataSource:"db:/sutra_cms/web_asset_instance",
 items:[
 {
 height:60,
@@ -64,6 +64,7 @@ uuid:"C7103E22-B566-4825-928C-E3F1F4C490CF"
 borderType:"SpecialMatteBorder,0.0,0.0,1.0,0.0,#000000,#000000,#999999,#000000,0.0,1.0",
 dataProviderID:"flag_initial",
 displayType:4,
+editable:false,
 formIndex:10600,
 location:"360,30",
 onDataChangeMethodID:"5D8061CC-162E-40E1-9893-481EE26F9981",
@@ -76,7 +77,7 @@ uuid:"F1C0C217-A86D-4F62-9B4C-189A2CC2404E",
 valuelistID:"4f6370be-de55-4992-a24f-57a43c0b25c3"
 }
 ],
-name:"WEB_0F_asset_group_1F_2L_asset",
+name:"WEB_0F_asset_1F_2L_asset_instance",
 onRecordSelectionMethodID:"0A274E4B-8669-4287-97D5-81A3CB5FBC75",
 onShowMethodID:"-1",
 paperPrintScale:100,

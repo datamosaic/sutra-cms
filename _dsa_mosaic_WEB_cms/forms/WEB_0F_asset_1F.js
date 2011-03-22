@@ -14,10 +14,11 @@ var _license_dsa_mosaic_WEB_cms = 'Module: _dsa_mosaic_WEB_cms \
  */
 function ACTIONS_list(event) {
 	//hand off to asset's actions
-	if (utils.hasRecords(web_asset_group_to_asset_type) && web_asset_group_to_asset_type.form_name &&
-		solutionModel.getForm(web_asset_group_to_asset_type.form_name).getFormMethod('ASSET_actions')) {
+	var template = globals.WEB_asset_map(asset_type)
+	
+	if (template && template.formName && solutionModel.getForm(template.formName).getFormMethod('ASSET_actions')) {
 		
-		forms[web_asset_group_to_asset_type.form_name].ASSET_actions(event,foundset.getSelectedRecord())
+		forms[template.formName].ASSET_actions(event,foundset.getSelectedRecord())
 	}
 	else {
 		plugins.dialogs.showInformationDialog(

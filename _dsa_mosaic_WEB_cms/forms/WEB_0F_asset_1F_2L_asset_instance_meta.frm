@@ -1,4 +1,4 @@
-dataSource:"db:/sutra_cms/web_asset_meta",
+dataSource:"db:/sutra_cms/web_asset_instance_meta",
 items:[
 {
 borderType:"SpecialMatteBorder,0.0,0.0,1.0,0.0,#000000,#000000,#999999,#000000,0.0,1.0",
@@ -84,7 +84,7 @@ typeid:7,
 uuid:"F92A816A-6965-4BBD-8542-FB7840230777"
 }
 ],
-name:"WEB_0F_asset_group_1F_2L_asset_meta",
+name:"WEB_0F_asset_1F_2L_asset_instance_meta",
 onRecordSelectionMethodID:"-1",
 onShowMethodID:"-1",
 paperPrintScale:100,

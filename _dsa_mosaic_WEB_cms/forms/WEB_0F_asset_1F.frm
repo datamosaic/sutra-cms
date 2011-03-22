@@ -1,4 +1,4 @@
-dataSource:"db:/sutra_cms/web_asset_group",
+dataSource:"db:/sutra_cms/web_asset",
 items:[
 {
 anchors:7,
@@ -35,8 +35,8 @@ items:[
 {
 containsFormID:"8A3EFA56-5BBE-4781-B56A-0BE9181E16B6",
 location:"10,28",
-relationName:"web_asset_group_to_asset",
-text:"WEB_0F_asset_group_1F_2L_asset",
+relationName:"web_asset_to_asset_instance",
+text:"WEB_0F_asset_1F_2L_asset_instance",
 typeid:15,
 uuid:"6BE240F7-C651-4C96-B697-A8CF8A221B2C"
 }
@@ -96,8 +96,8 @@ items:[
 {
 containsFormID:"32552F43-B650-4362-B3DC-0518C5F0D82B",
 location:"217,28",
-relationName:"web_asset_group_to_asset.web_asset_to_asset_meta",
-text:"WEB_0F_asset_group_1F_2L_asset_meta",
+relationName:"web_asset_to_asset_instance.web_asset_instance_to_asset_instance_meta",
+text:"WEB_0F_asset_1F_2L_asset_instance_meta",
 typeid:15,
 uuid:"40097AA3-AB16-4343-8E39-061A0B5AF31C"
 }
@@ -148,7 +148,7 @@ typeid:7,
 uuid:"FE9A4BBD-6588-4EAE-82B5-7306F86FE868"
 }
 ],
-name:"WEB_0F_asset_group_1F",
+name:"WEB_0F_asset_1F",
 navigatorID:"-1",
 onHideMethodID:"068440B5-C5B9-4B93-A7DE-F3AC5B0768FB",
 onLoadMethodID:"8B31E2E2-1E10-411A-94A8-6D9B71FF6049",

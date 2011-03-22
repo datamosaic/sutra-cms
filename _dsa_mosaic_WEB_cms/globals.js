@@ -860,3 +860,26 @@ if (application.__parent__.solutionPrefs) {
 	solutionPrefs.design.statusLockList = lockWorkflow && lockList
 }
 }
+
+/**
+ * @param	{Integer}	assetType What type of asset are we working with
+ * 
+ * @properties={typeid:24,uuid:"536AFDD8-D0B9-4611-9A31-FC3BDC222203"}
+ */
+function WEB_asset_map(assetType) {
+	switch (assetType) {
+		case 1:	//images
+			return forms.WEB_0F_asset__image.INIT_asset()
+			break
+	}
+}
+
+/**
+ * @properties={typeid:24,uuid:"48FC5C3F-2354-442E-BE6A-4963B953E080"}
+ */
+function WEB_startup_hack() {
+	//show all forms with browser beans so they don't error out on initial view
+	forms.WEB_0F__image.controller.show()
+	
+	forms.DATASUTRA_0F_solution.controller.show()
+}
