@@ -1,4 +1,11 @@
 /**
+ * @properties={typeid:35,uuid:"4FDACEFD-6F46-46F7-827B-375E25824AD6"}
+ */
+var _license_dsa_mosaic_WEB_cms = 'Module: _dsa_mosaic_WEB_cms \
+									Copyright (C) 2011 Data Mosaic \
+									MIT Licensed';
+
+/**
  * @param {JSEvent} event the event that triggered the action
  *
  * @properties={typeid:24,uuid:"EB853B3F-BD76-4C9F-9F57-538105A40151"}

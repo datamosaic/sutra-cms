@@ -1,4 +1,11 @@
 /**
+ * @properties={typeid:35,uuid:"4FDACEFD-6F16-46F7-807B-375E25824AD6"}
+ */
+var _license_dsa_mosaic_WEB_cms = 'Module: _dsa_mosaic_WEB_cms \
+									Copyright (C) 2011 Data Mosaic \
+									MIT Licensed';
+
+/**
  * @param	{JSRecord}	[assetGroupRecord] Record that we are working with
  * 
  * @properties={typeid:24,uuid:"C27CDF64-0B6B-4908-9DD2-52593E9A0F1D"}
