@@ -1,12 +1,12 @@
 /**
  * @properties={typeid:35,uuid:"4F2AE698-F740-4F36-922D-ECD6DD2A4932",variableType:-4}
  */
-var editsAllowed = null;
+var _editsAllowed = null;
 
 /**
  * @properties={typeid:35,uuid:"4768DA43-4617-41AC-B2E7-77D8DC83E2DC",variableType:-4}
  */
-var recBlockData = null;
+var _recBlockData = null;
 
 /**
  * param {} obj Data object passed to all markup methods
@@ -38,13 +38,9 @@ function BLOCK_save() {
 	ACTION_colorize()
 	
 	//called from browser bean, hide form
-	if (forms.WEB_0F_page.TRIGGER_mode_set() == "BROWSER") {
+	if (globals.WEB_page_mode == 3) {
 		forms.WEB_0F_page__browser__editor.ACTION_hide()
 	}
-	//refresh the colored version
-	else {
-		ACTION_colorize()
-	}	
 }
 
 /**
@@ -77,7 +73,9 @@ function ACTION_edit(event) {
  * @properties={typeid:24,uuid:"0B60D003-5C1F-4432-94D9-EA53C7A29887"}
  */
 function FORM_on_show(firstShow, event) {
-	ACTION_colorize()
+	if (!firstShow) {
+		ACTION_colorize()
+	}
 }
 
 /**
@@ -103,11 +101,11 @@ function BLOCK_cancel(event) {
 	databaseManager.setAutoSave(true)
 	
 	//called from browser bean, hide form
-	if (forms.WEB_0F_page.TRIGGER_mode_set() == "BROWSER") {
+	if (globals.WEB_page_mode == 3) {
 		forms.WEB_0F_page__browser__editor.ACTION_hide()
 	}
 	//refresh the colored version
-	else {
+	else if (globals.WEB_page_mode == 2) {
 		ACTION_colorize()
 	}
 }
@@ -117,7 +115,7 @@ function BLOCK_cancel(event) {
  * @properties={typeid:24,uuid:"AFC38F1A-D4AE-49AE-8C7C-C6901CC9B030"}
  */
 function TOGGLE_buttons(state) {
-	if (!editsAllowed) {
+	if (!_editsAllowed) {
 		elements.btn_edit.visible = false
 		elements.lbl_edit.visible = false
 	}
@@ -138,7 +136,7 @@ function TOGGLE_buttons(state) {
 	elements.bn_browser.visible = !state
 	
 	//cancel is always an option if in browser mode
-	if (forms.WEB_0F_page.TRIGGER_mode_set() == "BROWSER") {
+	if (globals.WEB_page_mode == 3) {
 		elements.btn_cancel.enabled = true
 		elements.lbl_cancel.enabled = true
 	}
@@ -206,7 +204,7 @@ function ACTION_insert_image(event) {
 	application.showFormInDialog(
 				forms.WEB_0F__image__P_choose,
 				-1,-1,-1,-1,
-				"Image",
+				" ",
 				false,
 				false,
 				"CMS_imageChoose"
@@ -217,11 +215,11 @@ function ACTION_insert_image(event) {
 		//wrap currently selected text with link
 		var elem = elements.fld_data_value
 	
-		var _imageChosen = forms.WEB_0F__image__P_choose._imageChosen
-		var token = "{DS:IMG_" + _imageChosen.id_asset_instance + "}"
+		var image = forms.WEB_0F__image__P_choose._imageChosen
+		var token = "{DS:IMG_" + image.asset.id_asset_instance + "}"
 		
 		//insert image at current location
-		var html = '<img src="' + token + '" width="' + _imageChosen.width + '" height="' + _imageChosen.height + '" alt="' + _imageChosen.asset_title +'">'
+		var html = '<img src="' + token + '" width="' + image.meta.width.data_value + '" height="' + image.meta.height.data_value + '" alt="' + image.asset.asset_title +'">'
 		
 		//length of tag
 		var offset = html.length
@@ -237,7 +235,6 @@ function ACTION_insert_image(event) {
 		
 		elem.caretPosition = cursor + offset
 		elem.requestFocus()
-		
 	}
 }
 
@@ -298,22 +295,16 @@ function INIT_block() {
 /**
  * @properties={typeid:24,uuid:"16312B6D-9AA1-465F-B962-79EAC114C412"}
  */
-function LOADER_init(recBlock,flagEdit) {
+function LOADER_init(fsBlockData, flagEdit, flagScrapbook) {
 	
-	if (utils.hasRecords(recBlock.web_block_to_scrapbook)) {
-		var recBlockData = recBlock.web_block_to_scrapbook.web_scrapbook_to_scrapbook_data.getRecord(1)
-	}
-	else {
-		var recBlockData = recBlock.web_block_to_block_data.getRecord(1)
-	}
+	var recBlockData = fsBlockData.getRecord(1)
 	
-	ACTION_colorize()
+	ACTION_colorize(recBlockData)
 	
-	forms.WEB_0F_page__design__content_1F_block_data.elements.tab_detail.removeTabAt(2)
-	forms.WEB_0F_page__design__content_1F_block_data.elements.tab_detail.addTab(forms.WEB_0F__html,null,null,null,null,null,null,'web_block_data_to_block_data')
-	forms.WEB_0F_page__design__content_1F_block_data.elements.tab_detail.tabIndex = 2
+	//TODO: scrapbook probably coming from different table
+	globals.WEB_block_form_loader('WEB_0F__html',((flagScrapbook) ? "SCRAPBOOK: HTML block" : "HTML block"),'web_block_data_to_block_data')
 	
-	editsAllowed = flagEdit
+	_editsAllowed = flagEdit
 	
 	elements.btn_edit.visible = flagEdit
 	elements.lbl_edit.visible = flagEdit
@@ -322,34 +313,19 @@ function LOADER_init(recBlock,flagEdit) {
 /**
  * @properties={typeid:24,uuid:"FB804749-0B28-485A-A528-4F10DE113301"}
  */
-function ACTION_colorize() {
+function ACTION_colorize(recBlockData) {
 	var html = ''
 	var prefix = ''
 	
-//	if (fsBlockData) {
-//		var recBlockData = fsBlockData.getRecord(1)
-//	}
-//	else {
-//		var recBlockData = foundset.getSelectedRecord()
-//	}
+	if (!recBlockData && utils.hasRecords(foundset)) {
+		recBlockData = foundset.getSelectedRecord()
+	}
 	
 	//if there's data, color it
-	if (recBlockData.data_value) {
+	if (recBlockData && recBlockData.data_value) {
 		var colorize = recBlockData.data_value
 		colorize = colorize.replace(/</g,'&lt;')
 		
-		//when running on real web
-//		if (utils.hasRecords(foundset.getSelectedRecord(),'web_block_data_to_block.web_block_to_area.web_area_to_version')) {
-//			//rewrite mode
-//			var fsInstall = databaseManager.getFoundSet('sutra_cms','web_install')
-//			fsInstall.loadAllRecords()
-//			if (utils.hasRecords(fsInstall)) {
-//				var rewriteMode = fsInstall.rewrite_enabled
-//			}
-//			if (rewriteMode) {
-//				prefix = 'sutraCMS/'
-//			}
-//		}
 		//when running in tinymce
 		prefix = globals.WEB_MRKUP_link_base()
 		
