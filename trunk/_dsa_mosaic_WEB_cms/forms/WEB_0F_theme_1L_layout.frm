@@ -94,6 +94,7 @@ uuid:"A30E14E2-41BE-43E7-8A0E-F88CE12B26B1"
 anchors:11,
 borderType:"SpecialMatteBorder,0.0,0.0,1.0,0.0,#000000,#000000,#999999,#000000,0.0,1.0",
 dataProviderID:"layout_path",
+editable:false,
 formIndex:10700,
 location:"150,31",
 selectOnEnter:true,

@@ -636,9 +636,9 @@ function REC_newFromTheme(progress) {
 				var layout = theme.web_theme_to_layout.getRecord(theme.web_theme_to_layout.newRecord())				
 			}
 			else {
-				// see if layout with current name
+				// see if layout with current path
 				theme.web_theme_to_layout.find()
-				theme.web_theme_to_layout.layout_name = i.split(".")[0]
+				theme.web_theme_to_layout.layout_path = i
 				var count = theme.web_theme_to_layout.search()
 				if ( count == 1 ) {
 					var layout = theme.web_theme_to_layout.getRecord(1)	
@@ -649,7 +649,17 @@ function REC_newFromTheme(progress) {
 				}
 			}
 			layout.layout_path = i
-			layout.layout_name = i.split(".")[0]
+			
+			var name = i.split(".")[0].split("_")
+			for (var j = 0; j < name.length; j++) {
+				if ( j == 0 ) {
+					layout.layout_name = utils.stringInitCap(name[j])
+				}
+				else {
+					layout.layout_name += " " + utils.stringInitCap(name[j])
+				}	
+			}
+						
 			if (i == "default.jsp") layout.flag_default = 1                                  
 			databaseManager.saveData(layout)
 			layoutList.push(layout.layout_name)
