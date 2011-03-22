@@ -175,18 +175,20 @@ function REC_new() {
 		
 		
 		// OPT 1: create theme record for data entry by hand
-		if (globals.CODE_key_pressed('shift')) {
-			
-			controller.newRecord(true)
-			id_site = forms.WEB_0F_site.id_site
-			activated = 1
-			elements.fld_theme_name.requestFocus(false)
-			
-		}
-		// OPT 2: create theme record with meta data automatically
-		else {
-			REC_newFromTheme()
-		}
+//		if (globals.CODE_key_pressed('shift')) {
+//			
+//			controller.newRecord(true)
+//			id_site = forms.WEB_0F_site.id_site
+//			activated = 1
+//			elements.fld_theme_name.requestFocus(false)
+//			
+//		}
+//		// OPT 2: create theme record with meta data automatically
+//		else {
+//			REC_newFromTheme()
+//		}
+		
+		REC_newFromTheme()
 		
 	}
 	else {
