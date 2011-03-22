@@ -61,7 +61,7 @@ function ACTION_ok() {
 		else {
 			//real mode
 			if (globals.WEB_page_mode == 3) {
-				var data = forms.WEB_0F_page__browser__editor.dataRec
+				var data = forms.WEB_0F_page__browser__editor._dataRec
 			}
 			//structure (data or gui) mode
 			else {
