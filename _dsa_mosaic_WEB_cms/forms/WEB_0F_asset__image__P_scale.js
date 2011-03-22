@@ -90,6 +90,8 @@ function ACTION_reset() {
 	_imageWidth = 
 	_metaWidth.data_value =
 		_imageWidthOriginal
+	_imageName = 
+	_asset.asset_title = FX_set_name(_imageWidth, _imageHeight)
 }
 
 /**
@@ -101,6 +103,8 @@ function FLD_change_height() {
 	_metaWidth.data_value = 
 	_imageWidth = 
 		utils.numberFormat(((_imageHeight * _imageWidthOriginal)/_imageHeightOriginal),'#')
+	_imageName = 
+	_asset.asset_title = FX_set_name(_imageWidth, _imageHeight)
 }
 
 /**
@@ -119,6 +123,8 @@ function FLD_change_width() {
 	_metaHeight.data_value = 
 	_imageHeight =
 		utils.numberFormat(((_imageWidth * _imageHeightOriginal) / _imageWidthOriginal),'#')
+	_imageName = 
+	_asset.asset_title = FX_set_name(_imageWidth, _imageHeight)
 }
 
 /**
@@ -157,4 +163,19 @@ function FLD_change_directory(oldValue, newValue, event) {
 	}
 	
 	_asset.asset_directory = _imageDirectory
+}
+
+/**
+ * @properties={typeid:24,uuid:"18DA2CA9-54B0-4589-9ECA-32877FBCAF5F"}
+ */
+function FX_set_name(width, height) {
+	// get extension
+	var temp = _imageName.split(".")
+	var extension = temp.pop()
+	// get name without size part
+	temp = temp.join('.').split("__")
+	var name = temp.shift()
+	// return name with new size
+	return name + "__" + width + "x" + height + "." + extension
+	                                
 }

@@ -58,11 +58,11 @@ function BLOCK_scale() {
 		forms[fidForm]._metaWidth = metaRows.width
 		forms[fidForm]._metaHeight = metaRows.height
 		
-		forms[fidForm]._imageHeightOriginal = metaRows.height.data_value
-		forms[fidForm]._imageHeight = dataRows.height.data_value
+		forms[fidForm]._imageHeightOriginal = 
+		forms[fidForm]._imageHeight = metaRows.height.data_value
 		
-		forms[fidForm]._imageWidthOriginal = metaRows.width.data_value
-		forms[fidForm]._imageWidth = dataRows.width.data_value
+		forms[fidForm]._imageWidthOriginal = 
+		forms[fidForm]._imageWidth = metaRows.width.data_value
 		
 		forms[fidForm]._imageName = asset.asset_title
 		forms[fidForm]._imageDirectory = asset.asset_directory
