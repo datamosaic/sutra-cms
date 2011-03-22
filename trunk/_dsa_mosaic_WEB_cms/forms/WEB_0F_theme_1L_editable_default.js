@@ -88,12 +88,12 @@ function BLOCK_new() {
 		
 	}
 	else {
-		forms.WEB_0F_scrapbook_1P__choose.f_source = "Theme"
+		forms.WEB_0F_scrapbook_1P__choose._source = "Theme"
 		if (selection == "Scrapbook copy...") {
-			forms.WEB_0F_scrapbook_1P__choose.f_type = 0
+			forms.WEB_0F_scrapbook_1P__choose._typeScrapbook = 0
 		}
 		else if (selection == "Scrapbook connect...") {
-			forms.WEB_0F_scrapbook_1P__choose.f_type = 1
+			forms.WEB_0F_scrapbook_1P__choose._typeScrapbook = 1
 		}
 		
 		application.showFormInDialog(forms.WEB_0F_scrapbook_1P__choose,-1,-1,-1,-1,"Scrapbook", false, false, "chooseScrapbook")

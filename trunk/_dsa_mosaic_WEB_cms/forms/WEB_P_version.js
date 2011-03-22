@@ -8,7 +8,7 @@ var _license_dsa_mosaic_WEB_cms = 'Module: _dsa_mosaic_WEB_cms \
 /**
  * @properties={typeid:35,uuid:"0DB8F194-B241-4646-8A35-6F27D096B1B5",variableType:4}
  */
-var fidAccept = null;
+var _fidAccept = null;
 
 /**
  *
@@ -73,7 +73,7 @@ function ACTION_ok()
 globals.CODE_hide_form = 1
 
 //accept
-fidAccept = 1
+_fidAccept = 1
 
 application.closeFormDialog('cmsSnapshot')
 
@@ -110,7 +110,7 @@ function FORM_on_show()
 globals.CODE_hide_form = 0
 
 //reset acceptance status
-fidAccept = null
+_fidAccept = null
 
 //null out all fields
 globals.WEB_version_name = null

@@ -8,7 +8,7 @@ var _license_dsa_mosaic_WEB_cms = 'Module: _dsa_mosaic_WEB_cms \
 /**
  * @properties={typeid:35,uuid:"09571115-F1B2-459B-904A-92F03A7F5554",variableType:4}
  */
-var themeSet = null;
+var _themeSet = null;
 
 /**
  *
@@ -36,8 +36,8 @@ function ACTION_cancel()
 	
 	if (!globals.CODE_hide_form) {
 		//MEMO: check WEB_P_page method too
-		if (forms.WEB_0T_page.addRecord) {
-			forms.WEB_0T_page.addRecord = null
+		if (forms.WEB_0T_page._addRecord) {
+			forms.WEB_0T_page._addRecord = null
 			
 			forms.WEB_0T_page.elements.bean_tree.removeAllRoots()
 			forms.WEB_0T_page.FORM_on_load()
@@ -76,11 +76,11 @@ function ACTION_ok()
 	 */
 	
 	//MEMO: check WEB_0F_page__design__header_edit method too
-	if (themeSet) {
-		themeSet = null
+	if (_themeSet) {
+		_themeSet = null
 		
 		//don't prompt if creating page
-		if (forms.WEB_0T_page.addRecord) {
+		if (forms.WEB_0T_page._addRecord) {
 			var input = "Yes"
 		}
 		//prompt
@@ -193,7 +193,7 @@ function ACTION_ok()
 	}
 	
 	//page was just created
-	if (forms.WEB_0T_page.addRecord) {
+	if (forms.WEB_0T_page._addRecord) {
 		//add path if one not specified
 		if (!utils.hasRecords(web_page_to_path)) {
 			var fsPath = databaseManager.getFoundSet('sutra_cms','web_path')
@@ -225,7 +225,7 @@ function ACTION_ok()
 		}
 		
 		//reset flag
-		forms.WEB_0T_page.addRecord = null
+		forms.WEB_0T_page._addRecord = null
 		
 	}
 	
@@ -291,6 +291,6 @@ elements.fld_page_name.requestFocus()
 function FLD_data_change__id_theme_layout(oldValue, newValue, event) {
 	//different value than before and old value existed (not selecting for first time)
 	if (oldValue != newValue) {
-		themeSet = 1
+		_themeSet = 1
 	}
 }

@@ -2,7 +2,7 @@ dataSource:"db:/sutra_cms/web_install",
 items:[
 {
 anchors:15,
-dataProviderID:"rewriteSample",
+dataProviderID:"_rewriteSample",
 displayType:1,
 formIndex:10500,
 location:"135,171",

@@ -457,7 +457,7 @@ function ACTION_save(event) {
 			return
 		}
 		else {
-			forms.WEB_0F_page__browser__editor.dataRec = null
+			forms.WEB_0F_page__browser__editor._dataRec = null
 		}
 	}
 		

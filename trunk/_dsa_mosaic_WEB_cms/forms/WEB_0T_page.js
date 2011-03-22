@@ -933,7 +933,7 @@ elements.bean_tree.selectionPath = FIND_path(destRecord)
 /**
  * @properties={typeid:35,uuid:"87F7463B-C4D2-4335-90C8-3D90D8A7607D",variableType:4}
  */
-var addRecord = null;
+var _addRecord = null;
 
 /**
  * @properties={typeid:24,uuid:"8846804B-4C28-4043-AF36-CEA8DAADD480"}
@@ -974,7 +974,7 @@ if (utils.hasRecords(forms.WEB_0F_site.foundset)) {
 	var webMode = forms.WEB_0F_page.TRIGGER_mode_set() == 'BROWSER'
 	
 	//set flag that a new record getting created
-	addRecord = 1
+	_addRecord = 1
 	
 	//get current location in the stack
 	if (utils.hasRecords(foundset)) {
@@ -1062,10 +1062,10 @@ if (utils.hasRecords(forms.WEB_0F_site.foundset)) {
 		
 		//set flag that theme has been set and all areas should be blown in
 		if (webMode) {
-			forms.WEB_P_page.themeSet = 1
+			forms.WEB_P_page._themeSet = 1
 		}
 		else {
-			forms.WEB_0F_page__design__header_edit.themeSet = 1
+			forms.WEB_0F_page__design__header_edit._themeSet = 1
 		}
 	}
 	
