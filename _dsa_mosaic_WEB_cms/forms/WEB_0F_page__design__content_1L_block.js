@@ -196,12 +196,12 @@ function BLOCK_new(input) {
 		}
 	}
 	else {
-		forms.WEB_0F_scrapbook_1P__choose.f_source = "Page"
+		forms.WEB_0F_scrapbook_1P__choose._source = "Page"
 		if (selection == "Scrapbook copy...") {
-			forms.WEB_0F_scrapbook_1P__choose.f_type = 0
+			forms.WEB_0F_scrapbook_1P__choose._typeScrapbook = 0
 		}
 		else if (selection == "Scrapbook connect...") {
-			forms.WEB_0F_scrapbook_1P__choose.f_type = 1
+			forms.WEB_0F_scrapbook_1P__choose._typeScrapbook = 1
 		}
 		
 		application.showFormInDialog(

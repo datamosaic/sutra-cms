@@ -8,17 +8,17 @@ var _license_dsa_mosaic_WEB_cms = 'Module: _dsa_mosaic_WEB_cms \
 /**
  * @properties={typeid:35,uuid:"03CAC318-572E-4E23-BC3E-ECA968E7D7E7",variableType:4}
  */
-var editLocation = 0;
+var _editLocation = 0;
 
 /**
  * @properties={typeid:35,uuid:"B0EEAB05-9BF7-4E41-B5E3-519BB7278576",variableType:-4}
  */
-var dataRec = null;
+var _dataRec = null;
 
 /**
  * @properties={typeid:35,uuid:"CE5D34A7-41F1-4B14-A923-B7CB21F02EAE",variableType:4}
  */
-var dataID = null;
+var _dataID = null;
 
 /**
  * Perform the element default action.
@@ -37,7 +37,7 @@ function FID_cancel(event) {
 function FID_save(event) {
 	var content = databaseManager.getFoundSet(controller.getServerName(),"web_block_data")
 	content.find()
-	content.id_block = dataID
+	content.id_block = _dataID
 	var count = content.search()
 	
 	// content.data_value = htmlEdit
@@ -60,15 +60,16 @@ function FID_save(event) {
  */
 function FORM_on_show(firstShow, event) {
 	//there is data to be edited
-	if (dataRec && utils.hasRecords(dataRec.web_block_data_to_block) && utils.hasRecords(dataRec.web_block_data_to_block.web_block_to_block_display)) {
+	if (_dataRec && utils.hasRecords(_dataRec.web_block_data_to_block) && utils.hasRecords(_dataRec.web_block_data_to_block.web_block_to_block_display)) {
 		//type of data, set different tab active to edit
-		switch (dataRec.web_block_data_to_block.web_block_to_block_type.block_name) {
+		switch (_dataRec.web_block_data_to_block.web_block_to_block_type.block_name) {
+			//TODO: this block needs to be recoded to work with new assets
 			case 'Image':
 				//hard coded to form, split out
-				forms.WEB_0F__image.blockData = dataRec
+				forms.WEB_0F__image.blockData = _dataRec
 				
 				//foundset with image datapoints
-				var fsBlockData = dataRec
+				var fsBlockData = _dataRec
 				
 				//create object with all properties
 				var objImage = new Object()
@@ -85,7 +86,7 @@ function FORM_on_show(firstShow, event) {
 				}
 				// image is set
 				else { 
-					var siteURL = dataRec.web_block_data_to_block.web_block_to_area.web_area_to_version.web_version_to_page.web_page_to_site.url
+					var siteURL = _dataRec.web_block_data_to_block.web_block_to_area.web_area_to_version.web_version_to_page.web_page_to_site.url
 					
 					if (siteURL) {
 						siteURL = 'http://' + siteURL
@@ -97,7 +98,7 @@ function FORM_on_show(firstShow, event) {
 						}
 					}
 					else {
-						var siteDirectory = dataRec.web_block_data_to_block.web_block_to_area.web_area_to_version.web_version_to_page.web_page_to_site.directory
+						var siteDirectory = _dataRec.web_block_data_to_block.web_block_to_area.web_area_to_version.web_version_to_page.web_page_to_site.directory
 						
 						siteURL = application.getServerURL() + '/' + siteDirectory
 					}
@@ -121,8 +122,8 @@ function FORM_on_show(firstShow, event) {
 			default:
 			case 'Content':
 				//hard coded to form, split out
-				forms.WEB_0F__content._recBlockData = dataRec
-				forms.WEB_0F__content.elements.bn_tinymce.html = dataRec.data_value
+				forms.WEB_0F__content._recBlockData = _dataRec
+				forms.WEB_0F__content.elements.bn_tinymce.html = _dataRec.data_value
 			/*
 			 * see the following locations for removal and addition of heavyweight forms
 			 * 
@@ -175,7 +176,7 @@ function ACTION_location(event) {
 			elements.btn_orient_bottom.visible = false
 			elements.btn_orient_side.visible = true
 			
-			editLocation = 1
+			_editLocation = 1
 			
 			break
 		//in side mode, flip to bottom
@@ -183,7 +184,7 @@ function ACTION_location(event) {
 			elements.btn_orient_bottom.visible = true
 			elements.btn_orient_side.visible = false
 			
-			editLocation = 0
+			_editLocation = 0
 			
 			break			
 	}
@@ -208,9 +209,9 @@ function FORM_on_load(event) {
  */
 function GET_modify() {
 	//there is data to be edited
-	if (dataRec && utils.hasRecords(dataRec.web_block_data_to_block) && utils.hasRecords(dataRec.web_block_data_to_block.web_block_to_block_display)) {
+	if (_dataRec && utils.hasRecords(_dataRec.web_block_data_to_block) && utils.hasRecords(_dataRec.web_block_data_to_block.web_block_to_block_display)) {
 		//type of data, set different tab active to edit
-		switch (dataRec.web_block_data_to_block.web_block_to_block_type.block_name) {
+		switch (_dataRec.web_block_data_to_block.web_block_to_block_type.block_name) {
 			case false:
 				
 			break

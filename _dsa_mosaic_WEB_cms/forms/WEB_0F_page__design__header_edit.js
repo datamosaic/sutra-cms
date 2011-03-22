@@ -8,7 +8,7 @@ var _license_dsa_mosaic_WEB_cms = 'Module: _dsa_mosaic_WEB_cms \
 /**
  * @properties={typeid:35,uuid:"2663ABEA-5268-43B2-B657-1575D5A41384",variableType:4}
  */
-var themeSet = null;
+var _themeSet = null;
 
 /**
  *
@@ -172,8 +172,8 @@ function ACTION_cancel() {
 	globals.WEB_simple_cancel()
 	
 	//MEMO: check WEB_P_page method too
-	if (forms.WEB_0T_page.addRecord) {
-		forms.WEB_0T_page.addRecord = null
+	if (forms.WEB_0T_page._addRecord) {
+		forms.WEB_0T_page._addRecord = null
 		
 		forms.WEB_0T_page.elements.bean_tree.removeAllRoots()
 		forms.WEB_0T_page.FORM_on_load()
@@ -188,11 +188,11 @@ function ACTION_cancel() {
  */
 function ACTION_save() {
 	//MEMO: check WEB_P_page method too
-	if (themeSet) {
-		themeSet = null
+	if (_themeSet) {
+		_themeSet = null
 		
 		//don't prompt if creating page
-		if (forms.WEB_0T_page.addRecord) {
+		if (forms.WEB_0T_page._addRecord) {
 			var input = "Yes"
 		}
 		//prompt
@@ -309,7 +309,7 @@ function ACTION_save() {
 	}
 	
 	//page was just created
-	if (forms.WEB_0T_page.addRecord) {
+	if (forms.WEB_0T_page._addRecord) {
 		var fsPath = databaseManager.getFoundSet('sutra_cms','web_path')
 		var siteID = id_site
 		
@@ -341,7 +341,7 @@ function ACTION_save() {
 		recPath.id_site = siteID
 		
 		//reset flag
-		forms.WEB_0T_page.addRecord = null
+		forms.WEB_0T_page._addRecord = null
 	}
 	
 	//call datachange to update display of stuff
@@ -443,6 +443,6 @@ function TOGGLE_fields(pageType) {
 function FLD_data_change__id_theme_layout(oldValue, newValue, event) {
 	//different value than before and old value existed (not selecting for first time)
 	if (oldValue != newValue) {
-		themeSet = 1
+		_themeSet = 1
 	}
 }

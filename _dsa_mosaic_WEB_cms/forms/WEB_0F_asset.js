@@ -40,7 +40,7 @@ function TAG_add(event) {
 		//turn autosave off
 		databaseManager.setAutoSave(false)
 		
-		forms.WEB_P_tag__add.callingForm = controller.getName()
+		forms.WEB_P_tag__add._callingForm = controller.getName()
 		
 		application.showFormInDialog(
 					forms.WEB_P_tag__add,
@@ -71,7 +71,7 @@ function TAG_delete(event) {
 		//turn autosave off
 		databaseManager.setAutoSave(false)
 		
-		forms.WEB_P_tag__remove.callingForm = controller.getName()
+		forms.WEB_P_tag__remove._callingForm = controller.getName()
 		
 		application.showFormInDialog(
 					forms.WEB_P_tag__remove,

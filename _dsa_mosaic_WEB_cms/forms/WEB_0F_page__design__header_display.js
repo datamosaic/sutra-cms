@@ -102,7 +102,7 @@ function NEW_version(event) {
 						'cmsSnapshot'
 					)		
 		
-		if (forms.WEB_P_version.fidAccept) {
+		if (forms.WEB_P_version._fidAccept) {
 			var srcRecord = forms.WEB_0F_page__design.web_page_to_version.getRecord(forms.WEB_0F_page__design.web_page_to_version.getSelectedIndex())
 			var destRecord = globals.CODE_record_duplicate(srcRecord,["web_version_to_area.web_area_to_block.web_block_to_block_data"])
 			

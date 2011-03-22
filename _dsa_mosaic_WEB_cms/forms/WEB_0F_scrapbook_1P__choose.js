@@ -8,12 +8,12 @@ var _license_dsa_mosaic_WEB_cms = 'Module: _dsa_mosaic_WEB_cms \
 /**
  * @properties={typeid:35,uuid:"D8C19E99-2B7C-4817-A164-F70B373AA629"}
  */
-var f_source = null;
+var _source = null;
 
 /**
  * @properties={typeid:35,uuid:"D7A14B12-10BF-4CD3-A787-1EFA743CC4B3",variableType:4}
  */
-var f_type = null;
+var _typeScrapbook = null;
 
 /**
  * @properties={typeid:35,uuid:"673A3550-672F-4BC6-8AC6-05651ECF2748",variableType:4}
@@ -54,7 +54,7 @@ if (!globals.CODE_hide_form) {
 	globals.CODE_hide_form = 1
 	
 	// clear form variables
-	forms.WEB_0F_scrapbook_1P__choose.f_source = null
+	forms.WEB_0F_scrapbook_1P__choose._source = null
 	
 	application.closeFormDialog('chooseScrapbook')
 }
@@ -67,9 +67,9 @@ if (!globals.CODE_hide_form) {
 function ACTION_ok()
 {
 	// called from page
-	if ( f_source == "Page" ) {
+	if ( _source == "Page" ) {
 		//this is a connection, set up link
-		if (f_type) {
+		if (_typeScrapbook) {
 			// duplicate scrapbook to page>area>new block
 			var source 		= forms.WEB_0F_scrapbook_1P__choose_2L.foundset.getRecord(forms.WEB_0F_scrapbook_1P__choose_2L.foundset.getSelectedIndex())
 			var destination	= forms.WEB_0F_page__design.web_page_to_block_by_area.getRecord(forms.WEB_0F_page__design.web_page_to_block_by_area.newRecord(false, true))
@@ -102,9 +102,9 @@ function ACTION_ok()
 		}
 	}
 		// called from theme
-	if ( f_source == "Theme" ) {
+	if ( _source == "Theme" ) {
 		//this is a connection, set up link
-		if (f_type) {
+		if (_typeScrapbook) {
 			// duplicate scrapbook to theme>layout>editable>new editable_default
 			var source 		= forms.WEB_0F_scrapbook_1P__choose_2L.foundset.getRecord(forms.WEB_0F_scrapbook_1P__choose_2L.foundset.getSelectedIndex())
 			//var destination	= forms.WEB_0F_page__design.web_page_to_block_by_area.getRecord(forms.WEB_0F_page__design.web_page_to_block_by_area.newRecord(false, true))
@@ -141,7 +141,7 @@ function ACTION_ok()
 	}
 	
 	// clear form variables
-	forms.WEB_0F_scrapbook_1P__choose.f_source = null
+	forms.WEB_0F_scrapbook_1P__choose._source = null
 	
 	//enable closing the form
 	globals.CODE_hide_form = 1

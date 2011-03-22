@@ -63,7 +63,7 @@ function URL_update(webMode) {
 	//see forms.WEB_0F_page__design__buton_tab__content.VISIT_page
 	
 	//newly created page...show filler
-	if (forms.WEB_0T_page.addRecord) {
+	if (forms.WEB_0T_page._addRecord) {
 		elements.bn_browser.html = '<html><body><h1>Newly created page</h1></body></head>'
 	}
 	//go to page
@@ -109,7 +109,7 @@ function EDIT_off() {
  */
 function BLOCK_edit(idBlock) {
 	var blockID = idBlock.split("-")
-	forms.WEB_0F_page__browser__editor.dataID = blockID[blockID.length - 1]
+	forms.WEB_0F_page__browser__editor._dataID = blockID[blockID.length - 1]
 	
 	var content = databaseManager.getFoundSet(controller.getServerName(),"web_block_data")
 	content.find()
@@ -117,7 +117,7 @@ function BLOCK_edit(idBlock) {
 	var count = content.search()
 	
 	if (count) {
-		forms.WEB_0F_page__browser__editor.dataRec = content
+		forms.WEB_0F_page__browser__editor._dataRec = content
 	}
 	
 	forms.WEB_0F_page__browser__editor.elements.tab_edit.removeTabAt(1)
@@ -165,7 +165,7 @@ function FORM_on_show(firstShow, event) {
  */
 function SPLIT_set(editMode) {
 	
-	var editLocation = forms.WEB_0F_page__browser__editor.editLocation
+	var editLocation = forms.WEB_0F_page__browser__editor._editLocation
 	
 	//edit mode on
 	if (editMode) {
@@ -175,14 +175,14 @@ function SPLIT_set(editMode) {
 		}
 		
 		//only switch orientation if needed
-		if (elements.bean_split.orientation != editLocation) {
-			elements.bean_split.orientation = editLocation
+		if (elements.bean_split.orientation != _editLocation) {
+			elements.bean_split.orientation = _editLocation
 			
 			//TODO: null out required?
 		}
 		
 		//side-wise location
-		if (editLocation) {
+		if (_editLocation) {
 			elements.bean_split.leftComponent	= elements.bn_browser
 			elements.bean_split.rightComponent	= elements.tab_editor
 			elements.bean_split.dividerLocation	= elements.bean_split.getWidth() - 300

@@ -8,7 +8,7 @@ var _license_dsa_mosaic_WEB_cms = 'Module: _dsa_mosaic_WEB_cms \
 /**
  * @properties={typeid:35,uuid:"ADFFFDE6-E494-4907-BEA8-9D5054BA7793"}
  */
-var callingForm = null;
+var _callingForm = null;
 
 /**
  *
@@ -73,7 +73,7 @@ function ACTION_ok()
  *			  	
  */
 
-var formName = this.callingForm
+var formName = this._callingForm
 
 if (globals.WEB_tag_choose) {
 	var removeTags = globals.WEB_tag_choose.split('\n')
@@ -178,7 +178,7 @@ globals.CODE_hide_form = 0
 globals.WEB_tag_choose = null
 
 //set valuelist
-var formName = this.callingForm
+var formName = this._callingForm
 var options = forms[formName].tags
 
 if (options) {

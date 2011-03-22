@@ -68,7 +68,7 @@ function ACTION_ok()
  *			  	
  */
 
-var formName = this.callingForm
+var formName = this._callingForm
 
 if (true) {
 	//choosing from pre-existing tags
