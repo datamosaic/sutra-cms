@@ -2,7 +2,7 @@ dataSource:"db:/sutra_cms/web_page",
 items:[
 {
 anchors:15,
-dataProviderID:"htmlNavigation",
+dataProviderID:"_htmlNavigation",
 displayType:1,
 formIndex:11801,
 location:"0,0",

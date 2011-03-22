@@ -1,7 +1,14 @@
 /**
+ * @properties={typeid:35,uuid:"4FDACEFD-6F16-96F7-827B-375E25824AD6"}
+ */
+var _license_dsa_mosaic_WEB_cms = 'Module: _dsa_mosaic_WEB_cms \
+									Copyright (C) 2011 Data Mosaic \
+									MIT Licensed';
+
+/**
  * @properties={typeid:35,uuid:"ABD4728C-CA5C-4D79-AB42-470E0C2435DF"}
  */
-var etherpad_UUID = null;
+var _etherpadUUID = null;
 
 /**
  *

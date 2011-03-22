@@ -138,7 +138,7 @@ uuid:"3D80DB4D-4636-464B-9B83-37504699F570"
 },
 {
 anchors:12,
-dataProviderID:"toolbarMode",
+dataProviderID:"_toolbarMode",
 displayType:2,
 editable:false,
 formIndex:-4,
