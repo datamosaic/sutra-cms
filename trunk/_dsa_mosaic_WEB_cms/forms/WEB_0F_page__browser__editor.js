@@ -121,7 +121,7 @@ function FORM_on_show(firstShow, event) {
 			default:
 			case 'Content':
 				//hard coded to form, split out
-				forms.WEB_0F__content.recBlockData = dataRec
+				forms.WEB_0F__content._recBlockData = dataRec
 				forms.WEB_0F__content.elements.bn_tinymce.html = dataRec.data_value
 			/*
 			 * see the following locations for removal and addition of heavyweight forms
