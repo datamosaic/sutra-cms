@@ -31,84 +31,27 @@ function BLOCK_choose() {
  * @properties={typeid:24,uuid:"43C94817-C701-46EF-809A-33BE2CFC738C"}
  */
 function BLOCK_scale() {
-	//TODO: call the ASSET_scale method and only do what's different here
-	if (utils.hasRecords(foundset)) {
-		var fidForm = 'WEB_0F_asset__image__P_scale'
-		
-		//save outstanding data and turn autosave off
-		databaseManager.saveData()
-		databaseManager.setAutoSave(false)
-		
-		//get default asset instance
-		var srcAsset = foundset.getRecord(1)
-		
-		//duplicate default asset
-		var asset = globals.CODE_record_duplicate(srcAsset,['web_asset_instance_to_asset_instance_meta'],null,true)
-		asset.flag_initial = 0
-		
-		//get meta data points we need
-		var metaRows = new Object()
-		for (var i = 1; i <= asset.web_asset_instance_to_asset_instance_meta.getSize(); i++) {
-			var record = asset.web_asset_instance_to_asset_instance_meta.getRecord(i)
-			metaRows[record.data_key] = record
-		}
-		
+	var fileOBJ = forms.WEB_0F_asset__image.ASSET_scale(foundset.getRecord(1))
+	
+	//the image was scaled
+	if (fileOBJ) {
 		//get block data points we need
 		var dataRows = new Object()
 		for (var i = 1; i <= forms.WEB_0F_page__design__content_1L_block.web_block_to_block_data.getSize(); i++) {
 			var record = forms.WEB_0F_page__design__content_1L_block.web_block_to_block_data.getRecord(i)
 			dataRows[record.data_key] = record
 		}
+	
+		//update the block data
+		dataRows.image_name.data_value = fileOBJ.image_name
+		dataRows.directory.data_value = fileOBJ.directory
+		dataRows.width.data_value = fileOBJ.width
+		dataRows.height.data_value = fileOBJ.height
 		
-		//pre-fill scale FiD
-		forms[fidForm]._asset = asset
-		forms[fidForm]._metaWidth = metaRows.width
-		forms[fidForm]._metaHeight = metaRows.height
-		
-		forms[fidForm]._imageHeightOriginal = metaRows.height.data_value
-		forms[fidForm]._imageHeight = dataRows.height.data_value
-		
-		forms[fidForm]._imageWidthOriginal = metaRows.width.data_value
-		forms[fidForm]._imageWidth = dataRows.width.data_value
-		
-		forms[fidForm]._imageName = asset.asset_title
-		forms[fidForm]._imageDirectory = asset.asset_directory
-		
-		//show FiD
-		application.showFormInDialog(
-				forms[fidForm],
-				-1,-1,-1,-1,
-				" ", 
-				false, 
-				false, 
-				"CMS_imageScale"
-			)
-		
-		//FiD not cancelled, get values and create new instance
-		if (databaseManager.getFoundSetDataProviderAsArray(srcAsset.web_asset_instance_to_asset.web_asset_to_asset_instance, 'id_asset_instance').indexOf(asset.id_asset_instance) >= 0) {
-			var baseDirectory = forms.WEB_0F_install.ACTION_get_install() +
-								'/application_server/server/webapps/ROOT/sutraCMS/sites/' +
-								forms.WEB_0F_site.directory + '/'
-			var origLocation = 	baseDirectory + srcAsset.asset_directory + '/' + srcAsset.asset_title
-			var newLocation = 	baseDirectory + asset.asset_directory + '/' + asset.asset_title
+		databaseManager.saveData()
 			
-			var fileOBJ = forms.WEB_0F_asset__image.FILE_import(origLocation, newLocation, metaRows.width.data_value, metaRows.height.data_value)
-			
-			//save down new information
-			asset.asset_size = fileOBJ.size
-			asset.asset_directory = fileOBJ.directory
-			
-			//update the block data
-			dataRows.image_name.data_value = fileOBJ.image_name
-			dataRows.directory.data_value = fileOBJ.directory
-			dataRows.width.data_value = fileOBJ.width
-			dataRows.height.data_value = fileOBJ.height
-			
-			databaseManager.saveData()
-			
-			//update display
-			globals.WEB_block_form_refresh()
-		}
+		//update display
+		globals.WEB_block_form_refresh()
 	}
 }
 
