@@ -281,7 +281,7 @@ function FLD_data_change__flag_default(oldValue, newValue, event) {
 function LAYOUTS_action_list(event) {
 	if (utils.hasRecords(foundset)) {
 		//menu items
-		var valuelist = new Array('Duplicate layout','Refresh from directory...'/*,'-','Re-order editables on pages using selected layout'*/)
+		var valuelist = new Array('Duplicate layout'/*,'-','Re-order editables on pages using selected layout'*/)
 		
 		//set up menu with arguments
 		var menu = new Array()
