@@ -10,7 +10,7 @@ var _license_dsa_mosaic_WEB_cms = 'Module: _dsa_mosaic_WEB_cms \
  * 
  * @properties={typeid:24,uuid:"C27CDF64-0B6B-4908-9DD2-52593E9A0F1D"}
  */
-function ASSET_scale(assetGroupRecord) {
+function ASSET_scale(assetRecord) {
 	var fidForm = 'WEB_0F_asset__image__P_scale'
 	
 	//save outstanding data and turn autosave off
@@ -18,7 +18,7 @@ function ASSET_scale(assetGroupRecord) {
 	databaseManager.setAutoSave(false)
 	
 	//get default asset instance
-	var srcAsset = assetGroupRecord.web_asset_to_asset_instance__initial.getRecord(1)
+	var srcAsset = assetRecord.web_asset_to_asset_instance__initial.getRecord(1)
 	
 	//duplicate default asset
 	var asset = globals.CODE_record_duplicate(srcAsset,['web_asset_instance_to_asset_instance_meta'],null,true)
@@ -58,7 +58,7 @@ function ASSET_scale(assetGroupRecord) {
 		)
 	
 	//FiD not cancelled, get values and create new instance
-	if (databaseManager.getFoundSetDataProviderAsArray(assetGroupRecord.web_asset_to_asset_instance, 'id_asset_instance').indexOf(asset.id_asset_instance) >= 0) {
+	if (databaseManager.getFoundSetDataProviderAsArray(assetRecord.web_asset_to_asset_instance, 'id_asset_instance').indexOf(asset.id_asset_instance) >= 0) {
 		var baseDirectory = forms.WEB_0F_install.ACTION_get_install() +
 							'/application_server/server/webapps/ROOT/sutraCMS/sites/' +
 							forms.WEB_0F_site.directory + '/'
@@ -73,8 +73,10 @@ function ASSET_scale(assetGroupRecord) {
 		
 		databaseManager.saveData()
 		
-		//select correct record
+		//select correct record (should only do this if called from asset screen)
 		forms.WEB_0F_asset_1F_2L_asset_instance.foundset.selectRecord(asset.id_asset_instance)
+		
+		return fileOBJ
 	}
 }
 
@@ -233,7 +235,7 @@ function INIT_asset() {
 /**
  * @properties={typeid:24,uuid:"3278B83E-D9B7-4AD0-91CD-01106D171D26"}
  */
-function ASSET_actions(input,assetGroupRecord) {
+function ASSET_actions(input,assetRecord) {
 	//menu items
 	var valuelist = new Array(
 					'Scale image'
@@ -247,7 +249,7 @@ function ASSET_actions(input,assetGroupRecord) {
 		for ( var i = 0 ; i < valuelist.length ; i++ ) {
 			menu[i] = plugins.popupmenu.createMenuItem(valuelist[i],ASSET_actions)
 			
-			menu[i].setMethodArguments(i,assetGroupRecord)
+			menu[i].setMethodArguments(i,assetRecord)
 			
 			if (menu[i].text == '----') {
 				menu[i].setEnabled(false)
@@ -264,7 +266,7 @@ function ASSET_actions(input,assetGroupRecord) {
 	else {
 		switch( input ) {
 			case 0:	//
-				ASSET_scale(assetGroupRecord)
+				ASSET_scale(assetRecord)
 				break
 		}
 	}
