@@ -1,7 +1,7 @@
 initialSort:"name_last asc, name_first asc",
 items:[
 {
-dataProviderID:"etherpad_UUID",
+dataProviderID:"_etherpadUUID",
 formIndex:11802,
 location:"130,250",
 size:"260,20",

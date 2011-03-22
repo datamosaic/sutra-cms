@@ -1,4 +1,11 @@
 /**
+ * @properties={typeid:35,uuid:"4FDADEFD-6F16-46F7-827B-375E25824AD6"}
+ */
+var _license_dsa_mosaic_WEB_cms = 'Module: _dsa_mosaic_WEB_cms \
+									Copyright (C) 2011 Data Mosaic \
+									MIT Licensed';
+
+/**
  * param {} obj Data object passed to all markup methods
  * @properties={typeid:24,uuid:"9F686D38-C923-456D-AA26-356F9D67BA5F"}
  */
@@ -14,12 +21,12 @@ function VIEW_default(obj)
 /**
  * @properties={typeid:35,uuid:"F01848BB-5EC3-40CC-BE6B-001526B4F291",variableType:-4}
  */
-var recBlockData = null;
+var _recBlockData = null;
 
 /**
  * @properties={typeid:35,uuid:"A5E7C6DE-46F3-4090-AECA-E3CA22A9EB84",variableType:4}
  */
-var toolbarMode = 0;
+var _toolbarMode = 0;
 
 /**
  * @properties={typeid:24,uuid:"2C01CB8B-1D9F-46AE-A205-E94F2E746805"}
@@ -169,7 +176,7 @@ function TINYMCE_init(mode) {
  * @properties={typeid:24,uuid:"553CBBDB-2269-49ED-BEC5-A585CBC2011A"}
  */
 function BLOCK_save() {
-	recBlockData.data_value = elements.bn_tinymce.html
+	_recBlockData.data_value = elements.bn_tinymce.html
 	databaseManager.saveData()
 	elements.bn_tinymce.clearDirtyState()
 	
@@ -226,7 +233,7 @@ function REC_on_select(event) {
  * @properties={typeid:24,uuid:"8DA68D80-88B6-47F7-857C-6CE05373251D"}
  */
 function BLOCK_cancel(event) {
-	elements.bn_tinymce.html = recBlockData.data_value
+	elements.bn_tinymce.html = _recBlockData.data_value
 	TOGGLE_buttons(false)
 	
 	//called from browser bean, hide form
@@ -246,7 +253,7 @@ function TOGGLE_buttons(state) {
 	elements.lbl_cancel.enabled = state
 	
 	//cancel is always an option if in browser mode
-	if (forms.WEB_0F_page.TRIGGER_mode_set() == "BROWSER") {
+	if (globals.WEB_page_mode == 3) {
 		elements.btn_cancel.enabled = true
 		elements.lbl_cancel.enabled = true
 	}
@@ -260,7 +267,7 @@ function TOGGLE_buttons(state) {
  * @properties={typeid:24,uuid:"26F961FF-263F-411A-AB23-827BDF15A740"}
  */
 function TOGGLE_mode(event) {
-	switch (toolbarMode) {
+	switch (_toolbarMode) {
 		case 0:
 			elements.bn_tinymce.setCustomConfiguration(TINYMCE_init("simple"))
 			break
@@ -281,7 +288,7 @@ function BLOCK_reset(event) {
 	elements.bn_tinymce.clearHtml()
 	
 	//get mode
-	if (toolbarMode) {
+	if (_toolbarMode) {
 		elements.bn_tinymce.setCustomConfiguration(TINYMCE_init('advanced'))
 	}
 	else {
@@ -348,7 +355,7 @@ function ACTION_insert_image(event) {
 	application.showFormInDialog(
 				forms.WEB_0F__image__P_choose,
 				-1,-1,-1,-1,
-				"Image",
+				" ",
 				false,
 				false,
 				"CMS_imageChoose"
@@ -356,10 +363,10 @@ function ACTION_insert_image(event) {
 	
 	//something chosen, insert image link at cursor location
 	if (forms.WEB_0F__image__P_choose._imageChosen) {
-		var _imageChosen = forms.WEB_0F__image__P_choose._imageChosen
-		var token = "{DS:IMG_" + _imageChosen.id_asset_instance + "}"
+		var image = forms.WEB_0F__image__P_choose._imageChosen
+		var token = "{DS:IMG_" + image.asset.id_asset_instance + "}"
 		
-		var html = '<img src="' + token + '" width="' + _imageChosen.width + '" height="' + _imageChosen.height + '" alt="' + _imageChosen.asset_title +'">'
+		var html = '<img src="' + token + '" width="' + image.meta.width.data_value + '" height="' + image.meta.height.data_value + '" alt="' + image.asset.asset_title +'">'
 		
 		var js = "tinyMCE.execCommand('mceInsertContent', false, '" + html + "');"
 		elements.bn_tinymce.executeJavaScript(js)
@@ -436,7 +443,7 @@ function LOADER_init(fsBlockData, flagEdit, flagScrapbook) {
 	
 	//show tinymce
 	if (flagEdit) {
-		forms.WEB_0F__content.recBlockData = recBlockData
+		forms.WEB_0F__content._recBlockData = recBlockData
 		forms.WEB_0F__content.elements.bn_tinymce.clearHtml()
 		
 		// load form

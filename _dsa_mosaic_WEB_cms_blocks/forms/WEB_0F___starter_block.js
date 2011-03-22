@@ -1,19 +1,15 @@
 /**
- * @properties={typeid:35,uuid:"E2883D99-02A0-4C3F-A99D-50C3E79C2AE2",variableType:-4}
+ * @properties={typeid:35,uuid:"4FDACEFD-6F26-46F7-827B-375E25824AD6"}
  */
-var recBlockData = null;
-
-/**
- * @properties={typeid:35,uuid:"CCA3703E-26DD-467D-9B1A-8D8626CE31F1",variableType:4}
- */
-var toolbarMode = 0;
+var _license_dsa_mosaic_WEB_cms = 'Module: _dsa_mosaic_WEB_cms \
+									Copyright (C) 2011 Data Mosaic \
+									MIT Licensed';
 
 /**
  * param {} obj Data object passed to all markup methods
  * @properties={typeid:24,uuid:"F20BDBF7-8CB2-4035-A50B-0785CE98FC00"}
  */
-function VIEW_default(obj)
-{
+function VIEW_default(obj) {
 	
 	// The main CMS page object gets passed to block VIEW methods.
 	// So include "obj" in the parameter slot for these methods
@@ -110,7 +106,7 @@ function INIT_block() {
 function LOADER_init(fsBlockData, flagEdit, flagScrapbook) {
 	
 	// set label and load form
-	globals.WEB_block_form_loader("WEB_0F___starter_block", (flagScrapbook) ? "Starter Block (scrapbook)" : "Starter Block")		
+	globals.WEB_block_form_loader("WEB_0F___starter_block", ((flagScrapbook) ? "SCRAPBOOK: Starter block" : "Starter block"))		
 
 }
 
