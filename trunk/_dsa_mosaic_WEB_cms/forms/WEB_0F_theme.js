@@ -466,6 +466,14 @@ function REC_newFromTheme(progress) {
 			if ( !input ) {
 				return "No theme selected"
 			}
+			// can't import theme with same name
+			var names = databaseManager.getFoundSetDataProviderAsArray(
+							foundset, "theme_name")
+			if ( names.lastIndexOf(input, 0) > -1 ) {
+				plugins.dialogs.showErrorDialog(
+					"Error",  "Theme with same name not allowed")
+				return "Duplicate theme"
+			}
 		}
 		else { // refresh current theme record
 			if( themes.indexOf(theme_name) > -1 ) {
