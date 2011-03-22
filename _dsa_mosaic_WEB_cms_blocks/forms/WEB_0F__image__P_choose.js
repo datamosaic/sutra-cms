@@ -1,6 +1,16 @@
 /**
+ * @properties={typeid:35,uuid:"CE572FF5-8795-41C4-972B-CED24975F685",variableType:-4}
+ */
+var _imageChosen = null;
+
+/**
+ * @properties={typeid:35,uuid:"24F8A309-8314-45BF-80FF-1345BD27C909",variableType:4}
+ */
+var _imageLink = null;
+
+/**
  *
- * @properties={typeid:24,uuid:"8B931B10-1A24-4593-B224-BF6B25E56755"}
+ * @properties={typeid:24,uuid:"28E098A0-3AFB-45D5-974D-5097C511ED6E"}
  */
 function ACTION_cancel()
 {
@@ -16,28 +26,18 @@ function ACTION_cancel()
 }
 
 /**
- * @properties={typeid:35,uuid:"104B9C5D-260A-4CBC-9B4E-0A5518EA83B0",variableType:4}
- */
-var _imageLink = null;
-
-/**
- * @properties={typeid:35,uuid:"B6B3FC85-8DB1-4FEC-A999-FD71414ABAFA",variableType:-4}
- */
-var _imageChosen = null;
-
-/**
- * @properties={typeid:24,uuid:"86FC5255-7DA5-47D5-BFD6-2CA7D2DEB7DD"}
+ * @properties={typeid:24,uuid:"F7D6A97F-52AD-47A0-A840-614BF18CC717"}
  */
 function ACTION_ok() {
 	//something selected
-	if (utils.hasRecords(forms.WEB_0F_asset__image__P_choose_1L_asset_group_2L_asset.foundset)) {
+	if (utils.hasRecords(forms.WEB_0F__image__P_choose_1L_asset_2L_asset_instance.foundset)) {
 		// choose image from FiD
-		var assetRec = forms.WEB_0F_asset__image__P_choose_1L_asset_group_2L_asset.foundset.getSelectedRecord()
+		var assetRec = forms.WEB_0F__image__P_choose_1L_asset_2L_asset_instance.foundset.getSelectedRecord()
 		
 		//get meta data points we need
 		var metaRows = new Object()
-		for (var j = 1; j <= assetRec.web_asset_to_asset_meta.getSize(); j++) {
-			var record = assetRec.web_asset_to_asset_meta.getRecord(j)
+		for (var j = 1; j <= assetRec.web_asset_instance_to_asset_instance_meta.getSize(); j++) {
+			var record = assetRec.web_asset_instance_to_asset_instance_meta.getRecord(j)
 			metaRows[record.data_key] = record
 		}
 		
@@ -61,7 +61,7 @@ function ACTION_ok() {
 				var data = forms.WEB_0F_page__design.web_page_to_block_data_by_area_by_block
 			}
 			
-			//see WEB_0F_asset__image.INIT_block for all block keys; WEB_0F_asset__image.INIT_asset for all asset keys
+			//see WEB_0F__image.INIT_block for all block keys; WEB_0F__image.INIT_asset for all asset keys
 			for (var i = 1; i <= data.getSize(); i++) {
 				var record = data.getRecord(i)
 				switch (record.data_key) {
@@ -101,13 +101,13 @@ function ACTION_ok() {
 
 /**
  *
- * @properties={typeid:24,uuid:"D666ED3E-928A-4A34-AA06-54F955E5DF0F"}
+ * @properties={typeid:24,uuid:"BE1F62DB-1D14-464C-96F5-1A8D252C761B"}
  */
 function FORM_on_load() {
 	//only load up images
-	forms.WEB_0F_asset__image__P_choose_1L_asset_group.foundset.find()
-	forms.WEB_0F_asset__image__P_choose_1L_asset_group.foundset.asset_type = 'Image'
-	var results = forms.WEB_0F_asset__image__P_choose_1L_asset_group.foundset.search()
+	forms.WEB_0F__image__P_choose_1L_asset.foundset.find()
+	forms.WEB_0F__image__P_choose_1L_asset.foundset.asset_type = 'Image'
+	var results = forms.WEB_0F__image__P_choose_1L_asset.foundset.search()
 	
 	//close form in dialog
 	if (!results) {
@@ -117,7 +117,7 @@ function FORM_on_load() {
 
 /**
  *
- * @properties={typeid:24,uuid:"854A00F4-2221-4A42-A6DD-5C40ACE70231"}
+ * @properties={typeid:24,uuid:"F9CB0AE8-38FD-48C2-82B8-1804803BDA80"}
  */
 function FORM_on_show()
 {

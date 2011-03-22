@@ -73,7 +73,7 @@ function WEB_block_form_loader(formName, bannerName) {
 function WEB_block_form_refresh() {
 	//update display
 	if (globals.WEB_page_mode == 2) {
-		forms.WEB_0F_page__design__content_1L_block.ACTION_load_gui_mode()
+		forms.WEB_0F_page__design__content_1L_block.ACTION_gui_mode_refresh()
 	}
 	else if (globals.WEB_page_mode == 3) {
 		forms.WEB_0F_page__browser__editor.FORM_on_show()

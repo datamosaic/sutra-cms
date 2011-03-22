@@ -1,4 +1,4 @@
-dataSource:"db:/sutra_cms/web_asset",
+dataSource:"db:/sutra_cms/web_asset_instance",
 items:[
 {
 anchors:6,
@@ -158,7 +158,7 @@ typeid:7,
 uuid:"E6C092D7-A0DB-4A86-8347-87BF30372343"
 }
 ],
-name:"WEB_0F_asset__image",
+name:"WEB_0F__image",
 navigatorID:"-1",
 onLoadMethodID:"-1",
 onRecordSelectionMethodID:"-1",

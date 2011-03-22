@@ -343,10 +343,10 @@ function ACTION_pop_toolbar(event) {
  * @properties={typeid:24,uuid:"E285B1BC-2924-477D-8F4C-D8B94FCF01A6"}
  */
 function ACTION_insert_image(event) {
-	forms.WEB_0F_asset__image__P_choose._imageLink = 1
+	forms.WEB_0F__image__P_choose._imageLink = 1
 	
 	application.showFormInDialog(
-				forms.WEB_0F_asset__image__P_choose,
+				forms.WEB_0F__image__P_choose,
 				-1,-1,-1,-1,
 				"Image",
 				false,
@@ -355,9 +355,9 @@ function ACTION_insert_image(event) {
 			)
 	
 	//something chosen, insert image link at cursor location
-	if (forms.WEB_0F_asset__image__P_choose._imageChosen) {
-		var _imageChosen = forms.WEB_0F_asset__image__P_choose._imageChosen
-		var token = "{DS:IMG_" + _imageChosen.id_asset + "}"
+	if (forms.WEB_0F__image__P_choose._imageChosen) {
+		var _imageChosen = forms.WEB_0F__image__P_choose._imageChosen
+		var token = "{DS:IMG_" + _imageChosen.id_asset_instance + "}"
 		
 		var html = '<img src="' + token + '" width="' + _imageChosen.width + '" height="' + _imageChosen.height + '" alt="' + _imageChosen.asset_title +'">'
 		
