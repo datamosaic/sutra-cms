@@ -362,7 +362,7 @@ function REC_selected() {
 	//gui view
 	if (globals.WEB_page_mode == 2) {
 		//switch tabpanel based on type of form
-		ACTION_load_gui_mode()
+		ACTION_gui_mode_load()
 	}
 	//data view
 	else {
@@ -374,7 +374,7 @@ function REC_selected() {
  *
  * @properties={typeid:24,uuid:"39CC4D1D-2547-4F23-85E9-63C434B95F70"}
  */
-function ACTION_load_gui_mode() {
+function ACTION_gui_mode_load() {
 	var recBlock = foundset.getSelectedRecord()
 	
 	//no scrapbook
@@ -438,6 +438,135 @@ function ACTION_load_gui_mode() {
 			
 			//there is a custom form to show
 			if (hasInit) {
+				var pseudoEvent = new Object()
+				pseudoEvent.getElementName = function() {
+						return 'lbl_mode_real'
+					}
+//				forms.WEB_TB__web_mode.ACTION_mode(pseudoEvent)
+				forms[recBlockType.form_name].LOADER_init(
+													recBlock.web_block_to_scrapbook.getRecord(1).web_scrapbook_to_scrapbook_data, 
+													flagEdit,
+													true
+												)
+			}
+			//something not right, show default form
+			else {
+				forms.WEB_0F_page__design__content_1F_block_data.elements.tab_detail.removeTabAt(2)
+				forms.WEB_0F_page__design__content_1F_block_data.elements.tab_detail.tabIndex = 1
+			}
+		}
+		else {
+			forms.WEB_0F_page__design__content_1F_block_data.elements.tab_detail.removeTabAt(2)
+			forms.WEB_0F_page__design__content_1F_block_data.elements.tab_detail.tabIndex = 1
+		}
+	}
+}
+
+/**
+ * @properties={typeid:24,uuid:"D36CCF55-4226-4FBC-B8C5-F9A61C79B81D"}
+ */
+function ACTION_gui_mode_refresh() {
+	var recBlock = foundset.getSelectedRecord()
+	
+	//no scrapbook
+	if (recBlock && !recBlock.id_scrapbook) {
+		if (recBlock && utils.hasRecords(recBlock.web_block_to_block_type)) {
+			var recBlockType = recBlock.web_block_to_block_type.getRecord(1)
+		}
+		
+		//editable status
+		if (utils.hasRecords(forms.WEB_0F_page__design.web_page_to_version) && 
+			forms.WEB_0F_page__design.web_page_to_version.flag_edit) {
+			
+			var flagEdit = true
+		}
+		
+		//this block definition exists as does the form
+		if (recBlockType && forms[recBlockType.form_name]) {
+			//form not loaded yet, get solution model to check for method existence
+			if (forms[recBlockType.form_name] == '<Form ' + recBlockType.form_name + ' not loaded yet>' && solutionModel.getForm(recBlockType.form_name).getFormMethod('LOADER_refresh')) {
+				var hasRefresh = true
+			}
+			//check for method existence on form
+			else if (forms[recBlockType.form_name].LOADER_refresh) {
+				var hasRefresh = true
+			}
+			
+			//form not loaded yet, get solution model to check for method existence
+			if (forms[recBlockType.form_name] == '<Form ' + recBlockType.form_name + ' not loaded yet>' && solutionModel.getForm(recBlockType.form_name).getFormMethod('LOADER_init')) {
+				var hasInit = true
+			}
+			//check for method existence on form
+			else if (forms[recBlockType.form_name].LOADER_init) {
+				var hasInit = true
+			}
+			
+			//there is a refresh method
+			if (hasRefresh) {
+				forms[recBlockType.form_name].LOADER_refresh(
+													recBlock.web_block_to_block_data,
+													flagEdit,
+													false
+												)
+			}
+			//there is not a refresh, fire init
+			else if (hasInit) {
+				forms[recBlockType.form_name].LOADER_init(
+													recBlock.web_block_to_block_data,
+													flagEdit,
+													false
+												)
+			}
+			//something not right, show default form
+			else {
+				forms.WEB_0F_page__design__content_1F_block_data.elements.tab_detail.removeTabAt(2)
+				forms.WEB_0F_page__design__content_1F_block_data.elements.tab_detail.tabIndex = 1
+			}
+		}
+		else {
+			forms.WEB_0F_page__design__content_1F_block_data.elements.tab_detail.removeTabAt(2)
+			forms.WEB_0F_page__design__content_1F_block_data.elements.tab_detail.tabIndex = 1
+		}
+	}
+	//scrapbook
+	else {
+		if (recBlock && utils.hasRecords(recBlock,'web_block_to_scrapbook.web_scrapbook_to_block_type')) {
+			var recBlockType = recBlock.web_block_to_scrapbook.web_scrapbook_to_block_type.getRecord(1)
+		}
+		
+		//editable status
+		var flagEdit = false
+		
+		//this block definition exists as does the form
+		if (recBlockType && forms[recBlockType.form_name]) {
+			//form not loaded yet, get solution model to check for method existence
+			if (forms[recBlockType.form_name] == '<Form ' + recBlockType.form_name + ' not loaded yet>' && solutionModel.getForm(recBlockType.form_name).getFormMethod('LOADER_refresh')) {
+				var hasRefresh = true
+			}
+			//check for method existence on form
+			else if (forms[recBlockType.form_name].LOADER_refresh) {
+				var hasRefresh = true
+			}
+			
+			//form not loaded yet, get solution model to check for method existence
+			if (forms[recBlockType.form_name] == '<Form ' + recBlockType.form_name + ' not loaded yet>' && solutionModel.getForm(recBlockType.form_name).getFormMethod('LOADER_init')) {
+				var hasInit = true
+			}
+			//check for method existence on form
+			else if (forms[recBlockType.form_name].LOADER_init) {
+				var hasInit = true
+			}
+			
+			//there is a refresh method
+			if (hasRefresh) {
+				forms[recBlockType.form_name].LOADER_refresh(
+													recBlock.web_block_to_block_data,
+													flagEdit,
+													false
+												)
+			}
+			//there is not a refresh, fire init
+			else if (hasInit) {
 				var pseudoEvent = new Object()
 				pseudoEvent.getElementName = function() {
 						return 'lbl_mode_real'

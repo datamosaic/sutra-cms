@@ -34,7 +34,7 @@ function REC_on_select(event) {
 	}
 	
 	//find site-specific stuff
-	forms.WEB_0F_asset_group.FORM_on_load()
+	forms.WEB_0F_asset.FORM_on_load()
 	forms.WEB_0F_block_type.FORM_on_load()
 	forms.WEB_0F_scrapbook.FORM_on_load()
 	forms.WEB_0F_theme.FORM_on_load()

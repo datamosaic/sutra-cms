@@ -65,7 +65,7 @@ function FORM_on_show(firstShow, event) {
 		switch (dataRec.web_block_data_to_block.web_block_to_block_type.block_name) {
 			case 'Image':
 				//hard coded to form, split out
-				forms.WEB_0F_asset__image.blockData = dataRec
+				forms.WEB_0F__image.blockData = dataRec
 				
 				//foundset with image datapoints
 				var fsBlockData = dataRec
@@ -109,10 +109,10 @@ function FORM_on_show(firstShow, event) {
 								'</body></html>'
 				}
 				
-				forms.WEB_0F_asset__image.elements.bn_browser.html = html
-				forms.WEB_0F_asset__image.TOGGLE_buttons(true)
+				forms.WEB_0F__image.elements.bn_browser.html = html
+				forms.WEB_0F__image.TOGGLE_buttons(true)
 				
-				elements.tab_edit.addTab(forms.WEB_0F_asset__image)
+				elements.tab_edit.addTab(forms.WEB_0F__image)
 				elements.tab_edit.tabIndex = 1
 				
 			break

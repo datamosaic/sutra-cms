@@ -1,5 +1,5 @@
 borderType:"EmptyBorder,0,0,0,0",
-dataSource:"db:/sutra_cms/web_asset_group",
+dataSource:"db:/sutra_cms/web_asset",
 items:[
 {
 anchors:14,
@@ -66,14 +66,13 @@ uuid:"9BEBE203-E554-49C8-A9AB-C1C32C6C4E74"
 },
 {
 anchors:11,
-dataProviderID:"id_asset_type",
+dataProviderID:"asset_type",
 displayType:2,
 editable:false,
 formIndex:10500,
 location:"20,60",
 size:"200,23",
 styleClass:"combobox",
-text:"Module",
 typeid:4,
 uuid:"A0083124-E6D0-4EF8-8827-C1F0A3EE6BD7",
 valuelistID:"48A848FB-45E0-4D3C-978B-91C2C9C27CE7"

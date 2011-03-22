@@ -18,27 +18,27 @@ var f_type = null;
 /**
  * @properties={typeid:35,uuid:"673A3550-672F-4BC6-8AC6-05651ECF2748",variableType:4}
  */
-var _image_height;
+var _imageHeight;
 
 /**
  * @properties={typeid:35,uuid:"36C6A5EF-CEA5-4BCA-ACB5-DA136CFC846B",variableType:4}
  */
-var _image_height_original;
+var _imageHeightOriginal;
 
 /**
  * @properties={typeid:35,uuid:"9F566459-641E-4480-A03F-D5F5C26729A8"}
  */
-var _image_name = '';
+var _imageName = '';
 
 /**
  * @properties={typeid:35,uuid:"FA6C4219-3296-4236-90E6-A8034B035448",variableType:4}
  */
-var _image_width;
+var _imageWidth;
 
 /**
  * @properties={typeid:35,uuid:"84469BA6-5E23-4859-926E-489A142290C6",variableType:4}
  */
-var _image_width_original;
+var _imageWidthOriginal;
 
 /**
  *

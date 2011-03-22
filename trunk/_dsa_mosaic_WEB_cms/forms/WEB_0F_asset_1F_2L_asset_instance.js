@@ -8,7 +8,7 @@ var _license_dsa_mosaic_WEB_cms = 'Module: _dsa_mosaic_WEB_cms \
 /**
  * @properties={typeid:35,uuid:"465C7830-170A-4A48-8964-C2AF4C5C2CC2",variableType:-4}
  */
-var assetMeta = null;
+var _assetMeta = null;
 
 /**
  * Handle record selected.
@@ -25,15 +25,15 @@ function REC_on_select(event) {
 	}
 	else {
 		var asset = 
-			assetMeta = new Object()
+			_assetMeta = new Object()
 		
 		asset.parentRec = foundset.getSelectedRecord()
 	}
 	
 	//bundle up pseudo-record of meta rows so easier to access
-	if (asset.parentRec && utils.hasRecords(asset.parentRec.web_asset_to_asset_meta)) {
-		for (var i = 1; i <= asset.parentRec.web_asset_to_asset_meta.getSize(); i++) {
-			var record = asset.parentRec.web_asset_to_asset_meta.getRecord(i)
+	if (asset.parentRec && utils.hasRecords(asset.parentRec.web_asset_instance_to_asset_instance_meta)) {
+		for (var i = 1; i <= asset.parentRec.web_asset_instance_to_asset_instance_meta.getSize(); i++) {
+			var record = asset.parentRec.web_asset_instance_to_asset_instance_meta.getRecord(i)
 			asset[record.data_key] = record
 		}
 	}
@@ -63,13 +63,13 @@ function REC_delete() {
  */
 function REC_new() {
 	var srcRecord = foundset.getSelectedRecord()
-	var dupeRecord = globals.CODE_record_duplicate(srcRecord,['web_asset_to_asset_meta'])
+	var dupeRecord = globals.CODE_record_duplicate(srcRecord,['web_asset_instance_to_asset_instance_meta'])
 	
 	//make sure duped record is not flagged as base
 	dupeRecord.flag_initial = 0
 	databaseManager.saveData(dupeRecord)
 	
-	foundset.selectRecord(dupeRecord.id_asset)
+	foundset.selectRecord(dupeRecord.id_asset_instance)
 }
 
 /**

@@ -1,25 +1,44 @@
 /**
- * @properties={type:12,typeid:36,uuid:"4DEA7AF3-07BD-41AD-A126-4683942414B1"}
+ * @properties={type:12,typeid:36,uuid:"E0B5FAF2-D80F-4E4A-96CB-7EE5E9DE01DD"}
  */
-function display_asset_size()
-{
-	if (asset_size) {
-		var size = asset_size / 1024
+function display_asset_info()	{
+	var linebreak = function() {
+		if (html != '<html><body>') {
+			html += '<br>\n'
+		}
+	}
+	
+	var html = '<html><body>'
+	
+	if (asset_name) {
+		html += '<strong>Name</strong>: ' + asset_name
+	}
+	
+//	if (utils.hasRecords(web_asset_to_asset_instance)) {
+//		linebreak()
+//		
+//		html += '<strong>Instances</strong>: ' + web_asset_to_asset_instance.getSize()
+//	}
+	
+	if (utils.hasRecords(web_asset_to_asset_instance__initial)) {
+		linebreak()
+//		html += '<br>Defaults<br>'
+//		
+		//get meta data points we need
+		var metaRows = new Object()
+		for (var i = 1; i <= web_asset_to_asset_instance__initial.web_asset_instance_to_asset_instance_meta.getSize(); i++) {
+			var record = web_asset_to_asset_instance__initial.web_asset_instance_to_asset_instance_meta.getRecord(i)
+			metaRows[record.data_key] = record
+		}
 		
-		if (size < 1) {
-			return '<1 KB'
-		}
-		else if (size < 1024) {
-			return utils.numberFormat(size,'#,###.#') + " KB"
-		}
-		else if (size > 1024 && size < (1024 * 1024)) {
-			return utils.numberFormat(size/1024,'#,###.#') + ' MB'
-		}
-		else {
-			return utils.numberFormat(size/(1024 * 1024),'#,###.#') + ' GB'
-		}
+		html += '<strong>Size</strong>: ' + web_asset_to_asset_instance__initial.display_asset_size + '<br>'
+		html += '<strong>Width</strong>: ' + metaRows.width.data_value + '<br>'
+		html += '<strong>Height</strong>: ' + metaRows.height.data_value + '<br>'
 	}
-	else {
-		return null
-	}
+	
+	
+	
+	html += '</body></html>'
+	
+	return html
 }

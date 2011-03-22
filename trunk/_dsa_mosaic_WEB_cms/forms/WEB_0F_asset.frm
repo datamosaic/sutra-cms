@@ -1,4 +1,4 @@
-dataSource:"db:/sutra_cms/web_asset_group",
+dataSource:"db:/sutra_cms/web_asset",
 items:[
 {
 anchors:6,
@@ -36,8 +36,8 @@ items:[
 {
 containsFormID:"9C5DDF76-80E4-46B7-AB22-45EB505A4ED6",
 location:"10,180",
-relationName:"web_asset_group_to_asset_group",
-text:"WEB_0F_asset_group_1F",
+relationName:"web_asset_to_asset",
+text:"WEB_0F_asset_1F",
 typeid:15,
 uuid:"96B33554-01CD-42FC-B25C-130A0160F9CA"
 }
@@ -51,7 +51,7 @@ typeid:16,
 uuid:"153F8859-2DFE-4668-9E70-84173929734F"
 },
 {
-dataProviderID:"asset_group",
+dataProviderID:"asset_name",
 formIndex:10600,
 location:"135,81",
 scrollbars:36,
@@ -221,12 +221,13 @@ typeid:7,
 uuid:"92E862EE-9CDB-4E6E-95F0-A16762EE9044"
 },
 {
-dataProviderID:"id_asset_type",
+dataProviderID:"asset_type",
 editable:false,
 formIndex:10500,
 location:"135,58",
 onDataChangeMethodID:"-1",
 scrollbars:36,
+selectOnEnter:true,
 size:"235,23",
 styleClass:"standard_table_noedit",
 typeid:4,
@@ -250,7 +251,7 @@ showFocus:false,
 size:"770,15",
 styleClass:"header",
 tabSeq:-1,
-text:"ASSET GROUP",
+text:"ASSETS",
 transparent:true,
 typeid:7,
 uuid:"A37819AE-88A3-42D1-B0A6-E267FE2F4CCA"
@@ -302,7 +303,7 @@ typeid:7,
 uuid:"E6512F93-1308-438B-B4D6-8BE3BBD88E19"
 }
 ],
-name:"WEB_0F_asset_group",
+name:"WEB_0F_asset",
 navigatorID:"-1",
 onHideMethodID:"6F9735E5-4802-4370-9526-80C07653820B",
 onLoadMethodID:"CFCBF7B5-C038-4D04-AFF3-41AEA18ED580",

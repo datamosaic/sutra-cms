@@ -1,8 +1,0 @@
-foreignDataSource:"db:/sutra_cms/web_asset_group",
-items:[
-{foreignColumnName:"id_asset_group",primaryDataProviderID:"id_asset_group",typeid:23,uuid:"382596A1-C376-451C-9FE0-92CB09788CE4"}
-],
-name:"web_asset_group_to_asset_group",
-primaryDataSource:"db:/sutra_cms/web_asset_group",
-typeid:22,
-uuid:"DC6E980B-2AA9-43AE-B473-99F1763F7886"

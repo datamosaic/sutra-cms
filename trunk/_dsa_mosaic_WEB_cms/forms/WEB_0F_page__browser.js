@@ -125,7 +125,7 @@ function BLOCK_edit(idBlock) {
 	//currently used elsewhere, remove
 	if (forms.WEB_0F_page__design__content_1F_block_data.elements.tab_detail.getMaxTabIndex() >= 2 && (
 		forms.WEB_0F_page__design__content_1F_block_data.elements.tab_detail.getTabFormNameAt(2) == 'WEB_0F__content' ||
-		forms.WEB_0F_page__design__content_1F_block_data.elements.tab_detail.getTabFormNameAt(2) == 'WEB_0F_asset__image' //||
+		forms.WEB_0F_page__design__content_1F_block_data.elements.tab_detail.getTabFormNameAt(2) == 'WEB_0F__image' //||
 		)) {
 		
 		forms.WEB_0F_page__design__content_1F_block_data.elements.tab_detail.removeTabAt(2)
