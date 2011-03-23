@@ -95,29 +95,37 @@ function TAG_delete(event) {
  *
  * @properties={typeid:24,uuid:"FF5AF14C-E836-4D15-897E-FC174AA6C371"}
  */
-function REC_new() {
+function REC_new(assetType) {
 	if (utils.hasRecords(forms.WEB_0F_site.foundset)) {
 		//no records created yet and interface locked
-		if (application.__parent__.solutionPrefs && solutionPrefs.design.statusLockWorkflow) {
+		if (!assetType && application.__parent__.solutionPrefs && solutionPrefs.design.statusLockWorkflow) {
 			globals.WEB_lock_workflow(false)
 		}
 		
 		//save down data
 		databaseManager.saveData()
 		databaseManager.setAutoSave(false)
+		
 		controller.newRecord()
 		id_site = forms.WEB_0F_site.id_site
 		var assetID = id_asset
 		
+		//asset type specified
+		if (assetType) {
+			asset_type = assetType
+		}
 		//prompt for type of asset
-		application.showFormInDialog(
-					forms.WEB_P_asset,
-					-1,-1,-1,-1,
-					' ',
-					false,
-					false,
-					'cmsAssetNew'
-				)
+		else {
+			//prompt for type of asset
+			application.showFormInDialog(
+						forms.WEB_P_asset,
+						-1,-1,-1,-1,
+						' ',
+						false,
+						false,
+						'cmsAssetNew'
+					)
+		}
 		
 		//new record not cancelled
 		if (assetID == id_asset) {
@@ -134,7 +142,7 @@ function REC_new() {
 				metaRec.data_key = i
 				metaRec.data_type = template.meta[i]
 				
-				databaseManager.saveData(metaRec)
+//				databaseManager.saveData(metaRec)
 			}
 			
 			//pseudo-record
@@ -153,8 +161,21 @@ function REC_new() {
 				
 				//show correct FiD for chosen asset type
 				if ( hasInit ) {
-					forms[template.formName].ASSET_import(assetMeta)
-					foundset.selectRecord(assetRecord.id_asset)
+					var success = forms[template.formName].ASSET_import(assetMeta)
+					
+					//asset type specified, rollback record if file selection cancelled
+					if (assetType) {
+						if (!success) {
+							databaseManager.rollbackEditedRecords()
+							databaseManager.setAutoSave(true)
+						}
+					}
+					//update screen with selected record
+					else {
+						foundset.selectRecord(assetRecord.id_asset)
+					}
+					
+					return assetMeta
 				}
 				else {
 					plugins.dialogs.showErrorDialog( "Error", "Selected block does not have a ASSET_import method")
