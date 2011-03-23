@@ -48,14 +48,12 @@ function ACTION_ok() {
 			metaRows[record.data_key] = record
 		}
 		
-		_imageChosen = {
+		// set record to form to be used elsewhere
+		if (_imageLink) {
+			_imageChosen = {
 					asset: assetRec,
 					meta: metaRows
 				}
-		
-		// set record to form to be used elsewhere
-		if (_imageLink) {
-			_imageChosen = record
 		}
 		// copy image details to block data points
 		else {
@@ -74,7 +72,7 @@ function ACTION_ok() {
 				switch (record.data_key) {
 					case 'height':
 					case 'width':
-						record.data_value = _imageChosen.meta[record.data_key].data_value
+						record.data_value = metaRows[record.data_key].data_value
 						break
 					case 'image_name':
 						record.data_value = assetRec.asset_title

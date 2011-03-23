@@ -52,7 +52,7 @@ function ASSET_scale(assetRecord) {
 			forms[fidForm],
 			-1,-1,-1,-1,
 			" ", 
-			false, 
+			true, 
 			false, 
 			"CMS_imageScale"
 		)
@@ -96,22 +96,24 @@ function FILE_import(origLocation, newLocation, newWidth, newHeight) {
 	if (!origLocation) {
 		var file = plugins.file.showFileOpenDialog()
 		
+		if ( !file ) {
+			return "Selection cancelled"
+		}
+		
 		var ext = file.getName().split('.')
+		
 		//file has an extension
 		if (ext && ext.length > 1) {
 			var fileExt = ext[ext.length-1].toLowerCase()
 		}
 		
-		if ( !file ) {
-			return //"Selection cancelled"
-		}
 	}
 	// input file specified, get it
 	else {
 		var file = plugins.file.convertToJSFile(origLocation)
 		
 		if ( !file ) {
-			return //"Source file not found"
+			return "Source file not found"
 		}
 		
 		if (newLocation) {
@@ -187,6 +189,7 @@ function ASSET_import(asset,fileLocation) {
 					'Error',
 					fileOBJ
 			)
+		return false
 	}
 	// create image asset record
 	else {
@@ -208,6 +211,8 @@ function ASSET_import(asset,fileLocation) {
 //		asset.thumbnail.data_value_blob	= fileOBJ.thumbnail
 		
 		databaseManager.saveData()
+		
+		return true
 	}
 }
 
