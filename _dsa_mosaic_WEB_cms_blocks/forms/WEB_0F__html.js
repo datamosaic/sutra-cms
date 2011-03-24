@@ -31,6 +31,9 @@ function VIEW_default(obj) {
  * @properties={typeid:24,uuid:"27048A75-8641-49AD-8E44-D614410947B0"}
  */
 function FORM_on_load() {
+	//clear foundset
+	foundset.clear()
+	
 	//set combobox to be square on os x
 	globals.CODE_property_combobox(true)
 }
