@@ -160,6 +160,18 @@ function FORM_on_load(event) {
 	elements.bean_split_1.leftComponent = elements.tab_layout
 	elements.bean_split_1.rightComponent = elements.bean_split_2
 	elements.bean_split_1.dividerLocation = 300
+	
+	// set split 4
+	elements.bean_split_4.leftComponent = elements.lbl_slide_2
+	elements.bean_split_4.rightComponent = elements.lbl_slide_3
+	elements.bean_split_4.dividerLocation = 200	
+	
+	// set split 3
+	elements.bean_split_3.leftComponent = elements.lbl_slide_1
+	elements.bean_split_3.rightComponent = elements.bean_split_4
+	elements.bean_split_3.dividerLocation = 300
+	
+	
 }
 
 /**
@@ -909,11 +921,24 @@ function FORM_on_show(firstShow, event) {
 		var aThird = (controller.getFormWidth() - 22) / 3
 		elements.bean_split_1.dividerLocation = aThird
 		elements.bean_split_2.dividerLocation = aThird
+		elements.bean_split_3.dividerLocation = aThird
+		elements.bean_split_4.dividerLocation = aThird
 	}
 	
 	if (!utils.hasRecords(foundset)) {
 		globals.WEB_lock_workflow(true)
 	}
+}
+
+/**
+ * Perform the element default action.
+ *
+ * @param {JSEvent} event the event that triggered the action
+ *
+ * @properties={typeid:24,uuid:"D7D1CE91-8C52-4808-BE77-DA406B1D8B8B"}
+ */
+function ACTION_new_block(event) {
+	forms.WEB_0F_theme_1L_editable_default.BLOCK_new()
 }
 
 /**
