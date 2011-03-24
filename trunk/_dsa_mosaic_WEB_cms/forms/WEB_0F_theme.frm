@@ -281,6 +281,40 @@ typeid:4,
 uuid:"8F4EFCC7-6D95-40C1-8C10-0571DB618FCC"
 },
 {
+anchors:11,
+formIndex:11800,
+location:"250,172",
+mediaOptions:14,
+name:"lbl_slide_2",
+showClick:false,
+showFocus:false,
+size:"260,18",
+styleClass:"standard_table_category",
+tabSeq:-1,
+text:"Editable areas",
+transparent:true,
+typeid:7,
+uuid:"8FD137BF-9090-40AD-9EC4-55B4FD0A564E"
+},
+{
+anchors:3,
+formIndex:12900,
+horizontalAlignment:0,
+imageMediaID:"ca71eeeb-624d-461d-a4b3-41a387f1304a",
+location:"749,174",
+mediaOptions:14,
+name:"btn_add",
+onActionMethodID:"D7D1CE91-8C52-4808-BE77-DA406B1D8B8B",
+rolloverCursor:12,
+rolloverImageMediaID:"e5ed6909-0205-4660-b805-94edf9739179",
+showClick:false,
+showFocus:false,
+size:"20,15",
+transparent:true,
+typeid:7,
+uuid:"90B0D063-D201-49DC-8A43-05E686A5FF3D"
+},
+{
 formIndex:10700,
 location:"40,58",
 mediaOptions:14,
@@ -293,6 +327,70 @@ text:"Theme",
 transparent:true,
 typeid:7,
 uuid:"A28E2F00-E8DD-4280-8614-A7F843801C93"
+},
+{
+anchors:11,
+beanClassName:"javax.swing.JSplitPane",
+beanXML:"<?xml version=\"1.0\" encoding=\"UTF-8\"?> 
+<java version=\"1.6.0_22\" class=\"java.beans.XMLDecoder\"> 
+ <object class=\"javax.swing.JSplitPane\"> 
+  <int>1<\/int> 
+  <void property=\"background\"> 
+   <object class=\"java.awt.Color\"> 
+    <int>209<\/int> 
+    <int>215<\/int> 
+    <int>226<\/int> 
+    <int>255<\/int> 
+   <\/object> 
+  <\/void> 
+  <void property=\"size\"> 
+   <object class=\"java.awt.Dimension\"> 
+    <int>170<\/int> 
+    <int>90<\/int> 
+   <\/object> 
+  <\/void> 
+  <void property=\"UI\"> 
+   <void property=\"continuousLayout\"> 
+    <boolean>true<\/boolean> 
+   <\/void> 
+  <\/void> 
+  <void property=\"border\"> 
+   <null/> 
+  <\/void> 
+  <void property=\"continuousLayout\"> 
+   <boolean>true<\/boolean> 
+  <\/void> 
+  <void property=\"dividerLocation\"> 
+   <int>0<\/int> 
+  <\/void> 
+  <void property=\"dividerSize\"> 
+   <int>0<\/int> 
+  <\/void> 
+  <void property=\"focusable\"> 
+   <boolean>false<\/boolean> 
+  <\/void> 
+  <void property=\"lastDividerLocation\"> 
+   <int>0<\/int> 
+  <\/void> 
+  <void property=\"name\"> 
+   <string>bean_split_2<\/string> 
+  <\/void> 
+  <void property=\"opaque\"> 
+   <boolean>false<\/boolean> 
+  <\/void> 
+  <void property=\"resizeWeight\"> 
+   <double>0.5<\/double> 
+  <\/void> 
+ <\/object> 
+<\/java> 
+",
+formIndex:9999,
+location:"99,172",
+name:"bean_split_4",
+size:"170,18",
+typeid:12,
+usesUI:true,
+uuid:"A91DF0DA-9758-4733-B1B2-3D7A2FACC88C"
 },
 {
 anchors:11,
@@ -321,6 +419,22 @@ size:"780,16",
 tabSeq:-1,
 typeid:7,
 uuid:"CBA8C3DE-ECFD-422E-85C6-6A407D9DDF4E"
+},
+{
+anchors:11,
+formIndex:11800,
+location:"430,172",
+mediaOptions:14,
+name:"lbl_slide_3",
+showClick:false,
+showFocus:false,
+size:"300,18",
+styleClass:"standard_table_category",
+tabSeq:-1,
+text:"Default blocks",
+transparent:true,
+typeid:7,
+uuid:"D47CDC6B-9FD5-4D59-A64A-1A8D3B722B82"
 },
 {
 dataProviderID:"theme_name",
@@ -392,12 +506,28 @@ beanXML:"<?xml version=\"1.0\" encoding=\"UTF-8\"?>
 <\/java> 
 ",
 formIndex:9998,
-location:"11,170",
+location:"11,190",
 name:"bean_split_1",
-size:"758,200",
+size:"758,180",
 typeid:12,
 usesUI:true,
 uuid:"D7F05C88-0D98-4DEC-9187-8CDACFF23D43"
+},
+{
+anchors:11,
+formIndex:11800,
+location:"30,172",
+mediaOptions:14,
+name:"lbl_slide_1",
+showClick:false,
+showFocus:false,
+size:"450,18",
+styleClass:"standard_table_category",
+tabSeq:-1,
+text:"Layouts",
+transparent:true,
+typeid:7,
+uuid:"DA2C5E10-1332-4298-A940-DA1C763790DB"
 },
 {
 formIndex:11800,
@@ -426,6 +556,70 @@ text:"Directory",
 transparent:true,
 typeid:7,
 uuid:"E53B4E4B-EA53-4D31-8251-56EAC9C6AA3C"
+},
+{
+anchors:11,
+beanClassName:"javax.swing.JSplitPane",
+beanXML:"<?xml version=\"1.0\" encoding=\"UTF-8\"?> 
+<java version=\"1.6.0_22\" class=\"java.beans.XMLDecoder\"> 
+ <object class=\"javax.swing.JSplitPane\"> 
+  <int>1<\/int> 
+  <void property=\"background\"> 
+   <object class=\"java.awt.Color\"> 
+    <int>209<\/int> 
+    <int>215<\/int> 
+    <int>226<\/int> 
+    <int>255<\/int> 
+   <\/object> 
+  <\/void> 
+  <void property=\"size\"> 
+   <object class=\"java.awt.Dimension\"> 
+    <int>760<\/int> 
+    <int>190<\/int> 
+   <\/object> 
+  <\/void> 
+  <void property=\"UI\"> 
+   <void property=\"continuousLayout\"> 
+    <boolean>true<\/boolean> 
+   <\/void> 
+  <\/void> 
+  <void property=\"border\"> 
+   <null/> 
+  <\/void> 
+  <void property=\"continuousLayout\"> 
+   <boolean>true<\/boolean> 
+  <\/void> 
+  <void property=\"dividerLocation\"> 
+   <int>0<\/int> 
+  <\/void> 
+  <void property=\"dividerSize\"> 
+   <int>0<\/int> 
+  <\/void> 
+  <void property=\"focusable\"> 
+   <boolean>false<\/boolean> 
+  <\/void> 
+  <void property=\"lastDividerLocation\"> 
+   <int>0<\/int> 
+  <\/void> 
+  <void property=\"name\"> 
+   <string>bean_split_1<\/string> 
+  <\/void> 
+  <void property=\"opaque\"> 
+   <boolean>false<\/boolean> 
+  <\/void> 
+  <void property=\"resizeWeight\"> 
+   <double>0.5<\/double> 
+  <\/void> 
+ <\/object> 
+<\/java> 
+",
+formIndex:9998,
+location:"10,172",
+name:"bean_split_3",
+size:"758,18",
+typeid:12,
+usesUI:true,
+uuid:"E7BC986A-E386-4565-9CB8-4C4E50688C33"
 },
 {
 anchors:11,

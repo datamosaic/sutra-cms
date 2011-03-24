@@ -61,21 +61,6 @@ uuid:"535BAE6F-BEB8-490B-A067-554EC7BCD5E5"
 },
 {
 anchors:11,
-formIndex:11800,
-location:"0,2",
-mediaOptions:14,
-showClick:false,
-showFocus:false,
-size:"260,18",
-styleClass:"standard_table_category",
-tabSeq:-1,
-text:"Editable areas",
-transparent:true,
-typeid:7,
-uuid:"602C78D0-1E41-41BF-8466-651517741F88"
-},
-{
-anchors:11,
 borderType:"SpecialMatteBorder,0.0,0.0,1.0,0.0,#000000,#000000,#999999,#000000,0.0,1.0",
 dataProviderID:"row_order",
 formIndex:10700,
@@ -105,12 +90,6 @@ transparent:true,
 typeid:7,
 uuid:"823A73DA-F249-448D-A47A-236C3C48EE64",
 verticalAlignment:0
-},
-{
-height:20,
-partType:1,
-typeid:19,
-uuid:"84283DB7-F2DC-4C0A-9E89-948D33E33FDF"
 },
 {
 anchors:11,
