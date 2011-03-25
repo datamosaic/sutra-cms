@@ -11,44 +11,6 @@ var _license_dsa_mosaic_WEB_cms = 'Module: _dsa_mosaic_WEB_cms \
 var _rewriteSample = '<?xml version="1.0" encoding="utf-8"?>\n<!DOCTYPE urlrewrite PUBLIC "-//tuckey.org//DTD UrlRewrite 2.6//EN"\n        "http://tuckey.org/res/dtds/urlrewrite2.6.dtd">\n\n<!--\n    Configuration file for Sutra CMS by Data Mosaic\n	http://www.data-mosaic.com/\n	\n	Rewriting provided by UrlRewriteFilter\n	http://tuckey.org/urlrewrite/\n-->\n\n\n<urlrewrite>\n\n<!--	generic top		-->\n	\n	<rule>\n		<name>Generic CMS .html inbound</name>\n		<note>All html files (any URL with ".html") will be fed into sutraCMS/index.jsp</note>\n		<from>^/(.*?).html(?:\?*)(.*)</from>\n		<to>/sutraCMS/index.jsp?pretty=$1&amp;$2</to>\n	</rule>\n\n	<rule>\n		<name>Generic CMS .jsp</name>\n		<note>All jsp files (any URL with ".jsp") served up from sutraCMS directory. NOTE: Exceptions should be added to this rule and then rewritten in a later rule.</note>\n		<from>(^.*.jsp.*$)</from>\n		<to>/sutraCMS/$1</to>\n	</rule>\n\n	<rule>\n		<name>Generic CMS home page</name>\n		<note>When no page specified, serve the default page for the requested domain</note>\n		<from>^/$</from>\n		<to>/sutraCMS/index.jsp</to>\n	</rule>	\n	\n<!--	site specifc	-->\n	\n	<rule>\n		<name>My cool site</name>\n		<note>Other files (non-html, non-jsp) pushed to site document root</note>\n		<condition name="host">\n			sitename\n		</condition>\n		<from>(^((?!^.*\b(html|jsp)\b.*$).)*)</from>\n		<to>/sutraCMS/sites/my_cool_site/$1</to>\n	</rule>\n\n\n</urlrewrite>';
 
 /**
- * Handle changed data.
- *
- * @param {Object} oldValue old value
- * @param {Object} newValue new value
- * @param {JSEvent} event the event that triggered the action
- *
- * @returns {Boolean}
- *
- * @properties={typeid:24,uuid:"4212DD65-CD73-428B-93F1-BF5190DECD1F"}
- */
-function FLD_data_change__type_server(oldValue, newValue, event) {
-	
-	switch (newValue) {
-		case 'Mac':
-			elements.fld_directory_linux.visible = false
-			elements.fld_directory_mac.visible = true
-			elements.fld_directory_windows.visible = false
-			break
-		case 'Windows':
-			elements.fld_directory_linux.visible = false
-			elements.fld_directory_mac.visible = false
-			elements.fld_directory_windows.visible = true
-			break
-		case 'Linux':
-			elements.fld_directory_linux.visible = true
-			elements.fld_directory_mac.visible = false
-			elements.fld_directory_windows.visible = false
-			break
-		default:
-			elements.fld_directory_linux.visible = false
-			elements.fld_directory_mac.visible = false
-			elements.fld_directory_windows.visible = false
-	}
-	
-	return true
-}
-
-/**
  * Callback method when form is (re)loaded.
  *
  * @param {JSEvent} event the event that triggered the action
@@ -56,6 +18,52 @@ function FLD_data_change__type_server(oldValue, newValue, event) {
  * @properties={typeid:24,uuid:"AA87953D-FECC-4DFD-A81E-783EBC4E875D"}
  */
 function FORM_on_load(event) {
+}
+
+/**
+ * @properties={typeid:24,uuid:"76B2ACAE-4C52-4779-9E61-71CE1C8AB97B"}
+ */
+function TAB_change()
+{
+
+/*
+ *	TITLE    :	TAB_change
+ *			  	
+ *	MODULE   :	wf_PRJ_project
+ *			  	
+ *	ABOUT    :	changes tab, shows correct buttons, shows/hides edit arrow
+ *			  	
+ *	INPUT    :	1- (optional) tab to navigate to
+ *			  	
+ *	OUTPUT   :	
+ *			  	
+ *	REQUIRES :	
+ *			  	
+ *	USAGE    :	TAB_change
+ *			  	
+ *	MODIFIED :	January 21, 2009 -- Troy Elliott, Data Mosaic
+ *			  	
+ */
+	
+	//MEMO: need to somehow put this section in a Function of it's own
+	//running in Tano...strip out jsevents for now
+	if (utils.stringToNumber(application.getVersion()) >= 5) {
+		//cast Arguments to array
+		var Arguments = new Array()
+		for (var i = 0; i < arguments.length; i++) {
+			Arguments.push(arguments[i])
+		}
+		
+		//reassign arguments without jsevents
+		arguments = Arguments.filter(globals.CODE_jsevent_remove)
+	}
+	
+	//tab clicked on
+	var elemName = (arguments[0]) ? 'tab_b' + arguments[0] : null
+	var formName = (elemName) ? controller.getName() : null
+	
+	globals.TAB_change_inline(formName,elemName,'tab_main','tab_b')
+	
 }
 
 /**
@@ -74,11 +82,9 @@ function FORM_on_show(firstShow, event) {
 		}
 	
 		//on first show of form, show correct field
-		FLD_data_change__type_server(null,type_server)	
+		forms.WEB_0F_install__setup.FLD_data_change__type_server(null,type_server)
 	}
-	
-	TOGGLE_sample_rewrite()
-	
+	forms.WEB_0F_install__rewrite.TOGGLE_sample_rewrite()
 	globals.TRIGGER_toolbar_record_navigator_set(false)
 }
 
@@ -93,18 +99,6 @@ function FORM_on_show(firstShow, event) {
  */
 function FORM_on_hide(event) {
 	globals.TRIGGER_toolbar_record_navigator_set(true)
-}
-
-/**
- * @properties={typeid:24,uuid:"BC2B89EA-1253-4CDF-9430-11670FB3D100"}
- */
-function TOGGLE_sample_rewrite(input) {
-	if (typeof input != 'boolean') {
-		input = (rewrite_enabled) ? true : false
-	}
-	
-	elements.lbl_rewriteSample.visible = input
-	elements.var_rewriteSample.visible = input
 }
 
 /**
