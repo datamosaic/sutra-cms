@@ -615,3 +615,14 @@ function TOGGLE_elements(editAllow) {
 	elements.fld_params.editable = editAllow	
 //	elements.fld_row_order.editable = editAllow
 }
+
+/**
+ * Perform the element default action.
+ *
+ * @param {JSEvent} event the event that triggered the action
+ *
+ * @properties={typeid:24,uuid:"0152F895-931B-4B2F-8290-A777DB27EF74"}
+ */
+function FLD_id_block_display(event) {
+	elements.fld_id_block_type.requestFocus()
+}
