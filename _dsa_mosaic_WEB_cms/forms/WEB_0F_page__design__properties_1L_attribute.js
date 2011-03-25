@@ -59,5 +59,13 @@ else {
  * @properties={typeid:24,uuid:"DBECAE84-98F5-4AC6-9B6A-4AA69E711EE4"}
  */
 function REC_new() {
-	controller.newRecord(false, true)
+	if ( utils.hasRecords( forms.WEB_0F_site.web_site_to_site_attribute) ) {
+		controller.newRecord(false, true)
+	}
+	else {
+		plugins.dialogs.showErrorDialog(
+					'Error',
+					'Site has no page attributes set up'
+			)
+	}
 }
