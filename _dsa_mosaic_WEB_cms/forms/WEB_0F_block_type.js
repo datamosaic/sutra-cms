@@ -281,23 +281,41 @@ function REC_new(flagRefresh) {
 		// OPT 2: create block record with meta data automatically
 		else {
 			
-			if (!flagRefresh) {			
-				// 1) choose form to register as a block
-				application.showFormInDialog(
-									forms.WEB_P__block_new,
-									-1,-1,-1,-1,
-									' ',
-									false,
-									false,
-									'cmsBlockNew'
-								)	
-				//this should be forms.WEB_P__block_new._formName...some scoping issue (fid cancel hack...)
-				if ( forms.WEB_0F_block_type._formName == undefined ) {
-					return "Action cancelled"
-				}	
-				var formName = _formName
-				//now delete _formName (.../fid cancel hack)
-				delete forms.WEB_0F_block_type._formName
+			if (!flagRefresh) {
+				//get current list of forms that are valid
+				var validForms = FIND_forms()
+				
+				if (validForms && validForms.length) {
+					var formName = plugins.dialogs.showSelectDialog(
+								'New block',
+								'Choose the form that describes the block you want to create',
+								validForms
+						)
+				}
+				else {
+					plugins.dialogs.showErrorDialog(
+								'Error',
+								'No valid forms in this solution and it\'s included modules'
+						)
+					return
+				}
+				
+//				// 1) choose form to register as a block
+//				application.showFormInDialog(
+//									forms.WEB_P__block_new,
+//									-1,-1,-1,-1,
+//									' ',
+//									false,
+//									false,
+//									'cmsBlockNew'
+//								)	
+//				//this should be forms.WEB_P__block_new._formName...some scoping issue (fid cancel hack...)
+//				if ( forms.WEB_0F_block_type._formName == undefined ) {
+//					return "Action cancelled"
+//				}	
+//				var formName = _formName
+//				//now delete _formName (.../fid cancel hack)
+//				delete forms.WEB_0F_block_type._formName
 			}	
 			else {
 				// use current block type record
@@ -468,6 +486,29 @@ function REC_new(flagRefresh) {
 						'You must add a site record first'
 				)
 	}
+}
+
+/**
+ * @properties={typeid:24,uuid:"8313F67E-2C06-4A31-B5AA-65ECB86C5801"}
+ */
+function FIND_forms() {
+	var formNames = forms.allnames
+	
+	for (var i = 0; i < formNames.length; i++) {
+		var formName = formNames[i]
+		
+		if (!solutionModel.getForm(formName).getFormMethod('INIT_block')) {
+			formNames.splice(i,1)
+			i--
+		}
+	}
+	
+	formNames = formNames.sort()
+	
+	return formNames
+	
+	//set valuelist
+//	application.setValueListItems('WEB_form_names', formNames)
 }
 
 /**
