@@ -612,7 +612,7 @@ function TOGGLE_elements(editAllow) {
 //	elements.fld_id_block_type.editable = editAllow
 	elements.fld_id_block_display__combo.visible = editAllow
 	elements.fld_id_block_display__field.visible = !editAllow
-	elements.fld_params.editable = editAllow	
+//	elements.fld_params.editable = editAllow	
 //	elements.fld_row_order.editable = editAllow
 }
 
