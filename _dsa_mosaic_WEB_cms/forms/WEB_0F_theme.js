@@ -706,6 +706,7 @@ function REC_newFromTheme(progress) {
 				databaseManager.saveData(editable) 
 				editablesList.push(_themes[_themesSelected].editables[i][j])
 			}
+			
 			var order = layout.web_layout_to_editable.getSize() + 1
 			for ( k in _themes[_themesSelected].includes[i] ) {
 				// 4 create editable area record for all include files
@@ -768,6 +769,14 @@ function REC_newFromTheme(progress) {
 					l--
 				}
 			}		
+		}
+		
+		//just reloop over editables and reset the order
+		for (var n = 1; n <= layout.web_layout_to_editable; n++) {
+			var layoutRec = layout.web_layout_to_editable.getRecord(i)
+			layoutRec.row_order = n
+			
+			databaseManager.saveData(layoutRec)
 		}
 		
 		// stop progress bar
