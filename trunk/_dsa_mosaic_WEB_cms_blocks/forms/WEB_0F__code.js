@@ -338,7 +338,7 @@ function ACTION_colorize(recBlockData) {
 	var brushMap = new Object()
 	brushMap.html = 'shBrushXml.js'
 	brushMap.js = 'shBrushJScript.js'
-	brushMap.servoyjs = 'shBrushJScript.js'
+	brushMap.servoyjs = 'shBrushServoyJScript.js'
 	brushMap.xml = 'shBrushXml.js'
 	brushMap.css = 'shBrushCss.js'
 	brushMap.java = 'shBrushJava.js'
