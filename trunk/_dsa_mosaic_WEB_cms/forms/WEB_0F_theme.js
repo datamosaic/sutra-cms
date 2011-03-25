@@ -774,11 +774,11 @@ function REC_newFromTheme(progress) {
 		//just reloop over editables and reset the order
 		for (var m = 1; m <= theme.web_theme_to_layout.getSize(); m++) {
 			layout = theme.web_theme_to_layout.getRecord(m)
-			
+			application.output('BEGIN: ' + layout.layout_name)
 			for (var n = 1; n <= layout.web_layout_to_editable; n++) {
 				var layoutRec = layout.web_layout_to_editable.getRecord(i)
 				layoutRec.row_order = n
-				
+				application.output(layout.layout_name + ' Old: ' + layoutRec.row_order + ' New: ' + n,[level])
 				databaseManager.saveData(layoutRec)
 			}
 		}
