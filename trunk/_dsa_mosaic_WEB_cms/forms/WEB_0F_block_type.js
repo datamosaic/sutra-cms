@@ -386,13 +386,33 @@ function REC_new(flagRefresh) {
 					web_block_type_to_block_action_client.deleteAllRecords()
 					web_block_type_to_block_action_web.deleteAllRecords()
 					web_block_type_to_block_configure.deleteAllRecords()
-					web_block_type_to_block_display.deleteAllRecords()
+//					web_block_type_to_block_display.deleteAllRecords()
 					web_block_type_to_block_input.deleteAllRecords()
 					web_block_type_to_block_response.deleteAllRecords()
 				}
 				
+				// create object of existing displays so know what to do
+				var displayCurrent = new Object()
+				var displayDelete = new Array()
+				
+				for (var i = 1; i <= web_block_type_to_block_display.getSize(); i++) {
+					var displayRec = web_block_type_to_block_display.getRecord(i)
+					
+					//todo: needs to work with view and controller
+					displayCurrent[displayRec.method_name.substr(5,100)] = displayRec
+					displayDelete.push(displayRec)
+				}
+				
 				// block displays
 				for (var i in obj.views) {
+					//this display already exists, continue
+					if (displayCurrent[i]) {
+						//remove from delete array
+						displayDelete.splice(displayDelete.indexOf(displayCurrent[i]),1)
+						continue
+					}
+					
+					//display doesn't exist
 					var view = block.web_block_type_to_block_display.getRecord(block.web_block_type_to_block_display.newRecord())
 					var name = i.split("_")
 					for (var j = 0; j < name.length; j++) {
@@ -406,6 +426,11 @@ function REC_new(flagRefresh) {
 					view.method_name = obj.views[i]
 					//flag default method as default
 					view.flag_default = ( obj.views[i] == "VIEW_default") ? 1 : null
+				}
+				
+				//if anything left in delete array, whack it 
+				for (var i = 0; i < displayDelete.length; i++) {
+					displayDelete[i].foundset.deleteRecord(displayDelete[i])
 				}
 				
 				// block client actions - "Block"
