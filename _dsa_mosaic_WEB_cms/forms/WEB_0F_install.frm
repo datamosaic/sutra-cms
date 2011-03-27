@@ -14,7 +14,7 @@ typeid:7,
 uuid:"076A07C6-25EA-4563-9D69-266E48C0F04A"
 },
 {
-height:16,
+height:18,
 partType:1,
 typeid:19,
 uuid:"20AACCF3-D93B-4D2B-94FB-C013893A3877"
@@ -110,6 +110,13 @@ uuid:"E43C1F3E-5609-4289-9339-64B552D19967"
 anchors:15,
 formIndex:10200,
 items:[
+{
+containsFormID:"4C400AD6-1DC0-4B6F-AB83-2E7FE97698C0",
+location:"110,140",
+text:"Tools placeholder",
+typeid:15,
+uuid:"84B8B23D-E089-4C85-89E9-B7E08D52BAC5"
+},
 {
 containsFormID:"0F050E41-0B2A-4E18-AB39-F5FF0C0C38F8",
 location:"50,110",
