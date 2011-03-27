@@ -22,6 +22,9 @@ function WEB_block_methods(formName, type) {
 		else if ( methods[i].substr(0,4) == "VIEW" ) {
 			views[methods[i].substr(5,100)] = methods[i]
 		}
+		else if ( methods[i].substr(0,10) == "CONTROLLER" ) {
+			views[methods[i].substr(11,100)] = methods[i]
+		}
 	}	
 	
 	switch (type) {
