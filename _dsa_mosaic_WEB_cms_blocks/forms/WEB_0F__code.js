@@ -104,21 +104,13 @@ var _recBlockDataConfigure = null;
 function REC_on_select(event) {
 	ACTION_colorize()
 	
-<<<<<<< .mine
-//	//update formvar used for whatever
-//	if (utils.hasRecords(web_block_data_to_block_data_configure)) {
-//		var record = web_block_data_to_block_data_configure.getRecord(1)
-//		record
-//	}
-=======
-	//update patch
-	if (utils.hasRecords(web_block_data_to_block_data_configure)) {
-		var record = web_block_data_to_block_data_configure.getRecord(1)
+	//update formvar used for whatever
+	if (utils.hasRecords(foundset.getSelectedRecord(),'web_block_data_to_block.web_block_to_block_data_configure')) {
+		var record = web_block_data_to_block.web_block_to_block_data_configure.getRecord(1)
 		_codeType = record.data_value
 		
 		_recBlockDataConfigure = record
 	}
->>>>>>> .r232
 }
 
 /**
