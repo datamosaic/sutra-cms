@@ -886,3 +886,27 @@ function WEB_startup_hack() {
 	
 	forms.DATASUTRA_0F_solution.controller.show()
 }
+
+/**
+ * @properties={typeid:24,uuid:"C14078C4-8D87-4207-83F2-0490E4719E5F"}
+ */
+function WEB_MRKUP_refresh(obj,scope) {
+	//no scope specified; send to default
+	if (!scope) {
+		scope = new Array(1)
+	}
+	
+	for (var i = 0; i < scope.length; i++) {
+		switch (scope[i]) {
+			case 'site':	//refresh site record
+				if (obj && obj.site && obj.site.record) {
+					databaseManager.refreshRecordFromDatabase(obj.site.record.foundset,-1)
+				}
+				break
+			default:	//just refresh the current page
+				if (obj && obj.page && obj.page.record) {
+					databaseManager.refreshRecordFromDatabase(obj.page.record.foundset,-1)
+				}
+		}
+	}
+}
