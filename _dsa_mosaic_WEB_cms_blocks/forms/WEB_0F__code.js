@@ -104,6 +104,13 @@ var _recBlockDataConfigure = null;
 function REC_on_select(event) {
 	ACTION_colorize()
 	
+<<<<<<< .mine
+//	//update formvar used for whatever
+//	if (utils.hasRecords(web_block_data_to_block_data_configure)) {
+//		var record = web_block_data_to_block_data_configure.getRecord(1)
+//		record
+//	}
+=======
 	//update patch
 	if (utils.hasRecords(web_block_data_to_block_data_configure)) {
 		var record = web_block_data_to_block_data_configure.getRecord(1)
@@ -111,6 +118,7 @@ function REC_on_select(event) {
 		
 		_recBlockDataConfigure = record
 	}
+>>>>>>> .r232
 }
 
 /**
@@ -357,6 +365,9 @@ function ACTION_colorize(recBlockData) {
 	
 	//if there's data, color it
 	if (recBlockData && recBlockData.data_value) {
+		//get type of code
+		var codeType = _codeType || 'html'
+		
 		var colorize = recBlockData.data_value
 		colorize = colorize.replace(/</g,'&lt;')
 		
@@ -370,7 +381,7 @@ function ACTION_colorize(recBlockData) {
 	<head>\n\
 		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />\n\
 		<script type="text/javascript" src="' + prefix + 'resources/syntax/scripts/shCore.js"></script>\n\
-		<script type="text/javascript" src="' + prefix + 'resources/syntax/scripts/' + brushMap[as] + '"></script>\n\
+		<script type="text/javascript" src="' + prefix + 'resources/syntax/scripts/' + brushMap[codeType] + '"></script>\n\
 		<link type="text/css" rel="stylesheet" href="' + prefix + 'resources/syntax/styles/shCoreEclipse.css"/>\n\
 		<script type="text/javascript">\n\
 			SyntaxHighlighter.defaults["toolbar"] = false;\n\
@@ -381,7 +392,7 @@ function ACTION_colorize(recBlockData) {
 	</head>\n\
 	\n\
 	<body style="background: white;">\n\
-		<pre class="brush:html">' + 
+		<pre class="brush:' + codeType + '">' + 
 			colorize + 
 		'</pre>\n\
 	</body>\n\
