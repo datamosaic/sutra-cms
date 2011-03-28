@@ -94,10 +94,11 @@ function FORM_on_show(firstShow, event) {
 }
 
 /**
- * Handle record selected.
- *
- * @param {JSEvent} event the event that triggered the action
- *
+ * @properties={typeid:35,uuid:"6F280884-1453-4C3C-B026-7FC70457CB7D",variableType:-4}
+ */
+var _recBlockDataConfigure = null;
+
+/**
  * @properties={typeid:24,uuid:"CC43FDE6-F4F9-4BEB-AF5D-D8FDB80E9AA7"}
  */
 function REC_on_select(event) {
@@ -106,7 +107,9 @@ function REC_on_select(event) {
 	//update patch
 	if (utils.hasRecords(web_block_data_to_block_data_configure)) {
 		var record = web_block_data_to_block_data_configure.getRecord(1)
-		record
+		_codeType = record.data_value
+		
+		_recBlockDataConfigure = record
 	}
 }
 
@@ -402,7 +405,9 @@ function ACTION_colorize(recBlockData) {
  * @properties={typeid:24,uuid:"1975546E-4E95-4C97-8332-E8135178C526"}
  */
 function FLD_data_change__code_type(oldValue, newValue, event) {
-	
+	if (_recBlockDataConfigure) {
+		_recBlockDataConfigure.data_value = newValue
+	}
 	
 	ACTION_colorize()
 }
