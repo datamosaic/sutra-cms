@@ -152,16 +152,16 @@ function BLOCK_new(input) {
 		// create block record
 		if (utils.hasRecords(web_page_to_area)) {
 			var count = web_page_to_block_by_area.getSize()
-			var record = web_page_to_block_by_area.getRecord(web_page_to_block_by_area.newRecord(false, true))
-			record.id_block_type = valueListObj[selection]
-			record.id_block_display = ( display ) ? display : null
-			record.row_order = count + 1
-			databaseManager.saveData(record)
+			var blockRec = web_page_to_block_by_area.getRecord(web_page_to_block_by_area.newRecord(false, true))
+			blockRec.id_block_type = valueListObj[selection]
+			blockRec.id_block_display = ( display ) ? display : null
+			blockRec.row_order = count + 1
+			databaseManager.saveData(blockRec)
 		}
 		
 		// set global when in web edit mode
 		if (webEdit) {
-			globals.WEB_page_id_block_selected = record.id_block
+			globals.WEB_page_id_block_selected = blockRec.id_block
 		}
 		
 		// get block data points
@@ -181,6 +181,18 @@ function BLOCK_new(input) {
 			var record = web_page_to_block_data_by_area_by_block.getRecord(web_page_to_block_data_by_area_by_block.newRecord(false, true))
 			record.data_key = dataNames[i]
 			databaseManager.saveData(record)
+		}
+		
+		// create a block data configure record for each data point
+		if (utils.hasRecords(blockRec,'web_block_to_block_type.web_block_type_to_block_configure')) {
+			for (var i = 1; i <= blockRec.web_block_to_block_type.web_block_type_to_block_configure.getSize(); i++) {
+				var configTemplate = blockRec.web_block_to_block_type.web_block_type_to_block_configure.getRecord(i)
+				var configRec = blockRec.web_block_to_block_data_configure.getRecord(blockRec.web_block_to_block_data_configure.newRecord(false, true))
+				
+				configRec.data_key = configTemplate.column_name
+				
+				databaseManager.saveData(configRec)
+			}
 		}
 		
 		// finish up
