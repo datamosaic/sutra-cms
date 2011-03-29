@@ -220,7 +220,7 @@ function CONTROLLER_builder(results, obj) {
 			// MARKUP CALL
 			// edit mode (needs div wrappers)
 			if ( obj.type == "Edit" ) {
-				var markupedData = forms[type.form_name][display.method_name](obj) || "<br>"
+				var markupedData = forms[type.form_name][display.method_name](obj, results) || "<br>"
 				areaMarkup += '<div id="sutra-block-data-' + block.id_block + '">\n'
 				areaMarkup += markupedData + '\n'
 				areaMarkup += "</div>\n"
@@ -228,7 +228,7 @@ function CONTROLLER_builder(results, obj) {
 			}
 			// deployed (no divs)
 			else {
-				areaMarkup += forms[type.form_name][display.method_name](obj) + '\n'
+				areaMarkup += forms[type.form_name][display.method_name](obj, results) + '\n'
 			}	
 			
 			// obj: block...CLEAR
