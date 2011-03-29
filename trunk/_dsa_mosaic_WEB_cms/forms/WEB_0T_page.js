@@ -263,10 +263,10 @@ beanTree.setMethodToCallOnCheckBoxChange(REC_column_publish,'id_page')
 beanTree.setNRelationName('web_page_to_page__child') 
 
 //sorting of children
-beanTree.childSortDataprovider = 'globals.WEB_page_sort'
+beanTree.setChildSortDataprovider('globals.WEB_page_sort')
 
 // Method to trigger when node is selected 
-beanTree.setMethodToCallOnClick(REC_on_select,'id_page') 
+beanTree.setCallBackInfo(REC_on_select,'id_page') 
 
 //select the root nodes (the nodes without a parent) 
 
@@ -798,6 +798,7 @@ if (utils.hasRecords(foundset) || typeof record == 'object') {
 		}
 		//dim out the lights
 		else {
+			controller.loadAllRecords()
 			forms.WEB_0F_page.FORM_on_show()
 		}
 		
