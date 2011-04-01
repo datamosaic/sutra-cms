@@ -1120,13 +1120,14 @@ else {
 //TODO: this is where the error is
 if (foundset.getSelectedRecord().id_page != selectedRecord) {
 	//foundset not working correctly
-	if (foundset.find())
+	if (foundset.find()) {
 		foundset.id_page = selectedRecord
 		var results = foundset.search()
 	}
 	else {
 	//	application.output('ID ' + selectedRecord + ' not selected correctly')
 	}
+}
 }
 
 /**

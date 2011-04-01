@@ -7,10 +7,14 @@ function display_page_name() {
 	if (page_type == 1) {
 		return 'Folder: ' + page_name
 	}
-	//this is a link
+	//this is an external link
 	else if (page_type == 2) {
 		return 'External link: ' + page_name
 	}
+	//this is an internal link
+	else if (page_type == 3) {
+		return 'Internal link: ' + page_name
+	}	
 	//this is a page
 	else {
 		return page_name

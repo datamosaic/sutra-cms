@@ -383,6 +383,9 @@ function CURTAIN_block(event) {
 	if (page_type == 2 && page_link) {
 		globals.CODE_url_handler(page_link)
 	}
+	else if (page_type == 3 && page_link_internal) {
+		globals.CODE_url_handler(globals.WEB_MRKUP_link_page(page_link_internal))
+	}
 }
 
 /**

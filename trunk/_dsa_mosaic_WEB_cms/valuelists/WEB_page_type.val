@@ -1,7 +1,8 @@
 addEmptyValue:1,
 customValues:"Page|0
 Folder|1
-Link|2",
+External link|2
+Internal link|3",
 name:"WEB_page_type",
 returnDataProviders:1,
 separator:" ",
