@@ -220,7 +220,7 @@ function ACTION_save() {
 		var results = fsArea.search()
 		
 		// get editable regions based on layout selected
-		if (!utils.hasRecords(web_page_to_layout.web_layout_to_editable)) {
+		if (!utils.hasRecords(foundset.getSelectedRecord(),'web_page_to_layout.web_layout_to_editable')) {
 			return 'No editables for selected layout'
 		}
 		
