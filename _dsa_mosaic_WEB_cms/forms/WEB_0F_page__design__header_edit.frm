@@ -82,7 +82,7 @@ location:"37,26",
 mediaOptions:14,
 showClick:false,
 showFocus:false,
-size:"285,18",
+size:"335,18",
 styleClass:"standard_table_category",
 tabSeq:-1,
 text:"Details",
@@ -94,7 +94,7 @@ uuid:"0EE34FA3-2867-40E4-9F95-89ECEAA4795D"
 formIndex:12000,
 horizontalAlignment:0,
 imageMediaID:"a2e147c1-5027-45cb-abf0-ddf2d8588969",
-location:"302,26",
+location:"352,26",
 mediaOptions:1,
 name:"help_details",
 onActionMethodID:"6a193823-8789-4ec3-a7bf-45d1238dc5bd",
@@ -182,7 +182,7 @@ location:"157,90",
 name:"fld_id_theme",
 onDataChangeMethodID:"-1",
 scrollbars:36,
-size:"165,23",
+size:"215,23",
 styleClass:"standard_table",
 typeid:4,
 uuid:"2EE4A210-1880-4012-B0F2-8A88E550E5DE",
@@ -193,7 +193,7 @@ anchors:11,
 dataProviderID:"id_organisation",
 displayType:10,
 formIndex:11600,
-location:"157,303",
+location:"157,313",
 onDataChangeMethodID:"AABACA93-4111-445C-A2F2-67A45DD9496F",
 scrollbars:36,
 size:"165,23",
@@ -301,12 +301,75 @@ typeid:7,
 uuid:"5B3632DB-5C8A-4578-9605-878A7A9AE7B4"
 },
 {
+beanClassName:"javax.swing.JSplitPane",
+beanXML:"<?xml version=\"1.0\" encoding=\"UTF-8\"?> 
+<java version=\"1.6.0_24\" class=\"java.beans.XMLDecoder\"> 
+ <object class=\"javax.swing.JSplitPane\"> 
+  <int>1<\/int> 
+  <void property=\"background\"> 
+   <object class=\"java.awt.Color\"> 
+    <int>209<\/int> 
+    <int>215<\/int> 
+    <int>226<\/int> 
+    <int>255<\/int> 
+   <\/object> 
+  <\/void> 
+  <void property=\"size\"> 
+   <object class=\"java.awt.Dimension\"> 
+    <int>214<\/int> 
+    <int>23<\/int> 
+   <\/object> 
+  <\/void> 
+  <void property=\"UI\"> 
+   <void property=\"continuousLayout\"> 
+    <boolean>true<\/boolean> 
+   <\/void> 
+  <\/void> 
+  <void property=\"border\"> 
+   <null/> 
+  <\/void> 
+  <void property=\"continuousLayout\"> 
+   <boolean>true<\/boolean> 
+  <\/void> 
+  <void property=\"dividerLocation\"> 
+   <int>0<\/int> 
+  <\/void> 
+  <void property=\"dividerSize\"> 
+   <int>0<\/int> 
+  <\/void> 
+  <void property=\"focusable\"> 
+   <boolean>false<\/boolean> 
+  <\/void> 
+  <void property=\"lastDividerLocation\"> 
+   <int>0<\/int> 
+  <\/void> 
+  <void property=\"name\"> 
+   <string>split_link_internal<\/string> 
+  <\/void> 
+  <void property=\"opaque\"> 
+   <boolean>false<\/boolean> 
+  <\/void> 
+  <void property=\"resizeWeight\"> 
+   <double>0.25<\/double> 
+  <\/void> 
+ <\/object> 
+<\/java> 
+",
+formIndex:9999,
+location:"157,210",
+name:"split_link_internal",
+size:"214,23",
+typeid:12,
+usesUI:true,
+uuid:"5BD6FBDE-BFF6-4258-8B98-BAB495B89E14"
+},
+{
 dataProviderID:"page_link",
 formIndex:11300,
 location:"157,90",
 name:"fld_page_link",
 scrollbars:36,
-size:"165,23",
+size:"215,23",
 styleClass:"standard_table",
 transparent:true,
 typeid:4,
@@ -321,7 +384,7 @@ location:"157,113",
 name:"fld_id_theme_layout",
 onDataChangeMethodID:"97DEA334-AEAC-43AC-BB85-0D796AB05318",
 scrollbars:36,
-size:"165,23",
+size:"215,23",
 styleClass:"standard_table_bottom",
 transparent:true,
 typeid:4,
@@ -337,7 +400,7 @@ location:"157,67",
 name:"fld_page_type",
 onDataChangeMethodID:"5EB85F2D-6D13-4392-9A96-A8CAA31808F2",
 scrollbars:36,
-size:"165,23",
+size:"215,23",
 styleClass:"standard_table",
 typeid:4,
 uuid:"6A18ED30-FB95-4D9C-B203-08BD800A805C",
@@ -356,6 +419,21 @@ text:"Name",
 transparent:true,
 typeid:7,
 uuid:"6F08A98E-1402-4CA2-B5B4-FAD83CDA88FB"
+},
+{
+formIndex:9995,
+imageMediaID:"0177e2a3-d01c-44c0-b860-cbae1f590bce",
+location:"359,89",
+mediaOptions:14,
+name:"btn_page_link_internal",
+rolloverCursor:12,
+showClick:false,
+showFocus:false,
+size:"12,23",
+tabSeq:-1,
+transparent:true,
+typeid:7,
+uuid:"783511E9-48B5-4E47-971E-A91389CD9C43"
 },
 {
 anchors:3,
@@ -424,12 +502,25 @@ formIndex:11300,
 location:"157,44",
 name:"fld_page_name",
 scrollbars:36,
-size:"165,23",
+size:"215,23",
 styleClass:"standard_table",
 tabSeq:2,
 transparent:true,
 typeid:4,
 uuid:"903A760E-0F06-4DB1-B8C0-2CFA2EEEFEEC"
+},
+{
+dataProviderID:"page_link_param",
+formIndex:11300,
+location:"277,210",
+name:"fld_page_link_param",
+scrollbars:36,
+size:"145,23",
+styleClass:"standard_table",
+toolTipText:"Key/value pairs",
+transparent:true,
+typeid:4,
+uuid:"91BE5331-1BE3-4AB6-8219-FA83B5B3541A"
 },
 {
 anchors:3,
@@ -610,6 +701,22 @@ text:"Site",
 transparent:true,
 typeid:7,
 uuid:"C86770FE-236C-43E7-B1F0-DF572C87FE2A"
+},
+{
+dataProviderID:"page_link_internal",
+editable:false,
+formIndex:11300,
+location:"157,90",
+name:"fld_page_link_internal",
+onActionMethodID:"B3FEA49F-D80F-4DE4-9CC7-B4491F7BED84",
+scrollbars:36,
+size:"215,23",
+styleClass:"standard_table",
+toolTipText:"Page",
+transparent:true,
+typeid:4,
+uuid:"D7E6F52F-E3A4-45A2-8245-601D6789364F",
+valuelistID:"21BA19DE-3C79-418D-8FB2-EECA862DC3D0"
 },
 {
 anchors:3,

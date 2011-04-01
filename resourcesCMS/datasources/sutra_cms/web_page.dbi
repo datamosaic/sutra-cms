@@ -71,9 +71,15 @@ name:"organization_id"
 {
 allowNull:true,
 creationOrderIndex:16,
-dataType:12,
-length:255,
+dataType:-1,
+length:65535,
 name:"page_link"
+},
+{
+allowNull:true,
+creationOrderIndex:17,
+dataType:4,
+name:"page_link_internal"
 },
 {
 allowNull:true,

@@ -156,6 +156,22 @@ globals.TAB_change_grid(null,null,'tab_secondary','tab_s','btn_sec_add','btn_sec
  * @properties={typeid:24,uuid:"FA2FEA2B-DF7F-4CB8-BBDF-6A0D7F8C9CA2"}
  */
 function FORM_on_show(firstShow, event) {
+	
+	if (firstShow) {
+		elements.fld_page_link_internal.visible = false
+		elements.btn_page_link_internal.visible = false
+		
+//		elements.split_link_internal.leftComponent = elements.fld_page_link_internal
+//		elements.split_link_internal.rightComponent = elements.fld_page_link_param
+//		elements.split_link_internal.setDividerLocation(0.5)
+//		elements.split_link_internal.setResizeWeight(0.5)
+//		
+//		elements.split_link_internal.visible = false
+//		
+//		elements.fld_page_link_internal.visible = true
+//		elements.fld_page_link_param.visible = true
+	}
+	
 	TOGGLE_fields(page_type)
 	
 	elements.fld_page_name.requestFocus(false)
@@ -380,6 +396,10 @@ function TOGGLE_fields(pageType) {
 	linkHeader.visible = false
 	folderHeader.visible = false
 	
+	var page = false
+	var link = false
+	var linkInternal = false
+	
 	var headerText = ''
 	var headerToolTip = ''
 	
@@ -389,13 +409,26 @@ function TOGGLE_fields(pageType) {
 			var page = true
 			var link = false
 			break
-		case 'Link':
+		case 'External link':
 			var page = false
 			var link = true
 			linkHeader.visible = true
+			
 			if (page_link) {
 				headerText = page_link
 				headerToolTip = 'Click to open "' + page_link + '" in a browser'
+			}
+			
+			break
+		case 'Internal link':
+			var page = false
+			var link = false
+			var linkInternal = true
+			linkHeader.visible = true
+			
+			if (page_link_internal) {
+				headerText = application.getValueListDisplayValue('WEB_pages',page_link_internal)
+				headerToolTip = 'Click to open internal page "' + headerText + '" in a browser'
 			}
 			
 			break
@@ -414,18 +447,41 @@ function TOGGLE_fields(pageType) {
 		elements.fld_id_theme.visible = page
 		elements.lbl_id_theme_layout.visible = page
 		elements.fld_id_theme_layout.visible = page
-		elements.lbl_page_link.visible = link
+		elements.lbl_page_link.visible = link || linkInternal
 		elements.fld_page_link.visible = link
+		
+		elements.fld_page_link_internal.visible = linkInternal
+		elements.btn_page_link_internal.visible = linkInternal
+		
 	}
 
 	
-	//folder or link type of page
-	if (!page) {
-		forms.WEB_0F_page__design.elements.tab_main.tabIndex = 3
+	//when on content tab, switch as needed
+	if (forms.WEB_0F_page__design__button_tab.elements.tab_button.tabIndex == 1) {
+		//folder or link type of page
+		if (!page) {
+			forms.WEB_0F_page__design.elements.tab_main.tabIndex = 3
+		}
+		//normal type of page
+		else {
+			forms.WEB_0F_page__design__button_tab.TAB_change('WEB_0F_page__design__button_tab','tab_b1')
+		}
 	}
-	//normal type of page
+}
+
+/**
+ * Perform the element default action.
+ *
+ * @param {JSEvent} event the event that triggered the action
+ *
+ * @properties={typeid:24,uuid:"B3FEA49F-D80F-4DE4-9CC7-B4491F7BED84"}
+ */
+function PAGE_picker(event) {
+	if (event instanceof JSEvent) {
+		globals.WEB_page_tree_to_popup(PAGE_picker,elements[event.getElementName()])
+	}
 	else {
-		forms.WEB_0F_page__design__button_tab.TAB_change('WEB_0F_page__design__button_tab','tab_b1')
+		page_link_internal = event
 	}
 }
 
