@@ -156,27 +156,16 @@ function ACTION_ok()
 						}
 					}
 					
-//					// CONFIG
-//					//create a ?? record for each block_configure
-//					if ( tempEditableDefaultRec.web_editable_default_to_block_input ) {
-//						for (var k = 1; k <= tempEditableDefaultRec.web_editable_default_to_block_input.getSize(); k++) {
-//							var tempEditableDefaultDetailRec = tempEditableDefaultRec.web_editable_default_to_block_input.getRecord(k)
-//	
-//							var blockDataRec = blockRec.web_block_to_block_data.getRecord(blockRec.web_block_to_block_data.newRecord(false,true))
-//							blockDataRec.data_key = tempEditableDefaultDetailRec.column_name
-//						}
-//					}
-//					
-//					// RESPONSE
-//					//create a block_data_response record for each block_response
-//					if ( tempEditableDefaultRec.web_editable_default_to_block_input ) {
-//						for (var k = 1; k <= tempEditableDefaultRec.web_editable_default_to_block_input.getSize(); k++) {
-//							var tempEditableDefaultDetailRec = tempEditableDefaultRec.web_editable_default_to_block_input.getRecord(k)
-//	
-//							var blockDataRec = blockRec.web_block_to_block_data.getRecord(blockRec.web_block_to_block_data.newRecord(false,true))
-//							blockDataRec.data_key = tempEditableDefaultDetailRec.column_name
-//						}
-//					}
+					// CONFIG
+					// create a block data configure record for each data point
+					if ( utils.hasRecords(tempEditableDefaultRec.web_editable_default_to_block_configure) ) {
+						for (var k = 1; k <= tempEditableDefaultRec.web_editable_default_to_block_configure.getSize(); k++) {
+							var configTemplate = tempEditableDefaultRec.web_editable_default_to_block_configure.getRecord(k)
+							
+							var configRec = tempEditableDefaultRec.web_editable_default_to_block_configure.getRecord(tempEditableDefaultRec.web_editable_default_to_block_configure.newRecord(false, true))
+							databaseManager.saveData(configRec)
+						}
+					}
 				}
 			}
 		}
