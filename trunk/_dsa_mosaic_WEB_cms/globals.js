@@ -659,31 +659,14 @@ function WEB_page_new(pageName,pageType,parentID,themeID,layoutID) {
 		//update valuelists
 		forms.WEB_0F_page__design.REC_on_select()
 		
+		//set theme
+		newRecord.id_theme = themeID
+		newRecord.id_theme_layout = layoutID
+		
 		databaseManager.saveData()
 		
-		//fill in defaults
-		var fsTheme = databaseManager.getFoundSet('sutra_cms','web_theme')
-		fsTheme.find()
-		fsTheme.theme_name = "Linds First Cut"
-		var results = fsTheme.search()
-		
-		if (results) {
-			//set theme
-			newRecord.id_theme = fsTheme.id_theme
-			
-			var fsLayout = databaseManager.getFoundSet('sutra_cms','web_layout')
-			fsLayout.find()
-			fsLayout.layout_name = "Product Controller"
-			fsLayout.id_theme = newRecord.id_theme
-			var results = fsLayout.search()
-			
-			//set layout
-			if (results) {
-				newRecord.id_theme_layout = fsLayout.id_layout
-			}
-			
-			databaseManager.saveData()
-			
+		//only create editable if enough information specified
+		if (utils.hasRecords(newRecord,'web_page_to_layout.web_layout_to_editable')) {
 			//group to create as
 			//TODO: if they've sorted, this will not be the everybody/visitor group
 			var recGroup = newRecord.web_page_to_site.web_site_to_group.getRecord(1)
@@ -691,10 +674,6 @@ function WEB_page_new(pageName,pageType,parentID,themeID,layoutID) {
 			var fsArea = databaseManager.getFoundSet('sutra_cms','web_area')
 			
 			// get editable regions based on layout selected
-			if (!utils.hasRecords(newRecord,'web_page_to_layout.web_layout_to_editable')) {
-				return 'No editables for selected layout'
-			}
-			
 			var fsRegions = newRecord.web_page_to_layout.web_layout_to_editable
 			
 			// create a page area record for each editable
@@ -738,27 +717,16 @@ function WEB_page_new(pageName,pageType,parentID,themeID,layoutID) {
 							}
 						}
 						
-	//					// CONFIG
-	//					//create a ?? record for each block_configure
-	//					if ( tempEditableDefaultRec.web_editable_default_to_block_input ) {
-	//						for (var k = 1; k <= tempEditableDefaultRec.web_editable_default_to_block_input.getSize(); k++) {
-	//							var tempEditableDefaultDetailRec = tempEditableDefaultRec.web_editable_default_to_block_input.getRecord(k)
-	//	
-	//							var blockDataRec = blockRec.web_block_to_block_data.getRecord(blockRec.web_block_to_block_data.newRecord(false,true))
-	//							blockDataRec.data_key = tempEditableDefaultDetailRec.column_name
-	//						}
-	//					}
-	//					
-	//					// RESPONSE
-	//					//create a block_data_response record for each block_response
-	//					if ( tempEditableDefaultRec.web_editable_default_to_block_input ) {
-	//						for (var k = 1; k <= tempEditableDefaultRec.web_editable_default_to_block_input.getSize(); k++) {
-	//							var tempEditableDefaultDetailRec = tempEditableDefaultRec.web_editable_default_to_block_input.getRecord(k)
-	//	
-	//							var blockDataRec = blockRec.web_block_to_block_data.getRecord(blockRec.web_block_to_block_data.newRecord(false,true))
-	//							blockDataRec.data_key = tempEditableDefaultDetailRec.column_name
-	//						}
-	//					}
+						// CONFIG
+						// create a block data configure record for each data point
+						if ( utils.hasRecords(tempEditableDefaultRec.web_editable_default_to_block_configure) ) {
+							for (var k = 1; k <= tempEditableDefaultRec.web_editable_default_to_block_configure.getSize(); k++) {
+								var configTemplate = tempEditableDefaultRec.web_editable_default_to_block_configure.getRecord(k)
+								
+								var configRec = tempEditableDefaultRec.web_editable_default_to_block_configure.getRecord(tempEditableDefaultRec.web_editable_default_to_block_configure.newRecord(false, true))
+								databaseManager.saveData(configRec)
+							}
+						}
 					}
 				}
 			}
@@ -800,6 +768,9 @@ function WEB_page_new(pageName,pageType,parentID,themeID,layoutID) {
 		recPath.flag_default = 1
 		recPath.path = pathName
 		recPath.id_site = siteID
+		
+		//set flag that need to update tree view on next load
+		forms.WEB_0T_page._refresh = 1
 		
 		return newRecord
 	}

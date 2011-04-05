@@ -1,4 +1,9 @@
 /**
+ * @properties={typeid:35,uuid:"D30001EE-2E04-408B-87BA-0DE1CFC32E23",variableType:4}
+ */
+var _refresh = null;
+
+/**
  * @properties={typeid:35,uuid:"04fde543-69cc-4de9-af47-7f7c22221f66"}
  */
 var _license_dsa_mosaic_WEB_cms = 'Module: _dsa_mosaic_WEB_cms \
@@ -240,71 +245,61 @@ if (input && input.id_page) {
  *
  * @properties={typeid:24,uuid:"7B82294C-C760-4E00-8CC6-071A0F16138C"}
  */
-function FORM_on_load(event)
-{
-
-//remove all existing bindings, if not called the first time
-//if (!event) {
-if (elements && elements.bean_tree) {
-	elements.bean_tree.removeAllRoots()
-}
-
-var beanTree = elements.bean_tree.createBinding(controller.getServerName(),controller.getTableName()) 
-
-//name of field to show in tree
-beanTree.setTextDataprovider('page_name') 
-
-// publish flag
-beanTree.setCheckBoxValueDataprovider('flag_publish')
-beanTree.setHasCheckBoxDataprovider('globals.CODE_constant_1')
-beanTree.setMethodToCallOnCheckBoxChange(REC_column_publish,'id_page')
-
-//relation to build tree on
-beanTree.setNRelationName('web_page_to_page__child') 
-
-//sorting of children
-beanTree.setChildSortDataprovider('globals.WEB_page_sort')
-
-// Method to trigger when node is selected 
-beanTree.setCallBackInfo(REC_on_select,'id_page') 
-
-//select the root nodes (the nodes without a parent) 
-
-if (foundset.find()) { 
-	// search for null values 
-	foundset.parent_id_page = '^='
-	foundset.id_site = forms.WEB_0F_site.id_site
-	var results = foundset.search()
-	
-	//manage the sort of the top-level nodes
-	if (results) {
-		foundset.sort('order_by asc')
+function FORM_on_load(event) {
+	//remove all existing bindings, if not called the first time
+	//if (!event) {
+	if (elements && elements.bean_tree) {
+		elements.bean_tree.removeAllRoots()
 	}
 	
-	//load the foundset into the treeview 
-	elements.bean_tree.addRoots(foundset)
-} 
-
-
-
-
-
-//force highlightion of first record unless called from duplicate rec
-if (utils.hasRecords(foundset) && event) {
-	elements.bean_tree.selectionPath = FIND_path(foundset.getRecord(1))
-}
-
-
+	var beanTree = elements.bean_tree.createBinding(controller.getServerName(),controller.getTableName()) 
+	
+	//name of field to show in tree
+	beanTree.setTextDataprovider('page_name') 
+	
+	// publish flag
+	beanTree.setCheckBoxValueDataprovider('flag_publish')
+	beanTree.setHasCheckBoxDataprovider('globals.CODE_constant_1')
+	beanTree.setMethodToCallOnCheckBoxChange(REC_column_publish,'id_page')
+	
+	//relation to build tree on
+	beanTree.setNRelationName('web_page_to_page__child') 
+	
+	//sorting of children
+	beanTree.setChildSortDataprovider('globals.WEB_page_sort')
+	
+	// Method to trigger when node is selected 
+	beanTree.setCallBackInfo(REC_on_select,'id_page') 
+	
+	//select the root nodes (the nodes without a parent) 
+	if (foundset.find()) { 
+		// search for null values 
+		foundset.parent_id_page = '^='
+		foundset.id_site = forms.WEB_0F_site.id_site
+		var results = foundset.search()
+		
+		//manage the sort of the top-level nodes
+		if (results) {
+			foundset.sort('order_by asc')
+		}
+		
+		//load the foundset into the treeview 
+		elements.bean_tree.addRoots(foundset)
+	} 
+	
+	//force highlightion of first record unless called from duplicate rec
+	if (utils.hasRecords(foundset) && event) {
+		elements.bean_tree.selectionPath = FIND_path(foundset.getRecord(1))
+	}
 }
 
 /**
  *
  * @properties={typeid:24,uuid:"A4A59C5A-C5A4-4159-94EB-8E4EEFE67773"}
  */
-function FORM_on_show()
-{
+function FORM_on_show(firstShow,event) {
 	//not really form on show, just keeping form on load a bit cleaner
-	if (arguments[0]) {
+	if (firstShow) {
 		// load tooltips from tooltip module
 		// globals.TRIGGER_set_tooltips()
 	
@@ -320,7 +315,15 @@ function FORM_on_show()
 	}
 	//return to sitemap subsequently
 	else {
-		elements.bean_tree.selectionPath = FIND_path(forms.WEB_0F_page.foundset.getSelectedRecord())
+		//full refresh of bean requested
+		if (_refresh) {
+			_refresh = null
+			FORM_on_load()
+		}
+		//highlight selected record
+		else {
+			elements.bean_tree.selectionPath = FIND_path(forms.WEB_0F_page.foundset.getSelectedRecord())
+		}
 	}
 	
 	//set record navigator to blank
