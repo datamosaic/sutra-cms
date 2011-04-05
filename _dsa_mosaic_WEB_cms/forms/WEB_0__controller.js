@@ -657,6 +657,7 @@ function CONTROLLER_setup(results, app, session, request, response, mode) {
 	}
 		
 	//if a folder, grab child page
+	//TODO: need to keep traversing down the folder tree until first non-folder encountered
 	if (page.page_type == 1) {
 		//there is a published child page
 		if (utils.hasRecords(page.web_page_to_page__child__publish)) {
