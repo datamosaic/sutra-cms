@@ -434,11 +434,11 @@ function INIT_block() {
  * @param {JSFoundset} fsBlockData block data points
  * @param {Boolean} flagEdit page version is editable or not
  * @param {Boolean} flagScrapbook true if showing scrapbook
+ * @param {String}	contextForm Form where this will be loaded in.
  * 
  * @properties={typeid:24,uuid:"8947A3D9-5C5E-4766-9C2C-C2F1BE5D6B8A"}
  */
-function LOADER_init(fsBlockData, flagEdit, flagScrapbook) {
-
+function LOADER_init(fsBlockData, flagEdit, flagScrapbook, contextForm) {
 	var recBlockData = fsBlockData.getRecord(1)
 	
 	//show tinymce
@@ -447,7 +447,7 @@ function LOADER_init(fsBlockData, flagEdit, flagScrapbook) {
 		forms.WEB_0F__content.elements.bn_tinymce.clearHtml()
 		
 		// load form
-		globals.WEB_block_form_loader("WEB_0F__content", "Content block")
+		globals.WEB_block_form_loader("WEB_0F__content", "Content block", null, contextForm)
 		
 		forms.WEB_0F__content.elements.bn_tinymce.html = recBlockData.data_value
 	}
@@ -458,7 +458,7 @@ function LOADER_init(fsBlockData, flagEdit, flagScrapbook) {
 		html += '</body></html>'
 			
 		// load form
-		globals.WEB_block_form_loader("WEB_0F__content_view", ((flagScrapbook) ? "SCRAPBOOK: Content block" : "Content block"))
+		globals.WEB_block_form_loader("WEB_0F__content_view", ((flagScrapbook) ? "SCRAPBOOK: Content block" : "Content block"), null, contextForm)
 		
 		forms.WEB_0F__content_view.elements.bn_browser.html = html
 	}
