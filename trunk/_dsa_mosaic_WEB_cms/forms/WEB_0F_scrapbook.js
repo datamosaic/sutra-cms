@@ -6,6 +6,11 @@ var _license_dsa_mosaic_WEB_cms = 'Module: _dsa_mosaic_WEB_cms \
 									MIT Licensed';
 
 /**
+ * @properties={typeid:35,uuid:"6E70A90A-35E2-488D-92AD-0D5F99E8CEE4",variableType:4}
+ */
+var _editMode = 0;
+
+/**
  *
  * @properties={typeid:24,uuid:"69CCDB89-DD7A-46C7-BF3D-F1BD0BC5BF7F"}
  */
@@ -99,4 +104,154 @@ function FORM_on_hide(event) {
 	}
 	
 	return true
+}
+
+/**
+ * Perform the element default action.
+ *
+ * @param {JSEvent} event the event that triggered the action
+ *
+ * @properties={typeid:24,uuid:"69B72F68-C6D4-4949-BEA5-2C2C8058CCE2"}
+ */
+function ACTION_toggle(event) {
+	if (!_editMode) {
+		_editMode = 1
+		elements.lbl_edit.text = 'Done'
+	}
+	else {
+		//punch down the save button
+		if (utils.hasRecords(foundset)) {
+			//load in correct gui representation for this block type
+			var recScrapbook = foundset.getSelectedRecord()
+	
+			if (recScrapbook && utils.hasRecords(recScrapbook.web_scrapbook_to_block_type)) {
+				var recBlockType = recScrapbook.web_scrapbook_to_block_type.getRecord(1)
+			}
+			
+			//editable status
+			var flagEdit = (_editMode) ? true : false
+			
+			//this block definition exists as does the form
+			if (recBlockType && forms[recBlockType.form_name]) {
+				//check for method existence on form
+				if (solutionModel.getForm(recBlockType.form_name).getFormMethod('BLOCK_save')) {
+					var hasInit = true
+				}
+				
+				//there is a custom form to show
+				if (hasInit) {
+					forms[recBlockType.form_name].BLOCK_save()
+	
+				}
+			}
+		}
+		
+		_editMode = 0
+		elements.lbl_edit.text = 'Edit'
+	}
+	
+	//when toggled from the button, redo the screen
+	if (event) {
+		REC_on_select()
+	}
+}
+
+/**
+ * Handle record selected.
+ *
+ * @param {JSEvent} event the event that triggered the action
+ *
+ * @properties={typeid:24,uuid:"E5591A6B-12A1-4292-8A9A-446A59112031"}
+ */
+function REC_on_select(event) {
+	if (utils.hasRecords(foundset)) {
+		//load in correct gui representation for this block type
+		var recScrapbook = foundset.getSelectedRecord()
+
+		if (recScrapbook && utils.hasRecords(recScrapbook.web_scrapbook_to_block_type)) {
+			var recBlockType = recScrapbook.web_scrapbook_to_block_type.getRecord(1)
+		}
+		
+		//editable status
+		var flagEdit = (_editMode) ? true : false
+		
+		//this block definition exists as does the form
+		if (recBlockType && forms[recBlockType.form_name]) {
+			//check for method existence on form
+			if (solutionModel.getForm(recBlockType.form_name).getFormMethod('LOADER_init')) {
+				var hasInit = true
+			}
+			
+			//there is a custom form to show
+			if (hasInit) {
+				forms[recBlockType.form_name].LOADER_init(
+													recScrapbook.web_scrapbook_to_scrapbook_data,
+													flagEdit,
+													false,
+													controller.getName()
+												)
+				TAB_change(null,'tab_d1')
+			}
+			//something not right, show default form
+			else {
+				if (elements.tab_detail.getMaxTabIndex() == 2) {
+					elements.tab_detail.removeTabAt(1)
+					elements.tab_detail.addTab(forms.CODE__blank,null,null,null,null,null,null,null,0)
+				}
+				TAB_change(null,'tab_d2')
+			}
+		}
+		else {
+			if (elements.tab_detail.getMaxTabIndex() == 2) {
+				elements.tab_detail.removeTabAt(1)
+				elements.tab_detail.addTab(forms.CODE__blank,null,null,null,null,null,null,null,0)
+			}
+			TAB_change(null,'tab_d2')
+		}
+	}
+}
+
+/**
+ * Perform the element default action.
+ *
+ * @param {JSEvent} event the event that triggered the action
+ *
+ * @properties={typeid:24,uuid:"8990F4CA-2618-4392-9AB6-ABE40B6A2626"}
+ */
+function TAB_change(event,elemName) {
+	globals.TAB_change_grid(null,elemName)
+	
+	//on first tab now and it's not blank or raw, refresh
+	if (elements.tab_detail.tabIndex == 1 && (elements.tab_detail.getTabFormNameAt(1) != 'CODE__blank' || elements.tab_detail.getTabFormNameAt(1) != 'WEB_0F_scrapbook_1L_scrapbook_data')) {
+		if (utils.hasRecords(foundset)) {
+			//load in correct gui representation for this block type
+			var recScrapbook = foundset.getSelectedRecord()
+	
+			if (recScrapbook && utils.hasRecords(recScrapbook.web_scrapbook_to_block_type)) {
+				var recBlockType = recScrapbook.web_scrapbook_to_block_type.getRecord(1)
+			}
+			
+			//editable status
+			var flagEdit = (_editMode) ? true : false
+			
+			//this block definition exists as does the form
+			if (recBlockType && forms[recBlockType.form_name]) {
+				//check for method existence on form
+				if (solutionModel.getForm(recBlockType.form_name).getFormMethod('LOADER_refresh')) {
+					var hasInit = true
+				}
+				
+				//there is a custom form to show
+				if (hasInit) {
+					forms[recBlockType.form_name].LOADER_refresh(
+														recScrapbook.web_scrapbook_to_scrapbook_data,
+														flagEdit,
+														false,
+														controller.getName()
+													)
+	
+				}
+			}
+		}
+	}
 }
