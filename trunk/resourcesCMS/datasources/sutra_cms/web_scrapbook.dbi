@@ -73,6 +73,13 @@ name:"row_order"
 },
 {
 allowNull:true,
+creationOrderIndex:11,
+dataType:-1,
+length:16777215,
+name:"scrapbook_description"
+},
+{
+allowNull:true,
 creationOrderIndex:8,
 dataType:12,
 length:255,
