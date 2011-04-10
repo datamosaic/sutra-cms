@@ -439,28 +439,18 @@ function INIT_block() {
  * @properties={typeid:24,uuid:"8947A3D9-5C5E-4766-9C2C-C2F1BE5D6B8A"}
  */
 function LOADER_init(fsBlockData, flagEdit, flagScrapbook, contextForm) {
-	var recBlockData = fsBlockData.getRecord(1)
+	//refresh display
+	LOADER_refresh(fsBlockData,flagEdit)
 	
 	//show tinymce
 	if (flagEdit) {
-		forms.WEB_0F__content._recBlockData = recBlockData
-		forms.WEB_0F__content.elements.bn_tinymce.clearHtml()
-		
 		// load form
 		globals.WEB_block_form_loader("WEB_0F__content", "Content block", null, contextForm)
-		
-		forms.WEB_0F__content.elements.bn_tinymce.html = recBlockData.data_value
 	}
 	//show browser bean
 	else {
-		var html = '<html><body>'
-		html += recBlockData.data_value
-		html += '</body></html>'
-			
 		// load form
 		globals.WEB_block_form_loader("WEB_0F__content_view", ((flagScrapbook) ? "SCRAPBOOK: Content block" : "Content block"), null, contextForm)
-		
-		forms.WEB_0F__content_view.elements.bn_browser.html = html
 	}
 }
 
@@ -469,4 +459,27 @@ function LOADER_init(fsBlockData, flagEdit, flagScrapbook, contextForm) {
  */
 function PAGE_popup_test() {
 	plugins.dialogs.showInfoDialog( "Demo", "Block page actions added to this menu")
+}
+
+/**
+ * @properties={typeid:24,uuid:"37C06D1C-1BA1-4D07-988D-055070467F54"}
+ */
+function LOADER_refresh(fsBlockData,flagEdit) {
+	var recBlockData = fsBlockData.getRecord(1)
+	
+	//show tinymce
+	if (flagEdit) {
+		forms.WEB_0F__content._recBlockData = recBlockData
+		forms.WEB_0F__content.elements.bn_tinymce.clearHtml()
+		
+		forms.WEB_0F__content.elements.bn_tinymce.html = recBlockData.data_value
+	}
+	//show browser bean
+	else {
+		var html = '<html><body>'
+		html += recBlockData.data_value
+		html += '</body></html>'
+		
+		forms.WEB_0F__content_view.elements.bn_browser.html = html
+	}
 }
