@@ -116,7 +116,16 @@ function FORM_on_hide(event) {
 function ACTION_toggle(event) {
 	if (!_editMode) {
 		_editMode = 1
-		elements.lbl_edit.text = 'Done'
+		
+		elements.btn_edit.visible = false
+		elements.btn_edit_left.visible = false
+		elements.btn_edit_right.visible = false
+		elements.lbl_edit.visible = false
+		
+		elements.btn_done.visible = true
+		elements.btn_done_left.visible = true
+		elements.btn_done_right.visible = true
+		elements.lbl_done.visible = true
 	}
 	else {
 		//punch down the save button
@@ -147,7 +156,16 @@ function ACTION_toggle(event) {
 		}
 		
 		_editMode = 0
-		elements.lbl_edit.text = 'Edit'
+		
+		elements.btn_edit.visible = true
+		elements.btn_edit_left.visible = true
+		elements.btn_edit_right.visible = true
+		elements.lbl_edit.visible = true
+		
+		elements.btn_done.visible = false
+		elements.btn_done_left.visible = false
+		elements.btn_done_right.visible = false
+		elements.lbl_done.visible = false
 	}
 	
 	//when toggled from the button, redo the screen
@@ -164,6 +182,8 @@ function ACTION_toggle(event) {
  * @properties={typeid:24,uuid:"E5591A6B-12A1-4292-8A9A-446A59112031"}
  */
 function REC_on_select(event) {
+	var fsPages = forms.WEB_0F_scrapbook_1L_page.foundset
+	
 	if (utils.hasRecords(foundset)) {
 		//load in correct gui representation for this block type
 		var recScrapbook = foundset.getSelectedRecord()
@@ -208,6 +228,12 @@ function REC_on_select(event) {
 			}
 			TAB_change(null,'tab_d2')
 		}
+		
+		//load correct pages that this is used on
+		
+	}
+	else {
+		fsPages.clear()
 	}
 }
 
