@@ -14,8 +14,7 @@ var _editMode = 0;
  *
  * @properties={typeid:24,uuid:"69CCDB89-DD7A-46C7-BF3D-F1BD0BC5BF7F"}
  */
-function REC_delete()
-{
+function REC_delete() {
 	var delRec = plugins.dialogs.showWarningDialog(
 				'Delete record',
 				'Do you really want to delete this record?',
@@ -87,6 +86,11 @@ function FORM_on_show(firstShow, event) {
 	if (!utils.hasRecords(foundset)) {
 		globals.WEB_lock_workflow(true)
 	}
+	
+	//update display if the GUI has been used elsewhere
+	if (!firstShow && elements.tab_detail.tabIndex == 1) {
+		REC_on_select()
+	}
 }
 
 /**
@@ -142,7 +146,6 @@ function ACTION_toggle(event) {
 				//there is a custom form to show
 				if (hasInit) {
 					forms[recBlockType.form_name].BLOCK_save()
-	
 				}
 			}
 		}
@@ -257,9 +260,7 @@ function TAB_change(event,elemName) {
 				if (hasInit) {
 					forms[recBlockType.form_name].LOADER_refresh(
 														recScrapbook.web_scrapbook_to_scrapbook_data,
-														flagEdit,
-														false,
-														controller.getName()
+														flagEdit
 													)
 	
 				}
