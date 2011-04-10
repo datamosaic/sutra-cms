@@ -116,16 +116,8 @@ function FORM_on_hide(event) {
 function ACTION_toggle(event) {
 	if (!_editMode) {
 		_editMode = 1
-		
-		elements.btn_edit.visible = false
-		elements.btn_edit_left.visible = false
-		elements.btn_edit_right.visible = false
-		elements.lbl_edit.visible = false
-		
-		elements.btn_done.visible = true
-		elements.btn_done_left.visible = true
-		elements.btn_done_right.visible = true
-		elements.lbl_done.visible = true
+		elements.lbl_edit.text = 'Done'
+		elements.btn_edit.toolTipText = 'Click when finished editing'
 	}
 	else {
 		//punch down the save button
@@ -156,16 +148,8 @@ function ACTION_toggle(event) {
 		}
 		
 		_editMode = 0
-		
-		elements.btn_edit.visible = true
-		elements.btn_edit_left.visible = true
-		elements.btn_edit_right.visible = true
-		elements.lbl_edit.visible = true
-		
-		elements.btn_done.visible = false
-		elements.btn_done_left.visible = false
-		elements.btn_done_right.visible = false
-		elements.lbl_done.visible = false
+		elements.lbl_edit.text = 'Edit'
+		elements.btn_edit.toolTipText = 'Click to begin editing...'
 	}
 	
 	//when toggled from the button, redo the screen
@@ -230,7 +214,9 @@ function REC_on_select(event) {
 		}
 		
 		//load correct pages that this is used on
-		
+		fsPages.find()
+		fsPages.web_page_to_area__allversions.web_area_to_block.id_scrapbook = id_scrapbook
+		var results = fsPages.search()
 	}
 	else {
 		fsPages.clear()

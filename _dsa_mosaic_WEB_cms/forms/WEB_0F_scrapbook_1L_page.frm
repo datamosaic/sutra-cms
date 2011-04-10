@@ -52,6 +52,7 @@ uuid:"CC424F50-2E54-486F-84A7-F6E9F8EEAAC1"
 }
 ],
 name:"WEB_0F_scrapbook_1L_page",
+namedFoundSet:"separate",
 onLoadMethodID:"-1",
 onRecordSelectionMethodID:"-1",
 onShowMethodID:"-1",
