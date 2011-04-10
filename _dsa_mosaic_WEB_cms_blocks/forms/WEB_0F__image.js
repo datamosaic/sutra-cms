@@ -149,7 +149,7 @@ function TOGGLE_buttons(editStatus) {
 /**
  * @properties={typeid:24,uuid:"E9062B39-C69D-4841-A367-94BDC60849FF"}
  */
-function LOADER_init(fsBlockData,flagEdit,flagScrapbook) {
+function LOADER_init(fsBlockData,flagEdit,flagScrapbook,contextForm) {
 	//clear foundset //handled with onShow
 //	foundset.clear()
 	
@@ -163,7 +163,7 @@ function LOADER_init(fsBlockData,flagEdit,flagScrapbook) {
 	TOGGLE_buttons(flagEdit)
 	
 	//load form
-	globals.WEB_block_form_loader(controller.getName(), ((flagScrapbook) ? "SCRAPBOOK: Image block" : "Image block"))
+	globals.WEB_block_form_loader(controller.getName(), ((flagScrapbook) ? "SCRAPBOOK: Image block" : "Image block"), null, contextForm)
 }
 
 /**
