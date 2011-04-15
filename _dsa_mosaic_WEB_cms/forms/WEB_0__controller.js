@@ -96,13 +96,13 @@ function CONTROLLER_session(obj) {
 		}
 		
 		// create session_access record
-		var recordSub 				= record.web_session_to_session_access.getRecord(record.web_session_to_session_access.newRecord())
-		recordSub.rec_created 		= new Date(session.getLastAccessedTime())
-		recordSub.rec_modified 		= new Date(session.getLastAccessedTime())
-		recordSub.organization_id	= obj.page.record.organization_id
-		recordSub.referrer			= obj.request.record.getHeader("referer")
-		recordSub.url				= obj.request.record.getRequestURL()
-		recordSub.id_page			= obj.page.record.id_page
+		var recordSub 					= record.web_session_to_session_access.getRecord(record.web_session_to_session_access.newRecord())
+		recordSub.rec_created_client 	= new Date(session.getLastAccessedTime())
+		recordSub.rec_modified_client 	= new Date(session.getLastAccessedTime())
+		recordSub.organization_id		= obj.page.record.organization_id
+		recordSub.referrer				= obj.request.record.getHeader("referer")
+		recordSub.url					= obj.request.record.getRequestURL()
+		recordSub.id_page				= obj.page.record.id_page
 		databaseManager.saveData(recordSub)
 	
 	}
