@@ -96,6 +96,16 @@ function TAG_delete(event) {
  * @properties={typeid:24,uuid:"FF5AF14C-E836-4D15-897E-FC174AA6C371"}
  */
 function REC_new(assetType) {
+	
+	var input = plugins.dialogs.showSelectDialog( 
+					"Asset", 
+					"Select asset type", 
+					"Image")
+	if ( input != null ) {
+		forms.WEB_0C__file_stream.IMAGE_import()
+	}
+	return
+
 	if (utils.hasRecords(forms.WEB_0F_site.foundset)) {
 		//no records created yet and interface locked
 		if (!assetType && application.__parent__.solutionPrefs && solutionPrefs.design.statusLockWorkflow) {
@@ -133,7 +143,7 @@ function REC_new(assetType) {
 			var assetRecord = web_asset_to_asset_instance.getRecord(web_asset_to_asset_instance.newRecord(false,true))
 			
 			//get template for this type of asset
-			var template = globals.WEB_asset_map(asset_type)
+			var template = forms.WEB_0F_asset.MAP_asset(asset_type)
 			
 			//add all meta data rows
 			for (var i in template.meta) {
@@ -244,4 +254,17 @@ function FORM_on_hide(event) {
 	}
 	
 	return true
+}
+
+/**
+ * @param	{Integer}	assetType What type of asset are we working with
+ * 
+ * @properties={typeid:24,uuid:"69916907-339D-4989-A21B-A53DD115E194"}
+ */
+function MAP_asset(assetType) {
+	switch (assetType) {
+		case 1:	//images
+			return forms.WEB_0F_asset__image.INIT_asset()
+			break
+	}
 }

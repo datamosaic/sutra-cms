@@ -821,19 +821,6 @@ function TEMP_replace_src_string() {
 	
 	// cleanup
 	plugins.dialogs.showInfoDialog( "Done", "Done")
-	
-}
-
-/**
- * @properties={typeid:24,uuid:"CAFFDEF4-E756-44DD-95EB-11CFD202BE77"}
- */
-function WEB_streaming_check() {
-	if ( plugins.file.getDefaultUploadLocation() == "/" || plugins.file.getDefaultUploadLocation() == "C:\\") {
-		return true
-	}
-	else {
-		return false
-	}
 }
 
 /**
@@ -1041,19 +1028,6 @@ if (application.__parent__.solutionPrefs) {
 	solutionPrefs.design.statusLockWorkflow = lockWorkflow
 	solutionPrefs.design.statusLockList = lockWorkflow && lockList
 }
-}
-
-/**
- * @param	{Integer}	assetType What type of asset are we working with
- * 
- * @properties={typeid:24,uuid:"536AFDD8-D0B9-4611-9A31-FC3BDC222203"}
- */
-function WEB_asset_map(assetType) {
-	switch (assetType) {
-		case 1:	//images
-			return forms.WEB_0F_asset__image.INIT_asset()
-			break
-	}
 }
 
 /**

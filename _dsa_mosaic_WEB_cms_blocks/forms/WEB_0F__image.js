@@ -61,6 +61,9 @@ function BLOCK_scale() {
  */
 function BLOCK_import() {
 	
+	forms.WEB_0C__file_stream.IMAGE_import()
+	return
+	
 	var file = plugins.file.showFileOpenDialog()
 	
 	// create new asset with one file
@@ -74,7 +77,7 @@ function BLOCK_import() {
 		var assetInstanceRec = assetRec.web_asset_to_asset_instance.getRecord(assetRec.web_asset_to_asset_instance.newRecord(false,true))
 		
 		//get template for this type of asset
-		var template = globals.WEB_asset_map(assetRec.asset_type)
+		var template = forms.WEB_0F_asset.MAP_asset(assetRec.asset_type)
 		
 		//add all meta data rows
 		for (var i in template.meta) {
