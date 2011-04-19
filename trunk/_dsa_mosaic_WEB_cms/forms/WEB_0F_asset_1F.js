@@ -14,7 +14,7 @@ var _license_dsa_mosaic_WEB_cms = 'Module: _dsa_mosaic_WEB_cms \
  */
 function ACTIONS_list(event) {
 	//hand off to asset's actions
-	var template = globals.WEB_asset_map(asset_type)
+	var template = forms.WEB_0F_asset.MAP_asset(asset_type)
 	
 	if (template && template.formName && solutionModel.getForm(template.formName).getFormMethod('ASSET_actions')) {
 		

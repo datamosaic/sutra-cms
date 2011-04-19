@@ -260,7 +260,6 @@ function ASSET_actions(input,assetRecord) {
 				menu[i].setEnabled(false)
 			}
 		}
-		
 		//popup
 		var elem = forms[input.getFormName()].elements[input.getElementName()]
 		if (elem != null) {

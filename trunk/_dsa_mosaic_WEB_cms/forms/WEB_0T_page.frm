@@ -4,7 +4,7 @@ items:[
 {
 formIndex:11000,
 imageMediaID:"a2e147c1-5027-45cb-abf0-ddf2d8588969",
-location:"2,0",
+location:"2,70",
 mediaOptions:1,
 name:"help_pages",
 onActionMethodID:"6a193823-8789-4ec3-a7bf-45d1238dc5bd",
