@@ -728,7 +728,13 @@ function IMAGE_import() {
 	_file.height = imageTemp.getHeight()
 	
 	// stream to server
-	var monitor = plugins.file.streamFilesToServer(file, uploadFile, IMAGE_import_callback)
+	if ( application.__parent__.solutionPrefs ) {
+		globals.TRIGGER_progressbar_start(null, "Streaming file to server...")
+		var monitor = plugins.file.streamFilesToServer(file, uploadFile, IMAGE_import_callback)
+	}
+	else {
+		var monitor = plugins.file.streamFilesToServer(file, uploadFile, IMAGE_import_callback)
+	}
 
 }
 
@@ -781,8 +787,20 @@ function IMAGE_import_callback(result, e) {
 	
 	databaseManager.saveData()
 	
+	// stream to server
+	if ( application.__parent__.solutionPrefs ) {
+		globals.TRIGGER_progressbar_stop()
+	}
+	
 	plugins.dialogs.showInfoDialog("Image",  "Image uploaded")
 	forms.WEB_0F_asset.controller.loadAllRecords()
 	forms.WEB_0F_asset.controller.setSelectedIndex(forms.WEB_0F_asset.controller.getMaxRecordIndex())
 		
+}
+
+/**
+ * @properties={typeid:24,uuid:"4B77F240-2EA9-4162-ADE0-5750CD297757"}
+ */
+function IMAGE_import_monitor() {
+	// TODO Auto-generated method stub
 }
