@@ -1,7 +1,7 @@
 /**
- * @properties={typeid:35,uuid:"3D47B360-52C5-4300-A937-59BAAE9E0D75",variableType:-4}
+ * @properties={typeid:35,uuid:"D5AB1086-3B0E-468D-96B2-E47D8B21FDED",variableType:-4}
  */
-var _fileOBJ = {};
+var _file = {};
 
 /**
  * @properties={typeid:35,uuid:"C0455562-E667-45D4-936D-7E5884B674FC",variableType:-4}
@@ -697,42 +697,35 @@ function IMAGE_import() {
 	}
 	
 	// error check for images only
-	if ( file.getContentType().split("/")[0] != "image" ) {
-		plugins.dialogs.showErrorDialog( "Error",  
-			"Only image file types can be imported")
-		IMAGE_import()
-		return "Incorrect file type selected"
-	}
-	
-	var ext = file.getName().split('.')[1]
-	
-	//file has an extension
-	if (ext && ext.length > 1) {
-		var fileExt = ext[ext.length-1].toLowerCase()
-	}	
-
-	var imageTemp =  plugins.images.getImage(file.getBytes())
-
-		
-	// set image details object
-	_fileOBJ = {}
-	_fileOBJ.image_name			= file.getName().replace(/ /g, "_")
-	_fileOBJ.image_type			= file.getContentType()
-	_fileOBJ.image_extension	= (file.getName().search(/./) != -1) ? file.getName().split('.')[1].toLowerCase() : null
-	_fileOBJ.width				= imageTemp.getWidth()
-	_fileOBJ.height				= imageTemp.getHeight()
-	_fileOBJ.directory			= "images"
-	_fileOBJ.rec_created 		= new Date()
-	_fileOBJ.size				= plugins.file.getFileSize(file)
-	if (_fileOBJ.width > 200 || _fileOBJ.height > 200) {
-		_fileOBJ.thumbnail		= imageTemp.resize((200*_fileOBJ.width) / _fileOBJ.height, 200)
+	if ( file.getContentType() != null ) {
+		if ( file.getContentType().split("/")[0] != "image" ) {
+			plugins.dialogs.showErrorDialog( "Error",  
+				"Only image file types can be imported")
+			IMAGE_import()
+			return "Incorrect file type selected"
+		}
 	}
 	else {
-		_fileOBJ.thumbnail		= imageTemp
+		plugins.dialogs.showErrorDialog( "Error",  
+				"Only image file types can be imported")
+			IMAGE_import()
+			return "Incorrect file type selected"
 	}
 	
 	// setup upload image
 	var uploadFile = baseDirectory + "/images/" + file.getName()
+	
+	// grab file stats
+	_file.size = file.size()
+	var imageTemp =  plugins.images.getImage(file.getBytes())
+	if (file.width > 200 || file.height > 200) {
+		_file.thumbnail		= imageTemp.resize((200*file.width) / file.height, 200)
+	}
+	else {
+		_file.thumbnail		= imageTemp
+	}
+	_file.width = imageTemp.getWidth()
+	_file.height = imageTemp.getHeight()
 	
 	// stream to server
 	var monitor = plugins.file.streamFilesToServer(file, uploadFile, IMAGE_import_callback)
@@ -748,14 +741,14 @@ function IMAGE_import_callback(result, e) {
 		plugins.dialogs.showErrorDialog("Error", "Error with image upload to server")
 		return "Error with image upload to server"
 	}
-		
-	// create new asset with one file
+	
+	// create asset record
 	var fsAsset = databaseManager.getFoundSet('sutra_cms','web_asset')
 	var assetRec = fsAsset.getRecord(fsAsset.newRecord(false,true))
 	assetRec.id_site = forms.WEB_0F_site.id_site
 	assetRec.asset_type = 1
 
-	//create asset
+	//create asset instance record
 	var assetInstanceRec = assetRec.web_asset_to_asset_instance.getRecord(assetRec.web_asset_to_asset_instance.newRecord(false,true))
 
 	//get template for this type of asset
@@ -764,36 +757,32 @@ function IMAGE_import_callback(result, e) {
 	//add all meta data rows
 	for (var i in template.meta) {
 		var metaRec = assetInstanceRec.web_asset_instance_to_asset_instance_meta.getRecord(assetInstanceRec.web_asset_instance_to_asset_instance_meta.newRecord(false,true))
-
 		metaRec.data_key = i
 		metaRec.data_type = template.meta[i]
-
+		switch (i) {
+			case "width":
+				metaRec.data_value = _file.width
+				break
+			case "height":
+				metaRec.data_value = _file.height
+				break
+		}
 		databaseManager.saveData(metaRec)
 	}
 	
-	//pseudo-record
-	var asset = forms.WEB_0F_asset_1F_2L_asset_instance.REC_on_select(assetInstanceRec)
-	
-	// create image asset record
-	var assetRecord = asset.parentRec
-	var assetGroupRecord = assetRecord.web_asset_instance_to_asset
-	
-	assetGroupRecord.asset_file_type = _fileOBJ.image_type
-	assetGroupRecord.asset_extension = _fileOBJ.image_extension
-	assetGroupRecord.asset_name = _fileOBJ.image_name
-	assetGroupRecord.thumbnail = _fileOBJ.thumbnail
-	assetRecord.asset_title = _fileOBJ.image_name
-	assetRecord.asset_size = _fileOBJ.size
-	assetRecord.asset_directory = _fileOBJ.directory
-	assetRecord.flag_initial = 1
-	
-	//create image asset meta data records
-	asset.width.data_value = _fileOBJ.width
-	asset.height.data_value = _fileOBJ.height
+	assetRec.asset_file_type = result.getContentType()
+	assetRec.asset_extension = (result.getName().search(/./) != -1) ? result.getName().split('.')[1].toLowerCase() : null
+	assetRec.asset_name = result.getName().replace(/ /g, "_")	
+	assetRec.thumbnail		= _file.thumbnail
+	assetInstanceRec.asset_title = result.getName().replace(/ /g, "_")
+	assetInstanceRec.asset_size = _file.size
+	assetInstanceRec.asset_directory = "images"
+	assetInstanceRec.flag_initial = 1	
 	
 	databaseManager.saveData()
 	
 	plugins.dialogs.showInfoDialog("Image",  "Image uploaded")
 	forms.WEB_0F_asset.controller.loadAllRecords()
+	forms.WEB_0F_asset.controller.setSelectedIndex(forms.WEB_0F_asset.controller.getMaxRecordIndex())
 		
 }
