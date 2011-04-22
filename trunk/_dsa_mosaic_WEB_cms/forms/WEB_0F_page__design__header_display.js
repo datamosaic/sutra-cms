@@ -63,7 +63,10 @@ function FLD_data_change__version_selected(oldValue, newValue, event) {
 	forms.WEB_0F_page__design__content_1L_block.TOGGLE_elements(editAllow)
 	forms.WEB_0F_page__design__content_1F_block_data__textarea.TOGGLE_elements(editAllow)
 	
-	forms.WEB_0F_page__design__content_1L_block.ACTION_gui_mode_load()
+	//guiLoading is not true, need to run
+	if (!forms.WEB_0F_page__design__content_1L_block._guiLoading) {
+		forms.WEB_0F_page__design__content_1L_block.ACTION_gui_mode_load()
+	}
 	
 	return true
 }

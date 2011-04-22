@@ -1037,8 +1037,9 @@ function WEB_startup_hack() {
 	//show all forms with browser beans so they don't error out on initial view
 	forms.WEB_0F__image.controller.show()
 	forms.WEB_0F__html.controller.show()
+	forms.WEB_0F__code.controller.show()
 //	forms.WEB_0F__content.controller.show()
-//	forms.WEB_0F__content_view.controller.show()
+	forms.WEB_0F__content_view.controller.show()
 	
 	forms.DATASUTRA_0F_solution.controller.show()
 }
