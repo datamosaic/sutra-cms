@@ -56,6 +56,14 @@ name:"keywords"
 },
 {
 allowNull:true,
+creationOrderIndex:18,
+dataType:12,
+flags:4,
+length:50,
+name:"multisite_page_key"
+},
+{
+allowNull:true,
 creationOrderIndex:7,
 dataType:4,
 name:"order_by"
