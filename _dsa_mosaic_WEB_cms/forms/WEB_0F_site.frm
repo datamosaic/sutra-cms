@@ -605,7 +605,6 @@ scrollbars:36,
 size:"180,23",
 styleClass:"standard_table_bottom",
 tabSeq:11,
-toolTipText:"Include site name in page titles",
 transparent:true,
 typeid:4,
 uuid:"BB16B286-BA43-4AE2-A10D-C8E526EC2B61"
