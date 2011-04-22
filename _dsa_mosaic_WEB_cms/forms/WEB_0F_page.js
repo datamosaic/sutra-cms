@@ -383,52 +383,59 @@ function TRIGGER_mode_set(mode) {
 var _lastToolbar = null;
 
 /**
+ * @properties={typeid:35,uuid:"FA071178-813A-4E1E-AAEB-13E5E59D62F3",variableType:-4}
+ */
+var _hackNoFire = false;
+
+/**
  * @properties={typeid:24,uuid:"10F5E463-15E2-4C0B-858D-F62E76FEDFBF"}
  */
 function FORM_on_show(firstShow, event) {
-	
-	//first time go to sitemap view
-	if (firstShow) {
-		globals.TRIGGER_ul_tab_list('WEB_0T_page','Sitemap',0)
-	}
-	
-	//don't run in headless client
-	if (application.getApplicationType() != APPLICATION_TYPES.HEADLESS_CLIENT) {
-		//save down currently selected toolbar
-		if (application.__parent__.solutionPrefs && !solutionPrefs.config.lockStatus) {
-			_lastToolbar = solutionPrefs.panel.toolbar[forms[solutionPrefs.config.formNameBase + '__header__toolbar'].elements.tab_toolbar.tabIndex - 1].tabName
-			
-			//make sure on page toolbar
-			globals.TRIGGER_toolbar_set('Web Edit')
+	//this is set when scrapbook is shown to ensure that browser bean has enough time to load before rendering
+	if (!_hackNoFire) {
+		//first time go to sitemap view
+		if (firstShow) {
+			globals.TRIGGER_ul_tab_list('WEB_0T_page','Sitemap',0)
 		}
 		
-		
-		//in workflow maximized view
-		if (firstShow && application.__parent__.solutionPrefs && solutionPrefs.config.activeSpace == 'workflow') {
-			//remove possible heavyweight stuff
-			if (forms.WEB_0F_page__design__content_1F_block_data.elements.tab_detail.getMaxTabIndex() >= 2 && (
-				forms.WEB_0F_page__design__content_1F_block_data.elements.tab_detail.getTabFormNameAt(2) == 'WEB_0F__content' ||
-				forms.WEB_0F_page__design__content_1F_block_data.elements.tab_detail.getTabFormNameAt(2) == 'WEB_0F__image' //||
-				)) {
+		//don't run in headless client
+		if (application.getApplicationType() != APPLICATION_TYPES.HEADLESS_CLIENT) {
+			//save down currently selected toolbar
+			if (application.__parent__.solutionPrefs && !solutionPrefs.config.lockStatus) {
+				_lastToolbar = solutionPrefs.panel.toolbar[forms[solutionPrefs.config.formNameBase + '__header__toolbar'].elements.tab_toolbar.tabIndex - 1].tabName
 				
-				forms.WEB_0F_page__design__content_1F_block_data.elements.tab_detail.removeTabAt(2)
+				//make sure on page toolbar
+				globals.TRIGGER_toolbar_set('Web Edit')
 			}
 			
-			//switch modes
-			TRIGGER_mode_set("BROWSER")
-			return
-		}
-		
-		if (!utils.hasRecords(foundset)) {
-			//no records, dim out
-			globals.WEB_version_selected = null
-			globals.WEB_group_selected = null
 			
-			globals.WEB_lock_workflow(true)
-		}
-		else {// if (TRIGGER_mode_set() != "BROWSER") {
-			// trigger correct block simple display
-			forms.WEB_0F_page__design__content_1L_block.ACTION_gui_mode_load()
+			//in workflow maximized view
+			if (firstShow && application.__parent__.solutionPrefs && solutionPrefs.config.activeSpace == 'workflow') {
+				//remove possible heavyweight stuff
+				if (forms.WEB_0F_page__design__content_1F_block_data.elements.tab_detail.getMaxTabIndex() >= 2 && (
+					forms.WEB_0F_page__design__content_1F_block_data.elements.tab_detail.getTabFormNameAt(2) == 'WEB_0F__content' ||
+					forms.WEB_0F_page__design__content_1F_block_data.elements.tab_detail.getTabFormNameAt(2) == 'WEB_0F__image' //||
+					)) {
+					
+					forms.WEB_0F_page__design__content_1F_block_data.elements.tab_detail.removeTabAt(2)
+				}
+				
+				//switch modes
+				TRIGGER_mode_set("BROWSER")
+				return
+			}
+			
+			if (!utils.hasRecords(foundset)) {
+				//no records, dim out
+				globals.WEB_version_selected = null
+				globals.WEB_group_selected = null
+				
+				globals.WEB_lock_workflow(true)
+			}
+			else {// if (TRIGGER_mode_set() != "BROWSER") {
+				// trigger correct block simple display
+				forms.WEB_0F_page__design__content_1L_block.ACTION_gui_mode_load()
+			}
 		}
 	}
 }
