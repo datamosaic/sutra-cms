@@ -804,3 +804,14 @@ function IMAGE_import_callback(result, e) {
 function IMAGE_import_monitor() {
 	// TODO Auto-generated method stub
 }
+
+/**
+ * @properties={typeid:24,uuid:"9CA1DB85-58BC-4FF9-8F16-1EE81CFB4706"}
+ */
+function IMAGE_delete(filePath) {
+	
+	if (plugins.file.deleteFile(filePath))
+	application.output('File deleted.')
+
+	
+}
