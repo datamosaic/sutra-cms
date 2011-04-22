@@ -414,3 +414,10 @@ function FLD_data_change__code_type(oldValue, newValue, event) {
 	
 	ACTION_colorize()
 }
+
+/**
+ * @properties={typeid:24,uuid:"2032938A-9A16-4FE2-BB20-EF2015D21E7E"}
+ */
+function LOADER_refresh() {
+	
+}

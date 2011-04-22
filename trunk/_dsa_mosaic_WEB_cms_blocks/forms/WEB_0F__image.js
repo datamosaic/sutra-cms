@@ -157,7 +157,7 @@ function LOADER_init(fsBlockData,flagEdit,flagScrapbook,contextForm) {
 //	foundset.clear()
 	
 	//update display
-	var objImage = LOADER_refresh(fsBlockData,flagEdit)
+	var objImage = LOADER_refresh(fsBlockData,flagEdit,flagScrapbook)
 	
 	//laod asset that we're working with onto this form
 	controller.loadRecords(utils.stringToNumber(objImage.id_asset_instance))
@@ -172,7 +172,7 @@ function LOADER_init(fsBlockData,flagEdit,flagScrapbook,contextForm) {
 /**
  * @properties={typeid:24,uuid:"CA20C98A-927F-484F-960F-73E9FC28634B"}
  */
-function LOADER_refresh(fsBlockData,flagEdit) {
+function LOADER_refresh(fsBlockData,flagEdit,flagScrapbook) {
 	//create object with all properties
 	var objImage = new Object()
 	for (var i = 1; i <= fsBlockData.getSize(); i++) {
@@ -200,6 +200,19 @@ function LOADER_refresh(fsBlockData,flagEdit) {
 	
 	TOGGLE_buttons(flagEdit)
 	elements.bn_browser.html = html	
+	
+	//hack to get scrapbook to display
+	if (flagScrapbook && application.__parent__.solutionPrefs) {
+		forms.WEB_0F_page._hackNoFire = true
+		forms.WEB_0F__content_view.controller.show()
+		forms.DATASUTRA_0F_solution.controller.show()
+		//this needs to be long enough for it to finish rendering
+		application.updateUI(1000)
+		forms.WEB_0F_page._hackNoFire = false
+		
+		//reset the window's title
+		forms.DATASUTRA_0F_solution.elements.fld_trigger_name.requestFocus(true)
+	}
 	
 	return objImage
 }

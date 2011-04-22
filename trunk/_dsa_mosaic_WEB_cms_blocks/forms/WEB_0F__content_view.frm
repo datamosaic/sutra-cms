@@ -1,4 +1,3 @@
-dataSource:"db:/sutra_cms/web_page",
 items:[
 {
 anchors:15,

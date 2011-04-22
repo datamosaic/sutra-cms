@@ -439,9 +439,6 @@ function INIT_block() {
  * @properties={typeid:24,uuid:"8947A3D9-5C5E-4766-9C2C-C2F1BE5D6B8A"}
  */
 function LOADER_init(fsBlockData, flagEdit, flagScrapbook, contextForm) {
-	//refresh display
-	LOADER_refresh(fsBlockData,flagEdit)
-	
 	//show tinymce
 	if (flagEdit) {
 		// load form
@@ -452,6 +449,9 @@ function LOADER_init(fsBlockData, flagEdit, flagScrapbook, contextForm) {
 		// load form
 		globals.WEB_block_form_loader("WEB_0F__content_view", ((flagScrapbook) ? "SCRAPBOOK: Content block" : "Content block"), null, contextForm)
 	}
+	
+	//refresh display
+	LOADER_refresh(fsBlockData,flagEdit,flagScrapbook)
 }
 
 /**
@@ -464,7 +464,7 @@ function PAGE_popup_test() {
 /**
  * @properties={typeid:24,uuid:"37C06D1C-1BA1-4D07-988D-055070467F54"}
  */
-function LOADER_refresh(fsBlockData,flagEdit) {
+function LOADER_refresh(fsBlockData,flagEdit,flagScrapbook) {
 	var recBlockData = fsBlockData.getRecord(1)
 	
 	//show tinymce
@@ -481,5 +481,18 @@ function LOADER_refresh(fsBlockData,flagEdit) {
 		html += '</body></html>'
 		
 		forms.WEB_0F__content_view.elements.bn_browser.html = html
+		
+		//hack to get scrapbook to display
+		if (flagScrapbook && application.__parent__.solutionPrefs) {
+			forms.WEB_0F_page._hackNoFire = true
+			forms.WEB_0F__content_view.controller.show()
+			forms.DATASUTRA_0F_solution.controller.show()
+			//this needs to be long enough for it to finish rendering
+			application.updateUI(1000)
+			forms.WEB_0F_page._hackNoFire = false
+			
+			//reset the window's title
+			forms.DATASUTRA_0F_solution.elements.fld_trigger_name.requestFocus(true)
+		}
 	}
 }
