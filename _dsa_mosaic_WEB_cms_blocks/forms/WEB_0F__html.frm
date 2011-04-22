@@ -1,4 +1,3 @@
-dataSource:"db:/sutra_cms/web_block_data",
 items:[
 {
 anchors:6,
@@ -232,7 +231,7 @@ uuid:"E2F6EBFE-FE2A-4DDE-B318-36685E6DB1BC"
 },
 {
 anchors:15,
-dataProviderID:"data_value",
+dataProviderID:"_dataValue",
 displayType:1,
 location:"5,5",
 name:"fld_data_value",

@@ -31,9 +31,6 @@ function VIEW_default(obj) {
  * @properties={typeid:24,uuid:"27048A75-8641-49AD-8E44-D614410947B0"}
  */
 function FORM_on_load() {
-	//clear foundset
-	foundset.clear()
-	
 	//set combobox to be square on os x
 	globals.CODE_property_combobox(true)
 }
@@ -42,7 +39,8 @@ function FORM_on_load() {
  * @properties={typeid:24,uuid:"B886B030-6E8A-4206-B8FC-7DF67F7362F0"}
  */
 function BLOCK_save() {
-	databaseManager.saveData(foundset.getSelectedRecord())
+	_recBlockData.data_value = _dataValue
+	databaseManager.saveData(_recBlockData)
 	databaseManager.setAutoSave(true)
 	
 	ACTION_colorize()
@@ -61,7 +59,7 @@ function BLOCK_save() {
  * @properties={typeid:24,uuid:"5322BB4A-0CAF-42E9-B314-F47B8108433C"}
  */
 function ACTION_edit(event) {
-	if (utils.hasRecords(foundset.getSelectedRecord(),'web_block_data_to_block.web_block_to_area.web_area_to_version') && web_block_data_to_block.web_block_to_area.web_area_to_version.flag_edit) {
+	if (_editsAllowed) {
 		databaseManager.saveData()
 		databaseManager.setAutoSave(false)
 		TOGGLE_buttons(true)
@@ -194,7 +192,10 @@ function ACTION_add_token(inputID,pageRec) {
 	var cursor = elem.caretPosition
 	
 	elem.replaceSelectedText(linkStart + linkPage + linkEnd)
-	databaseManager.saveData(foundset.getSelectedRecord())
+	
+	_recBlockData.data_value = _dataValue
+		
+	databaseManager.saveData(_recBlockData)
 	
 	elem.caretPosition = cursor + offset
 	elem.requestFocus()
@@ -241,7 +242,10 @@ function ACTION_insert_image(event) {
 		var cursor = elem.caretPosition
 		
 		elem.replaceSelectedText(html)
-		databaseManager.saveData(foundset.getSelectedRecord())
+		
+		_recBlockData.data_value = _dataValue
+		
+		databaseManager.saveData(_recBlockData)
 		
 		elem.caretPosition = cursor + offset
 		elem.requestFocus()
@@ -305,19 +309,20 @@ function INIT_block() {
 /**
  * @properties={typeid:24,uuid:"16312B6D-9AA1-465F-B962-79EAC114C412"}
  */
-function LOADER_init(fsBlockData, flagEdit, flagScrapbook) {
+function LOADER_init(fsBlockData, flagEdit, flagScrapbook, contextForm) {
+	//save down pertinent record
+	_recBlockData = fsBlockData.getRecord(1)
 	
-	var recBlockData = fsBlockData.getRecord(1)
+	//update display
+	LOADER_refresh(fsBlockData,flagEdit,flagScrapbook)
 	
-	ACTION_colorize(recBlockData)
-	
-	//TODO: scrapbook probably coming from different table
-	globals.WEB_block_form_loader('WEB_0F__html',((flagScrapbook) ? "SCRAPBOOK: HTML block" : "HTML block"),'web_block_data_to_block_data')
-	
-	_editsAllowed = flagEdit
-	
-	elements.btn_edit.visible = flagEdit
-	elements.lbl_edit.visible = flagEdit
+	//load correct form
+	if (flagScrapbook) {
+		globals.WEB_block_form_loader('WEB_0F__html',"SCRAPBOOK: HTML block",null,contextForm)
+	}
+	else {
+		globals.WEB_block_form_loader('WEB_0F__html',"HTML block",null,contextForm)
+	}
 }
 
 /**
@@ -327,8 +332,8 @@ function ACTION_colorize(recBlockData) {
 	var html = ''
 	var prefix = ''
 	
-	if (!recBlockData && utils.hasRecords(foundset)) {
-		recBlockData = foundset.getSelectedRecord()
+	if (!recBlockData && _recBlockData) {
+		recBlockData = _recBlockData
 	}
 	
 	//if there's data, color it
@@ -367,4 +372,31 @@ function ACTION_colorize(recBlockData) {
 	
 	elements.bn_browser.html = html
 	TOGGLE_buttons(false)
+}
+
+/**
+ * @properties={typeid:35,uuid:"56A4BECA-A9AC-4780-A2C2-3317C0A49108"}
+ */
+var _dataValue = null;
+
+/**
+ * @properties={typeid:24,uuid:"38AF4915-03E9-4D61-B791-237B336410AC"}
+ */
+function LOADER_refresh(fsBlockData,flagEdit,flagScrapbook) {
+	ACTION_colorize(_recBlockData)
+	
+	TOGGLE_buttons(flagEdit)
+	
+	//hack to get scrapbook to display
+	if (flagScrapbook && application.__parent__.solutionPrefs) {
+		forms.WEB_0F_page._hackNoFire = true
+		forms.WEB_0F__content_view.controller.show()
+		forms.DATASUTRA_0F_solution.controller.show()
+		//this needs to be long enough for it to finish rendering
+		application.updateUI(1000)
+		forms.WEB_0F_page._hackNoFire = false
+		
+		//reset the window's title
+		forms.DATASUTRA_0F_solution.elements.fld_trigger_name.requestFocus(true)
+	}
 }
