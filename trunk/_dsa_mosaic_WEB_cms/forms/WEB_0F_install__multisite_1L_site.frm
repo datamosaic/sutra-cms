@@ -54,6 +54,7 @@ uuid:"C2EE08BE-CB82-4C7F-BA59-C23B8FDCAA88"
 }
 ],
 name:"WEB_0F_install__multisite_1L_site",
+namedFoundSet:"separate",
 onLoadMethodID:"-1",
 onRecordSelectionMethodID:"-1",
 onShowMethodID:"-1",

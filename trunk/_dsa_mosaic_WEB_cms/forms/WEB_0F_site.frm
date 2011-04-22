@@ -900,7 +900,6 @@ uuid:"FE01A051-5E3C-45AD-BF13-9357D1D4C593"
 }
 ],
 name:"WEB_0F_site",
-namedFoundSet:"separate",
 navigatorID:"-1",
 onHideMethodID:"1F26A1AB-A7AB-4E89-92EA-4B3F4ADF38C4",
 onLoadMethodID:"A7337614-806A-4452-B0DC-18DEA06A0005",
