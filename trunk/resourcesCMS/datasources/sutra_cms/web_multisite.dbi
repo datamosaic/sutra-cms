@@ -18,6 +18,8 @@ name:"description"
 },
 {
 allowNull:true,
+autoEnterSubType:3,
+autoEnterType:2,
 creationOrderIndex:1,
 dataType:12,
 flags:4,
@@ -33,8 +35,10 @@ name:"name"
 },
 {
 allowNull:true,
+autoEnterType:5,
 creationOrderIndex:4,
 dataType:4,
+lookupValue:"globals.AC_current_organization",
 name:"organization_id"
 },
 {
