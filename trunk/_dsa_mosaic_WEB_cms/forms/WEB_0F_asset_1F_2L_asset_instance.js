@@ -46,6 +46,25 @@ function REC_on_select(event) {
  * @properties={typeid:24,uuid:"F2373AA4-4FB7-4DF7-8809-A0277D3CFCBC"}
  */
 function REC_delete() {
+	return "functionality in progress!"
+	
+	// root directory for this site
+	var baseDirectory = forms.WEB_0F_install.ACTION_get_install() +
+						'/application_server/server/webapps/ROOT/sutraCMS/sites/' +
+						forms.WEB_0F_site.directory
+						
+	var fileDirectory = asset_directory + '/' + asset_title
+	var x = new Object();
+	x.fileName = asset_directory + '/' + asset_title
+	
+	var jsclient = plugins.headlessclient.createClient("_dsa_mosaic_WEB_cms", null, null, null)
+//	jsclient.queueMethod("WEB_0C__file_stream", "IMAGE_delete", [x], null)
+	var z = "xxx"
+	
+	
+//	forms.WEB_0C__file_stream.IMAGE_delete(baseDirectory + '/' + fileDirectory)
+	
+	return
 	var delRec = plugins.dialogs.showWarningDialog(
 						'Delete record',
 						'Do you really want to delete this record?',
