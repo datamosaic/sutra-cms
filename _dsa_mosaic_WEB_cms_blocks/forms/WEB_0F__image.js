@@ -61,7 +61,7 @@ function BLOCK_scale() {
  */
 function BLOCK_import() {
 	
-	forms.WEB_0C__file_stream.IMAGE_import()
+	forms.WEB_0C__file_stream.IMAGE_import("images")
 	return
 	
 	var file = plugins.file.showFileOpenDialog()

@@ -683,7 +683,7 @@ function FUNCTION_streaming_check() {
 /**
  * @properties={typeid:24,uuid:"D7EA9BAE-E97A-4828-821E-08FA8E96E5B2"}
  */
-function IMAGE_import() {
+function IMAGE_import(directory) {
 	
 	// root directory for this site
 	var baseDirectory = forms.WEB_0F_install.ACTION_get_install() +
@@ -713,7 +713,7 @@ function IMAGE_import() {
 	}
 	
 	// setup upload image
-	var uploadFile = baseDirectory + "/images/" + file.getName()
+	var uploadFile = baseDirectory + directory + "/" + file.getName()
 	
 	// grab file stats
 	_file.size = file.size()
