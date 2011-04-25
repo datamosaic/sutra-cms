@@ -102,7 +102,7 @@ function REC_new(assetType) {
 					"Select asset type", 
 					"Image")
 	if ( input != null ) {
-		forms.WEB_0C__file_stream.IMAGE_import()
+		forms.WEB_0C__file_stream.IMAGE_import("images")
 	}
 	return
 
