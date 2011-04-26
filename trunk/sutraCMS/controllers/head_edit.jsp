@@ -68,6 +68,11 @@
 	}
 	
 	function blockNew(areaID) {
+		//put secondary hover craft over the whole mothership
+		var hiliteTwo = $("#cmsOverlay");
+		hiliteTwo.css("display", "block");
+		
+		//tell servoy which area is getting a new block appended
 		sendNSCommand("WEB_0F_page__browser.BLOCK_new",areaID);
 	}
 	
