@@ -132,9 +132,16 @@ function BLOCK_edit(idBlock) {
 	}
 	
 	//load in correct forms
-	forms.WEB_0F_page__browser__editor.FORM_on_show()
+	var statusBlock = forms.WEB_0F_page__browser__editor.FORM_on_show()
 	
-	SPLIT_set(true)
+	//only show block edit if something successfully loaded in
+	if (statusBlock) {
+		SPLIT_set(true)
+	}
+	else {
+		forms.WEB_0F_page__browser__editor.ACTION_hide()
+	}
+	
 	
 //	application.showFormInDialog(
 //			forms.WEB_0F_page__browser__editor,
@@ -241,10 +248,16 @@ function BLOCK_new(areaID) {
 	
 	//show picker for type of block and create
 	//TODO: scrapbook doesn't work yet
-	forms.WEB_0F_page__design__content_1L_block.BLOCK_new()
+	var newBlock = forms.WEB_0F_page__design__content_1L_block.BLOCK_new()
 	
-	//add editor to the screen
-	BLOCK_edit('sutra-block-data-' + globals.WEB_page_id_block_selected)
+	//add editor to the screen if new block not cancelled
+	if (newBlock) {
+		BLOCK_edit('sutra-block-data-' + globals.WEB_page_id_block_selected)
+	}
+	//resume edit mode
+	else {
+		forms.WEB_0F_page__browser__editor.ACTION_hide()
+	}
 	
 	//MEMO: page will be redrawn if block saved after edit mode
 }

@@ -132,7 +132,7 @@ function BLOCK_new(input) {
 	
 	// ERROR CHECK: NO SELECTED
 	if ( !selection ) {
-		return
+		return false
 	}
 	
 	if (! utils.stringPatternCount(selection,"Scrapbook")) {
@@ -226,6 +226,8 @@ function BLOCK_new(input) {
 			)
 
 	}
+	
+	return true
 }
 
 /**
