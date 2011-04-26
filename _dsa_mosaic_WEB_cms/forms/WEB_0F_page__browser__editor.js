@@ -116,23 +116,40 @@ function FORM_on_show(firstShow, event) {
 				elements.tab_edit.addTab(forms.WEB_0F__image)
 				elements.tab_edit.tabIndex = 1
 				
+				//all loaded fine
+				return true
 			break
 			
 			//tinymce
-			default:
 			case 'Content':
 				//hard coded to form, split out
 				forms.WEB_0F__content._recBlockData = _dataRec
 				forms.WEB_0F__content.elements.bn_tinymce.html = _dataRec.data_value
+				
 			/*
 			 * see the following locations for removal and addition of heavyweight forms
 			 * 
 			 * WEB_0F_page__browser.BLOCK_edit
 			 * WEB_0F_page.TRIGGER_mode_set
+			 * 
 			 */
+				
 				elements.tab_edit.addTab(forms.WEB_0F__content)
 				elements.tab_edit.tabIndex = 1
+				
+				//all loaded fine
+				return true
 			break
+			
+			//tinymce
+			default:
+				plugins.dialogs.showInfoDialog(
+							'Coming soon',
+							'Real mode editing is not implemented for this type of block'
+						)
+				
+				//alert that form not loaded in correctly
+				return false
 		}
 	}
 }
