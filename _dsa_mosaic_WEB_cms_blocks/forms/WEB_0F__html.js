@@ -131,6 +131,7 @@ function TOGGLE_buttons(state) {
 		elements.btn_edit.visible = !state
 		elements.lbl_edit.visible = !state
 	}
+	
 	elements.btn_save.enabled = state
 	elements.lbl_save.enabled = state
 	elements.btn_cancel.enabled = state
@@ -312,8 +313,10 @@ function INIT_block() {
 function LOADER_init(fsBlockData, flagEdit, flagScrapbook, contextForm) {
 	//save down pertinent record
 	_recBlockData = fsBlockData.getRecord(1)
+	_dataValue = _recBlockData.data_value
 	
 	//update display
+	_editsAllowed = flagEdit
 	LOADER_refresh(fsBlockData,flagEdit,flagScrapbook)
 	
 	//load correct form
