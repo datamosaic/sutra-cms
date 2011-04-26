@@ -101,8 +101,7 @@ var _themesSelected = [];
 function _INFO() {}
 
 /**
- * Creates a new theme. Theme needs a description.txt file and various jsp files with
- * editable regions in the theme directory.
+ * File streaming for CMS all in one place. One of these figure out generic file streaming functions.
  * 
  * 
  * @param {Integer} progress : used by streaming file callbacks to pass control back to this method
