@@ -1,4 +1,3 @@
-dataSource:"db:/sutra_cms/web_block_data",
 items:[
 {
 anchors:6,
@@ -40,7 +39,7 @@ uuid:"177EB45B-56F9-4D23-BEDE-38D35D6C0A39"
 },
 {
 anchors:15,
-dataProviderID:"data_value",
+dataProviderID:"_dataValue",
 displayType:1,
 location:"5,5",
 name:"fld_data_value",
@@ -279,7 +278,6 @@ uuid:"F971F42D-85B1-40CB-BBA2-DE0BDF1063E8"
 name:"WEB_0F__code",
 navigatorID:"-1",
 onLoadMethodID:"F33BE9B2-F674-4F60-BBE6-666F668D5657",
-onRecordSelectionMethodID:"CC43FDE6-F4F9-4BEB-AF5D-D8FDB80E9AA7",
 onShowMethodID:"3270E304-F977-48C3-97BF-FE5A7F9551D1",
 paperPrintScale:100,
 scrollbars:36,

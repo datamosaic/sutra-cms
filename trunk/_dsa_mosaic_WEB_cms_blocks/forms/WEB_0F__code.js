@@ -36,9 +36,6 @@ function VIEW_default(obj) {
  * @properties={typeid:24,uuid:"F33BE9B2-F674-4F60-BBE6-666F668D5657"}
  */
 function FORM_on_load() {
-	//clear foundset
-	foundset.clear()
-	
 	//set combobox to be square on os x
 	globals.CODE_property_combobox(true)
 }
@@ -47,7 +44,8 @@ function FORM_on_load() {
  * @properties={typeid:24,uuid:"596AC1D2-C10E-435B-A670-B17748C36852"}
  */
 function BLOCK_save() {
-	databaseManager.saveData(foundset.getSelectedRecord())
+	_recBlockData.data_value = _dataValue
+	databaseManager.saveData(_recBlockData)
 	databaseManager.setAutoSave(true)
 	
 	ACTION_colorize()
@@ -66,7 +64,7 @@ function BLOCK_save() {
  * @properties={typeid:24,uuid:"FD3FDA15-9CCB-46E7-81A4-CD1D2F6C1193"}
  */
 function ACTION_edit(event) {
-	if (utils.hasRecords(foundset.getSelectedRecord(),'web_block_data_to_block.web_block_to_area.web_area_to_version') && web_block_data_to_block.web_block_to_area.web_area_to_version.flag_edit) {
+	if (_editsAllowed) {
 		databaseManager.saveData()
 		databaseManager.setAutoSave(false)
 		TOGGLE_buttons(true)
@@ -135,7 +133,11 @@ function BLOCK_cancel(event) {
 }
 
 /**
- *
+ * @properties={typeid:35,uuid:"B3A5E4A5-A194-4AC6-9349-01DB3DAA2591"}
+ */
+var _dataValue = null;
+
+/**
  * @properties={typeid:24,uuid:"1DD58AA1-41B8-44A1-BDAE-FE0ADBF7F314"}
  */
 function TOGGLE_buttons(state) {
@@ -147,6 +149,7 @@ function TOGGLE_buttons(state) {
 		elements.btn_edit.visible = !state
 		elements.lbl_edit.visible = !state
 	}
+	
 	elements.btn_save.enabled = state
 	elements.lbl_save.enabled = state
 	elements.btn_cancel.enabled = state
@@ -158,6 +161,7 @@ function TOGGLE_buttons(state) {
 	
 	elements.fld_data_value.visible = state
 	elements.bn_browser.visible = !state
+	elements.var_codeType.enabled = !state
 	
 	//cancel is always an option if in browser mode
 	if (globals.WEB_page_mode == 3) {
@@ -208,7 +212,10 @@ function ACTION_add_token(inputID,pageRec) {
 	var cursor = elem.caretPosition
 	
 	elem.replaceSelectedText(linkStart + linkPage + linkEnd)
-	databaseManager.saveData(foundset.getSelectedRecord())
+	
+	_recBlockData.data_value = _dataValue
+		
+	databaseManager.saveData(_recBlockData)
 	
 	elem.caretPosition = cursor + offset
 	elem.requestFocus()
@@ -255,7 +262,10 @@ function ACTION_insert_image(event) {
 		var cursor = elem.caretPosition
 		
 		elem.replaceSelectedText(html)
-		databaseManager.saveData(foundset.getSelectedRecord())
+		
+		_recBlockData.data_value = _dataValue
+		
+		databaseManager.saveData(_recBlockData)
 		
 		elem.caretPosition = cursor + offset
 		elem.requestFocus()
@@ -319,19 +329,24 @@ function INIT_block() {
 /**
  * @properties={typeid:24,uuid:"79BC12DD-3EBB-4708-9A39-4238787249C9"}
  */
-function LOADER_init(fsBlockData, flagEdit, flagScrapbook) {
+function LOADER_init(fsBlockData, flagEdit, flagScrapbook, contextForm) {
+	//save down pertinent records
+	_recBlockData = fsBlockData.getRecord(1)
+	_dataValue = _recBlockData.data_value
+	_recBlockDataConfigure = _recBlockData.web_block_data_to_block.web_block_to_block_data_configure.getRecord(1)
+	_codeType = _recBlockDataConfigure.data_value
 	
-	var recBlockData = fsBlockData.getRecord(1)
-	
-	ACTION_colorize(recBlockData)
-	
-	//TODO: scrapbook probably coming from different table
-	globals.WEB_block_form_loader('WEB_0F__code',((flagScrapbook) ? "SCRAPBOOK: Code block" : "Code block"),'web_block_data_to_block_data')
-	
+	//update display
 	_editsAllowed = flagEdit
+	LOADER_refresh(fsBlockData,flagEdit,flagScrapbook)
 	
-	elements.btn_edit.visible = flagEdit
-	elements.lbl_edit.visible = flagEdit
+	//load correct form
+	if (flagScrapbook) {
+		globals.WEB_block_form_loader('WEB_0F__code',"SCRAPBOOK: Code block",null,contextForm)
+	}
+	else {
+		globals.WEB_block_form_loader('WEB_0F__code',"Code block",null,contextForm)
+	}
 }
 
 /**
@@ -351,8 +366,8 @@ function ACTION_colorize(recBlockData) {
 	var html = ''
 	var prefix = ''
 	
-	if (!recBlockData && utils.hasRecords(foundset)) {
-		recBlockData = foundset.getSelectedRecord()
+	if (!recBlockData && _recBlockData) {
+		recBlockData = _recBlockData
 	}
 	
 	//if there's data, color it
@@ -418,6 +433,21 @@ function FLD_data_change__code_type(oldValue, newValue, event) {
 /**
  * @properties={typeid:24,uuid:"2032938A-9A16-4FE2-BB20-EF2015D21E7E"}
  */
-function LOADER_refresh() {
+function LOADER_refresh(fsBlockData,flagEdit,flagScrapbook) {
+	ACTION_colorize(_recBlockData)
 	
+	TOGGLE_buttons(flagEdit)
+	
+	//hack to get scrapbook to display
+	if (flagScrapbook && application.__parent__.solutionPrefs) {
+		forms.WEB_0F_page._hackNoFire = true
+		forms.WEB_0F__content_view.controller.show()
+		forms.DATASUTRA_0F_solution.controller.show()
+		//this needs to be long enough for it to finish rendering
+		application.updateUI(1000)
+		forms.WEB_0F_page._hackNoFire = false
+		
+		//reset the window's title
+		forms.DATASUTRA_0F_solution.elements.fld_trigger_name.requestFocus(true)
+	}
 }
