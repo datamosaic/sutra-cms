@@ -175,14 +175,14 @@ function SPLIT_set(editMode) {
 		}
 		
 		//only switch orientation if needed
-		if (elements.bean_split.orientation != _editLocation) {
-			elements.bean_split.orientation = _editLocation
+		if (elements.bean_split.orientation != editLocation) {
+			elements.bean_split.orientation = editLocation
 			
 			//TODO: null out required?
 		}
 		
 		//side-wise location
-		if (_editLocation) {
+		if (editLocation) {
 			elements.bean_split.leftComponent	= elements.bn_browser
 			elements.bean_split.rightComponent	= elements.tab_editor
 			elements.bean_split.dividerLocation	= elements.bean_split.getWidth() - 300
