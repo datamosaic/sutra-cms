@@ -744,6 +744,7 @@ function IMAGE_import_callback(result, e) {
 	
 	if (e) {
 		plugins.dialogs.showErrorDialog("Error", "Error with image upload to server")
+		globals.TRIGGER_progressbar_stop()
 		return "Error with image upload to server"
 	}
 	
