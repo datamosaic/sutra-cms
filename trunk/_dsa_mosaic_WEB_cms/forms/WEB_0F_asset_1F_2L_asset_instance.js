@@ -50,16 +50,10 @@ function REC_delete() {
 	// root directory for this site
 	var baseDirectory = forms.WEB_0F_install.ACTION_get_install() +
 						'/application_server/server/webapps/ROOT/sutraCMS/sites/' +
-						forms.WEB_0F_site.directory
-						
-	var fileDirectory = asset_directory + '/' + asset_title
+						forms.WEB_0F_site.directory						
+	var deleteThis		= {}
+	deleteThis.file	 	= baseDirectory + '/' + asset_directory + '/' + asset_title
 	
-//	// file stream approach
-//	var x = new Object();
-//	x.fileName = asset_directory + '/' + asset_title
-//	var jsclient = plugins.headlessclient.createClient("_dsa_mosaic_WEB_cms", null, null, null)
-//	jsclient.queueMethod("WEB_0C__file_stream", "IMAGE_delete", [x], null)
-//	
 	var input = plugins.dialogs.showWarningDialog(
 						'Delete record',
 						'Do you really want to delete this record?',
@@ -68,14 +62,24 @@ function REC_delete() {
 					)
 
 	if (input == 'Yes') {
-		if ( forms.WEB_0C__file_stream.IMAGE_delete(baseDirectory + '/' + fileDirectory) ) {
-			controller.deleteRecord()
-			plugins.dialogs.showInfoDialog("Success","Record deleted")
+		if ( 1 == 1 ) {
+			// file stream version
+			var jsclient = plugins.headlessclient.createClient("_dsa_mosaic_WEB_cms", null, null, null)
+			jsclient.queueMethod("WEB_0C__file_stream", "IMAGE_delete", [deleteThis], REC_delete_callback)
+				
+		
 		}
 		else {
-			controller.deleteRecord()
-			plugins.dialogs.showInfoDialog("Success","Record deleted")
-			application.output("No file deleted")
+			// developer version (use local file system method since headless client plugin bugged)
+			if ( forms.WEB_0C__file_stream.IMAGE_delete(deleteThis) ) {
+				controller.deleteRecord()
+				plugins.dialogs.showInfoDialog("Success","Record deleted")
+			}
+			else {
+				controller.deleteRecord()
+				plugins.dialogs.showInfoDialog("Success","Record deleted")
+				application.output("No file deleted")
+			}
 		}
 	}
 }
@@ -118,4 +122,19 @@ function FLD_data_change__flag_initial(oldValue, newValue, event) {
 	databaseManager.saveData()
 	
 	return true
+}
+
+/**
+ * @properties={typeid:24,uuid:"897AE672-F733-424D-AF42-110E1C7AB43C"}
+ */
+function REC_delete_callback(callback) {
+	if ( callback.data ) {
+		controller.deleteRecord()
+		plugins.dialogs.showInfoDialog("Success","Record deleted")
+	}
+	else {
+		controller.deleteRecord()
+		plugins.dialogs.showInfoDialog("Success","Record deleted")
+		application.output("No file deleted")
+	}
 }

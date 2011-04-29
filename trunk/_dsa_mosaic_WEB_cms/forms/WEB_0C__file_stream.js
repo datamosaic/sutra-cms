@@ -808,9 +808,9 @@ function IMAGE_import_monitor() {
 /**
  * @properties={typeid:24,uuid:"9CA1DB85-58BC-4FF9-8F16-1EE81CFB4706"}
  */
-function IMAGE_delete(filePath) {
+function IMAGE_delete(filePathObj) {
 	
-	if (plugins.file.deleteFile(filePath)) {
+	if (plugins.file.deleteFile(filePathObj.file)) {
 		return true
 	}
 	else {
