@@ -810,8 +810,10 @@ function IMAGE_import_monitor() {
  */
 function IMAGE_delete(filePath) {
 	
-	if (plugins.file.deleteFile(filePath))
-	application.output('File deleted.')
-
-	
+	if (plugins.file.deleteFile(filePath)) {
+		return true
+	}
+	else {
+		return false
+	}
 }

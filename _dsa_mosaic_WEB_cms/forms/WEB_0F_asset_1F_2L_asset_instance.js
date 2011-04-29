@@ -46,7 +46,6 @@ function REC_on_select(event) {
  * @properties={typeid:24,uuid:"F2373AA4-4FB7-4DF7-8809-A0277D3CFCBC"}
  */
 function REC_delete() {
-	return "functionality in progress!"
 	
 	// root directory for this site
 	var baseDirectory = forms.WEB_0F_install.ACTION_get_install() +
@@ -54,26 +53,30 @@ function REC_delete() {
 						forms.WEB_0F_site.directory
 						
 	var fileDirectory = asset_directory + '/' + asset_title
-	var x = new Object();
-	x.fileName = asset_directory + '/' + asset_title
 	
-	var jsclient = plugins.headlessclient.createClient("_dsa_mosaic_WEB_cms", null, null, null)
+//	// file stream approach
+//	var x = new Object();
+//	x.fileName = asset_directory + '/' + asset_title
+//	var jsclient = plugins.headlessclient.createClient("_dsa_mosaic_WEB_cms", null, null, null)
 //	jsclient.queueMethod("WEB_0C__file_stream", "IMAGE_delete", [x], null)
-	var z = "xxx"
-	
-	
-//	forms.WEB_0C__file_stream.IMAGE_delete(baseDirectory + '/' + fileDirectory)
-	
-	return
-	var delRec = plugins.dialogs.showWarningDialog(
+//	
+	var input = plugins.dialogs.showWarningDialog(
 						'Delete record',
 						'Do you really want to delete this record?',
 						'Yes',
 						'No'
 					)
 
-	if (delRec == 'Yes') {
-		controller.deleteRecord()
+	if (input == 'Yes') {
+		if ( forms.WEB_0C__file_stream.IMAGE_delete(baseDirectory + '/' + fileDirectory) ) {
+			controller.deleteRecord()
+			plugins.dialogs.showInfoDialog("Success","Record deleted")
+		}
+		else {
+			controller.deleteRecord()
+			plugins.dialogs.showInfoDialog("Success","Record deleted")
+			application.output("No file deleted")
+		}
 	}
 }
 
