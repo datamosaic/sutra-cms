@@ -478,15 +478,25 @@ function FIELD_directory_onLost(event) {
  * @properties={typeid:24,uuid:"8FE70347-AA8A-458C-B751-C0AE5E0B0254"}
  */
 function FORM_on_show(firstShow, event) {
+	//disable form if no records
 	if (!utils.hasRecords(foundset)) {
 		globals.WEB_lock_workflow(true)
 	}
-		
+	
+	//disable rewrites if turned off
 	if (forms.WEB_0F_install.rewrite_enabled) {
 		elements.fld_pref_links.enabled = true
 	}
 	else {
 		elements.fld_pref_links.enabled = false
+	}
+	
+	//disable multisite if there aren't any
+	if (utils.hasRecords(forms.WEB_0F_install__multisite.foundset)) {
+		elements.fld_multisite_key.enabled = true
+	}
+	else {
+		elements.fld_multisite_key.enabled = false
 	}
 }
 
