@@ -430,8 +430,8 @@ function WEB_MRKUP_link_base(pageID, siteURL) {
 	
 	//no url rewrite OR running off localhost and site name not specified as localhost
 	if (!rewriteMode ||
-		(utils.stringPatternCount(siteURL,"localhost") && siteRec.url != "localhost") || 
-		(utils.stringPatternCount(siteURL,"127.0.0.1") && siteRec.url != "127.0.0.1")) {
+		(utils.stringPatternCount(siteURL,"localhost") > 0 && siteRec.url != "localhost") || 
+		(utils.stringPatternCount(siteURL,"127.0.0.1") > 0 && siteRec.url != "127.0.0.1")) {
 		
 		siteURL += '/sutraCMS'
 	}
@@ -472,8 +472,8 @@ function WEB_MRKUP_link_resources(pageID, siteURL, linkType) {
 	
 	//no url rewrite OR running off localhost and site name not specified as localhost
 	if (!rewriteMode ||
-		(utils.stringPatternCount(siteURL,"localhost") && siteRec.url != "localhost") || 
-		(utils.stringPatternCount(siteURL,"127.0.0.1") && siteRec.url != "127.0.0.1")) {
+		(utils.stringPatternCount(siteURL,"localhost") > 0 && siteRec.url != "localhost") || 
+		(utils.stringPatternCount(siteURL,"127.0.0.1") > 0 && siteRec.url != "127.0.0.1")) {
 		
 		siteDirectory = 'sutraCMS/sites/' + siteRec.directory + '/'
 	}
