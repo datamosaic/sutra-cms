@@ -425,7 +425,7 @@ function REC_new(flagRefresh) {
 					}
 					view.method_name = obj.views[i]
 					//flag default method as default
-					view.flag_default = ( obj.views[i] == "VIEW_default") ? 1 : null
+					view.flag_default = ( obj.views[i] == "VIEW_default" || obj.views[i] == "CONTROLLER_default") ? 1 : null
 				}
 				
 				//if anything left in delete array, whack it 
