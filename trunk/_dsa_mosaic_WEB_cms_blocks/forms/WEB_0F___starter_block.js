@@ -104,10 +104,18 @@ function INIT_block() {
  * @properties={typeid:24,uuid:"66882D66-C9FB-4C36-B2DA-10D0B467E09C"}
  */
 function LOADER_init(fsBlockData, flagEdit, flagScrapbook) {
-	
 	// set label and load form
 	globals.WEB_block_form_loader("WEB_0F___starter_block", ((flagScrapbook) ? "SCRAPBOOK: Starter block" : "Starter block"))		
+	
+	//refresh display
+	LOADER_refresh(fsBlockData,flagEdit,flagScrapbook)
+}
 
+/**
+ * @properties={typeid:24,uuid:"C8C679D5-C524-47CD-ACD4-93FF855F1611"}
+ */
+function LOADER_refresh(fsBlockData,flagEdit,flagScrapbook) {
+	//put in code that would be fired on rec select if changing between two blocks of the same type
 }
 
 /**
