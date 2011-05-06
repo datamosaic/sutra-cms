@@ -203,6 +203,42 @@ function ACTION_cancel() {
  * @properties={typeid:24,uuid:"2C217D68-302D-4F96-920E-E5145C9C19E9"}
  */
 function ACTION_save() {
+	//page was just created
+	if (forms.WEB_0T_page._addRecord) {
+		var fsPath = databaseManager.getFoundSet('sutra_cms','web_path')
+		var siteID = id_site
+		
+		//add in path for this page
+		var pathNameWanted = page_name || 'untitled-page'
+		pathNameWanted = pathNameWanted.toLowerCase()
+		pathNameWanted = utils.stringReplace(pathNameWanted, ' ', '-')
+		
+		var pathName = pathNameWanted
+		var cnt = 1
+		
+		//we need to get into the loop
+		results = null
+		
+		while (results != 0) {
+			fsPath.find()
+			fsPath.id_site = siteID
+			fsPath.path = pathName
+			var results = fsPath.search()
+			
+			if (results) {
+				pathName = pathNameWanted + cnt++
+			}
+		}
+		
+		var recPath = web_page_to_path.getRecord(web_page_to_path.newRecord(false,true))
+		recPath.flag_default = 1
+		recPath.path = pathName
+		recPath.id_site = siteID
+		
+		//reset flag
+		forms.WEB_0T_page._addRecord = null
+	}
+	
 	//MEMO: check WEB_P_page method too
 	if (_themeSet) {
 		_themeSet = null
@@ -311,42 +347,6 @@ function ACTION_save() {
 		
 		//fill group global
 		forms.WEB_0F_page__design.SET_groups()
-	}
-	
-	//page was just created
-	if (forms.WEB_0T_page._addRecord) {
-		var fsPath = databaseManager.getFoundSet('sutra_cms','web_path')
-		var siteID = id_site
-		
-		//add in path for this page
-		var pathNameWanted = page_name || 'untitled-page'
-		pathNameWanted = pathNameWanted.toLowerCase()
-		pathNameWanted = utils.stringReplace(pathNameWanted, ' ', '-')
-		
-		var pathName = pathNameWanted
-		var cnt = 1
-		
-		//we need to get into the loop
-		results = null
-		
-		while (results != 0) {
-			fsPath.find()
-			fsPath.id_site = siteID
-			fsPath.path = pathName
-			var results = fsPath.search()
-			
-			if (results) {
-				pathName = pathNameWanted + cnt++
-			}
-		}
-		
-		var recPath = web_page_to_path.getRecord(web_page_to_path.newRecord(false,true))
-		recPath.flag_default = 1
-		recPath.path = pathName
-		recPath.id_site = siteID
-		
-		//reset flag
-		forms.WEB_0T_page._addRecord = null
 	}
 	
 	//call datachange to update display of stuff
