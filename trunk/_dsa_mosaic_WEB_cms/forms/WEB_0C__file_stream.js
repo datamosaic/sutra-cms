@@ -260,10 +260,13 @@ function THEME_new(progress) {
 			}	
 		}
 		else {
-			plugins.dialogs.showErrorDialog( "Error", "No theme files defined in selected theme")
-			globals.TRIGGER_progressbar_stop()
-			return "No theme files defined in selected theme"
-		}		
+			//jump to stage 3
+			THEME_new(3)
+			
+//			plugins.dialogs.showErrorDialog( "Error", "No theme files defined in selected theme")
+//			globals.TRIGGER_progressbar_stop()
+//			return "No theme files defined in selected theme"
+		}
 	}
 	
 	
