@@ -64,30 +64,27 @@ function TINYMCE_init(mode) {
 		//set spellchecker
 //		js.spellchecker_rpc_url = 
 	
-		//styles
-		//get host from selected version
-		var thisSite = forms.WEB_0F_site.url
+		//styles for tinymce
+		var cssFile = globals.WEB_MRKUP_link_base()
 		
-		//dataset is valid
-		if (thisSite && thisSite.length) {
-			var cssFile = 'http://' + thisSite
-			
-			var port = application.getServerURL()
-			port = port.split(':')
-			if (port.length > 2) {
-				cssFile += ':' + port[2]
-			}
-		}
-		else {
-			//when running on ip/localhost, must use index.jsp to render page
-			var cssFile = application.getServerURL() + '/sutraCMS'
+		//rewrite mode
+		var fsInstall = databaseManager.getFoundSet('sutra_cms','web_install')
+		fsInstall.loadAllRecords()
+		if (utils.hasRecords(fsInstall)) {
+			var rewriteMode = fsInstall.rewrite_enabled
 		}
 		
-		//use the site's 'default url style
-		cssFile += '/sites/' + forms.WEB_0F_page.web_page_to_site.directory + '/themes/' + forms.WEB_0F_page.web_page_to_theme.theme_directory + '/css/tinymce.css'
+		//rewrites are disabled, spell out all the way to the site directory
+		if (!rewriteMode) {
+			cssFile += 'sites/' + forms.WEB_0F_page.web_page_to_site.directory
+		}
+		cssFile += '/themes/' + forms.WEB_0F_page.web_page_to_theme.theme_directory + '/css/tinymce.css'
+		
+		//read in cssFile to see if exists
+		var fileExists = plugins.http.getPageData(cssFile)
 		
 		//tinymce file 
-		if (cssFile) {
+		if (fileExists) {
 			js.content_css = cssFile
 		}
 		//no specific tinymce file present, use default css for entire site
