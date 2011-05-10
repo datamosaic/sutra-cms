@@ -59,6 +59,9 @@ function REC_on_select() {
 	
 	//page type ui differences
 	PAGE_type_display()
+	
+	//set tooltip of visit with link
+	forms.WEB_0F_page__design__button_tab__content.elements.btn_visit.toolTipText = globals.WEB_MRKUP_link_page(id_page)
 }
 
 /**
