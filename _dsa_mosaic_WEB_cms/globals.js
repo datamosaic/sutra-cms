@@ -311,9 +311,21 @@ function WEB_MRKUP_link_page(pageID, siteURL, linkType, webMode) {
 	}
 	//normal page, generate link
 	else {
+		//rewrite mode
+		var fsInstall = databaseManager.getFoundSet('sutra_cms','web_install')
+		fsInstall.loadAllRecords()
+		if (utils.hasRecords(fsInstall)) {
+			var rewriteMode = fsInstall.rewrite_enabled
+		}
+		
 		//use default link type if none specified
 		if (!linkType) {
 			linkType = siteRec.pref_links
+		}
+		
+		//if rewrite mode turned off and not edit mode, use index
+		if (!rewriteMode && linkType != 'Edit') {
+			linkType = 'Index'
 		}
 		
 		switch (linkType) {
