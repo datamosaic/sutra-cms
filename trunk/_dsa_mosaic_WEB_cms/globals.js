@@ -323,8 +323,11 @@ function WEB_MRKUP_link_page(pageID, siteURL, linkType, webMode) {
 			linkType = siteRec.pref_links
 		}
 		
-		//if rewrite mode turned off and not edit mode, use index
-		if (!rewriteMode && linkType != 'Edit') {
+		//if rewrite mode turned off and not edit mode
+		//or no url for site and not edit mode, use index
+		if ((!rewriteMode && linkType != 'Edit') ||
+			(!siteRec.url && linkType != 'Edit')) {
+			
 			linkType = 'Index'
 		}
 		
