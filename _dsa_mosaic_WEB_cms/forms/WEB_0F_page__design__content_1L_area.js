@@ -511,7 +511,7 @@ var input = arguments[0]
 var valuelist = new Array(
 //				'Add one-off area',
 //				'-',
-				'Add missing areas',
+//				'Add missing areas',
 				'Re-order areas',
 				'-',
 				'Change page layout'
@@ -552,17 +552,17 @@ else {
 //			
 //			break
 //			
-		case 0:	//add missing areas
-			AREA_add_missing()
+//		case 0:	//add missing areas
+//			AREA_add_missing()
+//			
+//			break
 			
-			break
-			
-		case 1:	//re-order areas
+		case 0:	//re-order areas
 			AREA_reorder()
 			
 			break
 			
-		case 3:	//assign new layout
+		case 2:	//assign new layout
 			AREA_new()
 			
 			break
