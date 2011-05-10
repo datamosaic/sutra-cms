@@ -178,13 +178,24 @@ function FORM_on_load(event) {
 function VISIT_page(event) {
 	//see forms.WEB_0F_page__browser.URL_update
 	
+	if (globals.CODE_key_pressed('shift')) {
+		var toClippy = true
+	}
+	
 	var fsPage = forms.WEB_0F_page.foundset
 	
 	if (utils.hasRecords(fsPage)) {
 		
 		var siteURL = globals.WEB_MRKUP_link_page(fsPage.id_page)
 		
-		globals.CODE_url_handler(siteURL)
+		//put on clipboard
+		if (toClippy) {
+			application.setClipboardContent(siteURL)
+		}
+		//go to page
+		else {
+			globals.CODE_url_handler(siteURL)
+		}
 	}
 	else {
 		plugins.dialogs.showErrorDialog(
