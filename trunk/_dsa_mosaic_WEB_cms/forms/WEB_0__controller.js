@@ -193,11 +193,41 @@ function CONTROLLER_builder(results, obj) {
 					}
 				}
 				
+				// BLOCK CONFIGURATION
+				var configureData = databaseManager.getFoundSet("sutra_cms","web_block_data_configure")
+				configureData.find()
+				configureData.id_block = block.id_block
+				var count = configureData.search()
+				
+				// obj: configuration
+				if (count) {
+					for (var k = 0; k < configureData.getSize(); k++) {
+						databaseManager.refreshRecordFromDatabase(configureData, k + 1)	
+						var point = configureData.getRecord(k + 1)
+						obj.configure[point.data_key] = point.data_value
+					}
+				}
+				
+				// BLOCK RESPONSE
+				var responseData = databaseManager.getFoundSet("sutra_cms","web_block_data_response")
+				responseData.find()
+				responseData.id_block = block.id_block
+				var count = responseData.search()
+				
+				// obj: response
+				if (count) {
+					for (var k = 0; k < responseData.getSize(); k++) {
+						databaseManager.refreshRecordFromDatabase(responseData, k + 1)	
+						var point = responseData.getRecord(k + 1)
+						obj.response[point.data_key] = point.data_value
+					}
+				}
+				
 			}
 			//this is a linked scrapbook
 			else {
 				
-				//check for stuff
+				// SCRAPBOOK DATA
 				if (utils.hasRecords(block.web_block_to_scrapbook) && utils.hasRecords(block.web_block_to_scrapbook.web_scrapbook_to_scrapbook_data)) {
 					var data = block.web_block_to_scrapbook.web_scrapbook_to_scrapbook_data
 					
@@ -206,7 +236,28 @@ function CONTROLLER_builder(results, obj) {
 						var point = data.getRecord(k + 1)
 						obj.data[point.data_key] = point.data_value
 					}
+				}
+				
+				// SCRAPBOOK CONFIGURATION
+				if (utils.hasRecords(block.web_block_to_scrapbook) && utils.hasRecords(block.web_block_to_scrapbook.web_scrapbook_to_scrapbook_configure)) {
+					var configureData = block.web_block_to_scrapbook.web_scrapbook_to_scrapbook_configure
 					
+					// obj: configuration
+					for (var k = 0; k < configureData.getSize(); k++) {
+						var point = configureData.getRecord(k + 1)
+						obj.configure[point.data_key] = point.data_value
+					}
+				}
+				
+				// SCRAPBOOK RESPONSE
+				if (utils.hasRecords(block.web_block_to_scrapbook) && utils.hasRecords(block.web_block_to_scrapbook.web_scrapbook_to_scrapbook_response)) {
+					var responseData = block.web_block_to_scrapbook.web_scrapbook_to_scrapbook_response
+					
+					// obj: response
+					for (var k = 0; k < responseData.getSize(); k++) {
+						var point = responseData.getRecord(k + 1)
+						obj.response[point.data_key] = point.data_value
+					}
 				}
 
 			}
@@ -284,8 +335,10 @@ function CONTROLLER_setup(results, app, session, request, response, mode) {
 	       		    page	: { record : '', id	: '', name	: '', parent : '', attribute	: {}},
 	       		    theme	: { directory : '', markup : { link : '' } },
 	       		    area	: { record : '', id	: '', name	: ''},
-	       		    block	: { record : '', id	: '', params : ''},   // TODO: allow for multiple params
+	       		    block	: { record : '', id	: '', params : ''},   // TODO: depricate params
 	       		    data	: {},
+	       		    configure : {},
+	       		    response : {},
 	       		    form	: { get : {}, post : {}, validate : { error : 0 },
 	       		    			multipart : { field : {}, file : {} }
 	       		    			},
