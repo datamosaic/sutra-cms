@@ -204,7 +204,7 @@ function CONTROLLER_builder(results, obj) {
 					for (var k = 0; k < configureData.getSize(); k++) {
 						databaseManager.refreshRecordFromDatabase(configureData, k + 1)	
 						var point = configureData.getRecord(k + 1)
-						obj.configure[point.data_key] = point.data_value
+						obj.block_configure[point.data_key] = point.data_value
 					}
 				}
 				
@@ -219,7 +219,7 @@ function CONTROLLER_builder(results, obj) {
 					for (var k = 0; k < responseData.getSize(); k++) {
 						databaseManager.refreshRecordFromDatabase(responseData, k + 1)	
 						var point = responseData.getRecord(k + 1)
-						obj.response[point.data_key] = point.data_value
+						obj.block_response[point.data_key] = point.data_value
 					}
 				}
 				
@@ -245,7 +245,7 @@ function CONTROLLER_builder(results, obj) {
 					// obj: configuration
 					for (var k = 0; k < configureData.getSize(); k++) {
 						var point = configureData.getRecord(k + 1)
-						obj.configure[point.data_key] = point.data_value
+						obj.block_configure[point.data_key] = point.data_value
 					}
 				}
 				
@@ -256,7 +256,7 @@ function CONTROLLER_builder(results, obj) {
 					// obj: response
 					for (var k = 0; k < responseData.getSize(); k++) {
 						var point = responseData.getRecord(k + 1)
-						obj.response[point.data_key] = point.data_value
+						obj.block_response[point.data_key] = point.data_value
 					}
 				}
 
@@ -337,8 +337,8 @@ function CONTROLLER_setup(results, app, session, request, response, mode) {
 	       		    area	: { record : '', id	: '', name	: ''},
 	       		    block	: { record : '', id	: '', params : ''},   // TODO: depricate params
 	       		    data	: {},
-	       		    configure : {},
-	       		    response : {},
+	       		    block_configure : {},
+	       		    block_response : {},
 	       		    form	: { get : {}, post : {}, validate : { error : 0 },
 	       		    			multipart : { field : {}, file : {} }
 	       		    			},
