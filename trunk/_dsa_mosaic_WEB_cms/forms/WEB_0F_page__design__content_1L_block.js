@@ -489,19 +489,19 @@ function ACTION_gui_mode_load() {
 					
 					//there is a custom form to show
 					if (hasInit) {
-						//MEMO: this is a hack, I just can't find out why browser not rendering
-						
-						var dataEvent = new Object()
-						dataEvent.getElementName = function() {
-								return 'lbl_mode_gui'
-							}
-						var guiEvent = new Object()
-						guiEvent.getElementName = function() {
-								return 'lbl_mode_gui'
-							}
-						
-	//					forms.WEB_TB__web_mode.ACTION_mode(dataEvent)
-	//					forms.WEB_TB__web_mode.ACTION_mode(guiEvent)
+//						//MEMO: this is a hack, I just can't find out why browser not rendering
+//						
+//						var dataEvent = new Object()
+//						dataEvent.getElementName = function() {
+//								return 'lbl_mode_gui'
+//							}
+//						var guiEvent = new Object()
+//						guiEvent.getElementName = function() {
+//								return 'lbl_mode_gui'
+//							}
+//						
+//						forms.WEB_TB__web_mode.ACTION_mode(dataEvent)
+//						forms.WEB_TB__web_mode.ACTION_mode(guiEvent)
 						
 						forms[recBlockType.form_name].LOADER_init(
 															recBlock.web_block_to_scrapbook.getRecord(1).web_scrapbook_to_scrapbook_data, 
@@ -640,10 +640,10 @@ function ACTION_gui_mode_refresh() {
 			}
 			//there is not a refresh, fire init
 			else if (hasInit) {
-				var pseudoEvent = new Object()
-				pseudoEvent.getElementName = function() {
-						return 'lbl_mode_real'
-					}
+//				var pseudoEvent = new Object()
+//				pseudoEvent.getElementName = function() {
+//						return 'lbl_mode_real'
+//					}
 //				forms.WEB_TB__web_mode.ACTION_mode(pseudoEvent)
 				forms[recBlockType.form_name].LOADER_init(
 													recBlock.web_block_to_scrapbook.getRecord(1).web_scrapbook_to_scrapbook_data, 
