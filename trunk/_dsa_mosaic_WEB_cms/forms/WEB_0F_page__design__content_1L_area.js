@@ -509,9 +509,7 @@ var input = arguments[0]
 
 //menu items
 var valuelist = new Array(
-//				'Add one-off area',
-//				'-',
-//				'Add missing areas',
+				'Set to theme defaults',
 				'Re-order areas',
 				'-',
 				'Change page layout'
@@ -541,28 +539,17 @@ if (typeof input != 'number') {
 //menu shown and item chosen
 else {
 	switch( input ) {
-//		case 0:	//add one off area
-//			var pageRec = forms.WEB_0F_page.foundset.getRecord(forms.WEB_0F_page.foundset.getSelectedIndex())
-//			
-//			var size = (utils.hasRecords(foundset)) ? foundset.getSize() : 0
-//			var record = foundset.getRecord(foundset.newRecord(false, true))
-//			record.row_order = size + 1
-//			record.id_group = globals.WEB_group_selected
-//			databaseManager.saveData(true)
-//			
-//			break
-//			
-//		case 0:	//add missing areas
-//			AREA_add_missing()
-//			
-//			break
+		case 0:	//set to theme defaults (delete all areas/blocks)
+			AREA_reset()
 			
-		case 0:	//re-order areas
+			break
+			
+		case 1:	//re-order areas
 			AREA_reorder()
 			
 			break
 			
-		case 2:	//assign new layout
+		case 3:	//assign new layout
 			AREA_new()
 			
 			break
@@ -571,6 +558,91 @@ else {
 	}
 }
 
+}
+
+/**
+ * @properties={typeid:24,uuid:"340A4C68-CFF4-4CF1-A790-750511C79F9E"}
+ */
+function AREA_reset() {
+	var delRec = plugins.dialogs.showWarningDialog(
+					'Page reset',
+					'This will reset the page to the defaults specified for the selected theme.\nWarning: This will delete all your data.  Proceed?',
+					'Yes',
+					'No'
+				)
+
+	if (delRec == 'Yes') {
+		controller.deleteAllRecords()
+		
+		var pageRec = forms.WEB_0F_page.foundset.getSelectedRecord()
+		
+		// get editable regions based on layout selected
+		if (!utils.hasRecords(pageRec.web_page_to_layout.web_layout_to_editable)) {
+			plugins.dialogs.showErrorDialog( 
+						"Error",
+						"No editable regions set up in layout selected."
+					)
+			return 'No editables for selected layout'
+		}
+		
+		var fsRegions = pageRec.web_page_to_layout.web_layout_to_editable
+		
+		var fsArea = databaseManager.getFoundSet('sutra_cms','web_area')
+		fsArea.find()
+		fsArea.id_group = globals.WEB_group_selected
+		fsArea.id_version = globals.WEB_version_selected
+		var results = fsArea.search()
+		
+		
+		// delete current area records
+		if (utils.hasRecords(fsArea)) {
+			fsArea.deleteAllRecords()
+		}
+		
+		// create a page area record for each editable
+		var order = 1
+		for (var i = 1; i <= fsRegions.getSize(); i++) {
+			var tempEditableRec = fsRegions.getRecord(i)
+			
+			var areaRec = fsArea.getRecord(fsArea.newRecord(false, true))
+			
+			areaRec.area_name = tempEditableRec.editable_name
+			areaRec.id_editable = tempEditableRec.id_editable
+			areaRec.row_order = order ++ 
+			areaRec.id_group = globals.WEB_group_selected
+			
+			databaseManager.saveData()
+			
+			//create a block record for each editable default
+			for (var j = 1; j <= tempEditableRec.web_editable_to_editable_default.getSize(); j++ ) {
+				var tempEditableDefaultRec = tempEditableRec.web_editable_to_editable_default.getRecord(j)
+				
+				var blockRec = areaRec.web_area_to_block.getRecord(areaRec.web_area_to_block.newRecord(false, true))
+				
+				blockRec.id_block_display = tempEditableDefaultRec.id_block_display
+				blockRec.id_block_type = tempEditableDefaultRec.id_block_type
+				blockRec.params = tempEditableDefaultRec.params
+				blockRec.row_order = j
+				databaseManager.saveData()
+				
+				//create a block_data record for each editable_default
+				for (var k = 1; k <= tempEditableDefaultRec.web_editable_default_to_block_input.getSize(); k++) {
+					var tempEditableDefaultDetailRec = tempEditableDefaultRec.web_editable_default_to_block_input.getRecord(k)
+					
+					var blockDataRec = blockRec.web_block_to_block_data.getRecord(blockRec.web_block_to_block_data.newRecord(false,true))
+					
+					blockDataRec.data_key = tempEditableDefaultDetailRec.column_name				
+				}			
+			}
+		}
+		
+		// finish up
+		foundset.loadRecords(fsArea)
+		foundset.sort( "row_order asc" )
+		foundset.setSelectedIndex(1)
+		
+		databaseManager.saveData()
+	}
 }
 
 /**

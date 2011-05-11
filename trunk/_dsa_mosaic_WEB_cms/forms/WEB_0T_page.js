@@ -71,7 +71,8 @@ if (utils.hasRecords(forms.WEB_0F_site.foundset)) {
 //get menu list from a value list
 var valueList = [
 		'Duplicate record',
-		'Update theme',
+		'Update theme...',
+		'Reset theme...',
 		'-',
 		'Toggle open',
 		'Toggle closed',
@@ -155,20 +156,24 @@ switch (arguments[0]) {
 	case 1: //update theme
 		forms.WEB_0F_page__design__content_1L_area.AREA_add_missing()
 		break
+	
+	case 2: //reset theme
+		forms.WEB_0F_page__design__content_1L_area.AREA_reset()
+		break
 		
-	case 3: //toggle open
+	case 4: //toggle open
 		TOGGLE_nodes(1)
 		break
 	
-	case 4: //toggle closed
+	case 5: //toggle closed
 		TOGGLE_nodes(0)
 		break
 	
-	case 6:	//delete record
+	case 7:	//delete record
 		REC_delete()
 		break	
 	
-	case 8: //delete all unnamed
+	case 9: //delete all unnamed
 		var fsPages = forms.WEB_0F_site.web_site_to_page
 		
 		var input = plugins.dialogs.showQuestionDialog(
