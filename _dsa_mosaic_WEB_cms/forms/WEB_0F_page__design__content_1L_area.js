@@ -650,7 +650,7 @@ function AREA_reset() {
  * @properties={typeid:24,uuid:"CC2A75E9-00A1-446E-8D67-4E9C74894569"}
  */
 function TOGGLE_elements(editAllow) {
-	elements.btn_actions.enabled = editAllow
+//	elements.btn_actions.enabled = editAllow
 //	elements.btn_add.enabled = editAllow
 	elements.btn_delete.visible = editAllow
 //	elements.btn_down.enabled = editAllow
