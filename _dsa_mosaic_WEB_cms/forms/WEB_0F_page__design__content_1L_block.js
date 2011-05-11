@@ -72,6 +72,27 @@ function BLOCK_action_list_control() {
 					databaseManager.copyMatchingColumns(record,destination)
 				}
 				databaseManager.saveData()
+				
+				// block_data_configure to scrapbook_configure
+				var fsSource		= source.web_block_to_block_data_configure
+				
+				for (var i = 0; i < fsSource.getSize(); i++) {
+					var record		= fsSource.getRecord(i + 1)
+					var destination	= forms.WEB_0F_scrapbook.web_scrapbook_to_scrapbook_configure.getRecord(forms.WEB_0F_scrapbook.web_scrapbook_to_scrapbook_configure.newRecord(true,true))
+					databaseManager.copyMatchingColumns(record,destination)
+				}
+				databaseManager.saveData()
+				
+				// block_data_response to scrapbook_response
+				var fsSource		= source.web_block_to_block_data_response
+				
+				for (var i = 0; i < fsSource.getSize(); i++) {
+					var record		= fsSource.getRecord(i + 1)
+					var destination	= forms.WEB_0F_scrapbook.web_scrapbook_to_scrapbook_response.getRecord(forms.WEB_0F_scrapbook.web_scrapbook_to_scrapbook_response.newRecord(true,true))
+					databaseManager.copyMatchingColumns(record,destination)
+				}
+				databaseManager.saveData()
+				
 			}
 			else {
 				plugins.dialogs.showErrorDialog(
