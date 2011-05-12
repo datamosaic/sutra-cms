@@ -64,7 +64,10 @@ function FLD_data_change__version_selected(oldValue, newValue, event) {
 	forms.WEB_0F_page__design__content_1F_block_data__textarea.TOGGLE_elements(editAllow)
 	
 	//guiLoading is not true, need to run
-	if (!forms.WEB_0F_page__design__content_1L_block._guiLoading) {
+//	if (!forms.WEB_0F_page__design__content_1L_block._guiLoading) {
+	
+	//only run when clicked on...this won't fire frequently enough, but will get around running an extra time on load 
+	if (event) {
 		forms.WEB_0F_page__design__content_1L_block.ACTION_gui_mode_load()
 	}
 	

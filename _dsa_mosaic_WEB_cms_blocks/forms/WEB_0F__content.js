@@ -64,27 +64,30 @@ function TINYMCE_init(mode) {
 		//set spellchecker
 //		js.spellchecker_rpc_url = 
 	
-		//styles for tinymce
-		var cssFile = globals.WEB_MRKUP_link_base()
+		//styles
+		//get host from selected version
+		var thisSite = forms.WEB_0F_site.url
 		
-		//rewrite mode
-		var fsInstall = databaseManager.getFoundSet('sutra_cms','web_install')
-		fsInstall.loadAllRecords()
-		if (utils.hasRecords(fsInstall)) {
-			var rewriteMode = fsInstall.rewrite_enabled
+		//dataset is valid
+		if (thisSite && thisSite.length) {
+			var cssFile = 'http://' + thisSite
+			
+			var port = application.getServerURL()
+			port = port.split(':')
+			if (port.length > 2) {
+				cssFile += ':' + port[2]
+			}
+		}
+		else {
+			//when running on ip/localhost, must use index.jsp to render page
+			var cssFile = application.getServerURL() + '/sutraCMS'
 		}
 		
-		//rewrites are disabled, spell out all the way to the site directory
-		if (!rewriteMode) {
-			cssFile += 'sites/' + forms.WEB_0F_page.web_page_to_site.directory
-		}
-		cssFile += '/themes/' + forms.WEB_0F_page.web_page_to_theme.theme_directory + '/css/tinymce.css'
-		
-		//read in cssFile to see if exists
-		var fileExists = plugins.http.getPageData(cssFile)
+		//use the site's 'default url style
+		cssFile += '/sites/' + forms.WEB_0F_page.web_page_to_site.directory + '/themes/' + forms.WEB_0F_page.web_page_to_theme.theme_directory + '/css/tinymce.css'
 		
 		//tinymce file 
-		if (fileExists) {
+		if (cssFile) {
 			js.content_css = cssFile
 		}
 		//no specific tinymce file present, use default css for entire site
@@ -479,17 +482,17 @@ function LOADER_refresh(fsBlockData,flagEdit,flagScrapbook) {
 		
 		forms.WEB_0F__content_view.elements.bn_browser.html = html
 		
-//		//hack to get scrapbook to display
-//		if (flagScrapbook && application.__parent__.solutionPrefs) {
-//			forms.WEB_0F_page._hackNoFire = true
-//			forms.WEB_0F__content_view.controller.show()
-//			forms.DATASUTRA_0F_solution.controller.show()
-//			//this needs to be long enough for it to finish rendering
-//			application.updateUI(1000)
-//			forms.WEB_0F_page._hackNoFire = false
-//			
-//			//reset the window's title
-//			forms.DATASUTRA_0F_solution.elements.fld_trigger_name.requestFocus(true)
-//		}
+		//hack to get scrapbook to display
+		if (flagScrapbook && application.__parent__.solutionPrefs) {
+			forms.WEB_0F_page._hackNoFire = true
+			forms.WEB_0F__content_view.controller.show()
+			forms.DATASUTRA_0F_solution.controller.show()
+			//this needs to be long enough for it to finish rendering
+			application.updateUI(1000)
+			forms.WEB_0F_page._hackNoFire = false
+			
+			//reset the window's title
+			forms.DATASUTRA_0F_solution.elements.fld_trigger_name.requestFocus(true)
+		}
 	}
 }
