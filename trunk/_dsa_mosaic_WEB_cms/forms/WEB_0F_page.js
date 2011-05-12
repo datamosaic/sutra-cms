@@ -392,7 +392,7 @@ var _hackNoFire = false;
  */
 function FORM_on_show(firstShow, event) {
 	//this is set when scrapbook is shown to ensure that browser bean has enough time to load before rendering
-//	if (!_hackNoFire) {
+	if (!_hackNoFire) {
 		//first time go to sitemap view
 		if (firstShow) {
 			globals.TRIGGER_ul_tab_list('WEB_0T_page','Sitemap',0)
@@ -437,7 +437,7 @@ function FORM_on_show(firstShow, event) {
 				forms.WEB_0F_page__design__content_1L_block.ACTION_gui_mode_load()
 			}
 		}
-//	}
+	}
 }
 
 /**

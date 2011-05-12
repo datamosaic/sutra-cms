@@ -876,7 +876,8 @@ function WEB_startup_hack() {
 	forms.WEB_0F__image.controller.show()
 	forms.WEB_0F__html.controller.show()
 	forms.WEB_0F__code.controller.show()
-//	forms.WEB_0F__content.controller.show()
+	forms.WEB_0F__content.controller.show()
+	application.sleep(1500)
 	forms.WEB_0F__content_view.controller.show()
 	
 	forms.DATASUTRA_0F_solution.controller.show()
