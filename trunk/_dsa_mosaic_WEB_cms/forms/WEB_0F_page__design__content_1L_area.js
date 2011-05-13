@@ -588,16 +588,6 @@ function AREA_reset() {
 		var fsRegions = pageRec.web_page_to_layout.web_layout_to_editable
 		
 		var fsArea = databaseManager.getFoundSet('sutra_cms','web_area')
-		fsArea.find()
-		fsArea.id_group = globals.WEB_group_selected
-		fsArea.id_version = globals.WEB_version_selected
-		var results = fsArea.search()
-		
-		
-		// delete current area records
-		if (utils.hasRecords(fsArea)) {
-			fsArea.deleteAllRecords()
-		}
 		
 		// create a page area record for each editable
 		var order = 1
@@ -610,6 +600,7 @@ function AREA_reset() {
 			areaRec.id_editable = tempEditableRec.id_editable
 			areaRec.row_order = order ++ 
 			areaRec.id_group = globals.WEB_group_selected
+			areaRec.id_version = globals.WEB_version_selected
 			
 			databaseManager.saveData()
 			
