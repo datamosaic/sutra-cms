@@ -271,7 +271,13 @@ function CONTROLLER_builder(results, obj) {
 			// MARKUP CALL
 			// edit mode (needs div wrappers)
 			if ( obj.type == "Edit" ) {
-				var markupedData = forms[type.form_name][display.method_name](obj, results) || "<br>"
+				if (FX_method_exists(display.method_name,type.form_name)) {
+					var markupedData = forms[type.form_name][display.method_name](obj, results) || "<br>"
+				}
+				else {
+					var markupedData = 'Error with block configuration'
+				}
+				
 				areaMarkup += '<div id="sutra-block-data-' + block.id_block + '">\n'
 				areaMarkup += markupedData + '\n'
 				areaMarkup += "</div>\n"
@@ -279,7 +285,12 @@ function CONTROLLER_builder(results, obj) {
 			}
 			// deployed (no divs)
 			else {
-				areaMarkup += forms[type.form_name][display.method_name](obj, results) + '\n'
+				if (FX_method_exists(display.method_name,type.form_name)) {
+					areaMarkup += forms[type.form_name][display.method_name](obj, results) + '\n'
+				}
+				else {
+					areaMarkup += 'Error with block configuration\n'
+				}
 			}	
 			
 			// obj: block...CLEAR
@@ -721,7 +732,7 @@ function CONTROLLER_setup(results, app, session, request, response, mode) {
 			var count = page.search()
 			
 			groupID = 0
-			versionID = 0			
+			versionID = 0		
 		}
 		else {
 			obj.error.code = 404
@@ -729,7 +740,7 @@ function CONTROLLER_setup(results, app, session, request, response, mode) {
 			return obj
 		}
 	}
-	//a link, navigate there as a 301 response status
+	//an external link, navigate there as a 301 response status
 	else if (page.page_type == 2) {
 		if (page.page_link) {
 			var pageLink = page.page_link
@@ -739,10 +750,31 @@ function CONTROLLER_setup(results, app, session, request, response, mode) {
 			obj.error.message = "External link is blank"
 			return obj
 		}
-		//		obj.response.record.sendRedirect(pageLink) // optional non-301 status redirect
+//				obj.response.record.sendRedirect(pageLink) // optional non-301 status redirect
 		response.setStatus(301)
 		response.setHeader("Location", pageLink)
 		response.setHeader("Connection", "close")
+		return obj
+	}
+	//an internal link, go to that page
+	else if (page.page_type == 3) {
+		var fsPage = databaseManager.getFoundSet('sutra_cms','web_page')
+		fsPage.find()
+		fsPage.id_page = page.page_link_internal
+		var results = fsPage.search()
+		
+		if (results && page.page_link_internal) {
+			//this changes the url
+			obj.response.record.sendRedirect(globals.WEB_MRKUP_link_page(page.page_link_internal))
+		}
+		else {
+			obj.error.code = 404
+			obj.error.message = "Internal link not valid"
+				
+			//this will show the error, comment out to go to default error/home page for this site
+			obj.type = true
+			return obj
+		}
 	}
 	
 	// publishable...only matters for a live site
@@ -990,4 +1022,36 @@ function WEB_log_page()
 	var pageID 		= arguments[0]
 	var identifier	= arguments[1]
 	var loggedIn	= arguments[2]
+}
+
+/**
+ * @properties={typeid:24,uuid:"41B5EBF3-8C67-40D3-9D33-F59D421623F0"}
+ */
+function FX_method_exists(methodName, formName) {
+	//a method passed in to check
+	if (methodName) {
+		//a form specified
+		if (formName) {
+			//check for method existence on given form
+			if (solutionModel.getForm(formName).getFormMethod(methodName)) {
+				return true
+			}
+			else {
+				return false
+			}
+		}
+		//no form specified, at the global scope
+		else {
+			//check for global method existence
+			if (solutionModel.getGlobalMethod(methodName)) {
+				return true
+			}
+			else {
+				return false
+			}
+		}
+	}
+	else {
+		return false
+	}
 }
