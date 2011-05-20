@@ -317,7 +317,7 @@ function LOADER_init(fsBlockData, flagEdit, flagScrapbook, contextForm) {
 	
 	//update display
 	_editsAllowed = flagEdit
-	LOADER_refresh(fsBlockData,flagEdit,flagScrapbook)
+	LOADER_refresh(fsBlockData,false,flagScrapbook)
 	
 	//load correct form
 	if (flagScrapbook) {
@@ -393,7 +393,7 @@ function LOADER_refresh(fsBlockData,flagEdit,flagScrapbook) {
 	//hack to get scrapbook to display
 	if (flagScrapbook && application.__parent__.solutionPrefs) {
 		forms.WEB_0F_page._hackNoFire = true
-		forms.WEB_0F__content_view.controller.show()
+		forms.WEB_0F__html.controller.show()
 		forms.DATASUTRA_0F_solution.controller.show()
 		//this needs to be long enough for it to finish rendering
 		application.updateUI(1000)
