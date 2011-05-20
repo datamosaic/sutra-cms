@@ -236,6 +236,7 @@ function ACTION_save() {
 		recPath.id_site = siteID
 		
 		//reset flag
+		var addedRecord = true
 		forms.WEB_0T_page._addRecord = null
 	}
 	
@@ -244,7 +245,7 @@ function ACTION_save() {
 		_themeSet = null
 		
 		//don't prompt if creating page
-		if (forms.WEB_0T_page._addRecord) {
+		if (addedRecord) {
 			var input = "Yes"
 		}
 		//prompt
@@ -330,7 +331,7 @@ function ACTION_save() {
 						for (var k = 1; k <= tempEditableDefaultRec.web_editable_default_to_block_configure.getSize(); k++) {
 							var configTemplate = tempEditableDefaultRec.web_editable_default_to_block_configure.getRecord(k)
 							
-							var configRec = tempEditableDefaultRec.web_editable_default_to_block_configure.getRecord(tempEditableDefaultRec.web_editable_default_to_block_configure.newRecord(false, true))
+							var configRec = blockRec.web_block_to_block_data_configure.getRecord(blockRec.web_block_to_block_data_configure.newRecord(false, true))
 							databaseManager.saveData(configRec)
 						}
 					}
