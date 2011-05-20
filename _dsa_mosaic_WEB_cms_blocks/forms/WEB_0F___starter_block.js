@@ -116,6 +116,23 @@ function LOADER_init(fsBlockData, flagEdit, flagScrapbook) {
  */
 function LOADER_refresh(fsBlockData,flagEdit,flagScrapbook) {
 	//put in code that would be fired on rec select if changing between two blocks of the same type
+	
+	//hack to get scrapbook to display (for some blocks needed always, not just scrapbook)
+	if (flagScrapbook && application.__parent__.solutionPrefs) {
+		globals.CODE_cursor_busy(true)
+		
+		forms.WEB_0F_page._hackNoFire = true
+		forms.CODE__blank.controller.show()
+		forms.DATASUTRA_0F_solution.controller.show()
+		//this needs to be long enough for it to finish rendering
+		application.updateUI(1000)
+		forms.WEB_0F_page._hackNoFire = false
+		
+		//reset the window's title
+		forms.DATASUTRA_0F_solution.elements.fld_trigger_name.requestFocus(true)
+		
+		globals.CODE_cursor_busy(false)
+	}
 }
 
 /**

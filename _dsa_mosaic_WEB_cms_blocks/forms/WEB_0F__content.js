@@ -484,8 +484,10 @@ function LOADER_refresh(fsBlockData,flagEdit,flagScrapbook) {
 		
 		//hack to get scrapbook to display
 		if (flagScrapbook && application.__parent__.solutionPrefs) {
+			globals.CODE_cursor_busy(true)
+			
 			forms.WEB_0F_page._hackNoFire = true
-			forms.WEB_0F__content_view.controller.show()
+			forms.CODE__blank.controller.show()
 			forms.DATASUTRA_0F_solution.controller.show()
 			//this needs to be long enough for it to finish rendering
 			application.updateUI(1000)
@@ -493,6 +495,8 @@ function LOADER_refresh(fsBlockData,flagEdit,flagScrapbook) {
 			
 			//reset the window's title
 			forms.DATASUTRA_0F_solution.elements.fld_trigger_name.requestFocus(true)
+			
+			globals.CODE_cursor_busy(false)
 		}
 	}
 }
