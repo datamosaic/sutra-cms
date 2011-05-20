@@ -20,8 +20,7 @@ var _license_dsa_mosaic_WEB_cms = 'Module: _dsa_mosaic_WEB_cms \
  * 
  * @properties={typeid:24,uuid:"4C8B4BD7-E187-4A00-9A77-C58FD3971691"}
  */
-function CONTROLLER(app, session, request, response, mode)
-{
+function CONTROLLER(app, session, request, response, mode) {
 	
 	// initialize good dataset to return to jsp
 	var results = databaseManager.createEmptyDataSet(0,["key","value"])
@@ -743,18 +742,21 @@ function CONTROLLER_setup(results, app, session, request, response, mode) {
 	//an external link, navigate there as a 301 response status
 	else if (page.page_type == 2) {
 		if (page.page_link) {
-			var pageLink = page.page_link
+			response.setStatus(301)
+			response.setHeader("Location", page.page_link)
+			response.setHeader("Connection", "close")
+			
+			//TODO: very important to not touch the response/results after connection closed; flagging this as error to make sure this doesn't happen...but we should trap for redirects as well
+			obj.error.code = 301
+			obj.type = true
+//			obj.error.message = "Redirecting to external link"			
+			return obj			
 		}
 		else {
 			obj.error.code = 404
 			obj.error.message = "External link is blank"
 			return obj
 		}
-//				obj.response.record.sendRedirect(pageLink) // optional non-301 status redirect
-		response.setStatus(301)
-		response.setHeader("Location", pageLink)
-		response.setHeader("Connection", "close")
-		return obj
 	}
 	//an internal link, go to that page
 	else if (page.page_type == 3) {
@@ -1008,7 +1010,6 @@ function CONTROLLER_error(obj) {
 		
 		// redirect to the home page
 		obj.response.record.sendRedirect(globals.WEB_MRKUP_link_page(site.id_page, pageServer))
-		
 	}
 }
 
