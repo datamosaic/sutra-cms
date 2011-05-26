@@ -916,7 +916,7 @@ function WEB_MRKUP_refresh(obj,scope) {
  * 
  * @properties={typeid:24,uuid:"541905F0-9B0C-474D-968C-F85408B3B05A"}
  */
-function WEB_MRKUP_parent_pages(obj, order) {
+function WEB_MRKUP_page_stack(obj, order) {
 	
 	var record = obj.page.record
 	var pages = [obj.page.record]
