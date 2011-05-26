@@ -906,3 +906,41 @@ function WEB_MRKUP_refresh(obj,scope) {
 		}
 	}
 }
+
+/**
+ * 
+ * Return array of parent page records in order from current page to top level page
+ * 
+ * @param {Object} obj Sutra CMS controller obj
+ * @param {String} order "asc" or "desc". "asc" is default
+ * 
+ * @properties={typeid:24,uuid:"541905F0-9B0C-474D-968C-F85408B3B05A"}
+ */
+function WEB_MRKUP_parent_pages(obj, order) {
+	
+	var record = obj.page.record
+	var pages = [obj.page.record]
+	var order = (order == "desc") ? order : (order == "asc") ? order : "asc"
+		
+	while ( record.parent_id_page ) {
+		
+		// find parent record
+		var page = databaseManager.getFoundSet("sutra_cms","web_page")
+		page.find()
+		page.id_page = record.parent_id_page
+		var count = page.search()
+		
+		// reasign record var
+		record = page.getRecord(1)
+		
+		// store in return array
+		if ( order == "asc" ) {
+			pages.unshift(record)
+		}
+		else {
+			pages.push(record)
+		}
+	}
+	
+	return pages
+}
