@@ -45,23 +45,26 @@ function TAB_header_size() {
  * @properties={typeid:24,uuid:"23B7AC31-3444-4F11-BDE4-748066C79D30"}
  */
 function REC_on_select() {
-	//set version junks
-	var vlReal = SET_globals()
-	
-	//set active version active
-	globals.WEB_version_selected = (vlReal.length) ? vlReal[0] : 0	
-	
-	//update editable/non stuff
-	forms.WEB_0F_page__design__header_display.FLD_data_change__version_selected()
-	
-	//fill groups value list
-	SET_groups()
-	
-	//page type ui differences
-	PAGE_type_display()
-	
-	//set tooltip of visit with link
-	forms.WEB_0F_page__design__button_tab__content.elements.btn_visit.toolTipText = globals.WEB_MRKUP_link_page(id_page)
+	//turn off REC_on_select for newly added page
+	if (!forms.WEB_0T_page._addRecord) {
+	 	//set version junks
+		var vlReal = SET_globals()
+		
+		//set active version active
+		globals.WEB_version_selected = (vlReal.length) ? vlReal[0] : 0	
+		
+		//update editable/non stuff
+		forms.WEB_0F_page__design__header_display.FLD_data_change__version_selected()
+		
+		//fill groups value list
+		SET_groups()
+		
+		//page type ui differences
+		PAGE_type_display()
+		
+		//set tooltip of visit with link
+		forms.WEB_0F_page__design__button_tab__content.elements.btn_visit.toolTipText = globals.WEB_MRKUP_link_page(id_page)
+	}
 }
 
 /**
@@ -193,5 +196,7 @@ function FORM_on_load(event) {
  * @properties={typeid:24,uuid:"D5C2AE5A-0CE4-42D3-AAF1-B277E73B748A"}
  */
 function PAGE_type_display() {
-	forms.WEB_0F_page__design__header_edit.TOGGLE_fields(page_type)
+	if (!forms.WEB_0T_page._addRecord) {
+		forms.WEB_0F_page__design__header_edit.TOGGLE_fields(page_type)
+	}
 }

@@ -14,137 +14,53 @@ var _themeSet = null;
  *
  * @properties={typeid:24,uuid:"74D490E2-0E2D-4AA6-A808-8D64A2B7640C"}
  */
-function TAB_display()
-{
-
-/*
- *	TITLE    :	TAB_display
- *			  	
- *	MODULE   :	wf_PRJ_project
- *			  	
- *	ABOUT    :	return to the non-editable tab
- *			  	
- *	INPUT    :	
- *			  	
- *	OUTPUT   :	
- *			  	
- *	REQUIRES :	
- *			  	
- *	MODIFIED :	March 13, 2009 -- Troy Elliott, Data Mosaic
- *			  	
- */
-
-//go back a tab
-var formName = 'PRJ_0F_project'
-var buttonsName = formName + '__button_tab'
-
-//offset
-var tabA = 55
-var tabB = 223
-var offset = tabB - tabA + 5 //the # is the space between tab_header_detail
-
-//set new size of this tab panel
-forms[formName].elements.tab_header_detail.setSize(forms[formName].elements.tab_header_button.getWidth(),tabA)
-
-//go to display-only fields
-forms[formName].elements.tab_header_detail.tabIndex = 1
-
-//move/resize other tab panels
-forms[formName].elements.tab_main.setLocation(0,forms[formName].elements.tab_main.getLocationY() - offset)
-forms[formName].elements.tab_main.setSize(forms[formName].elements.tab_header_button.getWidth(),forms[formName].elements.tab_main.getHeight() + offset)
-
-//flip graphic
-forms[buttonsName].elements.btn_cancel.visible = false
-forms[buttonsName].elements.btn_edit.visible = true
+function TAB_display() {
+	//go back a tab
+	var formName = 'PRJ_0F_project'
+	var buttonsName = formName + '__button_tab'
+	
+	//offset
+	var tabA = 55
+	var tabB = 223
+	var offset = tabB - tabA + 5 //the # is the space between tab_header_detail
+	
+	//set new size of this tab panel
+	forms[formName].elements.tab_header_detail.setSize(forms[formName].elements.tab_header_button.getWidth(),tabA)
+	
+	//go to display-only fields
+	forms[formName].elements.tab_header_detail.tabIndex = 1
+	
+	//move/resize other tab panels
+	forms[formName].elements.tab_main.setLocation(0,forms[formName].elements.tab_main.getLocationY() - offset)
+	forms[formName].elements.tab_main.setSize(forms[formName].elements.tab_header_button.getWidth(),forms[formName].elements.tab_main.getHeight() + offset)
+	
+	//flip graphic
+	forms[buttonsName].elements.btn_cancel.visible = false
+	forms[buttonsName].elements.btn_edit.visible = true
 }
 
 /**
  *
  * @properties={typeid:24,uuid:"F8DAAD9D-EB39-47DB-95FA-577776E143A5"}
  */
-function TAB_sec_actions()
-{
-
-/*
- *	TITLE    :	TAB_sec_actions
- *			  	
- *	MODULE   :	wf_PRJ_project
- *			  	
- *	ABOUT    :	wrapper on secondary action wheel
- *			  	
- *	INPUT    :	
- *			  	
- *	OUTPUT   :	
- *			  	
- *	REQUIRES :	
- *			  	
- *	USAGE    :	TAB_sec_actions()
- *			  	
- *	MODIFIED :	November 13, 2008 -- Troy Elliott, Data Mosaic
- *			  	
- */
-
-
-globals.TAB_btn_actions_list(null,'tab_secondary')
+function TAB_sec_actions() {
+	globals.TAB_btn_actions_list(null,'tab_secondary')
 }
 
 /**
  *
  * @properties={typeid:24,uuid:"1873D4E8-3D03-4431-A4EB-75099CA8459B"}
  */
-function TAB_sec_add()
-{
-
-/*
- *	TITLE    :	TAB_sec_add
- *			  	
- *	MODULE   :	wf_PRJ_project
- *			  	
- *	ABOUT    :	wrapper on secondary add button
- *			  	
- *	INPUT    :	
- *			  	
- *	OUTPUT   :	
- *			  	
- *	REQUIRES :	
- *			  	
- *	USAGE    :	TAB_sec_add()
- *			  	
- *	MODIFIED :	November 13, 2008 -- Troy Elliott, Data Mosaic
- *			  	
- */
-
-globals.TAB_btn_rec_new(null,'tab_secondary')
+function TAB_sec_add() {
+	globals.TAB_btn_rec_new(null,'tab_secondary')
 }
 
 /**
  *
  * @properties={typeid:24,uuid:"16873BD8-29ED-433A-A66F-AA9EEF7C5644"}
  */
-function TAB_sec_change()
-{
-
-/*
- *	TITLE    :	TAB_sec_change
- *			  	
- *	MODULE   :	wf_PRJ_project
- *			  	
- *	ABOUT    :	wrapper on tab change method
- *			  	
- *	INPUT    :	
- *			  	
- *	OUTPUT   :	
- *			  	
- *	REQUIRES :	
- *			  	
- *	USAGE    :	TAB_sec_change()
- *			  	
- *	MODIFIED :	November 26, 2008 -- Troy Elliott, Data Mosaic
- *			  	
- */
-
-
-globals.TAB_change_grid(null,null,'tab_secondary','tab_s','btn_sec_add','btn_sec_actions','btn_sec_help')
+function TAB_sec_change() {
+	globals.TAB_change_grid(null,null,'tab_secondary','tab_s','btn_sec_add','btn_sec_actions','btn_sec_help')
 }
 
 /**
@@ -172,7 +88,9 @@ function FORM_on_show(firstShow, event) {
 //		elements.fld_page_link_param.visible = true
 	}
 	
-	TOGGLE_fields(page_type)
+	if (!forms.WEB_0T_page._addRecord) {
+		TOGGLE_fields(page_type)
+	}
 	
 	elements.fld_page_name.requestFocus(false)
 }
@@ -185,16 +103,19 @@ function FORM_on_show(firstShow, event) {
  * @properties={typeid:24,uuid:"EB585F60-3597-44A6-AC80-E77B46CAE26E"}
  */
 function ACTION_cancel() {
+	//this will rollback and turn autoSave back on
 	globals.WEB_simple_cancel()
 	
 	//MEMO: check WEB_P_page method too
 	if (forms.WEB_0T_page._addRecord) {
-		forms.WEB_0T_page._addRecord = null
 		
-		forms.WEB_0T_page.elements.bean_tree.removeAllRoots()
-		forms.WEB_0T_page.FORM_on_load()
+		forms.WEB_0T_page._addRecord = null
+		forms.WEB_0T_page._oldRecord = null
+		_themeSet = null
+		
 	}
 	
+	//make sure correct stuff is showing
 	TOGGLE_fields(page_type)
 }
 
@@ -205,6 +126,58 @@ function ACTION_cancel() {
 function ACTION_save() {
 	//page was just created
 	if (forms.WEB_0T_page._addRecord) {
+		//turn on feedback indicator
+		globals.TRIGGER_progressbar_start(null,'Creating new page...')
+		
+		//put this page in the correct place; there were other records
+		if (forms.WEB_0T_page._oldRecord) {
+			
+			//find current syblings
+			var fsPeers = databaseManager.getFoundSet(controller.getServerName(),controller.getTableName())
+			fsPeers.loadRecords(forms.WEB_0T_page._oldRecord)
+			
+			var oldRecord = fsPeers.getSelectedRecord()
+			
+			fsPeers.find()
+			fsPeers.parent_id_page = oldRecord.parent_id_page
+			fsPeers.id_site = oldRecord.id_site
+			var results = fsPeers.search()
+			
+			if (results) {
+				fsPeers.sort('order_by asc')
+				fsPeers.selectRecord(oldRecord.id_page)
+			}
+			
+			//re-order everybody below current record in old foundset
+			for (var i = oldRecord.order_by + 1; i <= fsPeers.getSize(); i++) {
+				var recReorder = fsPeers.getRecord(i)
+				
+				recReorder.order_by ++
+			}
+			
+			//non-top level record
+			if (oldRecord.parent_id_page) {
+				parent_id_page = oldRecord.parent_id_page
+				order_by = oldRecord.order_by + 1
+			}
+			//top level record
+			else {
+				order_by = oldRecord.order_by + 1
+				
+				var treeReload = true
+			}
+		}
+		//this is the first record
+		else {
+			order_by = 1
+			
+			var treeReload = true
+		}
+		
+		//create one version
+		var oneVersion = web_page_to_version.getRecord(web_page_to_version.newRecord(false,true))
+		oneVersion.version_number = 1
+		
 		var fsPath = databaseManager.getFoundSet('sutra_cms','web_path')
 		var siteID = id_site
 		
@@ -235,9 +208,20 @@ function ACTION_save() {
 		recPath.path = pathName
 		recPath.id_site = siteID
 		
+		databaseManager.saveData()
+		databaseManager.setAutoSave(true)
+		
+		var pageID = id_page
+		forms.WEB_0T_page.elements.bean_tree.refresh()
+		forms.WEB_0T_page.REC_on_select(pageID)
+		forms.WEB_0T_page.elements.bean_tree.selectionPath = forms.WEB_0T_page.FIND_path(foundset.getSelectedRecord())
+		
 		//reset flag
 		var addedRecord = true
 		forms.WEB_0T_page._addRecord = null
+		
+		//update valuelists, etc
+		forms.WEB_0F_page__design.REC_on_select()
 	}
 	
 	//MEMO: check WEB_P_page method too
@@ -352,6 +336,11 @@ function ACTION_save() {
 	
 	//call datachange to update display of stuff
 	TOGGLE_fields(page_type)
+	
+	//turn off feedback indicator if on
+	if (globals.TRIGGER_progressbar_get()[1] == 'Creating new page...') {
+		globals.TRIGGER_progressbar_stop()
+	}
 	
 	return true
 }
