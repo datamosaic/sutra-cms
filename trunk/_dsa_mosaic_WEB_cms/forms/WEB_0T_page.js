@@ -54,10 +54,13 @@ if (utils.hasRecords(forms.WEB_0F_site.foundset)) {
 					
 					//only work with page actions
 					if (clientAction.action_type == 'Page') {
-						pageActions.push(plugins.popupmenu.createMenuItem(((blockType.block_name) ? blockType.block_name.toUpperCase() : 'BLOCK') + ': ' + clientAction.input_name, forms[blockType.form_name][clientAction.method_name]))
-						
-						//disable if that method or form isn't available
-						if (!forms[blockType.form_name] || !forms[blockType.form_name][clientAction.method_name]) {
+						//create popup with action attached
+						if (globals.CODE_servoy_object_exists(clientAction.method_name,blockType.form_name)) {
+							pageActions.push(plugins.popupmenu.createMenuItem(((blockType.block_name) ? blockType.block_name.toUpperCase() : 'BLOCK') + ': ' + clientAction.input_name, forms[blockType.form_name][clientAction.method_name]))
+						}
+						//create popup without action attached and disable it
+						else {
+							pageActions.push(plugins.popupmenu.createMenuItem(((blockType.block_name) ? blockType.block_name.toUpperCase() : 'BLOCK') + ': ' + clientAction.input_name, ACTIONS_list_control))
 							pageActions[pageActions.length - 1].setEnabled(false)
 						}
 					}
