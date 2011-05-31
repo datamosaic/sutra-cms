@@ -613,7 +613,7 @@ function REC_delete(record) {
 				fsPeers.sort('order_by asc')
 				
 				//re-order everybody below current record in old foundset
-				for (var i = orderBy; i <= fsPeers.getSize(); i++) {
+				for (var i = orderBy || fsPeers.getSize(); i <= fsPeers.getSize(); i++) {
 					var recReorder = fsPeers.getRecord(i)
 					
 					recReorder.order_by --
@@ -833,7 +833,7 @@ function REC_new() {
 		//design mode
 		else {
 			//hide everything except the bare necessities
-			forms.WEB_0F_page__design__header_edit.TOGGLE_fields(99)
+			forms.WEB_0F_page__design__header_edit.TOGGLE_fields(0)
 			
 			//show pop-down
 			globals.WEB_simple_edit('WEB_0F_page__design__button_tab')

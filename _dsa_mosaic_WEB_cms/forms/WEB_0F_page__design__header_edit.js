@@ -212,6 +212,12 @@ function ACTION_save() {
 		databaseManager.setAutoSave(true)
 		
 		var pageID = id_page
+		
+		//a full reload required
+		if (treeReload) {
+			forms.WEB_0T_page.TREE_refresh()
+		}
+		
 		forms.WEB_0T_page.elements.bean_tree.refresh()
 		forms.WEB_0T_page.REC_on_select(pageID)
 		forms.WEB_0T_page.elements.bean_tree.selectionPath = forms.WEB_0T_page.FIND_path(foundset.getSelectedRecord())
@@ -437,8 +443,8 @@ function TOGGLE_fields(pageType) {
 	
 	//when on content tab, switch as needed
 	if (forms.WEB_0F_page__design__button_tab.elements.tab_button.tabIndex == 1) {
-		//folder or link type of page
-		if (!page) {
+		//folder or link type of page or just creating a new record
+		if (!page || forms.WEB_0T_page._addRecord) {
 			forms.WEB_0F_page__design.elements.tab_main.tabIndex = 3
 		}
 		//normal type of page
