@@ -92,6 +92,7 @@ function FORM_on_show(firstShow, event) {
 		TOGGLE_fields(page_type)
 	}
 	
+	elements.lbl_save_wait.visible = false
 	elements.fld_page_name.requestFocus(false)
 }
 
@@ -124,6 +125,12 @@ function ACTION_cancel() {
  * @properties={typeid:24,uuid:"2C217D68-302D-4F96-920E-E5145C9C19E9"}
  */
 function ACTION_save() {
+	globals.CODE_cursor_busy(true)
+	
+	//show label that this may take a while
+	elements.lbl_save_wait.visible = true
+	application.updateUI()
+	
 	//page was just created
 	if (forms.WEB_0T_page._addRecord) {
 		//turn on feedback indicator
@@ -240,12 +247,14 @@ function ACTION_save() {
 		}
 		//prompt
 		else {
+			globals.CODE_cursor_busy(false)
 			var input = plugins.dialogs.showWarningDialog(
 							"Warning",
 							"New theme layout selected. All current area records\nwill be deleted. Continue?", 
 							"Yes", 
 							"No"
 						)
+			globals.CODE_cursor_busy(true)
 		}
 
 		if ( input != "Yes") {
@@ -344,9 +353,15 @@ function ACTION_save() {
 	TOGGLE_fields(page_type)
 	
 	//turn off feedback indicator if on
-	if (globals.TRIGGER_progressbar_get()[1] == 'Creating new page...') {
-		globals.TRIGGER_progressbar_stop()
+	if (globals.TRIGGER_progressbar_get() instanceof Array) {
+		if (globals.TRIGGER_progressbar_get()[1] == 'Creating new page...') {
+			globals.TRIGGER_progressbar_stop()
+		}
 	}
+	
+	//hide label that this may take a while
+	elements.lbl_save_wait.visible = false
+	globals.CODE_cursor_busy(false)
 	
 	return true
 }
