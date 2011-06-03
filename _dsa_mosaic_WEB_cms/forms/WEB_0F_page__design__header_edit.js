@@ -133,6 +133,11 @@ function ACTION_save() {
 	
 	//page was just created
 	if (forms.WEB_0T_page._addRecord) {
+		//unfreeze screen when in frameworks
+		if (application.__parent__.solutionPrefs && solutionPrefs.config.lockStatus) {
+			globals.TRIGGER_interface_lock(false)
+		}
+		
 		//turn on feedback indicator
 		globals.TRIGGER_progressbar_start(null,'Creating new page...')
 		
