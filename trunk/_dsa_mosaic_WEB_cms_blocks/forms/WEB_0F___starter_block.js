@@ -60,8 +60,8 @@ function INIT_block() {
 	block.record = {
 	        block_name			: 'Starter block',
 			block_description	: 'Boiler template for creating a custom block',		
-			form_name			: 'WEB_0F___starter_block',
-			form_name_display	: 'WEB_0F___starter_block'
+			form_name			: 'WEB_0F___starter_block'//,
+//			form_name_display	: 'WEB_0F___starter_block'	//this line only required when form_name_display different than form_name
 		}
 	
 	// block views
