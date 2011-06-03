@@ -91,7 +91,7 @@ beanXML:"<?xml version=\"1.0\" encoding=\"UTF-8\"?>
 formIndex:9998,
 location:"10,0",
 name:"bean_split_1",
-size:"580,290",
+size:"580,300",
 typeid:12,
 usesUI:true,
 uuid:"2453A9A8-E153-4DF0-B691-517DA4F6EC0E"
