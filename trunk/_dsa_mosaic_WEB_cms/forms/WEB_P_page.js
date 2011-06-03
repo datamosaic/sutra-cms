@@ -14,36 +14,17 @@ var _themeSet = null;
  *
  * @properties={typeid:24,uuid:"1D963961-FD45-4A02-87B8-E57B4A214AD4"}
  */
-function ACTION_cancel()
-{
-	
-	/*
-	 *	TITLE    :	ACTION_cancel
-	 *			  	
-	 *	MODULE   :	ds_NAV_engine
-	 *			  	
-	 *	ABOUT    :	close form in dialog
-	 *			  	
-	 *	INPUT    :	
-	 *			  	
-	 *	OUTPUT   :	
-	 *			  	
-	 *	REQUIRES :	
-	 *			  	
-	 *	MODIFIED :	Jan 2008 -- Troy Elliott, Data Mosaic
-	 *			  	
-	 */
+function ACTION_cancel() {
 	
 	if (!globals.CODE_hide_form) {
-		//MEMO: check WEB_P_page method too
+		//MEMO: check WEB_0F_page__design__header_edit method too
 		if (forms.WEB_0T_page._addRecord) {
 			forms.WEB_0T_page._addRecord = null
-			
-			forms.WEB_0T_page.elements.bean_tree.removeAllRoots()
-			forms.WEB_0T_page.FORM_on_load()
+			forms.WEB_0T_page._oldRecord = null
+			_themeSet = null
 		}
 		
-		//enaable closing the form
+		//enable closing the form
 		globals.CODE_hide_form = 1
 		
 		application.closeFormDialog('cmsNewPage')
@@ -55,42 +36,135 @@ function ACTION_cancel()
  *
  * @properties={typeid:24,uuid:"836DDC99-6CFF-499B-8949-E79373BD1DFB"}
  */
-function ACTION_ok()
-{
-
-	/*
-	 *	TITLE    :	ACTION_ok
-	 *			  	
-	 *	MODULE   :	ds_AC_access_control
-	 *			  	
-	 *	ABOUT    :	check password, save md5, close form in dialog
-	 *			  	
-	 *	INPUT    :	
-	 *			  	
-	 *	OUTPUT   :	
-	 *			  	
-	 *	REQUIRES :	
-	 *			  	
-	 *	MODIFIED :	Mar 2008 -- Troy Elliott, Data Mosaic
-	 *			  	
-	 */
+function ACTION_ok() {
+	//enaable closing the form
+	globals.CODE_hide_form = 1
+	
+	application.closeFormDialog('cmsNewPage')
+	
+	globals.CODE_cursor_busy(true)
+	
+	//turn on feedback indicator
+	globals.TRIGGER_progressbar_start(null,'Creating new page...')
+	
+	//put this page in the correct place; there were other records
+	if (forms.WEB_0T_page._oldRecord) {
+		
+		//find current syblings
+		var fsPeers = databaseManager.getFoundSet(controller.getServerName(),controller.getTableName())
+		fsPeers.loadRecords(forms.WEB_0T_page._oldRecord)
+		
+		var oldRecord = fsPeers.getSelectedRecord()
+		
+		fsPeers.find()
+		fsPeers.parent_id_page = oldRecord.parent_id_page
+		fsPeers.id_site = oldRecord.id_site
+		var results = fsPeers.search()
+		
+		if (results) {
+			fsPeers.sort('order_by asc')
+			fsPeers.selectRecord(oldRecord.id_page)
+		}
+		
+		//re-order everybody below current record in old foundset
+		for (var i = oldRecord.order_by + 1; i <= fsPeers.getSize(); i++) {
+			var recReorder = fsPeers.getRecord(i)
+			
+			recReorder.order_by ++
+		}
+		
+		//non-top level record
+		if (oldRecord.parent_id_page) {
+			parent_id_page = oldRecord.parent_id_page
+			order_by = oldRecord.order_by + 1
+		}
+		//top level record
+		else {
+			order_by = oldRecord.order_by + 1
+			
+			var treeReload = true
+		}
+	}
+	//this is the first record
+	else {
+		order_by = 1
+		
+		var treeReload = true
+	}
+	
+	//create one version
+	var oneVersion = web_page_to_version.getRecord(web_page_to_version.newRecord(false,true))
+	oneVersion.version_number = 1
+	
+	var fsPath = databaseManager.getFoundSet('sutra_cms','web_path')
+	var siteID = id_site
+	
+	//add in path for this page
+	var pathNameWanted = page_name || 'untitled-page'
+	pathNameWanted = pathNameWanted.toLowerCase()
+	pathNameWanted = utils.stringReplace(pathNameWanted, ' ', '-')
+	
+	var pathName = pathNameWanted
+	var cnt = 1
+	
+	//we need to get into the loop
+	results = null
+	
+	while (results != 0) {
+		fsPath.find()
+		fsPath.id_site = siteID
+		fsPath.path = pathName
+		var results = fsPath.search()
+		
+		if (results) {
+			pathName = pathNameWanted + cnt++
+		}
+	}
+	
+	var recPath = web_page_to_path.getRecord(web_page_to_path.newRecord(false,true))
+	recPath.flag_default = 1
+	recPath.path = pathName
+	recPath.id_site = siteID
+	
+	databaseManager.saveData()
+	databaseManager.setAutoSave(true)
+	
+	var pageID = id_page
+	
+	//a full reload required
+	if (treeReload) {
+		forms.WEB_0T_page.TREE_refresh()
+	}
+	
+	forms.WEB_0T_page.elements.bean_tree.refresh()
+	forms.WEB_0T_page.REC_on_select(pageID)
+	forms.WEB_0T_page.elements.bean_tree.selectionPath = forms.WEB_0T_page.FIND_path(foundset.getSelectedRecord())
+	
+	//reset flag
+	var addedRecord = true
+	forms.WEB_0T_page._addRecord = null
+	
+	//update valuelists, etc
+//	forms.WEB_0F_page__design.REC_on_select()
 	
 	//MEMO: check WEB_0F_page__design__header_edit method too
 	if (_themeSet) {
 		_themeSet = null
 		
-		//don't prompt if creating page
-		if (forms.WEB_0T_page._addRecord) {
+		//don't prompt if creating page (only creating page here, should get rid of checks)
+		if (addedRecord) {
 			var input = "Yes"
 		}
 		//prompt
 		else {
+			globals.CODE_cursor_busy(false)
 			var input = plugins.dialogs.showWarningDialog(
 							"Warning",
 							"New theme layout selected. All current area records\nwill be deleted. Continue?", 
 							"Yes", 
 							"No"
 						)
+			globals.CODE_cursor_busy(true)
 		}
 
 		if ( input != "Yes") {
@@ -131,7 +205,7 @@ function ACTION_ok()
 				areaRec.id_editable = tempEditableRec.id_editable
 				areaRec.row_order = order ++ 
 				areaRec.id_group = recGroup.id_group
-				areaRec.id_version = globals.WEB_version_selected			
+				areaRec.id_version = oneVersion.id_version			
 				
 				//create a block record for each editable default
 				for (var j = 1; j <= tempEditableRec.web_editable_to_editable_default.getSize(); j++ ) {
@@ -162,7 +236,7 @@ function ACTION_ok()
 						for (var k = 1; k <= tempEditableDefaultRec.web_editable_default_to_block_configure.getSize(); k++) {
 							var configTemplate = tempEditableDefaultRec.web_editable_default_to_block_configure.getRecord(k)
 							
-							var configRec = tempEditableDefaultRec.web_editable_default_to_block_configure.getRecord(tempEditableDefaultRec.web_editable_default_to_block_configure.newRecord(false, true))
+							var configRec = blockRec.web_block_to_block_data_configure.getRecord(blockRec.web_block_to_block_data_configure.newRecord(false, true))
 							databaseManager.saveData(configRec)
 						}
 					}
@@ -181,49 +255,16 @@ function ACTION_ok()
 		forms.WEB_0F_page__design.SET_groups()
 	}
 	
-	//page was just created
-	if (forms.WEB_0T_page._addRecord) {
-		//add path if one not specified
-		if (!utils.hasRecords(web_page_to_path)) {
-			var fsPath = databaseManager.getFoundSet('sutra_cms','web_path')
-			var siteID = id_site
-			
-			//add in path for this page
-			var pathNameWanted = page_name
-			pathNameWanted = pathNameWanted.toLowerCase()
-			pathNameWanted = utils.stringReplace(pathNameWanted, ' ', '-')
-			
-			var pathName = pathNameWanted
-			var cnt = 1
-			
-			while (results != 0) {
-				fsPath.find()
-				fsPath.id_site = siteID
-				fsPath.path = pathName
-				var results = fsPath.search()
-				
-				if (results) {
-					pathName = pathNameWanted + cnt++
-				}
-			}
-			
-			var recPath = web_page_to_path.getRecord(web_page_to_path.newRecord(false,true))
-			recPath.flag_default = 1
-			recPath.path = pathName
-			recPath.id_site = siteID
+	//turn off feedback indicator if on
+	if (globals.TRIGGER_progressbar_get() instanceof Array) {
+		if (globals.TRIGGER_progressbar_get()[1] == 'Creating new page...') {
+			globals.TRIGGER_progressbar_stop()
 		}
-		
-		//reset flag
-		forms.WEB_0T_page._addRecord = null
-		
 	}
 	
+	globals.CODE_cursor_busy(false)
+	
 	//return true
-	
-	//enaable closing the form
-	globals.CODE_hide_form = 1
-	
-	application.closeFormDialog('cmsNewPage')
 	
 	//refresh browser bean with new content
 	forms.WEB_0F_page__browser.REC_selected(null,true)	

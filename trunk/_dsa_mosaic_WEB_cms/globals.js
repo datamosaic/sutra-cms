@@ -646,14 +646,21 @@ function WEB_page_new(pageName,pageType,parentID,themeID,layoutID) {
 	
 	//there are sites
 	if (utils.hasRecords(forms.WEB_0F_site.foundset)) {
-		//get the parent record
+		
+		//turn on feedback indicator
+		globals.CODE_cursor_busy(true)
+		globals.TRIGGER_progressbar_start(null,'Creating new page...')
+		
+		var fsPage = databaseManager.getFoundSet('sutra_cms','web_page')
+		fsPage.clear()
+		
+		//parent record specified
 		if (parentID) {
-			//find parent rec
-			var fsPage = databaseManager.getFoundSet('sutra_cms','web_page')
 			fsPage.find()
 			fsPage.id_page = parentID
 			var results = fsPage.search()
 			
+			//get the parent record
 			if (results) {
 				var parentRec = fsPage.getRecord(1)
 			}
@@ -661,18 +668,60 @@ function WEB_page_new(pageName,pageType,parentID,themeID,layoutID) {
 		
 		var newRecord = fsPage.getRecord(fsPage.newRecord(false,true))
 		
+		//put this page in the correct place; there were other records
+		
+		//find current syblings (of parent rec or at the top level)
+		fsPage.find()
+		fsPage.parent_id_page = (parentRec) ? parentRec.id_page : 0
+		fsPage.id_site = (parentRec) ? parentRec.id_site : forms.WEB_0F_site.id_site
+		var results = fsPage.search()
+		
 		newRecord.page_name = pageName
 		newRecord.page_type = pageType
 		newRecord.parent_id_page = (parentRec) ? parentRec.id_page : 0
-		newRecord.order_by = (parentRec) ? parentRec.web_page_to_page__child.getSize() + 1 : 1
+		newRecord.order_by = (parentRec) ? parentRec.web_page_to_page__child.getSize() + 1 : results + 1
 		newRecord.id_site = (parentRec) ? parentRec.id_site : forms.WEB_0F_site.id_site
 		
 		//create one version
 		var oneVersion = newRecord.web_page_to_version.getRecord(newRecord.web_page_to_version.newRecord(false,true))
 		oneVersion.version_number = 1
 		
+		var fsPath = databaseManager.getFoundSet('sutra_cms','web_path')
+		var siteID = newRecord.id_site
+		
+		//add in path for this page
+		var pathNameWanted = newRecord.page_name
+		pathNameWanted = pathNameWanted.toLowerCase()
+		pathNameWanted = utils.stringReplace(pathNameWanted, ' ', '-')
+		
+		var pathName = pathNameWanted
+		var cnt = 1
+		
+		//we need to get into the loop
+		results = null
+		
+		while (results != 0) {
+			fsPath.find()
+			fsPath.id_site = siteID
+			fsPath.path = pathName
+			var results = fsPath.search()
+			
+			if (results) {
+				pathName = pathNameWanted + cnt++
+			}
+		}
+		
+		var recPath = newRecord.web_page_to_path.getRecord(newRecord.web_page_to_path.newRecord(false,true))
+		recPath.flag_default = 1
+		recPath.path = pathName
+		recPath.id_site = siteID		
+		
+//		//reset flag
+//		var addedRecord = true
+//		forms.WEB_0T_page._addRecord = null		
+		
 		//update valuelists
-		forms.WEB_0F_page__design.REC_on_select()
+//		forms.WEB_0F_page__design.REC_on_select()
 		
 		//set theme
 		newRecord.id_theme = themeID
@@ -738,7 +787,7 @@ function WEB_page_new(pageName,pageType,parentID,themeID,layoutID) {
 							for (var k = 1; k <= tempEditableDefaultRec.web_editable_default_to_block_configure.getSize(); k++) {
 								var configTemplate = tempEditableDefaultRec.web_editable_default_to_block_configure.getRecord(k)
 								
-								var configRec = tempEditableDefaultRec.web_editable_default_to_block_configure.getRecord(tempEditableDefaultRec.web_editable_default_to_block_configure.newRecord(false, true))
+								var configRec = blockRec.web_block_to_block_data_configure.getRecord(blockRec.web_block_to_block_data_configure.newRecord(false, true))
 								databaseManager.saveData(configRec)
 							}
 						}
@@ -753,39 +802,17 @@ function WEB_page_new(pageName,pageType,parentID,themeID,layoutID) {
 			//fsArea.sort( "row_order asc" )
 			fsArea.setSelectedIndex(1)
 		}
-	
-		var fsPath = databaseManager.getFoundSet('sutra_cms','web_path')
-		var siteID = newRecord.id_site
-		
-		//add in path for this page
-		var pathNameWanted = newRecord.page_name
-		pathNameWanted = pathNameWanted.toLowerCase()
-		pathNameWanted = utils.stringReplace(pathNameWanted, ' ', '-')
-		
-		var pathName = pathNameWanted
-		var cnt = 1
-		
-		//we need to get into the loop
-		results = null
-		
-		while (results != 0) {
-			fsPath.find()
-			fsPath.id_site = siteID
-			fsPath.path = pathName
-			var results = fsPath.search()
-			
-			if (results) {
-				pathName = pathNameWanted + cnt++
-			}
-		}
-		
-		var recPath = newRecord.web_page_to_path.getRecord(newRecord.web_page_to_path.newRecord(false,true))
-		recPath.flag_default = 1
-		recPath.path = pathName
-		recPath.id_site = siteID
 		
 		//set flag that need to update tree view on next load
 		forms.WEB_0T_page._refresh = 1
+		
+		//turn off feedback indicator if on
+		if (globals.TRIGGER_progressbar_get() instanceof Array) {
+			if (globals.TRIGGER_progressbar_get()[1] == 'Creating new page...') {
+				globals.TRIGGER_progressbar_stop()
+			}
+		}
+		globals.CODE_cursor_busy(false)
 		
 		return newRecord
 	}
