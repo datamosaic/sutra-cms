@@ -198,7 +198,9 @@ else {
 		forms[buttonsName].elements.btn_edit.visible = true
 		
 		//unfreeze screen
-		globals.TRIGGER_interface_lock(false)
+		if (solutionPrefs.config.lockStatus) {
+			globals.TRIGGER_interface_lock(false)
+		}
 		
 		if (forms[formName] && forms[formName].elements.gfx_curtain) {
 			forms[formName].elements.gfx_curtain.visible = false
@@ -252,8 +254,10 @@ function WEB_simple_save() {
 		forms[parentForm + '__button_tab'].elements.btn_cancel.visible = false
 		forms[parentForm + '__button_tab'].elements.btn_edit.visible = true
 		
-		//unfreeze screen
-		globals.TRIGGER_interface_lock(false)
+		//unfreeze screen if locked
+		if (solutionPrefs.config.lockStatus) {
+			globals.TRIGGER_interface_lock(false)
+		}
 		
 		if (forms[parentForm] && forms[parentForm].elements.gfx_curtain) {
 			forms[parentForm].elements.gfx_curtain.visible = false
@@ -802,7 +806,7 @@ function WEB_page_new(pageName,pageType,parentID,themeID,layoutID) {
 			//fsArea.sort( "row_order asc" )
 			fsArea.setSelectedIndex(1)
 		}
-		
+	
 		//set flag that need to update tree view on next load
 		forms.WEB_0T_page._refresh = 1
 		
