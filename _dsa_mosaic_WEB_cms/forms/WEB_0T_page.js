@@ -218,6 +218,9 @@ function FIND_path(input) {
  * @properties={typeid:24,uuid:"7B82294C-C760-4E00-8CC6-071A0F16138C"}
  */
 function FORM_on_load(event) {
+	//this will get rid of the connecting lines on windows/linux
+//	elements.bean_tree.putClientProperty("JTree.lineStyle", "None")
+	
 	var beanTree = elements.bean_tree.createBinding(controller.getServerName(),controller.getTableName()) 
 	
 	//name of field to show in tree
