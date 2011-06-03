@@ -662,16 +662,40 @@ function RESIZE_beans(event) {
 	var divOne = forms.WEB_0F_page__design__content.elements.bean_split_1
 	var divTwo = forms.WEB_0F_page__design__content.elements.bean_split_2
 	
+	//turn off
 	if (divOne.dividerSize || divTwo.dividerSize) {
 		divOne.dividerSize = 0
 		divTwo.dividerSize = 0
 		
+		//set lefthand border to size
+		forms.WEB_0F_page__design__content_1F_block_data.elements.lbl_lefthand.setSize(
+			forms.WEB_0F_page__design__content_1F_block_data.elements.lbl_lefthand.getWidth(),
+			forms.WEB_0F_page__design__content_1F_block_data.elements.lbl_lefthand.getHeight() - 5
+		)
+		//set lefthand border to size on raw
+		forms.WEB_0F_page__design__content_1F_block_data__raw.elements.lbl_lefthand.setSize(
+			forms.WEB_0F_page__design__content_1F_block_data__raw.elements.lbl_lefthand.getWidth(),
+			forms.WEB_0F_page__design__content_1F_block_data__raw.elements.lbl_lefthand.getHeight() - 5
+		)
+		
 		forms.WEB_0F_page__design__content.elements.tab_area.setBorder('MatteBorder,0,0,1,0,#808080')
 		forms.WEB_0F_page__design__content.elements.tab_block.setBorder('MatteBorder,0,0,0,0,#808080')
 	}
+	//turn on
 	else {
 		divOne.dividerSize = 8
 		divTwo.dividerSize = 8
+		
+		//set lefthand border to size
+		forms.WEB_0F_page__design__content_1F_block_data.elements.lbl_lefthand.setSize(
+			forms.WEB_0F_page__design__content_1F_block_data.elements.lbl_lefthand.getWidth(),
+			forms.WEB_0F_page__design__content_1F_block_data.elements.lbl_lefthand.getHeight() + 5
+		)
+		//set lefthand border to size on raw
+		forms.WEB_0F_page__design__content_1F_block_data__raw.elements.lbl_lefthand.setSize(
+			forms.WEB_0F_page__design__content_1F_block_data__raw.elements.lbl_lefthand.getWidth(),
+			forms.WEB_0F_page__design__content_1F_block_data__raw.elements.lbl_lefthand.getHeight() + 5
+		)
 		
 		forms.WEB_0F_page__design__content.elements.tab_area.setBorder('MatteBorder,0,1,1,0,#808080')
 		forms.WEB_0F_page__design__content.elements.tab_block.setBorder('MatteBorder,1,1,0,0,#808080')		
