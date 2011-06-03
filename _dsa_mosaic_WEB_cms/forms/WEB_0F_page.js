@@ -454,7 +454,7 @@ function FORM_on_hide(event) {
 	if (application.getApplicationType() != APPLICATION_TYPES.HEADLESS_CLIENT) {
 		globals.WEB_lock_workflow(false)
 		
-		//save down currently selected toolbar
+		//restore last selected toolbar
 		if (application.__parent__.solutionPrefs && !solutionPrefs.config.lockStatus) {
 			//make sure on whatever last toolbar was
 			globals.TRIGGER_toolbar_set(_lastToolbar)
