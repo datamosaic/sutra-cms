@@ -355,6 +355,7 @@ function CONTROLLER_setup(results, app, session, request, response, mode) {
 	       		    request	: { record : request, server : request.getServerName(), URI : request.getRequestURI(), query : request.getQueryString() },
 	       		    session_server : { record : ''},
 	       		    session_web	: { record : session },
+	       		    cookies : '',
 	       		    response : { record : response },
 	       		    app		: { record : app },
 	       		    error	: { code : '', message : ''}
@@ -611,12 +612,14 @@ function CONTROLLER_setup(results, app, session, request, response, mode) {
 	}
 
 	
+	// COOKIES
 	// test cookie data
-	var test = 0
 	var cookies = request.getCookies()
 	for ( var i in cookies ) {
-		test ++
+		var x = cookies[i]
 	}
+	
+	obj.cookies = request.getCookies()
 
 	
 	// set flag that we're in edit mode
