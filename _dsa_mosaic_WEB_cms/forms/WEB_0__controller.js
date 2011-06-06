@@ -72,11 +72,11 @@ function CONTROLLER_session(obj) {
 	if ( obj.site.record.flag_logging ) {	
 
 		// find matching session record 
-		var session = obj.session.record
+		var sessionWeb = obj.session_web.record
 	
 		var sn = databaseManager.getFoundSet("sutra_cms","web_session")
 		sn.find()
-		sn.session_id = session.getId()
+		sn.session_id = sessionWeb.getId()
 		var count = sn.search()
 		
 		// get existing session record
@@ -87,17 +87,17 @@ function CONTROLLER_session(obj) {
 		else {
 			var record = sn.getRecord(sn.newRecord())
 			// punch in created, modified and object
-			record.rec_created = new Date(session.getCreationTime())
-			record.rec_modified = new Date(session.getCreationTime())
-			record.session_id = session.getId()
+			record.rec_created = new Date(sessionWeb.getCreationTime())
+			record.rec_modified = new Date(sessionWeb.getCreationTime())
+			record.session_id = sessionWeb.getId()
 			record.organization_id = obj.page.record.organization_id
 			databaseManager.saveData(record)
 		}
 		
 		// create session_access record
 		var recordSub 					= record.web_session_to_session_access.getRecord(record.web_session_to_session_access.newRecord())
-		recordSub.rec_created_client 	= new Date(session.getLastAccessedTime())
-		recordSub.rec_modified_client 	= new Date(session.getLastAccessedTime())
+		recordSub.rec_created_client 	= new Date(sessionWeb.getLastAccessedTime())
+		recordSub.rec_modified_client 	= new Date(sessionWeb.getLastAccessedTime())
 		recordSub.organization_id		= obj.page.record.organization_id
 		recordSub.referrer				= obj.request.record.getHeader("referer")
 		recordSub.url					= obj.request.record.getRequestURL()
@@ -353,7 +353,8 @@ function CONTROLLER_setup(results, app, session, request, response, mode) {
 	       		    			multipart : { field : {}, file : {} }
 	       		    			},
 	       		    request	: { record : request, server : request.getServerName(), URI : request.getRequestURI(), query : request.getQueryString() },
-	       		    session	: { record : session },
+	       		    session_server : { record : ''},
+	       		    session_web	: { record : session },
 	       		    response : { record : response },
 	       		    app		: { record : app },
 	       		    error	: { code : '', message : ''}
