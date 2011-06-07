@@ -975,3 +975,101 @@ function WEB_MRKUP_page_stack(obj, order) {
 	
 	return pages
 }
+
+/**
+ * Tests if cookie exists in request.
+ * 
+ * @param {Javax.servlet.http.httpservletrequest} request implicit jsp request object
+ * @param {String} name Name of cookie to see if exists
+ * @return {boolean} 
+ * 
+ * @properties={typeid:24,uuid:"AE3EDE76-B244-4E00-A845-18DC3A640D36"}
+ */
+function WEB_COOKIE_exists(request, name) {
+	var cookies = request.getCookies()
+	for ( var i in cookies ) {
+		if (cookies[i].getName() == name) {
+			return true
+		}
+	}	
+	return false
+}
+
+/**
+ * Creates a new cookie and adds to the implicit jsp response object.
+ * 
+ * @param {Javax.servlet.http.httpservletresponse} response implicit jsp response object
+ * @param {String} name name of cookie
+ * 
+ * @return {javax.servlet.http.Cookie} pointer to specific cookie
+ * 
+ * @properties={typeid:24,uuid:"3CAB37EB-875D-41EB-B802-A2AFB50D3436"}
+ */
+function WEB_COOKIE_new(response, name, value) {
+
+	var cookie = new Packages.javax.servlet.http.Cookie(name,value)
+	cookie.setMaxAge(365 * 24 * 60 * 60)	// default to one year
+	response.addCookie(cookie)
+	
+	return cookie
+
+}
+
+/**
+ * Get cookie value from request by name.
+ * 
+ * @param {Javax.servlet.http.httpservletrequest} request implicit jsp request object
+ * @param {String} name Name of cookie to see if exists
+ * 
+ * @return {String} value of cookie
+ * 
+ * @properties={typeid:24,uuid:"D7F75042-ACFA-4BFC-984D-F3F26FB3DDC2"}
+ */
+function WEB_COOKIE_value_get(request, name) {
+
+	var cookies = request.getCookies()
+	for ( var i in cookies ) {
+		if (cookies[i].getName() == name) {
+			return cookies[i].getValue()
+		}
+	}	
+	return null
+
+}
+
+/**
+ * Delete cookie from response. Note that cookie still exists in current request.
+ * 
+ * @param {Javax.servlet.http.httpservletresponse} response implicit jsp response obj 
+ * @param {String} name Name of cookie to delete
+ * 
+ * @properties={typeid:24,uuid:"69DE3CBB-B513-4C89-BEEA-C9CBFC2C41A8"}
+ */
+function WEB_COOKIE_delete(response, name) {
+
+	var cookie = new Packages.javax.servlet.http.Cookie(name,"")
+	cookie.setMaxAge(0)
+	response.addCookie(cookie)
+	return cookie
+
+}
+
+/**
+ * Set cookie with new value. Note that cookies still retains old value in current request.
+ * 
+ * @param {Javax.servlet.http.httpservletrequest} request Implicit jsp request object cookie is a part of
+ * @param {javax.servlet.http.Cookie} cookie Cookie object to change
+ * @param {String} value Set cookie value to this
+ * 
+ * @return {javax.servlet.http.Cookie} pointer to specific cookie or null
+ * 
+ * @properties={typeid:24,uuid:"EB605EF7-FEC4-4DE3-BC5F-52680CAB3A7B"}
+ */
+function WEB_COOKIE_value_set(response, name, value) {
+	
+	var cookie = new Packages.javax.servlet.http.Cookie(name, "")
+	cookie.setValue(value)
+	response.addCookie(cookie)
+	return cookie
+
+}
