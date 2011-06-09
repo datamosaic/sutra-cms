@@ -62,7 +62,9 @@ function ACTIONS_list() {
 			'-',
 			'Delete record',
 			'-',
-			'Delete all unnamed pages'
+			'Delete all unnamed pages',
+			'-',
+			'Flush client cache'
 		]
 	
 	//build menu
@@ -165,6 +167,17 @@ function ACTIONS_list_control() {
 				}
 			}
 			break
+			
+		case 11: //flush client cache
+			//TODO: a progressbar indicator...better yet, spawn a headless client on the server
+			globals.CODE_cursor_busy(true)
+			var tables = databaseManager.getTableNames('sutra_cms')
+			for (var i = 0; i < tables.length; i++) {
+				plugins.rawSQL.flushAllClientsCache('sutra_cms', tables[i])
+			}
+			globals.CODE_cursor_busy(false)
+			break
+			
 	}
 }
 
