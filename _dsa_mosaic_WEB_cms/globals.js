@@ -296,29 +296,31 @@ function WEB_MRKUP_link_page(pageID, siteURL, linkType, webMode) {
 	var fsPage = databaseManager.getFoundSet("sutra_cms","web_page")
 	fsPage.find()
 	fsPage.id_page = pageID
+	fsPage.flag_publish = 1
 	var count = fsPage.search()
 	
 	//this page exists, get its site
 	if (count && utils.hasRecords(fsPage.web_page_to_site)) {
 		var pageRec = fsPage.getRecord(1)
+		var siteRec = pageRec.web_page_to_site.getRecord(1)
 		
 		//this is an internal link type of page
-		if (pageRec.page_type == 3 && pageRec.page_link_internal) {
+		while (pageRec.page_type == 3 && pageRec.page_link_internal) {
 			fsPage.find()
 			fsPage.id_page = pageRec.page_link_internal
+			fsPage.flag_publish = 1
 			var count = fsPage.search()
 			
 			//the internal link exists
 			if (count) {
 				pageRec = fsPage.getRecord(1)
+				siteRec = pageRec.web_page_to_site.getRecord(1)
 			}
-			//something happened to internal link, stay on same page that was pointing there
+			//internal link deleted or not published, error out (go home)
 			else {
-				
+				return pageLink
 			}
 		}
-		
-		var siteRec = pageRec.web_page_to_site.getRecord(1)
 	}
 	//no site specified, try to fail gracefully
 	else {
