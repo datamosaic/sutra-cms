@@ -81,28 +81,30 @@ function CONTROLLER_session(obj) {
 		
 		// get existing session record
 		if (count == 1) {
-			var record = sn.getRecord(1)
+			var sessionRec = sn.getRecord(1)
 		}
 		// create session record if it doens't already exist
 		else {
-			var record = sn.getRecord(sn.newRecord())
+			var sessionRec = sn.getRecord(sn.newRecord())
 			// punch in created, modified and object
-			record.rec_created = new Date(sessionWeb.getCreationTime())
-			record.rec_modified = new Date(sessionWeb.getCreationTime())
-			record.session_id = sessionWeb.getId()
-			record.organization_id = obj.page.record.organization_id
-			databaseManager.saveData(record)
+			sessionRec.rec_created = new Date(sessionWeb.getCreationTime())
+			sessionRec.rec_modified = new Date(sessionWeb.getCreationTime())
+			sessionRec.session_id = sessionWeb.getId()
+			sessionRec.organization_id = obj.page.record.organization_id
+			databaseManager.saveData(sessionRec)
 		}
 		
+		obj.session_server.record = sessionRec
+		
 		// create session_access record
-		var recordSub 					= record.web_session_to_session_access.getRecord(record.web_session_to_session_access.newRecord())
-		recordSub.rec_created_client 	= new Date(sessionWeb.getLastAccessedTime())
-		recordSub.rec_modified_client 	= new Date(sessionWeb.getLastAccessedTime())
-		recordSub.organization_id		= obj.page.record.organization_id
-		recordSub.referrer				= obj.request.record.getHeader("referer")
-		recordSub.url					= obj.request.record.getRequestURL()
-		recordSub.id_page				= obj.page.record.id_page
-		databaseManager.saveData(recordSub)
+		var sessionAccessRec 					= sessionRec.web_session_to_session_access.getRecord(sessionRec.web_session_to_session_access.newRecord())
+		sessionAccessRec.rec_created_client 	= new Date(sessionWeb.getLastAccessedTime())
+		sessionAccessRec.rec_modified_client 	= new Date(sessionWeb.getLastAccessedTime())
+		sessionAccessRec.organization_id		= obj.page.record.organization_id
+		sessionAccessRec.referrer				= obj.request.record.getHeader("referer")
+		sessionAccessRec.url					= obj.request.record.getRequestURL()
+		sessionAccessRec.id_page				= obj.page.record.id_page
+		databaseManager.saveData(sessionAccessRec)
 	
 	}
 		
