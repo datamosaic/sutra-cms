@@ -301,6 +301,23 @@ function WEB_MRKUP_link_page(pageID, siteURL, linkType, webMode) {
 	//this page exists, get its site
 	if (count && utils.hasRecords(fsPage.web_page_to_site)) {
 		var pageRec = fsPage.getRecord(1)
+		
+		//this is an internal link type of page
+		if (pageRec.page_type == 3 && pageRec.page_link_internal) {
+			fsPage.find()
+			fsPage.id_page = pageRec.page_link_internal
+			var count = fsPage.search()
+			
+			//the internal link exists
+			if (count) {
+				pageRec = fsPage.getRecord(1)
+			}
+			//something happened to internal link, stay on same page that was pointing there
+			else {
+				
+			}
+		}
+		
 		var siteRec = pageRec.web_page_to_site.getRecord(1)
 	}
 	//no site specified, try to fail gracefully
@@ -309,11 +326,11 @@ function WEB_MRKUP_link_page(pageID, siteURL, linkType, webMode) {
 		var siteRec = new Object()
 	}
 	
-	//this is a link type of page, pageLink == its link
+	//this is an external link type of page, pageLink == its link
 	if (pageRec.page_type == 2 && pageRec.page_link) {
 		pageLink = pageRec.page_link
 	}
-	//normal page, generate link
+	//page/folder within the cms, generate link
 	else {
 		//rewrite mode
 		var fsInstall = databaseManager.getFoundSet('sutra_cms','web_install')
@@ -951,18 +968,12 @@ function WEB_MRKUP_page_stack(obj, order) {
 	
 	var record = obj.page.record
 	var pages = [obj.page.record]
-	var order = (order == "desc") ? order : (order == "asc") ? order : "asc"
+	var order = (order == "desc") ? order : "asc"
 		
 	while ( record.parent_id_page ) {
 		
-		// find parent record
-		var page = databaseManager.getFoundSet("sutra_cms","web_page")
-		page.find()
-		page.id_page = record.parent_id_page
-		var count = page.search()
-		
 		// reasign record var
-		record = page.getRecord(1)
+		record = record.web_page_to_page__parent.getRecord(1)
 		
 		// store in return array
 		if ( order == "asc" ) {
