@@ -65,8 +65,6 @@ function CONTROLLER(app, session, request, response, mode) {
 function CONTROLLER_session(obj) {
 
 	// PROCESS: session management
-	// TODO: do i need to punch session back in at the jsp level? don't think so
-		// how to modify session in a block then? directly?
 
 	// if logging turned on, record sesion and page access
 	if ( obj.site.record.flag_logging ) {	
@@ -104,6 +102,7 @@ function CONTROLLER_session(obj) {
 		sessionAccessRec.referrer				= obj.request.record.getHeader("referer")
 		sessionAccessRec.url					= obj.request.record.getRequestURL()
 		sessionAccessRec.id_page				= obj.page.record.id_page
+		sessionAccessRec.access_type			= "PAGE"
 		databaseManager.saveData(sessionAccessRec)
 	
 	}		
