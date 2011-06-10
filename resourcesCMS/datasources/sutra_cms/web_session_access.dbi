@@ -11,6 +11,13 @@ name:"id_session_access"
 },
 {
 allowNull:true,
+creationOrderIndex:10,
+dataType:12,
+length:50,
+name:"access_type"
+},
+{
+allowNull:true,
 creationOrderIndex:6,
 dataType:4,
 name:"id_page"
