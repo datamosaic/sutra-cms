@@ -23,6 +23,9 @@
 		// theme directory
 		request.setAttribute("themeDirectory",(String)pageData.get("cmsThemeDirectory"));
 		
+		// site directory
+		request.setAttribute("siteDirectory",(String)pageData.get("cmsSiteDirectory"));
+		
 		// page layout
 		request.setAttribute("layout",(String)pageData.get("cmsLayout"));
 		
