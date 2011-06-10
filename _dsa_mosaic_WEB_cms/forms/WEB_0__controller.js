@@ -106,8 +106,7 @@ function CONTROLLER_session(obj) {
 		sessionAccessRec.id_page				= obj.page.record.id_page
 		databaseManager.saveData(sessionAccessRec)
 	
-	}
-		
+	}		
 }
 
 /**
@@ -340,7 +339,7 @@ function CONTROLLER_setup(results, app, session, request, response, mode) {
 	 */	
 
 	// initialize data object passed to block markup methods
-	var obj		= { site	: { record : '', id	: '', name	: '', tracking : ''},
+	var obj		= { site	: { record : '', path : '', id	: '', name	: '', tracking : ''},
 	       		    group	: { record : '', id	: ''},
 	       		    snapshot : { record : '', id : ''},
 	       		    home	: { record : ''},
@@ -971,6 +970,17 @@ function CONTROLLER_setup(results, app, session, request, response, mode) {
 	results.addRow(["cmsThemeDirectory", obj.theme.directory])
 	//layout will be referenced from within jsp, so internal and needs full path
 	results.addRow(["cmsLayout", "sites/" + page.web_page_to_site.directory + "/themes/" + theme.theme_directory + "/" + layout.layout_path])
+	
+	// site directory with rewrites
+	if (forms.WEB_0F_install.rewrite_enabled) {
+		obj.site.path = ""
+		results.addRow(["cmsSiteDirectory", obj.site.path])
+	}
+	// theme directory without rewrites
+	else {
+		obj.site.path = "sites/" + page.web_page_to_site.directory
+		results.addRow(["cmsSiteDirectory", obj.site.path])
+	}
 	
 	return obj
 }
