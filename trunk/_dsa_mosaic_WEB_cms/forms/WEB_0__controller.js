@@ -614,10 +614,10 @@ function CONTROLLER_setup(results, app, session, request, response, mode) {
 	
 	// COOKIES
 	// test cookie data
-	var cookies = request.getCookies()
-	for ( var i in cookies ) {
-		var x = cookies[i]
-	}
+//	var cookies = request.getCookies()
+//	for ( var i in cookies ) {
+//		var x = cookies[i]
+//	}
 	
 	obj.cookies = request.getCookies()
 
@@ -696,11 +696,25 @@ function CONTROLLER_setup(results, app, session, request, response, mode) {
 	}
 	// request home page as nothing specifically requested
 	else {
-			
+		
+		//if cms url left blank, assume localhost
+		var findExt = false
+		if (pageServer == 'localhost' || pageServer == '127.0.0.1') {
+			findExt = true
+		}
+		
 		var site = databaseManager.getFoundSet("sutra_cms","web_site")
 		site.find()
 		site.url = pageServer //"%" + pageServer + "%"
 		var count = site.search()
+		
+		//try finding blank cms url
+		if (!count && findExt) {
+			site.find()
+			site.url = '^='
+			var count = site.search()
+		}
+		
 		if (count != 1) {
 			obj.error.code = 500
 			obj.error.message = "No site found"
