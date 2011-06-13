@@ -88,9 +88,9 @@ function FORM_on_show(firstShow, event) {
 	}
 	
 	//update display if the GUI has been used elsewhere
-	if (!firstShow && elements.tab_detail.tabIndex == 1) {
+//	if (!firstShow && elements.tab_detail.tabIndex == 1) {
 		REC_on_select()
-	}
+//	}
 }
 
 /**
