@@ -2,6 +2,7 @@ foreignDataSource:"db:/sutra_cms/web_scrapbook",
 items:[
 {foreignColumnName:"id_scrapbook",primaryDataProviderID:"id_scrapbook",typeid:23,uuid:"9DC09A84-B1CF-4822-8BB6-9938018FCAF3"}
 ],
+joinType:1,
 name:"web_block_to_scrapbook",
 primaryDataSource:"db:/sutra_cms/web_block",
 typeid:22,

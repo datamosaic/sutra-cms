@@ -4,6 +4,7 @@ foreignDataSource:"db:/sutra_cms/web_block",
 items:[
 {foreignColumnName:"id_area",primaryDataProviderID:"id_area",typeid:23,uuid:"2DE9ADFB-9E2A-4373-90BD-CBB721523AC1"}
 ],
+joinType:1,
 name:"web_area_to_block",
 primaryDataSource:"db:/sutra_cms/web_area",
 typeid:22,
