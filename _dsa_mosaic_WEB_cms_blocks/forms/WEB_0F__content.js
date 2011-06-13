@@ -32,8 +32,11 @@ var _toolbarMode = 0;
  * @properties={typeid:24,uuid:"2C01CB8B-1D9F-46AE-A205-E94F2E746805"}
  */
 function FORM_on_load() {
-	//set combobox to be square on os x
-	globals.CODE_property_combobox(true)
+	//don't run in headless client
+	if (application.getApplicationType() != APPLICATION_TYPES.HEADLESS_CLIENT) {
+		//set combobox to be square on os x
+		globals.CODE_property_combobox(true)
+	}
 }
 
 /**
