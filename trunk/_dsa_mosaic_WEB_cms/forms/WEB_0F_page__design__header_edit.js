@@ -114,6 +114,11 @@ function ACTION_cancel() {
 		forms.WEB_0T_page._oldRecord = null
 		_themeSet = null
 		
+		//no page records, turn off ability to add a page
+		if (!utils.hasRecords(forms.WEB_0F_site.web_site_to_page)) {
+			globals.WEB_lock_workflow(true)
+		}
+		
 	}
 	
 	//make sure correct stuff is showing
