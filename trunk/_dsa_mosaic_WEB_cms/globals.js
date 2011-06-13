@@ -963,13 +963,17 @@ function WEB_MRKUP_refresh(obj,scope) {
  * 
  * @param {Object} obj Sutra CMS controller obj
  * @param {String} order "asc" or "desc". "asc" is default
+ * @param {JSRecord} record Page record to lookup (overrides whatever page is in obj)
  * 
  * @properties={typeid:24,uuid:"541905F0-9B0C-474D-968C-F85408B3B05A"}
  */
-function WEB_MRKUP_page_stack(obj, order) {
+function WEB_MRKUP_page_stack(obj, order, record) {
+	//no record specified, lookup from obj
+	if (!record) {
+		record = obj.page.record
+	}
 	
-	var record = obj.page.record
-	var pages = [obj.page.record]
+	var pages = [record]
 	var order = (order == "desc") ? order : "asc"
 		
 	while ( record.parent_id_page ) {
