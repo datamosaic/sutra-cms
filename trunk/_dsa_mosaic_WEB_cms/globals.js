@@ -973,7 +973,6 @@ function WEB_MRKUP_refresh(obj,scope) {
  */
 function WEB_MRKUP_pages_up(obj, order, record) {
 	
-//	WEB_MRKUP_page_stack
 	//no record specified, lookup from obj
 	if (!record) {
 		record = obj.page.record
@@ -1002,8 +1001,37 @@ function WEB_MRKUP_pages_up(obj, order, record) {
 /**
  * @properties={typeid:24,uuid:"3DB0FF72-EDE1-4F86-8F2A-BCB288586DB8"}
  */
-function WEB_MRKUP_pages_down() {
-	// TODO Auto-generated method stub
+function WEB_MRKUP_pages_down(obj, record) {
+	
+	// no record specified, lookup from obj
+	if (!record) {
+		record = obj.page.record
+	}
+	
+	// initialize result
+	var pages = []
+	
+	function iterate(foundset, pages) {
+		for (var i = 0; i < foundset.getSize(); i++) {
+			var record = foundset.getRecord(i + 1)			
+			if ( utils.hasRecords(record.web_page_to_page__child__publish) ) {
+				pages = iterate(record.web_page_to_page__child__publish, pages)
+			}	
+			else if ( record.page_type == 0) {
+				pages.push(record)			
+			}
+		}	
+		return pages
+	}
+			
+	if ( utils.hasRecords( record.web_page_to_page__child__publish ) ) {
+		pages = iterate(record.web_page_to_page__child__publish, pages)
+	}
+	else {
+		pages = null
+	}
+
+	return pages
 }
 
 /**
