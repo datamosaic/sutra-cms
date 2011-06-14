@@ -96,113 +96,15 @@ function TAG_delete(event) {
  * @properties={typeid:24,uuid:"FF5AF14C-E836-4D15-897E-FC174AA6C371"}
  */
 function REC_new(assetType) {
-	
 	var input = plugins.dialogs.showSelectDialog( 
 					"Asset", 
 					"Select asset type", 
-					"Image")
-	if ( input != null ) {
-		forms.WEB_0C__file_stream.IMAGE_import("images")
-	}
-	return
-
-	if (utils.hasRecords(forms.WEB_0F_site.foundset)) {
-		//no records created yet and interface locked
-		if (!assetType && application.__parent__.solutionPrefs && solutionPrefs.design.statusLockWorkflow) {
-			globals.WEB_lock_workflow(false)
-		}
-		
-		//save down data
-		databaseManager.saveData()
-		databaseManager.setAutoSave(false)
-		
-		controller.newRecord()
-		id_site = forms.WEB_0F_site.id_site
-		var assetID = id_asset
-		
-		//asset type specified
-		if (assetType) {
-			asset_type = assetType
-		}
-		//prompt for type of asset
-		else {
-			//prompt for type of asset
-			application.showFormInDialog(
-						forms.WEB_P_asset,
-						-1,-1,-1,-1,
-						' ',
-						false,
-						false,
-						'cmsAssetNew'
-					)
-		}
-		
-		//new record not cancelled
-		if (assetID == id_asset) {
-			//create asset
-			var assetRecord = web_asset_to_asset_instance.getRecord(web_asset_to_asset_instance.newRecord(false,true))
-			
-			//get template for this type of asset
-			var template = forms.WEB_0F_asset.MAP_asset(asset_type)
-			
-			//add all meta data rows
-			for (var i in template.meta) {
-				var metaRec = assetRecord.web_asset_instance_to_asset_instance_meta.getRecord(assetRecord.web_asset_instance_to_asset_instance_meta.newRecord(false,true))
-				
-				metaRec.data_key = i
-				metaRec.data_type = template.meta[i]
-				
-//				databaseManager.saveData(metaRec)
-			}
-			
-			//pseudo-record
-			var assetMeta = forms.WEB_0F_asset_1F_2L_asset_instance.REC_on_select(assetRecord)
-			
-			//check to see if this form is available and we can run an ASSET_import method on it
-			if ( template.formName && forms[template.formName] ) {
-				//form not loaded yet, get solution model to check for method existence
-				if (forms[template.formName] == '<Form ' + template.formName + ' not loaded yet>' && solutionModel.getForm(template.formName).getFormMethod('ASSET_import')) {
-					var hasInit = true
-				}
-				//check for method existence on form
-				else if (forms[template.formName].ASSET_import) {
-					var hasInit = true
-				}
-				
-				//show correct FiD for chosen asset type
-				if ( hasInit ) {
-					var success = forms[template.formName].ASSET_import(assetMeta)
-					
-					//asset type specified, rollback record if file selection cancelled
-					if (assetType) {
-						if (!success) {
-							databaseManager.rollbackEditedRecords()
-							databaseManager.setAutoSave(true)
-						}
-					}
-					//update screen with selected record
-					else {
-						foundset.selectRecord(assetRecord.id_asset)
-					}
-					
-					return assetMeta
-				}
-				else {
-					plugins.dialogs.showErrorDialog( "Error", "Selected block does not have a ASSET_import method")
-				}
-			}
-		}
-		else {
-			if (!utils.hasRecords(foundset)) {
-				globals.WEB_lock_workflow(true)
-			}
-		}
-	}
-	else {
-		plugins.dialogs.showErrorDialog(
-						'Error',
-						'You must add a site record first'
+					"Image"
 				)
+	
+	//something selected, do the right kind of import
+	if ( input  ) {
+		forms.WEB_0C__file_stream.IMAGE_import("images")
 	}
 }
 

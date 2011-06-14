@@ -796,9 +796,15 @@ function IMAGE_import_callback(result, e) {
 	}
 	
 	plugins.dialogs.showInfoDialog("Image",  "Image uploaded")
+	
+	//TODO: select the correct record (won't work when more than 200 assets)
 	forms.WEB_0F_asset.controller.loadAllRecords()
 	forms.WEB_0F_asset.controller.setSelectedIndex(forms.WEB_0F_asset.controller.getMaxRecordIndex())
-		
+	
+	//no records created yet and interface locked
+	if (application.__parent__.solutionPrefs && solutionPrefs.design.statusLockWorkflow) {
+		globals.WEB_lock_workflow(false)
+	}
 }
 
 /**
