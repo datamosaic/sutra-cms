@@ -672,7 +672,11 @@ function WEB_page_new(pageName,pageType,parentID,themeID,layoutID) {
 		
 		//turn on feedback indicator
 		globals.CODE_cursor_busy(true)
-		globals.TRIGGER_progressbar_start(null,'Creating new page...')
+		
+		//turn on progressbar if not already on
+		if (!globals.TRIGGER_progressbar_get()) {
+			globals.TRIGGER_progressbar_start(null,'Creating new page...')
+		}
 		
 		var fsPage = databaseManager.getFoundSet('sutra_cms','web_page')
 		fsPage.clear()
