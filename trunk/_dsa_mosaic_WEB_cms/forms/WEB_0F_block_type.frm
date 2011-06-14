@@ -517,7 +517,6 @@ items:[
 {
 containsFormID:"CA621C06-DC06-40B2-B3CE-7E9117DFD0CB",
 location:"630,87",
-relationName:"web_block_type_to_block.web_block_to_area.web_area_to_version.web_version_to_page",
 text:"WEB_0F_block_type_1L_page",
 typeid:15,
 uuid:"C26C950E-96C5-4393-9EA4-230C9F10F586"
