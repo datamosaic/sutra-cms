@@ -971,7 +971,9 @@ function WEB_MRKUP_refresh(obj,scope) {
  * 
  * @properties={typeid:24,uuid:"541905F0-9B0C-474D-968C-F85408B3B05A"}
  */
-function WEB_MRKUP_page_stack(obj, order, record) {
+function WEB_MRKUP_pages_up(obj, order, record) {
+	
+//	WEB_MRKUP_page_stack
 	//no record specified, lookup from obj
 	if (!record) {
 		record = obj.page.record
@@ -995,6 +997,13 @@ function WEB_MRKUP_page_stack(obj, order, record) {
 	}
 	
 	return pages
+}
+
+/**
+ * @properties={typeid:24,uuid:"3DB0FF72-EDE1-4F86-8F2A-BCB288586DB8"}
+ */
+function WEB_MRKUP_pages_down() {
+	// TODO Auto-generated method stub
 }
 
 /**
