@@ -29,7 +29,7 @@ creationOrderIndex:6,
 dataType:12,
 flags:4,
 length:50,
-name:"id_scrapbook"
+name:"id_scrapbook_version"
 },
 {
 allowNull:true,
