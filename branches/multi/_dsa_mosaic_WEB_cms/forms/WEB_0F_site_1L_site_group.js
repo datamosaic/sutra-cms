@@ -93,11 +93,11 @@ function FLD_data_change__group_name(oldValue, newValue, event) {
  * @properties={typeid:24,uuid:"130809CF-8CCF-4180-AED8-BC70FA29B24B"}
  */
 function REC_on_select(event) {
-	var fsPage = forms.WEB_0F_site_1L_page.foundset
+	var fsPage = forms.WEB_0F_site_1L_page__groups.foundset
 	
 	if (utils.hasRecords(foundset)) {
 		fsPage.find()
-		fsPage.web_page_to_area__allversions.id_group = id_group
+		fsPage.web_page_to_group.id_site_group = id_site_group
 		var results = fsPage.search()
 	}
 	else {

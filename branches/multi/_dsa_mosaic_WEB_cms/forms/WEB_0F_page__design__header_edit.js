@@ -273,7 +273,7 @@ function ACTION_save() {
 		
 		//group to create as
 			//TODO: if they've sorted, this will not be the everybody/visitor group
-		var recGroup = forms.WEB_0F_site.web_site_to_group.getRecord(1)
+		var recGroup = forms.WEB_0F_site.web_site_to_site_group.getRecord(1)
 		
 		var fsArea = databaseManager.getFoundSet('sutra_cms','web_area')
 		fsArea.find()

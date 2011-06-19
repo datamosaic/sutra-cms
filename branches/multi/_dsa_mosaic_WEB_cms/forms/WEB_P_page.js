@@ -172,7 +172,7 @@ function ACTION_ok() {
 		}
 		
 		//group to create as
-		var recGroup = forms.WEB_0F_site.web_site_to_group.getRecord(1)
+		var recGroup = forms.WEB_0F_site.web_site_to_site_group.getRecord(1)
 		
 		var fsArea = databaseManager.getFoundSet('sutra_cms','web_area')//forms.WEB_0F_page__design__content_1L_area.foundset
 		fsArea.clear()

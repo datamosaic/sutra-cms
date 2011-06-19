@@ -1,4 +1,4 @@
-dataSource:"db:/sutra_cms/web_group",
+dataSource:"db:/sutra_cms/web_site_group",
 items:[
 {
 height:60,
@@ -37,7 +37,7 @@ typeid:7,
 uuid:"FA3B451F-DC86-4026-8204-B30ACBAE10A2"
 }
 ],
-name:"WEB_0F_site_1L_group",
+name:"WEB_0F_site_1L_site_group",
 onRecordSelectionMethodID:"130809CF-8CCF-4180-AED8-BC70FA29B24B",
 onShowMethodID:"-1",
 paperPrintScale:100,

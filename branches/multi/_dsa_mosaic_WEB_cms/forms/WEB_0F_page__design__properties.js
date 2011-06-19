@@ -42,7 +42,7 @@ function UTIL_add_versioning(event) {
 			var siteRec = fsSites.getRecord(i)
 			
 			//create a group
-			var allGroup = siteRec.web_site_to_group.getRecord(siteRec.web_site_to_group.newRecord(false,true))
+			var allGroup = siteRec.web_site_to_site_group.getRecord(siteRec.web_site_to_site_group.newRecord(false,true))
 			allGroup.group_name = 'Everybody'
 			databaseManager.saveData()
 			

@@ -286,7 +286,7 @@ function TOGGLE_edit() {
  */
 function NEW_group(event) {
 	//find out which groups are as of yet unassigned
-	var allGroups = forms.WEB_0F_site.web_site_to_group
+	var allGroups = forms.WEB_0F_site.web_site_to_site_group
 	var dsGroups = databaseManager.getDataSetByQuery(
 			controller.getServerName(), 
 			'SELECT DISTINCT id_group FROM web_area where id_page = ? ',

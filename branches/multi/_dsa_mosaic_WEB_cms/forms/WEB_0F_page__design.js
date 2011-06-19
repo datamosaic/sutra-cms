@@ -74,7 +74,7 @@ function REC_on_select() {
 function SET_groups() {
 	var vlDisplay = new Array()
 	var vlReal = new Array()
-	var fsGroups = forms.WEB_0F_site.web_site_to_group
+	var fsGroups = forms.WEB_0F_site.web_site_to_site_group
 	
 	//groups used throughout this page
 	var dsGroups = databaseManager.getDataSetByQuery(

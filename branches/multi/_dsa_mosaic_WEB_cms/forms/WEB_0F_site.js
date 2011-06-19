@@ -13,7 +13,7 @@ var _license_dsa_mosaic_WEB_cms = 'Module: _dsa_mosaic_WEB_cms \
  * @properties={typeid:24,uuid:"F4E09655-F0E2-402A-907F-B5B944590FA8"}
  */
 function REC_on_select(event) {
-	var fsGroups = web_site_to_group
+	var fsGroups = web_site_to_site_group
 	
 	//set group valuelist
 	var vlReal = new Array()
@@ -34,23 +34,21 @@ function REC_on_select(event) {
 	}
 	
 	//find site-specific stuff
-	forms.WEB_0F_asset.FORM_on_load()
-	forms.WEB_0F_block_type.FORM_on_load()
-	forms.WEB_0F_scrapbook.FORM_on_load()
-	forms.WEB_0F_theme.FORM_on_load()
-	forms.WEB_0T_page.FORM_on_load()
-	
-//	application.setValueListItems('WEB_group',vlDisplay,vlReal)
+//	forms.WEB_0F_asset.FORM_on_load()
+//	forms.WEB_0F_block_type.FORM_on_load()
+//	forms.WEB_0F_scrapbook.FORM_on_load()
+//	forms.WEB_0F_theme.FORM_on_load()
+//	forms.WEB_0T_page.FORM_on_load()
 	
 	//set global with site info
 	globals.WEB_site_display = 'Site: ' + site_name
 	
 	//null out used-on page foundset if selected tab doesn't have any records
-	if ((elements.tab_detail.tabIndex == 1 && !utils.hasRecords(web_site_to_group)) ||
-		(elements.tab_detail.tabIndex == 2 && !utils.hasRecords(web_site_to_site_attribute))) {
-		
-		forms.WEB_0F_site_1L_page.foundset.clear()
-	}
+//	if ((elements.tab_detail.tabIndex == 1 && !utils.hasRecords(web_site_to_site_group)) ||
+//		(elements.tab_detail.tabIndex == 4 && !utils.hasRecords(web_site_to_site_attribute))) {
+//		
+//		forms.WEB_0F_site_1L_page__groups.foundset.clear()
+//	}
 }
 
 /**
@@ -107,8 +105,17 @@ function REC_new() {
 	controller.newRecord(false)
 	
 	//create a group
-	var allGroup = web_site_to_group.getRecord(web_site_to_group.newRecord(false,true))
+	var allGroup = web_site_to_site_group.getRecord(web_site_to_site_group.newRecord(false,true))
 	allGroup.group_name = 'Everybody'
+	
+	//create a language
+	var enLanguage = web_site_to_site_language.getRecord(web_site_to_site_language.newRecord(false,true))
+	enLanguage.language_name = 'English'
+	enLanguage.language_code = 'en'
+	
+	//create a platform
+	var platform = web_site_to_site_platform.getRecord(web_site_to_site_platform.newRecord(false,true))
+	platform.platform_name = 'Web'
 	
 	//save
 	databaseManager.saveData()
@@ -240,77 +247,6 @@ function ACTION_path_generate(event) {
 
 /**
  * Perform the element default action.
- * @param method callback method to trigger when tree item is selected
- *
- * @properties={typeid:24,uuid:"FE1B37B7-F621-48C8-B232-E078047FED9E"}
- */
-function SITE_tree(method) {
-	
-	function GET_page(pageRec) {
-		if (utils.hasRecords(pageRec[relnPage])) {
-			var subArray = new Array()
-			
-			subArray.push(
-						//choose this page
-							plugins.popupmenu.createMenuItem('Choose parent (' + pageRec.page_name + ')', method),
-						//blank line
-							plugins.popupmenu.createMenuItem('-', method)
-					)
-			
-			// set arguments
-			subArray[0].setMethodArguments(pageRec.id_page)
-					
-			// turn off '----'
-			subArray[1].setEnabled(false)
-			
-			for (var j = 1; j <= pageRec[relnPage].getSize(); j++ ) {
-				subArray.push(GET_page(pageRec[relnPage].getRecord(j)))
-			}
-			
-			return plugins.popupmenu.createMenuItem(pageRec.page_name + "", subArray)
-		}
-		else {
-			var item = plugins.popupmenu.createMenuItem(pageRec.page_name + "", method)
-			item.setMethodArguments(pageRec.id_page)
-			
-			//disable dividers
-			if (item.text == '----') {
-				item.setEnabled(false)
-			}
-			
-			return item
-		}
-	}
-	
-	var fsPages = databaseManager.getFoundSet(controller.getServerName(), 'web_page')
-	var relnPage = 'web_page_to_page__child'
-	
-	fsPages.find()
-	fsPages.parent_id_page = 0
-	fsPages.id_site = id_site
-	var results = fsPages.search()
-	
-	if (results) {
-		fsPages.sort('order_by asc')
-		
-		//make array
-		var menu = new Array()
-		
-		for (var i = 1 ; i <= fsPages.getSize() ; i++) {
-			menu.push(GET_page(fsPages.getRecord(i)))
-		}
-		
-		//pop up the popup menu
-		var elem = forms[application.getMethodTriggerFormName()].elements[application.getMethodTriggerElementName()]
-		if (elem != null) {
-		    plugins.popupmenu.showPopupMenu(elem, menu);
-		}
-		
-	}
-}
-
-/**
- * Perform the element default action.
  *
  * @param {JSEvent} event the event that triggered the action
  *
@@ -411,7 +347,7 @@ function TAB_change(event) {
 	
 	elements.tab_used_on.tabIndex = elements.tab_detail.tabIndex
 	
-	if (elements.tab_used_on.tabIndex == 2) {
+	if (elements.tab_used_on.tabIndex == 4) {
 		elements.btn_add_page_attrib.visible = true
 	}
 	else {

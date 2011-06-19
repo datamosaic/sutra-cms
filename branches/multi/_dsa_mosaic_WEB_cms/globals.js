@@ -760,7 +760,7 @@ function WEB_page_new(pageName,pageType,parentID,themeID,layoutID) {
 		if (utils.hasRecords(newRecord,'web_page_to_layout.web_layout_to_editable')) {
 			//group to create as
 			//TODO: if they've sorted, this will not be the everybody/visitor group
-			var recGroup = newRecord.web_page_to_site.web_site_to_group.getRecord(1)
+			var recGroup = newRecord.web_page_to_site.web_site_to_site_group.getRecord(1)
 			
 			var fsArea = databaseManager.getFoundSet('sutra_cms','web_area')
 			
