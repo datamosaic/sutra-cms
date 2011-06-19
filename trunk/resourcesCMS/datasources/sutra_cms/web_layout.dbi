@@ -1,11 +1,12 @@
 columns:[
 {
 allowNull:false,
-autoEnterSubType:0,
+autoEnterSubType:3,
 autoEnterType:2,
 creationOrderIndex:0,
-dataType:4,
-flags:1,
+dataType:12,
+flags:5,
+length:50,
 name:"id_layout"
 },
 {
@@ -24,7 +25,9 @@ name:"flag_default"
 {
 allowNull:true,
 creationOrderIndex:1,
-dataType:4,
+dataType:12,
+flags:4,
+length:50,
 name:"id_theme"
 },
 {
@@ -38,7 +41,7 @@ name:"layout_name"
 allowNull:true,
 creationOrderIndex:6,
 dataType:-1,
-length:65535,
+length:16777215,
 name:"layout_path"
 },
 {
