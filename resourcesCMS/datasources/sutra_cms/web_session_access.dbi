@@ -19,7 +19,9 @@ name:"access_type"
 {
 allowNull:true,
 creationOrderIndex:6,
-dataType:4,
+dataType:12,
+flags:4,
+length:50,
 name:"id_page"
 },
 {
