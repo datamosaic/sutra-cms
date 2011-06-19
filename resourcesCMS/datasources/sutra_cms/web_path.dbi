@@ -17,6 +17,14 @@ name:"flag_default"
 },
 {
 allowNull:true,
+creationOrderIndex:8,
+dataType:12,
+flags:4,
+length:50,
+name:"id_language"
+},
+{
+allowNull:true,
 creationOrderIndex:4,
 dataType:12,
 flags:4,
