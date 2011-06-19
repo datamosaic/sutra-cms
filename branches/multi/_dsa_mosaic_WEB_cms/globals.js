@@ -617,7 +617,7 @@ function WEB_page_tree_to_popup(method,elem) {
 	var relnPage = 'web_page_to_page__child'
 	
 	fsPages.find()
-	fsPages.parent_id_page = 0
+	fsPages.parent_id_page = '^='
 	fsPages.id_site = forms.WEB_0F_site.id_site
 	var results = fsPages.search()
 	

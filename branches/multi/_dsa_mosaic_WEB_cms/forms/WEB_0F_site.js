@@ -337,7 +337,7 @@ function ACTION_choose_error(event) {
  */
 function ACTION_set_home(inputID) {
 	if (inputID) {
-		id_page = inputID
+		id_page = application.getUUID(inputID)
 		databaseManager.saveData()
 	}
 }
