@@ -1,0 +1,9 @@
+foreignDataSource:"db:/sutra_cms/web_block_response",
+initialSort:"column_name asc",
+items:[
+{foreignColumnName:"id_block_type",primaryDataProviderID:"id_block_type",typeid:23,uuid:"11FBBA24-6C90-4FBC-A13E-8B2C0CABC230"}
+],
+name:"web_editable_default_to_web_block_response",
+primaryDataSource:"db:/sutra_cms/web_editable_default",
+typeid:22,
+uuid:"FD99B906-F079-45EC-A5CC-9B2C381E98A4"

@@ -1,0 +1,11 @@
+allowCreationRelatedRecords:true,
+deleteRelatedRecords:true,
+foreignDataSource:"db:/sutra_cms/web_block_data_configure",
+items:[
+{foreignColumnName:"id_block",primaryDataProviderID:"id_block",typeid:23,uuid:"09B92DA7-3C18-45E0-9A25-88CA87EBC022"}
+],
+joinType:1,
+name:"web_block_to_block_data_configure",
+primaryDataSource:"db:/sutra_cms/web_block",
+typeid:22,
+uuid:"A5DC3B62-BD03-4C60-AC1B-47EB104C2DAE"

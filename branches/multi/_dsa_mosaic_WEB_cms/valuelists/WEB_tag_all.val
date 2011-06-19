@@ -1,0 +1,11 @@
+addEmptyValue:1,
+dataProviderID1:"tag",
+dataSource:"db:/sutra_cms/web_tag",
+name:"WEB_tag_all",
+returnDataProviders:1,
+separator:" ",
+showDataProviders:1,
+sortOptions:"tag asc",
+typeid:34,
+uuid:"A44FFBB5-DE14-41FB-94FD-94E11C1F779D",
+valueListType:1
