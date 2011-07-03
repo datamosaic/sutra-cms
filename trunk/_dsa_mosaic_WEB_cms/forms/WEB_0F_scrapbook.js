@@ -193,6 +193,7 @@ function REC_on_select(event) {
 			if (hasInit) {
 				forms[recBlockType.form_name].LOADER_on_load(
 													recScrapbook.web_scrapbook_to_scrapbook_data,
+													recScrapbook.web_scrapbook_to_scrapbook_configure,
 													flagEdit,
 													false,
 													controller.getName()
