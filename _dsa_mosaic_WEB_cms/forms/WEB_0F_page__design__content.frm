@@ -18,7 +18,7 @@ uuid:"90808B7B-E299-48D1-BD66-9096F66C7217"
 {
 containsFormID:"6D758DEA-1F08-4DC6-A248-076D7BB84AEA",
 location:"620,170",
-relationName:"web_page_to_block_by_area",
+relationName:"web_page_to_block_data_by_area_by_block",
 text:"WEB_0F_page__design__content_1F_block_data",
 typeid:15,
 uuid:"A8C3FC14-DD6E-4AF1-895D-3E77B8914597"
