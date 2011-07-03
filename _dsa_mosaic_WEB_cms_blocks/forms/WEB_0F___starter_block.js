@@ -96,6 +96,8 @@ function INIT_block() {
 }
 
 /**
+ * Form load event. Fires code when changing between two blocks of different types.
+ * 
  * @param {JSFoundset}	fsBlockData Block data points.
  * @param {JSFoundset}	fsBlockConfig Block configure data points.
  * @param {Boolean}		flagEdit Editable status.
@@ -108,11 +110,17 @@ function LOADER_on_load(fsBlockData, fsBlockConfig, flagEdit, flagScrapbook, con
 	// set label and load form
 	globals.WEB_block_form_loader("WEB_0F___starter_block", ((flagScrapbook) ? "SCRAPBOOK: Starter block" : "Starter block"))		
 	
-	//refresh display
+	// do additional form load stuff
+	
+	// Trigger record select event
 	LOADER_on_select(fsBlockData,fsBlockConfig,flagEdit,flagScrapbook)
+	
+	// don't add anything more here
 }
 
 /**
+ * Record on select event. Fires code when changing between two blocks of the same type
+ * 
  * @param {JSFoundset}	fsBlockData Block data points.
  * @param {JSFoundset}	fsBlockConfig Block configure data points.
  * @param {Boolean}		flagEdit Editable status.
@@ -121,24 +129,7 @@ function LOADER_on_load(fsBlockData, fsBlockConfig, flagEdit, flagScrapbook, con
  * @properties={typeid:24,uuid:"C8C679D5-C524-47CD-ACD4-93FF855F1611"}
  */
 function LOADER_on_select(fsBlockData,fsBlockConfig,flagEdit,flagScrapbook) {
-	//put in code that would be fired on rec select if changing between two blocks of the same type
-	
-//	//hack to get scrapbook to display (for some blocks needed always, not just scrapbook)
-//	if (flagScrapbook && application.__parent__.solutionPrefs) {
-//		globals.CODE_cursor_busy(true)
-//		
-//		forms.WEB_0F_page._hackNoFire = true
-//		forms.CODE__blank.controller.show()
-//		forms.DATASUTRA_0F_solution.controller.show()
-//		//this needs to be long enough for it to finish rendering
-//		application.updateUI(1000)
-//		forms.WEB_0F_page._hackNoFire = false
-//		
-//		//reset the window's title
-//		forms.DATASUTRA_0F_solution.elements.fld_trigger_name.requestFocus(true)
-//		
-//		globals.CODE_cursor_busy(false)
-//	}
+
 }
 
 /**
