@@ -433,15 +433,15 @@ function INIT_block() {
 }
 
 /**
- * @param {JSFoundset}	fsBlockData Block data points.
- * @param {JSFoundset}	fsBlockConfig Block configure data points.
- * @param {Boolean}		flagEdit Editable status.
- * @param {Boolean}		[flagScrapbook=scrapbook or not] Working with a scrapbook.
- * @param {String}		[contextForm='WEB_0F_page__design__content_1F_block_data'] Form to add this block to.
+ * 
+ * @param {JSFoundset} fsBlockData block data points
+ * @param {Boolean} flagEdit page version is editable or not
+ * @param {Boolean} flagScrapbook true if showing scrapbook
+ * @param {String}	contextForm Form where this will be loaded in.
  * 
  * @properties={typeid:24,uuid:"8947A3D9-5C5E-4766-9C2C-C2F1BE5D6B8A"}
  */
-function LOADER_on_load(fsBlockData, fsBlockConfig, flagEdit, flagScrapbook, contextForm) {
+function LOADER_init(fsBlockData, flagEdit, flagScrapbook, contextForm) {
 	//show tinymce
 	if (flagEdit) {
 		// load form
@@ -454,7 +454,7 @@ function LOADER_on_load(fsBlockData, fsBlockConfig, flagEdit, flagScrapbook, con
 	}
 	
 	//refresh display
-	LOADER_on_select(fsBlockData,fsBlockConfig,flagEdit,flagScrapbook)
+	LOADER_refresh(fsBlockData,flagEdit,flagScrapbook)
 }
 
 /**
@@ -465,14 +465,9 @@ function PAGE_popup_test() {
 }
 
 /**
- * @param {JSFoundset}	fsBlockData Block data points.
- * @param {JSFoundset}	fsBlockConfig Block configure data points.
- * @param {Boolean}		flagEdit Editable status.
- * @param {Boolean}		[flagScrapbook=scrapbook or not] Working with a scrapbook.
- * 
  * @properties={typeid:24,uuid:"37C06D1C-1BA1-4D07-988D-055070467F54"}
  */
-function LOADER_on_select(fsBlockData,fsBlockConfig,flagEdit,flagScrapbook) {
+function LOADER_refresh(fsBlockData,flagEdit,flagScrapbook) {
 	var recBlockData = fsBlockData.getRecord(1)
 	
 	//show tinymce

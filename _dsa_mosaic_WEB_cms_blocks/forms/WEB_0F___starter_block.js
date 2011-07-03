@@ -96,40 +96,43 @@ function INIT_block() {
 }
 
 /**
- * Form load event. Fires code when changing between two blocks of different types.
  * 
- * @param {JSFoundset}	fsBlockData Block data points.
- * @param {JSFoundset}	fsBlockConfig Block configure data points.
- * @param {Boolean}		flagEdit Editable status.
- * @param {Boolean}		[flagScrapbook=scrapbook or not] Working with a scrapbook.
- * @param {String}		[contextForm='WEB_0F_page__design__content_1F_block_data'] Form to add this block to.
+ * @param {JSFoundset} fsBlockData block data points
+ * @param {Boolean} flagEdit page version is editable or not
+ * @param {Boolean} flagScrapbook true if showing scrapbook
  * 
  * @properties={typeid:24,uuid:"66882D66-C9FB-4C36-B2DA-10D0B467E09C"}
  */
-function LOADER_on_load(fsBlockData, fsBlockConfig, flagEdit, flagScrapbook, contextForm) {
+function LOADER_init(fsBlockData, flagEdit, flagScrapbook) {
 	// set label and load form
 	globals.WEB_block_form_loader("WEB_0F___starter_block", ((flagScrapbook) ? "SCRAPBOOK: Starter block" : "Starter block"))		
 	
-	// do additional form load stuff
-	
-	// Trigger record select event
-	LOADER_on_select(fsBlockData,fsBlockConfig,flagEdit,flagScrapbook)
-	
-	// don't add anything more here
+	//refresh display
+	LOADER_refresh(fsBlockData,flagEdit,flagScrapbook)
 }
 
 /**
- * Record on select event. Fires code when changing between two blocks of the same type
- * 
- * @param {JSFoundset}	fsBlockData Block data points.
- * @param {JSFoundset}	fsBlockConfig Block configure data points.
- * @param {Boolean}		flagEdit Editable status.
- * @param {Boolean}		[flagScrapbook=scrapbook or not] Working with a scrapbook.
- * 
  * @properties={typeid:24,uuid:"C8C679D5-C524-47CD-ACD4-93FF855F1611"}
  */
-function LOADER_on_select(fsBlockData,fsBlockConfig,flagEdit,flagScrapbook) {
-
+function LOADER_refresh(fsBlockData,flagEdit,flagScrapbook) {
+	//put in code that would be fired on rec select if changing between two blocks of the same type
+	
+//	//hack to get scrapbook to display (for some blocks needed always, not just scrapbook)
+//	if (flagScrapbook && application.__parent__.solutionPrefs) {
+//		globals.CODE_cursor_busy(true)
+//		
+//		forms.WEB_0F_page._hackNoFire = true
+//		forms.CODE__blank.controller.show()
+//		forms.DATASUTRA_0F_solution.controller.show()
+//		//this needs to be long enough for it to finish rendering
+//		application.updateUI(1000)
+//		forms.WEB_0F_page._hackNoFire = false
+//		
+//		//reset the window's title
+//		forms.DATASUTRA_0F_solution.elements.fld_trigger_name.requestFocus(true)
+//		
+//		globals.CODE_cursor_busy(false)
+//	}
 }
 
 /**
