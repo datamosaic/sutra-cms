@@ -532,7 +532,7 @@ function ACTION_gui_mode_load() {
 	
 	//see globals.WEB_block_form_loader
 	function defaultForms() {
-		forms.WEB_0F_page__design__content_1F_block_data.elements.tab_detail.removeTabAt(2)
+//		forms.WEB_0F_page__design__content_1F_block_data.elements.tab_detail.removeTabAt(2)
 		forms.WEB_0F_page__design__content_1F_block_data.elements.tab_detail.tabIndex = 1
 		
 		forms.WEB_0F_page__design__content_1F_block_data.elements.lbl_banner.text = "Content"
@@ -669,7 +669,7 @@ function ACTION_gui_mode_refresh() {
 	
 	//see globals.WEB_block_form_loader
 	function defaultForms() {
-		forms.WEB_0F_page__design__content_1F_block_data.elements.tab_detail.removeTabAt(2)
+//		forms.WEB_0F_page__design__content_1F_block_data.elements.tab_detail.removeTabAt(2)
 		forms.WEB_0F_page__design__content_1F_block_data.elements.tab_detail.tabIndex = 1
 		
 		forms.WEB_0F_page__design__content_1F_block_data.elements.lbl_banner.text = "Content"
