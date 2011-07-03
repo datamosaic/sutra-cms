@@ -452,12 +452,15 @@ function ACTION_gui_mode_load() {
 					
 					//there is a custom form to show
 					if (hasInit) {
-						forms[recBlockType.form_name].LOADER_on_load(
+						//this form is not in the currently selected tab
+						if (recBlockType.form_name != forms.WEB_0F_page__design__content_1F_block_data.elements.tab_detail.getTabFormNameAt(forms.WEB_0F_page__design__content_1F_block_data.elements.tab_detail.tabIndex)) {
+							forms[recBlockType.form_name].LOADER_on_load(
 															recBlock.web_block_to_block_data,
 															recBlock.web_block_to_block_data_configure,
 															flagEdit,
 															false
 														)
+						}
 					}
 					//something not right, show default form
 					else {
