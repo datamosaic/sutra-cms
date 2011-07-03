@@ -78,6 +78,7 @@ function WEB_block_form_loader(formName, bannerName, relationName, contextForm) 
 //			tabPanel.addTab(forms[formName],null,null,null,null,null,null,relationName)
 //			tabPanel.tabIndex = 2
 //		}
+		relationName = 'web_block_to_block'
 		tabPanel.addTab(forms[formName],null,null,null,null,null,null,relationName)
 		tabPanel.tabIndex = tabPanel.getMaxTabIndex()
 	}
