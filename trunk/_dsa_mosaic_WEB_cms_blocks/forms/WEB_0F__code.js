@@ -327,12 +327,18 @@ function INIT_block() {
 }
 
 /**
+ * @param {JSFoundset}	fsBlockData Block data points.
+ * @param {JSFoundset}	fsBlockConfig Block configure data points.
+ * @param {Boolean}		flagEdit Editable status.
+ * @param {Boolean}		[flagScrapbook=scrapbook or not] Working with a scrapbook.
+ * @param {String}		[contextForm='WEB_0F_page__design__content_1F_block_data'] Form to add this block to.
+ * 
  * @properties={typeid:24,uuid:"79BC12DD-3EBB-4708-9A39-4238787249C9"}
  */
-function LOADER_on_load(fsBlockData, flagEdit, flagScrapbook, contextForm) {
+function LOADER_on_load(fsBlockData, fsBlockConfig, flagEdit, flagScrapbook, contextForm) {
 	//update display
 	_editsAllowed = flagEdit
-	LOADER_on_select(fsBlockData,false,flagScrapbook)
+	LOADER_on_select(fsBlockData,fsBlockConfig,false,flagScrapbook)
 	
 	//load correct form
 	if (flagScrapbook) {
@@ -425,9 +431,14 @@ function FLD_data_change__code_type(oldValue, newValue, event) {
 }
 
 /**
+ * @param {JSFoundset}	fsBlockData Block data points.
+ * @param {JSFoundset}	fsBlockConfig Block configure data points.
+ * @param {Boolean}		flagEdit Editable status.
+ * @param {Boolean}		[flagScrapbook=scrapbook or not] Working with a scrapbook.
+ * 
  * @properties={typeid:24,uuid:"2032938A-9A16-4FE2-BB20-EF2015D21E7E"}
  */
-function LOADER_on_select(fsBlockData,flagEdit,flagScrapbook) {
+function LOADER_on_select(fsBlockData,fsBlockConfig,flagEdit,flagScrapbook) {
 	//save down pertinent records
 	_recBlockData = fsBlockData.getRecord(1)
 	_dataValue = _recBlockData.data_value

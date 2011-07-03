@@ -96,25 +96,31 @@ function INIT_block() {
 }
 
 /**
- * 
- * @param {JSFoundset} fsBlockData block data points
- * @param {Boolean} flagEdit page version is editable or not
- * @param {Boolean} flagScrapbook true if showing scrapbook
+ * @param {JSFoundset}	fsBlockData Block data points.
+ * @param {JSFoundset}	fsBlockConfig Block configure data points.
+ * @param {Boolean}		flagEdit Editable status.
+ * @param {Boolean}		[flagScrapbook=scrapbook or not] Working with a scrapbook.
+ * @param {String}		[contextForm='WEB_0F_page__design__content_1F_block_data'] Form to add this block to.
  * 
  * @properties={typeid:24,uuid:"66882D66-C9FB-4C36-B2DA-10D0B467E09C"}
  */
-function LOADER_on_load(fsBlockData, flagEdit, flagScrapbook) {
+function LOADER_on_load(fsBlockData, fsBlockConfig, flagEdit, flagScrapbook, contextForm) {
 	// set label and load form
 	globals.WEB_block_form_loader("WEB_0F___starter_block", ((flagScrapbook) ? "SCRAPBOOK: Starter block" : "Starter block"))		
 	
 	//refresh display
-	LOADER_on_select(fsBlockData,flagEdit,flagScrapbook)
+	LOADER_on_select(fsBlockData,fsBlockConfig,flagEdit,flagScrapbook)
 }
 
 /**
+ * @param {JSFoundset}	fsBlockData Block data points.
+ * @param {JSFoundset}	fsBlockConfig Block configure data points.
+ * @param {Boolean}		flagEdit Editable status.
+ * @param {Boolean}		[flagScrapbook=scrapbook or not] Working with a scrapbook.
+ * 
  * @properties={typeid:24,uuid:"C8C679D5-C524-47CD-ACD4-93FF855F1611"}
  */
-function LOADER_on_select(fsBlockData,flagEdit,flagScrapbook) {
+function LOADER_on_select(fsBlockData,fsBlockConfig,flagEdit,flagScrapbook) {
 	//put in code that would be fired on rec select if changing between two blocks of the same type
 	
 //	//hack to get scrapbook to display (for some blocks needed always, not just scrapbook)
