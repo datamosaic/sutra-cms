@@ -152,12 +152,12 @@ function TOGGLE_buttons(editStatus) {
 /**
  * @properties={typeid:24,uuid:"E9062B39-C69D-4841-A367-94BDC60849FF"}
  */
-function LOADER_init(fsBlockData,flagEdit,flagScrapbook,contextForm) {
+function LOADER_on_load(fsBlockData,flagEdit,flagScrapbook,contextForm) {
 	//clear foundset //handled with onShow
 //	foundset.clear()
 	
 	//update display
-	var objImage = LOADER_refresh(fsBlockData,flagEdit,flagScrapbook)
+	var objImage = LOADER_on_select(fsBlockData,flagEdit,flagScrapbook)
 	
 	//laod asset that we're working with onto this form
 	controller.loadRecords(utils.stringToNumber(objImage.id_asset_instance))
@@ -172,7 +172,7 @@ function LOADER_init(fsBlockData,flagEdit,flagScrapbook,contextForm) {
 /**
  * @properties={typeid:24,uuid:"CA20C98A-927F-484F-960F-73E9FC28634B"}
  */
-function LOADER_refresh(fsBlockData,flagEdit,flagScrapbook) {
+function LOADER_on_select(fsBlockData,flagEdit,flagScrapbook) {
 	//create object with all properties
 	var objImage = new Object()
 	for (var i = 1; i <= fsBlockData.getSize(); i++) {

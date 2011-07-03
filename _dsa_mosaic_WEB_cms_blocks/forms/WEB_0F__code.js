@@ -329,16 +329,10 @@ function INIT_block() {
 /**
  * @properties={typeid:24,uuid:"79BC12DD-3EBB-4708-9A39-4238787249C9"}
  */
-function LOADER_init(fsBlockData, flagEdit, flagScrapbook, contextForm) {
-	//save down pertinent records
-	_recBlockData = fsBlockData.getRecord(1)
-	_dataValue = _recBlockData.data_value
-	_recBlockDataConfigure = _recBlockData.web_block_data_to_block.web_block_to_block_data_configure.getRecord(1)
-	_codeType = _recBlockDataConfigure.data_value
-	
+function LOADER_on_load(fsBlockData, flagEdit, flagScrapbook, contextForm) {
 	//update display
 	_editsAllowed = flagEdit
-	LOADER_refresh(fsBlockData,false,flagScrapbook)
+	LOADER_on_select(fsBlockData,false,flagScrapbook)
 	
 	//load correct form
 	if (flagScrapbook) {
@@ -433,7 +427,13 @@ function FLD_data_change__code_type(oldValue, newValue, event) {
 /**
  * @properties={typeid:24,uuid:"2032938A-9A16-4FE2-BB20-EF2015D21E7E"}
  */
-function LOADER_refresh(fsBlockData,flagEdit,flagScrapbook) {
+function LOADER_on_select(fsBlockData,flagEdit,flagScrapbook) {
+	//save down pertinent records
+	_recBlockData = fsBlockData.getRecord(1)
+	_dataValue = _recBlockData.data_value
+	_recBlockDataConfigure = _recBlockData.web_block_data_to_block.web_block_to_block_data_configure.getRecord(1)
+	_codeType = _recBlockDataConfigure.data_value
+	
 	ACTION_colorize(_recBlockData)
 	
 	TOGGLE_buttons(flagEdit)

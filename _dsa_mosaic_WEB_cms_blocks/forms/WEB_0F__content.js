@@ -441,7 +441,7 @@ function INIT_block() {
  * 
  * @properties={typeid:24,uuid:"8947A3D9-5C5E-4766-9C2C-C2F1BE5D6B8A"}
  */
-function LOADER_init(fsBlockData, flagEdit, flagScrapbook, contextForm) {
+function LOADER_on_load(fsBlockData, flagEdit, flagScrapbook, contextForm) {
 	//show tinymce
 	if (flagEdit) {
 		// load form
@@ -454,7 +454,7 @@ function LOADER_init(fsBlockData, flagEdit, flagScrapbook, contextForm) {
 	}
 	
 	//refresh display
-	LOADER_refresh(fsBlockData,flagEdit,flagScrapbook)
+	LOADER_on_select(fsBlockData,flagEdit,flagScrapbook)
 }
 
 /**
@@ -467,7 +467,7 @@ function PAGE_popup_test() {
 /**
  * @properties={typeid:24,uuid:"37C06D1C-1BA1-4D07-988D-055070467F54"}
  */
-function LOADER_refresh(fsBlockData,flagEdit,flagScrapbook) {
+function LOADER_on_select(fsBlockData,flagEdit,flagScrapbook) {
 	var recBlockData = fsBlockData.getRecord(1)
 	
 	//show tinymce

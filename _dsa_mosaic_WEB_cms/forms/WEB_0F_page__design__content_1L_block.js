@@ -442,18 +442,19 @@ function ACTION_gui_mode_load() {
 				//this block definition exists as does the form
 				if (recBlockType && forms[recBlockType.form_name]) {
 					//form not loaded yet, get solution model to check for method existence
-					if (forms[recBlockType.form_name] == '<Form ' + recBlockType.form_name + ' not loaded yet>' && solutionModel.getForm(recBlockType.form_name).getFormMethod('LOADER_init')) {
+					if (forms[recBlockType.form_name] == '<Form ' + recBlockType.form_name + ' not loaded yet>' && solutionModel.getForm(recBlockType.form_name).getFormMethod('LOADER_on_load')) {
 						var hasInit = true
 					}
 					//check for method existence on form
-					else if (forms[recBlockType.form_name].LOADER_init) {
+					else if (forms[recBlockType.form_name].LOADER_on_load) {
 						var hasInit = true
 					}
 					
 					//there is a custom form to show
 					if (hasInit) {
-						forms[recBlockType.form_name].LOADER_init(
+						forms[recBlockType.form_name].LOADER_on_load(
 															recBlock.web_block_to_block_data,
+															recBlock.web_block_to_block_data_configure,
 															flagEdit,
 															false
 														)
@@ -479,11 +480,11 @@ function ACTION_gui_mode_load() {
 				//this block definition exists as does the form
 				if (recBlockType && forms[recBlockType.form_name]) {
 					//form not loaded yet, get solution model to check for method existence
-					if (forms[recBlockType.form_name] == '<Form ' + recBlockType.form_name + ' not loaded yet>' && solutionModel.getForm(recBlockType.form_name).getFormMethod('LOADER_init')) {
+					if (forms[recBlockType.form_name] == '<Form ' + recBlockType.form_name + ' not loaded yet>' && solutionModel.getForm(recBlockType.form_name).getFormMethod('LOADER_on_load')) {
 						var hasInit = true
 					}
 					//check for method existence on form
-					else if (forms[recBlockType.form_name].LOADER_init) {
+					else if (forms[recBlockType.form_name].LOADER_on_load) {
 						var hasInit = true
 					}
 					
@@ -503,8 +504,9 @@ function ACTION_gui_mode_load() {
 //						forms.WEB_TB__web_mode.ACTION_mode(dataEvent)
 //						forms.WEB_TB__web_mode.ACTION_mode(guiEvent)
 						
-						forms[recBlockType.form_name].LOADER_init(
+						forms[recBlockType.form_name].LOADER_on_load(
 															recBlock.web_block_to_scrapbook.getRecord(1).web_scrapbook_to_scrapbook_data, 
+															recBlock.web_block_to_scrapbook.getRecord(1).web_scrapbook_to_scrapbook_configure, 
 															flagEdit,
 															true
 														)
@@ -559,35 +561,37 @@ function ACTION_gui_mode_refresh() {
 		//this block definition exists as does the form
 		if (recBlockType && forms[recBlockType.form_name]) {
 			//form not loaded yet, get solution model to check for method existence
-			if (forms[recBlockType.form_name] == '<Form ' + recBlockType.form_name + ' not loaded yet>' && solutionModel.getForm(recBlockType.form_name).getFormMethod('LOADER_refresh')) {
+			if (forms[recBlockType.form_name] == '<Form ' + recBlockType.form_name + ' not loaded yet>' && solutionModel.getForm(recBlockType.form_name).getFormMethod('LOADER_on_select')) {
 				var hasRefresh = true
 			}
 			//check for method existence on form
-			else if (forms[recBlockType.form_name].LOADER_refresh) {
+			else if (forms[recBlockType.form_name].LOADER_on_select) {
 				var hasRefresh = true
 			}
 			
 			//form not loaded yet, get solution model to check for method existence
-			if (forms[recBlockType.form_name] == '<Form ' + recBlockType.form_name + ' not loaded yet>' && solutionModel.getForm(recBlockType.form_name).getFormMethod('LOADER_init')) {
+			if (forms[recBlockType.form_name] == '<Form ' + recBlockType.form_name + ' not loaded yet>' && solutionModel.getForm(recBlockType.form_name).getFormMethod('LOADER_on_load')) {
 				var hasInit = true
 			}
 			//check for method existence on form
-			else if (forms[recBlockType.form_name].LOADER_init) {
+			else if (forms[recBlockType.form_name].LOADER_on_load) {
 				var hasInit = true
 			}
 			
 			//there is a refresh method
 			if (hasRefresh) {
-				forms[recBlockType.form_name].LOADER_refresh(
+				forms[recBlockType.form_name].LOADER_on_select(
 													recBlock.web_block_to_block_data,
+													recBlock.web_block_to_block_data_configure,
 													flagEdit,
 													false
 												)
 			}
 			//there is not a refresh, fire init
 			else if (hasInit) {
-				forms[recBlockType.form_name].LOADER_init(
+				forms[recBlockType.form_name].LOADER_on_load(
 													recBlock.web_block_to_block_data,
+													recBlock.web_block_to_block_data_configure,
 													flagEdit,
 													false
 												)
@@ -613,27 +617,28 @@ function ACTION_gui_mode_refresh() {
 		//this block definition exists as does the form
 		if (recBlockType && forms[recBlockType.form_name]) {
 			//form not loaded yet, get solution model to check for method existence
-			if (forms[recBlockType.form_name] == '<Form ' + recBlockType.form_name + ' not loaded yet>' && solutionModel.getForm(recBlockType.form_name).getFormMethod('LOADER_refresh')) {
+			if (forms[recBlockType.form_name] == '<Form ' + recBlockType.form_name + ' not loaded yet>' && solutionModel.getForm(recBlockType.form_name).getFormMethod('LOADER_on_select')) {
 				var hasRefresh = true
 			}
 			//check for method existence on form
-			else if (forms[recBlockType.form_name].LOADER_refresh) {
+			else if (forms[recBlockType.form_name].LOADER_on_select) {
 				var hasRefresh = true
 			}
 			
 			//form not loaded yet, get solution model to check for method existence
-			if (forms[recBlockType.form_name] == '<Form ' + recBlockType.form_name + ' not loaded yet>' && solutionModel.getForm(recBlockType.form_name).getFormMethod('LOADER_init')) {
+			if (forms[recBlockType.form_name] == '<Form ' + recBlockType.form_name + ' not loaded yet>' && solutionModel.getForm(recBlockType.form_name).getFormMethod('LOADER_on_load')) {
 				var hasInit = true
 			}
 			//check for method existence on form
-			else if (forms[recBlockType.form_name].LOADER_init) {
+			else if (forms[recBlockType.form_name].LOADER_on_load) {
 				var hasInit = true
 			}
 			
 			//there is a refresh method
 			if (hasRefresh) {
-				forms[recBlockType.form_name].LOADER_refresh(
-													recBlock.web_block_to_block_data,
+				forms[recBlockType.form_name].LOADER_on_select(
+													recBlock.web_block_to_scrapbook.getRecord(1).web_scrapbook_to_scrapbook_data, 
+													recBlock.web_block_to_scrapbook.getRecord(1).web_scrapbook_to_scrapbook_configure, 
 													flagEdit,
 													false
 												)
@@ -645,8 +650,9 @@ function ACTION_gui_mode_refresh() {
 //						return 'lbl_mode_real'
 //					}
 //				forms.WEB_TB__web_mode.ACTION_mode(pseudoEvent)
-				forms[recBlockType.form_name].LOADER_init(
+				forms[recBlockType.form_name].LOADER_on_load(
 													recBlock.web_block_to_scrapbook.getRecord(1).web_scrapbook_to_scrapbook_data, 
+													recBlock.web_block_to_scrapbook.getRecord(1).web_scrapbook_to_scrapbook_configure, 
 													flagEdit,
 													true
 												)
