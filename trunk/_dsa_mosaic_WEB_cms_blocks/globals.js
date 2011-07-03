@@ -73,11 +73,13 @@ function WEB_block_form_loader(formName, bannerName, relationName, contextForm) 
 	
 	//add in as second tab
 	if (contextForm == 'WEB_0F_page__design__content_1F_block_data') {
-		if (tabPanel.getTabFormNameAt(2) != formName) {
-			tabPanel.removeTabAt(2)
-			tabPanel.addTab(forms[formName],null,null,null,null,null,null,relationName)
-			tabPanel.tabIndex = 2
-		}
+//		if (tabPanel.getTabFormNameAt(2) != formName) {
+//			tabPanel.removeTabAt(2)
+//			tabPanel.addTab(forms[formName],null,null,null,null,null,null,relationName)
+//			tabPanel.tabIndex = 2
+//		}
+		tabPanel.addTab(forms[formName],null,null,null,null,null,null,relationName)
+		tabPanel.tabIndex = tabPanel.getMaxTabIndex()
 	}
 	//put as first tab
 	else {

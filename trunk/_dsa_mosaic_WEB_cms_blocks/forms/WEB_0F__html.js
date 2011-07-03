@@ -313,14 +313,14 @@ function INIT_block() {
 /**
  * @properties={typeid:24,uuid:"16312B6D-9AA1-465F-B962-79EAC114C412"}
  */
-function LOADER_init(fsBlockData, flagEdit, flagScrapbook, contextForm) {
+function LOADER_on_load(fsBlockData, flagEdit, flagScrapbook, contextForm) {
 	//save down pertinent record
 	_recBlockData = fsBlockData.getRecord(1)
 	_dataValue = _recBlockData.data_value
 	
 	//update display
 	_editsAllowed = flagEdit
-	LOADER_refresh(fsBlockData,false,flagScrapbook)
+	LOADER_on_select(fsBlockData,false,flagScrapbook)
 	
 	//load correct form
 	if (flagScrapbook) {
@@ -388,7 +388,7 @@ var _dataValue = null;
 /**
  * @properties={typeid:24,uuid:"38AF4915-03E9-4D61-B791-237B336410AC"}
  */
-function LOADER_refresh(fsBlockData,flagEdit,flagScrapbook) {
+function LOADER_on_select(fsBlockData,flagEdit,flagScrapbook) {
 	ACTION_colorize(_recBlockData)
 	
 	TOGGLE_buttons(flagEdit)

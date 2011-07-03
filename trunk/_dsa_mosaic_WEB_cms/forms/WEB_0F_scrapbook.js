@@ -185,13 +185,13 @@ function REC_on_select(event) {
 		//this block definition exists as does the form
 		if (recBlockType && forms[recBlockType.form_name]) {
 			//check for method existence on form
-			if (solutionModel.getForm(recBlockType.form_name).getFormMethod('LOADER_init')) {
+			if (solutionModel.getForm(recBlockType.form_name).getFormMethod('LOADER_on_load')) {
 				var hasInit = true
 			}
 			
 			//there is a custom form to show
 			if (hasInit) {
-				forms[recBlockType.form_name].LOADER_init(
+				forms[recBlockType.form_name].LOADER_on_load(
 													recScrapbook.web_scrapbook_to_scrapbook_data,
 													flagEdit,
 													false,
@@ -252,13 +252,13 @@ function TAB_change(event,elemName) {
 			//this block definition exists as does the form
 			if (recBlockType && forms[recBlockType.form_name]) {
 				//check for method existence on form
-				if (solutionModel.getForm(recBlockType.form_name).getFormMethod('LOADER_refresh')) {
+				if (solutionModel.getForm(recBlockType.form_name).getFormMethod('LOADER_on_select')) {
 					var hasInit = true
 				}
 				
 				//there is a custom form to show
 				if (hasInit) {
-					forms[recBlockType.form_name].LOADER_refresh(
+					forms[recBlockType.form_name].LOADER_on_select(
 														recScrapbook.web_scrapbook_to_scrapbook_data,
 														flagEdit
 													)
