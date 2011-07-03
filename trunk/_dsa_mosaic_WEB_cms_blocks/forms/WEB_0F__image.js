@@ -150,20 +150,14 @@ function TOGGLE_buttons(editStatus) {
 }
 
 /**
- * @param {JSFoundset}	fsBlockData Block data points.
- * @param {JSFoundset}	fsBlockConfig Block configure data points.
- * @param {Boolean}		flagEdit Editable status.
- * @param {Boolean}		[flagScrapbook=scrapbook or not] Working with a scrapbook.
- * @param {String}		[contextForm='WEB_0F_page__design__content_1F_block_data'] Form to add this block to.
- * 
  * @properties={typeid:24,uuid:"E9062B39-C69D-4841-A367-94BDC60849FF"}
  */
-function LOADER_on_load(fsBlockData,fsBlockConfig,flagEdit,flagScrapbook,contextForm) {
+function LOADER_init(fsBlockData,flagEdit,flagScrapbook,contextForm) {
 	//clear foundset //handled with onShow
 //	foundset.clear()
 	
 	//update display
-	var objImage = LOADER_on_select(fsBlockData,fsBlockConfig,flagEdit,flagScrapbook)
+	var objImage = LOADER_refresh(fsBlockData,flagEdit,flagScrapbook)
 	
 	//laod asset that we're working with onto this form
 	controller.loadRecords(utils.stringToNumber(objImage.id_asset_instance))
@@ -176,14 +170,9 @@ function LOADER_on_load(fsBlockData,fsBlockConfig,flagEdit,flagScrapbook,context
 }
 
 /**
- * @param {JSFoundset}	fsBlockData Block data points.
- * @param {JSFoundset}	fsBlockConfig Block configure data points.
- * @param {Boolean}		flagEdit Editable status.
- * @param {Boolean}		[flagScrapbook=scrapbook or not] Working with a scrapbook.
- * 
  * @properties={typeid:24,uuid:"CA20C98A-927F-484F-960F-73E9FC28634B"}
  */
-function LOADER_on_select(fsBlockData,fsBlockConfig,flagEdit,flagScrapbook) {
+function LOADER_refresh(fsBlockData,flagEdit,flagScrapbook) {
 	//create object with all properties
 	var objImage = new Object()
 	for (var i = 1; i <= fsBlockData.getSize(); i++) {
