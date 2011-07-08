@@ -1,12 +1,11 @@
 columns:[
 {
 allowNull:false,
-autoEnterSubType:3,
+autoEnterSubType:0,
 autoEnterType:2,
 creationOrderIndex:0,
-dataType:12,
-flags:5,
-length:50,
+dataType:4,
+flags:1,
 name:"id_install"
 },
 {
