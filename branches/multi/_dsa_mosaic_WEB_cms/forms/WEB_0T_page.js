@@ -674,19 +674,20 @@ function REC_delete(record) {
 			var orderBy = record.order_by
 			
 			//delete all versions (doing on one of the three should get them all)
-			var fsVersions = databaseManager.getFoundSet('sutra_cms','web_version')
-			fsVersions.find()
-			fsVersions.id_platform = getKeys('web_page_to_platform','id_platform').join('||')
-			fsVersions.search(false,false)
-			fsVersions.deleteAllRecords()
-			fsVersions.find()
-			fsVersions.id_language = getKeys('web_page_to_language','id_language').join('||')
-			fsVersions.search(false,false)
-			fsVersions.deleteAllRecords()
-			fsVersions.find()
-			fsVersions.id_group = getKeys('web_page_to_platform','id_group').join('||')
-			fsVersions.search(false,false)
-			fsVersions.deleteAllRecords()
+			//TODO: this has been removed...will be workflow to clean up orphaned children
+//			var fsVersions = databaseManager.getFoundSet('sutra_cms','web_version')
+//			fsVersions.find()
+//			fsVersions.id_platform = getKeys('web_page_to_platform','id_platform').join('||')
+//			fsVersions.search(false,false)
+//			fsVersions.deleteAllRecords()
+//			fsVersions.find()
+//			fsVersions.id_language = getKeys('web_page_to_language','id_language').join('||')
+//			fsVersions.search(false,false)
+//			fsVersions.deleteAllRecords()
+//			fsVersions.find()
+//			fsVersions.id_group = getKeys('web_page_to_platform','id_group').join('||')
+//			fsVersions.search(false,false)
+//			fsVersions.deleteAllRecords()
 			
 			//delete it
 			record.deleteRecord()
