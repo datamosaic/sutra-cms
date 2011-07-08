@@ -62,8 +62,8 @@ function ACTIONS_list() {
 			'-',
 			'Delete record',
 			'-',
-			'Delete all unnamed pages',
-			'-',
+//			'Delete all unnamed pages',
+//			'-',
 			'Flush client cache'
 		]
 	
@@ -138,37 +138,38 @@ function ACTIONS_list_control() {
 			REC_delete()
 			break	
 		
-		case 9: //delete all unnamed
-			var fsPages = forms.WEB_0F_site.web_site_to_page
+//		case 9: //delete all unnamed
+//			//MEMO: this option was put in because blank pages were created when canceling a new page...this bug should be gone
+//			var fsPages = forms.WEB_0F_site.web_site_to_page
+//			
+//			var input = plugins.dialogs.showQuestionDialog(
+//						'Delete record?',
+//						'Do you want to delete all unnamed records from this site?',
+//						'Yes',
+//						'No'
+//				)
+//			
+//			if (input == 'Yes') {
+//				var flagDidSomething
+//				
+//				for (var i = 1; i <= fsPages.getSize(); i++) {
+//					var record = fsPages.getRecord(i)
+//					
+//					if (!record.display_page_name) {
+//						REC_delete(record)
+//						i--
+//						flagDidSomething = true
+//					}
+//				}
+//				
+//				//reload tree view
+//				if (flagDidSomething) {
+//					TREE_refresh()
+//				}
+//			}
+//			break
 			
-			var input = plugins.dialogs.showQuestionDialog(
-						'Delete record?',
-						'Do you want to delete all unnamed records from this site?',
-						'Yes',
-						'No'
-				)
-			
-			if (input == 'Yes') {
-				var flagDidSomething
-				
-				for (var i = 1; i <= fsPages.getSize(); i++) {
-					var record = fsPages.getRecord(i)
-					
-					if (!record.display_page_name) {
-						REC_delete(record)
-						i--
-						flagDidSomething = true
-					}
-				}
-				
-				//reload tree view
-				if (flagDidSomething) {
-					TREE_refresh()
-				}
-			}
-			break
-			
-		case 11: //flush client cache
+		case 9: //flush client cache
 			//TODO: a progressbar indicator...better yet, spawn a headless client on the server
 			globals.CODE_cursor_busy(true)
 			var tables = databaseManager.getTableNames('sutra_cms')
