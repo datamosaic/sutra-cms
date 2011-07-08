@@ -18,6 +18,14 @@ name:"directory"
 },
 {
 allowNull:true,
+autoEnterType:3,
+creationOrderIndex:19,
+dataType:4,
+defaultValue:"1",
+name:"flag_auto_activate"
+},
+{
+allowNull:true,
 creationOrderIndex:14,
 dataType:4,
 name:"flag_logging"
