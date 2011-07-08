@@ -1,12 +1,11 @@
 columns:[
 {
 allowNull:false,
-autoEnterSubType:3,
+autoEnterSubType:0,
 autoEnterType:2,
 creationOrderIndex:0,
-dataType:12,
-flags:5,
-length:50,
+dataType:4,
+flags:1,
 name:"id_theme"
 },
 {
@@ -31,9 +30,7 @@ name:"flag_default"
 {
 allowNull:true,
 creationOrderIndex:9,
-dataType:12,
-flags:4,
-length:50,
+dataType:4,
 name:"id_site"
 },
 {
@@ -71,7 +68,7 @@ name:"rec_modified"
 allowNull:true,
 creationOrderIndex:6,
 dataType:-1,
-length:16777215,
+length:65535,
 name:"theme_directory"
 },
 {

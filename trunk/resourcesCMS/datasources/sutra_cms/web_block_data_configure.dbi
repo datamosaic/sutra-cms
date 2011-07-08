@@ -1,12 +1,11 @@
 columns:[
 {
 allowNull:false,
-autoEnterSubType:3,
+autoEnterSubType:0,
 autoEnterType:2,
 creationOrderIndex:6,
-dataType:12,
-flags:5,
-length:50,
+dataType:4,
+flags:1,
 name:"id_block_data_configure"
 },
 {
@@ -26,9 +25,7 @@ name:"data_value"
 {
 allowNull:true,
 creationOrderIndex:4,
-dataType:12,
-flags:4,
-length:50,
+dataType:4,
 name:"id_block"
 },
 {
