@@ -78,16 +78,18 @@ function TINYMCE_init(mode) {
 		}
 		
 		//no pages, no css
-		if (utils.hasRecords(forms.WEB_0F_page)) {
-			//rewrites are disabled, spell out all the way to the site directory
-			if (!rewriteMode) {
-				cssFile += 'sites/' + forms.WEB_0F_page.web_page_to_site.directory
-			}
-			cssFile += '/themes/' + forms.WEB_0F_page.web_page_to_theme.theme_directory + '/css/tinymce.css'
-			
-			//read in cssFile to see if exists
-			var fileExists = plugins.http.getPageData(cssFile)
-		}
+		var fileExists
+//		if (utils.hasRecords(forms.WEB_0F_page)) {
+//			//rewrites are disabled, spell out all the way to the site directory
+//			if (!rewriteMode) {
+//				cssFile += 'sites/' + forms.WEB_0F_page.web_page_to_site.directory
+//			}
+			//web_page_to_theme is not a valid relation any more...needs to go through platform
+//			cssFile += '/themes/' + forms.WEB_0F_page.web_page_to_theme.theme_directory + '/css/tinymce.css'
+//			
+//			//read in cssFile to see if exists
+//			var fileExists = plugins.http.getPageData(cssFile)
+//		}
 		
 		//tinymce file 
 		if (fileExists) {
@@ -455,13 +457,6 @@ function LOADER_init(fsBlockData, flagEdit, flagScrapbook, contextForm) {
 	
 	//refresh display
 	LOADER_refresh(fsBlockData,flagEdit,flagScrapbook)
-}
-
-/**
- * @properties={typeid:24,uuid:"24C27F8E-25F9-4334-993A-389A21BE71E5"}
- */
-function PAGE_popup_test() {
-	plugins.dialogs.showInfoDialog( "Demo", "Block page actions added to this menu")
 }
 
 /**
