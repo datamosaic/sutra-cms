@@ -266,7 +266,7 @@ function ADD_version(event) {
 					
 					destRecord.version_number = 1
 					destRecord.version_description = info
-					destRecord.flag_active = null
+					destRecord.flag_active = forms.WEB_0F_site.flag_auto_activate
 					destRecord.flag_edit = 1
 					destRecord.id_platform = forms.WEB_0F_page__design__header_display__platform._platform.id_platform
 					destRecord.id_language = forms.WEB_0F_page__design__header_display__language._language.id_language
