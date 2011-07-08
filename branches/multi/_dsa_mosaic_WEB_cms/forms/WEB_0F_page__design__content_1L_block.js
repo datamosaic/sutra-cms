@@ -465,11 +465,14 @@ function ACTION_gui_mode_load() {
 					
 					//there is a custom form to show
 					if (hasInit) {
-						forms[recBlockType.form_name].LOADER_init(
+						//this form is not in the currently selected tab
+						if (recBlockType.form_name != forms.WEB_0F_page__design__content_1F_block_data.elements.tab_detail.getTabFormNameAt(forms.WEB_0F_page__design__content_1F_block_data.elements.tab_detail.tabIndex)) {
+							forms[recBlockType.form_name].LOADER_init(
 															recBlock.web_block_to_block_data,
 															flagEdit,
 															false
 														)
+						}
 					}
 					//something not right, show default form
 					else {
@@ -516,12 +519,14 @@ function ACTION_gui_mode_load() {
 //						forms.WEB_TB__web_mode.ACTION_mode(dataEvent)
 //						forms.WEB_TB__web_mode.ACTION_mode(guiEvent)
 						
-						forms[recBlockType.form_name].LOADER_init(
+						//this form is not in the currently selected tab
+						if (recBlockType.form_name != forms.WEB_0F_page__design__content_1F_block_data.elements.tab_detail.getTabFormNameAt(forms.WEB_0F_page__design__content_1F_block_data.elements.tab_detail.tabIndex)) {
+							forms[recBlockType.form_name].LOADER_init(
 															recBlock.web_block_to_scrapbook.getRecord(1).web_scrapbook_to_scrapbook_data, 
 															flagEdit,
 															true
 														)
-						
+						}
 					}
 					//something not right, show default form
 					else {
@@ -543,7 +548,7 @@ function ACTION_gui_mode_load() {
 	
 	//see globals.WEB_block_form_loader
 	function defaultForms() {
-		forms.WEB_0F_page__design__content_1F_block_data.elements.tab_detail.removeTabAt(2)
+//		forms.WEB_0F_page__design__content_1F_block_data.elements.tab_detail.removeTabAt(2)
 		forms.WEB_0F_page__design__content_1F_block_data.elements.tab_detail.tabIndex = 1
 		
 		forms.WEB_0F_page__design__content_1F_block_data.elements.lbl_banner.text = "Content"
