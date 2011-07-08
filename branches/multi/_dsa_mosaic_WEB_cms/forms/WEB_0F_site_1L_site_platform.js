@@ -18,8 +18,37 @@ function REC_delete() {
 				)
 
 	if (delRec == 'Yes') {
+		if (flag_default) {
+			var flagSet = true
+		}
+		
 		controller.deleteRecord()
+		
+		if (utils.hasRecords(foundset) && flagSet) {
+			flag_default = 1
+		}
+		
+		//update valuelists
+		forms.WEB_0F_page__design.REC_on_select()
 	}
+}
+
+/**
+ * Handle changed data.
+ *
+ * @param {Object} oldValue old value
+ * @param {Object} newValue new value
+ * @param {JSEvent} event the event that triggered the action
+ *
+ * @returns {Boolean}
+ *
+ * @properties={typeid:24,uuid:"036C8C75-8B62-4221-AE5C-17A53B4CC9F6"}
+ */
+function FLD_platform_name__data_change(oldValue, newValue, event) {
+	//update valuelists
+	forms.WEB_0F_page__design.REC_on_select()	
+	
+	return true
 }
 
 /**
@@ -28,7 +57,7 @@ function REC_delete() {
  */
 function REC_new() {
 	controller.newRecord(false)
-	elements.fld_platform_name.requestFocus(false)
+//	elements.fld_platform_name.requestFocus(false)
 }
 
 /**
@@ -48,5 +77,37 @@ function REC_on_select(event) {
 	}
 	else {
 		fsPage.clear()
+	}
+}
+
+/**
+ * Handle changed data.
+ *
+ * @param {Object} oldValue old value
+ * @param {Object} newValue new value
+ * @param {JSEvent} event the event that triggered the action
+ *
+ * @returns {Boolean}
+ *
+ * @properties={typeid:24,uuid:"E0694211-066D-4F0C-8AF9-F979F3F2C5CE"}
+ */
+function FLD_data_change__flag_default(oldValue, newValue, event) {
+	var record = foundset.getSelectedRecord()
+	
+	if (newValue) {
+		for (var i = 1; i <= foundset.getSize(); i++) {
+			var tempRecord = foundset.getRecord(i)
+			
+			if (tempRecord.id_site_platform != record.id_site_platform) {
+				tempRecord.flag_default = null
+			}
+		}
+	}
+	else {
+		plugins.dialogs.showErrorDialog(
+						'Error',
+						'There must always be a default'
+				)
+			record.flag_default = 1
 	}
 }

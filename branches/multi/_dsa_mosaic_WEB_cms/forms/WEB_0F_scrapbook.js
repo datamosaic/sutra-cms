@@ -44,6 +44,7 @@ function FORM_on_load(event) {
 	if (utils.hasRecords(forms.WEB_0F_site.foundset)) {
 		foundset.find()
 		foundset.id_site = forms.WEB_0F_site.id_site
+		foundset.scrapbook_type = 2
 		var results = foundset.search()
 	}
 	else {
@@ -64,6 +65,7 @@ function REC_new() {
 		
 		controller.newRecord(true)
 		id_site = forms.WEB_0F_site.id_site
+		scrapbook_type = 2
 		elements.fld_scrapbook_name.requestFocus(false)
 	}
 	else {

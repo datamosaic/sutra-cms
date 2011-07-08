@@ -1,4 +1,3 @@
-dataSource:"db:/sutra_cms/web_version",
 items:[
 {
 anchors:11,
@@ -39,7 +38,7 @@ showFocus:false,
 size:"278,25",
 styleClass:"heading1",
 tabSeq:-1,
-text:"Snapshot",
+text:"Versioning: Old Info",
 transparent:true,
 typeid:7,
 uuid:"254811EB-586D-4A63-BE01-2FE926D95F8E"
@@ -83,12 +82,12 @@ uuid:"6FC03DE8-12B1-45AF-8680-808A4F15F29F"
 },
 {
 anchors:15,
-dataProviderID:"globals.WEB_version_description",
+dataProviderID:"_versionDescription",
 displayType:1,
 formIndex:10600,
 location:"10,100",
 margin:"1,2,0,14",
-name:"fld_WEB_version_description",
+name:"var_versionDescription",
 onActionMethodID:"-1",
 onFocusGainedMethodID:"-1",
 onFocusLostMethodID:"-1",
@@ -138,11 +137,11 @@ uuid:"AC44FC39-3A09-4DFF-B88F-A06A3611D437"
 },
 {
 anchors:11,
-dataProviderID:"globals.WEB_version_name",
+dataProviderID:"_versionName",
 formIndex:10600,
 location:"10,56",
 margin:"1,2,0,14",
-name:"fld_WEB_version_name",
+name:"var_versionName",
 onActionMethodID:"-1",
 onFocusGainedMethodID:"-1",
 onFocusLostMethodID:"-1",
@@ -154,7 +153,6 @@ uuid:"F4A74430-A888-4277-9D39-3A6AEEB2325C"
 }
 ],
 name:"WEB_P_version",
-namedFoundSet:"separate",
 navigatorID:"-1",
 onDeleteAllRecordsCmdMethodID:"-1",
 onDeleteRecordCmdMethodID:"-1",

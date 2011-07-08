@@ -472,7 +472,7 @@ if (delRec == 'Yes') {
 	controller.setSelectedIndex(recSelect)
 
 	if (!utils.hasRecords(foundset)) {
-		REC_selected()
+		REC_on_select()
 	}
 }
 	
@@ -484,15 +484,9 @@ if (delRec == 'Yes') {
  *
  * @properties={typeid:24,uuid:"735FD557-C0C7-419E-95D5-7A6B5110B99D"}
  */
-function REC_selected()
-{
-	if (utils.hasRecords(foundset)) {
-		// populate area id global to display blocks by area
-		globals.WEB_page_id_area_selected = id_area
-	}
-	else {
-		globals.WEB_page_id_area_selected = 0
-		forms.WEB_0F_page__design__content_1L_block.REC_selected()
+function REC_on_select() {
+	if (!utils.hasRecords(foundset)) {
+		forms.WEB_0F_page__design__content_1L_block.REC_on_select()
 	}
 }
 

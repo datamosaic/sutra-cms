@@ -13,20 +13,6 @@ function id_block_display()
 
 /**
  *
- * @properties={type:12,typeid:36,uuid:"B9AE4773-F5E7-468E-8A08-076CD774CD46"}
- */
-function params()
-{
-	if (id_scrapbook) {
-		return web_block_to_scrapbook.params
-	}
-	else {
-		return params
-	}
-}
-
-/**
- *
  * @properties={type:12,typeid:36,uuid:"12906DFC-E969-45E6-86B6-C91DE92F4735"}
  */
 function row_background()

@@ -71,30 +71,6 @@ var _themesProgressCount = 0;
 var _themesDone = 0;
 
 /**
- *
- * @properties={typeid:24,uuid:"F2CB4A41-BEEE-4317-9FA2-4976302B50EA"}
- */
-function ACTION_new_editable()
-{
-	
-	if (utils.hasRecords(web_theme_to_layout)) {
-		web_theme_to_layout.web_layout_to_editable__selected.newRecord(false, true)
-		databaseManager.saveData()
-		web_theme_to_layout.web_layout_to_editable__selected.editable_name = ''
-		forms.WEB_0F_theme_1L_editable.elements.fld_name.requestFocus()
-		application.updateUI()
-	}
-	else {
-		plugins.dialogs.showErrorDialog(
-					'Error',
-					'No theme or layout selected.'
-			)
-	}	
-
-
-}
-
-/**
  * @properties={typeid:35,uuid:"563E0740-3E65-4C43-84B2-5EE80C9D81C3",variableType:-4}
  */
 var _themesPaths = [];

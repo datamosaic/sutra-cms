@@ -18,7 +18,18 @@ function REC_delete() {
 				)
 
 	if (delRec == 'Yes') {
+		if (flag_default) {
+			var flagSet = true
+		}
+		
 		controller.deleteRecord()
+		
+		if (utils.hasRecords(foundset) && flagSet) {
+			flag_default = 1
+		}
+		
+		//update valuelists
+		forms.WEB_0F_page__design.REC_on_select()
 	}
 }
 
@@ -49,4 +60,54 @@ function REC_on_select(event) {
 	else {
 		fsPage.clear()
 	}
+}
+
+/**
+ * Handle changed data.
+ *
+ * @param {Object} oldValue old value
+ * @param {Object} newValue new value
+ * @param {JSEvent} event the event that triggered the action
+ *
+ * @returns {Boolean}
+ *
+ * @properties={typeid:24,uuid:"165FE0CB-8A0F-4305-91A5-7D54E5190A28"}
+ */
+function FLD_data_change__flag_default(oldValue, newValue, event) {
+	var record = foundset.getSelectedRecord()
+	
+	if (newValue) {
+		for (var i = 1; i <= foundset.getSize(); i++) {
+			var tempRecord = foundset.getRecord(i)
+			
+			if (tempRecord.id_site_language != record.id_site_language) {
+				tempRecord.flag_default = null
+			}
+		}
+	}
+	else {
+		plugins.dialogs.showErrorDialog(
+						'Error',
+						'There must always be a default'
+				)
+			record.flag_default = 1
+	}
+}
+
+/**
+ * Handle changed data.
+ *
+ * @param {Object} oldValue old value
+ * @param {Object} newValue new value
+ * @param {JSEvent} event the event that triggered the action
+ *
+ * @returns {Boolean}
+ *
+ * @properties={typeid:24,uuid:"CBDEDE6A-C474-4B14-B2B8-CC4045424F28"}
+ */
+function FLD_data_change__language_name(oldValue, newValue, event) {
+	//update valuelists
+	forms.WEB_0F_page__design.REC_on_select()	
+		
+	return true
 }

@@ -39,7 +39,7 @@ uuid:"83F604C5-7AAE-47D4-A182-A58B592CA579"
 {
 anchors:11,
 borderType:"SpecialMatteBorder,0.0,0.0,1.0,0.0,#000000,#000000,#999999,#000000,0.0,1.0",
-dataProviderID:"page_name",
+dataProviderID:"web_page_to_language__default.page_name",
 editable:false,
 formIndex:10700,
 location:"60,30",

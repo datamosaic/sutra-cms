@@ -29,7 +29,7 @@ function REC_delete()
  *			  	
  *	MODIFIED :	July 31, 2008 -- Troy Elliott, Data Mosaic
  *			  	
- */	//TODO: renumber the remaining snapshots
+ */	//TODO: renumber the remaining versions
 
 if (utils.hasRecords(foundset)) {
 	//can't delete default

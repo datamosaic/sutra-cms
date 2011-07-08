@@ -154,7 +154,7 @@ function ACTIONS_list_control() {
 				for (var i = 1; i <= fsPages.getSize(); i++) {
 					var record = fsPages.getRecord(i)
 					
-					if (!record.page_name) {
+					if (!record.display_page_name) {
 						REC_delete(record)
 						i--
 						flagDidSomething = true
@@ -237,7 +237,7 @@ function FORM_on_load(event) {
 	var beanTree = elements.bean_tree.createBinding(controller.getServerName(),controller.getTableName()) 
 	
 	//name of field to show in tree
-	beanTree.setTextDataprovider('page_name') 
+	beanTree.setTextDataprovider('page_name')
 	
 	// publish flag
 	beanTree.setCheckBoxValueDataprovider('flag_publish')
@@ -558,31 +558,79 @@ function REC_column_publish(pagePK) {
 	fsPage.id_page = pagePK
 	var results = fsPage.search()
 	
-	if (results) {
-		//if no active snapshot, active working copy
-		for (var i = 1; i <= fsPage.web_page_to_version.getSize(); i++) {
-			var record = fsPage.web_page_to_version.getRecord(i)
-			
-			if (record.flag_active) {
-				var found = true
-			}
-		}
-		
-		//no active found, set working copy to be active
-		if (!found) {
-			var record = fsPage.web_page_to_version.getRecord(1)
-			record.flag_active = 1
-			
-			//re-draw the header area
-			forms.WEB_0F_page__design.SET_globals()
-			forms.WEB_0F_page__design__header_display.FLD_data_change__version_selected()
-		}
-		else {
-			//flag_publish
-		}
-		
-		databaseManager.saveData()
-	}
+	//TODO: what to activate?
+//	if (results) {
+//		
+//		var fsVersions = databaseManager.getFoundSet('sutra_cms','web_version')
+//		
+//		//get versions records
+//		fsVersions.find()
+//		fsVersions.id_platform = globals.WEB_page_platform
+//		fsVersions.id_language = globals.WEB_page_language
+//		fsVersions.id_group = globals.WEB_page_group
+//		var results = fsVersions.search(false,true)
+//		
+//		if (utils.hasRecords(fsVersions)) {
+//			if (!skipLoad) {
+//				fsVersions.sort('version_number desc')
+//			}
+//			
+//			for (var i = 1; i <= fsVersions.getSize(); i++) {
+//				var recVersion = fsVersions.getRecord(i)
+//				
+//				vlReal.push(recVersion.id_version)
+//				
+//				var displayVal = ''
+//				
+//				if (recVersion.flag_active) {
+//					displayVal += '<html><body><strong>ACTIVE</strong> '
+//					var active = {
+//						position: i,
+//						record: recVersion
+//					}
+//				}
+//				
+//				if (!recVersion.flag_active && i == 1) {
+//					displayVal += 'Working copy'
+//				}
+//				else {
+//					displayVal += 'Version ' + recVersion.version_number + ' (' + globals.CODE_date_format(recVersion.rec_modified,'current') + ')'
+//					
+//					if (recVersion.version_name) {
+//						displayVal += ': ' + recVersion.version_name
+//					}
+//				}	
+//				vlDisplay.push(displayVal)
+//			}
+//		}
+//		
+//		
+//		
+//		
+//		//if no active version, active working copy
+//		for (var i = 1; i <= fsPage.web_page_to_version.getSize(); i++) {
+//			var record = fsPage.web_page_to_version.getRecord(i)
+//			
+//			if (record.flag_active) {
+//				var found = true
+//			}
+//		}
+//		
+//		//no active found, set working copy to be active
+//		if (!found) {
+//			var record = fsPage.web_page_to_version.getRecord(1)
+//			record.flag_active = 1
+//			
+//			//re-draw the header area
+//			forms.WEB_0F_page__design.SET_globals()
+//			forms.WEB_0F_page__design__header_display.FLD_data_change__version_selected()
+//		}
+//		else {
+//			//flag_publish
+//		}
+//		
+//		databaseManager.saveData()
+//	}
 }
 
 /**
@@ -590,7 +638,17 @@ function REC_column_publish(pagePK) {
  * @properties={typeid:24,uuid:"952D8326-37DC-44A3-B6E9-F2212C1A87BE"}
  */
 function REC_delete(record) {
-
+	
+	function getKeys(relation,keyName) {
+		var keys = new Array()
+		
+		for (var i = 1; i <= record[relation].getSize(); i++) {
+			keys.push(record[relation].getRecord(i)[keyName])
+		}
+		
+		return keys
+	}
+	
 	if (utils.hasRecords(foundset) || typeof record == 'object') {
 		
 		if (typeof record == 'object' && record.id_page) {
@@ -604,7 +662,7 @@ function REC_delete(record) {
 								'Yes',
 								'No'
 							)
-			record = foundset.getRecord(foundset.getSelectedIndex())
+			record = foundset.getSelectedRecord()
 		}
 		
 		if (delRec == 'Yes') {
@@ -614,6 +672,21 @@ function REC_delete(record) {
 			//where do we want to end up
 			var parentID = record.parent_id_page
 			var orderBy = record.order_by
+			
+			//delete all versions (doing on one of the three should get them all)
+			var fsVersions = databaseManager.getFoundSet('sutra_cms','web_version')
+			fsVersions.find()
+			fsVersions.id_platform = getKeys('web_page_to_platform','id_platform').join('||')
+			fsVersions.search(false,false)
+			fsVersions.deleteAllRecords()
+			fsVersions.find()
+			fsVersions.id_language = getKeys('web_page_to_language','id_language').join('||')
+			fsVersions.search(false,false)
+			fsVersions.deleteAllRecords()
+			fsVersions.find()
+			fsVersions.id_group = getKeys('web_page_to_platform','id_group').join('||')
+			fsVersions.search(false,false)
+			fsVersions.deleteAllRecords()
 			
 			//delete it
 			record.deleteRecord()
@@ -784,7 +857,13 @@ function REC_new() {
 		return
 	}
 	
-	if (utils.hasRecords(forms.WEB_0F_site.foundset)) {
+	//default values for selected site
+	var siteDefaults = forms.WEB_0F_site.ACTION_get_defaults()
+	
+	//TODO: prompt to modify defaults (for example, logged in as spanish, only allowed to create spanish)
+	
+	//we have enough information to create a record
+	if (siteDefaults) {
 		globals.CODE_cursor_busy(true)
 		
 		//how is this record getting added
@@ -792,6 +871,9 @@ function REC_new() {
 		
 		//set flag that a new record getting created
 		_addRecord = 1
+		
+		//punch down site default
+		forms.WEB_0F_page__design__header_edit._siteDefaults = siteDefaults
 		
 		//get current location in the stack
 		if (utils.hasRecords(foundset)) {
@@ -801,34 +883,18 @@ function REC_new() {
 		else {
 			if (application.__parent__.solutionPrefs && solutionPrefs.design.statusLockWorkflow) {
 				globals.WEB_lock_workflow(false)
+				forms.WEB_TB__web_mode.controller.enabled = true
 			}
+			_oldRecord = null
 		}
 		
 		//save outstanding data and then turn autosave off until we don't get cancelled
 		databaseManager.saveData()
 		databaseManager.setAutoSave(false)
 		
-		var newRecord = foundset.getRecord(foundset.newRecord(false,true))
-		newRecord.id_site = forms.WEB_0F_site.id_site
-		
-		//fill in defaults
-		if (utils.hasRecords(newRecord.web_page_to_site.web_site_to_theme__default)) {
-			//set theme
-			newRecord.id_theme = newRecord.web_page_to_site.web_site_to_theme__default.id_theme
-			
-			//set layout
-			if (utils.hasRecords(newRecord.web_page_to_site.web_site_to_theme__default.web_theme_to_layout__default)) {
-				newRecord.id_theme_layout = newRecord.web_page_to_site.web_site_to_theme__default.web_theme_to_layout__default.id_layout
-			}
-			
-			//set flag that theme has been set and all areas should be blown in
-			if (webMode) {
-				forms.WEB_P_page._themeSet = 1
-			}
-			else {
-				forms.WEB_0F_page__design__header_edit._themeSet = 1
-			}
-		}
+		//create new page
+		var pageRec = foundset.getRecord(foundset.newRecord(false,true))
+		pageRec.id_site = forms.WEB_0F_site.id_site
 		
 		//if in browser mode, FiD to define page
 		if (webMode) {
@@ -844,7 +910,7 @@ function REC_new() {
 						true,
 						false,
 						'cmsNewPage'
-					)	
+					)
 		}
 		//design mode
 		else {
@@ -857,11 +923,22 @@ function REC_new() {
 			globals.CODE_cursor_busy(false)
 		}
 	}
+	//something wrong at the site level
 	else {
-		plugins.dialogs.showErrorDialog(
-						'Error',
-						'You must add a site record first'
-				)
+		//not all defaults specified
+		if (utils.hasRecords(foundset)) {
+			plugins.dialogs.showErrorDialog(
+							'Error',
+							'The defaults are not set correctly for this site'
+					)
+		}
+		//no site record
+		else {
+			plugins.dialogs.showErrorDialog(
+							'Error',
+							'You must add a site record first'
+					)
+		}
 	}
 }
 
@@ -871,6 +948,7 @@ function REC_new() {
  */
 function REC_on_select(selectedRecord) {
 
+	
 	//make record clicked in tree be selected on foundset also
 	if (selectedRecord && utils.hasRecords(foundset)) {
 		//just select that pk
@@ -880,19 +958,20 @@ function REC_on_select(selectedRecord) {
 		foundset.loadAllRecords()
 	}
 	
-	//that record not already loaded, find it
-	//TODO: this is where the error is
-	if (foundset.getSelectedRecord().id_page != selectedRecord) {
-		//foundset not working correctly
-		if (foundset.find()) {
-			foundset.id_page = selectedRecord
-			var results = foundset.search()
-		}
-		else {
-		//	application.output('ID ' + selectedRecord + ' not selected correctly')
+	if (utils.hasRecords(foundset)) {
+		//that record not already loaded, find it
+		//TODO: this is where the error is
+		if (foundset.getSelectedRecord().id_page != selectedRecord) {
+			//foundset not working correctly
+			if (foundset.find()) {
+				foundset.id_page = selectedRecord
+				var results = foundset.search()
+			}
+			else {
+			//	application.output('ID ' + selectedRecord + ' not selected correctly')
+			}
 		}
 	}
-	
 }
 
 /**

@@ -11,7 +11,7 @@ var _license_dsa_mosaic_WEB_cms = 'Module: _dsa_mosaic_WEB_cms \
  */
 function DATA_action_list() {
 	// get block type
-	var params = new Array(forms.WEB_0F_page__design.id_page, globals.WEB_page_id_area_selected, globals.WEB_page_id_block_selected)
+	var params = new Array(forms.WEB_0F_page__design.id_page, forms.WEB_0F_page__design__content_1L_area.id_area, forms.WEB_0F_page__design__content_1L_block.id_block)
 	var sql =	"select id_block_type, form_name from web_block_type where " +
 					"web_block_type.id_block_type = " +
 					"(select id_block_type from web_block where " +

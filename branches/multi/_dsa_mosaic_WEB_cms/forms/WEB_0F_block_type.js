@@ -587,17 +587,17 @@ function TAB_key_add(event) {
  *
  * @properties={typeid:24,uuid:"4FE94177-EF8D-49B1-855F-D9F35D57EB6E"}
  */
-function REC_selected(event) {
+function REC_on_select(event) {
 	var fsPages = forms.WEB_0F_block_type_1L_page.foundset
 	
 	//there is something to do on this page
 	if (utils.hasRecords(foundset)) {
 		FLD_data_change__form_name()
 		
-		//load correct pages that this is used on
-		fsPages.find()
-		fsPages.web_page_to_area__allversions.web_area_to_block.id_block_type = id_block_type
-		var results = fsPages.search()
+//		//load correct pages that this is used on
+//		fsPages.find()
+//		fsPages.web_page_to_area__allversions.web_area_to_block.id_block_type = id_block_type
+//		var results = fsPages.search()
 	}
 	//clear out the related pages link
 	else {

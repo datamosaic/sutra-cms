@@ -215,7 +215,6 @@ function ACTION_ok() {
 					
 					blockRec.id_block_display = tempEditableDefaultRec.id_block_display
 					blockRec.id_block_type = tempEditableDefaultRec.id_block_type
-					blockRec.params = tempEditableDefaultRec.params
 					blockRec.id_scrapbook = tempEditableDefaultRec.id_scrapbook
 					blockRec.row_order = tempEditableDefaultRec.row_order
 					
@@ -237,7 +236,7 @@ function ACTION_ok() {
 							var configTemplate = tempEditableDefaultRec.web_editable_default_to_block_configure.getRecord(k)
 							
 							var configRec = blockRec.web_block_to_block_data_configure.getRecord(blockRec.web_block_to_block_data_configure.newRecord(false, true))
-							databaseManager.saveData(configRec)
+							configRec.data_key = configTemplate.columnName
 						}
 					}
 				}
@@ -267,7 +266,7 @@ function ACTION_ok() {
 	//return true
 	
 	//refresh browser bean with new content
-	forms.WEB_0F_page__browser.REC_selected(null,true)	
+	forms.WEB_0F_page__browser.REC_on_select(null,true)	
 
 }
 

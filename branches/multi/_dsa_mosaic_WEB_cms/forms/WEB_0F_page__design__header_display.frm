@@ -10,6 +10,7 @@ horizontalAlignment:2,
 location:"10,0",
 margin:"0,5,0,0",
 mediaOptions:14,
+name:"lbl_display",
 onActionMethodID:"-1",
 showClick:false,
 showFocus:false,
@@ -21,48 +22,12 @@ typeid:7,
 uuid:"11BDA1DC-46E2-4041-8A59-847BDB244934"
 },
 {
-anchors:3,
-formIndex:11202,
-horizontalAlignment:0,
-imageMediaID:"1E25E435-F155-4EFF-BC1B-74575A603D47",
-location:"342,28",
-mediaOptions:1,
-name:"btn_edit_off",
-onActionMethodID:"9AE6A24D-2DA7-4DA9-BB55-E113EEC4A73F",
-rolloverCursor:12,
-rolloverImageMediaID:"74045302-CB52-4B2A-B04D-9DC183331188",
-showClick:false,
-showFocus:false,
-size:"20,16",
-toolTipText:"Edit",
-transparent:true,
-typeid:7,
-uuid:"1EB84398-B6F4-45E2-A9D6-F61DCADA7282"
-},
-{
-fontType:"Verdana,1,9",
-formIndex:10600,
-horizontalAlignment:0,
-location:"35,77",
-mediaOptions:14,
-name:"lbl_off",
-showClick:false,
-showFocus:false,
-size:"55,17",
-styleClass:"heading2",
-tabSeq:-1,
-text:"SIMPLE",
-transparent:true,
-typeid:7,
-uuid:"277F2CCD-BC13-4CE8-8B72-212BA39AD97E"
-},
-{
 anchors:11,
 displaysTags:true,
 foreground:"#335387",
 formIndex:10300,
 horizontalAlignment:4,
-location:"235,106",
+location:"235,166",
 mediaOptions:14,
 onActionMethodID:"-1",
 showClick:false,
@@ -75,37 +40,24 @@ typeid:7,
 uuid:"2C40A1DF-D024-48E7-9A0F-140E2ED9070B"
 },
 {
-anchors:3,
-displaysTags:true,
-foreground:"#335387",
-formIndex:9997,
-horizontalAlignment:4,
-location:"410,27",
-mediaOptions:14,
-onActionMethodID:"-1",
-showClick:false,
-showFocus:false,
-size:"40,16",
-styleClass:"heading3",
-text:"Group",
-transparent:true,
-typeid:7,
-uuid:"32F4E44A-0B96-4659-A766-9110D1CD91D2"
-},
+formIndex:11204,
+items:[
 {
-anchors:3,
-dataProviderID:"globals.WEB_group_selected",
-displayType:2,
-editable:false,
-formIndex:11201,
-location:"452,26",
-name:"fld_group_selected",
-onDataChangeMethodID:"538FB1A3-85D8-430B-B901-0E28D3034A2B",
-size:"115,18",
-styleClass:"combobox",
-typeid:4,
-uuid:"44C7E1AA-6070-45CC-9A39-D1910076063F",
-valuelistID:"63EE2FC0-023D-49D0-A16B-38E9D2731530"
+containsFormID:"E547F6F6-7034-4915-ADAE-3C5A87D12E0B",
+location:"530,36",
+text:"WEB_0F_page__design__header_display__version",
+typeid:15,
+uuid:"A03E6766-2AAE-4613-9571-06A4C4FC9C2D"
+}
+],
+location:"530,26",
+name:"tab_version",
+printable:false,
+size:"64,18",
+tabOrientation:-1,
+transparent:true,
+typeid:16,
+uuid:"4CDEE23D-5619-4ADE-899A-4A157E85CADC"
 },
 {
 anchors:11,
@@ -113,7 +65,7 @@ displaysTags:true,
 foreground:"#335387",
 formIndex:9997,
 horizontalAlignment:4,
-location:"235,120",
+location:"235,180",
 mediaOptions:14,
 onActionMethodID:"-1",
 showClick:false,
@@ -126,78 +78,183 @@ typeid:7,
 uuid:"4DAEB934-1726-4FCD-9C72-E90CD32F6630"
 },
 {
-anchors:3,
-formIndex:11202,
-horizontalAlignment:0,
-imageMediaID:"4A8E54CA-C377-4421-BBAE-7317F6F764D1",
-location:"570,27",
-mediaOptions:1,
-name:"btn_new_group",
-onActionMethodID:"B79D6834-10BC-4129-9197-88BDD15DBBDE",
-rolloverCursor:12,
-rolloverImageMediaID:"7FE369A3-5A40-4F3D-AE14-6618E9EF080A",
-showClick:false,
-showFocus:false,
-size:"20,16",
-toolTipText:"Add group",
-transparent:true,
-typeid:7,
-uuid:"5D6C8608-F40F-4A70-8514-6B2EC0562CCE"
+anchors:11,
+beanClassName:"javax.swing.JSplitPane",
+beanXML:"<?xml version=\"1.0\" encoding=\"UTF-8\"?> 
+<java version=\"1.6.0_26\" class=\"java.beans.XMLDecoder\"> 
+ <object class=\"javax.swing.JSplitPane\"> 
+  <int>1<\/int> 
+  <void property=\"size\"> 
+   <object class=\"java.awt.Dimension\"> 
+    <int>580<\/int> 
+    <int>19<\/int> 
+   <\/object> 
+  <\/void> 
+  <void property=\"UI\"> 
+   <void property=\"continuousLayout\"> 
+    <boolean>true<\/boolean> 
+   <\/void> 
+  <\/void> 
+  <void property=\"border\"> 
+   <null/> 
+  <\/void> 
+  <void property=\"continuousLayout\"> 
+   <boolean>true<\/boolean> 
+  <\/void> 
+  <void property=\"dividerLocation\"> 
+   <int>0<\/int> 
+  <\/void> 
+  <void property=\"dividerSize\"> 
+   <int>0<\/int> 
+  <\/void> 
+  <void property=\"focusable\"> 
+   <boolean>false<\/boolean> 
+  <\/void> 
+  <void property=\"lastDividerLocation\"> 
+   <int>0<\/int> 
+  <\/void> 
+  <void property=\"name\"> 
+   <string>split_picker_1<\/string> 
+  <\/void> 
+  <void property=\"opaque\"> 
+   <boolean>false<\/boolean> 
+  <\/void> 
+  <void property=\"resizeWeight\"> 
+   <double>0.3<\/double> 
+  <\/void> 
+ <\/object> 
+<\/java> 
+",
+formIndex:9999,
+location:"10,25",
+name:"split_picker_1",
+size:"580,19",
+typeid:12,
+usesUI:true,
+uuid:"5D6BFBFD-56F5-4BE1-913D-309D0888434B"
 },
 {
-formIndex:11200,
-horizontalAlignment:0,
-imageMediaID:"3428d523-a5a0-46bd-865d-a5b3354d1ee2",
-location:"10,106",
-mediaOptions:1,
-name:"btn_space_dividers",
-onActionMethodID:"FA11DFD7-3450-4F75-9E96-49892AB2258F",
-rolloverCursor:12,
-rolloverImageMediaID:"4c599104-8a63-47c9-ab66-d5f82f341ae4",
-showClick:false,
-showFocus:false,
-size:"14,18",
-toolTipText:"Resize dividers",
+formIndex:11204,
+items:[
+{
+containsFormID:"55151C84-0875-48B4-8A15-33DAB93D78E2",
+location:"486,36",
+relationName:"web_page_to_group",
+text:"WEB_0F_page__design__header_display__group",
+typeid:15,
+uuid:"54B95DF4-BEAB-4D2B-94FA-DBD6173169D6"
+}
+],
+location:"486,26",
+name:"tab_group",
+printable:false,
+size:"64,18",
+tabOrientation:-1,
 transparent:true,
-typeid:7,
-uuid:"5E868683-653E-4FA3-920D-FB3F12322FBD",
-verticalAlignment:0
+typeid:16,
+uuid:"61F4C783-9C26-4058-96B5-AC1E7FE423D0"
 },
 {
-formIndex:10300,
-imageMediaID:"ebb7fde1-c9c5-4945-8e83-7725984b2606",
-location:"90,80",
-mediaOptions:6,
-name:"btn_on",
-onActionMethodID:"2C69D26C-0E92-4BCB-9A39-DDF0E66B8CF7",
-rolloverCursor:12,
-rolloverImageMediaID:"973acbe0-44d2-4bb5-bffa-825371897d77",
-showClick:false,
-showFocus:false,
-size:"38,10",
+formIndex:11204,
+items:[
+{
+containsFormID:"DFCD7678-F809-406E-93DE-4857E24FD46F",
+location:"410,35",
+relationName:"web_page_to_platform",
+text:"WEB_0F_page__design__header_display__platform",
+typeid:15,
+uuid:"86E77198-D88E-4752-A64D-AB60F47632B4"
+}
+],
+location:"390,25",
+name:"tab_platform",
+printable:false,
+size:"64,18",
+tabOrientation:-1,
 transparent:true,
-typeid:7,
-uuid:"6F3526DE-E8FA-4091-AA1B-B75ADEF65625"
+typeid:16,
+uuid:"88A1737A-9A28-4752-B2FD-1006F5F024EB"
 },
 {
-displaysTags:true,
-foreground:"#335387",
-formIndex:9997,
-location:"10,77",
-mediaOptions:14,
-onActionMethodID:"-1",
-showClick:false,
-showFocus:false,
-size:"30,16",
-styleClass:"heading3",
-text:"Mode",
+anchors:11,
+beanClassName:"javax.swing.JSplitPane",
+beanXML:"<?xml version=\"1.0\" encoding=\"UTF-8\"?> 
+<java version=\"1.6.0_26\" class=\"java.beans.XMLDecoder\"> 
+ <object class=\"javax.swing.JSplitPane\"> 
+  <int>1<\/int> 
+  <void property=\"size\"> 
+   <object class=\"java.awt.Dimension\"> 
+    <int>150<\/int> 
+    <int>19<\/int> 
+   <\/object> 
+  <\/void> 
+  <void property=\"UI\"> 
+   <void property=\"continuousLayout\"> 
+    <boolean>true<\/boolean> 
+   <\/void> 
+  <\/void> 
+  <void property=\"border\"> 
+   <null/> 
+  <\/void> 
+  <void property=\"continuousLayout\"> 
+   <boolean>true<\/boolean> 
+  <\/void> 
+  <void property=\"dividerLocation\"> 
+   <int>0<\/int> 
+  <\/void> 
+  <void property=\"dividerSize\"> 
+   <int>0<\/int> 
+  <\/void> 
+  <void property=\"focusable\"> 
+   <boolean>false<\/boolean> 
+  <\/void> 
+  <void property=\"lastDividerLocation\"> 
+   <int>0<\/int> 
+  <\/void> 
+  <void property=\"name\"> 
+   <string>split_picker_3<\/string> 
+  <\/void> 
+  <void property=\"opaque\"> 
+   <boolean>false<\/boolean> 
+  <\/void> 
+  <void property=\"resizeWeight\"> 
+   <double>0.5<\/double> 
+  <\/void> 
+ <\/object> 
+<\/java> 
+",
+formIndex:9999,
+location:"280,25",
+name:"split_picker_3",
+size:"150,19",
+typeid:12,
+usesUI:true,
+uuid:"8DE481AD-16A6-4166-9D2E-0D4909C41019"
+},
+{
+formIndex:11204,
+items:[
+{
+containsFormID:"971CD761-A277-48CA-A541-B85A175FF736",
+location:"470,36",
+relationName:"web_page_to_language",
+text:"WEB_0F_page__design__header_display__language",
+typeid:15,
+uuid:"7818964E-7027-46A9-B15B-47B1EC7F70B2"
+}
+],
+location:"470,26",
+name:"tab_language",
+printable:false,
+size:"64,18",
+tabOrientation:-1,
 transparent:true,
-typeid:7,
-uuid:"7A9501C6-E4AC-48A6-8D45-483F19DD5CE5"
+typeid:16,
+uuid:"8E8A67C5-A518-4DB6-8C35-C99E25D68F58"
 },
 {
 anchors:15,
-formIndex:11203,
+formIndex:11206,
 horizontalAlignment:2,
 location:"10,26",
 mediaOptions:14,
@@ -211,42 +268,6 @@ typeid:7,
 uuid:"9A12BB9D-1C8F-4972-B2B2-18101B7F354C"
 },
 {
-anchors:3,
-formIndex:11202,
-horizontalAlignment:0,
-imageMediaID:"3D3101DD-2DF4-42E8-B5B1-78C0858475D9",
-location:"299,28",
-mediaOptions:1,
-name:"btn_check_off",
-onActionMethodID:"BA841370-FC0A-41E0-9D98-98EBA4D4A9C4",
-rolloverCursor:12,
-rolloverImageMediaID:"5E238774-FBE0-48A9-B7CB-9CC60FFCC2E8",
-showClick:false,
-showFocus:false,
-size:"20,16",
-toolTipText:"Set active",
-transparent:true,
-typeid:7,
-uuid:"A392CC0E-26D0-4584-BB2F-7A4F800CF3AB"
-},
-{
-fontType:"Verdana,1,9",
-formIndex:10700,
-horizontalAlignment:0,
-location:"127,77",
-mediaOptions:14,
-name:"lbl_on",
-showClick:false,
-showFocus:false,
-size:"70,17",
-styleClass:"heading2",
-tabSeq:-1,
-text:"ADVANCED",
-transparent:true,
-typeid:7,
-uuid:"B60C12B0-F5B7-472E-907E-15EC5042D317"
-},
-{
 anchors:11,
 displaysTags:true,
 formIndex:10200,
@@ -258,29 +279,10 @@ showClick:false,
 showFocus:false,
 size:"350,16",
 styleClass:"grid_pri_tab_select",
-text:"%%globals.WEB_site_display%%   ID: %%id_page%%",
+text:"%%globals.WEB_site_display%%   ID: %%url_param%%",
 transparent:true,
 typeid:7,
 uuid:"BDF22638-F531-44BC-B35C-DA717F9F8749"
-},
-{
-anchors:3,
-formIndex:11202,
-horizontalAlignment:0,
-imageMediaID:"40436FD4-6D06-4347-B58D-3473B006B991",
-location:"343,27",
-mediaOptions:1,
-name:"btn_edit_on",
-onActionMethodID:"9AE6A24D-2DA7-4DA9-BB55-E113EEC4A73F",
-rolloverCursor:12,
-rolloverImageMediaID:"2736DF4C-CBF7-4345-A5D8-0EE4B08F1897",
-showClick:false,
-showFocus:false,
-size:"20,16",
-toolTipText:"Edit",
-transparent:true,
-typeid:7,
-uuid:"C3EE7024-807A-47F1-B8C9-FF14B71C97CE"
 },
 {
 height:44,
@@ -289,42 +291,64 @@ typeid:19,
 uuid:"C8CBB406-83D2-4A3B-B152-98DEF47ADBD3"
 },
 {
-anchors:3,
-formIndex:11202,
-horizontalAlignment:0,
-imageMediaID:"B48D4A61-8827-4BF1-8A2B-60B030DEB0D0",
-location:"298,27",
-mediaOptions:1,
-name:"btn_check_on",
-onActionMethodID:"-1",
-showClick:false,
-showFocus:false,
-size:"20,16",
-toolTipText:"Active",
-transparent:true,
-typeid:7,
-uuid:"D3123E27-15D6-4124-BD6D-C98A932D8353"
-},
-{
-displaysTags:true,
-foreground:"#335387",
-formIndex:9997,
-horizontalAlignment:4,
-location:"9,27",
-mediaOptions:14,
-onActionMethodID:"-1",
-showClick:false,
-showFocus:false,
-size:"60,16",
-styleClass:"heading3",
-text:"Snapshot",
-transparent:true,
-typeid:7,
-uuid:"D526C361-21E1-4496-BF1A-571A4E16E36E"
+anchors:11,
+beanClassName:"javax.swing.JSplitPane",
+beanXML:"<?xml version=\"1.0\" encoding=\"UTF-8\"?> 
+<java version=\"1.6.0_26\" class=\"java.beans.XMLDecoder\"> 
+ <object class=\"javax.swing.JSplitPane\"> 
+  <int>1<\/int> 
+  <void property=\"size\"> 
+   <object class=\"java.awt.Dimension\"> 
+    <int>150<\/int> 
+    <int>19<\/int> 
+   <\/object> 
+  <\/void> 
+  <void property=\"UI\"> 
+   <void property=\"continuousLayout\"> 
+    <boolean>true<\/boolean> 
+   <\/void> 
+  <\/void> 
+  <void property=\"border\"> 
+   <null/> 
+  <\/void> 
+  <void property=\"continuousLayout\"> 
+   <boolean>true<\/boolean> 
+  <\/void> 
+  <void property=\"dividerLocation\"> 
+   <int>0<\/int> 
+  <\/void> 
+  <void property=\"dividerSize\"> 
+   <int>0<\/int> 
+  <\/void> 
+  <void property=\"focusable\"> 
+   <boolean>false<\/boolean> 
+  <\/void> 
+  <void property=\"lastDividerLocation\"> 
+   <int>0<\/int> 
+  <\/void> 
+  <void property=\"name\"> 
+   <string>split_picker_2<\/string> 
+  <\/void> 
+  <void property=\"opaque\"> 
+   <boolean>false<\/boolean> 
+  <\/void> 
+  <void property=\"resizeWeight\"> 
+   <double>0.33<\/double> 
+  <\/void> 
+ <\/object> 
+<\/java> 
+",
+formIndex:9999,
+location:"100,25",
+name:"split_picker_2",
+size:"150,19",
+typeid:12,
+usesUI:true,
+uuid:"CF82B8EC-A961-4E5C-A5FD-4D89FC7A7D20"
 },
 {
 anchors:15,
-formIndex:11203,
+formIndex:11205,
 horizontalAlignment:2,
 location:"10,26",
 mediaOptions:14,
@@ -337,63 +361,13 @@ size:"580,18",
 styleClass:"color_white",
 typeid:7,
 uuid:"D6823668-0EF8-4A33-B1AA-FD4200A4FB45"
-},
-{
-anchors:3,
-formIndex:11202,
-horizontalAlignment:0,
-imageMediaID:"4A8E54CA-C377-4421-BBAE-7317F6F764D1",
-location:"321,27",
-mediaOptions:1,
-name:"btn_duplicate",
-onActionMethodID:"F1039A0A-6835-4375-B4F2-E1E52F672E1A",
-rolloverCursor:12,
-rolloverImageMediaID:"7FE369A3-5A40-4F3D-AE14-6618E9EF080A",
-showClick:false,
-showFocus:false,
-size:"20,16",
-toolTipText:"Duplicate",
-transparent:true,
-typeid:7,
-uuid:"DE3C6CDF-E107-4924-A748-BDC39338B6F3"
-},
-{
-anchors:11,
-dataProviderID:"globals.WEB_version_selected",
-displayType:2,
-editable:false,
-formIndex:11201,
-location:"72,26",
-name:"fld_version_selected",
-onDataChangeMethodID:"55779490-C741-4400-AE16-B8A2F16C854A",
-size:"223,18",
-styleClass:"combobox",
-typeid:4,
-uuid:"DF71BC8A-24FD-4975-B028-8FF4C5D3F700",
-valuelistID:"6435B789-C660-4279-B0A2-0C5E9264C3F1"
-},
-{
-formIndex:10200,
-imageMediaID:"aabdee35-fc80-460a-905e-e98dc7897c23",
-location:"90,80",
-mediaOptions:6,
-name:"btn_off",
-onActionMethodID:"2C69D26C-0E92-4BCB-9A39-DDF0E66B8CF7",
-rolloverCursor:12,
-rolloverImageMediaID:"41d1a793-6e31-4a60-8e79-bdb69ce16ce0",
-showClick:false,
-showFocus:false,
-size:"38,10",
-transparent:true,
-typeid:7,
-uuid:"F2551802-DC33-4613-A86F-81AA85BE85D4"
 }
 ],
 name:"WEB_0F_page__design__header_display",
 navigatorID:"-1",
 onLoadMethodID:"8F3EE159-96AD-4FC8-A978-BD2ABAD1F366",
 onRecordSelectionMethodID:"-1",
-onShowMethodID:"-1",
+onShowMethodID:"EDA657C6-3547-40F8-956C-5E8541E4930C",
 paperPrintScale:100,
 size:"600,44",
 styleName:"_DATASUTRA_",

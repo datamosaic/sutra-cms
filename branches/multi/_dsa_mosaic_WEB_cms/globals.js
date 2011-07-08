@@ -1,4 +1,14 @@
 /**
+ * @properties={typeid:35,uuid:"953FF820-B3B4-4DCB-822D-E37FBD911426"}
+ */
+var WEB_page_id_block_selected = null;
+
+/**
+ * @properties={typeid:35,uuid:"B8BD989F-8261-4359-A449-507E164E8BF9",variableType:-4}
+ */
+var WEB_selected_language = null;
+
+/**
  * @properties={typeid:35,uuid:"24fde543-69cc-4de9-af47-7f7c22221f17"}
  */
 var _license_dsa_mosaic_WEB_cms = 'Module: _dsa_mosaic_WEB_cms \
@@ -6,14 +16,29 @@ var _license_dsa_mosaic_WEB_cms = 'Module: _dsa_mosaic_WEB_cms \
 									MIT Licensed';
 
 /**
+ * @properties={typeid:35,uuid:"B1FA121E-7FCE-4CD5-97D2-AE0E75D79440"}
+ */
+var WEB_page_group = null;
+
+/**
  * @properties={typeid:35,uuid:"17B52E70-9BEE-4FB1-9130-4230482F07B4"}
  */
 var WEB_site_attribute_selected = null;
 
 /**
- * @properties={typeid:35,uuid:"E3045B2B-BCFD-4C94-9CFA-2A03A15D4A86",variableType:-4}
+ * @properties={typeid:35,uuid:"86AA4208-BDF9-4D86-8267-C3EB48EC6C32"}
  */
-var WEB_site_group_selected = null;
+var WEB_page_platform = null;
+
+/**
+ * @properties={typeid:35,uuid:"BF6E24CB-9B98-4241-B8C2-CBE4CB520D6A",variableType:-4}
+ */
+var WEB_page_version = null;
+
+/**
+ * @properties={typeid:35,uuid:"5DDBD6FC-A0E1-4395-B10B-6154C12B4285"}
+ */
+var WEB_page_language = null;
 
 /**
  * @properties={typeid:35,uuid:"9B43706E-FC30-4C33-92A2-DF039DBB4661"}
@@ -41,26 +66,6 @@ var WEB_CONSTANT_DIRECTORY_JS = '/site/js/';
 var WEB_CONSTANT_DIRECTORY_THEMES = '/site/themes/';
 
 /**
- * @properties={typeid:35,uuid:"0A87FF80-7B76-4698-BE1D-BB2EA4BD64A8"}
- */
-var WEB_group_selected = null;
-
-/**
- * @properties={typeid:35,uuid:"D6D519FE-CA06-4692-8E6A-839D67E42030"}
- */
-var WEB_layout_selected = null;
-
-/**
- * @properties={typeid:35,uuid:"1119B023-A721-4730-B9BB-2A84E23BD49A"}
- */
-var WEB_page_id_area_selected = null;
-
-/**
- * @properties={typeid:35,uuid:"F8DC6E97-B0B2-428F-B81D-DDED2F72899E"}
- */
-var WEB_page_id_block_selected = null;
-
-/**
  * @properties={typeid:35,uuid:"DD53BF5B-DD20-4B47-911A-41051101A010",variableType:4}
  */
 var WEB_page_mode = 2;
@@ -84,26 +89,6 @@ var WEB_site_display = null;
  * @properties={typeid:35,uuid:"15313654-99B2-4BCA-9D6F-0D37F917C5DD"}
  */
 var WEB_tag_choose = null;
-
-/**
- * @properties={typeid:35,uuid:"791D7FA7-752E-42BD-9BD8-90FDC1548242",variableType:4}
- */
-var WEB_tag_kind = null;
-
-/**
- * @properties={typeid:35,uuid:"7FD6CC67-86A3-4FAE-AB16-4DE9EFF77C50"}
- */
-var WEB_version_description = null;
-
-/**
- * @properties={typeid:35,uuid:"3C355CBF-793A-419E-8E2E-706F342BF920",variableType:-4}
- */
-var WEB_version_name = null;
-
-/**
- * @properties={typeid:35,uuid:"67573874-7FDD-44E8-AB32-C98860B9650C"}
- */
-var WEB_version_selected = null;
 
 /**
  * Perform the element default action.
@@ -212,6 +197,11 @@ else {
 }
 
 /**
+ * @properties={typeid:35,uuid:"791D7FA7-752E-42BD-9BD8-90FDC1548242",variableType:4}
+ */
+var WEB_tag_kind = null;
+
+/**
  *
  * @properties={typeid:24,uuid:"73565A5D-1041-4CB5-99AD-6F5263680E13"}
  */
@@ -295,8 +285,11 @@ function WEB_MRKUP_link_page(pageID, siteURL, linkType, webMode) {
 	//get page requested
 	var fsPage = databaseManager.getFoundSet("sutra_cms","web_page")
 	fsPage.find()
-	fsPage.id_page = pageID
-	fsPage.flag_publish = 1
+	fsPage.id_page = pageID.toString()
+	//when in developer, all pages are valid for our purposes
+	if (!application.isInDeveloper()) {
+		fsPage.flag_publish = 1
+	}
 	var count = fsPage.search()
 	
 	//this page exists, get its site
@@ -356,7 +349,7 @@ function WEB_MRKUP_link_page(pageID, siteURL, linkType, webMode) {
 		
 		switch (linkType) {
 			case "Index":
-				pageLink += 'index.jsp?id=' + pageID
+				pageLink += 'index.jsp?id=' + pageRec.url_param
 				break
 			case "Folder":
 				
@@ -381,7 +374,7 @@ function WEB_MRKUP_link_page(pageID, siteURL, linkType, webMode) {
 			case "Edit":
 				//selection set in site tree which will trigger a loading in the main workflow
 				//jQuery changes index_edits to fire servoy callbacks on form load
-				pageLink += 'index_edit.jsp?id=' + pageID
+				pageLink += 'index_edit.jsp?id=' + pageRec.url_param
 				
 				if (webMode) {
 					pageLink += '&webmode=edit'
@@ -389,7 +382,7 @@ function WEB_MRKUP_link_page(pageID, siteURL, linkType, webMode) {
 				
 				break
 			default:
-				pageLink += 'index.jsp?id=' + pageID
+				pageLink += 'index.jsp?id=' + pageRec.url_param
 		}
 	}
 	
@@ -585,7 +578,7 @@ function WEB_page_tree_to_popup(method,elem) {
 					)
 			
 			// set arguments
-			subArray[0].setMethodArguments(pageRec.id_page.toString())
+			subArray[0].setMethodArguments(pageRec.id_page.toString(),pageRec)
 					
 			// turn off '----'
 			subArray[1].setEnabled(false)
@@ -793,7 +786,6 @@ function WEB_page_new(pageName,pageType,parentID,themeID,layoutID) {
 						
 						blockRec.id_block_display = tempEditableDefaultRec.id_block_display
 						blockRec.id_block_type = tempEditableDefaultRec.id_block_type
-						blockRec.params = tempEditableDefaultRec.params
 						blockRec.id_scrapbook = tempEditableDefaultRec.id_scrapbook
 						blockRec.row_order = tempEditableDefaultRec.row_order
 						
@@ -815,7 +807,7 @@ function WEB_page_new(pageName,pageType,parentID,themeID,layoutID) {
 								var configTemplate = tempEditableDefaultRec.web_editable_default_to_block_configure.getRecord(k)
 								
 								var configRec = blockRec.web_block_to_block_data_configure.getRecord(blockRec.web_block_to_block_data_configure.newRecord(false, true))
-								databaseManager.saveData(configRec)
+								configRec.data_key = configTemplate.columnName
 							}
 						}
 					}
@@ -849,47 +841,6 @@ function WEB_page_new(pageName,pageType,parentID,themeID,layoutID) {
 						'You must add a site record first'
 				)
 	}
-}
-
-/**
- *
- * @properties={typeid:24,uuid:"51A1F298-56F1-4D79-962F-795D222ED3CC"}
- */
-function TEMP_replace_src_string() {
-	
-	// siteID input
-	var siteID = forms.WEB_0D_site.id_site
-	
-	if (!siteID) return "no site selected"
-	
-	// grab the content data for specified site
-	var dataset = databaseManager.getDataSetByQuery(
-			"sutra_cms",
-			"SELECT web_block_data.id_block_data FROM web_block_data, web_block, web_area, web_page, web_site \
-			where web_block_data.id_block = web_block.id_block and \
-			web_block.id_area = web_area.id_area and \
-			web_area.id_page = web_page.id_page and \
-			web_page.id_site = ?",
-			[siteID],-1)
-			
-	if (!dataset.getMaxRowIndex()) return "no data found"
-	
-	// convert to foundset
-	var fsBlockData = databaseManager.getFoundSet('sutra_cms', 'web_block_data')
-	fsBlockData.loadRecords(dataset)
-	
-	// iterate over dataset
-	for (var i = 1; i <= fsBlockData.getSize(); i++) {
-		var record = fsBlockData.getRecord(i)
-		if (record.data_value && record.data_value.search(/src="site\//) >= 0) {
-			// replace regexp		
-			record.data_value = record.data_value.replace(/src="site\//gi, 'src="sites/' + forms.WEB_0D_site.directory + '/')
-			databaseManager.saveData(record)
-		}
-	}
-	
-	// cleanup
-	plugins.dialogs.showInfoDialog( "Done", "Done")
 }
 
 /**

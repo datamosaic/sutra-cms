@@ -29,7 +29,7 @@ function REC_delete()
  *			  	
  *	MODIFIED :	July 31, 2008 -- Troy Elliott, Data Mosaic
  *			  	
- */	//TODO: renumber the remaining snapshots
+ */	//TODO: renumber the remaining versions
 
 if (utils.hasRecords(foundset)) {
 	var delRec = plugins.dialogs.showWarningDialog(
@@ -41,6 +41,7 @@ if (utils.hasRecords(foundset)) {
 			
 	if (delRec == 'Yes') {
 		controller.deleteRecord()
+		forms.WEB_0F_page__design.REC_on_select()
 	}
 }
 else {

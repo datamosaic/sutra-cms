@@ -12,7 +12,7 @@ var _license_dsa_mosaic_WEB_cms = 'Module: _dsa_mosaic_WEB_cms \
  *
  * @properties={typeid:24,uuid:"60C0F66F-9740-428F-8C64-BE5870650741"}
  */
-function REC_selected(event,webMode) {
+function REC_on_select(event,webMode) {
 	//make sure variable set correctly
 	var vlReal = forms.WEB_0F_page__design.SET_globals()
 	
@@ -33,7 +33,7 @@ function REC_selected(event,webMode) {
 	forms.WEB_TB__web_mode.ACTION_save()
 	forms.WEB_TB__web_mode.TOGGLE_edit()
 	
-	//only show snapshots and groups if there is more than one defined
+	//only show versions and groups if there is more than one defined
 	forms.WEB_TB__web_mode.TOGGLE_group()
 	forms.WEB_TB__web_mode.TOGGLE_version()
 	
@@ -72,12 +72,12 @@ function URL_update(webMode) {
 		if (page_type == 2 && page_link) {
 			globals.WEB_preview_url = page_link	
 		}
-		//show selected group/snapshot
+		//show selected group/version
 		else {
 			globals.WEB_preview_url = 
 				globals.WEB_MRKUP_link_page(id_page,null,'Edit',webMode) + 
 				"&group=" + globals.WEB_group_selected +
-				"&snapshot=" + globals.WEB_version_selected
+				"&version=" + globals.WEB_version_selected
 		}
 		
 		elements.bn_browser.navigateTo(globals.WEB_preview_url)
@@ -244,7 +244,7 @@ function BLOCK_new(areaID) {
 //	var count = area.search()
 //	
 	//set globals so that global relations work
-	globals.WEB_page_id_area_selected = areaID
+//	globals.WEB_page_id_area_selected = areaID
 	
 	//show picker for type of block and create
 	//TODO: scrapbook doesn't work yet

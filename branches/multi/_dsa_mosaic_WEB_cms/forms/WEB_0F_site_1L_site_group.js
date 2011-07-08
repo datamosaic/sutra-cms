@@ -27,7 +27,15 @@ function REC_delete()
 					)
 	
 		if (delRec == 'Yes') {
+			if (flag_default) {
+				var flagSet = true
+			}
+			
 			controller.deleteRecord()
+			
+			if (utils.hasRecords(foundset) && flagSet) {
+				flag_default = 1
+			}
 		}
 	}
 }
@@ -77,6 +85,10 @@ function FLD_data_change__group_name(oldValue, newValue, event) {
 				)
 			group_name = oldValue
 		}
+		else {
+			//update valuelists
+			forms.WEB_0F_page__design.REC_on_select()
+		}
 	}
 	
 	databaseManager.saveData()
@@ -102,5 +114,37 @@ function REC_on_select(event) {
 	}
 	else {
 		fsPage.clear()
+	}
+}
+
+/**
+ * Handle changed data.
+ *
+ * @param {Object} oldValue old value
+ * @param {Object} newValue new value
+ * @param {JSEvent} event the event that triggered the action
+ *
+ * @returns {Boolean}
+ *
+ * @properties={typeid:24,uuid:"30F1BA69-44A2-4F5F-853C-AE8C84C9B213"}
+ */
+function FLD_data_change__flag_default(oldValue, newValue, event) {
+	var record = foundset.getSelectedRecord()
+	
+	if (newValue) {
+		for (var i = 1; i <= foundset.getSize(); i++) {
+			var tempRecord = foundset.getRecord(i)
+			
+			if (tempRecord.id_site_group != record.id_site_group) {
+				tempRecord.flag_default = null
+			}
+		}
+	}
+	else {
+		plugins.dialogs.showErrorDialog(
+						'Error',
+						'There must always be a default'
+				)
+			record.flag_default = 1
 	}
 }

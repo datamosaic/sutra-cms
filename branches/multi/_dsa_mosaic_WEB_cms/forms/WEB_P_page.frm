@@ -212,14 +212,6 @@ relationName:"web_page_to_attribute",
 text:"WEB_0F_page__design__properties_1L_attribute",
 typeid:15,
 uuid:"2C35DAA0-7F2C-4957-B232-3D55D049DBC8"
-},
-{
-containsFormID:"3921264D-30B5-46B5-BE0D-08460282FC8C",
-location:"30,210",
-relationName:"web_page_to_path",
-text:"WEB_0F_page__design__properties_1L_path",
-typeid:15,
-uuid:"B5F91972-4846-472B-8F09-4AA9ABB0B05E"
 }
 ],
 location:"10,177",

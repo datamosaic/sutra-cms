@@ -24,7 +24,7 @@ function CONTROLLER(app, session, request, response, mode) {
 	
 	// initialize good dataset to return to jsp
 	var results = databaseManager.createEmptyDataSet(0,["key","value"])
-	results.addRow(["cmsVersion","Sutra CMS - 2.0 alpha 3"])
+	results.addRow(["cmsVersion","Sutra CMS - 2.5 alpha uuuid"])
 	
 	// STEP 1: Setup
 	var obj = CONTROLLER_setup(results, app, session, request, response, mode)
@@ -121,20 +121,13 @@ function CONTROLLER_builder(results, obj) {
 	// AREA(S)	
 	var markup = ''
 	
-	var areas = databaseManager.getFoundSet("sutra_cms","web_area")
-	areas.find()
-	areas.id_page = obj.page.record.id_page
-	areas.id_group = obj.group.id
-	areas.id_version = obj.snapshot.id
-	var count = areas.search()
-	if ( !count ) {
+	if ( !utils.hasRecords(obj.version.record,'web_version_to_area') ) {
 		// send results back to web client
 		return results
 	}
-	else {
-		areas.sort('row_order')
-	}	
-
+	
+	var areas = obj.version.record.web_version_to_area
+	
 	// PROCESS: AREA
 	for (var i = 0; i < areas.getSize(); i++) {
 		
@@ -149,14 +142,7 @@ function CONTROLLER_builder(results, obj) {
 		obj.area.name	= area.area_name
 		
 		// BLOCK(S)
-		var blocks = databaseManager.getFoundSet("sutra_cms","web_block")
-		blocks.find()
-		blocks.id_area = area.id_area
-		var count = blocks.search()
-		
-		if ( count ) {
-			blocks.sort("row_order")
-		}
+		var blocks = area.web_area_to_block
 		
 		// PROCESS: BLOCK
 		for (var j = 0; j < blocks.getSize(); j++) {
@@ -167,24 +153,17 @@ function CONTROLLER_builder(results, obj) {
 			// obj: block
 			obj.block.record	= block
 			obj.block.id 		= block.id_block
-			obj.block.params 	= block.params
 			
 			// BLOCK TYPE
-			var type = databaseManager.getFoundSet("sutra_cms","web_block_type")
-			type.find()
-			type.id_block_type = block.id_block_type
-			var count = type.search()
+			var type = block.web_block_to_block_type
 			
 			//normal non-linked items
 			if (!block.id_scrapbook) {
 				// BLOCK DATA
-				var data = databaseManager.getFoundSet("sutra_cms","web_block_data")
-				data.find()
-				data.id_block = block.id_block
-				var count = data.search()
+				var data = block.web_block_to_block_data
 				
 				// obj: data
-				if (count) {
+				if ( utils.hasRecords(data) ) {
 					for (var k = 0; k < data.getSize(); k++) {
 						databaseManager.refreshRecordFromDatabase(data, k + 1)	
 						var point = data.getRecord(k + 1)
@@ -193,13 +172,10 @@ function CONTROLLER_builder(results, obj) {
 				}
 				
 				// BLOCK CONFIGURATION
-				var configureData = databaseManager.getFoundSet("sutra_cms","web_block_data_configure")
-				configureData.find()
-				configureData.id_block = block.id_block
-				var count = configureData.search()
+				var configureData = block.web_block_to_block_data_configure
 				
 				// obj: configuration
-				if (count) {
+				if ( utils.hasRecords(configureData) ) {
 					for (var k = 0; k < configureData.getSize(); k++) {
 						databaseManager.refreshRecordFromDatabase(configureData, k + 1)	
 						var point = configureData.getRecord(k + 1)
@@ -208,13 +184,10 @@ function CONTROLLER_builder(results, obj) {
 				}
 				
 				// BLOCK RESPONSE
-				var responseData = databaseManager.getFoundSet("sutra_cms","web_block_data_response")
-				responseData.find()
-				responseData.id_block = block.id_block
-				var count = responseData.search()
+				var responseData = block.web_block_to_block_data_response
 				
 				// obj: response
-				if (count) {
+				if ( utils.hasRecords(responseData) ) {
 					for (var k = 0; k < responseData.getSize(); k++) {
 						databaseManager.refreshRecordFromDatabase(responseData, k + 1)	
 						var point = responseData.getRecord(k + 1)
@@ -262,10 +235,7 @@ function CONTROLLER_builder(results, obj) {
 			}
 									
 			// BLOCK DISPLAY
-			var display = databaseManager.getFoundSet("sutra_cms","web_block_display")
-			display.find()
-			display.id_block_display = block.id_block_display
-			var count = display.search()
+			var display = block.web_block_to_block_display
 			
 			// MARKUP CALL
 			// edit mode (needs div wrappers)
@@ -295,7 +265,6 @@ function CONTROLLER_builder(results, obj) {
 			// obj: block...CLEAR
 			obj.block.record	= ''
 			obj.block.id 		= ''
-			obj.block.params 	= ''
 			
 			// obj: data...CLEAR
 			obj.data = {}
@@ -336,16 +305,18 @@ function CONTROLLER_setup(results, app, session, request, response, mode) {
 	/*
 	 * INITIALIZE, SETUP, FORMS, COOKIES, PAGE DATA
 	 */	
-
+	
 	// initialize data object passed to block markup methods
 	var obj		= { site	: { record : '', path : '', id	: '', name	: '', tracking : ''},
-	       		    group	: { record : '', id	: ''},
-	       		    snapshot : { record : '', id : ''},
-	       		    home	: { record : ''},
 	       		    page	: { record : '', id	: '', name	: '', parent : '', attribute	: {}},
+	       		    platform: { record : '', id	: '', name	: '', parent : '', attribute	: {}},
+	       		    language: { record : '', id	: '', name	: '', attribute	: {}},
+	       		    group	: { record : '', id	: ''},
+	       		    version : { record : '', id : ''},
+	       		    home	: { record : ''},
 	       		    theme	: { directory : '', markup : { link : '' } },
 	       		    area	: { record : '', id	: '', name	: ''},
-	       		    block	: { record : '', id	: '', params : ''},   // TODO: depricate params
+	       		    block	: { record : '', id	: ''},
 	       		    data	: {},
 	       		    block_configure : {},
 	       		    block_response : {},
@@ -368,13 +339,15 @@ function CONTROLLER_setup(results, app, session, request, response, mode) {
 	var pageURI		= request.getRequestURI()
 	var pageQuery	= request.getQueryString()
 	var pagePath	= request.getParameter("path")
-	var pageID 		= (request.getParameter("id")) ? application.getUUID(request.getParameter("id")) : 0
+	var pageID 		= request.getParameter("id")
 	
 	// these paramaters will be passed in when index_edit used (only internal to browser mode now)
 		// TODO: track group in session based on login and pass to dispatcher
-		// TODO: may add in ability to see snapshots on a live server
-	var groupID		= (request.getParameter("group")) ? application.getUUID(request.getParameter("group")) : 0
-	var versionID	= (request.getParameter("snapshot")) ? application.getUUID(request.getParameter("snapshot")) : 0
+		// TODO: may add in ability to see versions on a live server
+	var platformID		= request.getParameter("platform")
+	var languageID		= request.getParameter("language")
+	var groupID		= request.getParameter("group")
+	var versionID	= request.getParameter("version")
 			
 	// "get" form data (does not return "post" form data)
 	var getPairs	= {}
@@ -646,7 +619,7 @@ function CONTROLLER_setup(results, app, session, request, response, mode) {
 	if ( pageID ) {
 		var page = databaseManager.getFoundSet("sutra_cms","web_page")
 		page.find()
-		page.id_page = pageID
+		page.url_param = pageID
 		var count = page.search()
 		if (count != 1) {
 			obj.error.code = 404
@@ -654,6 +627,7 @@ function CONTROLLER_setup(results, app, session, request, response, mode) {
 			return obj
 		}
 		else {
+			pageID = page.id_page
 			databaseManager.refreshRecordFromDatabase(page, 1)
 		}
 	}
@@ -723,7 +697,7 @@ function CONTROLLER_setup(results, app, session, request, response, mode) {
 		
 		var page = databaseManager.getFoundSet("sutra_cms","web_page")
 		page.find()
-		page.id_page = site.id_page
+		page.id_page = site.id_page__home
 		var count = page.search()
 		if (count != 1) {
 			obj.error.code = 404
@@ -748,8 +722,8 @@ function CONTROLLER_setup(results, app, session, request, response, mode) {
 			page.id_page = pageID
 			var count = page.search()
 			
-			groupID = 0
-			versionID = 0		
+			groupID = null
+			versionID = null		
 		}
 		else {
 			obj.error.code = 404
@@ -807,7 +781,7 @@ function CONTROLLER_setup(results, app, session, request, response, mode) {
 	// obj: page
 	obj.page.record	= page.getRecord(1)
 	obj.page.id 	= page.id_page
-	obj.page.name 	= page.page_name
+//	obj.page.name 	= page.page_name	//see below under language
 	obj.page.parent	= page.parent_id_page
 	
 	// ATTRIBUTES
@@ -843,29 +817,224 @@ function CONTROLLER_setup(results, app, session, request, response, mode) {
 		obj.home.record = page.web_page_to_site.web_site_to_page__home.getRecord(1)
 	}
 	
+	// PLATFORM
+	// if not specified, use default platform
+	var platformSite = databaseManager.getFoundSet("sutra_cms","web_site_platform")
+	var platform = databaseManager.getFoundSet("sutra_cms","web_platform")
+	
+	if (!platformID) {
+		platformSite.find()
+		platformSite.id_site = page.id_site
+		platformSite.flag_default = 1
+		var count = platformSite.search()
+		if (!count) {
+			obj.error.code = 500
+			obj.error.message = "No default site platform"
+			return obj
+		}
+		else {
+			platform.find()
+			platform.id_site_platform = platformSite.id_site_platform
+			platform.id_page = page.id_page
+			var count = platform.search()
+			if (!count) {
+				platform.find()
+				platform.id_page = page.id_page
+				var count = platform.search()
+			}
+		}
+	}
+	else {
+		platform.find()
+		platform.url_param = platformID
+		var count = platform.search()
+	}
+	
+	// obj: platform
+	obj.platform.record = platform.getRecord(1)
+	obj.platform.id = platform.id_platform
+	
+	
+	// LANGUAGE
+	// if not specified, use default language
+	var languageSite = databaseManager.getFoundSet("sutra_cms","web_site_language")
+	var language = databaseManager.getFoundSet("sutra_cms","web_language")
+	
+	if (!languageID) {
+		languageSite.find()
+		languageSite.id_site = page.id_site
+		languageSite.flag_default = 1
+		var count = languageSite.search()
+		if (!count) {
+			obj.error.code = 500
+			obj.error.message = "No default site language"
+			return obj
+		}
+		else {
+			language.find()
+			language.id_site_language = languageSite.id_site_language
+			language.id_page = page.id_page
+			var count = language.search()
+			if (!count) {
+				language.find()
+				language.id_page = page.id_page
+				var count = language.search()
+			}
+		}
+	}
+	else {
+		language.find()
+		language.url_param = languageID
+		var count = language.search()
+	}
+	
+	// obj: language
+	obj.language.record = language.getRecord(1)
+	obj.language.id = language.id_language
+	obj.page.name 	= language.page_name
+	
+	
+	// SECURITY GROUP
+	// if not specified, use group from this session
+	var groupSite = databaseManager.getFoundSet("sutra_cms","web_site_group")
+	var group = databaseManager.getFoundSet("sutra_cms","web_group")
+	if (!groupID) {
+		groupSite.find()
+		groupSite.id_site = page.id_site
+		groupSite.flag_default = 1
+		var count = groupSite.search()
+		if (!count) {
+			obj.error.code = 500
+			obj.error.message = "No default site group"
+			return obj
+		}
+		else {
+			group.find()
+			group.id_site_group = groupSite.id_site_group
+			group.id_page = page.id_page
+			var count = group.search()
+			if (!count) {
+				group.find()
+				group.id_page = page.id_page
+				var count = group.search()
+			}
+		}
+	}
+	else {
+		group.find()
+		group.url_param = groupID
+		var count = group.search()
+	}
+	
+	// obj: group
+	obj.group.record = group.getRecord(1)
+	obj.group.id = group.id_group
+	
+	// ACTIVE VERSION
+	//if not specified, use active version
+	var version = databaseManager.getFoundSet("sutra_cms","web_version")
+	if (!versionID) {
+		version.find()
+		version.id_platform = platform.id_platform
+		version.id_language = language.id_language
+		version.id_group = group.id_group
+		version.flag_active = 1
+		var count = version.search()
+		if (count != 1) {
+			//check through all active languages to see if we have a different one to display
+			version.find()
+			version.id_platform = platform.id_platform
+			version.id_group = group.id_group
+			version.flag_active = 1
+			var count = version.search()
+			
+			if (count != 1) {
+				// TODO: insufficent access to view this page's content
+				obj.error.code = 500
+				obj.error.message = "No active version"
+				return obj
+			}
+		}
+		else {
+			var versionID = version.id_version
+		}
+	}
+	else {
+		version.find()
+		version.url_param = versionID
+		var count = version.search()
+	}
+	
+	// obj: version
+	obj.version.record	= version.getRecord(1)
+	obj.version.id		= version.id_version
+	
+	// THEME
+	if (!utils.hasRecords(obj.platform.record,'web_platform_to_theme')) {
+		obj.error.code = 500
+		obj.error.message = "No theme specified"
+		return obj
+	}
+	
+	// LAYOUT
+	if (!utils.hasRecords(obj.platform.record,'web_platform_to_layout')) {
+		obj.error.code = 500
+		obj.error.message = "No layout specified"
+		return obj
+	}
+	databaseManager.refreshRecordFromDatabase(obj.platform.record.web_platform_to_layout, 1)
+	
+	// theme directory with rewrites
+	if (forms.WEB_0F_install.rewrite_enabled) {
+		obj.theme.directory = "themes/" + obj.platform.record.web_platform_to_theme.theme_directory
+	}
+	// theme directory without rewrites
+	else {
+		obj.theme.directory = "sites/" + page.web_page_to_site.directory + "/themes/" + obj.platform.record.web_platform_to_theme.theme_directory
+	}
+	
+	obj.theme.markup.link = obj.theme.directory
+	
+	//theme will be included on html, so accessed by client (external)
+	results.addRow(["cmsThemeDirectory", obj.theme.directory])
+	//layout will be referenced from within jsp, so internal and needs full path
+	results.addRow(["cmsLayout", "sites/" + page.web_page_to_site.directory + "/themes/" + obj.platform.record.web_platform_to_theme.theme_directory + "/" + obj.platform.record.web_platform_to_layout.layout_path])
+	
+	// site directory with rewrites
+	if (forms.WEB_0F_install.rewrite_enabled) {
+		obj.site.path = ""
+		results.addRow(["cmsSiteDirectory", obj.site.path])
+	}
+	// theme directory without rewrites
+	else {
+		obj.site.path = "sites/" + page.web_page_to_site.directory
+		results.addRow(["cmsSiteDirectory", obj.site.path])
+	}
+	
 	// page title
 	if ( page.title_override ) {
 		results.addRow(["cmsTitle",page.title_override])
 	}
 	else if ( page.web_page_to_site.site_name_publish_flag ) {
-			var windowTitle = ''
-			if (page.web_page_to_site.site_name) {
-				windowTitle += page.web_page_to_site.site_name
-				
-				if (page.web_page_to_site.site_name_publish_separator) {
-					windowTitle += page.web_page_to_site.site_name_publish_separator
-				}
-				else {
-					windowTitle += ' '
-				}
-			}
-			windowTitle += page.page_name
+		var windowTitle = ''
+		if (page.web_page_to_site.site_name) {
+			windowTitle += page.web_page_to_site.site_name
 			
-			results.addRow(["cmsTitle", windowTitle])
+			if (page.web_page_to_site.site_name_publish_separator) {
+				windowTitle += page.web_page_to_site.site_name_publish_separator
+			}
+			else {
+				windowTitle += ' '
+			}
 		}
-		else {
-			results.addRow(["cmsTitle",page.page_name])
-		}
+		windowTitle += page.page_name
+		
+		results.addRow(["cmsTitle", windowTitle])
+	}
+	else {
+//		results.addRow(["cmsTitle",page.page_name])
+		results.addRow(["cmsTitle","TEST"])
+	}
 	
 	// HEAD & FOOTER INCLUDE STRING (note: relative path "up" from template directory where it is included from)
 	if (editMode) {
@@ -891,110 +1060,6 @@ function CONTROLLER_setup(results, app, session, request, response, mode) {
 		results.addRow(["cmsKeywords",""])
 	}
 	
-	// SECURITY GROUP
-	//if not specified, use group from this session
-	var group = databaseManager.getFoundSet("sutra_cms","web_group")
-	if (!groupID) {
-		group.find()
-		group.id_site = page.id_site
-		var count = group.search()
-		if (!count) {
-			obj.error.code = 500
-			obj.error.message = "No site groups setup"
-			return obj
-		}
-		else {
-			//put in order so oldest one is at top
-			group.sort('rec_created asc')
-			
-			//select oldest one (aka everybody)
-			group.setSelectedIndex(1)
-			var groupID = group.id_group
-		}
-	}
-	else {
-		group.loadRecords(databaseManager.convertToDataSet([groupID]))
-	}
-	
-	// obj: group
-	obj.group.record = group.getRecord(1)
-	obj.group.id = groupID
-	
-	// ACTIVE SNAPSHOT
-	//if not specified, use active version
-	var snapshot = databaseManager.getFoundSet("sutra_cms","web_version")
-	if (!versionID) {
-		snapshot.find()
-		snapshot.id_page = page.id_page
-		snapshot.flag_active = 1
-		var count = snapshot.search()
-		if (count != 1) {
-			// TODO: insufficent access to view this page's content
-			obj.error.code = 500
-			obj.error.message = "No active snapshot"
-			return obj
-		}
-		else {
-			var versionID = snapshot.id_version
-		}
-	}
-	else {
-		snapshot.loadRecords(databaseManager.convertToDataSet([versionID]))
-	}	
-	
-	obj.snapshot.record	= snapshot.getRecord(1)
-	obj.snapshot.id		= versionID
-	
-	// THEME
-	var theme = databaseManager.getFoundSet("sutra_cms","web_theme")
-	theme.find()
-	theme.id_theme = page.id_theme
-	var count = theme.search()
-	if (count != 1) {
-		obj.error.code = 500
-		obj.error.message = "No theme specified"
-		return obj
-	}
-	
-	// LAYOUT
-	var layout = databaseManager.getFoundSet("sutra_cms","web_layout")
-	layout.find()
-	layout.id_layout = page.id_theme_layout
-	var count = layout.search()
-	if (count != 1) {
-		obj.error.code = 500
-		obj.error.message = "No layout specified"
-		return obj
-	}
-	databaseManager.refreshRecordFromDatabase(layout, 1)
-	
-	// theme directory with rewrites
-	if (forms.WEB_0F_install.rewrite_enabled) {
-		obj.theme.directory = "themes/" + theme.theme_directory
-	}
-	// theme directory without rewrites
-	else {
-		obj.theme.directory = "sites/" + page.web_page_to_site.directory + "/themes/" + theme.theme_directory
-	}
-	
-	obj.theme.markup.link = obj.theme.directory
-	
-	//theme will be included on html, so accessed by client (external)
-	results.addRow(["cmsThemeDirectory", obj.theme.directory])
-	//layout will be referenced from within jsp, so internal and needs full path
-	results.addRow(["cmsLayout", "sites/" + page.web_page_to_site.directory + "/themes/" + theme.theme_directory + "/" + layout.layout_path])
-	
-	// site directory with rewrites
-	if (forms.WEB_0F_install.rewrite_enabled) {
-		obj.site.path = ""
-		results.addRow(["cmsSiteDirectory", obj.site.path])
-	}
-	// theme directory without rewrites
-	else {
-		obj.site.path = "sites/" + page.web_page_to_site.directory
-		results.addRow(["cmsSiteDirectory", obj.site.path])
-	}
-	
 	return obj
 }
 
@@ -1015,8 +1080,9 @@ function CONTROLLER_error(obj) {
 	// initialize bad dataset to return to the jsp
 	var error =  databaseManager.createEmptyDataSet(0, ["error"])
 	
-	//display error message
-	if (mode) {
+	//display error message in edit mode or when running in developer
+		//MEMO application.isInDeveloper doesn't work with headless client
+	if (mode || (plugins.sutra && plugins.sutra.getWorkspace && plugins.sutra.getWorkspace())) {
 		error.addRow([message])
 		return error
 	}
@@ -1032,13 +1098,13 @@ function CONTROLLER_error(obj) {
 			return error
 		}
 		
-		if (!site.id_page) {
+		if (!site.id_page__home) {
 			error.addRow(["No default page specified for this site"])
 			return error
 		}
 		
 		// redirect to the home page
-		obj.response.record.sendRedirect(globals.WEB_MRKUP_link_page(site.id_page, pageServer))
+		obj.response.record.sendRedirect(globals.WEB_MRKUP_link_page(site.id_page__home, pageServer))
 	}
 }
 

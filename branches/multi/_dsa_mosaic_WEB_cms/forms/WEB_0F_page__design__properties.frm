@@ -2,18 +2,16 @@ dataSource:"db:/sutra_cms/web_page",
 initialSort:"name asc",
 items:[
 {
-formIndex:10400,
-location:"30,115",
-mediaOptions:14,
-showClick:false,
-showFocus:false,
-size:"100,23",
-styleClass:"standard_table",
-tabSeq:-1,
-text:"Layout",
-transparent:true,
-typeid:7,
-uuid:"18074C0A-CBF2-46B7-B83A-6F55FFFCA925"
+anchors:15,
+formIndex:9998,
+location:"30,240",
+name:"tab_detail_bottom",
+printable:false,
+size:"540,30",
+styleClass:"grid_primary",
+tabOrientation:-1,
+typeid:16,
+uuid:"19231C26-322E-49AE-B896-B62755D2B679"
 },
 {
 anchors:3,
@@ -47,7 +45,7 @@ uuid:"219091E8-F7CE-4B2F-80F1-9A6A001CB999"
 {
 formIndex:11500,
 horizontalAlignment:4,
-location:"190,206",
+location:"190,306",
 mediaOptions:14,
 showClick:false,
 showFocus:false,
@@ -61,7 +59,7 @@ uuid:"21B24323-D74C-4CED-A5D4-21964D2B5862"
 {
 formIndex:11500,
 horizontalAlignment:4,
-location:"95,206",
+location:"95,166",
 mediaOptions:14,
 showClick:false,
 showFocus:false,
@@ -73,18 +71,7 @@ typeid:7,
 uuid:"248F3B8D-CCE2-4A26-9E6A-E0CC42A9AD1A"
 },
 {
-dataProviderID:"id_theme",
-formIndex:10500,
-location:"130,92",
-scrollbars:36,
-size:"155,23",
-styleClass:"standard_table_noedit",
-typeid:4,
-uuid:"287EF6EB-B3F0-4161-97F6-7523030114F1",
-valuelistID:"43DB3136-BDCD-43DF-8E47-751E3664115A"
-},
-{
-dataProviderID:"page_name",
+dataProviderID:"web_page_to_language__default.page_name",
 editable:false,
 formIndex:10500,
 location:"130,46",
@@ -111,16 +98,16 @@ uuid:"2BD86657-2D30-4B80-BDDD-6DDF43FC85E2"
 },
 {
 formIndex:11400,
-location:"196,202",
+location:"196,302",
 mediaOptions:14,
 name:"tab_d3",
-onActionMethodID:"1d11e845-6036-42a2-8367-5c8d524edad3",
+onActionMethodID:"18A5DA18-8E96-4E36-B92C-2BDC0BE065A6",
 rolloverCursor:12,
 showClick:false,
 showFocus:false,
-size:"50,16",
+size:"80,16",
 styleClass:"grid_pri_tab_unselect",
-text:"Path",
+text:"Languages",
 transparent:true,
 typeid:7,
 uuid:"31AEB035-304E-48CB-9EAF-C8D97B5D4EDE"
@@ -129,13 +116,6 @@ uuid:"31AEB035-304E-48CB-9EAF-C8D97B5D4EDE"
 anchors:11,
 formIndex:15204,
 items:[
-{
-containsFormID:"866CAF60-E772-4B8F-AAAD-F61CC482C8F5",
-location:"320,61",
-text:"WEB_0F_page__design__properties__keywords",
-typeid:15,
-uuid:"6CD4D32B-BD75-45CD-B89B-C33A53D19DF4"
-},
 {
 containsFormID:"BAD4F994-7561-453B-B9A3-5401EB73979C",
 location:"300,31",
@@ -147,7 +127,7 @@ uuid:"7341362F-2FC9-457A-8A0C-4D78A66E0AFF"
 location:"295,24",
 name:"tab_descript",
 printable:false,
-size:"120,159",
+size:"120,114",
 tabOrientation:-1,
 transparent:true,
 typeid:16,
@@ -180,7 +160,7 @@ uuid:"5E64F2A3-A34D-4C0F-BD0D-8D4341D32350"
 },
 {
 anchors:3,
-dataProviderID:"parent_id_page",
+dataProviderID:"web_page_to_page__parent.url_param",
 displaysTags:true,
 editable:false,
 formIndex:10500,
@@ -194,37 +174,73 @@ typeid:4,
 uuid:"62951429-4873-4E29-9A20-747171C439C7"
 },
 {
-dataProviderID:"id_theme_layout",
-editable:false,
-formIndex:10500,
-location:"130,115",
-scrollbars:36,
-size:"155,23",
-styleClass:"standard_table_noedit",
-typeid:4,
-uuid:"64F343A4-94B1-44A2-BC50-F21F0B177670",
-valuelistID:"171F9E82-11B2-4FE2-BD1C-D82E60C4FC01"
-},
-{
-formIndex:11400,
-location:"390,6",
-mediaOptions:14,
-name:"tab_e2",
-onActionMethodID:"00816965-17C0-42D7-9AF8-11112D3BB5D9",
-rolloverCursor:12,
-showClick:false,
-showFocus:false,
-size:"70,16",
-styleClass:"grid_pri_tab_unselect",
-text:"Keywords",
-transparent:true,
-typeid:7,
-uuid:"68D283CF-48C3-419A-9A81-830E8559DC0B"
+anchors:15,
+beanClassName:"javax.swing.JSplitPane",
+beanXML:"<?xml version=\"1.0\" encoding=\"UTF-8\"?> 
+<java version=\"1.6.0_24\" class=\"java.beans.XMLDecoder\"> 
+ <object class=\"javax.swing.JSplitPane\"> 
+  <int>0<\/int> 
+  <void property=\"background\"> 
+   <object class=\"java.awt.Color\"> 
+    <int>209<\/int> 
+    <int>215<\/int> 
+    <int>226<\/int> 
+    <int>255<\/int> 
+   <\/object> 
+  <\/void> 
+  <void property=\"size\"> 
+   <object class=\"java.awt.Dimension\"> 
+    <int>580<\/int> 
+    <int>95<\/int> 
+   <\/object> 
+  <\/void> 
+  <void property=\"UI\"> 
+   <void property=\"continuousLayout\"> 
+    <boolean>true<\/boolean> 
+   <\/void> 
+  <\/void> 
+  <void property=\"border\"> 
+   <null/> 
+  <\/void> 
+  <void property=\"continuousLayout\"> 
+   <boolean>true<\/boolean> 
+  <\/void> 
+  <void property=\"dividerLocation\"> 
+   <int>0<\/int> 
+  <\/void> 
+  <void property=\"dividerSize\"> 
+   <int>0<\/int> 
+  <\/void> 
+  <void property=\"focusable\"> 
+   <boolean>false<\/boolean> 
+  <\/void> 
+  <void property=\"lastDividerLocation\"> 
+   <int>0<\/int> 
+  <\/void> 
+  <void property=\"name\"> 
+   <string>bean_split_2<\/string> 
+  <\/void> 
+  <void property=\"opaque\"> 
+   <boolean>false<\/boolean> 
+  <\/void> 
+  <void property=\"resizeWeight\"> 
+   <double>0.25<\/double> 
+  <\/void> 
+ <\/object> 
+<\/java> 
+",
+formIndex:9996,
+location:"10,178",
+name:"split_details",
+size:"580,95",
+typeid:12,
+usesUI:true,
+uuid:"69228DFD-7CA3-488D-8B4F-F7FA68BFB005"
 },
 {
 dataProviderID:"title_override",
 formIndex:10500,
-location:"130,161",
+location:"130,115",
 scrollbars:36,
 size:"155,23",
 styleClass:"standard_table_bottom",
@@ -233,7 +249,7 @@ uuid:"6CFDA4CB-B839-423B-8F13-AED75DF7E7AE"
 },
 {
 formIndex:10400,
-location:"30,138",
+location:"30,92",
 mediaOptions:14,
 showClick:false,
 showFocus:false,
@@ -246,27 +262,13 @@ typeid:7,
 uuid:"6D9DF022-1119-4D19-B885-82117F1BA84F"
 },
 {
-height:330,
+height:280,
 partType:5,
 typeid:19,
 uuid:"7C9DFA84-2EE1-48AD-A0C0-EC9CE55BC173"
 },
 {
-formIndex:10400,
-location:"30,92",
-mediaOptions:14,
-showClick:false,
-showFocus:false,
-size:"100,23",
-styleClass:"standard_table",
-tabSeq:-1,
-text:"Theme",
-transparent:true,
-typeid:7,
-uuid:"91619072-3653-4E03-89B1-6C24091408BB"
-},
-{
-dataProviderID:"id_page",
+dataProviderID:"url_param",
 editable:false,
 formIndex:9998,
 location:"130,23",
@@ -275,6 +277,23 @@ size:"155,23",
 styleClass:"standard_table_noedit",
 typeid:4,
 uuid:"924F9512-C1D9-4027-B07D-F09EC84D78EB"
+},
+{
+formIndex:11400,
+location:"286,302",
+mediaOptions:14,
+name:"tab_d4",
+onActionMethodID:"18A5DA18-8E96-4E36-B92C-2BDC0BE065A6",
+printable:false,
+rolloverCursor:12,
+showClick:false,
+showFocus:false,
+size:"60,16",
+styleClass:"grid_pri_tab_unselect",
+text:"Groups",
+transparent:true,
+typeid:7,
+uuid:"96C62D67-60BB-45C8-A9D6-340A03A39595"
 },
 {
 anchors:3,
@@ -306,11 +325,25 @@ typeid:7,
 uuid:"A18DEF31-A63B-4F1A-BB2B-0D206E0D702A"
 },
 {
+formIndex:11500,
+horizontalAlignment:4,
+location:"280,306",
+mediaOptions:14,
+showClick:false,
+showFocus:false,
+size:"4,8",
+styleClass:"grid_tab_divider",
+tabSeq:-1,
+transparent:true,
+typeid:7,
+uuid:"A5D0C0D2-C40F-4369-94AC-7CFC2CAE7255"
+},
+{
 anchors:3,
 formIndex:15200,
 horizontalAlignment:0,
 imageMediaID:"a2e147c1-5027-45cb-abf0-ddf2d8588969",
-location:"535,201",
+location:"535,161",
 mediaOptions:1,
 name:"btn_help",
 onActionMethodID:"6a193823-8789-4ec3-a7bf-45d1238dc5bd",
@@ -328,7 +361,7 @@ anchors:3,
 formIndex:15100,
 horizontalAlignment:0,
 imageMediaID:"ca71eeeb-624d-461d-a4b3-41a387f1304a",
-location:"563,201",
+location:"563,161",
 mediaOptions:14,
 name:"btn_add",
 onActionMethodID:"d7d0db6e-a736-4395-a0e3-da757d161a37",
@@ -345,7 +378,7 @@ uuid:"A8859F9A-13DD-4213-A1D1-B94AE1180FF6"
 dataProviderID:"flag_ssl",
 displayType:4,
 formIndex:10500,
-location:"130,138",
+location:"130,92",
 scrollbars:36,
 size:"155,23",
 styleClass:"standard_table",
@@ -355,44 +388,27 @@ uuid:"AD8C668C-38B5-4325-8240-3644F7501E10",
 valuelistID:"4f6370be-de55-4992-a24f-57a43c0b25c3"
 },
 {
-anchors:3,
-borderType:"EmptyBorder,0,0,0,0",
-formIndex:12200,
-imageMediaID:"95a43c06-8988-440c-a759-e453d5712411",
-location:"470,359",
-mediaOptions:6,
-onActionMethodID:"AFD9DE7F-B435-4E32-B9AA-E1B808A00BD3",
-rolloverCursor:12,
-rolloverImageMediaID:"2f6dee3a-854c-47a6-9e15-3f7660c783e4",
-showClick:false,
-showFocus:false,
-size:"110,22",
-transparent:true,
-typeid:7,
-uuid:"B0ABAE09-A9E0-44AF-BEF0-3899042EA723"
-},
-{
 formIndex:11400,
-location:"101,202",
+location:"101,162",
 mediaOptions:14,
 name:"tab_d2",
-onActionMethodID:"1d11e845-6036-42a2-8367-5c8d524edad3",
+onActionMethodID:"18A5DA18-8E96-4E36-B92C-2BDC0BE065A6",
 rolloverCursor:12,
 showClick:false,
 showFocus:false,
-size:"80,16",
+size:"70,16",
 styleClass:"grid_pri_tab_unselect",
-text:"Snapshots",
+text:"Versions",
 transparent:true,
 typeid:7,
 uuid:"BC8922D7-80C7-4EE7-9371-6591D3BE912B"
 },
 {
 formIndex:11600,
-location:"10,202",
+location:"10,162",
 mediaOptions:14,
 name:"tab_d1",
-onActionMethodID:"1d11e845-6036-42a2-8367-5c8d524edad3",
+onActionMethodID:"18A5DA18-8E96-4E36-B92C-2BDC0BE065A6",
 rolloverCursor:12,
 showClick:false,
 showFocus:false,
@@ -424,7 +440,7 @@ location:"295,24",
 mediaOptions:14,
 showClick:false,
 showFocus:false,
-size:"120,160",
+size:"120,114",
 styleClass:"color_light",
 tabSeq:-1,
 typeid:7,
@@ -462,22 +478,6 @@ uuid:"CAF444B6-CABE-4DB0-987D-B3AE797F4088"
 },
 {
 anchors:3,
-formIndex:12300,
-location:"470,360",
-mediaOptions:14,
-rolloverCursor:12,
-showClick:false,
-showFocus:false,
-size:"108,20",
-styleClass:"button",
-tabSeq:-1,
-text:"Add Versioning",
-transparent:true,
-typeid:7,
-uuid:"D06EEB48-28BB-4672-972A-3E20C72D1BFD"
-},
-{
-anchors:3,
 dataProviderID:"order_by",
 editable:false,
 formIndex:10500,
@@ -490,7 +490,7 @@ uuid:"D92CCA2A-159E-4E32-8171-521135F14E3A"
 },
 {
 formIndex:10400,
-location:"30,161",
+location:"30,115",
 mediaOptions:14,
 showClick:false,
 showFocus:false,
@@ -575,52 +575,29 @@ typeid:7,
 uuid:"F7EBCB2C-4308-47DA-8943-292BF8D6F34E"
 },
 {
-formIndex:11500,
-horizontalAlignment:4,
-location:"384,10",
-mediaOptions:14,
-showClick:false,
-showFocus:false,
-size:"4,8",
-styleClass:"grid_tab_divider",
-tabSeq:-1,
-transparent:true,
-typeid:7,
-uuid:"FB55C339-8A67-4640-A135-DD9819BD3E6F"
-},
-{
 anchors:15,
 formIndex:9998,
 items:[
 {
 containsFormID:"B7088C88-FBA9-4C35-8BF5-BDD8F1A52ACD",
-location:"10,228",
+location:"50,180",
 relationName:"web_page_to_attribute",
 text:"WEB_0F_page__design__properties_1L_attribute",
 typeid:15,
 uuid:"1F54CA41-1014-4449-A0C1-17782A51DBE5"
 },
 {
-containsFormID:"3921264D-30B5-46B5-BE0D-08460282FC8C",
-location:"40,270",
-relationName:"web_page_to_path",
-text:"WEB_0F_page__design__properties_1L_path",
-typeid:15,
-uuid:"531F8008-274D-487E-A5A4-B68BD70E9148"
-},
-{
 containsFormID:"72398299-D5EF-440C-921E-3A0903862CED",
-location:"20,250",
-relationName:"web_page_to_version",
+location:"80,200",
 text:"WEB_0F_page__design__properties_1L_version",
 typeid:15,
-uuid:"803775FD-D355-4643-98A1-F328153834B2"
+uuid:"34FC5851-1A18-4FE1-8A45-D4160F641AA5"
 }
 ],
-location:"10,218",
+location:"30,178",
 name:"tab_detail",
 printable:false,
-size:"580,105",
+size:"540,55",
 styleClass:"grid_primary",
 tabOrientation:-1,
 typeid:16,
@@ -629,11 +606,11 @@ uuid:"FCEF6BFC-61F9-4BDD-AF16-2F0AE1B3915A"
 ],
 name:"WEB_0F_page__design__properties",
 navigatorID:"-1",
-onLoadMethodID:"-1",
+onLoadMethodID:"A07C3EAA-9D2B-4AAB-8FF5-25926ED8E8F6",
 onRecordSelectionMethodID:"-1",
 onShowMethodID:"-1",
 paperPrintScale:100,
-size:"600,330",
+size:"600,280",
 styleName:"_DATASUTRA_",
 typeid:3,
 uuid:"9A5AED4B-35EE-4696-BABE-61A0B8701D68"

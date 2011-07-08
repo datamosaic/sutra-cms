@@ -26,7 +26,6 @@ items:[
 {
 containsFormID:"48B5D410-E950-4C99-A057-640DDAB036C3",
 location:"31,80",
-relationName:"web_block_to_scrapbook.web_scrapbook_to_scrapbook_data",
 text:"WEB_0F_page__design__content_1L_scrapbook_data",
 typeid:15,
 uuid:"07C1421C-1E57-47B6-BEB2-678A2E54B916"

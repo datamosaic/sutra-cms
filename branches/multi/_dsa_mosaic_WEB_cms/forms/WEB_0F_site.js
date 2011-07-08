@@ -19,19 +19,19 @@ function REC_on_select(event) {
 	var vlReal = new Array()
 	var vlDisplay = new Array()	
 	
-	if (utils.hasRecords(fsGroups)) {
-		for (var i = 1; i <= fsGroups.getSize(); i++) {
-			var recGroup = fsGroups.getRecord(i)
-			
-//			vlReal.push(recGroup.id_group)
-//			vlDisplay.push(recGroup.group_name)
-			
-			if (recGroup.group_name == 'Everybody') {
-				//set group to everybody
-				globals.WEB_group_selected = recGroup.id_group
-			}
-		}
-	}
+//	if (utils.hasRecords(fsGroups)) {
+//		for (var i = 1; i <= fsGroups.getSize(); i++) {
+//			var recGroup = fsGroups.getRecord(i)
+//			
+////			vlReal.push(recGroup.id_group)
+////			vlDisplay.push(recGroup.group_name)
+//			
+//			if (recGroup.group_name == 'Everybody') {
+//				//set group to everybody
+//				globals.WEB_group_selected = recGroup.id_group
+//			}
+//		}
+//	}
 	
 	//find site-specific stuff
 //	forms.WEB_0F_asset.FORM_on_load()
@@ -55,8 +55,7 @@ function REC_on_select(event) {
  *
  * @properties={typeid:24,uuid:"5F06FB01-8EE2-4283-A5F5-E2C1E4802045"}
  */
-function REC_delete()
-{
+function REC_delete() {
 	var delRec = plugins.dialogs.showWarningDialog(
 				'Delete record',
 				'Do you really want to delete this record?',
@@ -66,6 +65,8 @@ function REC_delete()
 
 	if (delRec == 'Yes') {
 		globals.WEB_site_display = null
+		
+		//TODO: not deleteing versions and below....need to fix this
 		controller.deleteRecord()
 		
 		//dim out the lights
@@ -107,15 +108,18 @@ function REC_new() {
 	//create a group
 	var allGroup = web_site_to_site_group.getRecord(web_site_to_site_group.newRecord(false,true))
 	allGroup.group_name = 'Everybody'
+	allGroup.flag_default = 1
 	
 	//create a language
 	var enLanguage = web_site_to_site_language.getRecord(web_site_to_site_language.newRecord(false,true))
 	enLanguage.language_name = 'English'
 	enLanguage.language_code = 'en'
+	enLanguage.flag_default = 1
 	
 	//create a platform
 	var platform = web_site_to_site_platform.getRecord(web_site_to_site_platform.newRecord(false,true))
-	platform.platform_name = 'Web'
+	platform.platform_name = application.getValueListItems('WEB_platform').getValue(1,1)
+	platform.flag_default = 1
 	
 	//save
 	databaseManager.saveData()
@@ -134,51 +138,53 @@ function REC_new() {
  * @properties={typeid:24,uuid:"DE93701D-6639-40BE-B977-D24295C1932F"}
  */
 function ACTION_blow_in_missing_areas_to_all_pages() {
-if (globals.TRIGGER_registered_action_authenticate('cms site page update')) {
-	var input = plugins.dialogs.showWarningDialog(
-					'Continue?',
-					'Are you sure you want to modify all pages.\nWarning! This is irreversible.',
-					'Yes',
-					'No'
-			)
+	return
 	
-	if (input == 'Yes') {
-		//go to page layout
-		forms.WEB_0F_page.controller.show()
+	if (globals.TRIGGER_registered_action_authenticate('cms site page update')) {
+		var input = plugins.dialogs.showWarningDialog(
+						'Continue?',
+						'Are you sure you want to modify all pages.\nWarning! This is irreversible.',
+						'Yes',
+						'No'
+				)
 		
-		forms.WEB_0F_page.controller.find()
-		forms.WEB_0F_page.id_site = id_site
-		forms.WEB_0F_page.controller.search()
-		
-//		if (globals.TRIGGER_navigation_set('CMS_page',true,web_site_to_page)) {
-			application.updateUI(4000)
+		if (input == 'Yes') {
+			//go to page layout
+			forms.WEB_0F_page.controller.show()
 			
+			forms.WEB_0F_page.controller.find()
+			forms.WEB_0F_page.id_site = id_site
+			forms.WEB_0F_page.controller.search()
 			
-			//loop over all pages in site
-			for (var i = 1; i <= forms.WEB_0F_page.controller.getMaxRecordIndex(); i++) {
-//				var input = plugins.dialogs.showQuestionDialog(
-//							'Continue ' + i + '?',
-//							'Meh.',
-//							'Yes',
-//							'No'
-//					)
-//				
-//				if (input == 'No') {
-//					return
-//				}
-//				else if (input == 'Yes') {
-					//set selected index
-					forms.WEB_0F_page.controller.setSelectedIndex(i)
-					
-					//run area diff method
-					forms.WEB_0F_page__design__content_1L_area.AREA_add_missing()
-//				}
-//				
-//				input = 'No'
-			}
-//		}
+	//		if (globals.TRIGGER_navigation_set('CMS_page',true,web_site_to_page)) {
+				application.updateUI(4000)
+				
+				
+				//loop over all pages in site
+				for (var i = 1; i <= forms.WEB_0F_page.controller.getMaxRecordIndex(); i++) {
+	//				var input = plugins.dialogs.showQuestionDialog(
+	//							'Continue ' + i + '?',
+	//							'Meh.',
+	//							'Yes',
+	//							'No'
+	//					)
+	//				
+	//				if (input == 'No') {
+	//					return
+	//				}
+	//				else if (input == 'Yes') {
+						//set selected index
+						forms.WEB_0F_page.controller.setSelectedIndex(i)
+						
+						//run area diff method
+						forms.WEB_0F_page__design__content_1L_area.AREA_add_missing()
+	//				}
+	//				
+	//				input = 'No'
+				}
+	//		}
+		}
 	}
-}
 }
 
 /**
@@ -271,9 +277,10 @@ function ACTION_choose_error(event) {
  *
  * @properties={typeid:24,uuid:"28287505-5072-4F40-BDBF-C3A0717BB35A"}
  */
-function ACTION_set_home(inputID) {
+function ACTION_set_home(inputID,inputRec) {
 	if (inputID) {
-		id_page = application.getUUID(inputID)
+		id_page__home = inputRec.id_page.toString()
+		id_page__home__display = inputRec.display_page_name
 		databaseManager.saveData()
 	}
 }
@@ -282,9 +289,10 @@ function ACTION_set_home(inputID) {
  *
  * @properties={typeid:24,uuid:"28287505-5072-4F40-BEBF-C3A0717BB35A"}
  */
-function ACTION_set_error(inputID) {
+function ACTION_set_error(inputID,inputRec) {
 	if (inputID) {
-		id_page_error = inputID
+		id_page__error = inputRec.id_page.toString()
+		id_page__error__display = inputRec.display_page_name
 		databaseManager.saveData()
 	}
 }
@@ -452,6 +460,64 @@ function FIELD_publish() {
 	if ( site_name_publish_flag ) {
 		if ( !site_name_publish_separator ) {
 			site_name_publish_separator = " | "
+		}
+	}
+}
+
+/**
+ * @param	{JSRecord}	[siteRec] Site record to retrieve defaults for; if left blank will use selected record. 
+ * 
+ * @returns	{Object}	thisSite Object containing default platform, language, and group records for a site.
+ * 
+ * @properties={typeid:24,uuid:"739BF19F-5BF7-433F-9CAB-408DE15D2205"}
+ */
+function ACTION_get_defaults(siteRec) {
+	//no site specified, get the selected site
+	if (!siteRec) {
+		siteRec = foundset.getSelectedRecord()
+	}
+	
+	//we have a site to work with
+	if (siteRec) {
+		var thisSite = new Object()
+		thisSite.record = siteRec
+		
+		//loop over all platforms
+		for (var i = 1; i <= siteRec.web_site_to_site_platform.getSize(); i++) {
+			var record = siteRec.web_site_to_site_platform.getRecord(i)
+			
+			//grab default platform
+			if (record.flag_default) {
+				thisSite.platform = record
+				break
+			}
+		}
+		
+		//loop over all languages
+		for (var i = 1; i <= siteRec.web_site_to_site_language.getSize(); i++) {
+			var record = siteRec.web_site_to_site_language.getRecord(i)
+			
+			//grab default platform
+			if (record.flag_default) {
+				thisSite.language = record
+				break
+			}
+		}
+		
+		//loop over all groups
+		for (var i = 1; i <= siteRec.web_site_to_site_group.getSize(); i++) {
+			var record = siteRec.web_site_to_site_group.getRecord(i)
+			
+			//grab default platform
+			if (record.flag_default) {
+				thisSite.group = record
+				break
+			}
+		}
+		
+		//only return if there are defaults specified for all
+		if (thisSite && thisSite.platform && thisSite.language && thisSite.group) {
+			return thisSite
 		}
 	}
 }

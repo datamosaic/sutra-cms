@@ -127,8 +127,8 @@ function TOGGLE_group(showGroups) {
 function TOGGLE_version(showSnapshots) {
 	
 	if (typeof showSnapshots != 'boolean') {
-		var snapshots = application.getValueListItems('WEB_snapshot')
-		showSnapshots = (snapshots.getMaxRowIndex() > 1) ? true : false
+		var versions = application.getValueListItems('WEB_version')
+		showSnapshots = (versions.getMaxRowIndex() > 1) ? true : false
 	}
 	
 	elements.btn_versions.visible = showSnapshots
@@ -147,9 +147,9 @@ function ACTION_version(input) {
 	//called to depress menu
 	if (typeof input != 'number') {
 		//menu items
-		var snapshots = application.getValueListItems('WEB_snapshot')
-		var vlDisplay = snapshots.getColumnAsArray(1)
-		var vlReal = snapshots.getColumnAsArray(2)
+		var versions = application.getValueListItems('WEB_version')
+		var vlDisplay = versions.getColumnAsArray(1)
+		var vlReal = versions.getColumnAsArray(2)
 		
 		//set up menu with arguments
 		var menu = new Array()
@@ -202,7 +202,7 @@ function BREAD_update() {
 		label += '<br>'
 	}
 	
-	label += '<b>Snapshot</b> ' + application.getValueListDisplayValue('WEB_snapshot',globals.WEB_version_selected)
+	label += '<b>Snapshot</b> ' + application.getValueListDisplayValue('WEB_version',globals.WEB_version_selected)
 	
 	if (!simple) {
 		label += '<br>'
@@ -274,7 +274,7 @@ function ACTION_dashboard(event) {
 //			forms.WEB_0F_page__browser.elements.bn_browser.reload()
 			forms.WEB_0F_page.TRIGGER_mode_set("BROWSER")	
 			
-			//toggle edit, groups, snapshots
+			//toggle edit, groups, versions
 			TOGGLE_edit()
 			TOGGLE_group()
 			TOGGLE_version()		
@@ -359,7 +359,7 @@ function ACTION_mode(event) {
 					TOGGLE_version(false)
 					
 					//refire toggle
-					forms.WEB_0F_page__design__header_display.FLD_data_change__version_selected()
+					forms.WEB_0F_page__design__header_display__version.FLD_version__data_change()
 				}
 				break
 			case 'lbl_mode_gui':
@@ -373,8 +373,8 @@ function ACTION_mode(event) {
 				globals.WEB_page_mode = 2
 				forms.WEB_0F_page__design__content.elements.tab_content.tabIndex = 1
 				
-				//refire toggle
-				forms.WEB_0F_page__design__header_display.FLD_data_change__version_selected()
+				//refire toggle (may fire too frequently)
+				forms.WEB_0F_page__design__content_1L_block.ACTION_gui_mode_load()
 				
 				//go to non-real mode if not there already
 				if (currentMode != "DESIGN") {
@@ -402,7 +402,7 @@ function ACTION_mode(event) {
 					
 					forms.WEB_0F_page.TRIGGER_mode_set("BROWSER")
 					
-					//toggle edit, groups, snapshots
+					//toggle edit, groups, versions
 					TOGGLE_edit()
 					TOGGLE_group()
 					TOGGLE_version()	

@@ -171,61 +171,62 @@ function BLOCK_new(input) {
 		var display = dataset.getValue(1,3)
 		
 		// create block record
-		if (utils.hasRecords(web_page_to_area)) {
-			var count = web_page_to_block_by_area.getSize()
-			var blockRec = web_page_to_block_by_area.getRecord(web_page_to_block_by_area.newRecord(false, true))
+		if (utils.hasRecords(forms.WEB_0F_page__design__content_1L_area.foundset)) {
+			//turn off rec on select
+			_skipSelect = true
+			
+			var blockRec = foundset.getRecord(foundset.newRecord(false, true))
 			blockRec.id_block_type = valueListObj[selection]
 			blockRec.id_block_display = ( display ) ? display : null
-			blockRec.row_order = count + 1
+			blockRec.row_order = foundset.getSize()
 			databaseManager.saveData(blockRec)
-		}
-		
-		// set global when in web edit mode
-		if (webEdit) {
-			globals.WEB_page_id_block_selected = blockRec.id_block
-		}
-		
-		// get block data points
-		var dataset = databaseManager.getDataSetByQuery(
-							controller.getServerName(),
-							"select column_name, column_type, " +
-								"(select id_block_display from web_block_display where id_block_type = ? and flag_default = 1) as display " +
-							"from web_block_input where id_block_type = ?",
-							new Array(valueListObj[selection],valueListObj[selection]), 
-							-1
-						)
-		
-		var dataNames = dataset.getColumnAsArray(1)
-		
-		// create a block data record for each data point
-		for (var i = 0; i < dataNames.length; i++) {
-			var record = web_page_to_block_data_by_area_by_block.getRecord(web_page_to_block_data_by_area_by_block.newRecord(false, true))
-			record.data_key = dataNames[i]
-			databaseManager.saveData(record)
-		}
-		
-		// create a block data configure record for each data point
-		if (utils.hasRecords(blockRec,'web_block_to_block_type.web_block_type_to_block_configure')) {
-			for (var i = 1; i <= blockRec.web_block_to_block_type.web_block_type_to_block_configure.getSize(); i++) {
-				var configTemplate = blockRec.web_block_to_block_type.web_block_type_to_block_configure.getRecord(i)
-				var configRec = blockRec.web_block_to_block_data_configure.getRecord(blockRec.web_block_to_block_data_configure.newRecord(false, true))
+			
+			// get block data points
+			var dataset = databaseManager.getDataSetByQuery(
+								controller.getServerName(),
+								"select column_name, column_type, " +
+									"(select id_block_display from web_block_display where id_block_type = ? and flag_default = 1) as display " +
+								"from web_block_input where id_block_type = ?",
+								new Array(valueListObj[selection],valueListObj[selection]), 
+								-1
+							)
+			
+			var dataNames = dataset.getColumnAsArray(1)
+			
+			// create a block data record for each data point
+			for (var i = 0; i < dataNames.length; i++) {
+				var record = blockRec.web_block_to_block_data.getRecord(blockRec.web_block_to_block_data.newRecord(false, true))
+				record.data_key = dataNames[i]
 				
-				configRec.data_key = configTemplate.column_name
-				
-				databaseManager.saveData(configRec)
+				databaseManager.saveData(record)
 			}
-		}
-		
-		// finish up
-		web_page_to_block_data_by_area_by_block.setSelectedIndex(1)
-		
-		// set global with first blockID of this set
-		if (webEdit) {
-			globals.WEB_page_id_block_selected = web_page_to_block_data_by_area_by_block.id_block
-		}
-		// update screen in non-web edit
-		else {
-			forms.WEB_0F_page__design__content_1L_block.REC_selected()
+			
+			// create a block data configure record for each data point
+			if (utils.hasRecords(blockRec,'web_block_to_block_type.web_block_type_to_block_configure')) {
+				for (var i = 1; i <= blockRec.web_block_to_block_type.web_block_type_to_block_configure.getSize(); i++) {
+					var configTemplate = blockRec.web_block_to_block_type.web_block_type_to_block_configure.getRecord(i)
+					var configRec = blockRec.web_block_to_block_data_configure.getRecord(blockRec.web_block_to_block_data_configure.newRecord(false, true))
+					configRec.data_key = configTemplate.column_name
+					
+					databaseManager.saveData(configRec)
+				}
+			}
+			
+			// finish up
+			blockRec.web_block_to_block_data.setSelectedIndex(1)
+			
+			//turn on rec on select
+			_skipSelect = false
+			
+			// set global with first blockID of this set
+			if (webEdit) {
+				globals.WEB_page_id_block_selected = blockRec.id_block.toString()
+			}
+			// update screen in non-web edit
+			else {
+				forms.WEB_0F_page__design__content_1L_block.REC_on_select()
+			}
+			
 		}
 	}
 	else {
@@ -355,61 +356,63 @@ function REC_delete() {
 		controller.setSelectedIndex(recSelect)
 		
 		if (!utils.hasRecords(foundset)) {
-			REC_selected()
+			REC_on_select()
 		}
 		
 	}
 }
 
 /**
- *
+ * @properties={typeid:35,uuid:"FF646EF2-49F9-4BB9-B941-28E24ADB67D2",variableType:-4}
+ */
+var _skipSelect = false;
+
+/**
  * @properties={typeid:24,uuid:"BFBF2B28-E3BA-4CF7-807D-DADFF29D20F3"}
  */
-function REC_selected() {
-	if (utils.hasRecords(foundset)) {
-		// set relation
-		globals.WEB_page_id_block_selected = id_block
-		
-		//normal non-linked items
-		if (!id_scrapbook) {
-			// input method names for block type
-			var params = [id_block_type]
-			var sql =	"select input_name, method_name from web_block_action_client where " +
-							"web_block_action_client.id_block_type = ?"
-			var dataset = databaseManager.getDataSetByQuery(
-							controller.getServerName(), sql, params, -1)
-		
-			if ( dataset.getMaxRowIndex() ) {
-				forms.WEB_0F_page__design__content_1F_block_data__raw.elements.btn_data_actions.visible = true
-				forms.WEB_0F_page__design__content_1F_block_data.elements.btn_data_actions.visible = true
+function REC_on_select() {
+	//we're not intentially skipping this method, run it
+	if (!_skipSelect) {
+		if (utils.hasRecords(foundset)) {
+			//normal non-linked items
+			if (!id_scrapbook) {
+				// input method names for block type
+				var params = [id_block_type]
+				var sql =	"select input_name, method_name from web_block_action_client where " +
+								"web_block_action_client.id_block_type = ?"
+				var dataset = databaseManager.getDataSetByQuery(
+								controller.getServerName(), sql, params, -1)
+			
+				if ( dataset.getMaxRowIndex() ) {
+					forms.WEB_0F_page__design__content_1F_block_data__raw.elements.btn_data_actions.visible = true
+					forms.WEB_0F_page__design__content_1F_block_data.elements.btn_data_actions.visible = true
+				}
+				else {
+					forms.WEB_0F_page__design__content_1F_block_data__raw.elements.btn_data_actions.visible = false
+					forms.WEB_0F_page__design__content_1F_block_data.elements.btn_data_actions.visible = false			
+				}
 			}
+			//this is a linked scrapbook
 			else {
 				forms.WEB_0F_page__design__content_1F_block_data__raw.elements.btn_data_actions.visible = false
-				forms.WEB_0F_page__design__content_1F_block_data.elements.btn_data_actions.visible = false			
+				forms.WEB_0F_page__design__content_1F_block_data.elements.btn_data_actions.visible = false	
 			}
 		}
-		//this is a linked scrapbook
 		else {
+			//no actions available
 			forms.WEB_0F_page__design__content_1F_block_data__raw.elements.btn_data_actions.visible = false
-			forms.WEB_0F_page__design__content_1F_block_data.elements.btn_data_actions.visible = false	
+			forms.WEB_0F_page__design__content_1F_block_data.elements.btn_data_actions.visible = false
 		}
-	}
-	else {
-		globals.WEB_page_id_block_selected = 0
 		
-		//no actions available
-		forms.WEB_0F_page__design__content_1F_block_data__raw.elements.btn_data_actions.visible = false
-		forms.WEB_0F_page__design__content_1F_block_data.elements.btn_data_actions.visible = false
-	}
-	
-	//gui view
-	if (globals.WEB_page_mode == 2) {
-		//switch tabpanel based on type of form
-		ACTION_gui_mode_load()
-	}
-	//data view
-	else {
-		forms.WEB_0F_page__design__content_1F_block_data.elements.tab_detail.tabIndex = 1
+		//gui view
+		if (globals.WEB_page_mode == 2) {
+			//switch tabpanel based on type of form
+			ACTION_gui_mode_load()
+		}
+		//data view
+		else {
+			forms.WEB_0F_page__design__content_1F_block_data.elements.tab_detail.tabIndex = 1
+		}
 	}
 }
 
@@ -427,6 +430,16 @@ function ACTION_gui_mode_load() {
 		//method is beginning
 		_guiLoading = true
 		
+//		if (!this.someVar) {
+//			this.someVar = 1
+//		}
+//		else {
+//			this.someVar ++
+//		}
+//		
+//		//log how many times run and how
+//		application.output('WEB_0F_page__design__content_1L_block.ACTION_gui_mode_load(' + (utils.hasRecords(foundset) ? web_block_to_block_type.block_name : '') + ') #:' + this.someVar)
+		
 		var recBlock = foundset.getSelectedRecord()
 		
 		if (recBlock) {
@@ -437,7 +450,7 @@ function ACTION_gui_mode_load() {
 				}
 				
 				//editable status
-				var flagEdit = (utils.hasRecords(forms.WEB_0F_page__design.web_page_to_version) && forms.WEB_0F_page__design.web_page_to_version.flag_edit) ? true : false
+				var flagEdit = (utils.hasRecords(forms.WEB_0F_page__design__content.foundset) && forms.WEB_0F_page__design__content.flag_edit) ? true : false
 				
 				//this block definition exists as does the form
 				if (recBlockType && forms[recBlockType.form_name]) {

@@ -228,3 +228,39 @@ function UTIL_page_type() {
 function TAB_change_descript(event) {
 	globals.TAB_change_grid(null,null,'tab_descript','tab_e','btn_desc_add','btn_desc_actions','btn_desc_help')
 }
+
+/**
+ * Callback method when form is (re)loaded.
+ *
+ * @param {JSEvent} event the event that triggered the action
+ *
+ * @properties={typeid:24,uuid:"A07C3EAA-9D2B-4AAB-8FF5-25926ED8E8F6"}
+ */
+function FORM_on_load(event) {
+	// set detail split
+	elements.split_details.topComponent		= elements.tab_detail
+	elements.split_details.bottomComponent	= elements.tab_detail_bottom
+	elements.split_details.bottomComponent	= null
+}
+
+/**
+ * Perform the element default action.
+ *
+ * @param {JSEvent} event the event that triggered the action
+ *
+ * @properties={typeid:24,uuid:"18A5DA18-8E96-4E36-B92C-2BDC0BE065A6"}
+ */
+function TAB_change(event) {
+	globals.TAB_change_grid()
+//	
+//	elements.tab_detail_bottom.tabIndex = elements.tab_detail.tabIndex
+//	
+//	if (elements.tab_used_on.tabIndex == 4) {
+//		elements.btn_add_page_attrib.visible = true
+//	}
+//	else {
+//		elements.btn_add_page_attrib.visible = false
+//	}
+//	
+//	forms[elements.tab_detail.getTabFormNameAt(elements.tab_detail.tabIndex)].REC_on_select()
+}
