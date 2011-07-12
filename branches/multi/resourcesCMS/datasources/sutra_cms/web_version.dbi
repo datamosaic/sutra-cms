@@ -73,6 +73,8 @@ name:"rec_modified"
 },
 {
 allowNull:true,
+autoEnterSubType:0,
+autoEnterType:2,
 creationOrderIndex:12,
 dataType:4,
 name:"url_param"
