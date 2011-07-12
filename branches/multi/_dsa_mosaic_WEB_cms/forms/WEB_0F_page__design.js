@@ -42,10 +42,21 @@ function TAB_header_size() {
 }
 
 /**
- *
+ * @properties={typeid:35,uuid:"C2767F81-E228-4D18-9BE6-D9DC2B921123",variableType:-4}
+ */
+var _skipSelect = false;
+
+/**
+ * Method that is in charge of setting up the PAGE view of the page.
+ * 
+ * @param	{JSEvent}	[event] The event that triggered the action.
+ * @param	{Boolean}	[skipLoad=false] Find correct version stack or use the existing one.
+ * @param	{Number}	[verIndex] The version to select (by index).
+ * @param	{Boolean}	[fireSelect=false] Manually fire the REC_on_select on the selected block type's form.
+ * 
  * @properties={typeid:24,uuid:"23B7AC31-3444-4F11-BDE4-748066C79D30"}
  */
-function REC_on_select(event,skipLoad,verIndex) {
+function REC_on_select(event,skipLoad,verIndex,fireSelect) {
 //	if (!this.someVar) {
 //		this.someVar = 1
 //	}
@@ -56,73 +67,72 @@ function REC_on_select(event,skipLoad,verIndex) {
 //	//log how many times run and how
 //	application.output('WEB_0F_page__design.REC_on_select(' + url_param + '/' + display_page_name + ') #:' + this.someVar + ' ' + (event ? '(e)' : '') + (skipLoad ? ' (skipLoad)' : ''))
 	
+	//wrapper to keep from firing too much on initial load
+	if (!_skipSelect) {
+		_skipSelect = true
 	
-	//when newly added page, skip this
-	if (!forms.WEB_0T_page._addRecord) {
-		//halt additional on select firing
-		forms.WEB_0F_page__design__content_1L_block._skipSelect = true
-		
-	 	//when called with event (not programatically)
-		if (event) {
-		 	//set tooltip of visit with link
-			forms.WEB_0F_page__design__button_tab__content.elements.btn_visit.toolTipText = globals.WEB_MRKUP_link_page(id_page)
-		}
-		
-		//select page version of tri globals
-	 	SET_globals()
-		
-		//set up valuelists for tri globals
-		var pageValid = SET_valuelists()
-		
-		//set version junks
-		var activeInfo = SET_versions(skipLoad,!pageValid)
-		
-		//don't change anything if we're not loading in the versions
-		if (!skipLoad) {
-			//specified index to be selected
-			if (verIndex) {
-				//set selected index
-				forms.WEB_0F_page__design__content.foundset.setSelectedIndex(verIndex)
+		//when newly added page, skip this
+		if (!forms.WEB_0T_page._addRecord) {
+			//halt additional on select firing
+			forms.WEB_0F_page__design__content_1L_block._skipSelect = true
+			
+		 	//when called with event (not programatically)
+			if (event) {
+			 	//set tooltip of visit with link
+				forms.WEB_0F_page__design__button_tab__content.elements.btn_visit.toolTipText = globals.WEB_MRKUP_link_page(id_page)
 			}
-			//there is info about the active version
-			else if (activeInfo) {
-				//set selected index
-				forms.WEB_0F_page__design__content.foundset.setSelectedIndex(activeInfo.position)
-				
-				//set version to be the active one
-				globals.WEB_page_version = activeInfo.record.id_version
+			
+			//select page version of tri globals
+		 	SET_globals()
+			
+			//set up valuelists for tri globals
+			var pageValid = SET_valuelists()
+			
+			//set version junks
+			var activeInfo = SET_versions(skipLoad,!pageValid)
+			
+			//don't change anything if we're not loading in the versions
+			if (!skipLoad) {
+				//specified index to be selected
+				if (verIndex) {
+					//set selected index
+					forms.WEB_0F_page__design__content.foundset.setSelectedIndex(verIndex)
+				}
+				//there is info about the active version
+				else if (activeInfo) {
+					//set selected index
+					forms.WEB_0F_page__design__content.foundset.setSelectedIndex(activeInfo.position)
+					
+					//set version to be the active one
+					globals.WEB_page_version = activeInfo.record.id_version
+				}
+				//set to first thing in the list (most recent)
+				else {
+					globals.WEB_page_version = application.getValueListItems('WEB_page_version').getValue(1,2)
+				}
 			}
-			//set to first thing in the list (most recent)
-			else {
-				globals.WEB_page_version = application.getValueListItems('WEB_page_version').getValue(1,2)
-			}
+			
+			//page type ui differences
+			PAGE_type_display(!pageValid ? 'Page invalid' : null)
+			
+			//are edits allowed
+			var editAllow = forms.WEB_0F_page.ACTION_edit_get()
+			
+			//set elements appropriately
+			forms.WEB_0F_page__design__content_1L_area.TOGGLE_elements(editAllow)
+			forms.WEB_0F_page__design__content_1L_block.TOGGLE_elements(editAllow)
+			forms.WEB_0F_page__design__content_1F_block_data__textarea.TOGGLE_elements(editAllow)
+			forms.WEB_0F_page__design__header_display__version.TOGGLE_elements(editAllow)
+			
+			//allow additional on select firing
+			forms.WEB_0F_page__design__content_1L_block._skipSelect = false
+			
+			//may fire too frequently
+			forms.WEB_0F_page__design__content_1L_block.ACTION_gui_mode_load(fireSelect)
 		}
 		
-		//page type ui differences
-		PAGE_type_display(!pageValid ? 'Page invalid' : null)
-		
-		//disable edits if edit flag not set
-		if (!utils.hasRecords(forms.WEB_0F_page__design__content.foundset) || !forms.WEB_0F_page__design__content.flag_edit) {
-				//disable edits for active or non-latest versions
-				//utils.hasRecords(fsVersions) && fsVersions.version_number != fsVersions.getSize() || fsVersions.flag_active) {
-			var editAllow = false
-		}
-		//enable edits
-		else {
-			var editAllow = true
-		}
-		
-		//set elements appropriately
-		forms.WEB_0F_page__design__content_1L_area.TOGGLE_elements(editAllow)
-		forms.WEB_0F_page__design__content_1L_block.TOGGLE_elements(editAllow)
-		forms.WEB_0F_page__design__content_1F_block_data__textarea.TOGGLE_elements(editAllow)
-		forms.WEB_0F_page__design__header_display__version.TOGGLE_elements(editAllow)
-		
-		//allow additional on select firing
-		forms.WEB_0F_page__design__content_1L_block._skipSelect = false
-		
-		//may fire too frequently
-		forms.WEB_0F_page__design__content_1L_block.ACTION_gui_mode_load()
+		//allow to fire again
+		_skipSelect = false
 	}
 }
 
@@ -140,24 +150,31 @@ function SET_globals() {
 		//turn off default load
 		_loadFilters = false
 		
-		for (var i = 1; i <= web_page_to_site.web_site_to_site_platform.getSize(); i++) {
-			var record = web_page_to_site.web_site_to_site_platform.getRecord(i)
+		if (utils.hasRecords(foundset)) {
+			var siteRec = web_page_to_site.getSelectedRecord()
+		}
+		else {
+			var siteRec = forms.WEB_0F_site.foundset.getSelectedRecord()
+		}
+		
+		for (var i = 1; i <= siteRec.web_site_to_site_platform.getSize(); i++) {
+			var record = siteRec.web_site_to_site_platform.getRecord(i)
 			if (record.flag_default) {
 				var platform = record
 				break
 			}
 		}
 		
-		for (var i = 1; i <= web_page_to_site.web_site_to_site_language.getSize(); i++) {
-			var record = web_page_to_site.web_site_to_site_language.getRecord(i)
+		for (var i = 1; i <= siteRec.web_site_to_site_language.getSize(); i++) {
+			var record = siteRec.web_site_to_site_language.getRecord(i)
 			if (record.flag_default) {
 				var language = record
 				break
 			}
 		}
 		
-		for (var i = 1; i <= web_page_to_site.web_site_to_site_group.getSize(); i++) {
-			var record = web_page_to_site.web_site_to_site_group.getRecord(i)
+		for (var i = 1; i <= siteRec.web_site_to_site_group.getSize(); i++) {
+			var record = siteRec.web_site_to_site_group.getRecord(i)
 			if (record.flag_default) {
 				var group = record
 				break

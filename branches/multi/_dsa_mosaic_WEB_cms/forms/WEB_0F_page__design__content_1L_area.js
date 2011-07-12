@@ -7,144 +7,13 @@ var _license_dsa_mosaic_WEB_cms = 'Module: _dsa_mosaic_WEB_cms \
 
 /**
  *
- * @properties={typeid:24,uuid:"88F9B85E-8A85-4B47-B2EB-6E63713E46A3"}
- */
-function AREA_new(event) {
-	
-	var pageRec = forms.WEB_0F_page.foundset.getRecord(forms.WEB_0F_page.foundset.getSelectedIndex())
-	
-	// ERROR CHECK: PAGE AREA RECORDS DELETE
-	if (utils.hasRecords(foundset)) {
-		var input = plugins.dialogs.showWarningDialog(
-						"Warning",
-						"This action will delete current area records. Continue?", 
-						"Yes", 
-						"No"
-					)
-
-		if ( input != "Yes") {
-			return
-		}
-	}
-
-	// ERROR CHECK: THEME SELECTED FOR PAGE
-	if ( !pageRec.id_theme ) {
-		plugins.dialogs.showErrorDialog(
-						"Error",
-						"No theme selected for this page"
-					)
-		return
-	}
-
-	// get layouts from current page theme
-	var dataset = databaseManager.getDataSetByQuery(
-					controller.getServerName(),
-					"select id_layout, layout_name from web_layout where id_theme = ?",
-					[pageRec.id_theme], 
-					-1
-				)
-
-	// setup associative array
-	var IDs = dataset.getColumnAsArray(1)
-	var values = dataset.getColumnAsArray(2)
-	var valueListObj = {}
-	for (var i = 0; i < IDs.length; i++) {
-		valueListObj[values[i]] = IDs[i]
-	}
-
-	// choose layout
-	var selection = plugins.dialogs.showSelectDialog(
-				"Select",
-				"Choose layout", 
-				values
-			)
-
-	// ERROR CHECK: NO LAYOUT SELECTED
-	if ( !selection ) {
-		return
-	}
-	
-	//save new layout
-	pageRec.id_theme_layout = valueListObj[selection]
-	
-	// get editable regions based on layout selected
-	if (!utils.hasRecords(pageRec.web_page_to_layout.web_layout_to_editable)) {
-		plugins.dialogs.showErrorDialog( 
-					"Error",
-					"No editable regions set up in layout selected."
-				)
-		return 'No editables for selected layout'
-	}
-	
-	var fsRegions = pageRec.web_page_to_layout.web_layout_to_editable
-	
-	var fsArea = databaseManager.getFoundSet('sutra_cms','web_area')
-	fsArea.find()
-	fsArea.id_group = globals.WEB_group_selected
-	fsArea.id_version = globals.WEB_version_selected
-	var results = fsArea.search()
-	
-	
-	// delete current area records
-	if (utils.hasRecords(fsArea)) {
-		fsArea.deleteAllRecords()
-	}
-	
-	// create a page area record for each editable
-	var order = 1
-	for (var i = 1; i <= fsRegions.getSize(); i++) {
-		var tempEditableRec = fsRegions.getRecord(i)
-		
-		var areaRec = fsArea.getRecord(fsArea.newRecord(false, true))
-		
-		areaRec.area_name = tempEditableRec.editable_name
-		areaRec.id_editable = tempEditableRec.id_editable
-		areaRec.row_order = order ++ 
-		areaRec.id_group = globals.WEB_group_selected
-		
-		databaseManager.saveData()
-		
-		//create a block record for each editable default
-		for (var j = 1; j <= tempEditableRec.web_editable_to_editable_default.getSize(); j++ ) {
-			var tempEditableDefaultRec = tempEditableRec.web_editable_to_editable_default.getRecord(j)
-			
-			var blockRec = areaRec.web_area_to_block.getRecord(areaRec.web_area_to_block.newRecord(false, true))
-			
-			blockRec.id_block_display = tempEditableDefaultRec.id_block_display
-			blockRec.id_block_type = tempEditableDefaultRec.id_block_type
-			blockRec.params = tempEditableDefaultRec.params
-			blockRec.row_order = j
-			databaseManager.saveData()
-			
-			//create a block_data record for each editable_default
-			for (var k = 1; k <= tempEditableDefaultRec.web_editable_default_to_block_input.getSize(); k++) {
-				var tempEditableDefaultDetailRec = tempEditableDefaultRec.web_editable_default_to_block_input.getRecord(k)
-				
-				var blockDataRec = blockRec.web_block_to_block_data.getRecord(blockRec.web_block_to_block_data.newRecord(false,true))
-				
-				blockDataRec.data_key = tempEditableDefaultDetailRec.column_name				
-			}			
-		}
-	}
-	
-	// finish up
-	foundset.loadRecords(fsArea)
-	foundset.sort( "row_order asc" )
-	foundset.setSelectedIndex(1)
-	
-	databaseManager.saveData()
-
-}
-
-/**
- *
  * @properties={typeid:24,uuid:"35FDA09F-74E0-45AF-9BC1-C682E4F0F549"}
  */
 function AREA_add_missing() {
-	//MEMO: does not take into account groups...will break when more than one
+	//MEMO: does not take into account multiple groups, languages, or platforms
 	
 	//this page
-	var pageRec = forms.WEB_0F_page.foundset.getRecord(forms.WEB_0F_page.foundset.getSelectedIndex())
+	var pageRec = forms.WEB_0F_page.foundset.getSelectedRecord()
 	
 	//existing areas
 	var thisAreas = new Array()
@@ -153,7 +22,7 @@ function AREA_add_missing() {
 	}
 	
 	// ERROR CHECK: THEME SELECTED FOR PAGE
-	if ( !pageRec.id_theme ) {
+	if ( !forms.WEB_0F_page__design__header_display__platform._platform.id_theme ) {
 		plugins.dialogs.showErrorDialog(
 						"Error",
 						"No theme selected for this page"
@@ -162,25 +31,7 @@ function AREA_add_missing() {
 	}
 	
 	// get editable regions based on layout selected
-	if (pageRec.id_theme_layout) {
-		if (utils.hasRecords(pageRec.web_page_to_layout)) {
-			if (utils.hasRecords(pageRec.web_page_to_layout.web_layout_to_editable)) {
-				
-			}
-			else {
-				var hitme = true
-			}
-		}
-		else {
-			var hitme = true
-		}
-		
-	}
-	else {
-		var hitme = true
-	}
-	
-	if (hitme) {
+	if (!(forms.WEB_0F_page__design__header_display__platform._platform && utils.hasRecords(forms.WEB_0F_page__design__header_display__platform._platform,'web_platform_to_layout.web_layout_to_editable'))) {
 		plugins.dialogs.showErrorDialog( 
 					"Error",
 					"No editable regions set up in layout selected."
@@ -188,7 +39,7 @@ function AREA_add_missing() {
 		return 'No editables for selected layout'
 	}
 	
-	var fsRegions = pageRec.web_page_to_layout.web_layout_to_editable
+	var fsRegions = forms.WEB_0F_page__design__header_display__platform._platform.web_platform_to_layout.web_layout_to_editable
 	
 	// create a page area record for each non-existing editable
 	var order = 1
@@ -211,7 +62,7 @@ function AREA_add_missing() {
 		areaRec.area_name = tempEditableRec.editable_name
 		areaRec.id_editable = tempEditableRec.id_editable
 		areaRec.row_order = order ++ 
-		areaRec.id_group = globals.WEB_group_selected
+		areaRec.id_version = globals.WEB_page_version
 		
 		databaseManager.saveData()
 		
@@ -219,28 +70,50 @@ function AREA_add_missing() {
 		for (var k = 1; k <= tempEditableRec.web_editable_to_editable_default.getSize(); k++ ) {
 			var tempEditableDefaultRec = tempEditableRec.web_editable_to_editable_default.getRecord(k)
 			
-			var blockRec = areaRec.web_area_to_block.getRecord(areaRec.web_area_to_block.newRecord(false, true))
+			//disale/enable rec on select on the block type forms when creating scope
+			globals.WEB_block_on_select = false
 			
-			blockRec.id_block_display = tempEditableDefaultRec.id_block_display
+			//create scope record
+			var scopeRec = areaRec.web_area_to_scope.getRecord(areaRec.web_area_to_scope.newRecord(false, true))
+			scopeRec.row_order = k
+			
+			//disale/enable rec on select on the block type forms when creating scope
+			globals.WEB_block_on_select = true
+			
+			//create block record
+			var fsBlock = databaseManager.getFoundSet('sutra_cms','web_block')
+			var blockRec = fsBlock.getRecord(fsBlock.newRecord(false,true))
 			blockRec.id_block_type = tempEditableDefaultRec.id_block_type
-			blockRec.params = tempEditableDefaultRec.params
-			blockRec.row_order = k
+			blockRec.id_block_display = tempEditableDefaultRec.id_block_display
 			databaseManager.saveData()
 			
+			scopeRec.id_block = blockRec.id_block
 			
-			//create a block_data record for each editable_default
-			for (var m = 1; m <= tempEditableDefaultRec.web_editable_default_to_block_input.getSize(); m++) {
-				var tempEditableDefaultDetailRec = tempEditableDefaultRec.web_editable_default_to_block_input.getRecord(m)
-				
-				var blockDataRec = blockRec.web_block_to_block_data.getRecord(blockRec.web_block_to_block_data.newRecord(false,true))
-				
-				blockDataRec.data_key = tempEditableDefaultDetailRec.column_name				
+			// INPUT
+			// create a block_data record for each block_input
+			if ( utils.hasRecords(tempEditableDefaultRec.web_editable_default_to_block_input) ) {
+				for (var m = 1; m <= tempEditableDefaultRec.web_editable_default_to_block_input.getSize(); m++) {
+					var tempEditableDefaultDetailRec = tempEditableDefaultRec.web_editable_default_to_block_input.getRecord(m)
+
+					var blockDataRec = blockRec.web_block_to_block_data.getRecord(blockRec.web_block_to_block_data.newRecord(false,true))
+					blockDataRec.data_key = tempEditableDefaultDetailRec.column_name
+				}
+			}
+			
+			// CONFIG
+			// create a block data configure record for each data point
+			if ( utils.hasRecords(tempEditableDefaultRec.web_editable_default_to_block_configure) ) {
+				for (var m = 1; m <= tempEditableDefaultRec.web_editable_default_to_block_configure.getSize(); m++) {
+					var configTemplate = tempEditableDefaultRec.web_editable_default_to_block_configure.getRecord(m)
+					
+					var configRec = blockRec.web_block_to_block_data_configure.getRecord(blockRec.web_block_to_block_data_configure.newRecord(false, true))
+					configRec.data_key = configTemplate.columnName
+				}
 			}
 		}
 	}
 
 	// finish up
-	foundset.sort( "row_order asc" )
 	foundset.setSelectedIndex(1)
 	
 	databaseManager.saveData()
@@ -418,7 +291,7 @@ function DIR_up()
  *
  * @properties={typeid:24,uuid:"DDD4DB94-AB93-45C1-A05E-086D87FF69BF"}
  */
-function FORM_onLoad()
+function FORM_on_load()
 {
 	foundset.sort('row_order asc')
 }
@@ -571,7 +444,7 @@ function AREA_reset() {
 		var pageRec = forms.WEB_0F_page.foundset.getSelectedRecord()
 		
 		// get editable regions based on layout selected
-		if (!utils.hasRecords(pageRec.web_page_to_layout.web_layout_to_editable)) {
+		if (!(forms.WEB_0F_page__design__header_display__platform._platform && utils.hasRecords(forms.WEB_0F_page__design__header_display__platform._platform,'web_platform_to_layout.web_layout_to_editable'))) {
 			plugins.dialogs.showErrorDialog( 
 						"Error",
 						"No editable regions set up in layout selected."
@@ -579,7 +452,7 @@ function AREA_reset() {
 			return 'No editables for selected layout'
 		}
 		
-		var fsRegions = pageRec.web_page_to_layout.web_layout_to_editable
+		var fsRegions = forms.WEB_0F_page__design__header_display__platform._platform.web_platform_to_layout.web_layout_to_editable
 		
 		var fsArea = databaseManager.getFoundSet('sutra_cms','web_area')
 		
@@ -593,8 +466,7 @@ function AREA_reset() {
 			areaRec.area_name = tempEditableRec.editable_name
 			areaRec.id_editable = tempEditableRec.id_editable
 			areaRec.row_order = order ++ 
-			areaRec.id_group = globals.WEB_group_selected
-			areaRec.id_version = globals.WEB_version_selected
+			areaRec.id_version = globals.WEB_page_version
 			
 			databaseManager.saveData()
 			
@@ -602,21 +474,45 @@ function AREA_reset() {
 			for (var j = 1; j <= tempEditableRec.web_editable_to_editable_default.getSize(); j++ ) {
 				var tempEditableDefaultRec = tempEditableRec.web_editable_to_editable_default.getRecord(j)
 				
-				var blockRec = areaRec.web_area_to_block.getRecord(areaRec.web_area_to_block.newRecord(false, true))
+				//disale/enable rec on select on the block type forms when creating scope
+				globals.WEB_block_on_select = false
 				
-				blockRec.id_block_display = tempEditableDefaultRec.id_block_display
+				//create scope record
+				var scopeRec = areaRec.web_area_to_scope.getRecord(areaRec.web_area_to_scope.newRecord(false, true))
+				scopeRec.row_order = j
+				
+				//disale/enable rec on select on the block type forms when creating scope
+				globals.WEB_block_on_select = true
+				
+				//create block record
+				var fsBlock = databaseManager.getFoundSet('sutra_cms','web_block')
+				var blockRec = fsBlock.getRecord(fsBlock.newRecord(false,true))
 				blockRec.id_block_type = tempEditableDefaultRec.id_block_type
-				blockRec.params = tempEditableDefaultRec.params
-				blockRec.row_order = j
+				blockRec.id_block_display = tempEditableDefaultRec.id_block_display
 				databaseManager.saveData()
 				
-				//create a block_data record for each editable_default
-				for (var k = 1; k <= tempEditableDefaultRec.web_editable_default_to_block_input.getSize(); k++) {
-					var tempEditableDefaultDetailRec = tempEditableDefaultRec.web_editable_default_to_block_input.getRecord(k)
-					
-					var blockDataRec = blockRec.web_block_to_block_data.getRecord(blockRec.web_block_to_block_data.newRecord(false,true))
-					
-					blockDataRec.data_key = tempEditableDefaultDetailRec.column_name				
+				scopeRec.id_block = blockRec.id_block
+				
+				// INPUT
+				// create a block_data record for each block_input
+				if ( utils.hasRecords(tempEditableDefaultRec.web_editable_default_to_block_input) ) {
+					for (var k = 1; k <= tempEditableDefaultRec.web_editable_default_to_block_input.getSize(); k++) {
+						var tempEditableDefaultDetailRec = tempEditableDefaultRec.web_editable_default_to_block_input.getRecord(k)
+	
+						var blockDataRec = blockRec.web_block_to_block_data.getRecord(blockRec.web_block_to_block_data.newRecord(false,true))
+						blockDataRec.data_key = tempEditableDefaultDetailRec.column_name
+					}
+				}
+				
+				// CONFIG
+				// create a block data configure record for each data point
+				if ( utils.hasRecords(tempEditableDefaultRec.web_editable_default_to_block_configure) ) {
+					for (var k = 1; k <= tempEditableDefaultRec.web_editable_default_to_block_configure.getSize(); k++) {
+						var configTemplate = tempEditableDefaultRec.web_editable_default_to_block_configure.getRecord(k)
+						
+						var configRec = blockRec.web_block_to_block_data_configure.getRecord(blockRec.web_block_to_block_data_configure.newRecord(false, true))
+						configRec.data_key = configTemplate.columnName
+					}
 				}			
 			}
 		}
@@ -641,7 +537,7 @@ function TOGGLE_elements(editAllow) {
 //	elements.btn_down.enabled = editAllow
 //	elements.btn_up.enabled = editAllow
 	
-	elements.fld_area.editable = editAllow
+//	elements.fld_area.editable = editAllow
 //	elements.fld_row_order.editable = editAllow
 }
 

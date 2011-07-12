@@ -1,4 +1,4 @@
-dataSource:"db:/sutra_cms/web_block_data",
+dataSource:"db:/sutra_cms/web_block",
 items:[
 {
 height:200,
@@ -59,15 +59,6 @@ uuid:"EA72740C-813A-42E0-9E16-83AF097B1B9A"
 anchors:15,
 fontType:"Tahoma,0,13",
 formIndex:11801,
-items:[
-{
-containsFormID:"48550E53-F097-4840-B28B-335BAB804557",
-location:"1,20",
-text:"WEB_0F_page__design__content_1F_block_data_2F_blank",
-typeid:15,
-uuid:"64154A51-82BB-484C-B4D1-B094F76FF740"
-}
-],
 location:"1,18",
 name:"tab_detail",
 printable:false,

@@ -1,4 +1,4 @@
-dataSource:"db:/sutra_cms/web_scrapbook_data",
+dataSource:"db:/sutra_cms/web_block_data_configure",
 items:[
 {
 borderType:"SpecialMatteBorder,0.0,0.0,1.0,0.0,#000000,#000000,#999999,#000000,0.0,1.0",
@@ -36,7 +36,7 @@ typeid:19,
 uuid:"BEAB24D7-85E4-43E7-AB0F-2A47B4EEE42D"
 }
 ],
-name:"WEB_0F_page__design__content_1F_block_data__raw_2L_scrapbook_data",
+name:"WEB_0F_page__design__content_1F_block_data__raw_2L_block_data_configure",
 onRecordSelectionMethodID:"-1",
 onShowMethodID:"-1",
 paperPrintScale:100,

@@ -113,10 +113,12 @@ function SNAP_active(event) {
  * @properties={typeid:24,uuid:"2C69D26C-0E92-4BCB-9A39-DDF0E66B8CF7"}
  */
 function TOGGLE_display(event) {
+	var tabContent = forms.WEB_0F_page__design__content_1F_block_data.elements.tab_detail
+	
 	switch (event.getElementName()) {
 		case 'btn_on':
 			
-			if (forms.WEB_0F_page__design__content_1F_block_data.elements.tab_detail.getTabFormNameAt(2) == 'WEB_0F__content') {
+			if (tabContent.getTabFormNameAt(tabContent.tabIndex) == 'WEB_0F__content') {
 				forms.WEB_0F__content.BLOCK_cancel()
 			}			
 			
@@ -129,7 +131,7 @@ function TOGGLE_display(event) {
 		case 'btn_off':
 			//tinymce showing with edits, prompt to cancel
 				//TODO: abstract to work with all content types
-			if (forms.WEB_0F_page__design__content_1F_block_data.elements.tab_detail.getTabFormNameAt(2) == 'WEB_0F__content' &&
+			if (tabContent.getTabFormNameAt(tabContent.tabIndex) == 'WEB_0F__content' &&
 				forms.WEB_0F__content.elements.btn_save.enabled) {
 				
 				var input = plugins.dialogs.showWarningDialog(

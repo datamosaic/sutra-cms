@@ -141,14 +141,16 @@ function CONTROLLER_builder(results, obj) {
 		obj.area.id		= area.id_area
 		obj.area.name	= area.area_name
 		
-		// BLOCK(S)
-		var blocks = area.web_area_to_block
+		// SCOPE(S)
+		var scopes = area.web_area_to_scope
 		
-		// PROCESS: BLOCK
-		for (var j = 0; j < blocks.getSize(); j++) {
+		// PROCESS: SCOPE
+		for (var j = 0; j < scopes.getSize(); j++) {
+			var scope = scopes.getRecord(j + 1)
 			
-			databaseManager.refreshRecordFromDatabase(blocks, j + 1)			
-			var block = blocks.getRecord(j + 1)
+			// BLOCK(S)
+			databaseManager.refreshRecordFromDatabase(scope.web_scope_to_block, 1)			
+			var block = scope.web_scope_to_block.getRecord(1)
 			
 			// obj: block
 			obj.block.record	= block
@@ -157,81 +159,40 @@ function CONTROLLER_builder(results, obj) {
 			// BLOCK TYPE
 			var type = block.web_block_to_block_type
 			
-			//normal non-linked items
-			if (!block.id_scrapbook) {
-				// BLOCK DATA
-				var data = block.web_block_to_block_data
-				
-				// obj: data
-				if ( utils.hasRecords(data) ) {
-					for (var k = 0; k < data.getSize(); k++) {
-						databaseManager.refreshRecordFromDatabase(data, k + 1)	
-						var point = data.getRecord(k + 1)
-						obj.data[point.data_key] = point.data_value
-					}
+			// BLOCK DATA
+			var data = block.web_block_to_block_data
+			
+			// obj: data
+			if ( utils.hasRecords(data) ) {
+				for (var k = 0; k < data.getSize(); k++) {
+					databaseManager.refreshRecordFromDatabase(data, k + 1)	
+					var point = data.getRecord(k + 1)
+					obj.data[point.data_key] = point.data_value
 				}
-				
-				// BLOCK CONFIGURATION
-				var configureData = block.web_block_to_block_data_configure
-				
-				// obj: configuration
-				if ( utils.hasRecords(configureData) ) {
-					for (var k = 0; k < configureData.getSize(); k++) {
-						databaseManager.refreshRecordFromDatabase(configureData, k + 1)	
-						var point = configureData.getRecord(k + 1)
-						obj.block_configure[point.data_key] = point.data_value
-					}
-				}
-				
-				// BLOCK RESPONSE
-				var responseData = block.web_block_to_block_data_response
-				
-				// obj: response
-				if ( utils.hasRecords(responseData) ) {
-					for (var k = 0; k < responseData.getSize(); k++) {
-						databaseManager.refreshRecordFromDatabase(responseData, k + 1)	
-						var point = responseData.getRecord(k + 1)
-						obj.block_response[point.data_key] = point.data_value
-					}
-				}
-				
 			}
-			//this is a linked scrapbook
-			else {
-				
-				// SCRAPBOOK DATA
-				if (utils.hasRecords(block.web_block_to_scrapbook) && utils.hasRecords(block.web_block_to_scrapbook.web_scrapbook_to_scrapbook_data)) {
-					var data = block.web_block_to_scrapbook.web_scrapbook_to_scrapbook_data
-					
-					// obj: data
-					for (var k = 0; k < data.getSize(); k++) {
-						var point = data.getRecord(k + 1)
-						obj.data[point.data_key] = point.data_value
-					}
+			
+			// BLOCK CONFIGURATION
+			var configureData = block.web_block_to_block_data_configure
+			
+			// obj: configuration
+			if ( utils.hasRecords(configureData) ) {
+				for (var k = 0; k < configureData.getSize(); k++) {
+					databaseManager.refreshRecordFromDatabase(configureData, k + 1)	
+					var point = configureData.getRecord(k + 1)
+					obj.block_configure[point.data_key] = point.data_value
 				}
-				
-				// SCRAPBOOK CONFIGURATION
-				if (utils.hasRecords(block.web_block_to_scrapbook) && utils.hasRecords(block.web_block_to_scrapbook.web_scrapbook_to_scrapbook_configure)) {
-					var configureData = block.web_block_to_scrapbook.web_scrapbook_to_scrapbook_configure
-					
-					// obj: configuration
-					for (var k = 0; k < configureData.getSize(); k++) {
-						var point = configureData.getRecord(k + 1)
-						obj.block_configure[point.data_key] = point.data_value
-					}
+			}
+			
+			// BLOCK RESPONSE
+			var responseData = block.web_block_to_block_data_response
+			
+			// obj: response
+			if ( utils.hasRecords(responseData) ) {
+				for (var k = 0; k < responseData.getSize(); k++) {
+					databaseManager.refreshRecordFromDatabase(responseData, k + 1)	
+					var point = responseData.getRecord(k + 1)
+					obj.block_response[point.data_key] = point.data_value
 				}
-				
-				// SCRAPBOOK RESPONSE
-				if (utils.hasRecords(block.web_block_to_scrapbook) && utils.hasRecords(block.web_block_to_scrapbook.web_scrapbook_to_scrapbook_response)) {
-					var responseData = block.web_block_to_scrapbook.web_scrapbook_to_scrapbook_response
-					
-					// obj: response
-					for (var k = 0; k < responseData.getSize(); k++) {
-						var point = responseData.getRecord(k + 1)
-						obj.block_response[point.data_key] = point.data_value
-					}
-				}
-
 			}
 									
 			// BLOCK DISPLAY

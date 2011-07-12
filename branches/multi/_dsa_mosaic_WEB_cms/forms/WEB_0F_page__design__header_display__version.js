@@ -266,7 +266,7 @@ function ADD_version(event) {
 					
 					destRecord.version_number = 1
 					destRecord.version_description = info
-					destRecord.flag_active = forms.WEB_0F_site.flag_auto_activate
+					destRecord.flag_active = forms.WEB_0F_site.flag_auto_publish
 					destRecord.flag_edit = 1
 					destRecord.id_platform = forms.WEB_0F_page__design__header_display__platform._platform.id_platform
 					destRecord.id_language = forms.WEB_0F_page__design__header_display__language._language.id_language
@@ -340,7 +340,7 @@ function EDIT_version(event) {
 		}
 		//non-editable, prompt to make editable
 		else {
-			if (true) {		//globals.TRIGGER_registered_action_authenticate('cms edit version')) {
+			if (globals.TRIGGER_registered_action_authenticate('cms edit version')) {
 				if (version.flag_active) {
 					var input = plugins.dialogs.showQuestionDialog(
 								'Edit?',
@@ -360,7 +360,7 @@ function EDIT_version(event) {
 		}
 		
 		//redo version valuelist without touching the foundset
-		forms.WEB_0F_page__design.REC_on_select(null,true)
+		forms.WEB_0F_page__design.REC_on_select(null,true,null,true)
 	}
 	else {
 		plugins.dialogs.showErrorDialog(

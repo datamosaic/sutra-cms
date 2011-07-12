@@ -63,10 +63,15 @@ function REC_new() {
 			globals.WEB_lock_workflow(false)
 		}
 		
-		controller.newRecord(true)
-		id_site = forms.WEB_0F_site.id_site
-		scrapbook_type = 2
-		elements.fld_scrapbook_name.requestFocus(false)
+		plugins.dialogs.showInfoDialog(
+					'Scrapbook',
+					'Scrapbooks are created from existing blocks on a page.'
+			)
+		
+//		controller.newRecord(true)
+//		id_site = forms.WEB_0F_site.id_site
+//		scrapbook_type = 2
+//		elements.fld_scrapbook_name.requestFocus(false)
 	}
 	else {
 		plugins.dialogs.showErrorDialog(

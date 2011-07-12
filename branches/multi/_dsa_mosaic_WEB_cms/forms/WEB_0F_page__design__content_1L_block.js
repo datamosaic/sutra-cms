@@ -47,59 +47,59 @@ function BLOCK_action_list() {
 function BLOCK_action_list_control() {
 	
 	switch (arguments[0]) {
-		case 0:  // save block and data points to scrapbook and scrapbook data
-			
-			var input = plugins.dialogs.showInputDialog(
-					'Enter name',
-					'What is the name for this scrapbook entry?'
-			)
-			
-			if (input) {
-				// block to scrapbook
-				var source 		= foundset.getRecord(foundset.getSelectedIndex())
-				var destination	= forms.WEB_0F_scrapbook.foundset.getRecord(forms.WEB_0F_scrapbook.foundset.newRecord(true,true))
-				var success		= databaseManager.copyMatchingColumns(source,destination)
-				destination.scrapbook_name = input
-				destination.id_site = forms.WEB_0F_site.id_site
-				databaseManager.saveData()
-				
-				// block_data to scrapbook data
-				var fsSource		= source.web_block_to_block_data
-				
-				for (var i = 0; i < fsSource.getSize(); i++) {
-					var record		= fsSource.getRecord(i + 1)
-					var destination	= forms.WEB_0F_scrapbook.web_scrapbook_to_scrapbook_data.getRecord(forms.WEB_0F_scrapbook.web_scrapbook_to_scrapbook_data.newRecord(true,true))
-					databaseManager.copyMatchingColumns(record,destination)
-				}
-				databaseManager.saveData()
-				
-				// block_data_configure to scrapbook_configure
-				var fsSource		= source.web_block_to_block_data_configure
-				
-				for (var i = 0; i < fsSource.getSize(); i++) {
-					var record		= fsSource.getRecord(i + 1)
-					var destination	= forms.WEB_0F_scrapbook.web_scrapbook_to_scrapbook_configure.getRecord(forms.WEB_0F_scrapbook.web_scrapbook_to_scrapbook_configure.newRecord(true,true))
-					databaseManager.copyMatchingColumns(record,destination)
-				}
-				databaseManager.saveData()
-				
-				// block_data_response to scrapbook_response
-				var fsSource		= source.web_block_to_block_data_response
-				
-				for (var i = 0; i < fsSource.getSize(); i++) {
-					var record		= fsSource.getRecord(i + 1)
-					var destination	= forms.WEB_0F_scrapbook.web_scrapbook_to_scrapbook_response.getRecord(forms.WEB_0F_scrapbook.web_scrapbook_to_scrapbook_response.newRecord(true,true))
-					databaseManager.copyMatchingColumns(record,destination)
-				}
-				databaseManager.saveData()
-				
-			}
-			else {
-				plugins.dialogs.showErrorDialog(
-							'Error',
-							'No name entered for scrapbook'
-					)
-			}
+		case 0:  // set flag for type of scrapbook
+//			
+//			var input = plugins.dialogs.showInputDialog(
+//					'Enter name',
+//					'What is the name for this scrapbook entry?'
+//			)
+//			
+//			if (input) {
+//				// block to scrapbook
+//				var source 		= foundset.getRecord(foundset.getSelectedIndex())
+//				var destination	= forms.WEB_0F_scrapbook.foundset.getRecord(forms.WEB_0F_scrapbook.foundset.newRecord(true,true))
+//				var success		= databaseManager.copyMatchingColumns(source,destination)
+//				destination.scrapbook_name = input
+//				destination.id_site = forms.WEB_0F_site.id_site
+//				databaseManager.saveData()
+//				
+//				// block_data to scrapbook data
+//				var fsSource		= source.web_block_to_block_data
+//				
+//				for (var i = 0; i < fsSource.getSize(); i++) {
+//					var record		= fsSource.getRecord(i + 1)
+//					var destination	= forms.WEB_0F_scrapbook.web_scrapbook_to_scrapbook_data.getRecord(forms.WEB_0F_scrapbook.web_scrapbook_to_scrapbook_data.newRecord(true,true))
+//					databaseManager.copyMatchingColumns(record,destination)
+//				}
+//				databaseManager.saveData()
+//				
+//				// block_data_configure to scrapbook_configure
+//				var fsSource		= source.web_block_to_block_data_configure
+//				
+//				for (var i = 0; i < fsSource.getSize(); i++) {
+//					var record		= fsSource.getRecord(i + 1)
+//					var destination	= forms.WEB_0F_scrapbook.web_scrapbook_to_scrapbook_configure.getRecord(forms.WEB_0F_scrapbook.web_scrapbook_to_scrapbook_configure.newRecord(true,true))
+//					databaseManager.copyMatchingColumns(record,destination)
+//				}
+//				databaseManager.saveData()
+//				
+//				// block_data_response to scrapbook_response
+//				var fsSource		= source.web_block_to_block_data_response
+//				
+//				for (var i = 0; i < fsSource.getSize(); i++) {
+//					var record		= fsSource.getRecord(i + 1)
+//					var destination	= forms.WEB_0F_scrapbook.web_scrapbook_to_scrapbook_response.getRecord(forms.WEB_0F_scrapbook.web_scrapbook_to_scrapbook_response.newRecord(true,true))
+//					databaseManager.copyMatchingColumns(record,destination)
+//				}
+//				databaseManager.saveData()
+//				
+//			}
+//			else {
+//				plugins.dialogs.showErrorDialog(
+//							'Error',
+//							'No name entered for scrapbook'
+//					)
+//			}
 			break;
 		default:
 			break;
@@ -127,6 +127,10 @@ function BLOCK_new(input) {
 	
 	// ERROR CHECK: NO BLOCKS INSTALLED
 	if ( !dataset ) {
+		plugins.dialogs.showErrorDialog(
+					'Error',
+					'There are no blocks installed for this site.'
+			)
 		return
 	}
 	
@@ -175,11 +179,24 @@ function BLOCK_new(input) {
 			//turn off rec on select
 			_skipSelect = true
 			
-			var blockRec = foundset.getRecord(foundset.newRecord(false, true))
+			//disale/enable rec on select on the block type forms when creating scope
+			globals.WEB_block_on_select = false
+			
+			//create scope record //TODO: needs to work from real mode also
+			var scopeRec = foundset.getRecord(foundset.newRecord(false,true))
+			scopeRec.row_order = foundset.getSize()
+			databaseManager.saveData(scopeRec)
+			
+			//disale/enable rec on select on the block type forms when creating scope
+			globals.WEB_block_on_select = true
+			
+			var fsBlock = databaseManager.getFoundSet('sutra_cms','web_block')
+			var blockRec = fsBlock.getRecord(fsBlock.newRecord(false,true))
 			blockRec.id_block_type = valueListObj[selection]
 			blockRec.id_block_display = ( display ) ? display : null
-			blockRec.row_order = foundset.getSize()
 			databaseManager.saveData(blockRec)
+			
+			scopeRec.id_block = blockRec.id_block
 			
 			// get block data points
 			var dataset = databaseManager.getDataSetByQuery(
@@ -214,9 +231,12 @@ function BLOCK_new(input) {
 			
 			// finish up
 			blockRec.web_block_to_block_data.setSelectedIndex(1)
+			blockRec.web_block_to_block_data_configure.setSelectedIndex(1)
 			
 			//turn on rec on select
 			_skipSelect = false
+			
+			databaseManager.saveData()
 			
 			// set global with first blockID of this set
 			if (webEdit) {
@@ -320,7 +340,7 @@ function DIR_up() {
  *
  * @properties={typeid:24,uuid:"64E10B1C-C632-4B7D-92C5-F94DBA4C18BD"}
  */
-function FORM_onLoad()
+function FORM_on_load()
 {
 	elements.fld_id_block_display__field.visible = false
 	elements.fld_id_block_display__combo.visible = true
@@ -342,9 +362,10 @@ function REC_delete() {
 	if (delRec == 'Yes') {
 		
 		var recSelect = controller.getSelectedIndex()
-	
+		
+		//disale/enable rec on select on the block type forms when deleting
 		controller.deleteRecord()
-			
+		
 		var loop = recSelect
 		while (loop <= controller.getMaxRecordIndex()) {
 			controller.setSelectedIndex(loop)
@@ -373,35 +394,53 @@ var _skipSelect = false;
 function REC_on_select() {
 	//we're not intentially skipping this method, run it
 	if (!_skipSelect) {
+		
+		//give the triple-level relation forms a little extra help
 		if (utils.hasRecords(foundset)) {
+			if (globals.WEB_page_mode == 1) {
+				forms.WEB_0F_page__design__content_1F_block_data__raw.foundset.loadRecords(web_scope_to_block)
+			}
+			else if (globals.WEB_page_mode == 2) {
+				forms.WEB_0F_page__design__content_1F_block_data.foundset.loadRecords(web_scope_to_block)
+			}
+		}
+		else {
+//			if (globals.WEB_page_mode == 1) {
+//				forms.WEB_0F_page__design__content_1F_block_data__raw.foundset.clear()
+//			}
+//			else if (globals.WEB_page_mode == 2) {
+//				forms.WEB_0F_page__design__content_1F_block_data.foundset.clear()
+//			}
+		}
+		
+		if (utils.hasRecords(web_scope_to_block)) {
 			//normal non-linked items
-			if (!id_scrapbook) {
+			if (!web_scope_to_block.scope_type) {
 				// input method names for block type
-				var params = [id_block_type]
+				var params = [web_scope_to_block.id_block_type]
 				var sql =	"select input_name, method_name from web_block_action_client where " +
 								"web_block_action_client.id_block_type = ?"
 				var dataset = databaseManager.getDataSetByQuery(
 								controller.getServerName(), sql, params, -1)
 			
 				if ( dataset.getMaxRowIndex() ) {
-					forms.WEB_0F_page__design__content_1F_block_data__raw.elements.btn_data_actions.visible = true
-					forms.WEB_0F_page__design__content_1F_block_data.elements.btn_data_actions.visible = true
+					//there are actions actions available
+					buttonStatus(true)
 				}
 				else {
-					forms.WEB_0F_page__design__content_1F_block_data__raw.elements.btn_data_actions.visible = false
-					forms.WEB_0F_page__design__content_1F_block_data.elements.btn_data_actions.visible = false			
+					//no actions available
+					buttonStatus(false)		
 				}
 			}
 			//this is a linked scrapbook
 			else {
-				forms.WEB_0F_page__design__content_1F_block_data__raw.elements.btn_data_actions.visible = false
-				forms.WEB_0F_page__design__content_1F_block_data.elements.btn_data_actions.visible = false	
+				//no actions available
+				buttonStatus(false)
 			}
 		}
 		else {
 			//no actions available
-			forms.WEB_0F_page__design__content_1F_block_data__raw.elements.btn_data_actions.visible = false
-			forms.WEB_0F_page__design__content_1F_block_data.elements.btn_data_actions.visible = false
+			buttonStatus(false)
 		}
 		
 		//gui view
@@ -411,8 +450,30 @@ function REC_on_select() {
 		}
 		//data view
 		else {
-			forms.WEB_0F_page__design__content_1F_block_data.elements.tab_detail.tabIndex = 1
+//			forms.WEB_0F_page__design__content_1F_block_data.elements.tab_detail.tabIndex = 1
 		}
+	}
+	
+	function buttonStatus(state) {
+		//no actions available
+		forms.WEB_0F_page__design__content_1F_block_data__raw.elements.btn_data_actions.visible = state
+		forms.WEB_0F_page__design__content_1F_block_data.elements.btn_data_actions.visible = state
+	}
+}
+
+/**
+ * Callback method for when form is shown.
+ *
+ * @param {Boolean} firstShow form is shown first time after load
+ * @param {JSEvent} event the event that triggered the action
+ *
+ * @properties={typeid:24,uuid:"C6205B0F-FC44-45FA-928F-57AC405CE483"}
+ */
+function FORM_on_show(firstShow, event) {
+	//first time we come in on the page after launching the client we need to fire the selected block an extra time
+	if (firstShow && globals.WEB_page_mode == 2) {
+		//switch tabpanel based on type of form
+		ACTION_gui_mode_load(true)
 	}
 }
 
@@ -424,7 +485,7 @@ var _guiLoading = false;
 /**
  * @properties={typeid:24,uuid:"39CC4D1D-2547-4F23-85E9-63C434B95F70"}
  */
-function ACTION_gui_mode_load() {
+function ACTION_gui_mode_load(fireSelect) {
 	//only start up this method if not already running
 	if (!_guiLoading) {
 		//method is beginning
@@ -440,102 +501,61 @@ function ACTION_gui_mode_load() {
 //		//log how many times run and how
 //		application.output('WEB_0F_page__design__content_1L_block.ACTION_gui_mode_load(' + (utils.hasRecords(foundset) ? web_block_to_block_type.block_name : '') + ') #:' + this.someVar)
 		
-		var recBlock = foundset.getSelectedRecord()
+		var contextForm = 'WEB_0F_page__design__content_1F_block_data'
+		var tabPanel = forms[contextForm].elements.tab_detail
 		
-		if (recBlock) {
-			//no scrapbook
-			if (!recBlock.id_scrapbook) {
+		if (utils.hasRecords(web_scope_to_block)) {
+			var recBlock = web_scope_to_block.getSelectedRecord()
+			
+			if (recBlock) {
+				//is this a scrapbook of any kind?
+				var flagScrapbook = recBlock.scope_type ? true : false
+				
 				if (recBlock && utils.hasRecords(recBlock.web_block_to_block_type)) {
 					var recBlockType = recBlock.web_block_to_block_type.getRecord(1)
 				}
 				
-				//editable status
-				var flagEdit = (utils.hasRecords(forms.WEB_0F_page__design__content.foundset) && forms.WEB_0F_page__design__content.flag_edit) ? true : false
+				//editable status (scrapbooks not editable, has versions and selected version is editable)
+				var flagEdit = (!flagScrapbook && forms.WEB_0F_page.ACTION_edit_get()) ? true : false
 				
-				//this block definition exists as does the form
-				if (recBlockType && forms[recBlockType.form_name]) {
-					//form not loaded yet, get solution model to check for method existence
-					if (forms[recBlockType.form_name] == '<Form ' + recBlockType.form_name + ' not loaded yet>' && solutionModel.getForm(recBlockType.form_name).getFormMethod('LOADER_init')) {
-						var hasInit = true
+				//this block definition exists
+				if (recBlockType) {
+					//edits allowed
+					if (flagEdit) {
+						var formName = recBlockType.form_name
 					}
-					//check for method existence on form
-					else if (forms[recBlockType.form_name].LOADER_init) {
-						var hasInit = true
+					//no edits
+					else {
+						var formName = recBlockType.form_name_display || recBlockType.form_name
 					}
 					
-					//there is a custom form to show
-					if (hasInit) {
-						//this form is not in the currently selected tab
-						if (recBlockType.form_name != forms.WEB_0F_page__design__content_1F_block_data.elements.tab_detail.getTabFormNameAt(forms.WEB_0F_page__design__content_1F_block_data.elements.tab_detail.tabIndex)) {
-							forms[recBlockType.form_name].LOADER_init(
-															recBlock.web_block_to_block_data,
-															flagEdit,
-															false
-														)
-						}
+					//set heading for this tab panel
+					forms[contextForm].elements.lbl_banner.text = (flagScrapbook ? 'SCRAPBOOK: ' : '') + (recBlockType.block_name || 'Unnamed') + ' block'
+					
+					//the form exists and it isn't in the currently selected tab
+					if (formName && forms[formName] && formName != tabPanel.getTabFormNameAt(tabPanel.tabIndex)) {
+						var relationName = solutionModel.getForm(formName).dataSource == 'db:/sutra_cms/web_block' ? 'web_scope_to_block' : null
+						
+						//load tab panel
+						tabPanel.addTab(forms[formName],null,null,null,null,null,null,relationName)
+						tabPanel.tabIndex = tabPanel.getMaxTabIndex()
 					}
-					//something not right, show default form
 					else {
-						defaultForms()
+						tabPanel.tabIndex = tabPanel.getMaxTabIndex()
+					}
+					
+					//refire the onSelect method to force the gui to update
+						//MEMO: this will fire every time; only need to run it if the REC_on_select didn't fire...could do with timers
+					if (fireSelect && solutionModel.getForm(formName).onRecordSelection) {
+						forms[formName][solutionModel.getForm(formName).onRecordSelection.getName()](null,true)
 					}
 				}
 				else {
 					defaultForms()
 				}
 			}
-			//scrapbook
 			else {
-				if (recBlock && utils.hasRecords(recBlock,'web_block_to_scrapbook.web_scrapbook_to_block_type')) {
-					var recBlockType = recBlock.web_block_to_scrapbook.web_scrapbook_to_block_type.getRecord(1)
-				}
-				
-				//editable status
-				var flagEdit = false
-				
-				//this block definition exists as does the form
-				if (recBlockType && forms[recBlockType.form_name]) {
-					//form not loaded yet, get solution model to check for method existence
-					if (forms[recBlockType.form_name] == '<Form ' + recBlockType.form_name + ' not loaded yet>' && solutionModel.getForm(recBlockType.form_name).getFormMethod('LOADER_init')) {
-						var hasInit = true
-					}
-					//check for method existence on form
-					else if (forms[recBlockType.form_name].LOADER_init) {
-						var hasInit = true
-					}
-					
-					//there is a custom form to show
-					if (hasInit) {
-//						//MEMO: this is a hack, I just can't find out why browser not rendering
-//						
-//						var dataEvent = new Object()
-//						dataEvent.getElementName = function() {
-//								return 'lbl_mode_gui'
-//							}
-//						var guiEvent = new Object()
-//						guiEvent.getElementName = function() {
-//								return 'lbl_mode_gui'
-//							}
-//						
-//						forms.WEB_TB__web_mode.ACTION_mode(dataEvent)
-//						forms.WEB_TB__web_mode.ACTION_mode(guiEvent)
-						
-						//this form is not in the currently selected tab
-						if (recBlockType.form_name != forms.WEB_0F_page__design__content_1F_block_data.elements.tab_detail.getTabFormNameAt(forms.WEB_0F_page__design__content_1F_block_data.elements.tab_detail.tabIndex)) {
-							forms[recBlockType.form_name].LOADER_init(
-															recBlock.web_block_to_scrapbook.getRecord(1).web_scrapbook_to_scrapbook_data, 
-															flagEdit,
-															true
-														)
-						}
-					}
-					//something not right, show default form
-					else {
-						defaultForms()
-					}
-				}
-				else {
-					defaultForms()
-				}
+				defaultForms()
 			}
 		}
 		else {
@@ -546,144 +566,10 @@ function ACTION_gui_mode_load() {
 		_guiLoading = false
 	}
 	
-	//see globals.WEB_block_form_loader
 	function defaultForms() {
-//		forms.WEB_0F_page__design__content_1F_block_data.elements.tab_detail.removeTabAt(2)
-		forms.WEB_0F_page__design__content_1F_block_data.elements.tab_detail.tabIndex = 1
-		
-		forms.WEB_0F_page__design__content_1F_block_data.elements.lbl_banner.text = "Content"
-	}
-}
-
-/**
- * @properties={typeid:24,uuid:"D36CCF55-4226-4FBC-B8C5-F9A61C79B81D"}
- */
-function ACTION_gui_mode_refresh() {
-	var recBlock = foundset.getSelectedRecord()
-	
-	//no scrapbook
-	if (recBlock && !recBlock.id_scrapbook) {
-		if (recBlock && utils.hasRecords(recBlock.web_block_to_block_type)) {
-			var recBlockType = recBlock.web_block_to_block_type.getRecord(1)
-		}
-		
-		//editable status
-		if (utils.hasRecords(forms.WEB_0F_page__design.web_page_to_version) && 
-			forms.WEB_0F_page__design.web_page_to_version.flag_edit) {
-			
-			var flagEdit = true
-		}
-		
-		//this block definition exists as does the form
-		if (recBlockType && forms[recBlockType.form_name]) {
-			//form not loaded yet, get solution model to check for method existence
-			if (forms[recBlockType.form_name] == '<Form ' + recBlockType.form_name + ' not loaded yet>' && solutionModel.getForm(recBlockType.form_name).getFormMethod('LOADER_refresh')) {
-				var hasRefresh = true
-			}
-			//check for method existence on form
-			else if (forms[recBlockType.form_name].LOADER_refresh) {
-				var hasRefresh = true
-			}
-			
-			//form not loaded yet, get solution model to check for method existence
-			if (forms[recBlockType.form_name] == '<Form ' + recBlockType.form_name + ' not loaded yet>' && solutionModel.getForm(recBlockType.form_name).getFormMethod('LOADER_init')) {
-				var hasInit = true
-			}
-			//check for method existence on form
-			else if (forms[recBlockType.form_name].LOADER_init) {
-				var hasInit = true
-			}
-			
-			//there is a refresh method
-			if (hasRefresh) {
-				forms[recBlockType.form_name].LOADER_refresh(
-													recBlock.web_block_to_block_data,
-													flagEdit,
-													false
-												)
-			}
-			//there is not a refresh, fire init
-			else if (hasInit) {
-				forms[recBlockType.form_name].LOADER_init(
-													recBlock.web_block_to_block_data,
-													flagEdit,
-													false
-												)
-			}
-			//something not right, show default form
-			else {
-				defaultForms()
-			}
-		}
-		else {
-			defaultForms()
-		}
-	}
-	//scrapbook
-	else {
-		if (recBlock && utils.hasRecords(recBlock,'web_block_to_scrapbook.web_scrapbook_to_block_type')) {
-			var recBlockType = recBlock.web_block_to_scrapbook.web_scrapbook_to_block_type.getRecord(1)
-		}
-		
-		//editable status
-		var flagEdit = false
-		
-		//this block definition exists as does the form
-		if (recBlockType && forms[recBlockType.form_name]) {
-			//form not loaded yet, get solution model to check for method existence
-			if (forms[recBlockType.form_name] == '<Form ' + recBlockType.form_name + ' not loaded yet>' && solutionModel.getForm(recBlockType.form_name).getFormMethod('LOADER_refresh')) {
-				var hasRefresh = true
-			}
-			//check for method existence on form
-			else if (forms[recBlockType.form_name].LOADER_refresh) {
-				var hasRefresh = true
-			}
-			
-			//form not loaded yet, get solution model to check for method existence
-			if (forms[recBlockType.form_name] == '<Form ' + recBlockType.form_name + ' not loaded yet>' && solutionModel.getForm(recBlockType.form_name).getFormMethod('LOADER_init')) {
-				var hasInit = true
-			}
-			//check for method existence on form
-			else if (forms[recBlockType.form_name].LOADER_init) {
-				var hasInit = true
-			}
-			
-			//there is a refresh method
-			if (hasRefresh) {
-				forms[recBlockType.form_name].LOADER_refresh(
-													recBlock.web_block_to_block_data,
-													flagEdit,
-													false
-												)
-			}
-			//there is not a refresh, fire init
-			else if (hasInit) {
-//				var pseudoEvent = new Object()
-//				pseudoEvent.getElementName = function() {
-//						return 'lbl_mode_real'
-//					}
-//				forms.WEB_TB__web_mode.ACTION_mode(pseudoEvent)
-				forms[recBlockType.form_name].LOADER_init(
-													recBlock.web_block_to_scrapbook.getRecord(1).web_scrapbook_to_scrapbook_data, 
-													flagEdit,
-													true
-												)
-			}
-			//something not right, show default form
-			else {
-				defaultForms()
-			}
-		}
-		else {
-			defaultForms()
-		}
-	}
-	
-	//see globals.WEB_block_form_loader
-	function defaultForms() {
-		forms.WEB_0F_page__design__content_1F_block_data.elements.tab_detail.removeTabAt(2)
-		forms.WEB_0F_page__design__content_1F_block_data.elements.tab_detail.tabIndex = 1
-		
+//		forms.WEB_0F_page__design__content_1F_block_data.elements.tab_detail.tabIndex = 1
+		tabPanel.addTab(forms.WEB_0F_page__design__content_1F_block_data_2F_blank)
+		tabPanel.tabIndex = tabPanel.getMaxTabIndex()
 		forms.WEB_0F_page__design__content_1F_block_data.elements.lbl_banner.text = "Content"
 	}
 }

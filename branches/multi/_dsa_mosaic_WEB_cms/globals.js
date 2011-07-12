@@ -283,14 +283,16 @@ function WEB_MRKUP_link_page(pageID, siteURL, linkType, webMode) {
 	var pageLink = globals.WEB_MRKUP_link_base(pageID, siteURL, linkType)
 	
 	//get page requested
-	var fsPage = databaseManager.getFoundSet("sutra_cms","web_page")
-	fsPage.find()
-	fsPage.id_page = pageID.toString()
-	//when in developer, all pages are valid for our purposes
-	if (!application.isInDeveloper()) {
-		fsPage.flag_publish = 1
+	if (pageID) {
+		var fsPage = databaseManager.getFoundSet("sutra_cms","web_page")
+		fsPage.find()
+		fsPage.id_page = pageID.toString()
+		//when in developer, all pages are valid for our purposes
+		if (!application.isInDeveloper()) {
+			fsPage.flag_publish = 1
+		}
+		var count = fsPage.search()
 	}
-	var count = fsPage.search()
 	
 	//this page exists, get its site
 	if (count && utils.hasRecords(fsPage.web_page_to_site)) {
@@ -877,6 +879,10 @@ if (application.__parent__.solutionPrefs) {
  * @properties={typeid:24,uuid:"48FC5C3F-2354-442E-BE6A-4963B953E080"}
  */
 function WEB_startup_hack() {
+	//disable rec_on_select of the block type form
+	globals.WEB_block_on_select = false
+	
+	
 	//show all forms with browser beans so they don't error out on initial view
 	forms.WEB_0F__image.controller.show()
 	forms.WEB_0F__html.controller.show()

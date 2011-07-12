@@ -897,6 +897,7 @@ function REC_new() {
 		//create new page
 		var pageRec = foundset.getRecord(foundset.newRecord(false,true))
 		pageRec.id_site = forms.WEB_0F_site.id_site
+		pageRec.flag_publish = siteDefaults.record.flag_auto_publish
 		
 		//if in browser mode, FiD to define page
 		if (webMode) {

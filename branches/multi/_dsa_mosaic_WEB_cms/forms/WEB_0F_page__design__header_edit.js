@@ -359,7 +359,7 @@ function ACTION_save() {
 		firstVersion.id_language = languageRec.id_language
 		firstVersion.id_group = groupRec.id_group
 		firstVersion.version_number = 1
-		firstVersion.flag_active = forms.WEB_0F_site.flag_auto_activate
+		firstVersion.flag_active = 1
 		globals.WEB_page_version = firstVersion.id_version
 		
 		var fsPath = databaseManager.getFoundSet('sutra_cms','web_path')
@@ -521,12 +521,23 @@ function ACTION_save() {
 				for (var j = 1; j <= tempEditableRec.web_editable_to_editable_default.getSize(); j++ ) {
 					var tempEditableDefaultRec = tempEditableRec.web_editable_to_editable_default.getRecord(j)
 					
-					var blockRec = areaRec.web_area_to_block.getRecord(areaRec.web_area_to_block.newRecord(false, true))
+					//disale/enable rec on select on the block type forms when creating scope
+					globals.WEB_block_on_select = false
 					
-					blockRec.id_block_display = tempEditableDefaultRec.id_block_display
+					//create scope record
+					var scopeRec = areaRec.web_area_to_scope.getRecord(areaRec.web_area_to_scope.newRecord(false, true))
+					scopeRec.row_order = j
+					
+					//disale/enable rec on select on the block type forms when creating scope
+					globals.WEB_block_on_select = true
+					
+					//create block record
+					var fsBlock = databaseManager.getFoundSet('sutra_cms','web_block')
+					var blockRec = fsBlock.getRecord(fsBlock.newRecord(false,true))
 					blockRec.id_block_type = tempEditableDefaultRec.id_block_type
-					blockRec.id_scrapbook = tempEditableDefaultRec.id_scrapbook
-					blockRec.row_order = tempEditableDefaultRec.row_order
+					blockRec.id_block_display = tempEditableDefaultRec.id_block_display
+					
+					scopeRec.id_block = blockRec.id_block
 					
 					// INPUT
 					// create a block_data record for each block_input
@@ -555,8 +566,8 @@ function ACTION_save() {
 		
 		// finish up
 		databaseManager.saveData()
-		//fsArea.sort( "row_order asc" )
 		fsArea.setSelectedIndex(1)
+		fsArea.web_area_to_scope.setSelectedIndex(1)
 		
 		//theme has been successfully set
 		_themeSet = null

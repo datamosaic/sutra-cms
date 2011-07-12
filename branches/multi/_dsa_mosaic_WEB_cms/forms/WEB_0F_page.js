@@ -91,14 +91,16 @@ function FORM_on_show(firstShow, event) {
 			
 			//in workflow maximized view
 			if (firstShow && application.__parent__.solutionPrefs && solutionPrefs.config.activeSpace == 'workflow') {
-				//remove possible heavyweight stuff
-				if (forms.WEB_0F_page__design__content_1F_block_data.elements.tab_detail.getMaxTabIndex() >= 2 && (
-					forms.WEB_0F_page__design__content_1F_block_data.elements.tab_detail.getTabFormNameAt(2) == 'WEB_0F__content' ||
-					forms.WEB_0F_page__design__content_1F_block_data.elements.tab_detail.getTabFormNameAt(2) == 'WEB_0F__image' //||
-					)) {
-					
-					forms.WEB_0F_page__design__content_1F_block_data.elements.tab_detail.removeTabAt(2)
-				}
+				var tabContent = forms.WEB_0F_page__design__content_1F_block_data.elements.tab_detail
+				
+//				//remove possible heavyweight stuff
+//				if (tabContent.getMaxTabIndex() >= 2 && (
+//					tabContent.getTabFormNameAt(tabContent.tabIndex) == 'WEB_0F__content' ||
+//					tabContent.getTabFormNameAt(tabContent.tabIndex) == 'WEB_0F__image' //||
+//					)) {
+//					
+//					tabContent.addTab(forms.WEB_0F_page__design__content_1F_block_data_2F_blank)
+//				}
 				
 				//switch modes
 				TRIGGER_mode_set("BROWSER")
@@ -111,7 +113,8 @@ function FORM_on_show(firstShow, event) {
 				globals.WEB_page_group = null
 				globals.WEB_page_language = null
 				globals.WEB_page_platform = null
-				forms.WEB_0F_page__design.SET_valuelists()
+				
+				forms.WEB_0F_page__design.REC_on_select()
 				
 				//no records, dim out
 				globals.WEB_lock_workflow(true)
@@ -128,8 +131,11 @@ function FORM_on_show(firstShow, event) {
 				forms.WEB_0F_page__design__header_display__version.TOGGLE_elements(false)
 			}
 			else {// if (TRIGGER_mode_set() != "BROWSER") {
+				//enable rec_on_select of the block type form
+				globals.WEB_block_on_select = true
+				
 				// trigger correct block simple display
-				forms.WEB_0F_page__design__content_1L_block.ACTION_gui_mode_load()
+//				forms.WEB_0F_page__design__content_1L_block.ACTION_gui_mode_load()
 			}
 		}
 	}
@@ -187,4 +193,22 @@ function FIND_post_process(count) {
 		//force to select correct record
 		forms.WEB_0T_page.elements.bean_tree.selectionPath = forms.WEB_0T_page.FIND_path(foundset.getSelectedRecord())
 	}
+}
+
+/**
+ * @properties={typeid:24,uuid:"C24345A2-A310-4E68-9083-1D9F656002BB"}
+ */
+function ACTION_edit_get() {
+	//disable edits if edit flag not set
+	if (!utils.hasRecords(forms.WEB_0F_page__design__content.foundset) || !forms.WEB_0F_page__design__content.flag_edit) {
+			//disable edits for active or non-latest versions
+			//utils.hasRecords(fsVersions) && fsVersions.version_number != fsVersions.getSize() || fsVersions.flag_active) {
+		var editAllow = false
+	}
+	//enable edits
+	else {
+		var editAllow = true
+	}
+	
+	return editAllow
 }

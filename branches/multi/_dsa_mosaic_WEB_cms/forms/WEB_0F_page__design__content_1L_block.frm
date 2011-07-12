@@ -1,4 +1,4 @@
-dataSource:"db:/sutra_cms/web_block",
+dataSource:"db:/sutra_cms/web_scope",
 initialSort:"row_order asc",
 items:[
 {
@@ -61,7 +61,7 @@ uuid:"16CE7AB4-423F-41CB-9CF0-BD7AF6431DCB"
 {
 anchors:11,
 borderType:"SpecialMatteBorder,0.0,0.0,1.0,0.0,#000000,#000000,#999999,#000000,0.0,1.0",
-dataProviderID:"id_block_display",
+dataProviderID:"web_scope_to_block.id_block_display",
 displayType:2,
 editable:false,
 formIndex:10200,
@@ -189,7 +189,7 @@ verticalAlignment:0
 {
 anchors:11,
 borderType:"SpecialMatteBorder,0.0,0.0,1.0,0.0,#000000,#000000,#999999,#000000,0.0,1.0",
-dataProviderID:"id_block_type",
+dataProviderID:"web_scope_to_block.id_block_type",
 editable:false,
 formIndex:10200,
 location:"0,40",
@@ -204,7 +204,7 @@ valuelistID:"6171777B-FECD-4072-8E13-5CF251FCD891"
 {
 anchors:11,
 borderType:"SpecialMatteBorder,0.0,0.0,1.0,0.0,#000000,#000000,#999999,#000000,0.0,1.0",
-dataProviderID:"id_block_display",
+dataProviderID:"web_scope_to_block.id_block_display",
 editable:false,
 formIndex:10200,
 location:"90,30",
@@ -221,7 +221,7 @@ valuelistID:"2B28BEE4-D745-4DCE-8E30-AEDBE9E3F073"
 name:"WEB_0F_page__design__content_1L_block",
 onLoadMethodID:"64E10B1C-C632-4B7D-92C5-F94DBA4C18BD",
 onRecordSelectionMethodID:"BFBF2B28-E3BA-4CF7-807D-DADFF29D20F3",
-onShowMethodID:"-1",
+onShowMethodID:"C6205B0F-FC44-45FA-928F-57AC405CE483",
 paperPrintScale:100,
 rowBGColorCalculation:"row_background",
 scrollbars:33,
