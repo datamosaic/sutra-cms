@@ -1,4 +1,9 @@
 /**
+ * @properties={typeid:35,uuid:"2AFDC806-15C2-4F4C-B003-D71264F8119B",variableType:-4}
+ */
+var _skipSelect = true;
+
+/**
  * @properties={typeid:35,uuid:"4FDACEFD-6F26-46F7-827B-375E25824AD6"}
  */
 var _license_dsa_mosaic_WEB_cms = 'Module: _dsa_mosaic_WEB_cms \
@@ -6,7 +11,7 @@ var _license_dsa_mosaic_WEB_cms = 'Module: _dsa_mosaic_WEB_cms \
 									MIT Licensed';
 
 /**
- * param {} obj Data object passed to all markup methods
+ * @param	{Object}	obj Data object passed to all markup methods
  * @properties={typeid:24,uuid:"F20BDBF7-8CB2-4035-A50B-0785CE98FC00"}
  */
 function VIEW_default(obj) {
@@ -15,7 +20,7 @@ function VIEW_default(obj) {
 	// So include "obj" in the parameter slot for these methods
 	// The objective of VIEW methods is to return markup back to the page request.
 
-	return "hello world"
+	return "Hello world!"
 }
 
 /**
@@ -25,7 +30,7 @@ function BLOCK_sample_method() {
 	// method of type BLOCK
 	// BLOCK type methods are used in the CMS GUI
 	// not required
-	plugins.dialogs.showInfoDialog( "Block action demo", "Block action just occurred")
+	plugins.dialogs.showInfoDialog( "Block action demo", "Block action just occurred" )
 
 }
 
@@ -37,7 +42,10 @@ function BLOCK_sample_method() {
  * @properties={typeid:24,uuid:"D0B09ECA-F3FA-4035-A0DD-62166343DF4E"}
  */
 function REC_on_select(event) {
-	// various methods can be created that are attached to GUI events
+	//run on select only when it is 'enabled'
+	if (globals.WEB_block_enable(event)) {
+		
+	}
 }
 
 /**
@@ -46,8 +54,6 @@ function REC_on_select(event) {
  * 
  * @returns Data object that is used to register a block
  * @type object
- * 
- * @author Data Mosaic (C)
  * 
  * @properties={typeid:24,uuid:"B1A1F180-3F8A-47FE-8D44-F3FFC0CBEE9A"}
  */
@@ -93,46 +99,6 @@ function INIT_block() {
 	
 	return block
 	
-}
-
-/**
- * 
- * @param {JSFoundset} fsBlockData block data points
- * @param {Boolean} flagEdit page version is editable or not
- * @param {Boolean} flagScrapbook true if showing scrapbook
- * 
- * @properties={typeid:24,uuid:"66882D66-C9FB-4C36-B2DA-10D0B467E09C"}
- */
-function LOADER_init(fsBlockData, flagEdit, flagScrapbook) {
-	// set label and load form
-	globals.WEB_block_form_loader("WEB_0F___starter_block", ((flagScrapbook) ? "SCRAPBOOK: Starter block" : "Starter block"))		
-	
-	//refresh display
-	LOADER_refresh(fsBlockData,flagEdit,flagScrapbook)
-}
-
-/**
- * @properties={typeid:24,uuid:"C8C679D5-C524-47CD-ACD4-93FF855F1611"}
- */
-function LOADER_refresh(fsBlockData,flagEdit,flagScrapbook) {
-	//put in code that would be fired on rec select if changing between two blocks of the same type
-	
-//	//hack to get scrapbook to display (for some blocks needed always, not just scrapbook)
-//	if (flagScrapbook && application.__parent__.solutionPrefs) {
-//		globals.CODE_cursor_busy(true)
-//		
-//		forms.WEB_0F_page._hackNoFire = true
-//		forms.CODE__blank.controller.show()
-//		forms.DATASUTRA_0F_solution.controller.show()
-//		//this needs to be long enough for it to finish rendering
-//		application.updateUI(1000)
-//		forms.WEB_0F_page._hackNoFire = false
-//		
-//		//reset the window's title
-//		forms.DATASUTRA_0F_solution.elements.fld_trigger_name.requestFocus(true)
-//		
-//		globals.CODE_cursor_busy(false)
-//	}
 }
 
 /**

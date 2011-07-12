@@ -1,19 +1,14 @@
 /**
+ * @properties={typeid:35,uuid:"BFF4A9F6-28A2-4C19-AFA9-A0E124960BFD",variableType:-4}
+ */
+var _skipSelect = true;
+
+/**
  * @properties={typeid:35,uuid:"5FDACEFD-6F16-46F7-827B-375E25824AD6"}
  */
 var _license_dsa_mosaic_WEB_cms = 'Module: _dsa_mosaic_WEB_cms \
 									Copyright (C) 2011 Data Mosaic \
 									MIT Licensed';
-
-/**
- * @properties={typeid:35,uuid:"4F2AE698-F740-4F36-922D-ECD6DD2A4932",variableType:-4}
- */
-var _editsAllowed = null;
-
-/**
- * @properties={typeid:35,uuid:"4768DA43-4617-41AC-B2E7-77D8DC83E2DC",variableType:-4}
- */
-var _recBlockData = null;
 
 /**
  * param {} obj Data object passed to all markup methods
@@ -42,8 +37,8 @@ function FORM_on_load() {
  * @properties={typeid:24,uuid:"B886B030-6E8A-4206-B8FC-7DF67F7362F0"}
  */
 function BLOCK_save() {
-	_recBlockData.data_value = _dataValue
-	databaseManager.saveData(_recBlockData)
+	web_block_to_block_data.data_value = _dataValue
+	databaseManager.saveData(web_block_to_block_data)
 	databaseManager.setAutoSave(true)
 	
 	ACTION_colorize()
@@ -62,7 +57,7 @@ function BLOCK_save() {
  * @properties={typeid:24,uuid:"5322BB4A-0CAF-42E9-B314-F47B8108433C"}
  */
 function ACTION_edit(event) {
-	if (_editsAllowed) {
+	if (forms.WEB_0F_page.ACTION_edit_get()) {
 		databaseManager.saveData()
 		databaseManager.setAutoSave(false)
 		TOGGLE_buttons(true)
@@ -84,20 +79,29 @@ function ACTION_edit(event) {
  * @properties={typeid:24,uuid:"0B60D003-5C1F-4432-94D9-EA53C7A29887"}
  */
 function FORM_on_show(firstShow, event) {
-	if (!firstShow) {
-		ACTION_colorize()
-	}
+//	if (!firstShow) {
+//		ACTION_colorize()
+//	}
 }
 
 /**
- * Handle record selected.
+ * Update display as needed when block selected.
  *
- * @param {JSEvent} event the event that triggered the action
+ * @param 	{JSEvent}	event The event that triggered the action.
+ * @param	{Boolean}	[alwaysRun] Force the on select method to refire.
  *
  * @properties={typeid:24,uuid:"136705A2-5A67-4E9C-8AC9-DABCA1BABD5D"}
  */
-function REC_on_select(event) {
-	ACTION_colorize()
+function REC_on_select(event,alwaysRun) {
+	//run on select only when it is 'enabled'
+	if (alwaysRun || globals.WEB_block_enable(event)) {
+		//save down form variables so records can be changed
+		_dataValue = web_block_to_block_data.data_value
+		
+		//update display
+		TOGGLE_buttons(false)
+		ACTION_colorize()
+	}
 }
 
 /**
@@ -126,7 +130,7 @@ function BLOCK_cancel(event) {
  * @properties={typeid:24,uuid:"AFC38F1A-D4AE-49AE-8C7C-C6901CC9B030"}
  */
 function TOGGLE_buttons(state) {
-	if (!_editsAllowed) {
+	if (!forms.WEB_0F_page.ACTION_edit_get()) {
 		elements.btn_edit.visible = false
 		elements.lbl_edit.visible = false
 	}
@@ -197,9 +201,9 @@ function ACTION_add_token(inputID,pageRec) {
 	
 	elem.replaceSelectedText(linkStart + linkPage + linkEnd)
 	
-	_recBlockData.data_value = _dataValue
+	web_block_to_block_data.data_value = _dataValue
 		
-	databaseManager.saveData(_recBlockData)
+	databaseManager.saveData(web_block_to_block_data)
 	
 	elem.caretPosition = cursor + offset
 	elem.requestFocus()
@@ -247,9 +251,9 @@ function ACTION_insert_image(event) {
 		
 		elem.replaceSelectedText(html)
 		
-		_recBlockData.data_value = _dataValue
+		web_block_to_block_data.data_value = _dataValue
 		
-		databaseManager.saveData(_recBlockData)
+		databaseManager.saveData(web_block_to_block_data)
 		
 		elem.caretPosition = cursor + offset
 		elem.requestFocus()
@@ -311,36 +315,13 @@ function INIT_block() {
 }
 
 /**
- * @properties={typeid:24,uuid:"16312B6D-9AA1-465F-B962-79EAC114C412"}
- */
-function LOADER_init(fsBlockData, flagEdit, flagScrapbook, contextForm) {
-	//save down pertinent record
-	_recBlockData = fsBlockData.getRecord(1)
-	_dataValue = _recBlockData.data_value
-	
-	//update display
-	_editsAllowed = flagEdit
-	LOADER_refresh(fsBlockData,false,flagScrapbook)
-	
-	//load correct form
-	if (flagScrapbook) {
-		globals.WEB_block_form_loader('WEB_0F__html',"SCRAPBOOK: HTML block",null,contextForm)
-	}
-	else {
-		globals.WEB_block_form_loader('WEB_0F__html',"HTML block",null,contextForm)
-	}
-}
-
-/**
  * @properties={typeid:24,uuid:"FB804749-0B28-485A-A528-4F10DE113301"}
  */
 function ACTION_colorize(recBlockData) {
 	var html = ''
 	var prefix = ''
 	
-	if (!recBlockData && _recBlockData) {
-		recBlockData = _recBlockData
-	}
+	var recBlockData = web_block_to_block_data.getSelectedRecord()
 	
 	//if there's data, color it
 	if (recBlockData && recBlockData.data_value) {
@@ -384,29 +365,3 @@ function ACTION_colorize(recBlockData) {
  * @properties={typeid:35,uuid:"56A4BECA-A9AC-4780-A2C2-3317C0A49108"}
  */
 var _dataValue = null;
-
-/**
- * @properties={typeid:24,uuid:"38AF4915-03E9-4D61-B791-237B336410AC"}
- */
-function LOADER_refresh(fsBlockData,flagEdit,flagScrapbook) {
-	ACTION_colorize(_recBlockData)
-	
-	TOGGLE_buttons(flagEdit)
-	
-//	//hack to get scrapbook to display
-//	if (flagScrapbook && application.__parent__.solutionPrefs) {
-//		globals.CODE_cursor_busy(true)
-//		
-//		forms.WEB_0F_page._hackNoFire = true
-//		forms.CODE__blank.controller.show()
-//		forms.DATASUTRA_0F_solution.controller.show()
-//		//this needs to be long enough for it to finish rendering
-//		application.updateUI(1000)
-//		forms.WEB_0F_page._hackNoFire = false
-//		
-//		//reset the window's title
-//		forms.DATASUTRA_0F_solution.elements.fld_trigger_name.requestFocus(true)
-//		
-//		globals.CODE_cursor_busy(false)
-//	}
-}

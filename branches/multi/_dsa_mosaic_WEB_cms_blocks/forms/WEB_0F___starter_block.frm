@@ -1,4 +1,4 @@
-dataSource:"db:/sutra_cms/web_block_data",
+dataSource:"db:/sutra_cms/web_block",
 items:[
 {
 height:170,
