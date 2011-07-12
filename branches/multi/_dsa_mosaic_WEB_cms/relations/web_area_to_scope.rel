@@ -1,6 +1,7 @@
 allowCreationRelatedRecords:true,
 deleteRelatedRecords:true,
 foreignDataSource:"db:/sutra_cms/web_scope",
+initialSort:"row_order asc",
 items:[
 {foreignColumnName:"id_area",primaryDataProviderID:"id_area",typeid:23,uuid:"81AE4367-A6FD-4E58-A8CC-2AF1CE6E43D7"}
 ],

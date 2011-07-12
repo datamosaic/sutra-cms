@@ -114,7 +114,12 @@ function BLOCK_action_list_control() {
 function BLOCK_new(input) {
 	//method called not from a click on plus button; from web edit mode
 	if (!(input instanceof JSEvent)) {
+		function convertUUID(item) {
+			return item.substr(0,8) + '-' + item.substr(8,4) + '-' + item.substr(12,4) + '-' + item.substr(16,4)  + '-' + item.substr(20,12)
+		}
+		
 		var webEdit = true
+		var areaID = convertUUID(input)
 	}
 	
 	// get blocks
@@ -183,9 +188,23 @@ function BLOCK_new(input) {
 			globals.WEB_block_on_select = false
 			
 			//create scope record //TODO: needs to work from real mode also
-			var scopeRec = foundset.getRecord(foundset.newRecord(false,true))
-			scopeRec.row_order = foundset.getSize()
-			databaseManager.saveData(scopeRec)
+			if (webEdit) {
+				var fsScope = databaseManager.getFoundSet('sutra_cms','web_scope')
+				var scopeRec = fsScope.getRecord(fsScope.newRecord(false,true))
+				
+				fsScope.find()
+				fsScope.id_area = areaID
+				fsScope.search()
+				
+				scopeRec.id_area = areaID
+				scopeRec.row_order = fsScope.getSize() + 1
+				databaseManager.saveData(scopeRec)
+			}
+			else {
+				var scopeRec = foundset.getRecord(foundset.newRecord(false,true))
+				scopeRec.row_order = foundset.getSize()
+				databaseManager.saveData(scopeRec)
+			}
 			
 			//disale/enable rec on select on the block type forms when creating scope
 			globals.WEB_block_on_select = true
@@ -240,7 +259,7 @@ function BLOCK_new(input) {
 			
 			// set global with first blockID of this set
 			if (webEdit) {
-				globals.WEB_page_id_block_selected = blockRec.id_block.toString()
+				globals.WEB_selected_block = blockRec.id_block.toString()
 			}
 			// update screen in non-web edit
 			else {
@@ -269,7 +288,7 @@ function BLOCK_new(input) {
 
 	}
 	
-	return true
+	return blockRec
 }
 
 /**

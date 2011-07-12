@@ -16,39 +16,9 @@ var _editLocation = 0;
 var _dataRec = null;
 
 /**
- * @properties={typeid:35,uuid:"CE5D34A7-41F1-4B14-A923-B7CB21F02EAE",variableType:4}
+ * @properties={typeid:35,uuid:"CE5D34A7-41F1-4B14-A923-B7CB21F02EAE"}
  */
 var _dataID = null;
-
-/**
- * Perform the element default action.
- *
- * @param {JSEvent} event the event that triggered the action
- *
- * @properties={typeid:24,uuid:"0B39A5C8-5A32-42A7-94D6-7B05FF235547"}
- */
-function FID_cancel(event) {
-	application.closeFormDialog('cmsEditHover')
-}
-
-/**
- * @properties={typeid:24,uuid:"30E2A735-8C43-4621-BC9F-7045807A8E8B"}
- */
-function FID_save(event) {
-	var content = databaseManager.getFoundSet(controller.getServerName(),"web_block_data")
-	content.find()
-	content.id_block = _dataID
-	var count = content.search()
-	
-	// content.data_value = htmlEdit
-	content.data_value = elements.bn_editor.html
-	databaseManager.saveData()
-	forms.WEB_0F_page__browser.elements.bn_browser.reload()
-	application.closeFormDialog()
-	application.sleep(500)
-	// turn on jquery edit stuff
-	forms.WEB_0F_page__browser.EDIT_on()
-}
 
 /**
  * Callback method for when form is shown.
@@ -59,98 +29,55 @@ function FID_save(event) {
  * @properties={typeid:24,uuid:"4763A94A-B219-4DB9-95AF-311329BA5A23"}
  */
 function FORM_on_show(firstShow, event) {
-	//there is data to be edited
-	if (_dataRec && utils.hasRecords(_dataRec.web_block_data_to_block) && utils.hasRecords(_dataRec.web_block_data_to_block.web_block_to_block_display)) {
-		//type of data, set different tab active to edit
-		switch (_dataRec.web_block_data_to_block.web_block_to_block_type.block_name) {
-			//TODO: this block needs to be recoded to work with new assets
-			case 'Image':
-				//hard coded to form, split out
-				forms.WEB_0F__image.blockData = _dataRec
-				
-				//foundset with image datapoints
-				var fsBlockData = _dataRec
-				
-				//create object with all properties
-				var objImage = new Object()
-				for (var i = 1; i <= fsBlockData.getSize(); i++) {
-					var record = fsBlockData.getRecord(i)
-					objImage[record.data_key] = record.data_value
-				}
-				
-				//no image set yet
-				if (!objImage.image_name){
-					var html = 	'<html><head></head><body>' +
-								'No image chosen yet' +
-								'</body></html>'
-				}
-				// image is set
-				else { 
-					var siteURL = _dataRec.web_block_data_to_block.web_block_to_area.web_area_to_version.web_version_to_page.web_page_to_site.url
-					
-					if (siteURL) {
-						siteURL = 'http://' + siteURL
-						
-						var port = application.getServerURL()
-						port = port.split(':')
-						if (port.length > 2) {
-							siteURL += ':' + port[2]
-						}
-					}
-					else {
-						var siteDirectory = _dataRec.web_block_data_to_block.web_block_to_area.web_area_to_version.web_version_to_page.web_page_to_site.directory
-						
-						siteURL = application.getServerURL() + '/' + siteDirectory
-					}
-					
-					var html = 	'<html><head></head><body>' +
-								'<img src="' + siteURL + '/' + 
-								objImage.directory + '/' + objImage.image_name + 
-								'" height="' + objImage.height + '" width="' + objImage.width +'"' + '>' +
-								'</body></html>'
-				}
-				
-				forms.WEB_0F__image.elements.bn_browser.html = html
-				forms.WEB_0F__image.TOGGLE_buttons(true)
-				
-				elements.tab_edit.addTab(forms.WEB_0F__image)
-				elements.tab_edit.tabIndex = 1
-				
-				//all loaded fine
-				return true
-			break
+	var contextForm = 'WEB_0F_page__browser__editor'
+	var tabPanel = forms[contextForm].elements.tab_edit
+	
+	var recBlock = foundset.getSelectedRecord()
 			
-			//tinymce
-			case 'Content':
-				//hard coded to form, split out
-				forms.WEB_0F__content._recBlockData = _dataRec
-				forms.WEB_0F__content.elements.bn_tinymce.html = _dataRec.data_value
-				
-			/*
-			 * see the following locations for removal and addition of heavyweight forms
-			 * 
-			 * WEB_0F_page__browser.BLOCK_edit
-			 * WEB_0F_page.TRIGGER_mode_set
-			 * 
-			 */
-				
-				elements.tab_edit.addTab(forms.WEB_0F__content)
-				elements.tab_edit.tabIndex = 1
-				
-				//all loaded fine
-				return true
-			break
+	if (recBlock) {
+		//is this a scrapbook
+		if (recBlock.scope_type) {
+			plugins.dialogs.showWarningDialog(
+						'Warning',
+						'Scrapbooks cannot be edited when in real mode.'
+					)
 			
-			//tinymce
-			default:
-				plugins.dialogs.showInfoDialog(
-							'Coming soon',
-							'Real mode editing is not implemented for this type of block'
-						)
-				
-				//alert that form not loaded in correctly
-				return false
+			return false
 		}
+		
+		if (recBlock && utils.hasRecords(recBlock.web_block_to_block_type)) {
+			var recBlockType = recBlock.web_block_to_block_type.getRecord(1)
+		}
+		
+		//this block definition exists
+		if (recBlockType) {
+			var formName = recBlockType.form_name
+			
+			//set heading for this tab panel
+			forms[contextForm].elements.lbl_banner.text = (recBlockType.block_name || 'Unnamed') + ' block'
+			
+			//the form exists and it isn't in the currently selected tab
+			if (formName && forms[formName] && formName != tabPanel.getTabFormNameAt(tabPanel.tabIndex)) {
+				var relationName = solutionModel.getForm(formName).dataSource == 'db:/sutra_cms/web_block' ? 'web_block_to_block' : null
+				
+				//load tab panel
+				tabPanel.addTab(forms[formName],null,null,null,null,null,null,relationName)
+				tabPanel.tabIndex = tabPanel.getMaxTabIndex()
+			}
+			else {
+				tabPanel.tabIndex = tabPanel.getMaxTabIndex()
+			}
+			
+			return true
+		}
+		else {
+			//alert that form not loaded in correctly
+			return false
+		}
+	}
+	else {
+		//alert that form not loaded in correctly
+		return false
 	}
 }
 
@@ -165,7 +92,7 @@ function FORM_on_show(firstShow, event) {
  */
 function ACTION_hide(event) {
 	
-	plugins.sutra.busyCursor = true
+	globals.CODE_cursor_busy(true)
 	
 	//split pane in main window
 	forms.WEB_0F_page__browser.SPLIT_set(false)	
@@ -174,7 +101,7 @@ function ACTION_hide(event) {
 	//refresh the browser bean
 	forms.WEB_0F_page__browser.URL_update(true)
 	
-	plugins.sutra.busyCursor = false
+	globals.CODE_cursor_busy(false)
 	
 	return true
 }

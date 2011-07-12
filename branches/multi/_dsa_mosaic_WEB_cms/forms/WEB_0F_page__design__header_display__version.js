@@ -154,7 +154,7 @@ function ADD_version(event) {
 				globals.CODE_cursor_busy(true)
 				
 				var srcRecord = selectedVersion
-				var destRecord = globals.CODE_record_duplicate(srcRecord,["web_version_to_area.web_area_to_block.web_block_to_block_data"])
+				var destRecord = globals.CODE_record_duplicate(srcRecord,["web_version_to_area.web_area_to_scope.web_scope_to_block.web_block_to_block_data"])
 				
 				srcRecord.version_name = forms.WEB_P_version._versionName
 				srcRecord.version_description = forms.WEB_P_version._versionDescription

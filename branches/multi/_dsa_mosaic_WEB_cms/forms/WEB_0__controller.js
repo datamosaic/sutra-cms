@@ -208,7 +208,7 @@ function CONTROLLER_builder(results, obj) {
 					var markupedData = 'Error with block configuration'
 				}
 				
-				areaMarkup += '<div id="sutra-block-data-' + block.id_block + '">\n'
+				areaMarkup += '<div id="sutra-block-data-' + utils.stringReplace(block.id_block.toString(),'-','') + '">\n'
 				areaMarkup += markupedData + '\n'
 				areaMarkup += "</div>\n"
 
@@ -993,8 +993,7 @@ function CONTROLLER_setup(results, app, session, request, response, mode) {
 		results.addRow(["cmsTitle", windowTitle])
 	}
 	else {
-//		results.addRow(["cmsTitle",page.page_name])
-		results.addRow(["cmsTitle","TEST"])
+		results.addRow(["cmsTitle",obj.page.name])
 	}
 	
 	// HEAD & FOOTER INCLUDE STRING (note: relative path "up" from template directory where it is included from)

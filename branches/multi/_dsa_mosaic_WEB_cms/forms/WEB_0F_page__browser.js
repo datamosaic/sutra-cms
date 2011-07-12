@@ -12,37 +12,70 @@ var _license_dsa_mosaic_WEB_cms = 'Module: _dsa_mosaic_WEB_cms \
  *
  * @properties={typeid:24,uuid:"60C0F66F-9740-428F-8C64-BE5870650741"}
  */
-function REC_on_select(event,webMode) {
-	//make sure variable set correctly
-	var vlReal = forms.WEB_0F_page__design.SET_globals()
+function REC_on_select(event,webMode,skipLoad,verIndex,fireSelect) {
+	//this method is the same as...
+	var formName = 'WEB_0F_page__design'
 	
-	//update version to most recent one if selected version is not in this page stack
-	for (var i = 0; i < vlReal.length; i++) {
-		if (globals.WEB_version_selected == vlReal[i]) {
-			var found = true
-			break
+	//when newly added page, skip this
+	if (!forms.WEB_0T_page._addRecord) {
+		//halt additional on select firing
+//		forms.WEB_0F_page__design__content_1L_block._skipSelect = true
+		
+	 	//when called with event (not programatically)
+//		if (event) {
+//		 	//set tooltip of visit with link
+//			forms.WEB_0F_page__design__button_tab__content.elements.btn_visit.toolTipText = globals.WEB_MRKUP_link_page(id_page)
+//		}
+		
+		//select page version of tri globals
+	 	forms[formName].SET_globals()
+		
+		//set up valuelists for tri globals
+		var pageValid = forms[formName].SET_valuelists()
+		
+		//set version junks
+		var activeInfo = forms[formName].SET_versions(skipLoad,!pageValid)
+		
+		//don't change anything if we're not loading in the versions
+		if (!skipLoad) {
+			//specified index to be selected
+			if (verIndex) {
+				//set selected index
+				forms.WEB_0F_page__design__content.foundset.setSelectedIndex(verIndex)
+			}
+			//there is info about the active version
+			else if (activeInfo) {
+				//set selected index
+				forms.WEB_0F_page__design__content.foundset.setSelectedIndex(activeInfo.position)
+				
+				//set version to be the active one
+				globals.WEB_page_version = activeInfo.record.id_version
+			}
+			//set to first thing in the list (most recent)
+			else {
+				globals.WEB_page_version = application.getValueListItems('WEB_page_version').getValue(1,2)
+			}
 		}
-	}
-	
-	if (!found) {
-		globals.WEB_version_selected = (vlReal.length) ? vlReal[0] : 0
-	}
-	
-	//make sure edit button not showing if not supposed to be
-		//MEMO: probably don't want to force a save here...just need edit/save button reset to normal
-	forms.WEB_TB__web_mode.ACTION_save()
-	forms.WEB_TB__web_mode.TOGGLE_edit()
-	
-	//only show versions and groups if there is more than one defined
-	forms.WEB_TB__web_mode.TOGGLE_group()
-	forms.WEB_TB__web_mode.TOGGLE_version()
-	
-	//fill the browser bean with url to load
-	URL_update(webMode)
-	
-	//highlight edit mode
-	if (webMode) {
-		forms.WEB_TB__web_mode.ACTION_edit()
+		
+		//are edits allowed
+		var editAllow = forms.WEB_0F_page.ACTION_edit_get()
+		
+		//make sure edit button not showing if not supposed to be
+			//MEMO: probably don't want to force a save here...just need edit/save button reset to normal
+		forms.WEB_TB__web_mode.ACTION_save()
+		forms.WEB_TB__web_mode.TOGGLE_edit()
+		
+		//only show versions and groups if there is more than one defined
+		forms.WEB_TB__web_mode.TOGGLE_group()
+		forms.WEB_TB__web_mode.TOGGLE_version()
+		
+		//fill the browser bean with url to load
+		URL_update(webMode)
+		
+		//highlight edit mode
+		if (webMode) {
+			forms.WEB_TB__web_mode.ACTION_edit()
+		}
 	}
 }
 
@@ -72,12 +105,20 @@ function URL_update(webMode) {
 		if (page_type == 2 && page_link) {
 			globals.WEB_preview_url = page_link	
 		}
-		//show selected group/version
+		//this is an internal link
+		else if (page_type == 3) {
+			//TODO: put wrapper "header" on page to alert that on an internal link
+				//also, the version here is wrong, need to get for internal link
+//			globals.WEB_preview_url = 
+//				globals.WEB_MRKUP_link_page(page_link_internal,null,'Edit',webMode) + 
+//				"&version=" + forms.WEB_0F_page__browser__editor.url_param
+			plugins.dialogs.showInfoDialog('Coming soon...','Internal links can not be edited in real mode yet')
+		}
+		//show version for selected platform-language-group combo
 		else {
 			globals.WEB_preview_url = 
 				globals.WEB_MRKUP_link_page(id_page,null,'Edit',webMode) + 
-				"&group=" + globals.WEB_group_selected +
-				"&version=" + globals.WEB_version_selected
+				"&version=" + forms.WEB_0F_page__design__content.url_param
 		}
 		
 		elements.bn_browser.navigateTo(globals.WEB_preview_url)
@@ -108,28 +149,34 @@ function EDIT_off() {
  * @properties={typeid:24,uuid:"AE8C14E7-851C-475B-A830-A03AF6B7BFE3"}
  */
 function BLOCK_edit(idBlock) {
+	
+	function convertUUID(item) {
+		return item.substr(0,8) + '-' + item.substr(8,4) + '-' + item.substr(12,4) + '-' + item.substr(16,4)  + '-' + item.substr(20,12)
+	}
+	
 	var blockID = idBlock.split("-")
-	forms.WEB_0F_page__browser__editor._dataID = blockID[blockID.length - 1]
 	
-	var content = databaseManager.getFoundSet(controller.getServerName(),"web_block_data")
-	content.find()
-	content.id_block = blockID[blockID.length - 1]
-	var count = content.search()
+	forms.WEB_0F_page__browser__editor._dataID = convertUUID(blockID[blockID.length - 1])
 	
-	if (count) {
-		forms.WEB_0F_page__browser__editor._dataRec = content
-	}
+	var content = databaseManager.getFoundSet(controller.getServerName(),"web_block")
+	content.loadRecords(application.getUUID(forms.WEB_0F_page__browser__editor._dataID))
 	
-	forms.WEB_0F_page__browser__editor.elements.tab_edit.removeTabAt(1)
+	//load correct record
+	forms.WEB_0F_page__browser__editor.foundset.loadRecords(content)
 	
-	//currently used elsewhere, remove
-	if (forms.WEB_0F_page__design__content_1F_block_data.elements.tab_detail.getMaxTabIndex() >= 2 && (
-		forms.WEB_0F_page__design__content_1F_block_data.elements.tab_detail.getTabFormNameAt(2) == 'WEB_0F__content' ||
-		forms.WEB_0F_page__design__content_1F_block_data.elements.tab_detail.getTabFormNameAt(2) == 'WEB_0F__image' //||
-		)) {
-		
-		forms.WEB_0F_page__design__content_1F_block_data.elements.tab_detail.removeTabAt(2)
-	}
+	//TODO: make sure that only one heavyweight instance of each form		
+//			forms.WEB_0F_page__browser__editor.elements.tab_edit.removeTabAt(1)
+//			
+//			var tabPanel = forms.WEB_0F_page__design__content_1F_block_data.elements.tab_detail
+//			
+//			//currently used elsewhere, remove
+//			if (tabPanel.getMaxTabIndex() >= 2 && (
+//				tabPanel.getTabFormNameAt(tabPanel.getMaxTabIndex()) == 'WEB_0F__content' ||
+//				tabPanel.getTabFormNameAt(tabPanel.getMaxTabIndex()) == 'WEB_0F__image' //||
+//				)) {
+//				
+//				tabPanel.removeTabAt(tabPanel.getMaxTabIndex())
+//			}
 	
 	//load in correct forms
 	var statusBlock = forms.WEB_0F_page__browser__editor.FORM_on_show()
@@ -141,17 +188,6 @@ function BLOCK_edit(idBlock) {
 	else {
 		forms.WEB_0F_page__browser__editor.ACTION_hide()
 	}
-	
-	
-//	application.showFormInDialog(
-//			forms.WEB_0F_page__browser__editor,
-//			-1,-1,-1,-1,
-//			" ",
-//			true,
-//			false,
-//			"cmsEditHover",
-//			true
-//		)
 }
 
 /**
@@ -184,8 +220,6 @@ function SPLIT_set(editMode) {
 		//only switch orientation if needed
 		if (elements.bean_split.orientation != editLocation) {
 			elements.bean_split.orientation = editLocation
-			
-			//TODO: null out required?
 		}
 		
 		//side-wise location
@@ -237,22 +271,13 @@ function FORM_on_load(event) {
  * @properties={typeid:24,uuid:"FE79BE16-34CC-4556-8485-B6F9211A87D2"}
  */
 function BLOCK_new(areaID) {
-//	
-//	var area = databaseManager.getFoundSet("sutra_cms","web_area")
-//	area.find()
-//	area.id_area = areaID
-//	var count = area.search()
-//	
-	//set globals so that global relations work
-//	globals.WEB_page_id_area_selected = areaID
 	
 	//show picker for type of block and create
-	//TODO: scrapbook doesn't work yet
-	var newBlock = forms.WEB_0F_page__design__content_1L_block.BLOCK_new()
+	var newBlock = forms.WEB_0F_page__design__content_1L_block.BLOCK_new(areaID)
 	
 	//add editor to the screen if new block not cancelled
 	if (newBlock) {
-		BLOCK_edit('sutra-block-data-' + globals.WEB_page_id_block_selected)
+		BLOCK_edit('sutra-block-data-' + utils.stringReplace(newBlock.id_block.toString(),'-',''))
 	}
 	//resume edit mode
 	else {

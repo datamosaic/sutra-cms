@@ -1,7 +1,7 @@
 /**
  * @properties={typeid:35,uuid:"953FF820-B3B4-4DCB-822D-E37FBD911426"}
  */
-var WEB_page_id_block_selected = null;
+var WEB_selected_block = null;
 
 /**
  * @properties={typeid:35,uuid:"B8BD989F-8261-4359-A449-507E164E8BF9",variableType:-4}
@@ -549,10 +549,11 @@ function WEB_MRKUP_link_internal(markup,siteURL,linkType,areaID) {
 		
 		//this is linked up to a theme editable and set to allow records to be created
 		if (count && utils.hasRecords(area.web_area_to_editable) && area.web_area_to_editable.flag_new_block) {
+			var areaString = utils.stringReplace(areaID.toString(),'-','')
 			
 			var newBlock = '<!-- add new block -->'
-			newBlock += '<div id="sutra-block-add-' + areaID + '" class="block_new">'
-			newBlock += '<a href="javascript:blockNew(\'' + areaID + '\')">' + area.area_name.toUpperCase() + ': Add block</a>'
+			newBlock += '<div id="sutra-block-add-' + areaString + '" class="block_new">'
+			newBlock += '<a href="javascript:blockNew(\'' + areaString + '\')">' + area.area_name.toUpperCase() + ': Add block</a>'
 			newBlock += '</div>'
 				
 			markup += newBlock

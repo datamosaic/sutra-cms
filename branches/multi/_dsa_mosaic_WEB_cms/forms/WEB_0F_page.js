@@ -29,7 +29,7 @@ function TRIGGER_mode_set(mode) {
 				elements.tab_main.tabIndex = 1
 				
 				//reset enabled/disabled, etc.
-				forms.WEB_0F_page__design__header_display.FLD_data_change__version_selected()
+				forms.WEB_0F_page__design.REC_on_select()
 				
 				break;
 			case "BROWSER":	

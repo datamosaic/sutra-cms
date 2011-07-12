@@ -13,7 +13,7 @@ var _license_dsa_mosaic_WEB_cms = 'Module: _dsa_mosaic_WEB_cms \
  * @properties={typeid:24,uuid:"6963A7EB-B2F7-4485-9AD8-491BD890CF28"}
  */
 function ACTION_add(event) {
-	// TODO Auto-generated method stub
+	
 }
 
 /**
@@ -59,18 +59,17 @@ function ACTION_edit(event) {
  * @properties={typeid:24,uuid:"970B75AD-2B4F-4916-9C7E-4FF9FD591844"}
  */
 function ACTION_group(input) {
-	
 	//called to depress menu
-	if (typeof input != 'number') {
+	if (input instanceof JSEvent) {
 		//menu items
-		var siteGroups = application.getValueListItems('WEB_group')
+		var siteGroups = application.getValueListItems('WEB_page_group')
 		var vlDisplay = siteGroups.getColumnAsArray(1)
 		var vlReal = siteGroups.getColumnAsArray(2)
 		
 		//set up menu with arguments
 		var menu = new Array()
 		for ( var i = 0 ; i < vlDisplay.length ; i++ ) {
-			if (globals.WEB_group_selected == vlReal[i]) {
+			if (globals.WEB_page_group == vlReal[i]) {
 				menu[i] = plugins.popupmenu.createCheckboxMenuItem(vlDisplay[i],ACTION_group)
 				menu[i].setSelected(true)
 			}
@@ -80,7 +79,7 @@ function ACTION_group(input) {
 			
 			menu[i].setMethodArguments(vlReal[i])
 			
-			if (menu[i].text == '----') {
+			if (menu[i].text == '-') {
 				menu[i].setEnabled(false)
 			}
 		}
@@ -94,7 +93,7 @@ function ACTION_group(input) {
 	//menu shown and item chosen
 	else {
 		//update selected group
-		globals.WEB_group_selected = input
+		globals.WEB_page_group = input
 		
 		//show/hide edit button
 		TOGGLE_edit()		
@@ -111,7 +110,7 @@ function ACTION_group(input) {
 function TOGGLE_group(showGroups) {
 	
 	if (typeof showGroups != 'boolean') {
-		var pageGroups = application.getValueListItems('WEB_group')
+		var pageGroups = application.getValueListItems('WEB_page_group')
 		showGroups = (pageGroups.getMaxRowIndex() > 1) ? true : false
 	}
 	
@@ -127,7 +126,7 @@ function TOGGLE_group(showGroups) {
 function TOGGLE_version(showSnapshots) {
 	
 	if (typeof showSnapshots != 'boolean') {
-		var versions = application.getValueListItems('WEB_version')
+		var versions = application.getValueListItems('WEB_page_version')
 		showSnapshots = (versions.getMaxRowIndex() > 1) ? true : false
 	}
 	
@@ -145,16 +144,16 @@ function TOGGLE_version(showSnapshots) {
  */
 function ACTION_version(input) {
 	//called to depress menu
-	if (typeof input != 'number') {
+	if (input instanceof JSEvent) {
 		//menu items
-		var versions = application.getValueListItems('WEB_version')
+		var versions = application.getValueListItems('WEB_page_version')
 		var vlDisplay = versions.getColumnAsArray(1)
 		var vlReal = versions.getColumnAsArray(2)
 		
 		//set up menu with arguments
 		var menu = new Array()
 		for ( var i = 0 ; i < vlDisplay.length ; i++ ) {
-			if (globals.WEB_version_selected == vlReal[i]) {
+			if (globals.WEB_page_version == vlReal[i]) {
 				menu[i] = plugins.popupmenu.createCheckboxMenuItem(vlDisplay[i],ACTION_version)
 				menu[i].setSelected(true)
 			}
@@ -164,7 +163,7 @@ function ACTION_version(input) {
 			
 			menu[i].setMethodArguments(vlReal[i])
 			
-			if (menu[i].text == '----') {
+			if (menu[i].text == '-') {
 				menu[i].setEnabled(false)
 			}
 		}
@@ -178,7 +177,7 @@ function ACTION_version(input) {
 	//menu shown and item chosen
 	else {
 		//update selected group
-		globals.WEB_version_selected = input
+		globals.WEB_page_version = input
 		
 		//show/hide edit button
 		TOGGLE_edit()
@@ -196,13 +195,13 @@ function BREAD_update() {
 	var simple = true
 	
 	var label = '<html><body><center>'
-	label += '<b>Group</b> ' + application.getValueListDisplayValue('WEB_group',globals.WEB_group_selected) + '&nbsp;&nbsp;&nbsp;&nbsp;'
+	label += 'Group ' + application.getValueListDisplayValue('WEB_page_group',globals.WEB_page_group).substr(12) + '&nbsp;&nbsp;&nbsp;&nbsp;'
 	
 	if (simple) {
 		label += '<br>'
 	}
 	
-	label += '<b>Snapshot</b> ' + application.getValueListDisplayValue('WEB_version',globals.WEB_version_selected)
+	label += 'Version ' + application.getValueListDisplayValue('WEB_page_version',globals.WEB_page_version).substr(12)
 	
 	if (!simple) {
 		label += '<br>'
@@ -212,6 +211,7 @@ function BREAD_update() {
 	label += '</center></body></html>'
 	
 	elements.lbl_detail.text = label
+	elements.lbl_detail.toolTipText = '<html><body>Click to copy URL to clipboard<br>' + globals.WEB_preview_url
 }
 
 /**
@@ -222,7 +222,12 @@ function BREAD_update() {
  * @properties={typeid:24,uuid:"11FEB286-BF39-4E8D-8276-C3A3DBE71FAF"}
  */
 function BREAD_url_clipboard(event) {
-	application.setClipboardContent(globals.WEB_preview_url)
+	if (globals.CODE_key_pressed('shift')) {
+		globals.CODE_url_handler(globals.WEB_preview_url)
+	}
+	else {
+		application.setClipboardContent(globals.WEB_preview_url)
+	}
 }
 
 /**
@@ -233,53 +238,53 @@ function BREAD_url_clipboard(event) {
  * @properties={typeid:24,uuid:"95133A53-BDB0-4591-8709-20EAEC851693"}
  */
 function ACTION_dashboard(event) {
-	//don't enter if workflow form locked for some reason or not enough access
-	if (application.__parent__.solutionPrefs && !solutionPrefs.design.statusLockWorkflow && globals.TRIGGER_registered_action_authenticate('cms page mode toggle')) {
-		
-		//in edit mode with unsaved changes
-		if (elements.btn_save.visible && forms.WEB_0F_page__browser__editor.GET_modify()) {
-			var input = plugins.dialogs.showWarningDialog(
-						'Unsaved changes',
-						'There are unsaved changes.  Continue without saving?',
-						'Yes',
-						'No'
-				)
-			
-			if (input != 'Yes') {
-				return
-			}
-		}
-		
-		if (forms.WEB_0F_page.TRIGGER_mode_set() == "BROWSER") {
-			forms.WEB_0F_page.TRIGGER_mode_set("DESIGN")
-			
-			elements.lbl_edit.visible = false
-			elements.btn_edit.visible = false
-			elements.btn_save.visible = false
-			
-			elements.highlighter_dash.visible = false
-			elements.highlighter.visible = false
-			elements.lbl_detail.visible = false
-			
-			TOGGLE_group(false)
-			TOGGLE_version(false)
-			
-			//refire toggle
-			forms.WEB_0F_page__design__header_display.FLD_data_change__version_selected()
-		}
-		else {
-			elements.highlighter_dash.visible = true
-			elements.lbl_detail.visible = true
-			
-//			forms.WEB_0F_page__browser.elements.bn_browser.reload()
-			forms.WEB_0F_page.TRIGGER_mode_set("BROWSER")	
-			
-			//toggle edit, groups, versions
-			TOGGLE_edit()
-			TOGGLE_group()
-			TOGGLE_version()		
-		}
-	}
+//	//don't enter if workflow form locked for some reason or not enough access
+//	if (application.__parent__.solutionPrefs && !solutionPrefs.design.statusLockWorkflow && globals.TRIGGER_registered_action_authenticate('cms page mode toggle')) {
+//		
+//		//in edit mode with unsaved changes
+//		if (elements.btn_save.visible && forms.WEB_0F_page__browser__editor.GET_modify()) {
+//			var input = plugins.dialogs.showWarningDialog(
+//						'Unsaved changes',
+//						'There are unsaved changes.  Continue without saving?',
+//						'Yes',
+//						'No'
+//				)
+//			
+//			if (input != 'Yes') {
+//				return
+//			}
+//		}
+//		
+//		if (forms.WEB_0F_page.TRIGGER_mode_set() == "BROWSER") {
+//			forms.WEB_0F_page.TRIGGER_mode_set("DESIGN")
+//			
+//			elements.lbl_edit.visible = false
+//			elements.btn_edit.visible = false
+//			elements.btn_save.visible = false
+//			
+//			elements.highlighter_dash.visible = false
+//			elements.highlighter.visible = false
+//			elements.lbl_detail.visible = false
+//			
+//			TOGGLE_group(false)
+//			TOGGLE_version(false)
+//			
+//			//refire toggle
+//			forms.WEB_0F_page__design__header_display.FLD_data_change__version_selected()
+//		}
+//		else {
+//			elements.highlighter_dash.visible = true
+//			elements.lbl_detail.visible = true
+//			
+////			forms.WEB_0F_page__browser.elements.bn_browser.reload()
+//			forms.WEB_0F_page.TRIGGER_mode_set("BROWSER")	
+//			
+//			//toggle edit, groups, versions
+//			TOGGLE_edit()
+//			TOGGLE_group()
+//			TOGGLE_version()		
+//		}
+//	}
 }
 
 /**
@@ -456,9 +461,9 @@ function ACTION_save(event) {
 		if (input != 'Yes') {
 			return
 		}
-		else {
-			forms.WEB_0F_page__browser__editor._dataRec = null
-		}
+//		else {
+//			forms.WEB_0F_page__browser__editor._dataRec = null
+//		}
 	}
 		
 	elements.btn_edit.visible = true
@@ -512,32 +517,32 @@ function FORM_on_load() {
  * @properties={typeid:24,uuid:"CA41B609-7116-4C2E-8C07-56BD3D16EADD"}
  */
 function ACTION_sitemap(event) {
-	//don't enter if workflow form locked for some reason or not enough access
-	if (application.__parent__.solutionPrefs && !solutionPrefs.design.statusLockWorkflow) {// && globals.TRIGGER_registered_action_authenticate('cms page sitemap')) {
-		
-		//in edit mode with unsaved changes
-		if (elements.btn_save.visible && forms.WEB_0F_page__browser__editor.GET_modify()) {
-			var input = plugins.dialogs.showWarningDialog(
-						'Unsaved changes',
-						'There are unsaved changes.  Continue without saving?',
-						'Yes',
-						'No'
-				)
-			
-			if (input != 'Yes') {
-				return
-			}
-		}
-		
-		//switch space to sitemap
-		if (!elements.highlighter_dash.visible) {
-			globals.TRIGGER_spaces_set('list')
-			elements.highlighter_dash.visible = true
-		}
-		//switch space to browser only
-		else {
-			globals.TRIGGER_spaces_set('workflow')
-			elements.highlighter_dash.visible = false
-		}
-	}
+//	//don't enter if workflow form locked for some reason or not enough access
+//	if (application.__parent__.solutionPrefs && !solutionPrefs.design.statusLockWorkflow) {// && globals.TRIGGER_registered_action_authenticate('cms page sitemap')) {
+//		
+//		//in edit mode with unsaved changes
+//		if (elements.btn_save.visible && forms.WEB_0F_page__browser__editor.GET_modify()) {
+//			var input = plugins.dialogs.showWarningDialog(
+//						'Unsaved changes',
+//						'There are unsaved changes.  Continue without saving?',
+//						'Yes',
+//						'No'
+//				)
+//			
+//			if (input != 'Yes') {
+//				return
+//			}
+//		}
+//		
+//		//switch space to sitemap
+//		if (!elements.highlighter_dash.visible) {
+//			globals.TRIGGER_spaces_set('list')
+//			elements.highlighter_dash.visible = true
+//		}
+//		//switch space to browser only
+//		else {
+//			globals.TRIGGER_spaces_set('workflow')
+//			elements.highlighter_dash.visible = false
+//		}
+//	}
 }
