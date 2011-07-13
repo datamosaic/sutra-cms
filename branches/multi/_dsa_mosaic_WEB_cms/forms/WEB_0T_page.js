@@ -1017,7 +1017,7 @@ var _oldRecord = null;
 function SET_page(pageID) {
 	var fsPage = databaseManager.getFoundSet(controller.getServerName(),"web_page")
 	fsPage.find()
-	fsPage.id_page = pageID
+	fsPage.url_param = pageID
 	var results = fsPage.search()
 	
 	//called from headless client in browser bean
