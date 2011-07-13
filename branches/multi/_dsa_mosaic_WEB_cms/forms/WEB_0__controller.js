@@ -716,9 +716,9 @@ function CONTROLLER_setup(results, app, session, request, response, mode) {
 		var fsPage = databaseManager.getFoundSet('sutra_cms','web_page')
 		fsPage.find()
 		fsPage.id_page = page.page_link_internal
-		var results = fsPage.search()
+		var count = fsPage.search()
 		
-		if (results && page.page_link_internal) {
+		if (count && page.page_link_internal) {
 			//this changes the url
 			obj.response.record.sendRedirect(globals.WEB_MRKUP_link_page(page.page_link_internal))
 		}
