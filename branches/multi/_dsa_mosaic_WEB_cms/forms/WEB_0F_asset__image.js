@@ -58,7 +58,8 @@ function ASSET_scale(assetRecord) {
 		)
 	
 	//FiD not cancelled, get values and create new instance
-	if (databaseManager.getFoundSetDataProviderAsArray(assetRecord.web_asset_to_asset_instance, 'id_asset_instance').indexOf(asset.id_asset_instance) >= 0) {
+	var allKeys = databaseManager.getFoundSetDataProviderAsArray(assetRecord.web_asset_to_asset_instance, 'id_asset_instance').map(function(item) {return item.toString()})
+	if (allKeys.indexOf(asset.id_asset_instance.toString()) >= 0) {
 		var baseDirectory = forms.WEB_0F_install.ACTION_get_install() +
 							'/application_server/server/webapps/ROOT/sutraCMS/sites/' +
 							forms.WEB_0F_site.directory + '/'
@@ -127,8 +128,8 @@ function FILE_import(origLocation, newLocation, newWidth, newHeight) {
 			var fileExt = ext[ext.length-1].toLowerCase()
 		}
 	}
-	
-	var imageTemp =  plugins.images.getImage(file)
+	//THIS ISN'T VALID WHEN INPUT FILE SPECIFIED
+	var imageTemp =  plugins.images.getImage(file.getBytes())
 	
 	// set image details object
 	var fileOBJ = {}
@@ -149,7 +150,8 @@ function FILE_import(origLocation, newLocation, newWidth, newHeight) {
 	
 	//resize image if new sizes passed in
 	if (newWidth || newHeight) {
-		file = imageTemp.resize(newWidth || imageTemp.getWidth(), newHeight || imageTemp.getHeight()).getData()
+		//THIS LINE WILL ERROR BECAUSE OF (see above)
+		file = imageTemp.resize((utils.stringToNumber(newWidth) || imageTemp.getWidth()), (utils.stringToNumber(newHeight) || imageTemp.getHeight())).getData()
 		fileOBJ.size = file.length
 	}
 	//convert to byte array for initial import
