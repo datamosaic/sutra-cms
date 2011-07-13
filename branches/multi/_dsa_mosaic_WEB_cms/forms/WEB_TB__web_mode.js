@@ -379,7 +379,7 @@ function ACTION_mode(event) {
 				forms.WEB_0F_page__design__content.elements.tab_content.tabIndex = 1
 				
 				//refire toggle (may fire too frequently)
-				forms.WEB_0F_page__design__content_1L_block.ACTION_gui_mode_load()
+				forms.WEB_0F_page__design__content_1L_block.ACTION_gui_mode_load(true)
 				
 				//go to non-real mode if not there already
 				if (currentMode != "DESIGN") {
