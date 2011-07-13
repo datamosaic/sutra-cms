@@ -97,7 +97,7 @@ function URL_update(webMode) {
 	
 	//newly created page...show filler
 	if (forms.WEB_0T_page._addRecord) {
-		elements.bn_browser.html = '<html><body><h1>Newly created page</h1></body></head>'
+		elements.bn_browser.html = '<html><body><h1>Newly created page</h1></body></html>'
 	}
 	//go to page
 	else {
@@ -112,7 +112,20 @@ function URL_update(webMode) {
 //			globals.WEB_preview_url = 
 //				globals.WEB_MRKUP_link_page(page_link_internal,null,'Edit',webMode) + 
 //				"&version=" + forms.WEB_0F_page__browser__editor.url_param
-			plugins.dialogs.showInfoDialog('Coming soon...','Internal links can not be edited in real mode yet')
+//			plugins.dialogs.showInfoDialog('Coming soon...','Internal links can not be edited in real mode yet')
+			var fsPage = databaseManager.getFoundSet('sutra_cms','web_page')
+			fsPage.find()
+			fsPage.id_page = page_link_internal
+			var results = fsPage.search()
+			
+			if (results) {
+				elements.bn_browser.html = '<html><body><h2>Internal link page</h2><p>Internal links cannot be edited in real mode.<br /> <a href="#" onclick="sendNSCommand(\'WEB_0T_page.SET_page\',' + fsPage.url_param + '); return false;">Click here</a> to visit and edit the "' + fsPage.page_name + '" page.</p></body></html>'
+			}
+			else {
+				elements.bn_browser.html = '<html><body><h2>Internal link page</h2><p>The internal link this page references is not valid</p></body></html>'
+			}
+			
+			return
 		}
 		//show version for selected platform-language-group combo
 		else {
