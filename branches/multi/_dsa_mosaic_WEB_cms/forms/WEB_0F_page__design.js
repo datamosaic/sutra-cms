@@ -146,7 +146,7 @@ var _loadFilters = true;
  */
 function SET_globals() {
 	//this is initial run; set filters to site defaults
-	if (_loadFilters) {
+	if (_loadFilters && utils.hasRecords(forms.WEB_0F_site.foundset)) {
 		//turn off default load
 		_loadFilters = false
 		

@@ -13,27 +13,8 @@ var _license_dsa_mosaic_WEB_cms = 'Module: _dsa_mosaic_WEB_cms \
  * @properties={typeid:24,uuid:"F4E09655-F0E2-402A-907F-B5B944590FA8"}
  */
 function REC_on_select(event) {
-	var fsGroups = web_site_to_site_group
-	
-	//set group valuelist
-	var vlReal = new Array()
-	var vlDisplay = new Array()	
-	
-//	if (utils.hasRecords(fsGroups)) {
-//		for (var i = 1; i <= fsGroups.getSize(); i++) {
-//			var recGroup = fsGroups.getRecord(i)
-//			
-////			vlReal.push(recGroup.id_group)
-////			vlDisplay.push(recGroup.group_name)
-//			
-//			if (recGroup.group_name == 'Everybody') {
-//				//set group to everybody
-//				globals.WEB_group_selected = recGroup.id_group
-//			}
-//		}
-//	}
-	
 	//find site-specific stuff
+	//TODO: do we need to do this?
 //	forms.WEB_0F_asset.FORM_on_load()
 //	forms.WEB_0F_block_type.FORM_on_load()
 //	forms.WEB_0F_scrapbook.FORM_on_load()
@@ -44,11 +25,13 @@ function REC_on_select(event) {
 	globals.WEB_site_display = 'Site: ' + site_name
 	
 	//null out used-on page foundset if selected tab doesn't have any records
-//	if ((elements.tab_detail.tabIndex == 1 && !utils.hasRecords(web_site_to_site_group)) ||
-//		(elements.tab_detail.tabIndex == 4 && !utils.hasRecords(web_site_to_site_attribute))) {
-//		
-//		forms.WEB_0F_site_1L_page__groups.foundset.clear()
-//	}
+	if ((elements.tab_detail.tabIndex == 1 && !utils.hasRecords(web_site_to_site_platform)) ||
+		(elements.tab_detail.tabIndex == 2 && !utils.hasRecords(web_site_to_site_language)) ||
+		(elements.tab_detail.tabIndex == 3 && !utils.hasRecords(web_site_to_site_group)) ||
+		(elements.tab_detail.tabIndex == 4 && !utils.hasRecords(web_site_to_site_attribute))) {
+		
+		forms.WEB_0F_site_1L_page__groups.foundset.clear()
+	}
 }
 
 /**
@@ -130,6 +113,8 @@ function REC_new() {
 	//refire on select
 	REC_on_select()
 	
+	//bring focus back to this window
+	application.updateUI(5)
 	elements.fld_site_name.requestFocus()
 }
 
