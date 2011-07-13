@@ -88,6 +88,9 @@ function ACTION_ok() {
 		
 		//close the form
 		application.closeFormDialog('CMS_imageChoose')
+		
+		//refresh the block
+		forms.WEB_0F__image.REC_on_select(null,true)
 	}
 	//nothing selected
 	else {

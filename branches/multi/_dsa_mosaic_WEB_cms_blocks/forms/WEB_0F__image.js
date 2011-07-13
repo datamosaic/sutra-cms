@@ -33,7 +33,10 @@ function BLOCK_choose() {
  * @properties={typeid:24,uuid:"43C94817-C701-46EF-809A-33BE2CFC738C"}
  */
 function BLOCK_scale() {
-	var fileOBJ = forms.WEB_0F_asset__image.ASSET_scale(foundset.getRecord(1))
+	var fsAssetInstance = databaseManager.getFoundSet('sutra_cms','web_asset_instance')
+	fsAssetInstance.loadRecords([application.getUUID(_imageData.id_asset_instance)])
+	var recAsset = fsAssetInstance.web_asset_instance_to_asset.getRecord(1)
+	var fileOBJ = forms.WEB_0F_asset__image.ASSET_scale(recAsset)
 	
 	//the image was scaled
 	if (fileOBJ) {
@@ -53,7 +56,7 @@ function BLOCK_scale() {
 		databaseManager.saveData(web_block_to_block_data)
 			
 		//update display
-		REC_on_select()
+		REC_on_select(null,true)
 	}
 }
 
@@ -74,18 +77,18 @@ function BLOCK_import() {
 function VIEW_default(obj) {
 	
 	// template					
-	var markup = 	'<img width="<<width>>" height="<<height>>" border="0"' +
-					'src="<<directory>><<image_name>>"' +
+	var markup = 	'<img width="<<width>>" height="<<height>>" border="0" ' +
+					'src="<<directory>>/<<image_name>>" ' +
 					'alt="" />'
 	
 	// replace
 	markup = markup.replace(/<<width>>/ig, obj.data.width)
 	markup = markup.replace(/<<height>>/ig, obj.data.height)
 	markup = markup.replace(/<<image_name>>/ig, obj.data.image_name)
-	markup = markup.replace(/<<directory>>/ig, obj.data.directory)
+	markup = markup.replace(/<<directory>>/ig, '/' + globals.WEB_MRKUP_link_resources(obj.page.id) + obj.data.directory)
 	
 	// return
-	return markup	
+	return markup
 }
 
 /**
@@ -109,7 +112,7 @@ function VIEW_lightbox() {
 function TOGGLE_buttons() {
 	var editStatus = forms.WEB_0F_page.ACTION_edit_get()
 	
-	var hasData = _imageData.id_asset_instance
+	var hasData = _imageData.id_asset_instance ? true : false
 	
 	elements.btn_choose.enabled = editStatus
 	elements.btn_import.enabled = editStatus
@@ -216,7 +219,7 @@ function REC_on_select(event,alwaysRun) {
 		// image is set
 		else {
 			//both the base and resource url methods will return with "sutraCMS/"; need to remove from one so no doubling
-			var siteURL = utils.stringReplace(globals.WEB_MRKUP_link_base(forms.WEB_0F_page__design__content.id_page),'sutraCMS/','') + globals.WEB_MRKUP_link_resources(forms.WEB_0F_page__design__content.id_page)
+			var siteURL = utils.stringReplace(globals.WEB_MRKUP_link_base(forms.WEB_0F_page__design.id_page),'sutraCMS/','') + globals.WEB_MRKUP_link_resources(forms.WEB_0F_page__design.id_page)
 			
 			var html = 	'<html><head></head><body>' +
 						'<img src="' + siteURL + 
