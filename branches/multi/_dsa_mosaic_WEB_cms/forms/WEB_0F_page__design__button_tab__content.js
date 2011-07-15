@@ -110,74 +110,9 @@ function SNAP_active(event) {
  *
  * @param {JSEvent} event the event that triggered the action
  *
- * @properties={typeid:24,uuid:"2C69D26C-0E92-4BCB-9A39-DDF0E66B8CF7"}
- */
-function TOGGLE_display(event) {
-	var tabContent = forms.WEB_0F_page__design__content_1F_block_data.elements.tab_detail
-	
-	switch (event.getElementName()) {
-		case 'btn_on':
-			
-			if (tabContent.getTabFormNameAt(tabContent.tabIndex) == 'WEB_0F__content') {
-				forms.WEB_0F__content.BLOCK_cancel()
-			}			
-			
-			elements.btn_on.visible = false
-			elements.btn_off.visible = true
-			
-			globals.WEB_page_mode = 2
-			forms.WEB_0F_page__design__content.elements.tab_content.tabIndex = 1
-			break
-		case 'btn_off':
-			//tinymce showing with edits, prompt to cancel
-				//TODO: abstract to work with all content types
-			if (tabContent.getTabFormNameAt(tabContent.tabIndex) == 'WEB_0F__content' &&
-				forms.WEB_0F__content.elements.btn_save.enabled) {
-				
-				var input = plugins.dialogs.showWarningDialog(
-							'Unsaved changes',
-							'There are unsaved changes.  Continue without saving?',
-							'Yes',
-							'No'
-					)
-				
-				if (input != 'Yes') {
-					break
-				}
-			}
-			
-			elements.btn_on.visible = true
-			elements.btn_off.visible = false
-			
-			globals.WEB_page_mode = 1
-			forms.WEB_0F_page__design__content.elements.tab_content.tabIndex = 2
-			
-			break			
-	}
-}
-
-/**
- * Callback method when form is (re)loaded.
- *
- * @param {JSEvent} event the event that triggered the action
- *
- * @properties={typeid:24,uuid:"CB8ADEDF-333A-4B2D-80A1-FCC8E3F0C7D3"}
- */
-function FORM_on_load(event) {
-	//hide advanced mode status
-//	elements.btn_on.visible = false
-	
-	
-}
-
-/**
- * Perform the element default action.
- *
- * @param {JSEvent} event the event that triggered the action
- *
  * @properties={typeid:24,uuid:"05C77F09-34C3-42BD-8C77-F6B090C5FCD0"}
  */
-function VISIT_page(event) {
+function VISIT_page(event,returnURL) {
 	//see forms.WEB_0F_page__browser.URL_update
 	
 	if (globals.CODE_key_pressed('shift')) {
@@ -188,18 +123,38 @@ function VISIT_page(event) {
 	
 	if (utils.hasRecords(fsPage)) {
 		
-		var siteURL = globals.WEB_MRKUP_link_page(fsPage.id_page)
+		var urlString = globals.WEB_MRKUP_link_page(id_page)
+	
+		if (utils.hasRecords(forms.WEB_0F_page__design__header_display__platform._platform)) {
+			urlString += "&platform=" + forms.WEB_0F_page__design__header_display__platform._platform.url_param
+		}
 		
+		if (utils.hasRecords(forms.WEB_0F_page__design__header_display__language._language)) {
+			urlString += "&language=" + forms.WEB_0F_page__design__header_display__language._language.url_param
+		}
+		
+		if (utils.hasRecords(forms.WEB_0F_page__design__header_display__group._group)) {
+			urlString += "&group=" + forms.WEB_0F_page__design__header_display__group._group.url_param
+		}
+		
+		if (utils.hasRecords(forms.WEB_0F_page__design__content.foundset)) {
+			urlString += "&version=" + forms.WEB_0F_page__design__content.url_param
+		}
+		
+		//return url
+		if (returnURL) {
+			return urlString
+		}
 		//put on clipboard
-		if (toClippy) {
-			application.setClipboardContent(siteURL)
+		else if (toClippy) {
+			application.setClipboardContent(urlString)
 		}
 		//go to page
 		else {
-			globals.CODE_url_handler(siteURL)
+			globals.CODE_url_handler(urlString)
 		}
 	}
-	else {
+	else if (!returnURL) {
 		plugins.dialogs.showErrorDialog(
 					'Error',
 					'You must have a page selected in order to preview it'

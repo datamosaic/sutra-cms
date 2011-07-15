@@ -76,12 +76,6 @@ function REC_on_select(event,skipLoad,verIndex,fireSelect) {
 			//halt additional on select firing
 			forms.WEB_0F_page__design__content_1L_block._skipSelect = true
 			
-		 	//when called with event (not programatically)
-			if (event) {
-			 	//set tooltip of visit with link
-				forms.WEB_0F_page__design__button_tab__content.elements.btn_visit.toolTipText = globals.WEB_MRKUP_link_page(id_page)
-			}
-			
 			//select page version of tri globals
 		 	SET_globals()
 			
@@ -110,6 +104,13 @@ function REC_on_select(event,skipLoad,verIndex,fireSelect) {
 				else {
 					globals.WEB_page_version = application.getValueListItems('WEB_page_version').getValue(1,2)
 				}
+			}
+			
+			
+		 	//when called from event (not programatically) update tooltip on visit button
+			if (event) {
+			 	//set tooltip of visit with link
+				forms.WEB_0F_page__design__button_tab__content.elements.btn_visit.toolTipText = forms.WEB_0F_page__design__button_tab__content.VISIT_page(null,true)
 			}
 			
 			//page type ui differences

@@ -129,9 +129,25 @@ function URL_update(webMode) {
 		}
 		//show version for selected platform-language-group combo
 		else {
-			globals.WEB_preview_url = 
-				globals.WEB_MRKUP_link_page(id_page,null,'Edit',webMode) + 
-				"&version=" + forms.WEB_0F_page__design__content.url_param
+			var urlString = globals.WEB_MRKUP_link_page(id_page,null,'Edit',webMode)
+			
+			if (utils.hasRecords(forms.WEB_0F_page__design__header_display__platform._platform)) {
+				urlString += "&platform=" + forms.WEB_0F_page__design__header_display__platform._platform.url_param
+			}
+			
+			if (utils.hasRecords(forms.WEB_0F_page__design__header_display__language._language)) {
+				urlString += "&language=" + forms.WEB_0F_page__design__header_display__language._language.url_param
+			}
+			
+			if (utils.hasRecords(forms.WEB_0F_page__design__header_display__group._group)) {
+				urlString += "&group=" + forms.WEB_0F_page__design__header_display__group._group.url_param
+			}
+			
+			if (utils.hasRecords(forms.WEB_0F_page__design__content.foundset)) {
+				urlString += "&version=" + forms.WEB_0F_page__design__content.url_param
+			}
+			
+			globals.WEB_preview_url = urlString
 		}
 		
 		elements.bn_browser.navigateTo(globals.WEB_preview_url)
