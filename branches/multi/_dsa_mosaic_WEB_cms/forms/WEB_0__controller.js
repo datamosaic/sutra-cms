@@ -810,6 +810,14 @@ function CONTROLLER_setup(results, app, session, request, response, mode) {
 		platform.find()
 		platform.url_param = platformID
 		var count = platform.search()
+		
+		//check to make sure that it is in the correct page
+		if (!(count && platform.id_page == page.id_page)) {
+			// return error that no such version
+			obj.error.code = 500
+			obj.error.message = "Platform requested does not exist"
+			return obj
+		}		
 	}
 	
 	// obj: platform
@@ -848,6 +856,14 @@ function CONTROLLER_setup(results, app, session, request, response, mode) {
 		language.find()
 		language.url_param = languageID
 		var count = language.search()
+		
+		//check to make sure that it is in the correct page
+		if (!(count && language.id_page == page.id_page)) {
+			// return error that no such version
+			obj.error.code = 500
+			obj.error.message = "Language requested does not exist"
+			return obj
+		}
 	}
 	
 	// obj: language
@@ -886,16 +902,27 @@ function CONTROLLER_setup(results, app, session, request, response, mode) {
 		group.find()
 		group.url_param = groupID
 		var count = group.search()
+		
+		//check to make sure that it is in the correct page
+		if (!(count && group.id_page == page.id_page)) {
+			// return error that no such version
+			obj.error.code = 500
+			obj.error.message = "Group requested does not exist"
+			return obj
+		}
 	}
 	
 	// obj: group
 	obj.group.record = group.getRecord(1)
 	obj.group.id = group.id_group
 	
+	
 	// ACTIVE VERSION
 	//if not specified, use active version
 	var version = databaseManager.getFoundSet("sutra_cms","web_version")
-	if (!versionID) {
+	
+	//version not specified (or incorrectly specified)
+	if (!versionID) { 
 		version.find()
 		version.id_platform = platform.id_platform
 		version.id_language = language.id_language
@@ -921,10 +948,19 @@ function CONTROLLER_setup(results, app, session, request, response, mode) {
 			var versionID = version.id_version
 		}
 	}
+	//version was specified
 	else {
 		version.find()
 		version.url_param = versionID
 		var count = version.search()
+		
+		//check to make sure that it is in the correct page
+		if (!(count && utils.hasRecords(version.getRecord(1),'web_version_to_platform') && version.web_version_to_platform.id_page == page.id_page)) {
+			// return error that no such version
+			obj.error.code = 500
+			obj.error.message = "Version requested does not exist"
+			return obj
+		}
 	}
 	
 	// obj: version
