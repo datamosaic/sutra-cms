@@ -1,9 +1,4 @@
 /**
- * @properties={typeid:35,uuid:"55AF3DD1-299F-46A4-BECC-EBA0451C9EEE",variableType:-4}
- */
-var _skipSelect = true;
-
-/**
  * @properties={typeid:35,uuid:"4FDADEFD-6F16-46F7-827B-375E25824AD6"}
  */
 var _license_dsa_mosaic_WEB_cms = 'Module: _dsa_mosaic_WEB_cms \
@@ -182,7 +177,7 @@ function TINYMCE_init(mode) {
  * @properties={typeid:24,uuid:"553CBBDB-2269-49ED-BEC5-A585CBC2011A"}
  */
 function BLOCK_save() {
-	web_block_to_block_data.data_value = elements.bn_tinymce.html
+	web_block_to_block_version.web_block_version_to_block_data.data_value = elements.bn_tinymce.html
 	databaseManager.saveData()
 	elements.bn_tinymce.clearDirtyState()
 	
@@ -234,7 +229,7 @@ function REC_on_select(event,alwaysRun) {
 		TOGGLE_buttons(false)
 		
 		elements.bn_tinymce.clearHtml()
-		elements.bn_tinymce.html = web_block_to_block_data.data_value
+		elements.bn_tinymce.html = web_block_to_block_version.web_block_version_to_block_data.data_value
 	}
 }
 
@@ -246,7 +241,7 @@ function REC_on_select(event,alwaysRun) {
  * @properties={typeid:24,uuid:"8DA68D80-88B6-47F7-857C-6CE05373251D"}
  */
 function BLOCK_cancel(event) {
-	elements.bn_tinymce.html = web_block_to_block_data.data_value
+	elements.bn_tinymce.html = web_block_to_block_version.web_block_version_to_block_data.data_value
 	TOGGLE_buttons(false)
 	
 	//called from browser bean, hide form

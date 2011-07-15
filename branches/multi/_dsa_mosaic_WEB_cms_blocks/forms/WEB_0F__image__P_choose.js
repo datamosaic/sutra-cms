@@ -58,7 +58,7 @@ function ACTION_ok() {
 		// copy image details to block data points
 		else {
 			//the data we're working with here
-			var data = forms.WEB_0F__image.web_block_to_block_data
+			var data = forms.WEB_0F__image.web_block_version_to_block_data
 			
 			//see WEB_0F__image.INIT_block for all keys
 			for (var i = 1; i <= data.getSize(); i++) {

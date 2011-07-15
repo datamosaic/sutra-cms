@@ -1,9 +1,4 @@
 /**
- * @properties={typeid:35,uuid:"BFF4A9F6-28A2-4C19-AFA9-A0E124960BFD",variableType:-4}
- */
-var _skipSelect = true;
-
-/**
  * @properties={typeid:35,uuid:"5FDACEFD-6F16-46F7-827B-375E25824AD6"}
  */
 var _license_dsa_mosaic_WEB_cms = 'Module: _dsa_mosaic_WEB_cms \
@@ -37,8 +32,8 @@ function FORM_on_load() {
  * @properties={typeid:24,uuid:"B886B030-6E8A-4206-B8FC-7DF67F7362F0"}
  */
 function BLOCK_save() {
-	web_block_to_block_data.data_value = _dataValue
-	databaseManager.saveData(web_block_to_block_data)
+	web_block_to_block_version.web_block_version_to_block_data.data_value = _dataValue
+	databaseManager.saveData(web_block_to_block_version.web_block_version_to_block_data)
 	databaseManager.setAutoSave(true)
 	
 	ACTION_colorize()
@@ -96,7 +91,7 @@ function REC_on_select(event,alwaysRun) {
 	//run on select only when it is 'enabled'
 	if (alwaysRun || globals.WEB_block_enable(event)) {
 		//save down form variables so records can be changed
-		_dataValue = web_block_to_block_data.data_value
+		_dataValue = web_block_to_block_version.web_block_version_to_block_data.data_value
 		
 		//update display
 		TOGGLE_buttons(false)
@@ -201,9 +196,9 @@ function ACTION_add_token(inputID,pageRec) {
 	
 	elem.replaceSelectedText(linkStart + linkPage + linkEnd)
 	
-	web_block_to_block_data.data_value = _dataValue
+	web_block_to_block_version.web_block_version_to_block_data.data_value = _dataValue
 		
-	databaseManager.saveData(web_block_to_block_data)
+	databaseManager.saveData(web_block_to_block_version.web_block_version_to_block_data)
 	
 	elem.caretPosition = cursor + offset
 	elem.requestFocus()
@@ -251,9 +246,9 @@ function ACTION_insert_image(event) {
 		
 		elem.replaceSelectedText(html)
 		
-		web_block_to_block_data.data_value = _dataValue
+		web_block_to_block_version.web_block_version_to_block_data.data_value = _dataValue
 		
-		databaseManager.saveData(web_block_to_block_data)
+		databaseManager.saveData(web_block_to_block_version.web_block_version_to_block_data)
 		
 		elem.caretPosition = cursor + offset
 		elem.requestFocus()
@@ -321,7 +316,7 @@ function ACTION_colorize(recBlockData) {
 	var html = ''
 	var prefix = ''
 	
-	var recBlockData = web_block_to_block_data.getSelectedRecord()
+	var recBlockData = web_block_to_block_version.web_block_version_to_block_data.getSelectedRecord()
 	
 	//if there's data, color it
 	if (recBlockData && recBlockData.data_value) {

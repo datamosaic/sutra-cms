@@ -37,7 +37,7 @@ function FORM_on_load() {
  * @properties={typeid:24,uuid:"596AC1D2-C10E-435B-A670-B17748C36852"}
  */
 function BLOCK_save() {
-	web_block_to_block_data.data_value = _dataValue
+	web_block_to_block_version.web_block_version_to_block_data.data_value = _dataValue
 	databaseManager.saveData()
 	databaseManager.setAutoSave(true)
 	
@@ -85,11 +85,6 @@ function FORM_on_show(firstShow, event) {
 }
 
 /**
- * @properties={typeid:35,uuid:"2B429053-78BB-49C5-A2A4-E52AB4D92DD2",variableType:-4}
- */
-var _skipSelect = true;
-
-/**
  * Update display as needed when block selected.
  *
  * @param 	{JSEvent}	event The event that triggered the action.
@@ -101,8 +96,8 @@ function REC_on_select(event,alwaysRun) {
 	//run on select only when it is 'enabled'
 	if (alwaysRun || globals.WEB_block_enable(event)) {
 		//save down form variables so records can be changed
-		_dataValue = web_block_to_block_data.data_value
-		_codeType = web_block_to_block_data_configure.data_value
+		_dataValue = web_block_to_block_version.web_block_version_to_block_data.data_value
+		_codeType = web_block_to_block_version.web_block_version_to_block_data_configure.data_value
 		
 		//update display
 		TOGGLE_buttons(false)
@@ -122,7 +117,7 @@ function BLOCK_cancel(event) {
 	databaseManager.setAutoSave(true)
 	
 	//reset codeType var
-	_codeType = web_block_to_block_data_configure.data_value
+	_codeType = web_block_to_block_version.web_block_version_to_block_data_configure.data_value
 	
 	//called from browser bean, hide form
 	if (globals.WEB_page_mode == 3) {
@@ -215,9 +210,9 @@ function ACTION_add_token(inputID,pageRec) {
 	
 	elem.replaceSelectedText(linkStart + linkPage + linkEnd)
 	
-	web_block_to_block_data.data_value = _dataValue
+	web_block_to_block_version.web_block_version_to_block_data.data_value = _dataValue
 		
-	databaseManager.saveData(web_block_to_block_data)
+	databaseManager.saveData(web_block_to_block_version.web_block_version_to_block_data)
 	
 	elem.caretPosition = cursor + offset
 	elem.requestFocus()
@@ -265,9 +260,9 @@ function ACTION_insert_image(event) {
 		
 		elem.replaceSelectedText(html)
 		
-		web_block_to_block_data.data_value = _dataValue
+		web_block_to_block_version.web_block_version_to_block_data.data_value = _dataValue
 		
-		databaseManager.saveData(web_block_to_block_data)
+		databaseManager.saveData(web_block_version_to_block_data)
 		
 		elem.caretPosition = cursor + offset
 		elem.requestFocus()
@@ -345,7 +340,7 @@ function ACTION_colorize() {
 	var html = ''
 	var prefix = ''
 	
-	var recBlockData = web_block_to_block_data.getSelectedRecord()
+	var recBlockData = web_block_to_block_version.web_block_version_to_block_data.getSelectedRecord()
 	
 	//if there's data, color it
 	if (recBlockData && recBlockData.data_value) {
@@ -400,5 +395,5 @@ function ACTION_colorize() {
  * @properties={typeid:24,uuid:"1975546E-4E95-4C97-8332-E8135178C526"}
  */
 function FLD_data_change__code_type(oldValue, newValue, event) {
-	web_block_to_block_data_configure.data_value = newValue
+	web_block_to_block_version.web_block_version_to_block_data_configure.data_value = newValue
 }

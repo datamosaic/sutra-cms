@@ -1,9 +1,4 @@
 /**
- * @properties={typeid:35,uuid:"15F896D4-EF95-4FA4-9458-527FA8B12A21",variableType:-4}
- */
-var _skipSelect = true;
-
-/**
  * @properties={typeid:35,uuid:"4FDBCEFD-6F16-46F7-827B-375E25824AD6"}
  */
 var _license_dsa_mosaic_WEB_cms = 'Module: _dsa_mosaic_WEB_cms \
@@ -42,8 +37,8 @@ function BLOCK_scale() {
 	if (fileOBJ) {
 		//get block data points we need
 		var dataRows = new Object()
-		for (var i = 1; i <= web_block_to_block_data.getSize(); i++) {
-			var record = web_block_to_block_data.getRecord(i)
+		for (var i = 1; i <= web_block_to_block_version.web_block_version_to_block_data.getSize(); i++) {
+			var record = web_block_to_block_version.web_block_version_to_block_data.getRecord(i)
 			dataRows[record.data_key] = record
 		}
 	
@@ -53,7 +48,7 @@ function BLOCK_scale() {
 		dataRows.width.data_value = fileOBJ.width
 		dataRows.height.data_value = fileOBJ.height
 		
-		databaseManager.saveData(web_block_to_block_data)
+		databaseManager.saveData(web_block_to_block_version.web_block_version_to_block_data)
 			
 		//update display
 		REC_on_select(null,true)
@@ -182,9 +177,7 @@ function INIT_block() {
  * @properties={typeid:24,uuid:"6DABA0D5-F686-47B6-8F76-860D5D0B0209"}
  */
 function FORM_on_show(firstShow, event) {
-	if (firstShow) {
-		foundset.clear()
-	}
+	
 }
 
 /**
@@ -205,8 +198,8 @@ function REC_on_select(event,alwaysRun) {
 	if (alwaysRun || globals.WEB_block_enable(event)) {
 		//create object with all properties
 		_imageData = new Object()
-		for (var i = 1; i <= web_block_to_block_data.getSize(); i++) {
-			var record = web_block_to_block_data.getRecord(i)
+		for (var i = 1; i <= web_block_to_block_version.web_block_version_to_block_data.getSize(); i++) {
+			var record = web_block_to_block_version.web_block_version_to_block_data.getRecord(i)
 			_imageData[record.data_key] = record.data_value
 		}
 		

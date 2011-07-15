@@ -35,15 +35,16 @@ function BLOCK_sample_method() {
 }
 
 /**
- * Handle record selected.
+ * Update display as needed when block selected.
  *
- * @param {JSEvent} event the event that triggered the action
+ * @param 	{JSEvent}	event The event that triggered the action.
+ * @param	{Boolean}	[alwaysRun] Force the on select method to refire.
  *
  * @properties={typeid:24,uuid:"D0B09ECA-F3FA-4035-A0DD-62166343DF4E"}
  */
-function REC_on_select(event) {
+function REC_on_select(event,alwaysRun) {
 	//run on select only when it is 'enabled'
-	if (globals.WEB_block_enable(event)) {
+	if (alwaysRun || globals.WEB_block_enable(event)) {
 		
 	}
 }
