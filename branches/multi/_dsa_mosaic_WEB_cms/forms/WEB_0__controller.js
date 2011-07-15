@@ -149,7 +149,7 @@ function CONTROLLER_builder(results, obj) {
 			var scope = scopes.getRecord(j + 1)
 			
 			// the selected scope is published on the web					
-			if (scope.flag_active) {
+			if (scope.flag_active || obj.allblocks) {
 				
 				// BLOCK(S)
 				databaseManager.refreshRecordFromDatabase(scope.web_scope_to_block, 1)			
@@ -305,6 +305,11 @@ function CONTROLLER_setup(results, app, session, request, response, mode) {
 	var pageQuery	= request.getQueryString()
 	var pagePath	= request.getParameter("path")
 	var pageID 		= request.getParameter("id")
+	
+	// show all block datapoints
+	var allBlocks	= request.getParameter("showall")
+	obj.allblocks = allBlocks ? true : false
+	
 	
 	// these paramaters will be passed in when index_edit used (only internal to browser mode now)
 		// TODO: track group in session based on login and pass to dispatcher
