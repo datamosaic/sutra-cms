@@ -19,7 +19,7 @@ function display_page_name() {
 	}
 	//no page name, we must not have a valid language record
 	if (!pageName) {
-		return  "Language record error"
+		return  "Selected language hasn't been added to page yet"
 	}
 	
 	//this is a folder
@@ -71,7 +71,7 @@ function id_language__default() {
 		return initialLanguage.id_language
 	}
 	else {
-		return "Language record error"
+		return ""
 	}
 }
 
@@ -97,7 +97,7 @@ function page_name() {
 	
 	//no page name, we must not have a valid language record
 	if (!pageName) {
-		return  "Language record error"
+		return  "Selected language hasn't been added to page yet"
 	}
 	
 	//this is a folder
