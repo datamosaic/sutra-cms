@@ -29,7 +29,7 @@ creationOrderIndex:4,
 dataType:12,
 flags:4,
 length:50,
-name:"id_block"
+name:"id_block_version"
 },
 {
 allowNull:true,
