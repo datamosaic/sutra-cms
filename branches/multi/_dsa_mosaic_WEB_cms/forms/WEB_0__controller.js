@@ -306,11 +306,6 @@ function CONTROLLER_setup(results, app, session, request, response, mode) {
 	var pagePath	= request.getParameter("path")
 	var pageID 		= request.getParameter("id")
 	
-	// show all block datapoints
-	var allBlocks	= request.getParameter("showall")
-	obj.allblocks = allBlocks ? true : false
-	
-	
 	// these paramaters will be passed in when index_edit used (only internal to browser mode now)
 		// TODO: track group in session based on login and pass to dispatcher
 		// TODO: may add in ability to see versions on a live server
@@ -583,6 +578,9 @@ function CONTROLLER_setup(results, app, session, request, response, mode) {
 		
 		//variable for easy access
 		var editMode = true
+		
+		// show all block datapoints
+		obj.allblocks	= request.getParameter("showall") ? true : false
 	}
 	
 	// PAGE
