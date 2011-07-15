@@ -11,6 +11,14 @@ name:"id_scope"
 },
 {
 allowNull:true,
+autoEnterType:3,
+creationOrderIndex:7,
+dataType:4,
+defaultValue:"1",
+name:"flag_active"
+},
+{
+allowNull:true,
 creationOrderIndex:0,
 dataType:12,
 flags:4,
