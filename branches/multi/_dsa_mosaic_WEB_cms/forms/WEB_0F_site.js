@@ -264,8 +264,8 @@ function ACTION_choose_error(event) {
  */
 function ACTION_set_home(inputID,inputRec) {
 	if (inputID) {
-		id_page__home = inputRec.id_page.toString()
-		id_page__home__display = inputRec.display_page_name
+		id_page__home = inputRec.id_page
+		id_page__home__display = inputRec.page_name
 		databaseManager.saveData()
 	}
 }
@@ -276,8 +276,8 @@ function ACTION_set_home(inputID,inputRec) {
  */
 function ACTION_set_error(inputID,inputRec) {
 	if (inputID) {
-		id_page__error = inputRec.id_page.toString()
-		id_page__error__display = inputRec.display_page_name
+		id_page__error = inputRec.id_page
+		id_page__error__display = inputRec.page_name
 		databaseManager.saveData()
 	}
 }

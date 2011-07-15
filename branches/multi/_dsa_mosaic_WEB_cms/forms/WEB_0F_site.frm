@@ -82,8 +82,7 @@ typeid:7,
 uuid:"4A7A1ACF-A7E3-4241-9155-567279FA7A83"
 },
 {
-dataProviderID:"id_page__home_display",
-displaysTags:true,
+dataProviderID:"id_page__home__display",
 editable:false,
 formIndex:15705,
 location:"145,150",
@@ -100,7 +99,6 @@ uuid:"4B018860-EE9A-4675-9F1D-C3A211E15C22"
 },
 {
 dataProviderID:"directory",
-displaysTags:true,
 formIndex:10500,
 location:"145,81",
 name:"fld_directory",
@@ -236,8 +234,7 @@ typeid:4,
 uuid:"6E814C09-8E37-4631-B245-868C1A6718A9"
 },
 {
-dataProviderID:"id_page__error_display",
-displaysTags:true,
+dataProviderID:"id_page__error__display",
 editable:false,
 formIndex:15705,
 location:"145,173",
