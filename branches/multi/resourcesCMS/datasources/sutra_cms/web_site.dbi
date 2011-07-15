@@ -56,7 +56,7 @@ allowNull:true,
 creationOrderIndex:18,
 dataType:12,
 length:255,
-name:"id_page__error_display"
+name:"id_page__error__display"
 },
 {
 allowNull:true,
@@ -71,7 +71,7 @@ allowNull:true,
 creationOrderIndex:17,
 dataType:12,
 length:255,
-name:"id_page__home_display"
+name:"id_page__home__display"
 },
 {
 allowNull:true,
