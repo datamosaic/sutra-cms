@@ -469,7 +469,7 @@ function REC_on_select() {
 		}
 		//data view
 		else {
-//			forms.WEB_0F_page__design__content_1F_block_data.elements.tab_detail.tabIndex = 1
+			
 		}
 	}
 	
@@ -586,9 +586,15 @@ function ACTION_gui_mode_load(fireSelect) {
 	}
 	
 	function defaultForms() {
-//		forms.WEB_0F_page__design__content_1F_block_data.elements.tab_detail.tabIndex = 1
-		tabPanel.addTab(forms.WEB_0F_page__design__content_1F_block_data_2F_blank)
-		tabPanel.tabIndex = tabPanel.getMaxTabIndex()
+		//this should only be the case on the first load of the form
+		if (fireSelect) {
+			forms.WEB_0F_page__design__content_1F_block_data.elements.tab_detail.tabIndex = 1
+		}
+		//tack on to the end like every other block
+		else {
+			tabPanel.addTab(forms.WEB_0F_page__design__content_1F_block_data_2F_blank)
+			tabPanel.tabIndex = tabPanel.getMaxTabIndex()
+		}
 		forms.WEB_0F_page__design__content_1F_block_data.elements.lbl_banner.text = "Content"
 	}
 }

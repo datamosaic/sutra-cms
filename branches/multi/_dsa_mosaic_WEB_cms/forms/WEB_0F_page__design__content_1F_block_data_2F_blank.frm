@@ -7,7 +7,6 @@ uuid:"C9F58492-F2E6-4C8D-B983-FB8E9FA3F51A"
 }
 ],
 name:"WEB_0F_page__design__content_1F_block_data_2F_blank",
-namedFoundSet:"separate",
 navigatorID:"-1",
 onLoadMethodID:"-1",
 onRecordSelectionMethodID:"-1",

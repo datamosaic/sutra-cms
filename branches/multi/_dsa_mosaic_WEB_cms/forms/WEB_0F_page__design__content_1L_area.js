@@ -358,9 +358,7 @@ if (delRec == 'Yes') {
  * @properties={typeid:24,uuid:"735FD557-C0C7-419E-95D5-7A6B5110B99D"}
  */
 function REC_on_select() {
-	if (!utils.hasRecords(foundset)) {
-		forms.WEB_0F_page__design__content_1L_block.REC_on_select()
-	}
+	
 }
 
 /**

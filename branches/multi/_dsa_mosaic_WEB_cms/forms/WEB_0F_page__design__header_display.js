@@ -42,6 +42,7 @@ function FORM_on_show(firstShow, event) {
 		var minWidth = 140
 		var smallMax = (fullWidth * 2 / 9) > minWidth
 		
+		//fire several times to make sure splitpanes know how big they are
 		var cnt = 3
 		while (cnt) {
 			elements.split_picker_2.dividerLocation = smallMax ? minWidth : fullWidth * 2 / 9
@@ -86,17 +87,4 @@ function CURTAIN_block(event) {
 	else if (page_type == 3 && page_link_internal) {
 		globals.CODE_url_handler(globals.WEB_MRKUP_link_page(page_link_internal))
 	}
-}
-
-/**
- * Perform the element default action.
- *
- * @param {JSEvent} event the event that triggered the action
- *
- * @properties={typeid:24,uuid:"41ACF34C-2DCE-405F-A819-5658BCFD2293"}
- */
-function ACTION_copy_link(event) {
-	application.setClipboardContent(globals.WEB_MRKUP_link_page(id_page)/* + 
-			"&group=" + globals.WEB_group_selected +
-			"&version=" + globals.WEB_version_selected*/)
 }
