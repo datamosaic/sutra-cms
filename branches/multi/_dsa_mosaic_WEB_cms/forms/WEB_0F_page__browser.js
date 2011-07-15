@@ -193,20 +193,6 @@ function BLOCK_edit(idBlock) {
 	//load correct record
 	forms.WEB_0F_page__browser__editor.foundset.loadRecords(content)
 	
-	//TODO: make sure that only one heavyweight instance of each form		
-//			forms.WEB_0F_page__browser__editor.elements.tab_edit.removeTabAt(1)
-//			
-//			var tabPanel = forms.WEB_0F_page__design__content_1F_block_data.elements.tab_detail
-//			
-//			//currently used elsewhere, remove
-//			if (tabPanel.getMaxTabIndex() >= 2 && (
-//				tabPanel.getTabFormNameAt(tabPanel.getMaxTabIndex()) == 'WEB_0F__content' ||
-//				tabPanel.getTabFormNameAt(tabPanel.getMaxTabIndex()) == 'WEB_0F__image' //||
-//				)) {
-//				
-//				tabPanel.removeTabAt(tabPanel.getMaxTabIndex())
-//			}
-	
 	//load in correct forms
 	var statusBlock = forms.WEB_0F_page__browser__editor.FORM_on_show()
 	

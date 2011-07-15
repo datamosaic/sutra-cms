@@ -35,15 +35,15 @@ function FORM_on_show(firstShow, event) {
 	var recBlock = foundset.getSelectedRecord()
 			
 	if (recBlock) {
-		//is this a scrapbook
-		if (recBlock.scope_type) {
-			plugins.dialogs.showWarningDialog(
-						'Warning',
-						'Scrapbooks cannot be edited when in real mode.'
-					)
-			
-			return false
-		}
+//		//is this a scrapbook
+//		if (recBlock.scope_type) {
+//			plugins.dialogs.showWarningDialog(
+//						'Warning',
+//						'Scrapbooks cannot be edited when in real mode.'
+//					)
+//			
+//			return false
+//		}
 		
 		if (recBlock && utils.hasRecords(recBlock.web_block_to_block_type)) {
 			var recBlockType = recBlock.web_block_to_block_type.getRecord(1)
@@ -95,7 +95,7 @@ function ACTION_hide(event) {
 	globals.CODE_cursor_busy(true)
 	
 	//split pane in main window
-	forms.WEB_0F_page__browser.SPLIT_set(false)	
+	forms.WEB_0F_page__browser.SPLIT_set(false)
 	elements.tab_edit.removeAllTabs()
 	
 	//refresh the browser bean
