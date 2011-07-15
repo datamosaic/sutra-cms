@@ -182,11 +182,6 @@ function BLOCK_save() {
 	elements.bn_tinymce.clearDirtyState()
 	
 	TOGGLE_buttons(false)
-	
-	//called from browser bean, hide form
-	if (forms.WEB_0F_page.TRIGGER_mode_set() == "BROWSER") {
-		forms.WEB_0F_page__browser__editor.ACTION_hide()
-	}
 }
 
 /**
@@ -243,11 +238,6 @@ function REC_on_select(event,alwaysRun) {
 function BLOCK_cancel(event) {
 	elements.bn_tinymce.html = web_block_to_block_version.web_block_version_to_block_data.data_value
 	TOGGLE_buttons(false)
-	
-	//called from browser bean, hide form
-	if (forms.WEB_0F_page.TRIGGER_mode_set() == "BROWSER") {
-		forms.WEB_0F_page__browser__editor.ACTION_hide()
-	}
 }
 
 /**

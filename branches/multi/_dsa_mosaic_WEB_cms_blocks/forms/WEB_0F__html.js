@@ -37,11 +37,6 @@ function BLOCK_save() {
 	databaseManager.setAutoSave(true)
 	
 	ACTION_colorize()
-	
-	//called from browser bean, hide form
-	if (globals.WEB_page_mode == 3) {
-		forms.WEB_0F_page__browser__editor.ACTION_hide()
-	}
 }
 
 /**
@@ -110,12 +105,8 @@ function BLOCK_cancel(event) {
 	databaseManager.rollbackEditedRecords()
 	databaseManager.setAutoSave(true)
 	
-	//called from browser bean, hide form
-	if (globals.WEB_page_mode == 3) {
-		forms.WEB_0F_page__browser__editor.ACTION_hide()
-	}
 	//refresh the colored version
-	else if (globals.WEB_page_mode == 2) {
+	if (globals.WEB_page_mode == 2) {
 		ACTION_colorize()
 	}
 }

@@ -42,11 +42,6 @@ function BLOCK_save() {
 	databaseManager.setAutoSave(true)
 	
 	ACTION_colorize()
-	
-	//called from browser bean, hide form
-	if (globals.WEB_page_mode == 3) {
-		forms.WEB_0F_page__browser__editor.ACTION_hide()
-	}
 }
 
 /**
@@ -119,12 +114,8 @@ function BLOCK_cancel(event) {
 	//reset codeType var
 	_codeType = web_block_to_block_version.web_block_version_to_block_data_configure.data_value
 	
-	//called from browser bean, hide form
-	if (globals.WEB_page_mode == 3) {
-		forms.WEB_0F_page__browser__editor.ACTION_hide()
-	}
 	//refresh the colored version
-	else if (globals.WEB_page_mode == 2) {
+	if (globals.WEB_page_mode == 2) {
 		ACTION_colorize()
 	}
 }
