@@ -134,8 +134,8 @@ function ADD_version(event) {
 			var selectedVersion = fsVersion.getSelectedRecord()
 			
 			//prefill fields on version picker
-			_versionName = selectedVersion.version_name
-			_versionDescription = selectedVersion.version_description
+			forms.WEB_P_version._versionName = selectedVersion.version_name
+			forms.WEB_P_version._versionDescription = selectedVersion.version_description
 			
 			//show form in dialog
 			application.showFormInDialog(
@@ -153,17 +153,51 @@ function ADD_version(event) {
 				globals.TRIGGER_progressbar_start(null,progressText)
 				globals.CODE_cursor_busy(true)
 				
-				var srcRecord = selectedVersion
-				var destRecord = globals.CODE_record_duplicate(srcRecord,["web_version_to_area.web_area_to_scope.web_scope_to_block.web_block_to_block_data"])
+				//duplicate selectedVersion and put at top of stack
+				var destVersion = fsVersion.getRecord(fsVersion.duplicateRecord(fsVersion.getSelectedIndex(),true,true))
+				//manually duplicating all records because depending on type of block, may not need to be duplicated
+				for (var i = 1; i <= selectedVersion.web_version_to_area.getSize(); i++) {
+					//grab this area and duplicate it
+					var srcArea = selectedVersion.web_version_to_area.getRecord(i)
+					var destArea = destVersion.web_version_to_area.getRecord(destVersion.web_version_to_area.newRecord(false,true))
+					databaseManager.copyMatchingColumns(srcArea,destArea)
+					
+					//go through scopes
+					for (var j = 1; j <= srcArea.web_area_to_scope.getSize(); j++) {
+						var srcScope = srcArea.web_area_to_scope.getRecord(j)
+						var destScope = destArea.web_area_to_scope.getRecord(destArea.web_area_to_scope.newRecord(false,true))
+						databaseManager.copyMatchingColumns(srcScope,destScope)
+						
+						//there is a block attached to this scope
+						if (utils.hasRecords(srcScope.web_scope_to_block)) {
+							var srcBlock = srcScope.web_scope_to_block.getRecord(1)
+							
+							//block is a scrapbook, don't duplicate
+							if (srcBlock.scope_type) {
+								//don't need to do anything as the copyMatchingColumns in scope already hooked it up
+							}
+							//block is unique, duplicate
+							else {
+								var destBlock = globals.CODE_record_duplicate(srcBlock,[
+																	"web_block_to_block_data",
+																	"web_block_to_block_data_configure"
+																])
+								//re-hook this unique block back in to the current scope
+								destScope.id_block = destBlock.id_block
+							}
+						}
+					}
+				}
 				
-				srcRecord.version_name = forms.WEB_P_version._versionName
-				srcRecord.version_description = forms.WEB_P_version._versionDescription
-				srcRecord.flag_edit = 0
 				
-				destRecord.version_number = latestVersion.version_number + 1
-				destRecord.flag_active = null
-				destRecord.flag_edit = 1
-				globals.WEB_page_version = destRecord.id_version
+				selectedVersion.version_name = forms.WEB_P_version._versionName
+				selectedVersion.version_description = forms.WEB_P_version._versionDescription
+				selectedVersion.flag_edit = 0
+				
+				destVersion.version_number = latestVersion.version_number + 1
+				destVersion.flag_active = null
+				destVersion.flag_edit = 1
+				globals.WEB_page_version = destVersion.id_version
 				
 				databaseManager.saveData()
 				
@@ -244,34 +278,70 @@ function ADD_version(event) {
 					globals.TRIGGER_progressbar_start(null,progressText)
 					globals.CODE_cursor_busy(true)
 					
-					var srcRecord = forms.WEB_P_page__version._fsVersion.getSelectedRecord()
+					var selectedVersion = forms.WEB_P_page__version._fsVersion.getRecord(forms.WEB_P_page__version._posnVersion)
 					
 					var info = ''
 					//create prerequisite page-level records
 					if (!validPlatform) {
-						info += forms.WEB_0F_page__design__header_display__platform.CREATE_platform(srcRecord)
+						info += forms.WEB_0F_page__design__header_display__platform.CREATE_platform(selectedVersion)
 					}
 					if (!validLanguage) {
-						info += forms.WEB_0F_page__design__header_display__language.CREATE_language(srcRecord)
+						info += forms.WEB_0F_page__design__header_display__language.CREATE_language(selectedVersion)
 					}
 					if (!validGroup) {
-						info += forms.WEB_0F_page__design__header_display__group.CREATE_group(srcRecord)
+						info += forms.WEB_0F_page__design__header_display__group.CREATE_group(selectedVersion)
 					}
 					
-					info += '\nBased on: version ' + srcRecord.version_number + ' (' + srcRecord.version_name + ') of \n' +
-					'Platform: ' + forms.WEB_0F_page__design__header_display__platform._platform.platform_name + ', Language: ' + forms.WEB_0F_page__design__header_display__language._language.language_name + ', Group: ' + forms.WEB_0F_page__design__header_display__group._group.group_name
+					info += '\nBased on: version ' + selectedVersion.version_number + ' (' + selectedVersion.version_name + ') of \n' +
+						'Platform: ' + forms.WEB_0F_page__design__header_display__platform._platform.platform_name + ', ' + 
+						'Language: ' + forms.WEB_0F_page__design__header_display__language._language.language_name + ', ' + 
+						'Group: ' + forms.WEB_0F_page__design__header_display__group._group.group_name
 					
-					//duplicate record
-					var destRecord = globals.CODE_record_duplicate(srcRecord,["web_version_to_area.web_area_to_block.web_block_to_block_data"])
+					//create new record
+					var destVersion = fsVersion.getRecord(fsVersion.newRecord(false,true))
 					
-					destRecord.version_number = 1
-					destRecord.version_description = info
-					destRecord.flag_active = forms.WEB_0F_site.flag_auto_publish
-					destRecord.flag_edit = 1
-					destRecord.id_platform = forms.WEB_0F_page__design__header_display__platform._platform.id_platform
-					destRecord.id_language = forms.WEB_0F_page__design__header_display__language._language.id_language
-					destRecord.id_group = forms.WEB_0F_page__design__header_display__group._group.id_group
-					globals.WEB_page_version = destRecord.id_version
+					//manually duplicating all records because depending on type of block, may not need to be duplicated
+					for (var i = 1; i <= selectedVersion.web_version_to_area.getSize(); i++) {
+						//grab this area and duplicate it
+						var srcArea = selectedVersion.web_version_to_area.getRecord(i)
+						var destArea = destVersion.web_version_to_area.getRecord(destVersion.web_version_to_area.newRecord(false,true))
+						databaseManager.copyMatchingColumns(srcArea,destArea)
+						
+						//go through scopes
+						for (var j = 1; j <= srcArea.web_area_to_scope.getSize(); j++) {
+							var srcScope = srcArea.web_area_to_scope.getRecord(j)
+							var destScope = destArea.web_area_to_scope.getRecord(destArea.web_area_to_scope.newRecord(false,true))
+							databaseManager.copyMatchingColumns(srcScope,destScope)
+							
+							//there is a block attached to this scope
+							if (utils.hasRecords(srcScope.web_scope_to_block)) {
+								var srcBlock = srcScope.web_scope_to_block.getRecord(1)
+								
+								//block is a scrapbook, don't duplicate
+								if (srcBlock.scope_type) {
+									//don't need to do anything as the copyMatchingColumns in scope already hooked it up
+								}
+								//block is unique, duplicate
+								else {
+									var destBlock = globals.CODE_record_duplicate(srcBlock,[
+																		"web_block_to_block_data",
+																		"web_block_to_block_data_configure"
+																	])
+									//re-hook this unique block back in to the current scope
+									destScope.id_block = destBlock.id_block
+								}
+							}
+						}
+					}
+					
+					destVersion.version_number = 1
+					destVersion.version_description = info
+					destVersion.flag_active = forms.WEB_0F_site.flag_auto_publish
+					destVersion.flag_edit = 1
+					destVersion.id_platform = forms.WEB_0F_page__design__header_display__platform._platform.id_platform
+					destVersion.id_language = forms.WEB_0F_page__design__header_display__language._language.id_language
+					destVersion.id_group = forms.WEB_0F_page__design__header_display__group._group.id_group
+					globals.WEB_page_version = destVersion.id_version
 					
 					databaseManager.saveData()
 					

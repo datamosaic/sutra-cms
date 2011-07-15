@@ -535,7 +535,9 @@ function ACTION_gui_mode_load(fireSelect) {
 				}
 				
 				//editable status (scrapbooks not editable, has versions and selected version is editable)
-				var flagEdit = (!flagScrapbook && forms.WEB_0F_page.ACTION_edit_get()) ? true : false
+//				var flagEdit = (!flagScrapbook && forms.WEB_0F_page.ACTION_edit_get()) ? true : false
+				//no reason for scrapbooks to be non-editable at this point
+				var flagEdit = (forms.WEB_0F_page.ACTION_edit_get()) ? true : false
 				
 				//this block definition exists
 				if (recBlockType) {
@@ -549,7 +551,20 @@ function ACTION_gui_mode_load(fireSelect) {
 					}
 					
 					//set heading for this tab panel
-					forms[contextForm].elements.lbl_banner.text = (flagScrapbook ? 'SCRAPBOOK: ' : '') + (recBlockType.block_name || 'Unnamed') + ' block'
+					var scrap = ''
+					switch (recBlock.scope_type) {
+						case 1:	//page
+							scrap = 'CONTENT (page): '
+							break
+						case 2:	//site
+							scrap = 'SCRAPBOOK (site): '
+							break
+						case 3:	//install
+							scrap = 'STACK (install): '
+							break
+					}
+					
+					forms[contextForm].elements.lbl_banner.text = scrap + (recBlockType.block_name || 'Unnamed') + ' block'
 					
 					//the form exists and it isn't in the currently selected tab
 					if (formName && forms[formName] && formName != tabPanel.getTabFormNameAt(tabPanel.tabIndex)) {

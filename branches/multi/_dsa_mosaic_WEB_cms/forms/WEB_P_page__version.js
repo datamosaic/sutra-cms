@@ -228,6 +228,8 @@ function FLD_idGroup__data_change(oldValue, newValue, event) {
 	
 	//add this language to possible options
 	if (results) {
+		fsVersions.sort('version_number desc')
+		
 		for (var i = 1; i <= fsVersions.getSize(); i++) {
 			var record = fsVersions.getRecord(i)
 			
