@@ -124,6 +124,11 @@ function THEME_new(progress) {
 		var install = forms.WEB_0F_install.FUNCTION_getInstallDirectory() 
 		var theme = FUNCTION_theme_directory()
 		
+		//errorer out
+		if (theme == "No theme site directory specified") {
+			return
+		}
+		
 		var directory = install + "/application_server/server/webapps/ROOT/sutraCMS/sites/" + theme + "/themes/"
 		directory = utils.stringReplace(directory,"\\", "/")	// windows backslashes to js standard forward slashes
 		
