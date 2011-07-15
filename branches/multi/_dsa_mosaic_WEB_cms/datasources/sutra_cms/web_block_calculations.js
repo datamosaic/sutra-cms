@@ -1,4 +1,16 @@
 /**
+ * @properties={type:12,typeid:36,uuid:"6C866905-554B-4628-97C5-54FD489C1530"}
+ */
+function display_scope_type() {
+	if (typeof scope_type == 'number') {
+		return 'Scope: ' + application.getValueListDisplayValue('WEB_scope_type',scope_type)
+	}
+	else {
+		return null
+	}
+}
+
+/**
  * @properties={type:12,typeid:36,uuid:"2BAB7813-E340-4B29-81B2-0D4C51A808C8"}
  */
 function id_block_display()

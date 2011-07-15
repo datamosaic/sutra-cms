@@ -442,10 +442,10 @@ function REC_on_select(event,fireSelect) {
 		}
 		
 		if (utils.hasRecords(web_scope_to_block)) {
-			//normal non-linked items
-			if (!web_scope_to_block.scope_type) {
+//			//normal non-linked items
+//			if (!web_scope_to_block.scope_type) {
 				// input method names for block type
-				var params = [web_scope_to_block.id_block_type]
+				var params = [web_scope_to_block.id_block_type.toString()]
 				var sql =	"select input_name, method_name from web_block_action_client where " +
 								"web_block_action_client.id_block_type = ?"
 				var dataset = databaseManager.getDataSetByQuery(
@@ -459,12 +459,12 @@ function REC_on_select(event,fireSelect) {
 					//no actions available
 					buttonStatus(false)		
 				}
-			}
-			//this is a linked scrapbook
-			else {
-				//no actions available
-				buttonStatus(false)
-			}
+//			}
+//			//this is a linked scrapbook
+//			else {
+//				//no actions available
+//				buttonStatus(false)
+//			}
 		}
 		else {
 			//no actions available
@@ -483,7 +483,22 @@ function REC_on_select(event,fireSelect) {
 	}
 	
 	function buttonStatus(state) {
-		//no actions available
+		//set position of scope label because actions are showing differently
+		if (forms.WEB_0F_page__design__content_1F_block_data.elements.btn_data_actions.visible != state) {
+			
+			//move left
+			if (state) {
+				forms.WEB_0F_page__design__content_1F_block_data__raw.elements.lbl_scope.setLocation(forms.WEB_0F_page__design__content_1F_block_data__raw.elements.lbl_scope.getLocationX() - 30,forms.WEB_0F_page__design__content_1F_block_data__raw.elements.lbl_scope.getLocationY())
+				forms.WEB_0F_page__design__content_1F_block_data.elements.lbl_scope.setLocation(forms.WEB_0F_page__design__content_1F_block_data.elements.lbl_scope.getLocationX() - 30,forms.WEB_0F_page__design__content_1F_block_data.elements.lbl_scope.getLocationY())
+			}
+			//flush right
+			else {
+				forms.WEB_0F_page__design__content_1F_block_data__raw.elements.lbl_scope.setLocation(forms.WEB_0F_page__design__content_1F_block_data__raw.elements.lbl_scope.getLocationX() + 30,forms.WEB_0F_page__design__content_1F_block_data__raw.elements.lbl_scope.getLocationY())
+				forms.WEB_0F_page__design__content_1F_block_data.elements.lbl_scope.setLocation(forms.WEB_0F_page__design__content_1F_block_data.elements.lbl_scope.getLocationX() + 30,forms.WEB_0F_page__design__content_1F_block_data.elements.lbl_scope.getLocationY())
+			}
+		}
+		
+		//actions available
 		forms.WEB_0F_page__design__content_1F_block_data__raw.elements.btn_data_actions.visible = state
 		forms.WEB_0F_page__design__content_1F_block_data.elements.btn_data_actions.visible = state
 	}
@@ -559,21 +574,21 @@ function ACTION_gui_mode_load(fireSelect) {
 						var formName = recBlockType.form_name_display || recBlockType.form_name
 					}
 					
-					//set heading for this tab panel
-					var scrap = ''
-					switch (recBlock.scope_type) {
-						case 1:	//page
-							scrap = 'CONTENT (page): '
-							break
-						case 2:	//site
-							scrap = 'SCRAPBOOK (site): '
-							break
-						case 3:	//install
-							scrap = 'STACK (install): '
-							break
-					}
+//					//set heading for this tab panel
+//					var scrap = ''
+//					switch (recBlock.scope_type) {
+//						case 1:	//page
+//							scrap = 'CONTENT (page): '
+//							break
+//						case 2:	//site
+//							scrap = 'SCRAPBOOK (site): '
+//							break
+//						case 3:	//install
+//							scrap = 'STACK (install): '
+//							break
+//					}
 					
-					forms[contextForm].elements.lbl_banner.text = scrap + (recBlockType.block_name || 'Unnamed') + ' block'
+					forms[contextForm].elements.lbl_banner.text = (recBlockType.block_name || 'Unnamed') + ' block'
 					
 					//the form exists and it isn't in the currently selected tab
 					if (formName && forms[formName] && formName != tabPanel.getTabFormNameAt(tabPanel.tabIndex)) {
