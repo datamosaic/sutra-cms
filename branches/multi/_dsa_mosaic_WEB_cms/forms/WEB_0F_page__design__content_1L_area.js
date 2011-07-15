@@ -83,19 +83,23 @@ function AREA_add_missing() {
 			//create block record
 			var fsBlock = databaseManager.getFoundSet('sutra_cms','web_block')
 			var blockRec = fsBlock.getRecord(fsBlock.newRecord(false,true))
-			blockRec.id_block_type = tempEditableDefaultRec.id_block_type
-			blockRec.id_block_display = tempEditableDefaultRec.id_block_display
-			databaseManager.saveData()
 			
 			scopeRec.id_block = blockRec.id_block
+			
+			//create first block version record
+			var blockVersionRec = blockRec.web_block_to_block_version__all.getRecord(blockRec.web_block_to_block_version__all.newRecord(false,true))
+			blockVersionRec.flag_active = 1
+			blockVersionRec.version_number = 1
+			blockVersionRec.id_block_type = tempEditableDefaultRec.id_block_type
+			blockVersionRec.id_block_display = tempEditableDefaultRec.id_block_display
 			
 			// INPUT
 			// create a block_data record for each block_input
 			if ( utils.hasRecords(tempEditableDefaultRec.web_editable_default_to_block_input) ) {
-				for (var m = 1; m <= tempEditableDefaultRec.web_editable_default_to_block_input.getSize(); m++) {
-					var tempEditableDefaultDetailRec = tempEditableDefaultRec.web_editable_default_to_block_input.getRecord(m)
+				for (var k = 1; k <= tempEditableDefaultRec.web_editable_default_to_block_input.getSize(); k++) {
+					var tempEditableDefaultDetailRec = tempEditableDefaultRec.web_editable_default_to_block_input.getRecord(k)
 
-					var blockDataRec = blockRec.web_block_to_block_data.getRecord(blockRec.web_block_to_block_data.newRecord(false,true))
+					var blockDataRec = blockVersionRec.web_block_version_to_block_data.getRecord(blockVersionRec.web_block_version_to_block_data.newRecord(false,true))
 					blockDataRec.data_key = tempEditableDefaultDetailRec.column_name
 				}
 			}
@@ -103,10 +107,10 @@ function AREA_add_missing() {
 			// CONFIG
 			// create a block data configure record for each data point
 			if ( utils.hasRecords(tempEditableDefaultRec.web_editable_default_to_block_configure) ) {
-				for (var m = 1; m <= tempEditableDefaultRec.web_editable_default_to_block_configure.getSize(); m++) {
-					var configTemplate = tempEditableDefaultRec.web_editable_default_to_block_configure.getRecord(m)
+				for (var k = 1; k <= tempEditableDefaultRec.web_editable_default_to_block_configure.getSize(); k++) {
+					var configTemplate = tempEditableDefaultRec.web_editable_default_to_block_configure.getRecord(k)
 					
-					var configRec = blockRec.web_block_to_block_data_configure.getRecord(blockRec.web_block_to_block_data_configure.newRecord(false, true))
+					var configRec = blockVersionRec.web_block_version_to_block_data_configure.getRecord(blockVersionRec.web_block_version_to_block_data_configure.newRecord(false, true))
 					configRec.data_key = configTemplate.columnName
 				}
 			}
@@ -485,19 +489,23 @@ function AREA_reset() {
 				//create block record
 				var fsBlock = databaseManager.getFoundSet('sutra_cms','web_block')
 				var blockRec = fsBlock.getRecord(fsBlock.newRecord(false,true))
-				blockRec.id_block_type = tempEditableDefaultRec.id_block_type
-				blockRec.id_block_display = tempEditableDefaultRec.id_block_display
-				databaseManager.saveData()
 				
 				scopeRec.id_block = blockRec.id_block
+				
+				//create first block version record
+				var blockVersionRec = blockRec.web_block_to_block_version__all.getRecord(blockRec.web_block_to_block_version__all.newRecord(false,true))
+				blockVersionRec.flag_active = 1
+				blockVersionRec.version_number = 1
+				blockVersionRec.id_block_type = tempEditableDefaultRec.id_block_type
+				blockVersionRec.id_block_display = tempEditableDefaultRec.id_block_display
 				
 				// INPUT
 				// create a block_data record for each block_input
 				if ( utils.hasRecords(tempEditableDefaultRec.web_editable_default_to_block_input) ) {
 					for (var k = 1; k <= tempEditableDefaultRec.web_editable_default_to_block_input.getSize(); k++) {
 						var tempEditableDefaultDetailRec = tempEditableDefaultRec.web_editable_default_to_block_input.getRecord(k)
-	
-						var blockDataRec = blockRec.web_block_to_block_data.getRecord(blockRec.web_block_to_block_data.newRecord(false,true))
+
+						var blockDataRec = blockVersionRec.web_block_version_to_block_data.getRecord(blockVersionRec.web_block_version_to_block_data.newRecord(false,true))
 						blockDataRec.data_key = tempEditableDefaultDetailRec.column_name
 					}
 				}
@@ -508,7 +516,7 @@ function AREA_reset() {
 					for (var k = 1; k <= tempEditableDefaultRec.web_editable_default_to_block_configure.getSize(); k++) {
 						var configTemplate = tempEditableDefaultRec.web_editable_default_to_block_configure.getRecord(k)
 						
-						var configRec = blockRec.web_block_to_block_data_configure.getRecord(blockRec.web_block_to_block_data_configure.newRecord(false, true))
+						var configRec = blockVersionRec.web_block_version_to_block_data_configure.getRecord(blockVersionRec.web_block_version_to_block_data_configure.newRecord(false, true))
 						configRec.data_key = configTemplate.columnName
 					}
 				}			

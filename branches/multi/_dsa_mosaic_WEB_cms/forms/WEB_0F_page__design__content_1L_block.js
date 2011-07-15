@@ -64,7 +64,7 @@ function BLOCK_action_list_control() {
 //				databaseManager.saveData()
 //				
 //				// block_data to scrapbook data
-//				var fsSource		= source.web_block_to_block_data
+//				var fsSource		= source.web_block_version_to_block_data
 //				
 //				for (var i = 0; i < fsSource.getSize(); i++) {
 //					var record		= fsSource.getRecord(i + 1)
@@ -74,7 +74,7 @@ function BLOCK_action_list_control() {
 //				databaseManager.saveData()
 //				
 //				// block_data_configure to scrapbook_configure
-//				var fsSource		= source.web_block_to_block_data_configure
+//				var fsSource		= source.web_block_version_to_block_data_configure
 //				
 //				for (var i = 0; i < fsSource.getSize(); i++) {
 //					var record		= fsSource.getRecord(i + 1)
@@ -84,7 +84,7 @@ function BLOCK_action_list_control() {
 //				databaseManager.saveData()
 //				
 //				// block_data_response to scrapbook_response
-//				var fsSource		= source.web_block_to_block_data_response
+//				var fsSource		= source.web_block_version_to_block_data_response
 //				
 //				for (var i = 0; i < fsSource.getSize(); i++) {
 //					var record		= fsSource.getRecord(i + 1)
@@ -149,9 +149,9 @@ function BLOCK_new(input) {
 	
 	// add scrapbook options
 		//scrapbook temporarily disabled on add block
-	if (!webEdit) {
-		values.push("---", "Scrapbook copy...", "Scrapbook connect...")
-	}
+//	if (!webEdit) {
+//		values.push("---", "Scrapbook copy...", "Scrapbook connect...")
+//	}
 	
 	// choose block type
 	var selection = plugins.dialogs.showSelectDialog(
@@ -211,11 +211,20 @@ function BLOCK_new(input) {
 			
 			var fsBlock = databaseManager.getFoundSet('sutra_cms','web_block')
 			var blockRec = fsBlock.getRecord(fsBlock.newRecord(false,true))
-			blockRec.id_block_type = valueListObj[selection]
-			blockRec.id_block_display = ( display ) ? display : null
-			databaseManager.saveData(blockRec)
+			
+			//create block record
+			var fsBlock = databaseManager.getFoundSet('sutra_cms','web_block')
+			var blockRec = fsBlock.getRecord(fsBlock.newRecord(false,true))
 			
 			scopeRec.id_block = blockRec.id_block
+			
+			//create first block version record
+			var blockVersionRec = blockRec.web_block_to_block_version__all.getRecord(blockRec.web_block_to_block_version__all.newRecord(false,true))
+			blockVersionRec.flag_active = 1
+			blockVersionRec.version_number = 1
+			blockVersionRec.id_block_type = valueListObj[selection]
+			blockVersionRec.id_block_display = ( display ) ? display : null
+			databaseManager.saveData(blockVersionRec)
 			
 			// get block data points
 			var dataset = databaseManager.getDataSetByQuery(
@@ -231,7 +240,7 @@ function BLOCK_new(input) {
 			
 			// create a block data record for each data point
 			for (var i = 0; i < dataNames.length; i++) {
-				var record = blockRec.web_block_to_block_data.getRecord(blockRec.web_block_to_block_data.newRecord(false, true))
+				var record = blockVersionRec.web_block_version_to_block_data.getRecord(blockVersionRec.web_block_version_to_block_data.newRecord(false, true))
 				record.data_key = dataNames[i]
 				
 				databaseManager.saveData(record)
@@ -240,8 +249,8 @@ function BLOCK_new(input) {
 			// create a block data configure record for each data point
 			if (utils.hasRecords(blockRec,'web_block_to_block_type.web_block_type_to_block_configure')) {
 				for (var i = 1; i <= blockRec.web_block_to_block_type.web_block_type_to_block_configure.getSize(); i++) {
-					var configTemplate = blockRec.web_block_to_block_type.web_block_type_to_block_configure.getRecord(i)
-					var configRec = blockRec.web_block_to_block_data_configure.getRecord(blockRec.web_block_to_block_data_configure.newRecord(false, true))
+					var configTemplate = blockVersionRec.web_block_to_block_type.web_block_type_to_block_configure.getRecord(i)
+					var configRec = blockVersionRec.web_block_version_to_block_data_configure.getRecord(blockVersionRec.web_block_version_to_block_data_configure.newRecord(false, true))
 					configRec.data_key = configTemplate.column_name
 					
 					databaseManager.saveData(configRec)
@@ -249,8 +258,8 @@ function BLOCK_new(input) {
 			}
 			
 			// finish up
-			blockRec.web_block_to_block_data.setSelectedIndex(1)
-			blockRec.web_block_to_block_data_configure.setSelectedIndex(1)
+			blockVersionRec.web_block_version_to_block_data.setSelectedIndex(1)
+			blockVersionRec.web_block_version_to_block_data_configure.setSelectedIndex(1)
 			
 			//turn on rec on select
 			_skipSelect = false
@@ -410,7 +419,7 @@ var _skipSelect = false;
 /**
  * @properties={typeid:24,uuid:"BFBF2B28-E3BA-4CF7-807D-DADFF29D20F3"}
  */
-function REC_on_select() {
+function REC_on_select(event,fireSelect) {
 	//we're not intentially skipping this method, run it
 	if (!_skipSelect) {
 		
@@ -465,7 +474,7 @@ function REC_on_select() {
 		//gui view
 		if (globals.WEB_page_mode == 2) {
 			//switch tabpanel based on type of form
-			ACTION_gui_mode_load()
+			ACTION_gui_mode_load(fireSelect)
 		}
 		//data view
 		else {
@@ -491,8 +500,8 @@ function REC_on_select() {
 function FORM_on_show(firstShow, event) {
 	//first time we come in on the page after launching the client we need to fire the selected block an extra time
 	if (firstShow && globals.WEB_page_mode == 2) {
-		//switch tabpanel based on type of form
-		ACTION_gui_mode_load(true)
+		//switch tabpanel based on type of form and hide/show action wheel
+		REC_on_select(null,true)
 	}
 }
 
@@ -601,16 +610,16 @@ function ACTION_gui_mode_load(fireSelect) {
 	}
 	
 	function defaultForms() {
-		//this should only be the case on the first load of the form
-		if (fireSelect) {
-			forms.WEB_0F_page__design__content_1F_block_data.elements.tab_detail.tabIndex = 1
+		//this should only be the case on the first load of the form or when we're on a blank form already
+		if (fireSelect || tabPanel.getTabFormNameAt(tabPanel.tabIndex) == 'WEB_0F_page__design__content_1F_block_data_2F_blank') {
+			tabPanel.tabIndex = 1
 		}
 		//tack on to the end like every other block
 		else {
 			tabPanel.addTab(forms.WEB_0F_page__design__content_1F_block_data_2F_blank)
 			tabPanel.tabIndex = tabPanel.getMaxTabIndex()
 		}
-		forms.WEB_0F_page__design__content_1F_block_data.elements.lbl_banner.text = "Content"
+		forms[contextForm].elements.lbl_banner.text = "Content"
 	}
 }
 

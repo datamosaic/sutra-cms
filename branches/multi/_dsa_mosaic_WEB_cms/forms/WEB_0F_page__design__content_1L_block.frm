@@ -61,7 +61,7 @@ uuid:"16CE7AB4-423F-41CB-9CF0-BD7AF6431DCB"
 {
 anchors:11,
 borderType:"SpecialMatteBorder,0.0,0.0,1.0,0.0,#000000,#000000,#999999,#000000,0.0,1.0",
-dataProviderID:"web_scope_to_block.id_block_display",
+dataProviderID:"web_scope_to_block.web_block_to_block_version.id_block_display",
 displayType:2,
 editable:false,
 formIndex:10200,
@@ -189,7 +189,7 @@ verticalAlignment:0
 {
 anchors:11,
 borderType:"SpecialMatteBorder,0.0,0.0,1.0,0.0,#000000,#000000,#999999,#000000,0.0,1.0",
-dataProviderID:"web_scope_to_block.id_block_type",
+dataProviderID:"web_scope_to_block.web_block_to_block_version.id_block_type",
 editable:false,
 formIndex:10200,
 location:"0,40",
@@ -204,7 +204,7 @@ valuelistID:"6171777B-FECD-4072-8E13-5CF251FCD891"
 {
 anchors:11,
 borderType:"SpecialMatteBorder,0.0,0.0,1.0,0.0,#000000,#000000,#999999,#000000,0.0,1.0",
-dataProviderID:"web_scope_to_block.id_block_display",
+dataProviderID:"web_scope_to_block.web_block_to_block_version.id_block_display",
 editable:false,
 formIndex:10200,
 location:"90,30",

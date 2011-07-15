@@ -178,12 +178,25 @@ function ADD_version(event) {
 							}
 							//block is unique, duplicate
 							else {
-								var destBlock = globals.CODE_record_duplicate(srcBlock,[
-																	"web_block_to_block_data",
-																	"web_block_to_block_data_configure"
-																])
+								//create new block record
+								var destBlock = destScope.web_scope_to_block.getRecord(destScope.web_scope_to_block.newRecord(false,true))
+								
 								//re-hook this unique block back in to the current scope
 								destScope.id_block = destBlock.id_block
+								
+								//get source block version
+								var srcBlockVer = srcBlock.web_block_to_block_version.getRecord(1)
+								
+								//create destination block version record
+								var destBlockVer = globals.CODE_record_duplicate(srcBlockVer,[
+																	"web_block_version_to_block_data",
+																	"web_block_version_to_block_data_configure"
+																])
+								
+								//set datapoints on new block version
+								destBlockVer.id_block = destBlock.id_block
+								destBlockVer.flag_active = 1
+								destBlockVer.version_number = 1
 							}
 						}
 					}
@@ -323,12 +336,25 @@ function ADD_version(event) {
 								}
 								//block is unique, duplicate
 								else {
-									var destBlock = globals.CODE_record_duplicate(srcBlock,[
-																		"web_block_to_block_data",
-																		"web_block_to_block_data_configure"
-																	])
+									//create new block record
+									var destBlock = destScope.web_scope_to_block.getRecord(destScope.web_scope_to_block.newRecord(false,true))
+									
 									//re-hook this unique block back in to the current scope
 									destScope.id_block = destBlock.id_block
+									
+									//get source block version
+									var srcBlockVer = srcBlock.web_block_to_block_version.getRecord(1)
+									
+									//create destination block version record
+									var destBlockVer = globals.CODE_record_duplicate(srcBlockVer,[
+																		"web_block_version_to_block_data",
+																		"web_block_version_to_block_data_configure"
+																	])
+									
+									//set datapoints on new block version
+									destBlockVer.id_block = destBlock.id_block
+									destBlockVer.flag_active = 1
+									destBlockVer.version_number = 1
 								}
 							}
 						}

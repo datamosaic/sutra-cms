@@ -154,13 +154,14 @@ function CONTROLLER_builder(results, obj) {
 			
 			// obj: block
 			obj.block.record	= block
+			obj.block.version	= block.web_block_to_block_version.getRecord(1)
 			obj.block.id 		= block.id_block
 			
 			// BLOCK TYPE
-			var type = block.web_block_to_block_type
+			var type = obj.block.version.web_block_to_block_type
 			
 			// BLOCK DATA
-			var data = block.web_block_to_block_data
+			var data = obj.block.version.web_block_version_to_block_data
 			
 			// obj: data
 			if ( utils.hasRecords(data) ) {
@@ -172,7 +173,7 @@ function CONTROLLER_builder(results, obj) {
 			}
 			
 			// BLOCK CONFIGURATION
-			var configureData = block.web_block_to_block_data_configure
+			var configureData = obj.block.version.web_block_version_to_block_data_configure
 			
 			// obj: configuration
 			if ( utils.hasRecords(configureData) ) {
@@ -184,7 +185,7 @@ function CONTROLLER_builder(results, obj) {
 			}
 			
 			// BLOCK RESPONSE
-			var responseData = block.web_block_to_block_data_response
+			var responseData = obj.block.version.web_block_version_to_block_data_response
 			
 			// obj: response
 			if ( utils.hasRecords(responseData) ) {
@@ -196,7 +197,7 @@ function CONTROLLER_builder(results, obj) {
 			}
 									
 			// BLOCK DISPLAY
-			var display = block.web_block_to_block_display
+			var display = obj.block.version.web_block_to_block_display
 			
 			// MARKUP CALL
 			// edit mode (needs div wrappers)
@@ -277,7 +278,7 @@ function CONTROLLER_setup(results, app, session, request, response, mode) {
 	       		    home	: { record : ''},
 	       		    theme	: { directory : '', markup : { link : '' } },
 	       		    area	: { record : '', id	: '', name	: ''},
-	       		    block	: { record : '', id	: ''},
+	       		    block	: { record : '', version	: '', id	: ''},
 	       		    data	: {},
 	       		    block_configure : {},
 	       		    block_response : {},

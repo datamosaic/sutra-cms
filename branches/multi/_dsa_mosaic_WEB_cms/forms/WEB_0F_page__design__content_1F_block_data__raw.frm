@@ -93,7 +93,7 @@ uuid:"1835CE9A-79EE-4AD3-AB1F-FFCEF7F5A1AB"
 {
 containsFormID:"48B5D410-E950-4C99-A057-640DDAB036C3",
 location:"20,70",
-relationName:"web_block_to_block_data_configure",
+relationName:"web_block_to_block_version.web_block_version_to_block_data_configure",
 text:"WEB_0F_page__design__content_1F_block_data__raw_2L_block_data_configure",
 typeid:15,
 uuid:"2D065F90-A6CD-49F4-8A88-444834413553"
@@ -101,7 +101,7 @@ uuid:"2D065F90-A6CD-49F4-8A88-444834413553"
 {
 containsFormID:"1EA4A4B5-9C11-48D5-8E56-CBC5F91C866F",
 location:"1,48",
-relationName:"web_block_to_block_data",
+relationName:"web_block_to_block_version.web_block_version_to_block_data",
 text:"WEB_0F_page__design__content_1F_block_data__raw_2L_block_data",
 typeid:15,
 uuid:"9ECAF403-C045-40A0-BF1E-2A89F9C61AE9"

@@ -779,7 +779,7 @@ function REC_duplicate() {
 	
 	//copy selected version
 	var destRecord = globals.CODE_record_duplicate(srcRecord,[
-										"web_page_to_version.web_version_to_area.web_area_to_block.web_block_to_block_data",
+										"web_page_to_version.web_version_to_area.web_area_to_block.web_block_version_to_block_data",
 										"web_page_to_attribute"
 									])
 	
