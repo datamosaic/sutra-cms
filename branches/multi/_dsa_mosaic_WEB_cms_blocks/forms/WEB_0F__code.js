@@ -38,7 +38,7 @@ function FORM_on_load() {
  */
 function BLOCK_save() {
 	web_block_to_block_data.data_value = _dataValue
-	databaseManager.saveData(web_block_to_block_data)
+	databaseManager.saveData()
 	databaseManager.setAutoSave(true)
 	
 	ACTION_colorize()
@@ -121,6 +121,9 @@ function BLOCK_cancel(event) {
 	databaseManager.rollbackEditedRecords()
 	databaseManager.setAutoSave(true)
 	
+	//reset codeType var
+	_codeType = web_block_to_block_data_configure.data_value
+	
 	//called from browser bean, hide form
 	if (globals.WEB_page_mode == 3) {
 		forms.WEB_0F_page__browser__editor.ACTION_hide()
@@ -160,7 +163,7 @@ function TOGGLE_buttons(state) {
 	
 	elements.fld_data_value.visible = state
 	elements.bn_browser.visible = !state
-	elements.var_codeType.enabled = !state
+	elements.var_codeType.enabled = state
 	
 	//cancel is always an option if in browser mode
 	if (globals.WEB_page_mode == 3) {
@@ -398,6 +401,4 @@ function ACTION_colorize() {
  */
 function FLD_data_change__code_type(oldValue, newValue, event) {
 	web_block_to_block_data_configure.data_value = newValue
-	
-	ACTION_colorize()
 }
