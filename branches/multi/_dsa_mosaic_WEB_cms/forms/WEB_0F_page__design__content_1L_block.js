@@ -651,3 +651,19 @@ function TOGGLE_elements(editAllow) {
 function FLD_id_block_display(event) {
 	elements.fld_id_block_type.requestFocus()
 }
+
+/**
+ * Handle changed data.
+ *
+ * @param {Object} oldValue old value
+ * @param {Object} newValue new value
+ * @param {JSEvent} event the event that triggered the action
+ *
+ * @returns {Boolean}
+ *
+ * @properties={typeid:24,uuid:"52D40AE1-4066-438F-BDF9-AF794DCCE2C6"}
+ */
+function FLD_flag_active__data_change(oldValue, newValue, event) {
+	databaseManager.saveData()
+	return true
+}
