@@ -667,6 +667,19 @@ function REC_delete(record) {
 		}
 		
 		if (delRec == 'Yes') {
+			
+			if (utils.hasRecords(record,'web_page_to_page__child')) {
+				var delRec = plugins.dialogs.showWarningDialog(
+								'Delete child records',
+								'This page has sub-pages. All will be deleted.\nContinue with delete?',
+								'Yes',
+								'No'
+							)
+				if (delRec != 'Yes') {
+					return
+				}
+			}
+			
 			//busy on
 			globals.CODE_cursor_busy(true)
 			
