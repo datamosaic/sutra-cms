@@ -34,7 +34,6 @@ borderType:"SpecialMatteBorder,0.0,0.0,1.0,0.0,#000000,#000000,#999999,#000000,0
 dataProviderID:"id_block_type",
 editable:false,
 formIndex:10200,
-format:"#",
 location:"0,40",
 name:"fld_id_block_type",
 size:"92,23",

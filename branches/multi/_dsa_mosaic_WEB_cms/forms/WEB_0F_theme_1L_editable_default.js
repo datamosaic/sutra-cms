@@ -19,7 +19,7 @@ function BLOCK_new() {
 	var dataset = databaseManager.getDataSetByQuery(
 				controller.getServerName(),
 				"SELECT id_block_type, block_name FROM web_block_type WHERE id_site = ?",
-				[forms.WEB_0F_site.id_site], 
+				[forms.WEB_0F_site.id_site.toString()], 
 				-1
 			)
 	
@@ -37,13 +37,14 @@ function BLOCK_new() {
 	}
 	
 	// add scrapbook option
-	values.push("---", "Scrapbook connect...")
+//	values.push("---", "Scrapbook connect...")
 	
 	// choose block type
 	var selection = plugins.dialogs.showSelectDialog(
-	"Select",
-	"Choose block type", 
-	values)
+							"Select",
+							"Choose block type", 
+							values
+						)
 	
 	// ERROR CHECK: NO SELECTED
 	if ( !selection ) {
@@ -66,25 +67,14 @@ function BLOCK_new() {
 //		var dataNames = dataset.getColumnAsArray(1)
 		var display = dataset.getValue(1,3)
 		
-		// create block record
+		// create editable default record
 		if (utils.hasRecords(forms.WEB_0F_theme_1L_editable.foundset)) {
-			var count = foundset.getSize()
-			var record = forms.WEB_0F_theme_1L_editable.web_editable_to_editable_default.getRecord(forms.WEB_0F_theme_1L_editable.web_editable_to_editable_default.newRecord(false, true))
-			record.id_block_type = valueListObj[selection]
-			record.id_block_display = ( display ) ? display : null
-			record.row_order = count + 1
+			var record = foundset.getRecord(foundset.newRecord(false, true))
+			record.id_block_type = application.getUUID(valueListObj[selection])
+			record.id_block_display = ( display ) ? application.getUUID(display) : null
+			record.row_order = foundset.getSize()
 			databaseManager.saveData()
 		}
-		/*
-		// create a block data record for each data point
-		for (var i = 0; i < dataNames.length; i++) {
-			var record = web_page_to_block_data_by_area_by_block.getRecord(web_page_to_block_data_by_area_by_block.newRecord(false, true))
-			record.data_key = dataNames[i]
-			databaseManager.saveData()
-		}
-		*/
-		// finish up
-//		web_page_to_block_data_by_area_by_block.setSelectedIndex(1)
 		
 	}
 	else {

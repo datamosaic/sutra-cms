@@ -675,7 +675,7 @@ function REC_delete(record) {
 			var orderBy = record.order_by
 			
 			//delete all versions (doing on one of the three should get them all)
-			//TODO: this has been removed...will be workflow to clean up orphaned children
+			//TODO: this has been removed...there will be workflow to clean up orphaned children
 //			var fsVersions = databaseManager.getFoundSet('sutra_cms','web_version')
 //			fsVersions.find()
 //			fsVersions.id_platform = getKeys('web_page_to_platform','id_platform').join('||')
@@ -733,6 +733,7 @@ function REC_delete(record) {
 			//dim out the lights
 			else {
 				controller.loadAllRecords()
+				forms.WEB_0F_page__design__button_tab.TAB_change(null,'tab_b1')
 				forms.WEB_0F_page.FORM_on_show()
 			}
 			

@@ -437,16 +437,16 @@ function WEB_MRKUP_link_base(pageID, siteURL) {
 		siteURL = accessURL
 	}
 	
-	//advanced apache setup, reference by correct url
-	if (siteRec.url_2) {
-		siteURL = siteRec.url_2
-		port = null
-	}
-	//take port into consideration
-		//MEMO: obviously, the port (if non-standard) is entered in the url_2 column above
-	else {
-		
-	}
+//	//advanced apache setup, reference by correct url
+//	if (siteRec.url_2) {
+//		siteURL = siteRec.url_2
+//		port = null
+//	}
+//	//take port into consideration
+//		//MEMO: obviously, the port (if non-standard) is entered in the url_2 column above
+//	else {
+//		
+//	}
 	
 	//force to be secure
 	if (pageRec.flag_ssl) {
