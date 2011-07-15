@@ -360,6 +360,7 @@ function ACTION_save() {
 		firstVersion.id_group = groupRec.id_group
 		firstVersion.version_number = 1
 		firstVersion.flag_active = 1
+		firstVersion.version_name = 'Initial version'
 		globals.WEB_page_version = firstVersion.id_version
 		
 		var fsPath = databaseManager.getFoundSet('sutra_cms','web_path')

@@ -133,10 +133,6 @@ function ADD_version(event) {
 			var latestVersion = fsVersion.getRecord(1)
 			var selectedVersion = fsVersion.getSelectedRecord()
 			
-			//prefill fields on version picker
-			forms.WEB_P_version._versionName = selectedVersion.version_name
-			forms.WEB_P_version._versionDescription = selectedVersion.version_description
-			
 			//show form in dialog
 			application.showFormInDialog(
 							forms.WEB_P_version,
@@ -202,11 +198,14 @@ function ADD_version(event) {
 					}
 				}
 				
+				//disable edits on old version
+				if (selectedVersion.flag_edit) {
+					selectedVersion.flag_edit = 0
+				}
 				
-				selectedVersion.version_name = forms.WEB_P_version._versionName
-				selectedVersion.version_description = forms.WEB_P_version._versionDescription
-				selectedVersion.flag_edit = 0
-				
+				//save down information for new version
+				destVersion.version_name = forms.WEB_P_version._versionName
+				destVersion.version_description = forms.WEB_P_version._versionDescription
 				destVersion.version_number = latestVersion.version_number + 1
 				destVersion.flag_active = null
 				destVersion.flag_edit = 1
@@ -361,6 +360,7 @@ function ADD_version(event) {
 					}
 					
 					destVersion.version_number = 1
+					destVersion.version_name = 'Initial version'
 					destVersion.version_description = info
 					destVersion.flag_active = forms.WEB_0F_site.flag_auto_publish
 					destVersion.flag_edit = 1

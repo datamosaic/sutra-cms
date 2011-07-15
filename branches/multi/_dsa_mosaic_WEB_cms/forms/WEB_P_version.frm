@@ -38,7 +38,7 @@ showFocus:false,
 size:"278,25",
 styleClass:"heading1",
 tabSeq:-1,
-text:"Versioning: Old Info",
+text:"New Version",
 transparent:true,
 typeid:7,
 uuid:"254811EB-586D-4A63-BE01-2FE926D95F8E"

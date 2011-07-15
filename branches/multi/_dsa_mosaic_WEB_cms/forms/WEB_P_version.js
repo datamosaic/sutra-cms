@@ -64,6 +64,10 @@ function FORM_on_show() {
 	//reset acceptance status
 	_fidAccept = null
 	
+	//reset other fields
+	_versionName = null
+	_versionDescription = null
+	
 	//request focus in first field
 	application.updateUI()
 	elements.var_versionName.requestFocus()
