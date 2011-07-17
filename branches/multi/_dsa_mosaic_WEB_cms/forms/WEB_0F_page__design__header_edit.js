@@ -150,7 +150,12 @@ function FORM_on_show(firstShow, event) {
 		//punch in current values to other form variables
 		_idLayout = _recPlatform.id_layout
 		_idTheme = _recPlatform.id_theme
-		_pageName = _recLanguage.page_name	
+		_pageName = _recLanguage.page_name
+		
+		//if there is a theme set, populate layout valuelist
+		if (_idTheme) {
+			SET_valuelist_layout()
+		}
 	}
 	//when adding a record, blow in defaults
 	else {
