@@ -132,7 +132,7 @@ showFocus:false,
 size:"178,25",
 styleClass:"heading1",
 tabSeq:-1,
-text:"New Block",
+text:"New Block Type",
 transparent:true,
 typeid:7,
 uuid:"C00AC92B-4B55-44AC-B853-DDE8BAAAA01A"

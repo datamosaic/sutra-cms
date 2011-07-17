@@ -288,7 +288,7 @@ function REC_new(flagRefresh) {
 									' ',
 									true,
 									false,
-									'cmsBlockNew'
+									'cmsBlockTypeNew'
 								)	
 				
 				//this should be forms.WEB_P__block_type__new._formName...some scoping issue (fid cancel hack...)

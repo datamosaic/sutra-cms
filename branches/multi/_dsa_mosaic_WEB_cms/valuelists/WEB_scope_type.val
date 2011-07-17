@@ -1,8 +1,8 @@
 addEmptyValue:1,
-customValues:"Install|3
-Site|2
+customValues:"Unique|0
 Page|1
-Unique|0",
+Site|2
+Install|3",
 name:"WEB_scope_type",
 returnDataProviders:1,
 separator:" ",

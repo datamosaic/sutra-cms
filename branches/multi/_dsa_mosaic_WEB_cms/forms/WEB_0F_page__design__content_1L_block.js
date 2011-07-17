@@ -118,186 +118,25 @@ function BLOCK_new(input) {
 			return item.substr(0,8) + '-' + item.substr(8,4) + '-' + item.substr(12,4) + '-' + item.substr(16,4)  + '-' + item.substr(20,12)
 		}
 		
-		var webEdit = true
-		var areaID = convertUUID(input)
-	}
-	
-	// get blocks
-	var dataset = databaseManager.getDataSetByQuery(
-				controller.getServerName(),
-				"SELECT id_block_type, block_name FROM web_block_type WHERE id_site = ? ORDER BY block_name ASC",
-				[forms.WEB_0F_site.id_site.toString()], 
-				-1
-			)
-	
-	// ERROR CHECK: NO BLOCKS INSTALLED
-	if ( !dataset ) {
-		plugins.dialogs.showErrorDialog(
-					'Error',
-					'There are no blocks installed for this site.'
-			)
-		return
-	}
-	
-	// setup associative array
-	var IDs = dataset.getColumnAsArray(1)
-	var values = dataset.getColumnAsArray(2)
-	var valueListObj = {}
-	for (var i = 0; i < IDs.length; i++) {
-		valueListObj[values[i]] = IDs[i]
-	}
-	
-	// add scrapbook options
-		//scrapbook temporarily disabled on add block
-//	if (!webEdit) {
-//		values.push("---", "Scrapbook copy...", "Scrapbook connect...")
-//	}
-	
-	// choose block type
-	var selection = plugins.dialogs.showSelectDialog(
-							"Select",
-							"Choose block type", 
-							values
-						)
-	
-	// ERROR CHECK: NO SELECTED
-	if ( !selection ) {
-		return false
-	}
-	
-	if (! utils.stringPatternCount(selection,"Scrapbook")) {
-	
-		// get block display
-		var dataset = databaseManager.getDataSetByQuery(
-							controller.getServerName(),
-							"select display_name, method_name, " +
-								"(select id_block_display from web_block_display where id_block_type = ? and flag_default = 1) as display " +
-							"from web_block_display where id_block_type = ?",
-							new Array(valueListObj[selection],valueListObj[selection]), 
-							-1
-						)
-		
-		var display = dataset.getValue(1,3)
-		
-		// create block record
-		if (utils.hasRecords(forms.WEB_0F_page__design__content_1L_area.foundset)) {
-			//turn off rec on select
-			_skipSelect = true
-			
-			//disale/enable rec on select on the block type forms when creating scope
-			globals.WEB_block_on_select = false
-			
-			//create scope record //TODO: needs to work from real mode also
-			if (webEdit) {
-				var fsScope = databaseManager.getFoundSet('sutra_cms','web_scope')
-				var scopeRec = fsScope.getRecord(fsScope.newRecord(false,true))
-				
-				fsScope.find()
-				fsScope.id_area = areaID
-				fsScope.search()
-				
-				scopeRec.id_area = areaID
-				scopeRec.row_order = fsScope.getSize() + 1
-				databaseManager.saveData(scopeRec)
-			}
-			else {
-				var scopeRec = foundset.getRecord(foundset.newRecord(false,true))
-				scopeRec.row_order = foundset.getSize()
-				databaseManager.saveData(scopeRec)
-			}
-			
-			//disale/enable rec on select on the block type forms when creating scope
-			globals.WEB_block_on_select = true
-			
-			var fsBlock = databaseManager.getFoundSet('sutra_cms','web_block')
-			var blockRec = fsBlock.getRecord(fsBlock.newRecord(false,true))
-			
-			//create block record
-			var fsBlock = databaseManager.getFoundSet('sutra_cms','web_block')
-			var blockRec = fsBlock.getRecord(fsBlock.newRecord(false,true))
-			
-			scopeRec.id_block = blockRec.id_block
-			
-			//create first block version record
-			var blockVersionRec = blockRec.web_block_to_block_version__all.getRecord(blockRec.web_block_to_block_version__all.newRecord(false,true))
-			blockVersionRec.flag_active = 1
-			blockVersionRec.version_number = 1
-			blockVersionRec.id_block_type = valueListObj[selection]
-			blockVersionRec.id_block_display = ( display ) ? display : null
-			databaseManager.saveData(blockVersionRec)
-			
-			// get block data points
-			var dataset = databaseManager.getDataSetByQuery(
-								controller.getServerName(),
-								"select column_name, column_type, " +
-									"(select id_block_display from web_block_display where id_block_type = ? and flag_default = 1) as display " +
-								"from web_block_input where id_block_type = ?",
-								new Array(valueListObj[selection],valueListObj[selection]), 
-								-1
-							)
-			
-			var dataNames = dataset.getColumnAsArray(1)
-			
-			// create a block data record for each data point
-			for (var i = 0; i < dataNames.length; i++) {
-				var record = blockVersionRec.web_block_version_to_block_data.getRecord(blockVersionRec.web_block_version_to_block_data.newRecord(false, true))
-				record.data_key = dataNames[i]
-				
-				databaseManager.saveData(record)
-			}
-			
-			// create a block data configure record for each data point
-			if (utils.hasRecords(blockRec,'web_block_to_block_type.web_block_type_to_block_configure')) {
-				for (var i = 1; i <= blockRec.web_block_to_block_type.web_block_type_to_block_configure.getSize(); i++) {
-					var configTemplate = blockVersionRec.web_block_to_block_type.web_block_type_to_block_configure.getRecord(i)
-					var configRec = blockVersionRec.web_block_version_to_block_data_configure.getRecord(blockVersionRec.web_block_version_to_block_data_configure.newRecord(false, true))
-					configRec.data_key = configTemplate.column_name
-					
-					databaseManager.saveData(configRec)
-				}
-			}
-			
-			// finish up
-			blockVersionRec.web_block_version_to_block_data.setSelectedIndex(1)
-			blockVersionRec.web_block_version_to_block_data_configure.setSelectedIndex(1)
-			
-			//turn on rec on select
-			_skipSelect = false
-			
-			databaseManager.saveData()
-			
-			// set global with first blockID of this set
-			if (webEdit) {
-				globals.WEB_selected_block = blockRec.id_block.toString()
-			}
-			// update screen in non-web edit
-			else {
-				forms.WEB_0F_page__design__content_1L_block.REC_on_select()
-			}
-			
-		}
+		//notify which area we're adding to when in real mode
+		forms.WEB_P__block__new._calledFrom = 'Real'
+		forms.WEB_P__block__new._areaID = convertUUID(input)
 	}
 	else {
-		forms.WEB_0F_scrapbook_1P__choose._source = "Page"
-		if (selection == "Scrapbook copy...") {
-			forms.WEB_0F_scrapbook_1P__choose._typeScrapbook = 0
-		}
-		else if (selection == "Scrapbook connect...") {
-			forms.WEB_0F_scrapbook_1P__choose._typeScrapbook = 1
-		}
-		
-		application.showFormInDialog(
-				forms.WEB_0F_scrapbook_1P__choose,
-				-1,-1,-1,-1,
-				"Scrapbook", 
-				false, 
-				false, 
-				"chooseScrapbook"
-			)
-
+		forms.WEB_P__block__new._calledFrom = 'GUI'
 	}
 	
-	return blockRec
+	//show FiD for adding a new block
+	application.showFormInDialog(
+				forms.WEB_P__block__new,
+				-1,-1,-1,-1,
+				' ',
+				true,
+				false,
+				'cmsBlockNew'
+			)
+	
+//	return blockRec
 }
 
 /**

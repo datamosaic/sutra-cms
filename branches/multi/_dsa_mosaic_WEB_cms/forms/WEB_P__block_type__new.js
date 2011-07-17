@@ -43,7 +43,7 @@ function ACTION_ok(event) {
 	// punch form variable value into destination form as a "property" since can't access this form's vars from other form methods
 	forms.WEB_0F_block_type._formName = _formName
 	
-	application.closeFormDialog('cmsBlockNew')
+	application.closeFormDialog('cmsBlockTypeNew')
 }
 
 /**
@@ -53,7 +53,7 @@ function ACTION_ok(event) {
 function ACTION_cancel()
 {
 	globals.CODE_hide_form = 1
-	application.closeFormDialog('cmsBlockNew')
+	application.closeFormDialog('cmsBlockTypeNew')
 }
 
 /**
