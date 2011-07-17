@@ -158,7 +158,7 @@ typeid:7,
 uuid:"D47FB97F-EE60-49F2-8E21-E84F9408D8D5"
 }
 ],
-name:"WEB_P__block_new",
+name:"WEB_P__block_type__new",
 navigatorID:"-1",
 onDeleteAllRecordsCmdMethodID:"-1",
 onDeleteRecordCmdMethodID:"-1",

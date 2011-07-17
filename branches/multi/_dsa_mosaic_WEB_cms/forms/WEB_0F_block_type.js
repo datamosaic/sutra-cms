@@ -283,7 +283,7 @@ function REC_new(flagRefresh) {
 				
 				// 1) choose form to register as a block
 				application.showFormInDialog(
-									forms.WEB_P__block_new,
+									forms.WEB_P__block_type__new,
 									-1,-1,-1,-1,
 									' ',
 									true,
@@ -291,7 +291,7 @@ function REC_new(flagRefresh) {
 									'cmsBlockNew'
 								)	
 				
-				//this should be forms.WEB_P__block_new._formName...some scoping issue (fid cancel hack...)
+				//this should be forms.WEB_P__block_type__new._formName...some scoping issue (fid cancel hack...)
 				if ( forms.WEB_0F_block_type._formName == undefined ) {
 					return "Action cancelled"
 				}	
@@ -588,7 +588,7 @@ function FIND_forms() {
 	application.setValueListItems('WEB_block_names', blockNames, formNames)	
 	
 	//save down info about valid blocks
-	forms.WEB_P__block_new._validBlocks = blockInfo
+	forms.WEB_P__block_type__new._validBlocks = blockInfo
 	
 	return blockNames
 }
