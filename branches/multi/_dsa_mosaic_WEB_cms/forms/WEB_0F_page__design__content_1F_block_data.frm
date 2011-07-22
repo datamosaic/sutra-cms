@@ -27,7 +27,7 @@ uuid:"4862F32E-219A-4DFD-928B-7CAEC71A902C"
 {
 anchors:13,
 borderType:"MatteBorder,0,0,0,1,#808080",
-formIndex:10600,
+formIndex:9998,
 location:"0,18",
 mediaOptions:14,
 name:"lbl_lefthand",
@@ -60,7 +60,7 @@ uuid:"A2C7825B-7F5C-4F1A-8B44-F03B8F60C1A9"
 {
 anchors:11,
 formIndex:11800,
-location:"0,0",
+location:"1,0",
 mediaOptions:14,
 name:"lbl_banner",
 showClick:false,
@@ -76,7 +76,16 @@ uuid:"EA72740C-813A-42E0-9E16-83AF097B1B9A"
 {
 anchors:15,
 fontType:"Tahoma,0,13",
-formIndex:11801,
+formIndex:9999,
+items:[
+{
+containsFormID:"48550E53-F097-4840-B28B-335BAB804557",
+location:"10,30",
+text:"WEB_0F_page__design__content_1F_block_data_2F_blank",
+typeid:15,
+uuid:"7F3A17F6-5EB3-4087-A56A-F9C2E8DABEF2"
+}
+],
 location:"1,18",
 name:"tab_detail",
 printable:false,

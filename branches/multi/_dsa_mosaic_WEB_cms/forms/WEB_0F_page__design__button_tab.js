@@ -19,31 +19,18 @@ elements.btn_cancel.visible = false
  *
  * @properties={typeid:24,uuid:"C946B15B-1BD2-4FC4-9D1A-130E19536C2D"}
  */
-function TAB_change(formName,elemName)
-{
-
-/*
- *	TITLE    :	TAB_change
- *			  	
- *	MODULE   :	wf_PRJ_project
- *			  	
- *	ABOUT    :	changes tab, shows correct buttons, shows/hides edit arrow
- *			  	
- *	INPUT    :	
- *			  	
- *	OUTPUT   :	
- *			  	
- *	REQUIRES :	
- *			  	
- *	USAGE    :	TAB_change
- *			  	
- *	MODIFIED :	January 21, 2009 -- Troy Elliott, Data Mosaic
- *			  	
- */
-
-globals.TAB_change_inline('WEB_0F_page__design__button_tab',elemName,'tab_button','tab_b')
-
-forms.WEB_0F_page__design.elements.tab_main.tabIndex = elements.tab_button.tabIndex
-
+function TAB_change(formName,elemName) {
+	globals.TAB_change_inline('WEB_0F_page__design__button_tab',elemName,'tab_button','tab_b')
+	
+	forms.WEB_0F_page__design.elements.tab_main.tabIndex = elements.tab_button.tabIndex
+	
+	//put on custom header for content
+	if (elements.tab_button.tabIndex == 3) {
+		forms.WEB_0F_page__design.elements.tab_header_detail.tabIndex = 3
+	}
+	//standard header
+	else if (forms.WEB_0F_page__design.elements.tab_header_detail.tabIndex != 1) {
+		forms.WEB_0F_page__design.elements.tab_header_detail.tabIndex = 1
+	}
 
 }

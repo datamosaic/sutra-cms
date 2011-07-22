@@ -152,87 +152,105 @@ function CONTROLLER_builder(results, obj) {
 			if (scope.flag_active || obj.allblocks) {
 				
 				// BLOCK(S)
-				databaseManager.refreshRecordFromDatabase(scope.web_scope_to_block, 1)			
-				var block = scope.web_scope_to_block.getRecord(1)
-				
-				// obj: block
-				obj.block.record	= block
-				obj.block.version	= block.web_block_to_block_version.getRecord(1)
-				obj.block.id 		= block.id_block
-				
-				// BLOCK TYPE
-				var type = obj.block.version.web_block_to_block_type
-				
-				// BLOCK DATA
-				var data = obj.block.version.web_block_version_to_block_data
-				
-				// obj: data
-				if ( utils.hasRecords(data) ) {
-					for (var k = 0; k < data.getSize(); k++) {
-						databaseManager.refreshRecordFromDatabase(data, k + 1)	
-						var point = data.getRecord(k + 1)
-						obj.data[point.data_key] = point.data_value
+				if (utils.hasRecords(scope.web_scope_to_block)) {
+					databaseManager.refreshRecordFromDatabase(scope.web_scope_to_block, 1)
+					var block = scope.web_scope_to_block.getRecord(1)
+					
+					// if no block, skip it
+					if (!block) {
+						if (obj.type == 'Edit') {
+							areaMarkup += 'Error with block configuration\n<br />\n'
+						}
+						continue
 					}
-				}
-				
-				// BLOCK CONFIGURATION
-				var configureData = obj.block.version.web_block_version_to_block_data_configure
-				
-				// obj: configuration
-				if ( utils.hasRecords(configureData) ) {
-					for (var k = 0; k < configureData.getSize(); k++) {
-						databaseManager.refreshRecordFromDatabase(configureData, k + 1)	
-						var point = configureData.getRecord(k + 1)
-						obj.block_configure[point.data_key] = point.data_value
-					}
-				}
-				
-				// BLOCK RESPONSE
-				var responseData = obj.block.version.web_block_version_to_block_data_response
-				
-				// obj: response
-				if ( utils.hasRecords(responseData) ) {
-					for (var k = 0; k < responseData.getSize(); k++) {
-						databaseManager.refreshRecordFromDatabase(responseData, k + 1)	
-						var point = responseData.getRecord(k + 1)
-						obj.block_response[point.data_key] = point.data_value
-					}
-				}
-										
-				// BLOCK DISPLAY
-				var display = obj.block.version.web_block_to_block_display
-				
-				// MARKUP CALL
-				// edit mode (needs div wrappers)
-				if ( obj.type == "Edit" ) {
-					if (FX_method_exists(display.method_name,type.form_name)) {
-						var markupedData = forms[type.form_name][display.method_name](obj, results) || "<br>"
-					}
-					else {
-						var markupedData = 'Error with block configuration'
+					// if no active version for this block, skip it
+					else if (!utils.hasRecords(block,'web_block_to_block_version')) {
+						if (obj.type == 'Edit') {
+							var prettyBlock = block.block_name ? (' for "' + block.block_name + '" block') : ''
+							areaMarkup += 'Error: No active block version' + prettyBlock + '\n<br />\n'
+						}
+						continue
 					}
 					
-					areaMarkup += '<div id="sutra-block-data-' + utils.stringReplace(block.id_block.toString(),'-','') + '">\n'
-					areaMarkup += markupedData + '\n'
-					areaMarkup += "</div>\n"
-	
-				}
-				// deployed (no divs)
-				else {
-					if (FX_method_exists(display.method_name,type.form_name)) {
-						areaMarkup += forms[type.form_name][display.method_name](obj, results) + '\n'
+					// obj: block
+					obj.block.record	= block
+					obj.block.version	= block.web_block_to_block_version.getRecord(1)
+					obj.block.id 		= block.id_block
+					
+					// BLOCK TYPE
+					var type = obj.block.version.web_block_to_block_type
+					
+					// BLOCK DATA
+					var data = obj.block.version.web_block_version_to_block_data
+					
+					// obj: data
+					if ( utils.hasRecords(data) ) {
+						for (var k = 0; k < data.getSize(); k++) {
+							databaseManager.refreshRecordFromDatabase(data, k + 1)	
+							var point = data.getRecord(k + 1)
+							obj.data[point.data_key] = point.data_value
+						}
 					}
+					
+					// BLOCK CONFIGURATION
+					var configureData = obj.block.version.web_block_version_to_block_data_configure
+					
+					// obj: configuration
+					if ( utils.hasRecords(configureData) ) {
+						for (var k = 0; k < configureData.getSize(); k++) {
+							databaseManager.refreshRecordFromDatabase(configureData, k + 1)	
+							var point = configureData.getRecord(k + 1)
+							obj.block_configure[point.data_key] = point.data_value
+						}
+					}
+					
+					// BLOCK RESPONSE
+					var responseData = obj.block.version.web_block_version_to_block_data_response
+					
+					// obj: response
+					if ( utils.hasRecords(responseData) ) {
+						for (var k = 0; k < responseData.getSize(); k++) {
+							databaseManager.refreshRecordFromDatabase(responseData, k + 1)	
+							var point = responseData.getRecord(k + 1)
+							obj.block_response[point.data_key] = point.data_value
+						}
+					}
+											
+					// BLOCK DISPLAY
+					var display = obj.block.version.web_block_to_block_display
+					
+					// MARKUP CALL
+					// edit mode (needs div wrappers)
+					if ( obj.type == "Edit" ) {
+						if (FX_method_exists(display.method_name,type.form_name)) {
+							var markupedData = forms[type.form_name][display.method_name](obj, results) || "<br>"
+						}
+						else {
+							var markupedData = 'Error with block configuration'
+						}
+						
+						areaMarkup += '<div id="sutra-block-data-' + utils.stringReplace(block.id_block.toString(),'-','') + '">\n'
+						areaMarkup += markupedData + '\n'
+						areaMarkup += "</div>\n"
+		
+					}
+					// deployed (no divs)
 					else {
-						areaMarkup += 'Error with block configuration\n'
-					}
-				}	
-				
-				// obj: block...CLEAR
-				obj.block.record	= ''
-				obj.block.id 		= ''
-				
-				// obj: data...CLEAR
-				obj.data = {}
+						if (FX_method_exists(display.method_name,type.form_name)) {
+							areaMarkup += forms[type.form_name][display.method_name](obj, results) + '\n'
+						}
+						else {
+							areaMarkup += 'Error with block configuration\n'
+						}
+					}	
+					
+					// obj: block...CLEAR
+					obj.block.record	= ''
+					obj.block.id 		= ''
+					
+					// obj: data...CLEAR
+					obj.data = {}
+				}
 			}
 		}
 

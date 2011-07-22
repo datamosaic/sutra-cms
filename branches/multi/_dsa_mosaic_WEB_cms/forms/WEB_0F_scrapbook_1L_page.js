@@ -15,5 +15,5 @@ var _license_dsa_mosaic_WEB_cms = 'Module: _dsa_mosaic_WEB_cms \
 function GOTO_page(event) {
 	globals.TRIGGER_navigation_set('CMS_page')
 	
-	forms.WEB_0T_page.SET_page(id_page)
+	forms.WEB_0T_page.SET_page(url_param)
 }

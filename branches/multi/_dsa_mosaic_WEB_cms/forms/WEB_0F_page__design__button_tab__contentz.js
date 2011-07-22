@@ -24,3 +24,32 @@ function FORM_on_load(event) {
 		globals.CODE_property_combobox(true)
 	}
 }
+
+/**
+ * Callback method for when form is shown.
+ *
+ * @param {Boolean} firstShow form is shown first time after load
+ * @param {JSEvent} event the event that triggered the action
+ *
+ * @properties={typeid:24,uuid:"BB49E4A8-738B-4785-BFCC-2278871FD89A"}
+ */
+function FORM_on_show(firstShow, event) {
+	// make scrapbook work again for the page view
+	globals.WEB_block_page_mode = false
+}
+
+/**
+ * Handle hide window.
+ *
+ * @param {JSEvent} event the event that triggered the action
+ *
+ * @returns {Boolean}
+ *
+ * @properties={typeid:24,uuid:"C67402A5-CFCF-45F5-A6C4-A46C5DCEDCB1"}
+ */
+function FORM_on_hide(event) {
+	// make scrapbook work again for the page view
+	globals.WEB_block_page_mode = true
+	
+	return true
+}

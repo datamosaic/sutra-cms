@@ -372,7 +372,7 @@ function ACTION_mode(event) {
 				
 				//reset pretty form (//TODO: make work for all block types)
 				if (forms.WEB_0F_page__design__content_1F_block_data.elements.tab_detail.getTabFormNameAt(forms.WEB_0F_page__design__content_1F_block_data.elements.tab_detail.tabIndex) == 'WEB_0F__content') {
-					forms.WEB_0F__content.BLOCK_cancel()
+					forms.WEB_0F__content.BLOCK_cancel(event)
 				}			
 				
 				globals.WEB_page_mode = 2

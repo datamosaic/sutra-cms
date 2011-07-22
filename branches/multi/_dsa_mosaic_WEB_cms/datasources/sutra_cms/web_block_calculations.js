@@ -1,4 +1,16 @@
 /**
+ * @properties={type:12,typeid:36,uuid:"BBF552BD-916F-4671-B9D2-44DBD232841B"}
+ */
+function display_block_name() {
+	if (block_name) {
+		return block_name
+	}
+	else {
+		return 'No name'
+	}
+}
+
+/**
  * @properties={type:12,typeid:36,uuid:"6C866905-554B-4628-97C5-54FD489C1530"}
  */
 function display_scope_type() {

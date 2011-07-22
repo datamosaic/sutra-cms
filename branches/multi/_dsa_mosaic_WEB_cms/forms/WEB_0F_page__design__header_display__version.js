@@ -22,47 +22,10 @@ function FORM_on_load(event) {
  * @properties={typeid:24,uuid:"1A839919-BFA6-430E-B101-41D09279345A"}
  */
 function FLD_version__data_change(oldValue, newValue, event) {
-//	var z = application.getValueListItems('WEB_page_version')
-//	
-//	function fromBytes(byteString) {
-////	    var bytesOriginal = newValue
-////	    var bytes = new Array(16)
-////	
-////	    // Reverse the first 4 bytes
-////	    bytes[0] = bytesOriginal[3];
-////	    bytes[1] = bytesOriginal[2];
-////	    bytes[2] = bytesOriginal[1];
-////	    bytes[3] = bytesOriginal[0];
-////	    // Reverse 6th and 7th
-////	    bytes[4] = bytesOriginal[5];
-////	    bytes[5] = bytesOriginal[4];
-////	    // Reverse 8th and 9th
-////	    bytes[6] = bytesOriginal[7];
-////	    bytes[7] = bytesOriginal[6];                                 
-////	    // Copy the rest straight up        
-////	    for ( var i = 8; i < 16; i++ ) {
-////	        bytes[i] = bytesOriginal[i];
-////	    }    
-////	
-//	    var bytes = newValue
-//	    
-//		var msb = 0;
-//	    var lsb = 0;
-//	    for (var i = 0; i < 8; i++)
-//	            msb = (msb << 8) | (bytes[i] & 0xff);
-//	    for (var i = 8; i < 16; i++)
-//	            lsb = (lsb << 8) | (bytes[i] & 0xff);
-//	    var result = new UUID(msb, lsb);
-//	
-//	    return result
-//	}
-//	
-//	var x = fromBytes(newValue)
-	
-	//our uuids aren't exactly, so here's a hacky way to figure out which version we're on
+	//our uuids are byte[] and i can't convert back to uui, so here's a hacky way to figure out which version we're on
 
 	//compare value in global with valuelist
-	var dataset = application.getValueListItems('WEB_page_version')
+	var dataset = application.getValueListItems('WEB_block_version')
 	var vlReal = dataset.getColumnAsArray(2)
 	for (var i = 0; i < vlReal.length; i++) {
 		if (vlReal[i] == newValue) {
@@ -81,7 +44,7 @@ function FLD_version__data_change(oldValue, newValue, event) {
 		var ver = utils.stringToNumber(utils.stringMiddle(displayVal,utils.stringPosition(displayVal,'Version ',0,1) + 8,utils.stringPosition(displayVal,'(',0,1) - utils.stringPosition(displayVal,'Version ',0,1) - 8))
 	}
 
-	//assumption here is that foundset is in sync with this valuelist (convert version to reverse ordered record list
+	//assumption here is that foundset is in sync with this valuelist (convert version to reverse ordered record list)
 	forms.WEB_0F_page__design__content.foundset.setSelectedIndex(forms.WEB_0F_page__design__content.foundset.getSize() - ver + 1)
 	
 	//update display and reload version valuelist; don't reload versions foundset
@@ -509,19 +472,17 @@ function ACTIVATE_version(event) {
 					
 					databaseManager.saveData()
 					
-		//			//create log record when version set as active
-		//			globals.TRIGGER_log_create(
-		//								//type of log
-		//								'Custom',
-		//	//								//dealing with cms version
-		//	//								'CMS Snapshot',
-		//	//								//id_site
-		//	//								id_site,
-		//	//								//id_page
-		//	//								id_page,
-		//								//id_version
-		//								globals.WEB_version_selected
-		//							)
+					//create log record when version set as active
+					globals.TRIGGER_log_create(
+										//type of log
+										'CMS Page version created',
+		//								//id_site
+		//								id_site,
+		//								//id_page
+		//								id_page,
+										//id_version
+										selectedVersion.id_version.toString()
+									)
 					
 					//redo version valuelist without touching the foundset
 					forms.WEB_0F_page__design.SET_versions(true)

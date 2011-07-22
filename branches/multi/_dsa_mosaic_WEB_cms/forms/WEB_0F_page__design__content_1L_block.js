@@ -136,7 +136,17 @@ function BLOCK_new(input) {
 				'cmsBlockNew'
 			)
 	
-//	return blockRec
+	//created a new record
+	if (forms.WEB_P__block__new._success) {
+		// refire when in gui mode
+		if (globals.WEB_page_mode == 2) {
+			forms.WEB_0F_page__design__content_1L_block.REC_on_select(null,true)
+		}
+		// or real mode
+		else if (globals.WEB_page_mode == 3) {
+			
+		}
+	}
 }
 
 /**
@@ -271,14 +281,6 @@ function REC_on_select(event,fireSelect) {
 				forms.WEB_0F_page__design__content_1F_block_data.foundset.loadRecords(web_scope_to_block)
 			}
 		}
-		else {
-//			if (globals.WEB_page_mode == 1) {
-//				forms.WEB_0F_page__design__content_1F_block_data__raw.foundset.clear()
-//			}
-//			else if (globals.WEB_page_mode == 2) {
-//				forms.WEB_0F_page__design__content_1F_block_data.foundset.clear()
-//			}
-		}
 		
 		if (utils.hasRecords(web_scope_to_block)) {
 //			//normal non-linked items
@@ -353,10 +355,9 @@ function REC_on_select(event,fireSelect) {
  */
 function FORM_on_show(firstShow, event) {
 	//first time we come in on the page after launching the client we need to fire the selected block an extra time
-	if (firstShow && globals.WEB_page_mode == 2) {
-		//switch tabpanel based on type of form and hide/show action wheel
+	//in the event that a scrapbook change was made, we need to refresh again
+	//switch tabpanel based on type of form and hide/show action wheel
 		REC_on_select(null,true)
-	}
 }
 
 /**
@@ -397,10 +398,12 @@ function ACTION_gui_mode_load(fireSelect) {
 					var recBlockType = recBlock.web_block_to_block_type.getRecord(1)
 				}
 				
-				//editable status (scrapbooks not editable, has versions and selected version is editable)
-//				var flagEdit = (!flagScrapbook && forms.WEB_0F_page.ACTION_edit_get()) ? true : false
-				//no reason for scrapbooks to be non-editable at this point
-				var flagEdit = (forms.WEB_0F_page.ACTION_edit_get()) ? true : false
+				var flagEdit = forms.WEB_0F_page.ACTION_edit_get()
+				
+				//check to make sure the active scrapbook version is editable
+				if (flagScrapbook) {
+					flagEdit = flagEdit && recBlock.web_block_to_block_version.flag_edit
+				}
 				
 				//this block definition exists
 				if (recBlockType) {
@@ -442,9 +445,12 @@ function ACTION_gui_mode_load(fireSelect) {
 					}
 					
 					//refire the onSelect method to force the gui to update
-						//MEMO: this will fire every time; only need to run it if the REC_on_select didn't fire...could do with timers
 					if (fireSelect && solutionModel.getForm(formName).onRecordSelection) {
-						forms[formName][solutionModel.getForm(formName).onRecordSelection.getName()](null,true)
+						//pseudo-event comes from the scope of where this is fired
+						var pseudoEvent = new Object()
+						pseudoEvent.getFormName = function() {return formName}
+						
+						forms[formName][solutionModel.getForm(formName).onRecordSelection.getName()](pseudoEvent,true)
 					}
 				}
 				else {
@@ -456,7 +462,15 @@ function ACTION_gui_mode_load(fireSelect) {
 			}
 		}
 		else {
-			defaultForms()
+			//scope's block record has been deleted
+			if (utils.hasRecords(foundset)) {
+				tabPanel.addTab(forms.WEB_0F_page__design__content_1F_block_data_2F__error)
+				tabPanel.tabIndex = tabPanel.getMaxTabIndex()
+				forms[contextForm].foundset.loadRecords(web_scope_to_block)
+			}
+			else {
+				defaultForms()
+			}
 		}
 		
 		//method is done
@@ -465,14 +479,15 @@ function ACTION_gui_mode_load(fireSelect) {
 	
 	function defaultForms() {
 		//this should only be the case on the first load of the form or when we're on a blank form already
-		if (fireSelect || tabPanel.getTabFormNameAt(tabPanel.tabIndex) == 'WEB_0F_page__design__content_1F_block_data_2F_blank') {
+//		if (fireSelect) {// || tabPanel.getTabFormNameAt(tabPanel.tabIndex) == 'WEB_0F_page__design__content_1F_block_data_2F_blank') {
+			forms[contextForm].foundset.loadRecords(web_scope_to_block)
 			tabPanel.tabIndex = 1
-		}
-		//tack on to the end like every other block
-		else {
-			tabPanel.addTab(forms.WEB_0F_page__design__content_1F_block_data_2F_blank)
-			tabPanel.tabIndex = tabPanel.getMaxTabIndex()
-		}
+//		}
+//		//tack on to the end like every other block
+//		else {
+//			tabPanel.addTab(forms.WEB_0F_page__design__content_1F_block_data_2F_blank)
+//			tabPanel.tabIndex = tabPanel.getMaxTabIndex()
+//		}
 		forms[contextForm].elements.lbl_banner.text = "Content"
 	}
 }

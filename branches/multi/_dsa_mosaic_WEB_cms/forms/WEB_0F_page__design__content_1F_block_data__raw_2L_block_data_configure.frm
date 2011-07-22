@@ -18,7 +18,6 @@ uuid:"00F740D9-7DF7-4871-8CBE-84DB47BE644B"
 anchors:11,
 borderType:"SpecialMatteBorder,0.0,0.0,1.0,0.0,#000000,#000000,#999999,#000000,0.0,1.0",
 dataProviderID:"data_value",
-editable:false,
 formIndex:10700,
 location:"110,32",
 name:"fld_data_value",

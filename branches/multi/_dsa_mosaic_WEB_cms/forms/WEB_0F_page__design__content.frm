@@ -1,5 +1,5 @@
 dataSource:"db:/sutra_cms/web_version",
-initialSort:"name asc",
+initialSort:"",
 items:[
 {
 anchors:11,
@@ -213,6 +213,7 @@ uuid:"EB69B03A-1C99-4DC5-AF5B-62593674E9E9"
 name:"WEB_0F_page__design__content",
 namedFoundSet:"separate",
 navigatorID:"-1",
+onHideMethodID:"97BFCB0E-2906-4C9F-B9E5-51209BAB5DCF",
 onLoadMethodID:"E4A1ABA3-14D7-48B6-895C-85F186CCB271",
 onShowMethodID:"DC5B0B90-D4D7-4BA6-8CB4-EA4F985F284C",
 paperPrintScale:100,

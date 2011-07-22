@@ -1,10 +1,10 @@
 dataSource:"db:/sutra_cms/web_page",
-initialSort:"page_name asc",
+initialSort:"",
 items:[
 {
 anchors:11,
 borderType:"SpecialMatteBorder,0.0,0.0,1.0,0.0,#000000,#000000,#999999,#000000,0.0,1.0",
-dataProviderID:"id_page",
+dataProviderID:"url_param",
 editable:false,
 formIndex:10700,
 location:"20,31",

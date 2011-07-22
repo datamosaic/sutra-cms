@@ -1,4 +1,14 @@
 /**
+ * @properties={typeid:35,uuid:"59111D71-665C-4CE1-BBEF-EA4B1ADB6F0D",variableType:4}
+ */
+var WEB_block_scope__new = null;
+
+/**
+ * @properties={typeid:35,uuid:"484C4F77-B18E-4B39-89C7-59BFCFB5B6E5"}
+ */
+var WEB_block_version = null;
+
+/**
  * @properties={typeid:35,uuid:"24385EA8-9C3C-4666-8A71-239F22D067E5",variableType:4}
  */
 var WEB_block_scope = null;

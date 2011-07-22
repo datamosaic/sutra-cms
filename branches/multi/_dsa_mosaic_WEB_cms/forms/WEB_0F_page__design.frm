@@ -1,5 +1,5 @@
 dataSource:"db:/sutra_cms/web_page",
-initialSort:"name asc",
+initialSort:"",
 items:[
 {
 anchors:11,
@@ -13,8 +13,16 @@ typeid:15,
 uuid:"9B68F4D7-B3C1-4504-910F-E2EBAC031786"
 },
 {
+containsFormID:"07ED1214-BA49-4CEC-8FA2-394EB66E6123",
+location:"80,53",
+relationName:"web_page_to_block__scope",
+text:"WEB_0F_scrapbook__header",
+typeid:15,
+uuid:"9CFF764E-8F9C-4A85-B283-C6E27D95F265"
+},
+{
 containsFormID:"B04813BB-6FF8-432B-B210-1A9B85F4BDEE",
-location:"60,40",
+location:"20,40",
 text:"WEB_0F_page__design__header_edit",
 typeid:15,
 uuid:"A3368451-CC08-437F-ADB1-669A5666FD68"
@@ -52,7 +60,7 @@ uuid:"1AEB74DE-DABA-4616-8AEE-7F0608FA9B95"
 anchors:15,
 background:"#323a4b",
 formIndex:12001,
-location:"10,0",
+location:"60,0",
 mediaOptions:4,
 name:"gfx_curtain",
 onActionMethodID:"CBA4256A-1CF7-42E4-A265-237E6AB08408",
@@ -75,11 +83,12 @@ anchors:15,
 formIndex:10000,
 items:[
 {
-containsFormID:"4C400AD6-1DC0-4B6F-AB83-2E7FE97698C0",
+containsFormID:"6894EB97-1D0D-485F-B59A-EE011A7D0EB0",
 location:"30,130",
-text:"CODE__blank",
+relationName:"web_page_to_block__scope",
+text:"WEB_0F_scrapbook",
 typeid:15,
-uuid:"05A77188-BA87-4E4B-9AFC-522942C5673A"
+uuid:"2DE33751-1170-4D19-B4C6-3D8F39153B72"
 },
 {
 containsFormID:"9A5AED4B-35EE-4696-BABE-61A0B8701D68",
@@ -121,6 +130,7 @@ uuid:"ECEDDED1-E5DF-402A-9BFF-57BD384900FD"
 ],
 name:"WEB_0F_page__design",
 navigatorID:"-1",
+onHideMethodID:"C9BACEDC-DE86-4198-9361-D096BBCC4A15",
 onLoadMethodID:"0F8B8765-1036-412D-88DB-7C65A6C6710C",
 onRecordSelectionMethodID:"23B7AC31-3444-4F11-BDE4-748066C79D30",
 onShowMethodID:"2F7F3445-277A-4DA8-948D-58099A1B41C3",

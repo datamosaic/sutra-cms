@@ -215,6 +215,9 @@ function BLOCK_edit(idBlock) {
  */
 function FORM_on_show(firstShow, event) {
 	SPLIT_set(false)
+	
+	//entering page mode (only active version of block used)
+	globals.WEB_block_page_mode = true	
 }
 
 /**
@@ -300,4 +303,20 @@ function BLOCK_new(areaID) {
 	}
 	
 	//MEMO: page will be redrawn if block saved after edit mode
+}
+
+/**
+ * Handle hide window.
+ *
+ * @param {JSEvent} event the event that triggered the action
+ *
+ * @returns {Boolean}
+ *
+ * @properties={typeid:24,uuid:"1A00D0BD-4B72-4185-B038-44F2419A5D6E"}
+ */
+function FORM_on_hide(event) {
+	//leaving page mode (only active version of block used)
+	globals.WEB_block_page_mode = false	
+	
+	return true
 }

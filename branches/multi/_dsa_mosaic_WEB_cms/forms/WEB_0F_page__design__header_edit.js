@@ -534,41 +534,48 @@ function ACTION_save() {
 					var scopeRec = areaRec.web_area_to_scope.getRecord(areaRec.web_area_to_scope.newRecord(false, true))
 					scopeRec.row_order = j
 					
-					//disale/enable rec on select on the block type forms when creating scope
+					//disable/enable rec on select on the block type forms when creating scope
 					globals.WEB_block_on_select = true
 					
-					//create block record
-					var fsBlock = databaseManager.getFoundSet('sutra_cms','web_block')
-					var blockRec = fsBlock.getRecord(fsBlock.newRecord(false,true))
-					
-					scopeRec.id_block = blockRec.id_block
-					
-					//create first block version record
-					var blockVersionRec = blockRec.web_block_to_block_version__all.getRecord(blockRec.web_block_to_block_version__all.newRecord(false,true))
-					blockVersionRec.flag_active = 1
-					blockVersionRec.version_number = 1
-					blockVersionRec.id_block_type = tempEditableDefaultRec.id_block_type
-					blockVersionRec.id_block_display = tempEditableDefaultRec.id_block_display
-					
-					// INPUT
-					// create a block_data record for each block_input
-					if ( utils.hasRecords(tempEditableDefaultRec.web_editable_default_to_block_input) ) {
-						for (var k = 1; k <= tempEditableDefaultRec.web_editable_default_to_block_input.getSize(); k++) {
-							var tempEditableDefaultDetailRec = tempEditableDefaultRec.web_editable_default_to_block_input.getRecord(k)
-	
-							var blockDataRec = blockVersionRec.web_block_version_to_block_data.getRecord(blockVersionRec.web_block_version_to_block_data.newRecord(false,true))
-							blockDataRec.data_key = tempEditableDefaultDetailRec.column_name
-						}
+					//this is a scrapbook, just connect
+					if (tempEditableDefaultRec.id_block) {
+						scopeRec.id_block = tempEditableDefaultRec.id_block
 					}
-					
-					// CONFIG
-					// create a block data configure record for each data point
-					if ( utils.hasRecords(tempEditableDefaultRec.web_editable_default_to_block_configure) ) {
-						for (var k = 1; k <= tempEditableDefaultRec.web_editable_default_to_block_configure.getSize(); k++) {
-							var configTemplate = tempEditableDefaultRec.web_editable_default_to_block_configure.getRecord(k)
-							
-							var configRec = blockVersionRec.web_block_version_to_block_data_configure.getRecord(blockVersionRec.web_block_version_to_block_data_configure.newRecord(false, true))
-							configRec.data_key = configTemplate.columnName
+					//unique block
+					else {
+						//create block record
+						var fsBlock = databaseManager.getFoundSet('sutra_cms','web_block')
+						var blockRec = fsBlock.getRecord(fsBlock.newRecord(false,true))
+						
+						scopeRec.id_block = blockRec.id_block
+						
+						//create first block version record
+						var blockVersionRec = blockRec.web_block_to_block_version__all.getRecord(blockRec.web_block_to_block_version__all.newRecord(false,true))
+						blockVersionRec.flag_active = 1
+						blockVersionRec.version_number = 1
+						blockVersionRec.id_block_type = tempEditableDefaultRec.id_block_type
+						blockVersionRec.id_block_display = tempEditableDefaultRec.id_block_display
+						
+						// INPUT
+						// create a block_data record for each block_input
+						if ( utils.hasRecords(tempEditableDefaultRec.web_editable_default_to_block_input) ) {
+							for (var k = 1; k <= tempEditableDefaultRec.web_editable_default_to_block_input.getSize(); k++) {
+								var tempEditableDefaultDetailRec = tempEditableDefaultRec.web_editable_default_to_block_input.getRecord(k)
+		
+								var blockDataRec = blockVersionRec.web_block_version_to_block_data.getRecord(blockVersionRec.web_block_version_to_block_data.newRecord(false,true))
+								blockDataRec.data_key = tempEditableDefaultDetailRec.column_name
+							}
+						}
+						
+						// CONFIG
+						// create a block data configure record for each data point
+						if ( utils.hasRecords(tempEditableDefaultRec.web_editable_default_to_block_configure) ) {
+							for (var k = 1; k <= tempEditableDefaultRec.web_editable_default_to_block_configure.getSize(); k++) {
+								var configTemplate = tempEditableDefaultRec.web_editable_default_to_block_configure.getRecord(k)
+								
+								var configRec = blockVersionRec.web_block_version_to_block_data_configure.getRecord(blockVersionRec.web_block_version_to_block_data_configure.newRecord(false, true))
+								configRec.data_key = configTemplate.columnName
+							}
 						}
 					}
 				}

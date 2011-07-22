@@ -1,81 +1,20 @@
-dataSource:"db:/sutra_cms/web_scrapbook",
-initialSort:"name_last asc, name_first asc",
+dataSource:"db:/sutra_cms/web_block",
+initialSort:"",
 items:[
 {
-anchors:3,
-formIndex:9999,
-location:"530,40",
-mediaOptions:14,
-showClick:false,
-showFocus:false,
-size:"159,18",
-styleClass:"tabpanel",
-tabSeq:-1,
-text:"Pages with scrapbook",
-transparent:true,
-typeid:7,
-uuid:"00DCF1E4-2B56-45ED-BA01-3AAA2FEB627D"
-},
-{
-height:300,
+height:200,
 partType:5,
 typeid:19,
 uuid:"0EE3CB33-B800-48E6-B08F-DE80989932FA"
 },
 {
-formIndex:11500,
-horizontalAlignment:4,
-location:"60,128",
-mediaOptions:14,
-showClick:false,
-showFocus:false,
-size:"4,8",
-styleClass:"grid_tab_divider",
-tabSeq:-1,
-transparent:true,
-typeid:7,
-uuid:"136544C0-9BE8-4FC1-BF0B-943CF1FC3512"
-},
-{
-height:16,
-partType:1,
-typeid:19,
-uuid:"175D2E2C-9EB4-4D5C-BDD9-D3F84AC5B3B8"
-},
-{
-anchors:11,
-formIndex:10900,
-imageMediaID:"50b57e9b-b95e-4188-bcfb-1f0f0936643d",
-location:"0,0",
-mediaOptions:6,
-showClick:false,
-showFocus:false,
-size:"700,16",
-tabSeq:-1,
-typeid:7,
-uuid:"2EC8335B-7A92-4E12-854E-301AB2093535"
-},
-{
-formIndex:10700,
-location:"35,58",
-mediaOptions:14,
-showClick:false,
-showFocus:false,
-size:"70,23",
-styleClass:"standard_table",
-tabSeq:-1,
-text:"Name",
-transparent:true,
-typeid:7,
-uuid:"33F713D1-ED21-4ABE-AF85-2879FAE46AB7"
-},
-{
 anchors:6,
-formIndex:10100,
+formIndex:12709,
 horizontalAlignment:2,
 imageMediaID:"ea372c60-bcc6-4d7e-b9bd-4a80f24be950",
-location:"520,198",
+location:"380,104",
 mediaOptions:14,
+name:"lbl_edit_left",
 rotation:270,
 showClick:false,
 showFocus:false,
@@ -86,147 +25,96 @@ typeid:7,
 uuid:"34B763EC-18A6-4AEA-926F-270BC9A2D762"
 },
 {
-dataProviderID:"scrapbook_name",
-formIndex:10600,
-location:"105,58",
-name:"fld_scrapbook_name",
-scrollbars:36,
-size:"195,23",
-styleClass:"standard_table",
-transparent:true,
-typeid:4,
-uuid:"406A0025-C1F4-4024-92A4-7A9674E427B4"
-},
-{
-formIndex:11202,
-horizontalAlignment:0,
-imageMediaID:"4A8E54CA-C377-4421-BBAE-7317F6F764D1",
-location:"279,84",
-mediaOptions:1,
-name:"btn_duplicate",
-onActionMethodID:"F1039A0A-6835-4375-B4F2-E1E52F672E1A",
-rolloverCursor:12,
-rolloverImageMediaID:"7FE369A3-5A40-4F3D-AE14-6618E9EF080A",
-showClick:false,
-showFocus:false,
-size:"20,16",
-toolTipText:"Duplicate",
-transparent:true,
-typeid:7,
-uuid:"555332CE-911D-4D44-B6E4-115634F36E8E"
-},
-{
-formIndex:11600,
-location:"10,124",
-mediaOptions:14,
-name:"tab_d1",
-onActionMethodID:"8990F4CA-2618-4392-9AB6-ABE40B6A2626",
-rolloverCursor:12,
-showClick:false,
-showFocus:false,
-size:"50,16",
-styleClass:"grid_pri_tab_select",
-text:"GUI",
-transparent:true,
-typeid:7,
-uuid:"5652CA27-E8FD-432B-93FE-415C0744744F"
-},
-{
-dataProviderID:"web_scrapbook_to_scrapbook_version.id_scrapbook_version",
-displayType:2,
-editable:false,
-formIndex:10600,
-location:"105,81",
-scrollbars:36,
-size:"150,23",
-styleClass:"standard_table_bottom",
-transparent:true,
-typeid:4,
-uuid:"76F6209E-DFAC-4110-90BA-279B13F177A8"
-},
-{
 anchors:7,
-formIndex:9997,
-items:[
-{
-containsFormID:"7C8D7717-F6C4-424E-8E3D-C2DDD552D809",
-location:"530,87",
-text:"WEB_0F_scrapbook_1L_page",
-typeid:15,
-uuid:"E378D4D3-23CE-46C2-B6CE-09EA4D62E2F6"
-}
-],
-location:"530,57",
-name:"tab_pages",
-printable:false,
-size:"160,236",
-styleClass:"grid_primary",
-tabOrientation:-1,
-typeid:16,
-uuid:"81993790-6930-44F4-B4E4-52BD0D92E3C2"
+beanClassName:"javax.swing.JSplitPane",
+beanXML:"<?xml version=\"1.0\" encoding=\"UTF-8\"?> 
+<java version=\"1.5.0_19\" class=\"java.beans.XMLDecoder\"> 
+ <object class=\"javax.swing.JSplitPane\"> 
+  <int>0<\/int> 
+  <void property=\"background\"> 
+   <object class=\"java.awt.Color\"> 
+    <int>209<\/int> 
+    <int>215<\/int> 
+    <int>226<\/int> 
+    <int>255<\/int> 
+   <\/object> 
+  <\/void> 
+  <void property=\"size\"> 
+   <object class=\"java.awt.Dimension\"> 
+    <int>170<\/int> 
+    <int>90<\/int> 
+   <\/object> 
+  <\/void> 
+  <void property=\"UI\"> 
+   <void property=\"continuousLayout\"> 
+    <boolean>true<\/boolean> 
+   <\/void> 
+  <\/void> 
+  <void property=\"border\"> 
+   <null/> 
+  <\/void> 
+  <void property=\"continuousLayout\"> 
+   <boolean>true<\/boolean> 
+  <\/void> 
+  <void property=\"dividerLocation\"> 
+   <int>0<\/int> 
+  <\/void> 
+  <void property=\"dividerSize\"> 
+   <int>0<\/int> 
+  <\/void> 
+  <void property=\"focusable\"> 
+   <boolean>false<\/boolean> 
+  <\/void> 
+  <void property=\"lastDividerLocation\"> 
+   <int>0<\/int> 
+  <\/void> 
+  <void property=\"name\"> 
+   <string>bean_split_2<\/string> 
+  <\/void> 
+  <void property=\"resizeWeight\"> 
+   <double>0.25<\/double> 
+  <\/void> 
+ <\/object> 
+<\/java> 
+",
+formIndex:9996,
+location:"390,0",
+name:"split_sidebar",
+size:"200,193",
+typeid:12,
+usesUI:true,
+uuid:"76974EB8-3B78-4CDF-AAE8-ADAE81DDB409"
 },
 {
 anchors:6,
 borderType:"EmptyBorder,0,0,0,0",
-formIndex:12702,
-location:"520,216",
+formIndex:12708,
+location:"380,122",
 mediaOptions:6,
 name:"btn_edit",
-onActionMethodID:"69B72F68-C6D4-4949-BEA5-2C2C8058CCE2",
-rolloverCursor:12,
 showClick:false,
 showFocus:false,
 size:"17,40",
 styleClass:"color_primary",
-toolTipText:"Click to begin editing...",
+tabSeq:-1,
 typeid:7,
 uuid:"82763997-0689-4D5D-BD48-EECE6157AA69"
 },
 {
-anchors:11,
-formIndex:11500,
-location:"310,40",
-mediaOptions:14,
-showClick:false,
-showFocus:false,
-size:"210,18",
-styleClass:"standard_table",
-tabSeq:-1,
-text:"Description",
-transparent:true,
-typeid:7,
-uuid:"8B6CFE9A-8F94-422D-9FD2-4144CD912366"
-},
-{
-formIndex:11400,
-location:"66,124",
-mediaOptions:14,
-name:"tab_d2",
-onActionMethodID:"8990F4CA-2618-4392-9AB6-ABE40B6A2626",
-rolloverCursor:12,
-showClick:false,
-showFocus:false,
-size:"50,16",
-styleClass:"grid_pri_tab_unselect",
-text:"Data",
-transparent:true,
-typeid:7,
-uuid:"9A71284A-981D-4537-8D0D-932436A80329"
-},
-{
 anchors:6,
-formIndex:12703,
-location:"520,217",
+formIndex:12710,
+location:"380,123",
 mediaOptions:14,
 name:"lbl_edit",
+onActionMethodID:"69B72F68-C6D4-4949-BEA5-2C2C8058CCE2",
 rolloverCursor:12,
 rotation:90,
 showClick:false,
 showFocus:false,
 size:"17,38",
 styleClass:"fancytabunselect",
-tabSeq:-1,
 text:"Edit",
+toolTipText:"Click to begin editing...",
 transparent:true,
 typeid:7,
 uuid:"A1BA9B4A-5F1A-408D-A29E-3201B9CC0643"
@@ -236,53 +124,38 @@ anchors:15,
 formIndex:11801,
 items:[
 {
-containsFormID:"4C400AD6-1DC0-4B6F-AB83-2E7FE97698C0",
-location:"30,160",
-text:"CODE__blank",
+containsFormID:"5900044C-5DC9-4F9F-958C-9BB0E4396CC1",
+location:"41,30",
+relationName:"web_block_to_block",
+text:"WEB_0F_scrapbook__data",
 typeid:15,
-uuid:"8C2839BA-EC43-4B6E-AD30-770891356341"
+uuid:"9EFE6A97-45EF-42A0-8EAB-028963F38CC2"
 },
 {
-containsFormID:"889BF1A7-CA8B-4D65-9B62-7582F8B0C1A5",
-location:"60,180",
-relationName:"web_scrapbook_to_scrapbook_version.web_scrapbook_version_to_scrapbook_data",
-text:"WEB_0F_scrapbook_1L_scrapbook_data",
+containsFormID:"34A061E0-0D92-413A-827D-985565BA7BA6",
+location:"21,10",
+relationName:"web_block_to_block",
+text:"WEB_0F_scrapbook__gui",
 typeid:15,
-uuid:"FB4077F3-078E-4239-ACF0-D9D47B6CD045"
+uuid:"C0516721-6FEC-4F96-B7E3-9D318A46B3DF"
 }
 ],
-location:"10,140",
-name:"tab_detail",
+location:"10,0",
+name:"tab_main",
 printable:false,
-size:"510,153",
-styleClass:"grid_primary",
+size:"370,193",
 tabOrientation:-1,
 typeid:16,
 uuid:"A278FE47-942B-4CAA-986F-0C352EA5EF58"
 },
 {
-formIndex:11202,
-horizontalAlignment:0,
-imageMediaID:"B48D4A61-8827-4BF1-8A2B-60B030DEB0D0",
-location:"256,84",
-mediaOptions:1,
-name:"btn_check_on",
-onActionMethodID:"-1",
-showClick:false,
-showFocus:false,
-size:"20,16",
-toolTipText:"Active",
-transparent:true,
-typeid:7,
-uuid:"AA19EAC5-8E40-4ABC-A118-401762AAF091"
-},
-{
 anchors:6,
-formIndex:10000,
+formIndex:12706,
 horizontalAlignment:4,
 imageMediaID:"69672384-6c57-4862-bb1c-e91c4e695094",
-location:"520,256",
+location:"380,162",
 mediaOptions:14,
+name:"lbl_edit_right",
 rotation:270,
 showClick:false,
 showFocus:false,
@@ -293,85 +166,53 @@ typeid:7,
 uuid:"B4E53EEE-7372-4D5A-B8A8-B79A486BB3DF"
 },
 {
-anchors:11,
-displaysTags:true,
-formIndex:11000,
-location:"15,0",
-mediaOptions:14,
-showClick:false,
-showFocus:false,
-size:"670,15",
-styleClass:"header",
-tabSeq:-1,
-text:"SITE SCRAPBOOK",
-transparent:true,
-typeid:7,
-uuid:"BBEB9FBE-E694-49C6-9460-21E4B4AB3DD4"
+formIndex:12704,
+items:[
+{
+containsFormID:"B1C07BF4-D1E3-420A-9238-C9B5B63E9BBD",
+location:"410,12",
+text:"WEB_0F_scrapbook__blocks",
+typeid:15,
+uuid:"AB6A32B3-6A1F-466A-91E0-A1EBCC8E027E"
+}
+],
+location:"390,6",
+name:"tab_blocks",
+printable:false,
+size:"204,64",
+tabOrientation:-1,
+typeid:16,
+uuid:"C70593E8-C51D-4C15-8E1A-9CAAAD66394A"
 },
 {
-anchors:11,
-formIndex:10000,
-location:"310,58",
-mediaOptions:14,
-showClick:false,
-showFocus:false,
-size:"210,60",
-styleClass:"color_light",
-tabSeq:-1,
-typeid:7,
-uuid:"DE633544-0513-4A8C-8002-4D388F91FB14"
-},
+formIndex:12705,
+items:[
 {
-formIndex:11800,
-location:"10,40",
-mediaOptions:14,
-showClick:false,
-showFocus:false,
-size:"290,18",
-styleClass:"standard_table_category",
-tabSeq:-1,
-text:"Details",
-transparent:true,
-typeid:7,
-uuid:"E2B75AF7-1EE7-4A7F-9682-D9C6A359C6E4"
-},
-{
-anchors:11,
-borderType:"EmptyBorder,0,0,0,0",
-dataProviderID:"scrapbook_description",
-displayType:1,
-formIndex:12700,
-location:"310,58",
-scrollbars:33,
-size:"210,61",
-styleClass:"textareanoborder",
-transparent:true,
-typeid:4,
-uuid:"EBFCB7CC-52C9-499D-B95D-879766ECB4CA"
-},
-{
-formIndex:10700,
-location:"35,81",
-mediaOptions:14,
-showClick:false,
-showFocus:false,
-size:"70,23",
-styleClass:"standard_table_bottom",
-tabSeq:-1,
-text:"Version",
-transparent:true,
-typeid:7,
-uuid:"F813AD5C-4C23-40CD-99B3-0EFC44AD59FA"
+containsFormID:"10337119-F8DC-4508-8F38-0AFBE7A3ECD1",
+location:"410,122",
+relationName:"web_block_to_block",
+text:"WEB_0F_scrapbook__sidebar",
+typeid:15,
+uuid:"8989B909-EDEB-42E7-B6C2-B6F2A71BD1E0"
+}
+],
+location:"390,116",
+name:"tab_versions",
+printable:false,
+size:"204,54",
+tabOrientation:-1,
+typeid:16,
+uuid:"F8AA8E22-3A62-4B9C-9D8D-DF5E70F74D71"
 }
 ],
 name:"WEB_0F_scrapbook",
 navigatorID:"-1",
-onHideMethodID:"35F6C3C6-F764-4864-8624-2F19A13FB579",
+onHideMethodID:"B6058009-92CF-486A-A193-0B1CB44C736B",
 onLoadMethodID:"A17B8FB8-4920-4F9A-92F8-6B9C7F3B4E0D",
 onRecordSelectionMethodID:"E5591A6B-12A1-4292-8A9A-446A59112031",
 onShowMethodID:"5281F4B0-6AF6-4782-A3D0-48C4F05F8828",
 paperPrintScale:100,
-size:"700,300",
+size:"600,200",
 styleName:"_DATASUTRA_",
 typeid:3,
 uuid:"6894EB97-1D0D-485F-B59A-EE011A7D0EB0"

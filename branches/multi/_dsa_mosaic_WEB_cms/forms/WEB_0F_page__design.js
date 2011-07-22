@@ -14,8 +14,26 @@ var _license_dsa_mosaic_WEB_cms = 'Module: _dsa_mosaic_WEB_cms \
  * @properties={typeid:24,uuid:"2F7F3445-277A-4DA8-948D-58099A1B41C3"}
  */
 function FORM_on_show(firstShow, event) {
-	//is this still needed?
-	forms.WEB_0F_page__design__content_1L_area.REC_on_select()
+	//set global to load in page records
+	globals.WEB_block_scope = 1
+	
+	//show the block picker pane
+	forms.WEB_0F_scrapbook.SPLIT_set(true)
+}
+
+/**
+ * Handle hide window.
+ *
+ * @param {JSEvent} event the event that triggered the action
+ *
+ * @returns {Boolean}
+ *
+ * @properties={typeid:24,uuid:"C9BACEDC-DE86-4198-9361-D096BBCC4A15"}
+ */
+function FORM_on_hide(event) {
+	forms.WEB_0F_scrapbook.SPLIT_set(false)
+	
+	return true
 }
 
 /**

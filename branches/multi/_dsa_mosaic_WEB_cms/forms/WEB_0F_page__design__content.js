@@ -32,8 +32,27 @@ function FORM_on_load()
  * @properties={typeid:24,uuid:"DC5B0B90-D4D7-4BA6-8CB4-EA4F985F284C"}
  */
 function FORM_on_show(firstShow, event) {
+	//entering page mode (only active version of block used)
+	globals.WEB_block_page_mode = true	
+	
 	//covered by onSelect the first time
 	if (!firstShow) {
 		forms.WEB_0F_page__design.PAGE_type_display()
 	}
+}
+
+/**
+ * Handle hide window.
+ *
+ * @param {JSEvent} event the event that triggered the action
+ *
+ * @returns {Boolean}
+ *
+ * @properties={typeid:24,uuid:"97BFCB0E-2906-4C9F-B9E5-51209BAB5DCF"}
+ */
+function FORM_on_hide(event) {
+	//leaving page mode (only active version of block used)
+	globals.WEB_block_page_mode = false
+	
+	return true
 }

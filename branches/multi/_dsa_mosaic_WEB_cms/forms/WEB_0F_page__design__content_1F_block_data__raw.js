@@ -14,11 +14,10 @@ var _license_dsa_mosaic_WEB_cms = 'Module: _dsa_mosaic_WEB_cms \
  */
 function DATA_action_list(event) {
 	// get block type
-	var params = new Array(forms.WEB_0F_page__design__content_1L_area.id_area, forms.WEB_0F_page__design__content_1L_block.id_block)
+	var params = new Array(id_block.toString())
 	var sql =	"select id_block_type, form_name from web_block_type where " +
 					"web_block_type.id_block_type = " +
 					"(select id_block_type from web_block where " +
-					"web_block.id_area = ? and " +
 					"web_block.id_block = ?)"
 	var dataset = databaseManager.getDataSetByQuery(
 					controller.getServerName(), sql, params, -1)	
@@ -28,7 +27,7 @@ function DATA_action_list(event) {
 		var formName = dataset.getValue(1,2)
 	}
 	else { 
-		return "No mathing block type found"
+		return "No matching block type found"
 	}
 
 	
@@ -42,7 +41,7 @@ function DATA_action_list(event) {
 	if ( dataset.getMaxRowIndex() ) {
 		//sort alphabetically
 		dataset.sort(1,true)
-
+		
 		//menu items
 		var valuelist 	= dataset.getColumnAsArray(1)
 		var methods		= dataset.getColumnAsArray(2)
@@ -75,5 +74,9 @@ function DATA_action_list(event) {
  * @properties={typeid:24,uuid:"8861F626-796C-403D-AB5E-03E6593A9678"}
  */
 function DATA_action_list_control(event) {
-	forms[arguments[0]][arguments[1]]()
+	//pseudo-event comes from the scope of where this is fired
+	var pseudoEvent = new Object()
+	pseudoEvent.getFormName = function() {return 'WEB_0F_page__design__content_1F_block_data__raw'}
+	
+	forms[arguments[0]][arguments[1]](pseudoEvent)
 }

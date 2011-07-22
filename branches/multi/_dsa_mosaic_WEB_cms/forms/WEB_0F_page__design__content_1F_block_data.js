@@ -14,7 +14,7 @@ var _license_dsa_mosaic_WEB_cms = 'Module: _dsa_mosaic_WEB_cms \
  */
 function DATA_action_list(event) {
 	// get block type
-	var params = new Array(forms.WEB_0F_page__design__content_1L_block.web_scope_to_block.id_block.toString())
+	var params = new Array(id_block.toString())
 	var sql =	"select id_block_type, form_name from web_block_type where " +
 					"web_block_type.id_block_type = " +
 					"(select id_block_type from web_block where " +
@@ -74,5 +74,9 @@ function DATA_action_list(event) {
  * @properties={typeid:24,uuid:"2AFA45C5-E703-47EB-B87F-C64BCEDA1569"}
  */
 function DATA_action_list_control(event) {
-	forms[arguments[0]][arguments[1]]()
+	//pseudo-event comes from the scope of where this is fired
+	var pseudoEvent = new Object()
+	pseudoEvent.getFormName = function() {return elements.tab_detail.getTabFormNameAt(elements.tab_detail.tabIndex)}
+	
+	forms[arguments[0]][arguments[1]](pseudoEvent)
 }
