@@ -80,17 +80,12 @@ function SNIPPET_credit_card_month() {
  * @properties={typeid:24,uuid:"5AD0C261-20CA-4EAB-BDAD-BC675C223D1E"}
  */
 function SNIPPET_credit_card_year() {
-	var html = '<option value="2011">2011</option>\n\
-  				<option value="2012">2012</option>\n\
-  				<option value="2013">2013</option>\n\
-				<option value="2014">2014</option>\n\
-				<option value="2015">2015</option>\n\
-				<option value="2016">2016</option>\n\
-				<option value="2017">2017</option>\n\
-				<option value="2018">2018</option>\n\
-				<option value="2019">2019</option>\n\
-				<option value="2020">2020</option>\n\
-				<option value="2021">2021</option>\n\
-				<option value="2022">2022</option>\n'
+	var html =''
+	var today = new Date()
+	var thisYear = today.getFullYear()
+	for (var i=thisYear; i<thisYear+11; i++) {
+		html += '<option value="'+i+'">'+i+'</option>\n'
+	}
+
 	return html
 }
