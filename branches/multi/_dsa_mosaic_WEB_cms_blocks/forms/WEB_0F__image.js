@@ -6,10 +6,11 @@ var _license_dsa_mosaic_WEB_cms = 'Module: _dsa_mosaic_WEB_cms \
 									MIT Licensed';
 
 /**
+ * @param {JSEvent} event the event that triggered the action
  *
  * @properties={typeid:24,uuid:"FFE14AC8-BECE-4D27-9AC1-0EE22A0032FF"}
  */
-function BLOCK_choose() {
+function BLOCK_choose(event) {
 	//show image chooser
 	application.showFormInDialog(
 					forms.WEB_0F__image__P_choose,
@@ -24,10 +25,11 @@ function BLOCK_choose() {
 }
 
 /**
+ * @param {JSEvent} event the event that triggered the action
  *
  * @properties={typeid:24,uuid:"43C94817-C701-46EF-809A-33BE2CFC738C"}
  */
-function BLOCK_scale() {
+function BLOCK_scale(event) {
 	var fsAssetInstance = databaseManager.getFoundSet('sutra_cms','web_asset_instance')
 	fsAssetInstance.loadRecords([application.getUUID(_imageData.id_asset_instance)])
 	var recAsset = fsAssetInstance.web_asset_instance_to_asset.getRecord(1)
@@ -37,8 +39,9 @@ function BLOCK_scale() {
 	if (fileOBJ) {
 		//get block data points we need
 		var dataRows = new Object()
-		for (var i = 1; i <= web_block_to_block_version.web_block_version_to_block_data.getSize(); i++) {
-			var record = web_block_to_block_version.web_block_version_to_block_data.getRecord(i)
+		var fsBlockData = globals.WEB_block_getData(event)
+		for (var i = 1; i <= fsBlockData.getSize(); i++) {
+			var record = fsBlockData.getRecord(i)
 			dataRows[record.data_key] = record
 		}
 	
@@ -48,7 +51,7 @@ function BLOCK_scale() {
 		dataRows.width.data_value = fileOBJ.width
 		dataRows.height.data_value = fileOBJ.height
 		
-		databaseManager.saveData(web_block_to_block_version.web_block_version_to_block_data)
+		databaseManager.saveData(fsBlockData)
 			
 		//update display
 		REC_on_select(null,true)
@@ -56,10 +59,11 @@ function BLOCK_scale() {
 }
 
 /**
- *
+ * @param {JSEvent} event the event that triggered the action
+ * 
  * @properties={typeid:24,uuid:"D5507344-C123-4997-A29D-32181865B93F"}
  */
-function BLOCK_import() {
+function BLOCK_import(event) {
 	
 	forms.WEB_0C__file_stream.IMAGE_import("images")
 	
@@ -101,10 +105,11 @@ function VIEW_lightbox() {
 }
 
 /**
- *
+ * @param {JSEvent} event the event that triggered the action
+ * 
  * @properties={typeid:24,uuid:"581D1472-7339-4669-A110-353A1904B241"}
  */
-function TOGGLE_buttons() {
+function TOGGLE_buttons(event) {
 	var editStatus = forms.WEB_0F_page.ACTION_edit_get()
 	
 	var hasData = _imageData.id_asset_instance ? true : false
@@ -198,8 +203,11 @@ function REC_on_select(event,alwaysRun) {
 	if (alwaysRun || globals.WEB_block_enable(event)) {
 		//create object with all properties
 		_imageData = new Object()
-		for (var i = 1; i <= web_block_to_block_version.web_block_version_to_block_data.getSize(); i++) {
-			var record = web_block_to_block_version.web_block_version_to_block_data.getRecord(i)
+
+		var fsBlockData = globals.WEB_block_getData(event)
+		
+		for (var i = 1; i <= fsBlockData.getSize(); i++) {
+			var record = fsBlockData.getRecord(i)
 			_imageData[record.data_key] = record.data_value
 		}
 		

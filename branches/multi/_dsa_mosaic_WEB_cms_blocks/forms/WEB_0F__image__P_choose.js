@@ -58,7 +58,7 @@ function ACTION_ok() {
 		// copy image details to block data points
 		else {
 			//the data we're working with here
-			var data = forms.WEB_0F__image.web_block_to_block_version.web_block_version_to_block_data
+			var data = globals.WEB_block_getData(null,'WEB_0F__image')
 			
 			//see WEB_0F__image.INIT_block for all keys
 			for (var i = 1; i <= data.getSize(); i++) {
@@ -89,8 +89,12 @@ function ACTION_ok() {
 		//close the form
 		application.closeFormDialog('CMS_imageChoose')
 		
+		//pseudo-event comes from the scope of where this is fired
+		var pseudoEvent = new Object()
+		pseudoEvent.getFormName = function() {return 'WEB_0F__image'}
+		
 		//refresh the block
-		forms.WEB_0F__image.REC_on_select(null,true)
+		forms.WEB_0F__image.REC_on_select(pseudoEvent,true)
 	}
 	//nothing selected
 	else {

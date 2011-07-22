@@ -1,5 +1,5 @@
 dataSource:"db:/sutra_cms/web_page",
-initialSort:"name_last asc, name_first asc",
+initialSort:"",
 items:[
 {
 anchors:3,
@@ -372,8 +372,8 @@ uuid:"FC73AEAC-6B63-4DB2-B246-1F11B8877BC8"
 name:"WEBa_0B_page__navigation",
 navigatorID:"-1",
 onRecordEditStopMethodID:"50d8a27a-2321-4118-b4f7-db097f8c0f0a",
-onRecordSelectionMethodID:"60dca133-a72b-4eed-9740-50b1c5aa2f0a",
-onShowMethodID:"c7dcf4f4-9c8a-404d-a30c-5c8a8ea00c35",
+onRecordSelectionMethodID:"-1",
+onShowMethodID:"-1",
 paperPrintScale:100,
 size:"780,470",
 styleName:"_DATASUTRA_",

@@ -16,8 +16,12 @@ var _license_dsa_mosaic_WEB_cms = 'Module: _dsa_mosaic_WEB_cms \
 function REC_on_select(event,alwaysRun) {
 	//run on select only when it is 'enabled'
 	if (alwaysRun || globals.WEB_block_enable(event)) {
+		var fsBlockData = globals.WEB_block_getData(event)
+		
 		var html = '<html><body>'
-		html += web_block_to_block_version.web_block_version_to_block_data.data_value
+		if (utils.hasRecords(fsBlockData)) {
+			html += fsBlockData.data_value
+		}
 		html += '</body></html>'
 		
 		elements.bn_browser.html = html

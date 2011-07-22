@@ -1,4 +1,9 @@
 /**
+ * @properties={typeid:35,uuid:"D055F5E5-A18B-459B-9D17-86A082C98715",variableType:-4}
+ */
+var WEB_block_page_mode = false;
+
+/**
  * @properties={typeid:35,uuid:"669F48AD-6BF9-4038-A808-1A8530337316",variableType:-4}
  */
 var WEB_block_on_select = true;
@@ -86,4 +91,94 @@ function WEB_block_enable(event) {
 		globals.WEB_block_on_select
 		
 	return blockEnable
+}
+
+/**
+ * Returns the correct web_block_data foundset to work with.
+ * 
+ * @param	{JSEvent}	event Event that triggered onSelect of the block_type form
+ * 
+ * @returns	{JSFoundset}	web_block_data foundset.
+ * 
+ * @properties={typeid:24,uuid:"C8DFEF81-D9D8-4742-96C3-3BA32FFCF62C"}
+ */
+function WEB_block_getData(event, formName) {
+	//get form from event
+	if (!formName && event && event.getFormName) {
+		formName = event.getFormName()
+	}
+	
+	//we know where this is being called from
+	if (formName) {
+		//get the block record they were on
+		/** @type {JSRecord<db:/sutra_cms/web_block>}*/
+		var blockRec = forms[formName].foundset
+		
+		//on the page and not viewing page scrapbooks, just use active version
+		if (globals.WEB_block_page_mode) {
+			return (utils.hasRecords(blockRec,'web_block_to_block_version.web_block_version_to_block_data')) ? blockRec.web_block_to_block_version.web_block_version_to_block_data : {}
+		}
+		//on a scrapbook, go through all relation (selected index determines which version)
+		else {
+			return (utils.hasRecords(blockRec,'web_block_to_block_version__all.web_block_version_to_block_data')) ? blockRec.web_block_to_block_version__all.web_block_version_to_block_data : {}
+		}
+	}
+	//return something empty so won't fail as hard
+	else {
+		return new Object()
+	}
+}
+
+/**
+ * Returns the correct web_block_data_configure foundset to work with.
+ * 
+ * @param	{JSEvent}	event Event that triggered onSelect of the block_type form
+ * 
+ * @returns	{JSFoundset}	web_block_data_configure foundset.
+ * 
+ * @properties={typeid:24,uuid:"C8DFEF81-D9D7-4742-96C3-3BA32FFCF62C"}
+ */
+function WEB_block_getConfig(event) {
+	//we know where this is being called from
+	if (event && event.getFormName) {
+		//get the block record they were on
+		/** @type {JSRecord<db:/sutra_cms/web_block>}*/
+		var blockRec = forms[event.getFormName()].foundset
+		
+		//on the page and not viewing page scrapbooks, just use active version
+		if (globals.WEB_block_page_mode) {
+			return utils.hasRecords(blockRec,'web_block_to_block_version.web_block_version_to_block_data_configure') ? blockRec.web_block_to_block_version.web_block_version_to_block_data_configure : {}
+		}
+		//on a scrapbook, go through all relation (selected index determines which version)
+		else {
+			return utils.hasRecords(blockRec,'web_block_to_block_version__all.web_block_version_to_block_data_configure') ? blockRec.web_block_to_block_version__all.web_block_version_to_block_data_configure : {}
+		}
+	}
+}
+
+/**
+ * Returns the correct web_block_data_response foundset to work with.
+ * 
+ * @param	{JSEvent}	event Event that triggered onSelect of the block_type form
+ * 
+ * @returns	{JSFoundset}	web_block_data_response foundset.
+ * 
+ * @properties={typeid:24,uuid:"B0D3D289-08E8-4820-9998-70F18D96C9B0"}
+ */
+function WEB_block_getResponse(event) {
+	//we know where this is being called from
+	if (event && event.getFormName) {
+		//get the block record they were on
+		/** @type {JSRecord<db:/sutra_cms/web_block>}*/
+		var blockRec = forms[event.getFormName()].foundset
+		
+		//on the page and not viewing page scrapbooks, just use active version
+		if (globals.WEB_block_page_mode) {
+			return utils.hasRecords(blockRec,'web_block_to_block_version.web_block_version_to_block_data_response') ? blockRec.web_block_to_block_version.web_block_version_to_block_data_response : {}
+		}
+		//on a scrapbook, go through all relation (selected index determines which version)
+		else {
+			return utils.hasRecords(blockRec,'web_block_to_block_version__all.web_block_version_to_block_data_response') ? blockRec.web_block_to_block_version__all.web_block_version_to_block_data_response : {}
+		}
+	}
 }

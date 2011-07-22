@@ -34,14 +34,16 @@ function FORM_on_load() {
 }
 
 /**
+ * @param {JSEvent} event the event that triggered the action
+ * 
  * @properties={typeid:24,uuid:"596AC1D2-C10E-435B-A670-B17748C36852"}
  */
-function BLOCK_save() {
-	web_block_to_block_version.web_block_version_to_block_data.data_value = _dataValue
+function BLOCK_save(event) {
+	globals.WEB_block_getData(event).data_value = _dataValue
 	databaseManager.saveData()
 	databaseManager.setAutoSave(true)
 	
-	ACTION_colorize()
+	ACTION_colorize(event)
 }
 
 /**
@@ -91,12 +93,12 @@ function REC_on_select(event,alwaysRun) {
 	//run on select only when it is 'enabled'
 	if (alwaysRun || globals.WEB_block_enable(event)) {
 		//save down form variables so records can be changed
-		_dataValue = web_block_to_block_version.web_block_version_to_block_data.data_value
-		_codeType = web_block_to_block_version.web_block_version_to_block_data_configure.data_value
+		_dataValue = globals.WEB_block_getData(event).data_value
+		_codeType = globals.WEB_block_getConfig(event).data_value
 		
 		//update display
 		TOGGLE_buttons(false)
-		ACTION_colorize()
+		ACTION_colorize(event)
 	}
 }
 
@@ -112,11 +114,11 @@ function BLOCK_cancel(event) {
 	databaseManager.setAutoSave(true)
 	
 	//reset codeType var
-	_codeType = web_block_to_block_version.web_block_version_to_block_data_configure.data_value
+	_codeType = globals.WEB_block_getConfig(event).data_value
 	
 	//refresh the colored version
 	if (globals.WEB_page_mode == 2) {
-		ACTION_colorize()
+		ACTION_colorize(event)
 	}
 }
 
@@ -201,9 +203,11 @@ function ACTION_add_token(inputID,pageRec) {
 	
 	elem.replaceSelectedText(linkStart + linkPage + linkEnd)
 	
-	web_block_to_block_version.web_block_version_to_block_data.data_value = _dataValue
+	var recBlockData = globals.WEB_block_getData(event).getRecord(1)
+	
+	recBlockData.data_value = _dataValue
 		
-	databaseManager.saveData(web_block_to_block_version.web_block_version_to_block_data)
+	databaseManager.saveData(recBlockData)
 	
 	elem.caretPosition = cursor + offset
 	elem.requestFocus()
@@ -251,9 +255,11 @@ function ACTION_insert_image(event) {
 		
 		elem.replaceSelectedText(html)
 		
-		web_block_to_block_version.web_block_version_to_block_data.data_value = _dataValue
+		var recBlockData = globals.WEB_block_getData(event).getRecord(1)
 		
-		databaseManager.saveData(web_block_version_to_block_data)
+		recBlockData.data_value = _dataValue
+			
+		databaseManager.saveData(recBlockData)
 		
 		elem.caretPosition = cursor + offset
 		elem.requestFocus()
@@ -315,9 +321,11 @@ function INIT_block() {
 }
 
 /**
+ * @param {JSEvent} event Upstream event that gives context.
+ * 
  * @properties={typeid:24,uuid:"145AE1D1-D199-44AE-9F61-9F1AD0DF7097"}
  */
-function ACTION_colorize() {
+function ACTION_colorize(event) {
 	var brushMap = new Object()
 	brushMap.html = 'shBrushXml.js'
 	brushMap.js = 'shBrushJScript.js'
@@ -331,7 +339,7 @@ function ACTION_colorize() {
 	var html = ''
 	var prefix = ''
 	
-	var recBlockData = web_block_to_block_version.web_block_version_to_block_data.getSelectedRecord()
+	var recBlockData = globals.WEB_block_getData(event).getSelectedRecord()
 	
 	//if there's data, color it
 	if (recBlockData && recBlockData.data_value) {
@@ -386,5 +394,5 @@ function ACTION_colorize() {
  * @properties={typeid:24,uuid:"1975546E-4E95-4C97-8332-E8135178C526"}
  */
 function FLD_data_change__code_type(oldValue, newValue, event) {
-	web_block_to_block_version.web_block_version_to_block_data_configure.data_value = newValue
+	globals.WEB_block_getConfig(event).data_value = newValue
 }

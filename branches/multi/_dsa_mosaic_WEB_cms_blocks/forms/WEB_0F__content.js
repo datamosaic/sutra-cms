@@ -174,10 +174,12 @@ function TINYMCE_init(mode) {
 }
 
 /**
+ * @param {JSEvent} event the event that triggered the action
+ * 
  * @properties={typeid:24,uuid:"553CBBDB-2269-49ED-BEC5-A585CBC2011A"}
  */
-function BLOCK_save() {
-	web_block_to_block_version.web_block_version_to_block_data.data_value = elements.bn_tinymce.html
+function BLOCK_save(event) {
+	globals.WEB_block_getData(event).data_value = elements.bn_tinymce.html
 	databaseManager.saveData()
 	elements.bn_tinymce.clearDirtyState()
 	
@@ -221,10 +223,15 @@ function FORM_on_show(firstShow, event) {
 function REC_on_select(event,alwaysRun) {
 	//run on select only when it is 'enabled'
 	if (alwaysRun || globals.WEB_block_enable(event)) {
+		var fsBlockData = globals.WEB_block_getData(event)
+		
 		TOGGLE_buttons(false)
 		
 		elements.bn_tinymce.clearHtml()
-		elements.bn_tinymce.html = web_block_to_block_version.web_block_version_to_block_data.data_value
+		
+		if (utils.hasRecords(fsBlockData)) {
+			elements.bn_tinymce.html = fsBlockData.data_value
+		}
 	}
 }
 
@@ -236,7 +243,7 @@ function REC_on_select(event,alwaysRun) {
  * @properties={typeid:24,uuid:"8DA68D80-88B6-47F7-857C-6CE05373251D"}
  */
 function BLOCK_cancel(event) {
-	elements.bn_tinymce.html = web_block_to_block_version.web_block_version_to_block_data.data_value
+	elements.bn_tinymce.html = globals.WEB_block_getData(event).data_value
 	TOGGLE_buttons(false)
 }
 
@@ -293,7 +300,7 @@ function BLOCK_reset(event) {
 		elements.bn_tinymce.setCustomConfiguration(TINYMCE_init('simple'))
 	}
 	
-	BLOCK_cancel()
+	BLOCK_cancel(event)
 	
 }
 
