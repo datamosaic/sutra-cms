@@ -184,6 +184,9 @@ function BLOCK_save(event) {
 	elements.bn_tinymce.clearDirtyState()
 	
 	TOGGLE_buttons(false)
+	
+	//toggle upstream _editMode, but don't retrigger a save
+	forms.WEB_A__scrapbook.ACTION_save(null,true)
 }
 
 /**
@@ -242,9 +245,14 @@ function REC_on_select(event,alwaysRun) {
  *
  * @properties={typeid:24,uuid:"8DA68D80-88B6-47F7-857C-6CE05373251D"}
  */
-function BLOCK_cancel(event) {
+function BLOCK_cancel(event,stayEdit) {
 	elements.bn_tinymce.html = globals.WEB_block_getData(event).data_value
 	TOGGLE_buttons(false)
+	
+	//toggle upstream _editMode, but don't retrigger a save
+	if (!stayEdit) {
+		forms.WEB_A__scrapbook.ACTION_save(null,true)
+	}
 }
 
 /**
@@ -300,7 +308,12 @@ function BLOCK_reset(event) {
 		elements.bn_tinymce.setCustomConfiguration(TINYMCE_init('simple'))
 	}
 	
-	BLOCK_cancel(event)
+	//pseudo-event comes from the scope of where this is fired
+	var pseudoEvent = new Object()
+	pseudoEvent.getFormName = function() {return controller.getName()}
+	
+	//cancel current edits, but don't leave edit mode
+	BLOCK_cancel(pseudoEvent,true)
 	
 }
 
