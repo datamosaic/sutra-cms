@@ -53,9 +53,7 @@ function TOGGLE_elements() {
 		elements.btn_edit_on.visible = flagEdit
 		elements.btn_edit_off.visible = !flagEdit
 		
-		elements.btn_edit.enabled = flagEdit
-		elements.lbl_edit.enabled = flagEdit
-		
+		//set actions wheelies
 		forms.WEB_0F_scrapbook__gui.elements.btn_data_actions.enabled = forms.WEB_0F_scrapbook._editMode
 		forms.WEB_0F_scrapbook__data.elements.btn_data_actions.enabled = forms.WEB_0F_scrapbook._editMode
 	}
@@ -67,10 +65,6 @@ function TOGGLE_elements() {
 		//set edit button to correct state
 		elements.btn_edit_on.visible = false
 		elements.btn_edit_off.visible = true
-		
-		//set edit mode button to correct state
-		elements.btn_edit.enabled = false
-		elements.lbl_edit.enabled = false
 		
 		//set actions wheelies
 		forms.WEB_0F_scrapbook__gui.elements.btn_data_actions.enabled = false
@@ -120,13 +114,17 @@ function TOGGLE_mode(event,mode) {
 		
 		//go to gui if not already there
 		if (mode == 'gui' && forms.WEB_0F_scrapbook.elements.tab_main.tabIndex != 1) {
-			forms.WEB_0F_scrapbook.elements.lbl_edit.visible = true
-			forms.WEB_0F_scrapbook.elements.lbl_edit_left.visible = true
-			forms.WEB_0F_scrapbook.elements.lbl_edit_right.visible = true
-			forms.WEB_0F_scrapbook.elements.btn_edit.visible = true
+//			forms.WEB_0F_scrapbook.elements.lbl_edit.visible = true
+//			forms.WEB_0F_scrapbook.elements.lbl_edit_left.visible = true
+//			forms.WEB_0F_scrapbook.elements.lbl_edit_right.visible = true
+//			forms.WEB_0F_scrapbook.elements.btn_edit.visible = true
 			
-			elements.btn_gui.visible = false
-			elements.btn_data.visible = true
+//			elements.btn_gui.visible = false
+//			elements.btn_data.visible = true
+			
+			//show correct data buttons
+			forms.WEB_A__scrapbook.elements.btn_data.visible = true
+			forms.WEB_A__scrapbook.elements.btn_gui.visible = false
 			
 			forms.WEB_0F_scrapbook.elements.tab_main.tabIndex = 1
 			
@@ -137,13 +135,13 @@ function TOGGLE_mode(event,mode) {
 		}
 		//go to data if not already there
 		else if (mode == 'data' && forms.WEB_0F_scrapbook.elements.tab_main.tabIndex != 2) {
-			forms.WEB_0F_scrapbook.elements.lbl_edit.visible = false
-			forms.WEB_0F_scrapbook.elements.lbl_edit_left.visible = false
-			forms.WEB_0F_scrapbook.elements.lbl_edit_right.visible = false
-			forms.WEB_0F_scrapbook.elements.btn_edit.visible = false
+//			forms.WEB_0F_scrapbook.elements.lbl_edit.visible = false
+//			forms.WEB_0F_scrapbook.elements.lbl_edit_left.visible = false
+//			forms.WEB_0F_scrapbook.elements.lbl_edit_right.visible = false
+//			forms.WEB_0F_scrapbook.elements.btn_edit.visible = false
 			
-			elements.btn_gui.visible = true
-			elements.btn_data.visible = false
+//			elements.btn_gui.visible = true
+//			elements.btn_data.visible = false
 			
 			//if we're in edit mode, exit
 			if (forms.WEB_0F_scrapbook._editMode) {
@@ -151,6 +149,10 @@ function TOGGLE_mode(event,mode) {
 			}
 			
 			forms.WEB_0F_scrapbook.elements.tab_main.tabIndex = 2
+			
+			//show correct data buttons
+			forms.WEB_A__scrapbook.elements.btn_data.visible = false
+			forms.WEB_A__scrapbook.elements.btn_gui.visible = true
 		}
 	}
 }

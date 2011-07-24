@@ -93,6 +93,9 @@ function ACTION_ok(event) {
 			if (formStack.getMaxRowIndex() > 1) {
 				var formParent = formStack.getValue(formStack.getMaxRowIndex()-1,2)
 			}
+			else {
+				var formParent = 'WEB_0F_scrapbook'
+			}
 			
 			//something chosen
 			if (utils.hasRecords(forms.WEB_P__block__new_1L_block.foundset)) {

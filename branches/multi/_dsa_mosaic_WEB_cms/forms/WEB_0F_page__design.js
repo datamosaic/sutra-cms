@@ -40,9 +40,7 @@ function FORM_on_hide(event) {
  *
  * @properties={typeid:24,uuid:"2A684B84-9416-419A-B6EC-6F91209B4DA1"}
  */
-function TAB_header_size() {
-	
-	var input = arguments[0]
+function TAB_header_size(input) {
 	
 	switch (input) {
 		case 'A':
@@ -53,7 +51,7 @@ function TAB_header_size() {
 			break
 		default:
 		case 'space':
-			return 5
+			return 3
 			break
 	}
 

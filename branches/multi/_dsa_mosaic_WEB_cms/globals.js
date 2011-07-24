@@ -141,7 +141,7 @@ var tabB = (forms[formName].TAB_header_size) ? forms[formName].TAB_header_size('
 var offset = tabB - tabA - ((forms[formName].TAB_header_size) ? forms[formName].TAB_header_size('space') : 10)
 
 //only go to edit if currently on display
-if (forms[formName].elements.tab_header_detail.tabIndex == 1) {
+if (forms[formName].elements.tab_header_detail.tabIndex != 2) {
 	//turn autosave off
 	databaseManager.setAutoSave(false)
 	
@@ -169,14 +169,14 @@ if (forms[formName].elements.tab_header_detail.tabIndex == 1) {
 //prompt to cancel current edits
 else {
 
-	var answer = plugins.dialogs.showWarningDialog(
-							'Cancel?',
-							'Cancel all header edits?',
-							'Yes',
-							'No'
-						)
+//	var answer = plugins.dialogs.showWarningDialog(
+//							'Cancel?',
+//							'Cancel all header edits?',
+//							'Yes',
+//							'No'
+//						)
 	
-	if (answer == 'Yes') {
+	if (true) {//answer == 'Yes') {
 		//rollback edited records
 		databaseManager.rollbackEditedRecords()
 		

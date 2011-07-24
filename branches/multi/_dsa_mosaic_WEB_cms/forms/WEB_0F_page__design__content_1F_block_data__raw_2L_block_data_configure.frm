@@ -20,7 +20,7 @@ borderType:"SpecialMatteBorder,0.0,0.0,1.0,0.0,#000000,#000000,#999999,#000000,0
 dataProviderID:"data_value",
 formIndex:10700,
 location:"110,32",
-name:"fld_data_value",
+name:"edit_data_value",
 selectOnEnter:true,
 size:"139,23",
 styleClass:"tableview",

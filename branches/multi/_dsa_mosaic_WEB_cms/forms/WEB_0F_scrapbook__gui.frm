@@ -10,6 +10,15 @@ uuid:"60FE9CB4-E075-4199-991A-41E45DAEA0A0"
 anchors:15,
 fontType:"Tahoma,0,13",
 formIndex:9999,
+items:[
+{
+containsFormID:"4C400AD6-1DC0-4B6F-AB83-2E7FE97698C0",
+location:"10,30",
+text:"CODE__blank",
+typeid:15,
+uuid:"66E9E9E8-96B3-4A44-B0CA-37D4FCE60311"
+}
+],
 location:"0,18",
 name:"tab_detail",
 printable:false,

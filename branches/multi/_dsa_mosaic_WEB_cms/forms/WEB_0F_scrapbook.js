@@ -119,10 +119,10 @@ function FORM_on_show(firstShow, event) {
 //	forms.WEB_0F_page__design__content_1F_block_data.elements.tab_detail.setBorder('SpecialMatteBorder,0.0,1.0,3.0,1.0,#647B95,#A1B0CF,#A1B0CF,#A1B0CF,0.0,')
 //	forms.WEB_0F_page__design__content_1F_block_data__raw.elements.tab_detail.setBorder('SpecialMatteBorder,0.0,1.0,3.0,1.0,#647B95,#A1B0CF,#A1B0CF,#A1B0CF,0.0,')
 	
-	//go to gui mode first
-	if (!firstShow) {
-		forms.WEB_0F_scrapbook__header.TOGGLE_mode(null,'gui')
-	}
+//	//go to gui mode first
+//	if (!firstShow) {
+//		forms.WEB_0F_scrapbook__header.TOGGLE_mode(null,'gui')
+//	}
 	
 	if (!utils.hasRecords(foundset)) {
 		REC_on_select()
@@ -136,48 +136,79 @@ function FORM_on_show(firstShow, event) {
  *
  * @properties={typeid:24,uuid:"69B72F68-C6D4-4949-BEA5-2C2C8058CCE2"}
  */
-function ACTION_edit_toggle(event) {
+function ACTION_edit_toggle(event,noSave) {
+	if (event instanceof JSEvent) {
+		var cancel = utils.stringPatternCount(event.getElementName(),'cancel')
+		
+		event = new Object()
+		event.getFormName = function() {return controller.getName()}
+	}
+	
 	if (!_editMode) {
+		//enter pseudo-transaction
+		databaseManager.saveData()
+		databaseManager.setAutoSave(false)
+		
 		_editMode = true
 		
-		elements.lbl_edit.text = 'Done'
-		elements.btn_edit.toolTipText = 'Click when finished editing'
+//		elements.lbl_edit.text = 'Done'
+//		elements.btn_edit.toolTipText = 'Click when finished editing'
 			
-		forms.WEB_0F_scrapbook__header.elements.lbl_edit.text = 'd o n e'
-		forms.WEB_0F_scrapbook__header.elements.btn_edit.toolTipText = 'Click when finished editing'
+//		forms.WEB_0F_scrapbook__header.elements.lbl_edit.text = 'd o n e'
+//		forms.WEB_0F_scrapbook__header.elements.btn_edit.toolTipText = 'Click when finished editing'
 		
 		forms.WEB_0F_scrapbook__gui.elements.btn_data_actions.enabled = true
 		forms.WEB_0F_scrapbook__data.elements.btn_data_actions.enabled = true
+		
+		forms.WEB_0F_page__design__content_1F_block_data__raw_2L_block_data.elements.edit_data_value.editable = true
+		forms.WEB_0F_page__design__content_1F_block_data__raw_2L_block_data_configure.elements.edit_data_value.editable = true
+		forms.WEB_0F_page__design__content_1F_block_data__raw_2L_block_data_response.elements.edit_data_value.editable = true
 	}
 	else {
-		//punch down the save button
-		if (utils.hasRecords(foundset)) {
-			//load in correct gui representation for this block type
-			var recScrapbook = foundset.getSelectedRecord()
-	
-			if (recScrapbook && utils.hasRecords(recScrapbook.web_block_to_block_type)) {
-				var recBlockType = recScrapbook.web_block_to_block_type.getRecord(1)
-			}
+		//punch down the save button when not cancelled
+		if (utils.hasRecords(foundset) && !cancel && !noSave) {
+			//save the data
+			databaseManager.saveData()
 			
-			//this block definition exists as does the form and it has a save method on it
-			if (recBlockType && forms[recBlockType.form_name] && solutionModel.getForm(recBlockType.form_name).getFormMethod('BLOCK_save')) {
-				forms[recBlockType.form_name].BLOCK_save(event)
+			//when in gui mode, save
+			if (forms.WEB_0F_scrapbook.elements.tab_main.tabIndex == 1) {
+				//load in correct gui representation for this block type
+				var recScrapbook = foundset.getSelectedRecord()
+		
+				if (recScrapbook && utils.hasRecords(recScrapbook.web_block_to_block_type)) {
+					var recBlockType = recScrapbook.web_block_to_block_type.getRecord(1)
+				}
+				
+				//this block definition exists as does the form and it has a save method on it
+				if (recBlockType && forms[recBlockType.form_name] && solutionModel.getForm(recBlockType.form_name).getFormMethod('BLOCK_save')) {
+					forms[recBlockType.form_name].BLOCK_save(event)
+				}
 			}
 		}
+		//cancelled
+		else if (cancel) {
+			databaseManager.rollbackEditedRecords()
+		}
+		
+		databaseManager.setAutoSave(true)
 		
 		_editMode = false
-		elements.lbl_edit.text = 'Edit'
-		elements.btn_edit.toolTipText = 'Click to begin editing...'
+//		elements.lbl_edit.text = 'Edit'
+//		elements.btn_edit.toolTipText = 'Click to begin editing...'
 		
-		forms.WEB_0F_scrapbook__header.elements.lbl_edit.text = 'e d i t'
-		forms.WEB_0F_scrapbook__header.elements.btn_edit.toolTipText = 'Click to begin editing...'
+//		forms.WEB_0F_scrapbook__header.elements.lbl_edit.text = 'e d i t'
+//		forms.WEB_0F_scrapbook__header.elements.btn_edit.toolTipText = 'Click to begin editing...'
 		
 		forms.WEB_0F_scrapbook__gui.elements.btn_data_actions.enabled = false
 		forms.WEB_0F_scrapbook__data.elements.btn_data_actions.enabled = false
+		
+		forms.WEB_0F_page__design__content_1F_block_data__raw_2L_block_data.elements.edit_data_value.editable = false
+		forms.WEB_0F_page__design__content_1F_block_data__raw_2L_block_data_configure.elements.edit_data_value.editable = false
+		forms.WEB_0F_page__design__content_1F_block_data__raw_2L_block_data_response.elements.edit_data_value.editable = false
 	}
 	
-	//when toggled from the button, redo the screen
-	if (event) {
+	//when toggled from the button or cancelled, redo the screen
+	if (event || noSave) {
 		REC_on_select()
 	}
 }
@@ -227,7 +258,7 @@ function REC_on_select(event) {
 		}
 		
 		//if edits aren't allowed, disable edit button
-		elements.lbl_edit.enabled = ACTION_edit_get()
+//		elements.lbl_edit.enabled = ACTION_edit_get()
 		
 		//status of the edit
 		forms.WEB_0F_scrapbook__header.TOGGLE_elements()
@@ -287,7 +318,7 @@ function ACTION_gui_mode_load() {
 		forms.WEB_0F_scrapbook__header.TOGGLE_mode(null,'gui')
 	}
 	else {
-		forms.WEB_0F_scrapbook__header.TOGGLE_mode(null,'data')
+		tabPanel.tabIndex = 1
 	}
 }
 

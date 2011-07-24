@@ -454,7 +454,7 @@ function MOVE_generic(input) {
 			break
 		case 'out':
 			//only move out if node level not 0
-			if (recMove.parent_id_page != 0) {
+			if (recMove.parent_id_page) {
 				//find new parent
 				var idParent = recMove['web_page_to_page__parent'].parent_id_page
 				
