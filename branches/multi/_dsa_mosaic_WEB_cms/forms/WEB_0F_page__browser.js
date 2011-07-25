@@ -234,6 +234,10 @@ function FORM_on_show(firstShow, event) {
 	
 	//entering page mode (only active version of block used)
 	globals.WEB_block_page_mode = true	
+	
+	if (firstShow) {
+		elements.bn_browser.navigateTo(globals.WEB_preview_url)
+	}
 }
 
 /**
