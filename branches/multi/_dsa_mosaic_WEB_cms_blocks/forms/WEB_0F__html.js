@@ -40,8 +40,6 @@ function BLOCK_save(event) {
 	databaseManager.setAutoSave(true)
 	
 	ACTION_colorize(event)
-	
-	globals.WEB_block_save()
 }
 
 /**
@@ -114,8 +112,6 @@ function BLOCK_cancel(event) {
 	if (globals.WEB_page_mode == 2) {
 		ACTION_colorize(event)
 	}
-	
-	globals.WEB_block_cancel()
 }
 
 /**

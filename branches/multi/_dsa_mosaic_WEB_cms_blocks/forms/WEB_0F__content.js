@@ -184,9 +184,6 @@ function BLOCK_save(event) {
 	elements.bn_tinymce.clearDirtyState()
 	
 	TOGGLE_buttons(false)
-	
-	//don't run when in real mode
-	globals.WEB_block_save()
 }
 
 /**
@@ -253,11 +250,6 @@ function REC_on_select(event,alwaysRun) {
 function BLOCK_cancel(event,stayEdit) {
 	elements.bn_tinymce.html = globals.WEB_block_getData(event).data_value
 	TOGGLE_buttons(false)
-	
-	//toggle upstream _editMode, but don't retrigger a save
-	if (!stayEdit) {
-		globals.WEB_block_cancel()
-	}
 }
 
 /**
