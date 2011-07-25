@@ -150,7 +150,7 @@ showFocus:false,
 size:"298,25",
 styleClass:"heading1",
 tabSeq:-1,
-text:"New version",
+text:"Copy version from...",
 transparent:true,
 typeid:7,
 uuid:"8E0F334C-5CFF-44A8-89DC-0FB1B016BAE2"

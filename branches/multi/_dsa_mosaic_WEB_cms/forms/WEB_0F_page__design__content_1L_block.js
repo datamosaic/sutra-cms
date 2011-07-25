@@ -11,25 +11,42 @@ var _license_dsa_mosaic_WEB_cms = 'Module: _dsa_mosaic_WEB_cms \
  */
 function BLOCK_action_list() {
 	if (utils.hasRecords(foundset)) {
+		//type lists
+		var vlDisplay = [
+				'Page',
+				'Site',
+				'Install'
+			]
+		var vlReal = [1,2,3]
+		
+		//what level is this block?
+		if (utils.hasRecords(web_scope_to_block) && web_scope_to_block.scope_type) {
+			vlDisplay = vlDisplay.slice(web_scope_to_block.scope_type)
+			vlReal = vlReal.slice(web_scope_to_block.scope_type)
+		}
+		
 		//menu items
-		var valuelist = new Array('Save to scrapbook')
+		var valuelist = new Array('Copy to...','Promote to...')
 		
 		//set up menu with arguments
-		var menu = new Array()
-		for ( var i = 0 ; i < valuelist.length ; i++ ) {
-			menu[i] = plugins.popupmenu.createMenuItem(valuelist[i],BLOCK_action_list_control)
-		
-			menu[i].setMethodArguments(i)
-		
-			if (menu[i].text == '----') {
-				menu[i].setEnabled(false)
-			}
+		var subMenu1 = new Array()
+		var subMenu2 = new Array()
+		for ( var i = 0 ; i < vlDisplay.length ; i++ ) {
+			subMenu1[i] = plugins.popupmenu.createMenuItem(vlDisplay[i],BLOCK_action_list_control)
+			subMenu2[i] = plugins.popupmenu.createMenuItem(vlDisplay[i],BLOCK_action_list_control)
+			
+			subMenu1[i].setMethodArguments(vlReal[i],true)
+			subMenu2[i].setMethodArguments(vlReal[i],null,true)
 		}
+		
+		var mainMenu = new Array()
+		mainMenu[0] = plugins.popupmenu.createMenuItem(valuelist[0],subMenu1)
+		mainMenu[1] = plugins.popupmenu.createMenuItem(valuelist[1],subMenu2)
 		
 		//popup
 		var elem = elements[application.getMethodTriggerElementName()]
-		if (elem != null && valuelist.length) {
-			plugins.popupmenu.showPopupMenu(elem, menu)
+		if (elem != null && vlDisplay.length) {
+			plugins.popupmenu.showPopupMenu(elem, mainMenu)
 		}
 	}
 	else {
@@ -44,67 +61,33 @@ function BLOCK_action_list() {
  *
  * @properties={typeid:24,uuid:"0DE68168-7178-4FE8-B538-60456C223C6E"}
  */
-function BLOCK_action_list_control() {
+function BLOCK_action_list_control(scope,copy,promote) {
+	var blockRec = web_scope_to_block.getSelectedRecord()
 	
-	switch (arguments[0]) {
-		case 0:  // set flag for type of scrapbook
-//			
-//			var input = plugins.dialogs.showInputDialog(
-//					'Enter name',
-//					'What is the name for this scrapbook entry?'
-//			)
-//			
-//			if (input) {
-//				// block to scrapbook
-//				var source 		= foundset.getRecord(foundset.getSelectedIndex())
-//				var destination	= forms.WEB_0F_scrapbook.foundset.getRecord(forms.WEB_0F_scrapbook.foundset.newRecord(true,true))
-//				var success		= databaseManager.copyMatchingColumns(source,destination)
-//				destination.scrapbook_name = input
-//				destination.id_site = forms.WEB_0F_site.id_site
-//				databaseManager.saveData()
-//				
-//				// block_data to scrapbook data
-//				var fsSource		= source.web_block_version_to_block_data
-//				
-//				for (var i = 0; i < fsSource.getSize(); i++) {
-//					var record		= fsSource.getRecord(i + 1)
-//					var destination	= forms.WEB_0F_scrapbook.web_scrapbook_to_scrapbook_data.getRecord(forms.WEB_0F_scrapbook.web_scrapbook_to_scrapbook_data.newRecord(true,true))
-//					databaseManager.copyMatchingColumns(record,destination)
-//				}
-//				databaseManager.saveData()
-//				
-//				// block_data_configure to scrapbook_configure
-//				var fsSource		= source.web_block_version_to_block_data_configure
-//				
-//				for (var i = 0; i < fsSource.getSize(); i++) {
-//					var record		= fsSource.getRecord(i + 1)
-//					var destination	= forms.WEB_0F_scrapbook.web_scrapbook_to_scrapbook_configure.getRecord(forms.WEB_0F_scrapbook.web_scrapbook_to_scrapbook_configure.newRecord(true,true))
-//					databaseManager.copyMatchingColumns(record,destination)
-//				}
-//				databaseManager.saveData()
-//				
-//				// block_data_response to scrapbook_response
-//				var fsSource		= source.web_block_version_to_block_data_response
-//				
-//				for (var i = 0; i < fsSource.getSize(); i++) {
-//					var record		= fsSource.getRecord(i + 1)
-//					var destination	= forms.WEB_0F_scrapbook.web_scrapbook_to_scrapbook_response.getRecord(forms.WEB_0F_scrapbook.web_scrapbook_to_scrapbook_response.newRecord(true,true))
-//					databaseManager.copyMatchingColumns(record,destination)
-//				}
-//				databaseManager.saveData()
-//				
-//			}
-//			else {
-//				plugins.dialogs.showErrorDialog(
-//							'Error',
-//							'No name entered for scrapbook'
-//					)
-//			}
-			break;
-		default:
-			break;
+	//make a copy of this block
+	if (copy) {
+		plugins.dialogs.showInfoDialog(
+					'Coming soon',
+					'Copying this block as a scrapbook is coming soon...'
+			)
 	}
-
+	//assign this a little bit higher
+	else if (promote) {
+		blockRec.scope_type = scope
+		
+		if (scope == 1) {
+			blockRec.id_page = forms.WEB_0F_page.id_page
+		}
+		else if (scope == 2) {
+			blockRec.id_site = forms.WEB_0F_page.id_site
+		}
+		else if (scope == 3) {
+			blockRec.id_page = null
+			blockRec.id_site = null
+		}
+		
+		databaseManager.saveData(blockRec)
+	}
 }
 
 /**
