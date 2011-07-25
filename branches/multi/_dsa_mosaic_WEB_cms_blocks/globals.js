@@ -182,3 +182,37 @@ function WEB_block_getResponse(event) {
 		}
 	}
 }
+
+/**
+ * @properties={typeid:24,uuid:"B82E9E1D-9201-47C8-8FF7-D606643DCD6A"}
+ */
+function WEB_block_save() {
+	//don't run when in real mode
+	if (globals.WEB_page_mode != 3) {
+		var formName = 'WEB_A__scrapbook'
+		//on page gui detail
+		if (globals.WEB_block_scope == 1 && globals.WEB_page_mode == 2 && forms.WEB_0F_page__design.elements.tab_main.tabIndex == 1) {
+			formName = 'WEB_A__page'
+		}
+		
+		//toggle upstream _editMode, but don't retrigger a save
+		forms[formName].ACTION_save(null,true)
+	}
+}
+
+/**
+ * @properties={typeid:24,uuid:"44816F74-9845-4672-BE53-3D9C070DB6BC"}
+ */
+function WEB_block_cancel() {
+	//don't run when in real mode
+	if (globals.WEB_page_mode != 3) {
+		var formName = 'WEB_A__scrapbook'
+		//on page gui detail
+		if (globals.WEB_block_scope == 1 && globals.WEB_page_mode == 2 && forms.WEB_0F_page__design.elements.tab_main.tabIndex == 1) {
+			formName = 'WEB_A__page'
+		}
+		
+		//toggle upstream _editMode, but don't retrigger a save
+		forms[formName].ACTION_cancel(null,true)
+	}
+}

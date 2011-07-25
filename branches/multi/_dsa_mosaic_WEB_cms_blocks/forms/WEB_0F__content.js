@@ -185,8 +185,8 @@ function BLOCK_save(event) {
 	
 	TOGGLE_buttons(false)
 	
-	//toggle upstream _editMode, but don't retrigger a save
-	forms.WEB_A__scrapbook.ACTION_save(null,true)
+	//don't run when in real mode
+	globals.WEB_block_save()
 }
 
 /**
@@ -230,7 +230,12 @@ function REC_on_select(event,alwaysRun) {
 		
 		TOGGLE_buttons(false)
 		
-		elements.bn_tinymce.clearHtml()
+		if (elements.bn_tinymce) {
+			elements.bn_tinymce.clearHtml()
+		}
+		else {
+			globals.WEB_browser_error()
+		}
 		
 		if (utils.hasRecords(fsBlockData)) {
 			elements.bn_tinymce.html = fsBlockData.data_value
@@ -251,7 +256,7 @@ function BLOCK_cancel(event,stayEdit) {
 	
 	//toggle upstream _editMode, but don't retrigger a save
 	if (!stayEdit) {
-		forms.WEB_A__scrapbook.ACTION_save(null,true)
+		globals.WEB_block_cancel()
 	}
 }
 

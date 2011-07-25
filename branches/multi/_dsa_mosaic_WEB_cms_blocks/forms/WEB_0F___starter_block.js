@@ -108,3 +108,23 @@ function INIT_block() {
 function PAGE_sample_method() {
 	plugins.dialogs.showInfoDialog( "Page action demo", "Block page actions added to this menu")
 }
+
+/**
+ * @properties={typeid:24,uuid:"CA0EC453-6093-41F1-BB67-534534B10636"}
+ */
+function BLOCK_save() {
+	// your code goes here
+	
+	// exit edit mode
+	globals.WEB_block_save()
+}
+
+/**
+ * @properties={typeid:24,uuid:"7122605B-CB57-4365-852C-5DC97AADE5F1"}
+ */
+function BLOCK_cancel() {
+	// your code goes here
+	
+	// exit edit mode
+	globals.WEB_block_cancel()
+}

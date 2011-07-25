@@ -230,6 +230,11 @@ function REC_on_select(event,alwaysRun) {
 		}
 		
 		TOGGLE_buttons()
-		elements.bn_browser.html = html
+		if (elements.bn_browser) {
+			elements.bn_browser.html = html
+		}
+		else {
+			globals.WEB_browser_error()
+		}
 	}
 }

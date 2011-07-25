@@ -40,6 +40,8 @@ function BLOCK_save(event) {
 	databaseManager.setAutoSave(true)
 	
 	ACTION_colorize(event)
+	
+	globals.WEB_block_save()
 }
 
 /**
@@ -112,6 +114,8 @@ function BLOCK_cancel(event) {
 	if (globals.WEB_page_mode == 2) {
 		ACTION_colorize(event)
 	}
+	
+	globals.WEB_block_cancel()
 }
 
 /**
@@ -138,7 +142,12 @@ function TOGGLE_buttons(state) {
 	elements.gfx_graphic.enabled = state
 	
 	elements.fld_data_value.visible = state
-	elements.bn_browser.visible = !state
+	if (elements.bn_browser) {
+		elements.bn_browser.visible = !state
+	}
+	else {
+		globals.WEB_browser_error()
+	}
 	
 	//cancel is always an option if in browser mode
 	if (globals.WEB_page_mode == 3) {
@@ -352,7 +361,13 @@ function ACTION_colorize(event) {
 		
 	}
 	
-	elements.bn_browser.html = html
+	if (elements.bn_browser) {
+		elements.bn_browser.html = html
+	}
+	else {
+		globals.WEB_browser_error()
+	}
+	
 	TOGGLE_buttons(false)
 }
 
