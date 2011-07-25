@@ -85,7 +85,13 @@ function REC_on_select(event,webMode,skipLoad,verIndex,fireSelect) {
  */
 function EDIT_on() {
 	var prefix = 'sutra-block-data-'
-	elements.bn_browser.executeJavaScript("editOn('" + prefix + "');")
+	
+	if (elements.bn_browser) {
+		elements.bn_browser.executeJavaScript("editOn('" + prefix + "');")
+	}
+	else {
+		globals.WEB_browser_error()
+	}
 }
 
 /**
@@ -94,6 +100,10 @@ function EDIT_on() {
  */
 function URL_update(webMode) {
 	//see forms.WEB_0F_page__design__buton_tab__content.VISIT_page
+	
+	if (!elements.bn_browser) {
+		globals.WEB_browser_error()
+	}
 	
 	//newly created page...show filler
 	if (forms.WEB_0T_page._addRecord) {
@@ -166,7 +176,13 @@ function URL_update(webMode) {
  */
 function EDIT_off() {
 	var prefix = 'sutra-block-data-'
-	elements.bn_browser.executeJavaScript("editOff('" + prefix + "');")
+	
+	if (elements.bn_browser) {
+		elements.bn_browser.executeJavaScript("editOff('" + prefix + "');")
+	}
+	else {
+		globals.WEB_browser_error()
+	}
 	
 	if (elements.bean_split.bottomComponent) {
 		SPLIT_set(false)

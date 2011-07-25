@@ -1095,6 +1095,6 @@ function WEB_browser_error() {
 		)
 	
 	if (input == 'Yes') {
-		application.exit(true)
+		application.exit()
 	}
 }
