@@ -14,16 +14,6 @@ var WEB_block_version = null;
 var WEB_block_scope = null;
 
 /**
- * @properties={typeid:35,uuid:"953FF820-B3B4-4DCB-822D-E37FBD911426"}
- */
-var WEB_selected_block = null;
-
-/**
- * @properties={typeid:35,uuid:"B8BD989F-8261-4359-A449-507E164E8BF9",variableType:-4}
- */
-var WEB_selected_language = null;
-
-/**
  * @properties={typeid:35,uuid:"24fde543-69cc-4de9-af47-7f7c22221f17"}
  */
 var _license_dsa_mosaic_WEB_cms = 'Module: _dsa_mosaic_WEB_cms \
@@ -113,102 +103,83 @@ var WEB_tag_choose = null;
  * @properties={typeid:24,uuid:"523C0FEA-E636-4CBF-930C-5C4D7B8F601B"}
  */
 function WEB_simple_edit(event) {
-	
-/*
- *	TITLE    :	COM4_simple_cancel
- *			  	
- *	MODULE   :	rsrc_4COM_4_community
- *			  	
- *	ABOUT    :	go to editable tab
- *			  	
- *	INPUT    :	
- *			  	
- *	OUTPUT   :	
- *			  	
- *	REQUIRES :	
- *			  	
- *	MODIFIED :	October 29, 2009 -- Troy Elliott, Data Mosaic	
- *			  	
- */	
 
-var append = '__button_tab'
-var buttonsName = (event.getFormName) ? event.getFormName() : event
-var formName = buttonsName.substring(0,buttonsName.length - append.length)
-
-//get offset from forms
-var tabA = (forms[formName].TAB_header_size) ? forms[formName].TAB_header_size('A') : 40
-var tabB = (forms[formName].TAB_header_size) ? forms[formName].TAB_header_size('B') :  250
-var offset = tabB - tabA - ((forms[formName].TAB_header_size) ? forms[formName].TAB_header_size('space') : 10)
-
-//only go to edit if currently on display
-if (forms[formName].elements.tab_header_detail.tabIndex != 2) {
-	//turn autosave off
-	databaseManager.setAutoSave(false)
+	var append = '__button_tab'
+	var buttonsName = (event.getFormName) ? event.getFormName() : event
+	var formName = buttonsName.substring(0,buttonsName.length - append.length)
 	
-	//set new size of this tab panel
-	forms[formName].elements.tab_header_detail.setSize(forms[formName].elements.tab_header_button.getWidth(),tabB)
+	//get offset from forms
+	var tabA = (forms[formName].TAB_header_size) ? forms[formName].TAB_header_size('A') : 40
+	var tabB = (forms[formName].TAB_header_size) ? forms[formName].TAB_header_size('B') :  250
+	var offset = tabB - tabA - ((forms[formName].TAB_header_size) ? forms[formName].TAB_header_size('space') : 10)
 	
-	//go to editable fields
-	forms[formName].elements.tab_header_detail.tabIndex = 2
-	
-	//move/resize other tab panels
-	forms[formName].elements.tab_main.setLocation(0,forms[formName].elements.tab_main.getLocationY() + offset)
-	forms[formName].elements.tab_main.setSize(forms[formName].elements.tab_header_button.getWidth(),forms[formName].elements.tab_main.getHeight() - offset)
-	
-	//flip graphic
-	forms[buttonsName].elements.btn_cancel.visible = true
-	forms[buttonsName].elements.btn_edit.visible = false
-	
-	//freeze screen
-	globals.TRIGGER_interface_lock(true)
-	
-	if (forms[formName] && forms[formName].elements.gfx_curtain) {
-		forms[formName].elements.gfx_curtain.visible = true
-	}
-}
-//prompt to cancel current edits
-else {
-
-//	var answer = plugins.dialogs.showWarningDialog(
-//							'Cancel?',
-//							'Cancel all header edits?',
-//							'Yes',
-//							'No'
-//						)
-	
-	if (true) {//answer == 'Yes') {
-		//rollback edited records
-		databaseManager.rollbackEditedRecords()
-		
-		//turn autosave back on
-		databaseManager.setAutoSave(true)
+	//only go to edit if currently on display
+	if (forms[formName].elements.tab_header_detail.tabIndex != 2) {
+		//turn autosave off
+		databaseManager.setAutoSave(false)
 		
 		//set new size of this tab panel
-		forms[formName].elements.tab_header_detail.setSize(forms[formName].elements.tab_header_button.getWidth(),tabA)
+		forms[formName].elements.tab_header_detail.setSize(forms[formName].elements.tab_header_button.getWidth(),tabB)
 		
-		//go to display-only fields
-		forms[formName].elements.tab_header_detail.tabIndex = 1
+		//go to editable fields
+		forms[formName].elements.tab_header_detail.tabIndex = 2
 		
 		//move/resize other tab panels
-		forms[formName].elements.tab_main.setLocation(0,forms[formName].elements.tab_main.getLocationY() - offset)
-		forms[formName].elements.tab_main.setSize(forms[formName].elements.tab_header_button.getWidth(),forms[formName].elements.tab_main.getHeight() + offset)
+		forms[formName].elements.tab_main.setLocation(0,forms[formName].elements.tab_main.getLocationY() + offset)
+		forms[formName].elements.tab_main.setSize(forms[formName].elements.tab_header_button.getWidth(),forms[formName].elements.tab_main.getHeight() - offset)
 		
 		//flip graphic
-		forms[buttonsName].elements.btn_cancel.visible = false
-		forms[buttonsName].elements.btn_edit.visible = true
+		forms[buttonsName].elements.btn_cancel.visible = true
+		forms[buttonsName].elements.btn_edit.visible = false
 		
-		//unfreeze screen
-		if (solutionPrefs.config.lockStatus) {
-			globals.TRIGGER_interface_lock(false)
-		}
+		//freeze screen
+		globals.TRIGGER_interface_lock(true)
 		
 		if (forms[formName] && forms[formName].elements.gfx_curtain) {
-			forms[formName].elements.gfx_curtain.visible = false
+			forms[formName].elements.gfx_curtain.visible = true
 		}
 	}
-}
-
+	//prompt to cancel current edits
+	else {
 	
+	//	var answer = plugins.dialogs.showWarningDialog(
+	//							'Cancel?',
+	//							'Cancel all header edits?',
+	//							'Yes',
+	//							'No'
+	//						)
+		
+		if (true) {//answer == 'Yes') {
+			//rollback edited records
+			databaseManager.rollbackEditedRecords()
+			
+			//turn autosave back on
+			databaseManager.setAutoSave(true)
+			
+			//set new size of this tab panel
+			forms[formName].elements.tab_header_detail.setSize(forms[formName].elements.tab_header_button.getWidth(),tabA)
+			
+			//go to display-only fields
+			forms[formName].elements.tab_header_detail.tabIndex = 1
+			
+			//move/resize other tab panels
+			forms[formName].elements.tab_main.setLocation(0,forms[formName].elements.tab_main.getLocationY() - offset)
+			forms[formName].elements.tab_main.setSize(forms[formName].elements.tab_header_button.getWidth(),forms[formName].elements.tab_main.getHeight() + offset)
+			
+			//flip graphic
+			forms[buttonsName].elements.btn_cancel.visible = false
+			forms[buttonsName].elements.btn_edit.visible = true
+			
+			//unfreeze screen
+			if (solutionPrefs.config.lockStatus) {
+				globals.TRIGGER_interface_lock(false)
+			}
+			
+			if (forms[formName] && forms[formName].elements.gfx_curtain) {
+				forms[formName].elements.gfx_curtain.visible = false
+			}
+		}
+	}
 }
 
 /**
@@ -1110,4 +1081,20 @@ function WEB_COOKIE_value_set(response, name, value) {
  */
 function WEB_sutra_trigger() {
 	//any function that calls something in the CODE module comes through here first in the event that not running in data sutra framework
+}
+
+/**
+ * @properties={typeid:24,uuid:"88B20E7F-82B4-4235-87EE-C291469E681A"}
+ */
+function WEB_browser_error() {
+	var input = plugins.dialogs.showErrorDialog(
+				'Error',
+				'The Browser Suite did not initialize properly.\nRestart client now.',
+				'Yes',
+				'No'
+		)
+	
+	if (input == 'Yes') {
+		application.exit(true)
+	}
 }

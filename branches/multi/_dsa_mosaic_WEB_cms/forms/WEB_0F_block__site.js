@@ -70,13 +70,13 @@ function REC_delete() {
  */
 function FOUNDSET_restrict(mungedData) {
 	if (mungedData) {
-		mungedData.split('||')
+		mungedData = mungedData.split('||')
 		
 		var returnContent = mungedData[0]
 		var returnSite = mungedData[1]
 		var noSutra = mungedData[2]
 		
-		return forms.WEB_0F_scrapbook.FOUNDSET_restrict(returnContent, returnSite, noSutra)
+		return forms.WEB_0F_scrapbook.FOUNDSET_restrict(returnContent, returnSite, noSutra, 2)
 	}
 	//find everything if incorrect parameters
 	else {

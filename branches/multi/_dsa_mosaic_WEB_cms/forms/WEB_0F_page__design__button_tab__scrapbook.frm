@@ -151,7 +151,7 @@ typeid:7,
 uuid:"FEF22FBE-73A4-4B67-8562-FA304ACCA483"
 }
 ],
-name:"WEB_0F_page__design__button_tab__contentz",
+name:"WEB_0F_page__design__button_tab__scrapbook",
 namedFoundSet:"separate",
 navigatorID:"-1",
 onDeleteAllRecordsCmdMethodID:"-1",

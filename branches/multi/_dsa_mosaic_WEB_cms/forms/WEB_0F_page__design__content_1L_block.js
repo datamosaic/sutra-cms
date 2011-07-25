@@ -144,7 +144,7 @@ function BLOCK_new(input) {
 		}
 		// or real mode
 		else if (globals.WEB_page_mode == 3) {
-			
+			return forms.WEB_P__block__new._success
 		}
 	}
 }
@@ -324,11 +324,13 @@ function REC_on_select(event,fireSelect) {
 	}
 	
 	function buttonStatus(state) {
+		var editMode = forms.WEB_0F_page.ACTION_edit_get() && state
+		
 		//set position of scope label because actions are showing differently
-		if (forms.WEB_0F_page__design__content_1F_block_data.elements.btn_data_actions.visible != state) {
+		if (forms.WEB_0F_page__design__content_1F_block_data.elements.btn_data_actions.visible != editMode) {
 			
 			//move left
-			if (state) {
+			if (editMode) {
 				forms.WEB_0F_page__design__content_1F_block_data__raw.elements.lbl_scope.setLocation(forms.WEB_0F_page__design__content_1F_block_data__raw.elements.lbl_scope.getLocationX() - 30,forms.WEB_0F_page__design__content_1F_block_data__raw.elements.lbl_scope.getLocationY())
 				forms.WEB_0F_page__design__content_1F_block_data.elements.lbl_scope.setLocation(forms.WEB_0F_page__design__content_1F_block_data.elements.lbl_scope.getLocationX() - 30,forms.WEB_0F_page__design__content_1F_block_data.elements.lbl_scope.getLocationY())
 			}
@@ -340,8 +342,8 @@ function REC_on_select(event,fireSelect) {
 		}
 		
 		//actions available
-		forms.WEB_0F_page__design__content_1F_block_data__raw.elements.btn_data_actions.visible = state
-		forms.WEB_0F_page__design__content_1F_block_data.elements.btn_data_actions.visible = state
+		forms.WEB_0F_page__design__content_1F_block_data__raw.elements.btn_data_actions.visible = editMode
+		forms.WEB_0F_page__design__content_1F_block_data.elements.btn_data_actions.visible = editMode
 	}
 }
 
@@ -504,6 +506,7 @@ function TOGGLE_elements(editAllow) {
 	elements.btn_up.enabled = editAllow
 	
 //	elements.fld_id_block_type.editable = editAllow
+	elements.fld_flag_active.enabled = editAllow
 	elements.fld_id_block_display__combo.visible = editAllow
 	elements.fld_id_block_display__field.visible = !editAllow
 //	elements.fld_params.editable = editAllow	

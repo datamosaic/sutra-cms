@@ -160,9 +160,13 @@ function ACTION_edit_toggle(event,noSave) {
 		forms.WEB_0F_scrapbook__gui.elements.btn_data_actions.enabled = true
 		forms.WEB_0F_scrapbook__data.elements.btn_data_actions.enabled = true
 		
+		//enable raw data mode fields for editing
 		forms.WEB_0F_page__design__content_1F_block_data__raw_2L_block_data.elements.edit_data_value.editable = true
 		forms.WEB_0F_page__design__content_1F_block_data__raw_2L_block_data_configure.elements.edit_data_value.editable = true
 		forms.WEB_0F_page__design__content_1F_block_data__raw_2L_block_data_response.elements.edit_data_value.editable = true
+		
+		//allow to rename scrapbook
+		forms.WEB_0F_scrapbook__header.LBL_block_name__action()
 	}
 	else {
 		//punch down the save button when not cancelled
@@ -205,6 +209,8 @@ function ACTION_edit_toggle(event,noSave) {
 		forms.WEB_0F_page__design__content_1F_block_data__raw_2L_block_data.elements.edit_data_value.editable = false
 		forms.WEB_0F_page__design__content_1F_block_data__raw_2L_block_data_configure.elements.edit_data_value.editable = false
 		forms.WEB_0F_page__design__content_1F_block_data__raw_2L_block_data_response.elements.edit_data_value.editable = false
+		
+		forms.WEB_0F_scrapbook__header.FLD_block_name__save()
 	}
 	
 	//when toggled from the button or cancelled, redo the screen
@@ -389,29 +395,37 @@ function SET_versions() {
 /**
  * @properties={typeid:24,uuid:"573F36C0-638A-494B-80D5-C24DD8BC1688"}
  */
-function FOUNDSET_restrict(returnContent, returnSite, noSutra) {
+function FOUNDSET_restrict(returnContent, returnSite, noSutra, scrapbookScope) {
+	//get parent form
+	var formStack = controller.getFormContext()
+	
+	//this form is included on some other form
+	if (formStack.getMaxRowIndex() > 1) {
+		var formParent = formStack.getValue(formStack.getMaxRowIndex()-1,2)
+	}
+		
 	//return what scope to find records in
 	if (returnContent) {
-		return globals.WEB_block_scope
+		return scrapbookScope
 	}
 	//scope to site unless on install scope
-	else if (returnSite && globals.WEB_block_scope != 3) {
+	else if (returnSite && scrapbookScope != 3) {
 		return utils.hasRecords(forms.WEB_0F_site.foundset) ? forms.WEB_0F_site.id_site : null
 	}
 	//when no data sutra, still try to work
 	else if (noSutra) {
 		//find stuff for the selected site
 		if (utils.hasRecords(forms.WEB_0F_site.foundset)) {
-			foundset.find()
+			forms[formParent].foundset.find()
 			//scope to selected site unless viewing the install level
-			if (globals.WEB_block_scope != 3) {
-				foundset.id_site = forms.WEB_0F_site.id_site
+			if (scrapbookScope != 3) {
+				forms[formParent].foundset.id_site = forms.WEB_0F_site.id_site
 			}
-			foundset.scrapbook_type = 2 //globals.WEB_block_scope
-			var results = foundset.search()
+			forms[formParent].foundset.scrapbook_type = scrapbookScope
+			var results = forms[formParent].foundset.search()
 		}
 		else {
-			foundset.clear()
+			forms[formParent].foundset.clear()
 		}
 	}
 }
@@ -443,7 +457,6 @@ function FORM_on_hide(event) {
 function SPLIT_set(show) {
 	elements.split_sidebar.topComponent	= elements.tab_blocks
 	elements.split_sidebar.bottomComponent = elements.tab_versions
-	
 	
 	if (show) {
 		elements.split_sidebar.dividerLocation = 200

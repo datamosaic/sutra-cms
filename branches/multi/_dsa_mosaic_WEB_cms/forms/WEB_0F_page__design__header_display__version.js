@@ -56,12 +56,12 @@ function FLD_version__data_change(oldValue, newValue, event) {
 /**
  * @properties={typeid:24,uuid:"F7FCCB63-BE93-49DB-A292-873DD6399A16"}
  */
-function TOGGLE_elements(editAllow) {
+function TOGGLE_elements() {
 	//show correct checkbox/edit graphics
 	elements.btn_check_on.visible = (forms.WEB_0F_page__design__content.flag_active) ? true : false
 	elements.btn_check_off.visible = (forms.WEB_0F_page__design__content.flag_active) ? false : true
-	elements.btn_edit_on.visible = (editAllow) ? true : false
-	elements.btn_edit_off.visible = (editAllow) ? false : true
+	elements.btn_edit_on.visible = (forms.WEB_0F_page__design__content.flag_edit) ? true : false
+	elements.btn_edit_off.visible = (forms.WEB_0F_page__design__content.flag_edit) ? false : true
 			
 	//toggle enabled state of combobox based on value
 	if (application.getValueListDisplayValue('WEB_page_version',null) == '<html><body>Click <strong>+</strong> button to create a version') {

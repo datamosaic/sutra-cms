@@ -431,7 +431,7 @@ function ACTION_ok(event) {
 		globals.CODE_hide_form = 1
 		
 		//a record was created
-		_success = true
+		_success = blockRec
 		
 		application.closeFormDialog('cmsBlockNew')
 	}

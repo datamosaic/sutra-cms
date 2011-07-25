@@ -964,8 +964,6 @@ function REC_new() {
  * @properties={typeid:24,uuid:"6C822BD6-4F1B-4B48-B0A2-C695A0DDC47B"}
  */
 function REC_on_select(selectedRecord) {
-
-	
 	//make record clicked in tree be selected on foundset also
 	if (selectedRecord && utils.hasRecords(foundset)) {
 		//just select that pk

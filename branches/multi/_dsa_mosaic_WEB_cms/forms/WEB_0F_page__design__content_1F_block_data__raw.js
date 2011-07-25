@@ -76,7 +76,16 @@ function DATA_action_list(event) {
 function DATA_action_list_control(event) {
 	//pseudo-event comes from the scope of where this is fired
 	var pseudoEvent = new Object()
-	pseudoEvent.getFormName = function() {return 'WEB_0F_page__design__content_1F_block_data__raw'}
+	pseudoEvent.getFormName = function() {return controller.getName()}
 	
 	forms[arguments[0]][arguments[1]](pseudoEvent)
+}
+
+/**
+ * @properties={typeid:24,uuid:"8627B776-64BF-4EBB-9102-D5D821D1D52D"}
+ */
+function TOGGLE_elements(editAllow) {
+	forms.WEB_0F_page__design__content_1F_block_data__raw_2L_block_data.elements.edit_data_value.editable = editAllow
+	forms.WEB_0F_page__design__content_1F_block_data__raw_2L_block_data_configure.elements.edit_data_value.editable = editAllow
+	forms.WEB_0F_page__design__content_1F_block_data__raw_2L_block_data_response.elements.edit_data_value.editable = editAllow
 }

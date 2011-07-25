@@ -28,10 +28,10 @@ function REC_on_select(event,webMode,skipLoad,verIndex,fireSelect) {
 //		}
 		
 		//select page version of tri globals
-	 	forms[formName].SET_globals()
+	 	forms.WEB_0F_page.SET_globals()
 		
 		//set up valuelists for tri globals
-		var pageValid = forms[formName].SET_valuelists()
+		var pageValid = forms.WEB_0F_page.SET_valuelists()
 		
 		//set version junks
 		var activeInfo = forms[formName].SET_versions(skipLoad,!pageValid)
@@ -58,7 +58,7 @@ function REC_on_select(event,webMode,skipLoad,verIndex,fireSelect) {
 		}
 		
 		//are edits allowed
-		var editAllow = forms.WEB_0F_page.ACTION_edit_get()
+//		var editAllow = forms.WEB_0F_page.ACTION_edit_get()
 		
 		//make sure edit button not showing if not supposed to be
 			//MEMO: probably don't want to force a save here...just need edit/save button reset to normal

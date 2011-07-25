@@ -37,8 +37,20 @@ function FORM_on_show(firstShow, event) {
 /**
  * @properties={typeid:24,uuid:"57648298-D5DB-4B84-90DA-FE29AAF766D1"}
  */
-function FOUNDSET_restrict() {
-	forms.WEB_0F_scrapbook.FOUNDSET_restrict(returnContent, returnSite, noSutra)
+function FOUNDSET_restrict(mungedData) {
+	if (mungedData) {
+		mungedData = mungedData.split('||')
+		
+		var returnContent = mungedData[0]
+		var returnSite = mungedData[1]
+		var noSutra = mungedData[2]
+		
+		return forms.WEB_0F_scrapbook.FOUNDSET_restrict(returnContent, returnSite, noSutra, 3)
+	}
+	//find everything if incorrect parameters
+	else {
+		return '^='
+	}
 }
 
 /**

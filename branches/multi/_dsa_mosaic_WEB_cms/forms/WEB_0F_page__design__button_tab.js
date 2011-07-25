@@ -29,7 +29,7 @@ function TAB_change(formName,elemName) {
 		forms.WEB_0F_page__design.elements.tab_header_detail.tabIndex = 3
 	}
 	//standard header
-	else if (forms.WEB_0F_page__design.elements.tab_header_detail.tabIndex != 1) {
+	else if (forms.WEB_0F_page__design.elements.tab_header_detail.tabIndex == 3) {
 		forms.WEB_0F_page__design.elements.tab_header_detail.tabIndex = 1
 	}
 

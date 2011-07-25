@@ -264,3 +264,24 @@ function TAB_change(event) {
 //	
 //	forms[elements.tab_detail.getTabFormNameAt(elements.tab_detail.tabIndex)].REC_on_select()
 }
+
+/**
+ * @properties={typeid:24,uuid:"90ABEFE5-34A2-4007-89FA-AF32062CD7F1"}
+ */
+function TOGGLE_elements(editAllow) {
+	//this form
+	elements.fld_flag_ssl.enabled = editAllow
+	elements.fld_title_override.editable = editAllow
+	elements.fld_description.editable = editAllow
+	elements.btn_add.enabled = editAllow
+	
+	//attributes
+	forms.WEB_0F_page__design__properties_1L_attribute.elements.btn_delete.visible = editAllow
+	forms.WEB_0F_page__design__properties_1L_attribute.elements.fld_id_site_attribute.visible = editAllow
+	forms.WEB_0F_page__design__properties_1L_attribute.elements.fld_attribute_key.visible = !editAllow
+	forms.WEB_0F_page__design__properties_1L_attribute.elements.fld_attribute_value.editable = editAllow
+	
+	//versions
+	forms.WEB_0F_page__design__properties_1L_version.elements.btn_delete.visible = editAllow
+	forms.WEB_0F_page__design__properties_1L_version.elements.fld_version_name.editable = editAllow
+}

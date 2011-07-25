@@ -80,7 +80,7 @@ function LBL_block_name__action() {
 	elements.lbl_block_name.visible = true
 	elements.lbl_display.visible = false
 	
-	elements.fld_block_name.requestFocus(false)
+//	elements.fld_block_name.requestFocus(false)
 }
 
 /**

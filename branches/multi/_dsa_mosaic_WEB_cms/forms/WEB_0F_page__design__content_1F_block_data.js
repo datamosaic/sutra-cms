@@ -76,7 +76,7 @@ function DATA_action_list(event) {
 function DATA_action_list_control(event) {
 	//pseudo-event comes from the scope of where this is fired
 	var pseudoEvent = new Object()
-	pseudoEvent.getFormName = function() {return elements.tab_detail.getTabFormNameAt(elements.tab_detail.tabIndex)}
+	pseudoEvent.getFormName = function() {return controller.getName()/*elements.tab_detail.getTabFormNameAt(elements.tab_detail.tabIndex)*/}
 	
 	forms[arguments[0]][arguments[1]](pseudoEvent)
 }

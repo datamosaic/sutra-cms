@@ -1,4 +1,9 @@
 /**
+ * @properties={typeid:35,uuid:"BA09B348-4B82-45BC-9ABB-BBC73E3CC672",variableType:-4}
+ */
+var _loadFilters = true;
+
+/**
  * @properties={typeid:35,uuid:"04fde543-69cc-4de9-af47-7f7c22221f28"}
  */
 var _license_dsa_mosaic_WEB_cms = 'Module: _dsa_mosaic_WEB_cms \
@@ -125,10 +130,7 @@ function FORM_on_show(firstShow, event) {
 				forms.WEB_TB__web_mode.elements.gfx_tool_center.enabled = true
 				forms.WEB_TB__web_mode.elements.gfx_tool_right.enabled = true
 				
-				forms.WEB_0F_page__design__content_1L_area.TOGGLE_elements(true)
-				forms.WEB_0F_page__design__content_1L_block.TOGGLE_elements(true)
-				forms.WEB_0F_page__design__content_1F_block_data__textarea.TOGGLE_elements(false)
-				forms.WEB_0F_page__design__header_display__version.TOGGLE_elements(false)
+				forms.WEB_A__page.TOGGLE_edit_mode(false)
 			}
 			else {// if (TRIGGER_mode_set() != "BROWSER") {
 				//enable rec_on_select of the block type form
@@ -199,16 +201,318 @@ function FIND_post_process(count) {
  * @properties={typeid:24,uuid:"C24345A2-A310-4E68-9083-1D9F656002BB"}
  */
 function ACTION_edit_get() {
-	//disable edits if edit flag not set
-	if (!utils.hasRecords(forms.WEB_0F_page__design__content.foundset) || !forms.WEB_0F_page__design__content.flag_edit) {
-			//disable edits for active or non-latest versions
-			//utils.hasRecords(fsVersions) && fsVersions.version_number != fsVersions.getSize() || fsVersions.flag_active) {
-		var editAllow = false
-	}
-	//enable edits
-	else {
-		var editAllow = true
+//	//disable edits if edit flag not set
+//	if (!utils.hasRecords(forms.WEB_0F_page__design__content.foundset) || !forms.WEB_0F_page__design__content.flag_edit) {
+//			//disable edits for active or non-latest versions
+//			//utils.hasRecords(fsVersions) && fsVersions.version_number != fsVersions.getSize() || fsVersions.flag_active) {
+//		var editAllow = false
+//	}
+//	//enable edits
+//	else {
+//		var editAllow = true
+//	}
+	
+	return forms.WEB_A__page._editMode
+}
+
+/**
+ * @properties={typeid:24,uuid:"BBDA7706-C829-49AD-A0C6-C6738AFE0402"}
+ */
+function SET_globals() {
+	//this is initial run; set filters to site defaults
+	if (_loadFilters && utils.hasRecords(forms.WEB_0F_site.foundset)) {
+		//turn off default load
+		_loadFilters = false
+		
+		if (utils.hasRecords(foundset)) {
+			var siteRec = web_page_to_site.getSelectedRecord()
+		}
+		else {
+			var siteRec = forms.WEB_0F_site.foundset.getSelectedRecord()
+		}
+		
+		for (var i = 1; i <= siteRec.web_site_to_site_platform.getSize(); i++) {
+			var record = siteRec.web_site_to_site_platform.getRecord(i)
+			if (record.flag_default) {
+				var platform = record
+				break
+			}
+		}
+		
+		for (var i = 1; i <= siteRec.web_site_to_site_language.getSize(); i++) {
+			var record = siteRec.web_site_to_site_language.getRecord(i)
+			if (record.flag_default) {
+				var language = record
+				break
+			}
+		}
+		
+		for (var i = 1; i <= siteRec.web_site_to_site_group.getSize(); i++) {
+			var record = siteRec.web_site_to_site_group.getRecord(i)
+			if (record.flag_default) {
+				var group = record
+				break
+			}
+		}
+		
+		//set globals 
+		globals.WEB_page_platform = platform.id_site_platform.toString()
+		globals.WEB_page_language = language.id_site_language.toString()
+		globals.WEB_page_group = group.id_site_group.toString()
 	}
 	
-	return editAllow
+	
+	//store page version of platform
+	var pageVersion = null
+	for (var i = 1; i <= web_page_to_platform.getSize(); i++) {
+		var record = web_page_to_platform.getRecord(i)
+		if (record.id_site_platform.toString() == globals.WEB_page_platform) {
+			pageVersion = record
+			break
+		}
+	}
+	if (pageVersion) {
+		forms.WEB_0F_page__design__header_display__platform._platform.loadRecords(pageVersion.id_platform)
+	}
+	else {
+		forms.WEB_0F_page__design__header_display__platform._platform.clear()
+	}
+	
+	//store page version of language
+	pageVersion = null
+	for (var i = 1; i <= web_page_to_language.getSize(); i++) {
+		var record = web_page_to_language.getRecord(i)
+		if (record.id_site_language.toString() == globals.WEB_page_language) {
+			pageVersion = record
+			break
+		}
+	}
+	if (pageVersion) {
+		forms.WEB_0F_page__design__header_display__language._language.loadRecords(pageVersion.id_language)
+	}
+	else {
+		forms.WEB_0F_page__design__header_display__language._language.clear()
+	}
+	
+	//store page version of group
+	pageVersion = null
+	for (var i = 1; i <= web_page_to_group.getSize(); i++) {
+		var record = web_page_to_group.getRecord(i)
+		if (record.id_site_group.toString() == globals.WEB_page_group) {
+			pageVersion = record
+			break
+		}
+	}
+	if (pageVersion) {
+		forms.WEB_0F_page__design__header_display__group._group.loadRecords(pageVersion.id_group)
+	}
+	else {
+		forms.WEB_0F_page__design__header_display__group._group.clear()
+	}
+	
+	//update tooltips for page version globals
+	forms.WEB_0F_page__design__header_display__platform.SET_tooltip()
+	forms.WEB_0F_page__design__header_display__language.SET_tooltip()
+	forms.WEB_0F_page__design__header_display__group.SET_tooltip()
+}
+
+/**
+ * @properties={typeid:24,uuid:"4F5E8573-8472-4F69-913D-6029EFFE9D26"}
+ */
+function SET_valuelists() {
+	//from left to right...
+	//set up valuelists showing all values for site, but with enabled versions for what selected
+		//return value is site dictionary pk
+	//TODO: big todo....all these finds for every combination in the versions table has to be slow
+	
+	var fsPlatformAll = forms.WEB_0F_site.web_site_to_site_platform
+	var fsLanguageAll = forms.WEB_0F_site.web_site_to_site_language
+	var fsGroupAll = forms.WEB_0F_site.web_site_to_site_group
+	
+	var fsPlatform = web_page_to_platform
+	var fsLanguage = web_page_to_language
+	var fsGroup = web_page_to_group
+	
+	var fsVersions = databaseManager.getFoundSet('sutra_cms','web_version')
+	
+	var valid
+	
+	var vlPlatformDisplay = new Array()
+	var vlPlatformReal = new Array()
+	var vlLanguageDisplay = new Array()
+	var vlLanguageReal = new Array()
+	var vlGroupDisplay = new Array()
+	var vlGroupReal = new Array()
+	
+//PLATFORMS
+	
+	//grab all created platforms for this page (used to check and see if page version created)
+	var keysPlatform = databaseManager.getFoundSetDataProviderAsArray(fsPlatform, 'id_site_platform')
+	keysPlatform = keysPlatform.map(function(item) {return item.toString()})
+	
+	//loop over all platforms and only show valid ones as an option
+	if (utils.hasRecords(fsPlatformAll)) {
+		for (var i = 1; i <= fsPlatformAll.getSize(); i++) {
+			//reset the check for validity to not valid
+			valid = false
+			
+			//site level record
+			var recSite = fsPlatformAll.getRecord(i)
+			
+			//1- is there a page scoped record
+			var posn = keysPlatform.indexOf(recSite.id_site_platform.toString())
+			if (posn >= 0) {
+				//page level record
+				var recPage = fsPlatform.getRecord(posn + 1)
+				
+				//2- is there a version stack
+				fsVersions.find()
+				fsVersions.id_platform = recPage.id_platform.toString()
+				var results = fsVersions.search()
+				if (results) {
+					valid = true
+					
+					//this is the selected record and it's valid
+					if (utils.hasRecords(forms.WEB_0F_page__design__header_display__platform._platform) && forms.WEB_0F_page__design__header_display__platform._platform.id_platform.toString() == recPage.id_platform.toString()) {
+						var platformValid = true
+					}
+				}
+			}
+			
+			//push on as valid
+			if (valid) {
+				var display = '<html><body><font color="#333333"><strong>' + recSite.platform_name + '</strong></font>'
+				vlPlatformDisplay.push(display)
+			}
+			//invalid option, push greyed out
+			else {
+				var display = '<html><body><font color="#4C4C4C">' + recSite.platform_name + '</font>'
+				vlPlatformDisplay.push(display)
+			}
+			vlPlatformReal.push(recSite.id_site_platform)
+		}
+	}
+	
+	//set valuelist
+	application.setValueListItems('WEB_page_platform',vlPlatformDisplay,vlPlatformReal)
+	
+	
+//LANGUAGES
+	
+	//grab all created languages for this page (used to check and see if page version created)
+	var keysLanguage = databaseManager.getFoundSetDataProviderAsArray(fsLanguage, 'id_site_language')
+	keysLanguage = keysLanguage.map(function(item) {return item.toString()})
+	
+	//loop over all languages and only show valid ones as an option
+	if (utils.hasRecords(fsLanguageAll)) {
+		for (var i = 1; i <= fsLanguageAll.getSize(); i++) {
+			//reset the check for validity to not valid
+			valid = false
+			
+			//site level record
+			var recSite = fsLanguageAll.getRecord(i)
+			
+			//selected platform valid, keep checking
+			if (platformValid) {
+				//1- is there a page scoped record
+				var posn = keysLanguage.indexOf(recSite.id_site_language.toString())
+				if (posn >= 0) {
+					//page level record
+					var recPage = fsLanguage.getRecord(posn + 1)
+					
+					//2- is there a version stack
+					fsVersions.find()
+					fsVersions.id_platform = forms.WEB_0F_page__design__header_display__platform._platform.id_platform.toString()
+					fsVersions.id_language = recPage.id_language.toString()
+					var results = fsVersions.search()
+					if (results) {
+						valid = true
+						
+						//this is the selected record and it's valid
+						if (utils.hasRecords(forms.WEB_0F_page__design__header_display__language._language) && forms.WEB_0F_page__design__header_display__language._language.id_language.toString() == recPage.id_language.toString()) {
+							var languageValid = true
+						}
+					}
+				}
+			}
+			
+			//push on as valid
+			if (valid) {
+				var display = '<html><body><font color="#333333"><strong>' + recSite.language_name + '</strong></font>'
+				vlLanguageDisplay.push(display)
+			}
+			//invalid option, push greyed out
+			else {
+				var display = '<html><body><font color="#4C4C4C">' + recSite.language_name + '</font>'
+				vlLanguageDisplay.push(display)
+			}
+			vlLanguageReal.push(recSite.id_site_language)
+		}
+	}
+	
+	//set valuelist
+	application.setValueListItems('WEB_page_language',vlLanguageDisplay,vlLanguageReal)
+	
+	
+//GROUPS
+	
+	//grab all created groups for this page (used to check and see if page version created)
+	var keysGroup = databaseManager.getFoundSetDataProviderAsArray(fsGroup, 'id_site_group')
+	keysGroup = keysGroup.map(function(item) {return item.toString()})
+	
+	//loop over all groups and only show valid ones as an option
+	if (utils.hasRecords(fsGroupAll)) {
+		for (var i = 1; i <= fsGroupAll.getSize(); i++) {
+			//reset the check for validity to not valid
+			valid = false
+			
+			//site level record
+			var recSite = fsGroupAll.getRecord(i)
+			
+			//selected platform and language valid, keep checking
+			if (platformValid && languageValid) {
+				
+				//1- is there a page scoped record
+				var posn = keysGroup.indexOf(recSite.id_site_group.toString())
+				if (posn >= 0) {
+					//page level record
+					var recPage = fsGroup.getRecord(posn + 1)
+					
+					//2- is there a version stack
+					fsVersions.find()
+					fsVersions.id_platform = forms.WEB_0F_page__design__header_display__platform._platform.id_platform.toString()
+					fsVersions.id_language = forms.WEB_0F_page__design__header_display__language._language.id_language.toString()
+					fsVersions.id_group = recPage.id_group.toString()
+					var results = fsVersions.search()
+					if (results) {
+						valid = true
+						
+						//this is the selected record and it's valid
+						if (utils.hasRecords(forms.WEB_0F_page__design__header_display__group._group) && forms.WEB_0F_page__design__header_display__group._group.id_group.toString() == recPage.id_group.toString()) {
+							var groupValid = true
+						}
+					}
+				}
+			}
+			
+			//push on as valid
+			if (valid) {
+				var display = '<html><body><font color="#333333"><strong>' + recSite.group_name + '</strong></font>'
+				vlGroupDisplay.push(display)
+			}
+			//invalid option, push greyed out
+			else {
+				var display = '<html><body><font color="#4C4C4C">' + recSite.group_name + '</font>'
+				vlGroupDisplay.push(display)
+			}
+			vlGroupReal.push(recSite.id_site_group)
+		}
+	}
+	
+	//set valuelist
+	application.setValueListItems('WEB_page_group',vlGroupDisplay,vlGroupReal)
+	
+	
+	//the platform-language-group combo selected is valid
+	return platformValid && languageValid && groupValid
 }
