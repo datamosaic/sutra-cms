@@ -734,7 +734,7 @@ function TOGGLE_fields(pageType) {
 	if (forms.WEB_0F_page__design__button_tab.elements.tab_button.tabIndex == 1) {
 		//folder or link type of page or just creating a new record
 		if (!page || forms.WEB_0T_page._addRecord || pageHide) {
-			forms.WEB_0F_page__design.elements.tab_main.tabIndex = 3
+			forms.WEB_0F_page__design.elements.tab_main.tabIndex = 4
 		}
 		//normal type of page
 		else {

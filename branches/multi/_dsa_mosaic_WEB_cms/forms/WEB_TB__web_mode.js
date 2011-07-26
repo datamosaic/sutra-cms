@@ -146,22 +146,42 @@ function ACTION_version(input) {
 	//called to depress menu
 	if (input instanceof JSEvent) {
 		//menu items
-		var versions = application.getValueListItems('WEB_page_version')
-		var vlDisplay = versions.getColumnAsArray(1)
-		var vlReal = versions.getColumnAsArray(2)
+//		var versions = application.getValueListItems('WEB_page_version')
+//		var vlDisplay = versions.getColumnAsArray(1)
+//		var vlReal = versions.getColumnAsArray(2)
+		var fsVersions = forms.WEB_0F_page__design__content.foundset
 		
 		//set up menu with arguments
 		var menu = new Array()
-		for ( var i = 0 ; i < vlDisplay.length ; i++ ) {
-			if (globals.WEB_page_version == vlReal[i]) {
-				menu[i] = plugins.popupmenu.createCheckboxMenuItem(vlDisplay[i],ACTION_version)
+		for ( var i = 1 ; i <= fsVersions.getSize() ; i++ ) {
+			var recVersion = fsVersions.getRecord(i)
+			
+			var displayVal = ''
+			
+			if (recVersion.flag_active) {
+				displayVal += '<html><body><strong>ACTIVE</strong> '
+			}
+			else if (i == 1) {
+				displayVal += 'Working copy'
+			}
+			
+			if (i > 1 || recVersion.flag_active) {
+				displayVal += 'Version ' + recVersion.version_number + ' (' + globals.CODE_date_format(recVersion.rec_modified,'current') + ')'
+				
+				if (recVersion.version_name) {
+					displayVal += ': ' + recVersion.version_name
+				}
+			}
+			
+			if (globals.WEB_page_version.toString() == recVersion.id_version.toString()) {
+				menu[i] = plugins.popupmenu.createCheckboxMenuItem(displayVal,ACTION_version)
 				menu[i].setSelected(true)
 			}
 			else {
-				menu[i] = plugins.popupmenu.createMenuItem(vlDisplay[i],ACTION_version)
+				menu[i] = plugins.popupmenu.createMenuItem(displayVal,ACTION_version)
 			}
 			
-			menu[i].setMethodArguments(vlReal[i])
+			menu[i].setMethodArguments(recVersion.id_version)
 			
 			if (menu[i].text == '-') {
 				menu[i].setEnabled(false)
@@ -176,7 +196,7 @@ function ACTION_version(input) {
 	}
 	//menu shown and item chosen
 	else {
-		//update selected group
+		//update selected version
 		globals.WEB_page_version = input
 		
 		//show/hide edit button
@@ -184,6 +204,32 @@ function ACTION_version(input) {
 		
 		//regenerate html
 		forms.WEB_0F_page__browser.URL_update()
+		
+//		//compare value in global with valuelist
+//		var dataset = application.getValueListItems('WEB_page_version')
+//		var vlReal = dataset.getColumnAsArray(2)
+//		for (var i = 0; i < vlReal.length; i++) {
+//			if (vlReal[i] == newValue) {
+//				break
+//			}
+//		}
+//		
+//		//match found
+//		var displayVal = dataset.getValue(i + 1,1)
+//		
+//		//use display value to track down actual record
+//		if (displayVal == 'Working copy') {
+//			var ver = forms.WEB_0F_page__design__content.foundset.getSize()
+//		}
+//		else {
+//			var ver = utils.stringToNumber(utils.stringMiddle(displayVal,utils.stringPosition(displayVal,'Version ',0,1) + 8,utils.stringPosition(displayVal,'(',0,1) - utils.stringPosition(displayVal,'Version ',0,1) - 8))
+//		}
+	
+		//assumption here is that foundset is in sync with this valuelist (convert version to reverse ordered record list)
+		forms.WEB_0F_page__design__content.foundset.selectRecord(globals.WEB_page_version)
+		
+		//update display and reload version valuelist; don't reload versions foundset
+		forms.WEB_0F_page__browser.REC_on_select(null,null,true)
 	}
 }
 
@@ -201,7 +247,7 @@ function BREAD_update() {
 		label += '<br>'
 	}
 	
-	label += 'Version ' + application.getValueListDisplayValue('WEB_page_version',globals.WEB_page_version).substr(12)
+	label += '' + application.getValueListDisplayValue('WEB_page_version',globals.WEB_page_version)
 	
 	if (!simple) {
 		label += '<br>'

@@ -13,38 +13,23 @@ var _license_dsa_mosaic_WEB_cms = 'Module: _dsa_mosaic_WEB_cms \
  * @properties={typeid:24,uuid:"570EDE4C-54AB-4279-A57B-74B45922F1E5"}
  */
 function DATA_action_list(event) {
-	// get block type
-	var params = new Array(id_block.toString())
-	var sql =	"select id_block_type, form_name from web_block_type where " +
-					"web_block_type.id_block_type = " +
-					"(select id_block_type from web_block where " +
-					"web_block.id_block = ?)"
-	var dataset = databaseManager.getDataSetByQuery(
-					controller.getServerName(), sql, params, -1)	
-	
-	if ( dataset.getMaxRowIndex() ) {
-		var typeID = dataset.getValue(1,1)
-		var formName = dataset.getValue(1,2)
-	}
-	else { 
-		return "No matching block type found"
-	}
-
-	
-	// input method names for block type
-	var params = [typeID,"Block"]
-	var sql =	"select input_name, method_name from web_block_action_client where " +
-					"id_block_type = ? AND action_type = ?"
-	var dataset = databaseManager.getDataSetByQuery(
-					controller.getServerName(), sql, params, -1)
-
-	if ( dataset.getMaxRowIndex() ) {
-		//sort alphabetically
-		dataset.sort(1,true)
-		
+	//we have the records we need
+	if (utils.hasRecords(foundset.getSelectedRecord(),'web_block_to_block_type.web_block_type_to_block_action_client')) {
 		//menu items
-		var valuelist 	= dataset.getColumnAsArray(1)
-		var methods		= dataset.getColumnAsArray(2)
+		var valuelist = new Array()
+		var methods = new Array()
+		
+		//form where these methods will run
+		var formName = web_block_to_block_type.form_name
+		
+		//loop over foundset and pick up the block records
+		for (var i = 1; i <= web_block_to_block_type.web_block_type_to_block_action_client.getSize(); i++) {
+			var record = web_block_to_block_type.web_block_type_to_block_action_client.getRecord(i)
+			if (record.action_type == 'Block') {
+				valuelist.push(record.input_name)
+				methods.push(record.method_name)
+			}
+		}
 		
 		//set up menu with arguments
 		var menu = new Array()

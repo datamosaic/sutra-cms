@@ -64,16 +64,51 @@ function BLOCK_action_list() {
 function BLOCK_action_list_control(scope,copy,promote) {
 	var blockRec = web_scope_to_block.getSelectedRecord()
 	
+	var input = plugins.dialogs.showInputDialog(
+					'Name',
+					'Please (re)name the block you are working with',
+					blockRec.block_name
+			)
+	
 	//make a copy of this block
 	if (copy) {
-		plugins.dialogs.showInfoDialog(
-					'Coming soon',
-					'Copying this block as a scrapbook is coming soon...'
-			)
+		//create new block record
+		var fsBlock = databaseManager.getFoundSet('sutra_cms','web_block')
+		var destBlock = fsBlock.getRecord(fsBlock.newRecord(false,true))
+		
+		//get source block version
+		var srcBlockVer = blockRec.web_block_to_block_version.getRecord(1)
+		
+		//create destination block version record
+		var destBlockVer = globals.CODE_record_duplicate(srcBlockVer,[
+											"web_block_version_to_block_data",
+											"web_block_version_to_block_data_configure"
+										])
+		
+		//set datapoints on new block version
+		destBlockVer.id_block = destBlock.id_block
+		destBlockVer.flag_active = 1
+		destBlockVer.version_number = 1
+		destBlockVer.version_name = 'Initial version'
+		destBlockVer.version_description = 'Copied: ' + application.getValueListDisplayValue('WEB_scope_type',blockRec.scope_type) + ' content\n' +
+			'"' + blockRec.block_name + '", version ' + blockRec.web_block_to_block_version.version_number + '\n' +
+			'ID: ' + blockRec.id_block.toString()
+		
+		//assign scope to the newly copied record
+		destBlock.scope_type = scope
+		destBlock.block_name = input
+		
+		if (scope == 1) {
+			destBlock.id_page = forms.WEB_0F_page.id_page
+		}
+		else if (scope == 2) {
+			destBlock.id_site = forms.WEB_0F_page.id_site
+		}
 	}
 	//assign this a little bit higher
 	else if (promote) {
 		blockRec.scope_type = scope
+		blockRec.block_name = input
 		
 		if (scope == 1) {
 			blockRec.id_page = forms.WEB_0F_page.id_page
@@ -85,8 +120,6 @@ function BLOCK_action_list_control(scope,copy,promote) {
 			blockRec.id_page = null
 			blockRec.id_site = null
 		}
-		
-		databaseManager.saveData(blockRec)
 	}
 }
 
@@ -220,21 +253,19 @@ function REC_delete() {
 					)
 	
 	if (delRec == 'Yes') {
+		//get record to delete
+		var recDelete = foundset.getSelectedRecord()
 		
-		var recSelect = controller.getSelectedIndex()
-		
-		//disale/enable rec on select on the block type forms when deleting
-		controller.deleteRecord()
-		
-		var loop = recSelect
-		while (loop <= controller.getMaxRecordIndex()) {
-			controller.setSelectedIndex(loop)
-			row_order--
-			loop++
+		for (var i = 1; i <= foundset.getSize(); i++) {
+			var record = foundset.getRecord(i)
+			
+			if (record.row_order > recDelete.row_order) {
+				record.row_order--
+			}
 		}
 		
-		controller.sort('row_order asc')
-		controller.setSelectedIndex(recSelect)
+		//TODO: disable/enable rec on select on the block type forms when deleting?
+		foundset.deleteRecord(recDelete)
 		
 		if (!utils.hasRecords(foundset)) {
 			REC_on_select()
@@ -268,19 +299,12 @@ function REC_on_select(event,fireSelect) {
 		if (utils.hasRecords(web_scope_to_block)) {
 //			//normal non-linked items
 //			if (!web_scope_to_block.scope_type) {
-				// input method names for block type
-				var params = [web_scope_to_block.id_block_type.toString()]
-				var sql =	"select input_name, method_name from web_block_action_client where " +
-								"web_block_action_client.id_block_type = ?"
-				var dataset = databaseManager.getDataSetByQuery(
-								controller.getServerName(), sql, params, -1)
-			
-				if ( dataset.getMaxRowIndex() ) {
-					//there are actions actions available
+				//there are actions actions available	//TODO: are there any "block" actions?
+				if (utils.hasRecords(foundset.getSelectedRecord(),'web_scope_to_block.web_block_to_block_type.web_block_type_to_block_action_client')) {
 					buttonStatus(true)
 				}
+				//no actions available
 				else {
-					//no actions available
 					buttonStatus(false)		
 				}
 //			}
@@ -519,6 +543,10 @@ function FLD_id_block_display(event) {
  * @properties={typeid:24,uuid:"52D40AE1-4066-438F-BDF9-AF794DCCE2C6"}
  */
 function FLD_flag_active__data_change(oldValue, newValue, event) {
-	databaseManager.saveData()
+	//save data when autosave on
+	if (databaseManager.getAutoSave()) {
+		databaseManager.saveData()
+	}
+	
 	return true
 }

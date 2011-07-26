@@ -165,7 +165,7 @@ function ACTION_ok(event) {
 								var fsScope = forms.WEB_0F_page__design__content_1L_block.foundset
 								var scopeRec = fsScope.getRecord(fsScope.newRecord(false,true))
 								
-								scopeRec.row_order = foundset.getSize()
+								scopeRec.row_order = fsScope.getSize()
 								databaseManager.saveData(scopeRec)
 							}
 							
@@ -260,7 +260,7 @@ function ACTION_ok(event) {
 							var fsScope = forms.WEB_0F_page__design__content_1L_block.foundset
 							var scopeRec = fsScope.getRecord(fsScope.newRecord(false,true))
 							
-							scopeRec.row_order = foundset.getSize()
+							scopeRec.row_order = fsScope.getSize()
 							databaseManager.saveData(scopeRec)
 						}
 						
@@ -350,7 +350,7 @@ function ACTION_ok(event) {
 							var fsScope = forms.WEB_0F_page__design__content_1L_block.foundset
 							var scopeRec = fsScope.getRecord(fsScope.newRecord(false,true))
 							
-							scopeRec.row_order = foundset.getSize()
+							scopeRec.row_order = fsScope.getSize()
 							databaseManager.saveData(scopeRec)
 						}
 						

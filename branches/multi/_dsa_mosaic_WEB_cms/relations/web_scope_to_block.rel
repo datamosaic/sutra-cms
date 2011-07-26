@@ -1,4 +1,3 @@
-allowCreationRelatedRecords:true,
 foreignDataSource:"db:/sutra_cms/web_block",
 items:[
 {foreignColumnName:"id_block",primaryDataProviderID:"id_block",typeid:23,uuid:"9B5973DD-0E92-4BDB-AD47-EC457418AE7C"}

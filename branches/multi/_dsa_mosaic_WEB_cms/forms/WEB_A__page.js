@@ -35,7 +35,7 @@ function ACTION_edit(event) {
  * @properties={typeid:24,uuid:"D5876A87-E0EE-4FFD-A5A9-CEF098FDA60F"}
  */
 function ACTION_cancel(event) {
-	//enter edit mode
+	//leave edit mode without saving
 	TOGGLE_edit_mode()
 	
 	//toggle elements
@@ -51,9 +51,9 @@ function ACTION_cancel(event) {
  *
  * @properties={typeid:24,uuid:"EA4BF701-A1BA-44F5-98BF-F5D550B45F0A"}
  */
-function ACTION_save(event,noSave) {
-	//enter edit mode
-	TOGGLE_edit_mode(null,noSave)
+function ACTION_save(event) {
+	//leave edit mode and save
+	TOGGLE_edit_mode(null,true)
 	
 	//toggle elements
 //	elements.btn_cancel.visible = false

@@ -22,10 +22,10 @@ function FORM_on_load(event) {
  * @properties={typeid:24,uuid:"1A839919-BFA6-430E-B101-41D09279345A"}
  */
 function FLD_version__data_change(oldValue, newValue, event) {
-	//our uuids are byte[] and i can't convert back to uui, so here's a hacky way to figure out which version we're on
+	//our uuids are byte[] and i can't convert back to uuid, so here's a hacky way to figure out which version we're on
 
 	//compare value in global with valuelist
-	var dataset = application.getValueListItems('WEB_block_version')
+	var dataset = application.getValueListItems('WEB_page_version')
 	var vlReal = dataset.getColumnAsArray(2)
 	for (var i = 0; i < vlReal.length; i++) {
 		if (vlReal[i] == newValue) {
@@ -299,7 +299,8 @@ function ADD_version(event) {
 								//block is unique, duplicate
 								else {
 									//create new block record
-									var destBlock = destScope.web_scope_to_block.getRecord(destScope.web_scope_to_block.newRecord(false,true))
+									var fsBlock = databaseManager.getFoundSet('sutra_cms','web_block')
+									var destBlock = fsBlock.getRecord(fsBlock.newRecord(false,true))
 									
 									//re-hook this unique block back in to the current scope
 									destScope.id_block = destBlock.id_block

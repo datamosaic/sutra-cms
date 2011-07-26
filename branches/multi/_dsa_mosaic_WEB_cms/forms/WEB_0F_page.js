@@ -264,11 +264,13 @@ function SET_globals() {
 	
 	//store page version of platform
 	var pageVersion = null
-	for (var i = 1; i <= web_page_to_platform.getSize(); i++) {
-		var record = web_page_to_platform.getRecord(i)
-		if (record.id_site_platform.toString() == globals.WEB_page_platform) {
-			pageVersion = record
-			break
+	if (utils.hasRecords(web_page_to_platform)) {
+		for (var i = 1; i <= web_page_to_platform.getSize(); i++) {
+			var record = web_page_to_platform.getRecord(i)
+			if (record.id_site_platform.toString() == globals.WEB_page_platform) {
+				pageVersion = record
+				break
+			}
 		}
 	}
 	if (pageVersion) {
@@ -280,11 +282,13 @@ function SET_globals() {
 	
 	//store page version of language
 	pageVersion = null
-	for (var i = 1; i <= web_page_to_language.getSize(); i++) {
-		var record = web_page_to_language.getRecord(i)
-		if (record.id_site_language.toString() == globals.WEB_page_language) {
-			pageVersion = record
-			break
+	if (utils.hasRecords(web_page_to_language)) {
+		for (var i = 1; i <= web_page_to_language.getSize(); i++) {
+			var record = web_page_to_language.getRecord(i)
+			if (record.id_site_language.toString() == globals.WEB_page_language) {
+				pageVersion = record
+				break
+			}
 		}
 	}
 	if (pageVersion) {
@@ -296,18 +300,20 @@ function SET_globals() {
 	
 	//store page version of group
 	pageVersion = null
-	for (var i = 1; i <= web_page_to_group.getSize(); i++) {
-		var record = web_page_to_group.getRecord(i)
-		if (record.id_site_group.toString() == globals.WEB_page_group) {
-			pageVersion = record
-			break
+	if (utils.hasRecords(web_page_to_group)) {
+		for (var i = 1; i <= web_page_to_group.getSize(); i++) {
+			var record = web_page_to_group.getRecord(i)
+			if (record.id_site_group.toString() == globals.WEB_page_group) {
+				pageVersion = record
+				break
+			}
 		}
-	}
-	if (pageVersion) {
-		forms.WEB_0F_page__design__header_display__group._group.loadRecords(pageVersion.id_group)
-	}
-	else {
-		forms.WEB_0F_page__design__header_display__group._group.clear()
+		if (pageVersion) {
+			forms.WEB_0F_page__design__header_display__group._group.loadRecords(pageVersion.id_group)
+		}
+		else {
+			forms.WEB_0F_page__design__header_display__group._group.clear()
+		}
 	}
 	
 	//update tooltips for page version globals

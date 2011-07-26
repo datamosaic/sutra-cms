@@ -11,7 +11,7 @@ showClick:false,
 showFocus:false,
 size:"60,14",
 styleClass:"button",
-text:"Snapshot",
+text:"Versions",
 transparent:true,
 typeid:7,
 uuid:"0360BE05-1C8D-4480-817F-2EA982FB9689"
