@@ -51,7 +51,7 @@ function BLOCK_scale(event) {
 		dataRows.width.data_value = fileOBJ.width
 		dataRows.height.data_value = fileOBJ.height
 		
-		databaseManager.saveData(fsBlockData)
+//		databaseManager.saveData(fsBlockData)
 			
 		//update display
 		REC_on_select(null,true)

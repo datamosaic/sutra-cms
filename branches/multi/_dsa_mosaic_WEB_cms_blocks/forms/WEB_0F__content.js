@@ -180,7 +180,7 @@ function TINYMCE_init(mode) {
  */
 function BLOCK_save(event) {
 	globals.WEB_block_getData(event).data_value = elements.bn_tinymce.html
-	databaseManager.saveData()
+//	databaseManager.saveData()
 	elements.bn_tinymce.clearDirtyState()
 	
 	TOGGLE_buttons(false)

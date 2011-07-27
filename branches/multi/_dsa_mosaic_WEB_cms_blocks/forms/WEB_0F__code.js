@@ -40,8 +40,6 @@ function FORM_on_load() {
  */
 function BLOCK_save(event) {
 	globals.WEB_block_getData(event).data_value = _dataValue
-	databaseManager.saveData()
-	databaseManager.setAutoSave(true)
 	
 	ACTION_colorize(event)
 }
@@ -54,17 +52,7 @@ function BLOCK_save(event) {
  * @properties={typeid:24,uuid:"FD3FDA15-9CCB-46E7-81A4-CD1D2F6C1193"}
  */
 function ACTION_edit(event) {
-	if (forms.WEB_0F_page.ACTION_edit_get()) {
-		databaseManager.saveData()
-		databaseManager.setAutoSave(false)
-		TOGGLE_buttons(true)
-	}
-	else {
-		plugins.dialogs.showErrorDialog(
-						'Error',
-						'This page is non-editable'
-					)
-	}
+	TOGGLE_buttons(true)
 }
 
 /**
@@ -96,9 +84,15 @@ function REC_on_select(event,alwaysRun) {
 		_dataValue = globals.WEB_block_getData(event).data_value
 		_codeType = globals.WEB_block_getConfig(event).data_value
 		
+		//when no data, enter in edit mode
+		if (!_dataValue) {
+			TOGGLE_buttons(true)
+		}
 		//update display
-		TOGGLE_buttons(false)
-		ACTION_colorize(event)
+		else {
+			TOGGLE_buttons(false)
+			ACTION_colorize(event)
+		}
 	}
 }
 
@@ -110,9 +104,6 @@ function REC_on_select(event,alwaysRun) {
  * @properties={typeid:24,uuid:"8F3FE07B-111D-4858-ABD2-3373302B5FBE"}
  */
 function BLOCK_cancel(event) {
-	databaseManager.rollbackEditedRecords()
-	databaseManager.setAutoSave(true)
-	
 	//reset codeType var
 	_codeType = globals.WEB_block_getConfig(event).data_value
 	
