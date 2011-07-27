@@ -123,7 +123,12 @@ function FORM_on_show(firstShow, event) {
 //	if (!firstShow) {
 //		forms.WEB_0F_scrapbook__header.TOGGLE_mode(null,'gui')
 //	}
-	
+
+	//make sure right things are showing
+	if (firstShow) {
+		forms.WEB_0F_scrapbook__header.TOGGLE_elements()
+	}
+
 	if (!utils.hasRecords(foundset)) {
 		REC_on_select()
 	}
@@ -167,6 +172,15 @@ function ACTION_edit_toggle(event,noSave) {
 		
 		//allow to rename scrapbook
 		forms.WEB_0F_scrapbook__header.LBL_block_name__action()
+		
+		//toggle elements
+		forms.WEB_A__scrapbook.elements.btn_cancel.visible = true
+		forms.WEB_A__scrapbook.elements.btn_done.visible = true
+		forms.WEB_A__scrapbook.elements.btn_edit.visible = false
+		
+		//deleting
+		forms.WEB_0F_scrapbook_1L_block_version.elements.btn_delete.visible = true
+		forms.WEB_0F_scrapbook_1L_block_version.elements.fld_version_description.editable = true
 	}
 	else {
 		//punch down the save button when not cancelled
@@ -211,6 +225,15 @@ function ACTION_edit_toggle(event,noSave) {
 		forms.WEB_0F_page__design__content_1F_block_data__raw_2L_block_data_response.elements.edit_data_value.editable = false
 		
 		forms.WEB_0F_scrapbook__header.FLD_block_name__save()
+		
+		//toggle elements
+		forms.WEB_A__scrapbook.elements.btn_cancel.visible = false
+		forms.WEB_A__scrapbook.elements.btn_done.visible = false
+		forms.WEB_A__scrapbook.elements.btn_edit.visible = true
+		
+		//deleting
+		forms.WEB_0F_scrapbook_1L_block_version.elements.btn_delete.visible = false
+		forms.WEB_0F_scrapbook_1L_block_version.elements.fld_version_description.editable = false
 	}
 	
 	//when toggled from the button or cancelled, redo the screen
@@ -358,7 +381,7 @@ function SET_versions() {
 		//resort by version number desc if not already there
 		if (fsVersions.getCurrentSort() != 'version_number desc') {
 			fsVersions = fsVersions.duplicateFoundSet()
-			fsVersions.sort('version_number desc')
+			fsVersions.sort('version_number desc',true)
 		}
 		
 		for (var i = 1; i <= fsVersions.getSize(); i++) {

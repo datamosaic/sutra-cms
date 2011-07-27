@@ -32,6 +32,9 @@ function FORM_on_show(firstShow, event) {
 	if (!utils.hasRecords(foundset)) {
 		globals.WEB_lock_workflow(true)
 	}
+	
+	//refire rec on select
+	forms.WEB_0F_scrapbook.REC_on_select()
 }
 
 /**

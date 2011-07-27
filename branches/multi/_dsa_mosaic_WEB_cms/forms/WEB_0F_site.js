@@ -14,12 +14,14 @@ var _license_dsa_mosaic_WEB_cms = 'Module: _dsa_mosaic_WEB_cms \
  */
 function REC_on_select(event) {
 	//find site-specific stuff
-	//TODO: do we need to do this?
-//	forms.WEB_0F_asset.FORM_on_load()
-//	forms.WEB_0F_block_type.FORM_on_load()
-//	forms.WEB_0F_scrapbook.FORM_on_load()
-//	forms.WEB_0F_theme.FORM_on_load()
-//	forms.WEB_0T_page.FORM_on_load()
+	//only do this when not running in data sutra
+	if (!application.__parent__.solutionPrefs) {
+//		forms.WEB_0T_page.FORM_on_load() //covered with refresh flag on tree view bean
+		forms.WEB_0F_scrapbook.FORM_on_load()
+		forms.WEB_0F_asset.FORM_on_load()
+		forms.WEB_0F_theme.FORM_on_load()
+		forms.WEB_0F_block_type.FORM_on_load()
+	}
 	
 	//set global with site info
 	globals.WEB_site_display = 'Site: ' + site_name
@@ -32,6 +34,9 @@ function REC_on_select(event) {
 		
 		forms.WEB_0F_site_1L_page__groups.foundset.clear()
 	}
+	
+	//set flag for page tree to be refreshed
+	forms.WEB_0T_page._refresh = true
 }
 
 /**

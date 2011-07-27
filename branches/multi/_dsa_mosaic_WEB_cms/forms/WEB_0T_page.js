@@ -1,7 +1,7 @@
 /**
- * @properties={typeid:35,uuid:"D30001EE-2E04-408B-87BA-0DE1CFC32E23",variableType:4}
+ * @properties={typeid:35,uuid:"D30001EE-2E04-408B-87BA-0DE1CFC32E23",variableType:-4}
  */
-var _refresh = null;
+var _refresh = false;
 
 /**
  * @properties={typeid:35,uuid:"04fde543-69cc-4de9-af47-7f7c22221f66"}
@@ -287,13 +287,12 @@ function FORM_on_show(firstShow,event) {
 	else {
 		//full refresh of bean requested
 		if (_refresh) {
-			_refresh = null
+			_refresh = false
 			TREE_refresh()
 		}
+		
 		//highlight selected record
-		else {
-			elements.bean_tree.selectionPath = FIND_path(forms.WEB_0F_page.foundset.getSelectedRecord())
-		}
+		elements.bean_tree.selectionPath = FIND_path(forms.WEB_0F_page.foundset.getSelectedRecord())
 	}
 	
 	//set record navigator to blank
@@ -900,6 +899,9 @@ function REC_new() {
 			if (application.__parent__.solutionPrefs && solutionPrefs.design.statusLockWorkflow) {
 				globals.WEB_lock_workflow(false)
 				forms.WEB_TB__web_mode.controller.enabled = true
+				
+//				//refire correct enabled state for comboboxes
+//				forms.WEB_A__page.TOGGLE_edit_mode(false)
 			}
 			_oldRecord = null
 		}

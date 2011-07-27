@@ -20,9 +20,15 @@ function FORM_on_show(firstShow, event) {
 	//show the block picker pane
 	forms.WEB_0F_scrapbook.SPLIT_set(true)
 	
-	//make sure on first tab
-	if (firstShow && elements.tab_main.tabIndex != 1) {
-		REC_on_select()
+	//things to do on first showing
+	if (firstShow) {
+		//enter non-edit mode
+		forms.WEB_A__page.TOGGLE_edit_mode(false)
+		
+		//make sure on first tab
+		if (elements.tab_main.tabIndex != 1) {
+			REC_on_select()
+		}
 	}
 }
 
@@ -139,7 +145,7 @@ function REC_on_select(event,skipLoad,verIndex,fireSelect) {
 			forms.WEB_0F_page__design__header_display__version.TOGGLE_elements()
 			
 			//re-set page to not be in edit mode
-			forms.WEB_A__page.TOGGLE_edit_mode(false)
+//			forms.WEB_A__page.TOGGLE_edit_mode(false)
 			
 			//allow additional on select firing
 			forms.WEB_0F_page__design__content_1L_block._skipSelect = false
@@ -222,17 +228,6 @@ function SET_versions(skipLoad,pageInvalid) {
 	application.setValueListItems('WEB_page_version',vlDisplay,vlReal)
 	
 	return active
-}
-
-/**
- * Perform the element default action.
- *
- * @param {JSEvent} event the event that triggered the action
- *
- * @properties={typeid:24,uuid:"CBA4256A-1CF7-42E4-A265-237E6AB08408"}
- */
-function BLOCK_click(event) {
-	
 }
 
 /**

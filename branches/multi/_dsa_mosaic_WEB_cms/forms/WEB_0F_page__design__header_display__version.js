@@ -63,8 +63,8 @@ function TOGGLE_elements() {
 	elements.btn_edit_on.visible = (forms.WEB_0F_page__design__content.flag_edit) ? true : false
 	elements.btn_edit_off.visible = (forms.WEB_0F_page__design__content.flag_edit) ? false : true
 			
-	//toggle enabled state of combobox based on value
-	if (application.getValueListDisplayValue('WEB_page_version',null) == '<html><body>Click <strong>+</strong> button to create a version') {
+	//toggle enabled state of combobox based on value or edit mode
+	if (application.getValueListDisplayValue('WEB_page_version',null) == '<html><body>Click <strong>+</strong> button to create a version' || !forms.WEB_A__page._editMode) {
 		elements.fld_version.enabled = false
 //		elements.btn_check_off.enabled = false
 //		elements.btn_edit_off.enabled = false
@@ -86,6 +86,11 @@ function TOGGLE_elements() {
  * @properties={typeid:24,uuid:"3EDEB7C9-1778-4C96-ABF2-A5F21035BF98"}
  */
 function ADD_version(event) {
+	//don't do anything unless in edit mode
+	if (!forms.WEB_A__page._editMode) {
+		return
+	}
+	
 	//there is a page
 	if (utils.hasRecords(forms.WEB_0F_page__design.foundset)) {
 		//do we have any versions?
@@ -138,7 +143,8 @@ function ADD_version(event) {
 							//block is unique, duplicate
 							else {
 								//create new block record
-								var destBlock = destScope.web_scope_to_block.getRecord(destScope.web_scope_to_block.newRecord(false,true))
+								var fsBlock = databaseManager.getFoundSet('sutra_cms','web_block')
+								var destBlock = fsBlock.getRecord(fsBlock.newRecord(false,true))
 								
 								//re-hook this unique block back in to the current scope
 								destScope.id_block = destBlock.id_block
@@ -380,6 +386,11 @@ function DELETE_version(event) {
  * @properties={typeid:24,uuid:"DAFB8B47-5EE4-4FC6-9661-34D670A373BB"}
  */
 function EDIT_version(event) {
+	//don't do anything unless in edit mode
+	if (!forms.WEB_A__page._editMode) {
+		return
+	}
+	
 	//find this version
 	var version = forms.WEB_0F_page__design__content.foundset.getSelectedRecord()
 	
@@ -395,7 +406,7 @@ function EDIT_version(event) {
 			}
 			else {
 				version.flag_edit = 0
-				databaseManager.saveData(version)
+//				databaseManager.saveData(version)
 			}
 		}
 		//non-editable, prompt to make editable
@@ -415,7 +426,13 @@ function EDIT_version(event) {
 				}
 				
 				version.flag_edit = 1
-				databaseManager.saveData(version)
+//				databaseManager.saveData(version)
+			}
+			else {
+				plugins.dialogs.showErrorDialog(
+							'Insufficient access',
+							'You are not allowed to change the editability of a page'
+					)
 			}
 		}
 		
@@ -438,6 +455,10 @@ function EDIT_version(event) {
  * @properties={typeid:24,uuid:"9CA51902-3FF5-4C02-AB93-16FF1B9C0512"}
  */
 function ACTIVATE_version(event) {
+	//don't do anything unless in edit mode
+	if (!forms.WEB_A__page._editMode) {
+		return
+	}
 	
 	var fsVersion = forms.WEB_0F_page__design__content.foundset
 	var selectedVersion = fsVersion.getSelectedRecord()	
@@ -445,7 +466,7 @@ function ACTIVATE_version(event) {
 	switch (event.getElementName()) {
 		case 'btn_check_on':
 			selectedVersion.flag_active = 0
-			databaseManager.saveData(selectedVersion)
+//			databaseManager.saveData(selectedVersion)
 			
 			//redo version valuelist without touching the foundset
 			forms.WEB_0F_page__design.SET_versions(true)
@@ -471,7 +492,7 @@ function ACTIVATE_version(event) {
 					selectedVersion.flag_active = 1
 					selectedVersion.flag_edit = 0
 					
-					databaseManager.saveData()
+//					databaseManager.saveData()
 					
 					//create log record when version set as active
 					globals.TRIGGER_log_create(
@@ -487,7 +508,9 @@ function ACTIVATE_version(event) {
 					
 					//redo version valuelist without touching the foundset
 					forms.WEB_0F_page__design.SET_versions(true)
-					TOGGLE_elements(selectedVersion.flag_edit)
+					
+					//redo what is displayed to take into account
+					forms.WEB_A__page.TOGGLE_edit_mode(forms.WEB_A__page._editMode)
 				}
 			}
 			else {

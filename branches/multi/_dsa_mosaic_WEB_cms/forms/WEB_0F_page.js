@@ -96,17 +96,6 @@ function FORM_on_show(firstShow, event) {
 			
 			//in workflow maximized view
 			if (firstShow && application.__parent__.solutionPrefs && solutionPrefs.config.activeSpace == 'workflow') {
-				var tabContent = forms.WEB_0F_page__design__content_1F_block_data.elements.tab_detail
-				
-//				//remove possible heavyweight stuff
-//				if (tabContent.getMaxTabIndex() >= 2 && (
-//					tabContent.getTabFormNameAt(tabContent.tabIndex) == 'WEB_0F__content' ||
-//					tabContent.getTabFormNameAt(tabContent.tabIndex) == 'WEB_0F__image' //||
-//					)) {
-//					
-//					tabContent.addTab(forms.WEB_0F_page__design__content_1F_block_data_2F_blank)
-//				}
-				
 				//switch modes
 				TRIGGER_mode_set("BROWSER")
 				return
@@ -121,6 +110,9 @@ function FORM_on_show(firstShow, event) {
 				
 				forms.WEB_0F_page__design.REC_on_select()
 				
+				//update tree
+				forms.WEB_0T_page.TREE_refresh()
+				
 				//no records, dim out
 				globals.WEB_lock_workflow(true)
 				
@@ -132,12 +124,15 @@ function FORM_on_show(firstShow, event) {
 				
 				forms.WEB_A__page.TOGGLE_edit_mode(false)
 			}
-			else {// if (TRIGGER_mode_set() != "BROWSER") {
+			else {
 				//enable rec_on_select of the block type form
 				globals.WEB_block_on_select = true
 				
-				// trigger correct block simple display
-//				forms.WEB_0F_page__design__content_1L_block.ACTION_gui_mode_load()
+				//need to reload the tree, update globals showing
+				if (forms.WEB_0T_page._refresh) {
+					_loadFilters = true
+					SET_globals()
+				}
 			}
 		}
 	}
@@ -155,7 +150,12 @@ function FORM_on_show(firstShow, event) {
 function FORM_on_hide(event) {
 	//don't run in headless client
 	if (application.getApplicationType() != APPLICATION_TYPES.HEADLESS_CLIENT) {
+		//undo locked screen
 		globals.WEB_lock_workflow(false)
+		
+//		//refire correct enabled state for comboboxes
+//		forms.WEB_A__page.TOGGLE_edit_mode(forms.WEB_A__page._editMode)
+		
 		forms.WEB_TB__web_mode.controller.enabled = true
 		
 		//restore last selected toolbar
@@ -174,7 +174,7 @@ function FORM_on_hide(event) {
  * @properties={typeid:24,uuid:"6DF88FF6-B5B2-4C20-BECB-5199AA95F932"}
  */
 function FIND_restrict_site() {
-	return forms.WEB_0F_site.id_site
+	return globals.WEB_site_find_restrict()
 }
 
 /**
@@ -201,18 +201,19 @@ function FIND_post_process(count) {
  * @properties={typeid:24,uuid:"C24345A2-A310-4E68-9083-1D9F656002BB"}
  */
 function ACTION_edit_get() {
-//	//disable edits if edit flag not set
-//	if (!utils.hasRecords(forms.WEB_0F_page__design__content.foundset) || !forms.WEB_0F_page__design__content.flag_edit) {
-//			//disable edits for active or non-latest versions
-//			//utils.hasRecords(fsVersions) && fsVersions.version_number != fsVersions.getSize() || fsVersions.flag_active) {
-//		var editAllow = false
-//	}
-//	//enable edits
-//	else {
-//		var editAllow = true
-//	}
+	//disable edits if edit flag not set
+	if (!utils.hasRecords(forms.WEB_0F_page__design__content.foundset) || !forms.WEB_0F_page__design__content.flag_edit) {
+		var editAllow = false
+	}
+	//enable edits if in edit mode
+	else if (forms.WEB_A__page._editMode) {
+		var editAllow = true
+	}
+	else {
+		var editAllow = false
+	}
 	
-	return forms.WEB_A__page._editMode
+	return editAllow
 }
 
 /**
@@ -387,7 +388,7 @@ function SET_valuelists() {
 			
 			//push on as valid
 			if (valid) {
-				var display = '<html><body><font color="#333333"><strong>' + recSite.platform_name + '</strong></font>'
+				var display = '<html><body><strong>' + recSite.platform_name + '</strong>'
 				vlPlatformDisplay.push(display)
 			}
 			//invalid option, push greyed out
@@ -444,7 +445,7 @@ function SET_valuelists() {
 			
 			//push on as valid
 			if (valid) {
-				var display = '<html><body><font color="#333333"><strong>' + recSite.language_name + '</strong></font>'
+				var display = '<html><body><strong>' + recSite.language_name + '</strong>'
 				vlLanguageDisplay.push(display)
 			}
 			//invalid option, push greyed out
@@ -503,7 +504,7 @@ function SET_valuelists() {
 			
 			//push on as valid
 			if (valid) {
-				var display = '<html><body><font color="#333333"><strong>' + recSite.group_name + '</strong></font>'
+				var display = '<html><body><strong>' + recSite.group_name + '</strong>'
 				vlGroupDisplay.push(display)
 			}
 			//invalid option, push greyed out

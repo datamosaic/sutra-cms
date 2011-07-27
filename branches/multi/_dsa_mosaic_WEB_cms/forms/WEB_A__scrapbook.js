@@ -25,11 +25,6 @@ function ACTION_mode(event) {
  * @properties={typeid:24,uuid:"E22B7ED5-5CC9-4B8B-9234-94AE2FB5D174"}
  */
 function ACTION_edit(event) {
-	//toggle elements
-	elements.btn_cancel.visible = true
-	elements.btn_done.visible = true
-	elements.btn_edit.visible = false
-	
 	//enter edit mode
 	forms.WEB_0F_scrapbook.ACTION_edit_toggle(event)
 }
@@ -44,11 +39,6 @@ function ACTION_edit(event) {
 function ACTION_cancel(event) {
 	//cancel stuff
 	forms.WEB_0F_scrapbook.ACTION_edit_toggle(event)
-	
-	//toggle elements
-	elements.btn_cancel.visible = false
-	elements.btn_done.visible = false
-	elements.btn_edit.visible = true
 }
 
 /**
@@ -61,11 +51,6 @@ function ACTION_cancel(event) {
 function ACTION_save(event,noSave) {
 	//save stuff down
 	forms.WEB_0F_scrapbook.ACTION_edit_toggle(event,noSave)
-	
-	//toggle elements
-	elements.btn_cancel.visible = false
-	elements.btn_done.visible = false
-	elements.btn_edit.visible = true
 }
 
 /**

@@ -87,6 +87,7 @@ function FORM_on_show() {
 	//reset acceptance status
 	_fidAccept = null
 	
+	
 	//reset everything
 	_idGroup = null
 	_idLanguage = null
@@ -96,6 +97,49 @@ function FORM_on_show() {
 	application.setValueListItems('WEB_page_language__new_version',[],[])
 	application.setValueListItems('WEB_page_group__new_version',[],[])
 	application.setValueListItems('WEB_page_version__new_version',[],[])
+	
+	
+	//find site defaults
+	var siteDefaults = forms.WEB_0F_site.ACTION_get_defaults()
+	
+	//pre-fill to site defaults if they are valid for this page
+	if (siteDefaults) {
+		//platform
+		for (var i = 1; i <= web_page_to_platform.getSize(); i++) {
+			var record = web_page_to_platform.getRecord(i)
+			
+			//set this page site default value and stop this loop
+			if (record.id_site_platform == siteDefaults.platform.id_site_platform) {
+				_idPlatform = record.id_platform.toString()
+				FLD_idPlatform__data_change()
+				
+				//language
+				for (var i = 1; i <= web_page_to_language.getSize(); i++) {
+					var record = web_page_to_language.getRecord(i)
+					
+					//set this page site default value and stop this loop
+					if (record.id_site_language == siteDefaults.language.id_site_language) {
+						_idLanguage = record.id_language.toString()
+						FLD_idLanguage__data_change()
+						
+						//group
+						for (var i = 1; i <= web_page_to_group.getSize(); i++) {
+							var record = web_page_to_group.getRecord(i)
+							
+							//set this page site default value and stop this loop
+							if (record.id_site_group == siteDefaults.group.id_site_group) {
+								_idGroup = record.id_group.toString()
+								FLD_idGroup__data_change()
+								break
+							}
+						}
+						break
+					}
+				}
+				break
+			}
+		}
+	}
 }
 
 /**
@@ -133,7 +177,6 @@ function FLD_idPlatform__data_change(oldValue, newValue, event) {
 			vlLanguageDisplay.push(recPage.language_name)
 			vlLanguageReal.push(recPage.id_language.toString())
 		}
-		
 	}
 	
 	//set valuelist
@@ -181,7 +224,7 @@ function FLD_idLanguage__data_change(oldValue, newValue, event) {
 		fsVersions.id_group = recPage.id_group.toString()
 		var results = fsVersions.search()
 		
-		//add this language to possible options
+		//add this group to possible options
 		if (results) {
 			vlGroupDisplay.push(recPage.group_name)
 			vlGroupReal.push(recPage.id_group.toString())
@@ -213,6 +256,10 @@ function FLD_idLanguage__data_change(oldValue, newValue, event) {
  * @properties={typeid:24,uuid:"3BCBFC86-819E-43A4-A4D3-04F5DDF5E276"}
  */
 function FLD_idGroup__data_change(oldValue, newValue, event) {
+	//reset variables
+	_posnVersion = null
+	_versionDescription = null	
+	
 	//set up versions valuelist
 	var fsVersions = _fsVersion
 	
@@ -226,12 +273,18 @@ function FLD_idGroup__data_change(oldValue, newValue, event) {
 	fsVersions.id_group = _idGroup
 	var results = fsVersions.search()
 	
-	//add this language to possible options
+	//add this version to possible options
 	if (results) {
 		fsVersions.sort('version_number desc')
 		
 		for (var i = 1; i <= fsVersions.getSize(); i++) {
 			var record = fsVersions.getRecord(i)
+			
+			//active version, set as default
+			if (record.flag_active) {
+				_posnVersion = i
+				_versionDescription = record.version_description
+			}
 			
 			var displayVal = 'Version ' + record.version_number + ' (' + globals.CODE_date_format(record.rec_modified,'current') + ')'
 			if (record.version_name) {
@@ -246,10 +299,6 @@ function FLD_idGroup__data_change(oldValue, newValue, event) {
 	
 	//set valuelist
 	application.setValueListItems('WEB_page_version__new_version',vlVersionDisplay,vlVersionReal)
-	
-	//reset variables
-	_posnVersion = null
-	_versionDescription = null
 	
 	return true
 }

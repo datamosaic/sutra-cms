@@ -812,7 +812,7 @@ function WEB_page_new(pageName,pageType,parentID,themeID,layoutID) {
 		}
 	
 		//set flag that need to update tree view on next load
-		forms.WEB_0T_page._refresh = 1
+		forms.WEB_0T_page._refresh = true
 		
 		//turn off feedback indicator if on
 		if (globals.TRIGGER_progressbar_get() instanceof Array) {
@@ -1280,4 +1280,11 @@ function WEB_browser_error() {
 	if (input == 'Yes') {
 		application.exit()
 	}
+}
+
+/**
+ * @properties={typeid:24,uuid:"CEE8177B-36B3-47A5-9CD7-574FDEBA51ED"}
+ */
+function WEB_site_find_restrict() {
+	return forms.WEB_0F_site.id_site
 }

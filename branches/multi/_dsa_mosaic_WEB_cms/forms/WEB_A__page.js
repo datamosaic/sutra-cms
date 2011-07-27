@@ -24,7 +24,7 @@ function ACTION_edit(event) {
 //	elements.btn_edit.visible = false
 	
 	//enter edit mode
-	TOGGLE_edit_mode()
+	TOGGLE_edit_mode(true)
 }
 
 /**
@@ -98,6 +98,7 @@ function TOGGLE_edit_mode(editMode,saveData) {
 	
 	//entering edit mode
 	if (_editMode) {
+		//enter pseudo-transaction
 		databaseManager.saveData()
 		databaseManager.setAutoSave(false)
 		
@@ -113,11 +114,32 @@ function TOGGLE_edit_mode(editMode,saveData) {
 	else if (currentState) {
 		//save the data
 		if (saveData) {
+			//when in gui mode, save
+			if (globals.WEB_page_mode == 2 && utils.hasRecords(forms.WEB_0F_page__design__content_1L_block.foundset.getSelectedRecord(),'web_scope_to_block')) {
+				var recBlock = forms.WEB_0F_page__design__content_1L_block.web_scope_to_block.getSelectedRecord()
+		
+				if (recBlock && utils.hasRecords(recBlock.web_block_to_block_type)) {
+					var recBlockType = recBlock.web_block_to_block_type.getRecord(1)
+				}
+				
+				//this block definition exists as does the form and it has a save method on it
+				if (recBlockType && forms[recBlockType.form_name] && solutionModel.getForm(recBlockType.form_name).getFormMethod('BLOCK_save')) {
+					//pseudo-event comes from the scope of where this is fired
+					var pseudoEvent = new Object()
+					pseudoEvent.getFormName = function() {return recBlockType.form_name}
+					
+					forms[recBlockType.form_name].BLOCK_save(pseudoEvent)
+				}
+			}
+			
 			databaseManager.saveData()
 		}
 		//rollback the data if we were in edit mode
 		else if (!databaseManager.getAutoSave()) {
 			databaseManager.rollbackEditedRecords()
+			
+			//update version valuelist (if version activated, need to undo)
+			forms.WEB_0F_page__design.SET_versions(true)
 		}
 		
 		databaseManager.setAutoSave(true)
@@ -137,4 +159,10 @@ function TOGGLE_edit_mode(editMode,saveData) {
 	forms.WEB_0F_page__design__content_1F_block_data__raw.TOGGLE_elements(_editMode)
 	forms.WEB_0F_page__design__properties.TOGGLE_elements(_editMode)
 	forms.WEB_0F_page__design__content_1L_block.REC_on_select(null,true)
+	
+	//set control comboboxes
+	forms.WEB_0F_page__design__header_display__platform.elements.fld_platform.enabled = _editMode
+	forms.WEB_0F_page__design__header_display__language.elements.fld_language.enabled = _editMode
+	forms.WEB_0F_page__design__header_display__group.elements.fld_group.enabled = _editMode
+	forms.WEB_0F_page__design__header_display__version.TOGGLE_elements()
 }

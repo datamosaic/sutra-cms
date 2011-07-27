@@ -83,19 +83,19 @@ function ACTION_ok(event) {
 	
 	//not already ok to close, cancel
 	if (!globals.CODE_hide_form) {
+		//get parent form
+		var formStack = forms.WEB_0F_scrapbook.controller.getFormContext()
+		
+		//this form is included on some other form
+		if (formStack.getMaxRowIndex() > 1) {
+			var formParent = formStack.getValue(formStack.getMaxRowIndex()-1,2)
+		}
+		else {
+			var formParent = 'WEB_0F_scrapbook'
+		}
+		
 		//get what is chosen (scrapbook)
 		if (globals.WEB_block_scope__new) {
-			
-			//get parent form
-			var formStack = forms.WEB_0F_scrapbook.controller.getFormContext()
-			
-			//this form is included on some other form
-			if (formStack.getMaxRowIndex() > 1) {
-				var formParent = formStack.getValue(formStack.getMaxRowIndex()-1,2)
-			}
-			else {
-				var formParent = 'WEB_0F_scrapbook'
-			}
 			
 			//something chosen
 			if (utils.hasRecords(forms.WEB_P__block__new_1L_block.foundset)) {
