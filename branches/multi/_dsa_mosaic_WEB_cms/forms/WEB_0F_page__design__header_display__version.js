@@ -376,17 +376,8 @@ function EDIT_version(event) {
 	if (version) {
 		//currently editable, prompt to turn off
 		if (version.flag_edit) {
-			//if top of the stack and more than one version and not active, refuse to proceed
-			if (forms.WEB_0F_page__design__content.foundset.getSelectedIndex() == 1 && forms.WEB_0F_page__design__content.foundset.getSize() > 1 && !version.flag_active) {
-				plugins.dialogs.showErrorDialog(
-							'Error',
-							'The working copy must be editable'
-					)
-			}
-			else {
-				version.flag_edit = 0
-//				databaseManager.saveData(version)
-			}
+			version.flag_edit = 0
+//			databaseManager.saveData(version)
 		}
 		//non-editable, prompt to make editable
 		else {
