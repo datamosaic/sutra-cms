@@ -86,11 +86,6 @@ function TOGGLE_elements() {
  * @properties={typeid:24,uuid:"3EDEB7C9-1778-4C96-ABF2-A5F21035BF98"}
  */
 function ADD_version(event) {
-	//don't do anything unless in edit mode
-	if (!forms.WEB_A__page._editMode) {
-		return
-	}
-	
 	//there is a page
 	if (utils.hasRecords(forms.WEB_0F_page__design.foundset)) {
 		//do we have any versions?
@@ -372,25 +367,9 @@ function ADD_version(event) {
  *
  * @param {JSEvent} event the event that triggered the action
  *
- * @properties={typeid:24,uuid:"ADA4AB13-B870-4862-863E-3757F95B00EB"}
- */
-function DELETE_version(event) {
-	// TODO Auto-generated method stub
-}
-
-/**
- * Perform the element default action.
- *
- * @param {JSEvent} event the event that triggered the action
- *
  * @properties={typeid:24,uuid:"DAFB8B47-5EE4-4FC6-9661-34D670A373BB"}
  */
 function EDIT_version(event) {
-	//don't do anything unless in edit mode
-	if (!forms.WEB_A__page._editMode) {
-		return
-	}
-	
 	//find this version
 	var version = forms.WEB_0F_page__design__content.foundset.getSelectedRecord()
 	
@@ -455,11 +434,6 @@ function EDIT_version(event) {
  * @properties={typeid:24,uuid:"9CA51902-3FF5-4C02-AB93-16FF1B9C0512"}
  */
 function ACTIVATE_version(event) {
-	//don't do anything unless in edit mode
-	if (!forms.WEB_A__page._editMode) {
-		return
-	}
-	
 	var fsVersion = forms.WEB_0F_page__design__content.foundset
 	var selectedVersion = fsVersion.getSelectedRecord()	
 	
