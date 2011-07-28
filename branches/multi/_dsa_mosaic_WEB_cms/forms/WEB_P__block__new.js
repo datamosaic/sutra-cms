@@ -474,6 +474,27 @@ function FORM_on_show() {
 	
 	//show correct buttons
 	TOGGLE_buttons()
+	
+	//only show combobox when called from page
+	if (_calledFrom == 'Real' || _calledFrom == 'GUI') {
+		elements.lbl_scope.visible = true
+		elements.fld_scope.visible = true
+		//only move tabpanel if it's been moved before
+		if (elements.tab_detail.getLocationY() != 60) {
+			elements.tab_detail.setLocation(0, 60)
+			elements.tab_detail.setSize(elements.tab_detail.getWidth(),elements.tab_detail.getHeight() - 25)
+		}
+	}
+	//hide combobox
+	else {
+		elements.lbl_scope.visible = false
+		elements.fld_scope.visible = false
+		//only move tabpanel if it's not here yet
+		if (elements.tab_detail.getLocationY() != 35) {
+			elements.tab_detail.setLocation(0, 35)
+			elements.tab_detail.setSize(elements.tab_detail.getWidth(),elements.tab_detail.getHeight() + 25)
+		}
+	}
 }
 
 /**

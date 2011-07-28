@@ -160,6 +160,7 @@ function BLOCK_new(input) {
 		}
 		// or real mode
 		else if (globals.WEB_page_mode == 3) {
+			//_success holds the actual block record created
 			return forms.WEB_P__block__new._success
 		}
 	}
