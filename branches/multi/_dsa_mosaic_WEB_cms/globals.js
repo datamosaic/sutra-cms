@@ -173,6 +173,11 @@ function WEB_simple_edit(event) {
 			//unfreeze screen
 			if (solutionPrefs.config.lockStatus) {
 				globals.TRIGGER_interface_lock(false)
+				
+				//hack to re-lock up the page screen
+				if (solutionPrefs.config.currentFormName == 'WEB_0F_page') {
+					forms.WEB_A__page.TOGGLE_edit_mode(false)
+				}
 			}
 			
 			if (forms[formName] && forms[formName].elements.gfx_curtain) {
@@ -233,6 +238,11 @@ function WEB_simple_save() {
 		//unfreeze screen if locked
 		if (solutionPrefs.config.lockStatus) {
 			globals.TRIGGER_interface_lock(false)
+			
+			//hack to re-lock up the page screen
+			if (solutionPrefs.config.currentFormName == 'WEB_0F_page') {
+				forms.WEB_A__page.TOGGLE_edit_mode(false)
+			}			
 		}
 		
 		if (forms[parentForm] && forms[parentForm].elements.gfx_curtain) {

@@ -900,9 +900,6 @@ function REC_new() {
 				//turn off disabled screen
 				globals.WEB_lock_workflow(false)
 				forms.WEB_TB__web_mode.controller.enabled = true
-				
-				//refire correct enabled state for this screen (will not be needed with newest version of frameworks)
-				forms.WEB_A__page.TOGGLE_edit_mode(false)
 			}
 			_oldRecord = null
 		}
