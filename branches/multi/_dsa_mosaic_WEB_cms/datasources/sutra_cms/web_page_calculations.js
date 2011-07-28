@@ -18,8 +18,8 @@ function display_page_name() {
 		}
 	}
 	//no page name, we must not have a valid language record
-	if (!pageName) {
-		return  "Selected language hasn't been added to page yet"
+	if (!pageName && utils.hasRecords(web_page_to_language__default)) {
+		var pageName = web_page_to_language__default.page_name
 	}
 	
 	//this is a folder
