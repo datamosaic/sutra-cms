@@ -47,7 +47,7 @@ function FORM_on_show(firstShow, event) {
 		while (cnt) {
 			elements.split_picker_2.dividerLocation = smallMax ? minWidth : fullWidth * 2 / 9
 			
-			elements.split_picker_3.dividerLocation = smallMax ? minWidth + 20 : (fullWidth * 2 / 9 + 20)
+			elements.split_picker_3.dividerLocation = smallMax ? minWidth + 10 : (fullWidth * 2 / 9 + 10)
 			
 			elements.split_picker_1.dividerLocation = smallMax ? minWidth * 3 : fullWidth * 2 / 3
 			cnt --
