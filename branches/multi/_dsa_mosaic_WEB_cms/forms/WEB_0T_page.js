@@ -897,11 +897,12 @@ function REC_new() {
 		//no records created yet
 		else {
 			if (application.__parent__.solutionPrefs && solutionPrefs.design.statusLockWorkflow) {
+				//turn off disabled screen
 				globals.WEB_lock_workflow(false)
 				forms.WEB_TB__web_mode.controller.enabled = true
 				
-//				//refire correct enabled state for comboboxes
-//				forms.WEB_A__page.TOGGLE_edit_mode(false)
+				//refire correct enabled state for this screen (will not be needed with newest version of frameworks)
+				forms.WEB_A__page.TOGGLE_edit_mode(false)
 			}
 			_oldRecord = null
 		}
