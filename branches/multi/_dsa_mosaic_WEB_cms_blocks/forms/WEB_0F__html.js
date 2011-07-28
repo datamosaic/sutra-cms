@@ -79,8 +79,8 @@ function REC_on_select(event,alwaysRun) {
 		//save down form variables so records can be changed
 		_dataValue = globals.WEB_block_getData(event).data_value
 		
-		//when no data, enter in edit mode
-		if (!_dataValue) {
+		//when no data or in edit mode, enter in edit mode
+		if (!_dataValue || forms.WEB_0F_page.ACTION_edit_get()) {
 			TOGGLE_buttons(true)
 		}
 		//update display
