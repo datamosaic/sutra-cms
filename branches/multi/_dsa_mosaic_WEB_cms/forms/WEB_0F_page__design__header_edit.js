@@ -422,9 +422,7 @@ function ACTION_save() {
 		globals.WEB_page_group = _idSiteGroup
 		
 		//refresh this newly created record if it is the first one (some issue with the calcs getting fired)
-		if (!forms.WEB_0T_page._oldRecord) {
-			databaseManager.recalculate(pageRec)
-		}
+		databaseManager.recalculate(pageRec)
 	}
 	
 	//MEMO: check WEB_P_page method too
