@@ -720,7 +720,7 @@ function IMAGE_import(directory) {
 	}
 	
 	// setup upload image
-	var uploadFile = baseDirectory + directory + "/" + file.getName()
+	var uploadFile = baseDirectory + directory + "/" + file.getName().replace(/ /g, "_")
 	
 	// grab file stats
 	_file.size = file.size()
