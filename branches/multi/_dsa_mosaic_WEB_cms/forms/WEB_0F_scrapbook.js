@@ -281,23 +281,13 @@ function REC_on_select(event) {
 	if (!_skipSelect) {
 		var fsPages = forms.WEB_0F_scrapbook_1L_page.foundset
 		
+		//clear html used for details (if there are no pages used on)
+		forms.WEB_0F_scrapbook_1L_page._moshPit = null
+		
 		if (utils.hasRecords(foundset)) {
 			//when record selection changes as opposed to when called programatically
-			if (event) {
-				//get pages where this block is used
-				var query = "SELECT DISTINCT id_page FROM web_platform WHERE id_platform IN \
-				(SELECT DISTINCT id_platform FROM web_version WHERE id_version IN \
-					(SELECT DISTINCT id_version FROM web_area WHERE id_area IN \
-						(SELECT DISTINCT id_area FROM web_scope WHERE id_block = ?)))"
-				var dataset = databaseManager.getDataSetByQuery(
-							'sutra_cms',
-							query,
-							[id_block.toString()],
-							-1
-						)
-				
-				//load correct pages that this is used on
-				fsPages.loadRecords(dataset)
+			if (event && forms.WEB_0F_scrapbook__sidebar.elements.tab_detail.tabIndex == 2) {
+				LOAD_used_on()
 			}
 		}
 		else {
@@ -327,6 +317,37 @@ function REC_on_select(event) {
 		//load correct gui form
 		ACTION_gui_mode_load()
 	}
+}
+
+/**
+ * @properties={typeid:24,uuid:"6DFEB9F4-738D-4E24-B2B6-467FA545370D"}
+ */
+function LOAD_used_on() {
+	var fsPages = forms.WEB_0F_scrapbook_1L_page.foundset
+	
+	globals.CODE_cursor_busy(true)
+	
+	//get pages where this block is used
+	var query = "SELECT DISTINCT c.id_page FROM web_platform a, web_version b, web_page c WHERE  \
+				b.id_version IN ( \
+				SELECT DISTINCT c.id_version from web_block a, web_scope b, web_area c WHERE  \
+				c.id_area = b.id_area AND \
+				b.id_block = a.id_block AND \
+				a.id_block = ? \
+				) AND \
+				a.id_platform = b.id_platform AND \
+				a.id_page = c.id_page"
+	var dataset = databaseManager.getDataSetByQuery(
+				'sutra_cms',
+				query,
+				[id_block.toString()],
+				-1
+			)
+	
+	//load correct pages that this is used on
+	fsPages.loadRecords(dataset)
+	
+	globals.CODE_cursor_busy(false)
 }
 
 /**
