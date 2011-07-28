@@ -22,13 +22,23 @@ var _editMode = false;
 function REC_delete() {
 	var delRec = plugins.dialogs.showWarningDialog(
 				'Delete record',
-				'Do you really want to delete this record?',
+				'Deleting a scrapbook will remove it from all pages.\nDo you really want to delete this record?',
 				'Yes',
 				'No'
 			)
 	
 	if (delRec == 'Yes') {
-		//find all scope records and flag them with missing data?
+		//find all scope records and flag as having missing data
+		var fsScope = databaseManager.getFoundSet('sutra_cms','web_scope')
+		fsScope.find()
+		fsScope.id_block = id_block
+		var results = fsScope.search()
+		
+		if (results) {
+			var fsUpdater = databaseManager.getFoundSetUpdater(fsScope)
+			fsUpdater.setColumn('flag_active',0)
+			fsUpdater.performUpdate()
+		}
 		
 		controller.deleteRecord()
 		
@@ -194,6 +204,8 @@ function ACTION_edit_toggle(event,noSave) {
 		forms.WEB_A__scrapbook.elements.btn_edit.visible = false
 		
 		//deleting
+		forms.WEB_0F_scrapbook__blocks.elements.btn_add.visible = true
+		forms.WEB_0F_scrapbook_1L_block.elements.btn_delete.visible = true
 		forms.WEB_0F_scrapbook_1L_block_version.elements.btn_delete.visible = true
 		forms.WEB_0F_scrapbook_1L_block_version.elements.fld_version_description.editable = true
 	}
@@ -250,6 +262,8 @@ function ACTION_edit_toggle(event,noSave) {
 		forms.WEB_A__scrapbook.elements.btn_edit.visible = true
 		
 		//deleting
+		forms.WEB_0F_scrapbook__blocks.elements.btn_add.visible = false
+		forms.WEB_0F_scrapbook_1L_block.elements.btn_delete.visible = false
 		forms.WEB_0F_scrapbook_1L_block_version.elements.btn_delete.visible = false
 		forms.WEB_0F_scrapbook_1L_block_version.elements.fld_version_description.editable = false
 	}

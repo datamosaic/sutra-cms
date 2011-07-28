@@ -50,6 +50,22 @@ typeid:4,
 uuid:"62B2088E-F74C-4655-B5DC-5BB588C0D45B"
 },
 {
+borderType:"SpecialMatteBorder,0.0,0.0,1.0,0.0,#000000,#000000,#999999,#000000,0.0,1.0",
+formIndex:14900,
+imageMediaID:"16c4d692-c1ea-4200-a078-1150b1da4d5f",
+location:"210,10",
+mediaOptions:1,
+name:"btn_delete",
+onActionMethodID:"962B5B5E-1B05-459E-B805-D327AC501777",
+rolloverCursor:12,
+showClick:false,
+showFocus:false,
+size:"20,22",
+toolTipText:"Delete record",
+typeid:7,
+uuid:"721563F6-8DB0-4A91-A573-964767EA98E6"
+},
+{
 anchors:14,
 borderType:"MatteBorder,1,0,0,0,#A1B0CF",
 formIndex:9999,

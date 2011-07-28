@@ -12,3 +12,14 @@ function FORM_on_load(event) {
 		globals.CODE_property_combobox(false, 'mini')
 	}
 }
+
+/**
+ * Perform the element default action.
+ *
+ * @param {JSEvent} event the event that triggered the action
+ *
+ * @properties={typeid:24,uuid:"F7D69635-C7FC-4DDF-8217-2DB4F9A311F7"}
+ */
+function REC_new(event) {
+	forms.WEB_0F_scrapbook.REC_new()
+}
