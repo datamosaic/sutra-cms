@@ -132,6 +132,12 @@ function TOGGLE_edit_mode(editMode,saveData) {
 				}
 			}
 			
+			//update modification date on this record
+			forms.WEB_0F_page__design__content.rec_modified = application.getServerTimeStamp()
+			
+			//redo valuelist for versions
+			forms.WEB_0F_page__design.SET_versions(true)
+			
 			databaseManager.saveData()
 		}
 		//rollback the data if we were in edit mode
@@ -154,15 +160,10 @@ function TOGGLE_edit_mode(editMode,saveData) {
 	}
 	
 	//set elements appropriately
+	forms.WEB_0F_page__design__header_display__version.TOGGLE_elements()
 	forms.WEB_0F_page__design__content_1L_area.TOGGLE_elements(_editMode)
 	forms.WEB_0F_page__design__content_1L_block.TOGGLE_elements(_editMode)
 	forms.WEB_0F_page__design__content_1F_block_data__raw.TOGGLE_elements(_editMode)
 	forms.WEB_0F_page__design__properties.TOGGLE_elements(_editMode)
 	forms.WEB_0F_page__design__content_1L_block.REC_on_select(null,true)
-	
-	//set control comboboxes
-	forms.WEB_0F_page__design__header_display__platform.elements.fld_platform.enabled = _editMode
-	forms.WEB_0F_page__design__header_display__language.elements.fld_language.enabled = _editMode
-	forms.WEB_0F_page__design__header_display__group.elements.fld_group.enabled = _editMode
-	forms.WEB_0F_page__design__header_display__version.TOGGLE_elements()
 }

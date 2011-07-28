@@ -63,8 +63,8 @@ function TOGGLE_elements() {
 	elements.btn_edit_on.visible = (forms.WEB_0F_page__design__content.flag_edit) ? true : false
 	elements.btn_edit_off.visible = (forms.WEB_0F_page__design__content.flag_edit) ? false : true
 			
-	//toggle enabled state of combobox based on value or edit mode
-	if (application.getValueListDisplayValue('WEB_page_version',null) == '<html><body>Click <strong>+</strong> button to create a version' || !forms.WEB_A__page._editMode) {
+	//toggle enabled state of combobox based on value
+	if (application.getValueListDisplayValue('WEB_page_version',null) == '<html><body>Click <strong>+</strong> button to create a version') {
 		elements.fld_version.enabled = false
 //		elements.btn_check_off.enabled = false
 //		elements.btn_edit_off.enabled = false

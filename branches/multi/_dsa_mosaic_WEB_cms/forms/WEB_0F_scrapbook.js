@@ -217,6 +217,9 @@ function ACTION_edit_toggle(event,noSave) {
 					forms[recBlockType.form_name].BLOCK_save(event)
 				}
 			}
+			
+			//update modification date on this record
+			web_block_to_block_version.rec_modified = application.getServerTimeStamp()
 		}
 		//cancelled
 		else if (cancel) {

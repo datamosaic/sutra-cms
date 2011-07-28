@@ -205,17 +205,40 @@ function SET_versions(skipLoad,pageInvalid) {
 					record: recVersion
 				}
 			}
-			else if (i == 1) {
-				displayVal += 'Working copy'
+			
+			displayVal += 'Version ' + recVersion.version_number + ' '
+			
+			if (recVersion.rec_created || recVersion.rec_modified) {
+				displayVal += '('
+				
+				if (recVersion.rec_created) {
+					displayVal += globals.CODE_date_format(recVersion.rec_created,'current')
+				}
+				
+				//modified created is same, don't display second
+				var dateCreated = new Date(recVersion.rec_created)
+				var dateModified = new Date(recVersion.rec_modified)
+				if (dateCreated && dateModified && 
+					!(dateCreated.getMonth() == dateModified.getMonth() &&
+					dateCreated.getYear() == dateModified.getYear() &&
+					dateCreated.getDate() == dateModified.getDate())) {
+					
+					if (recVersion.rec_created && recVersion.rec_modified) {
+						displayVal += ' / '
+					}
+					
+					if (recVersion.rec_modified) {
+						displayVal += globals.CODE_date_format(recVersion.rec_modified,'current')
+					}
+				}
+				
+				displayVal += ')'
 			}
 			
-			if (i > 1 || recVersion.flag_active) {
-				displayVal += 'Version ' + recVersion.version_number + ' (' + globals.CODE_date_format(recVersion.rec_modified,'current') + ')'
-				
-				if (recVersion.version_name) {
-					displayVal += ': ' + recVersion.version_name
-				}
-			}	
+			if (recVersion.version_name) {
+				displayVal += ': ' + recVersion.version_name
+			}
+			
 			vlDisplay.push(displayVal)
 		}
 	}

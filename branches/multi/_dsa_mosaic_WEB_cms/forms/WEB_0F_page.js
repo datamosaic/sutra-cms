@@ -388,7 +388,7 @@ function SET_valuelists() {
 			
 			//push on as valid
 			if (valid) {
-				var display = '<html><body><strong>' + recSite.platform_name + '</strong>'
+				var display = '<html><body><font color="#333333"><strong>' + recSite.platform_name + '</strong></font>'
 				vlPlatformDisplay.push(display)
 			}
 			//invalid option, push greyed out
@@ -445,7 +445,7 @@ function SET_valuelists() {
 			
 			//push on as valid
 			if (valid) {
-				var display = '<html><body><strong>' + recSite.language_name + '</strong>'
+				var display = '<html><body><font color="#333333"><strong>' + recSite.language_name + '</strong></font>'
 				vlLanguageDisplay.push(display)
 			}
 			//invalid option, push greyed out
@@ -504,7 +504,7 @@ function SET_valuelists() {
 			
 			//push on as valid
 			if (valid) {
-				var display = '<html><body><strong>' + recSite.group_name + '</strong>'
+				var display = '<html><body><font color="#333333"><strong>' + recSite.group_name + '</strong></font>'
 				vlGroupDisplay.push(display)
 			}
 			//invalid option, push greyed out
