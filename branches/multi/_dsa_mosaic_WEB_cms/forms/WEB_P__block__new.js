@@ -89,9 +89,10 @@ function ACTION_ok(event) {
 		//this form is included on some other form
 		if (formStack.getMaxRowIndex() > 1) {
 			var formParent = formStack.getValue(formStack.getMaxRowIndex()-1,2)
+			var fsBlock = forms[formParent].foundset
 		}
-		else {
-			var formParent = 'WEB_0F_scrapbook'
+		if (!formParent || formParent == 'WEB_0F_page__design') {
+			var fsBlock = databaseManager.getFoundSet('sutra_cms','web_block')
 		}
 		
 		//get what is chosen (scrapbook)
@@ -125,7 +126,7 @@ function ACTION_ok(event) {
 							forms.WEB_0F_scrapbook_1L_block_version._skipSelect = true
 							
 							//choose context where to create scrapbook
-							var fsBlock = forms[formParent].foundset
+//							var fsBlock = forms[formParent].foundset
 							
 							var blockRec = fsBlock.getRecord(fsBlock.newRecord(true,true))
 							blockRec.block_name = scrapbookRec.block_name + ' (copy)'
@@ -311,7 +312,7 @@ function ACTION_ok(event) {
 						forms.WEB_0F_scrapbook_1L_block_version._skipSelect = true
 						
 						//choose context where to create scrapbook
-						var fsBlock = forms[formParent].foundset
+//						var fsBlock = forms[formParent].foundset
 						
 						var blockRec = fsBlock.getRecord(fsBlock.newRecord(true,true))
 						
@@ -475,8 +476,8 @@ function FORM_on_show() {
 	//show correct buttons
 	TOGGLE_buttons()
 	
-	//only show combobox when called from page
-	if (_calledFrom == 'Real' || _calledFrom == 'GUI') {
+	//only show combobox when called from page or theme
+	if (_calledFrom == 'Real' || _calledFrom == 'GUI' || _calledFrom == 'Theme') {
 		elements.lbl_scope.visible = true
 		elements.fld_scope.visible = true
 		//only move tabpanel if it's been moved before
