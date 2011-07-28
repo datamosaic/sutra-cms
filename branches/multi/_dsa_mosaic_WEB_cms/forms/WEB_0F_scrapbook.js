@@ -54,6 +54,16 @@ function FORM_on_load(event) {
 }
 
 /**
+ * @properties={typeid:24,uuid:"95D93344-A2EB-41E0-B6C9-E52A54EED328"}
+ */
+function FILTER_records() {
+	//only do this when not running in data sutra
+	if (!application.__parent__.solutionPrefs) {
+		FILTER_records(event)
+	}
+}
+
+/**
  *
  * @properties={typeid:24,uuid:"81BCE4C0-7411-4947-8D02-0A5025D053CD"}
  */
@@ -127,6 +137,11 @@ function FORM_on_show(firstShow, event) {
 	//make sure right things are showing
 	if (firstShow) {
 		forms.WEB_0F_scrapbook__header.TOGGLE_elements()
+	}
+	
+	//only do this when not running in data sutra
+	if (!application.__parent__.solutionPrefs) {
+		FILTER_records(event)
 	}
 
 	if (!utils.hasRecords(foundset)) {

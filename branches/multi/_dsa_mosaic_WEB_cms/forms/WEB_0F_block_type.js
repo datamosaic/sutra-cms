@@ -12,7 +12,7 @@ var _license_dsa_mosaic_WEB_cms = 'Module: _dsa_mosaic_WEB_cms \
  *
  * @properties={typeid:24,uuid:"4581AF20-5EEC-4B8D-9F54-56EB4AE0D46C"}
  */
-function FORM_on_load(event) {
+function FILTER_records(event) {
 	//find stuff for the selected site
 	if (utils.hasRecords(forms.WEB_0F_site.foundset)) {
 		foundset.find()
@@ -706,6 +706,11 @@ function FLD_data_change__form_name(oldValue, newValue, event) {
  * @properties={typeid:24,uuid:"1B080D9F-62BC-4987-B9AA-F6B22B1E65E2"}
  */
 function FORM_on_show(firstShow, event) {
+	//only do this when not running in data sutra
+	if (!application.__parent__.solutionPrefs) {
+		FILTER_records(event)
+	}
+	
 	if (!utils.hasRecords(foundset)) {
 		globals.WEB_lock_workflow(true)
 	}

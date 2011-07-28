@@ -363,16 +363,6 @@ function FIELD_directory_onLost(event) {
  */
 function FORM_on_show(firstShow, event) {
 	if (firstShow) {
-		//find stuff for the selected site
-		if (utils.hasRecords(forms.WEB_0F_site.foundset)) {
-			foundset.find()
-			foundset.id_site = forms.WEB_0F_site.id_site
-			var results = foundset.search()
-		}
-		else {
-			foundset.clear()
-		}
-		
 		//set divider locations
 		var aThird = (controller.getFormWidth() - 22) / 3
 		elements.bean_split_1.dividerLocation = aThird
@@ -381,8 +371,30 @@ function FORM_on_show(firstShow, event) {
 		elements.bean_split_4.dividerLocation = aThird
 	}
 	
+	//only do this when not running in data sutra
+	if (!application.__parent__.solutionPrefs) {
+		FILTER_records(event)
+	}
+	
 	if (!utils.hasRecords(foundset)) {
 		globals.WEB_lock_workflow(true)
+	}
+}
+
+/**
+ * @param {JSEvent} event the event that triggered the action
+ * 
+ * @properties={typeid:24,uuid:"A7C0E994-A29D-4BBA-9677-8F7608F29578"}
+ */
+function FILTER_records(event) {
+	//find stuff for the selected site
+	if (utils.hasRecords(forms.WEB_0F_site.foundset)) {
+		foundset.find()
+		foundset.id_site = forms.WEB_0F_site.id_site
+		var results = foundset.search()
+	}
+	else {
+		foundset.clear()
 	}
 }
 
