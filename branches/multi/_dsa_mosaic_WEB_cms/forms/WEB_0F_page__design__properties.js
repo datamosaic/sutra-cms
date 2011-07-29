@@ -6,16 +6,6 @@ var _license_dsa_mosaic_WEB_cms = 'Module: _dsa_mosaic_WEB_cms \
 									MIT Licensed';
 
 /**
- *
- * @properties={typeid:24,uuid:"BBF2CC81-62AC-40F4-9E5F-AA2F167FC92C"}
- */
-function ATTRIBUTE_new()
-{
-	forms.WEB_0F_page__design.web_page_to_attribute.newRecord(false, true)
-	databaseManager.saveData()
-}
-
-/**
  * Perform the element default action.
  *
  * @param {JSEvent} event the event that triggered the action
@@ -56,7 +46,7 @@ function UTIL_add_versioning(event) {
 					var oneVersion = pageRec.web_page_to_version.getRecord(pageRec.web_page_to_version.newRecord(false,true))
 					oneVersion.version_number = 1
 					oneVersion.flag_active = 1
-					oneVersion.flag_edit = 1
+					oneVersion.flag_lock = 0
 					oneVersion.version_name = 'Initial version'
 					databaseManager.saveData()
 					
@@ -219,17 +209,6 @@ function UTIL_page_type() {
 }
 
 /**
- * Perform the element default action.
- *
- * @param {JSEvent} event the event that triggered the action
- *
- * @properties={typeid:24,uuid:"00816965-17C0-42D7-9AF8-11112D3BB5D9"}
- */
-function TAB_change_descript(event) {
-	globals.TAB_change_grid(null,null,'tab_descript','tab_e','btn_desc_add','btn_desc_actions','btn_desc_help')
-}
-
-/**
  * Callback method when form is (re)loaded.
  *
  * @param {JSEvent} event the event that triggered the action
@@ -252,7 +231,23 @@ function FORM_on_load(event) {
  */
 function TAB_change(event) {
 	globals.TAB_change_grid()
-//	
+	
+	//on language, show bottom
+	if (elements.tab_detail.tabIndex == 4) {
+		elements.split_details.bottomComponent	= elements.tab_detail_bottom
+		elements.split_details.dividerLocation = elements.split_details.getHeight() - 170
+		
+		//set tabpanel bordering to be thinner
+//		elements.tab_detail.setBorder('SpecialMatteBorder,1.0,1.0,1.0,1.0,#647B95,#A1B0CF,#A1B0CF,#A1B0CF,0.0,')
+	}
+	//bottom tab panel was showing
+	else if (elements.split_details.bottomComponent) {
+		elements.split_details.bottomComponent	= null
+		
+		//restore tabpanel bordering
+//		elements.tab_detail.setBorder('SpecialMatteBorder,1.0,1.0,3.0,1.0,#647B95,#A1B0CF,#A1B0CF,#A1B0CF,0.0,')
+	}
+	
 //	elements.tab_detail_bottom.tabIndex = elements.tab_detail.tabIndex
 //	
 //	if (elements.tab_used_on.tabIndex == 4) {
@@ -284,4 +279,21 @@ function TOGGLE_elements(editAllow) {
 	//versions
 	forms.WEB_0F_page__design__properties_1L_version.elements.btn_delete.visible = editAllow
 	forms.WEB_0F_page__design__properties_1L_version.elements.fld_version_name.editable = editAllow
+	
+	//platforms
+	forms.WEB_0F_page__design__properties_1L_platform.elements.btn_delete.visible = editAllow
+	
+	//languages
+	forms.WEB_0F_page__design__properties_1L_language.elements.btn_delete.visible = editAllow
+	forms.WEB_0F_page__design__properties_1F_language.elements.btn_add.visible = editAllow
+	
+	//paths
+	forms.WEB_0F_page__design__properties_1L_path.elements.btn_delete.visible = editAllow
+	forms.WEB_0F_page__design__properties_1L_path.elements.fld_path.editable = editAllow
+	forms.WEB_0F_page__design__properties_1L_path.elements.fld_flag_default.enabled = editAllow
+	
+	//seo
+	forms.WEB_0F_page__design__properties_1L_seo.elements.btn_delete.visible = editAllow
+	forms.WEB_0F_page__design__properties_1L_seo.elements.edit_data_value.editable = editAllow
+	forms.WEB_0F_page__design__properties_1L_seo.elements.fld_data_key.editable = editAllow
 }
