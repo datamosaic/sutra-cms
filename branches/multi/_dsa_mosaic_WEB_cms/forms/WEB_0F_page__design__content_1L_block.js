@@ -412,7 +412,7 @@ function ACTION_gui_mode_load(fireSelect) {
 				
 				//check to make sure the active scrapbook version is editable
 				if (flagScrapbook) {
-					flagEdit = flagEdit && recBlock.web_block_to_block_version.flag_edit
+					flagEdit = flagEdit && !recBlock.web_block_to_block_version.flag_lock
 				}
 				
 				//this block definition exists

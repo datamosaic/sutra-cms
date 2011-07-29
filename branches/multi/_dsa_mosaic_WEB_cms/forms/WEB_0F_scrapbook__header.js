@@ -236,10 +236,10 @@ function ACTION_duplicate(event) {
 				newVersion.version_name = forms.WEB_P_version._versionName
 				newVersion.version_description = forms.WEB_P_version._versionDescription
 				newVersion.flag_active = null
-				newVersion.flag_edit = 1
+				newVersion.flag_lock = 0
 				
 				//set datapoints on old block version
-				selectedVersion.flag_edit = 0
+				selectedVersion.flag_lock = 1
 				
 				databaseManager.saveData(newVersion)
 				
@@ -317,7 +317,7 @@ function ACTION_activate(event) {
 					
 					//set selected version as active
 					selectedVersion.flag_active = 1
-					selectedVersion.flag_edit = 0
+					selectedVersion.flag_lock = 1
 					
 					databaseManager.saveData()
 					
@@ -361,7 +361,7 @@ function ACTION_edit(event) {
 	
 	if (version) {
 		//currently editable, prompt to turn off
-		if (version.flag_edit) {
+		if (!version.flag_lock) {
 //			//if top of the stack and more than one version and not active, refuse to proceed
 //			if (forms.WEB_0F_page__design__content.foundset.getSelectedIndex() == 1 && forms.WEB_0F_page__design__content.foundset.getSize() > 1 && !version.flag_active) {
 //				plugins.dialogs.showErrorDialog(
@@ -370,7 +370,7 @@ function ACTION_edit(event) {
 //					)
 //			}
 //			else {
-				version.flag_edit = 0
+				version.flag_lock = 1
 //				databaseManager.saveData(version)
 //			}
 		}
@@ -390,7 +390,7 @@ function ACTION_edit(event) {
 					}
 				}
 				
-				version.flag_edit = 1
+				version.flag_lock = 0
 //				databaseManager.saveData(version)
 			}
 			else {

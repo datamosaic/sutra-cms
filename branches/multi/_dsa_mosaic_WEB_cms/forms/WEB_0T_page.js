@@ -813,7 +813,7 @@ function REC_duplicate() {
 	destRecord.parent_id_page = srcRecord.parent_id_page
 	destRecord.flag_publish = 0
 	thisVersionToDo.flag_active = 0
-	thisVersionToDo.flag_edit = 1
+	thisVersionToDo.flag_lock = 0
 	thisVersionToDo.version_number = 1
 	destRecord.order_by ++
 	

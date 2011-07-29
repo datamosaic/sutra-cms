@@ -160,121 +160,6 @@ function FORM_on_show(firstShow, event) {
 }
 
 /**
- * Perform the element default action.
- *
- * @param {JSEvent} event the event that triggered the action
- *
- * @properties={typeid:24,uuid:"69B72F68-C6D4-4949-BEA5-2C2C8058CCE2"}
- */
-function ACTION_edit_toggle(event,noSave) {
-	if (event instanceof JSEvent) {
-		var cancel = utils.stringPatternCount(event.getElementName(),'cancel')
-		
-		event = new Object()
-		event.getFormName = function() {return controller.getName()}
-	}
-	
-	if (!_editMode) {
-		//enter pseudo-transaction
-		databaseManager.saveData()
-		databaseManager.setAutoSave(false)
-		
-		_editMode = true
-		
-//		elements.lbl_edit.text = 'Done'
-//		elements.btn_edit.toolTipText = 'Click when finished editing'
-			
-//		forms.WEB_0F_scrapbook__header.elements.lbl_edit.text = 'd o n e'
-//		forms.WEB_0F_scrapbook__header.elements.btn_edit.toolTipText = 'Click when finished editing'
-		
-		forms.WEB_0F_scrapbook__gui.elements.btn_data_actions.enabled = true
-		forms.WEB_0F_scrapbook__data.elements.btn_data_actions.enabled = true
-		
-		//enable raw data mode fields for editing
-		forms.WEB_0F_page__design__content_1F_block_data__raw_2L_block_data.elements.edit_data_value.editable = true
-		forms.WEB_0F_page__design__content_1F_block_data__raw_2L_block_data_configure.elements.edit_data_value.editable = true
-		forms.WEB_0F_page__design__content_1F_block_data__raw_2L_block_data_response.elements.edit_data_value.editable = true
-		
-		//allow to rename scrapbook
-		forms.WEB_0F_scrapbook__header.LBL_block_name__action()
-		
-		//toggle elements
-		forms.WEB_A__scrapbook.elements.btn_cancel.visible = true
-		forms.WEB_A__scrapbook.elements.btn_done.visible = true
-		forms.WEB_A__scrapbook.elements.btn_edit.visible = false
-		
-		//deleting
-		forms.WEB_0F_scrapbook__blocks.elements.btn_add.visible = true
-		forms.WEB_0F_scrapbook_1L_block.elements.btn_delete.visible = true
-		forms.WEB_0F_scrapbook_1L_block_version.elements.btn_delete.visible = true
-		forms.WEB_0F_scrapbook_1L_block_version.elements.fld_version_description.editable = true
-	}
-	else {
-		//punch down the save button when not cancelled
-		if (utils.hasRecords(foundset) && !cancel && !noSave) {
-			//save the data
-			databaseManager.saveData()
-			
-			//when in gui mode, save
-			if (forms.WEB_0F_scrapbook.elements.tab_main.tabIndex == 1) {
-				//load in correct gui representation for this block type
-				var recScrapbook = foundset.getSelectedRecord()
-		
-				if (recScrapbook && utils.hasRecords(recScrapbook.web_block_to_block_type)) {
-					var recBlockType = recScrapbook.web_block_to_block_type.getRecord(1)
-				}
-				
-				//this block definition exists as does the form and it has a save method on it
-				if (recBlockType && forms[recBlockType.form_name] && solutionModel.getForm(recBlockType.form_name).getFormMethod('BLOCK_save')) {
-					forms[recBlockType.form_name].BLOCK_save(event)
-				}
-			}
-			
-			//update modification date on this record
-			web_block_to_block_version.rec_modified = application.getServerTimeStamp()
-		}
-		//cancelled
-		else if (cancel) {
-			databaseManager.rollbackEditedRecords()
-		}
-		
-		databaseManager.setAutoSave(true)
-		
-		_editMode = false
-//		elements.lbl_edit.text = 'Edit'
-//		elements.btn_edit.toolTipText = 'Click to begin editing...'
-		
-//		forms.WEB_0F_scrapbook__header.elements.lbl_edit.text = 'e d i t'
-//		forms.WEB_0F_scrapbook__header.elements.btn_edit.toolTipText = 'Click to begin editing...'
-		
-		forms.WEB_0F_scrapbook__gui.elements.btn_data_actions.enabled = false
-		forms.WEB_0F_scrapbook__data.elements.btn_data_actions.enabled = false
-		
-		forms.WEB_0F_page__design__content_1F_block_data__raw_2L_block_data.elements.edit_data_value.editable = false
-		forms.WEB_0F_page__design__content_1F_block_data__raw_2L_block_data_configure.elements.edit_data_value.editable = false
-		forms.WEB_0F_page__design__content_1F_block_data__raw_2L_block_data_response.elements.edit_data_value.editable = false
-		
-		forms.WEB_0F_scrapbook__header.FLD_block_name__save()
-		
-		//toggle elements
-		forms.WEB_A__scrapbook.elements.btn_cancel.visible = false
-		forms.WEB_A__scrapbook.elements.btn_done.visible = false
-		forms.WEB_A__scrapbook.elements.btn_edit.visible = true
-		
-		//deleting
-		forms.WEB_0F_scrapbook__blocks.elements.btn_add.visible = false
-		forms.WEB_0F_scrapbook_1L_block.elements.btn_delete.visible = false
-		forms.WEB_0F_scrapbook_1L_block_version.elements.btn_delete.visible = false
-		forms.WEB_0F_scrapbook_1L_block_version.elements.fld_version_description.editable = false
-	}
-	
-	//when toggled from the button or cancelled, redo the screen
-	if (event || noSave) {
-		REC_on_select()
-	}
-}
-
-/**
  * @properties={typeid:24,uuid:"E5591A6B-12A1-4292-8A9A-446A59112031"}
  */
 function REC_on_select(event) {
@@ -295,21 +180,13 @@ function REC_on_select(event) {
 		}
 		
 		//set versions
+			//TODO: could use this activeVersion record to set globals.WEB_block_version
 		var activeVersion = SET_versions()
-		
-		//put into non-editable mode when called from actual record selection
-		//TODO: there is probably an issue here with it not saving the old record
-		if (_editMode && event) {
-			ACTION_edit_toggle(event)
-		}
 		
 		//update version global for combobox (see forms.WEB_0F_scrapbook_1L_block_version.REC_on_select)
 		if (forms.WEB_0F_scrapbook__sidebar.elements.tab_detail.tabIndex != 1) {
 			globals.WEB_block_version = utils.hasRecords(web_block_to_block_version__all) ? web_block_to_block_version__all.id_block_version.toString() : null
 		}
-		
-		//if edits aren't allowed, disable edit button
-//		elements.lbl_edit.enabled = ACTION_edit_get()
 		
 		//status of the edit
 		forms.WEB_0F_scrapbook__header.TOGGLE_elements()
@@ -366,7 +243,7 @@ function ACTION_gui_mode_load() {
 	//this block definition exists as does the form and we're in gui mode
 	if (recBlockType && forms[recBlockType.form_name] && elements.tab_main.tabIndex == 1) {
 		//edits allowed
-		if (_editMode) {
+		if (ACTION_edit_get()) {
 			var formName = recBlockType.form_name
 		}
 		//no edits
@@ -409,12 +286,15 @@ function ACTION_gui_mode_load() {
  */
 function ACTION_edit_get() {
 	//disable edits if edit flag not set
-	if (!utils.hasRecords(web_block_to_block_version__all) || !web_block_to_block_version__all.flag_edit) {
+	if (!utils.hasRecords(web_block_to_block_version__all) || web_block_to_block_version__all.flag_lock) {
 		var editAllow = false
 	}
-	//enable edits
-	else {
+	//enable edits if in edit mode
+	else if (forms.WEB_A__scrapbook._editMode) {
 		var editAllow = true
+	}
+	else {
+		var editAllow = false
 	}
 	
 	return editAllow
@@ -448,17 +328,40 @@ function SET_versions() {
 				displayVal += '<html><body><strong>ACTIVE</strong> '
 				var active = recVersion
 			}
-			else if (i == 1) {
-				displayVal += 'Working copy'
+			
+			displayVal += 'Version ' + recVersion.version_number + ' '
+			
+			if (recVersion.rec_created || recVersion.rec_modified) {
+				displayVal += '('
+				
+				if (recVersion.rec_created) {
+					displayVal += globals.CODE_date_format(recVersion.rec_created,'current')
+				}
+				
+				//modified created is same, don't display second
+				var dateCreated = new Date(recVersion.rec_created)
+				var dateModified = new Date(recVersion.rec_modified)
+				if (dateCreated && dateModified && 
+					!(dateCreated.getMonth() == dateModified.getMonth() &&
+					dateCreated.getYear() == dateModified.getYear() &&
+					dateCreated.getDate() == dateModified.getDate())) {
+					
+					if (recVersion.rec_created && recVersion.rec_modified) {
+						displayVal += ' / '
+					}
+					
+					if (recVersion.rec_modified) {
+						displayVal += globals.CODE_date_format(recVersion.rec_modified,'current')
+					}
+				}
+				
+				displayVal += ')'
 			}
 			
-			if (i > 1 || recVersion.flag_active) {
-				displayVal += 'Version ' + recVersion.version_number + ' (' + globals.CODE_date_format(recVersion.rec_modified,'current') + ')'
-				
-				if (recVersion.version_name) {
-					displayVal += ': ' + recVersion.version_name
-				}
-			}	
+			if (recVersion.version_name) {
+				displayVal += ': ' + recVersion.version_name
+			}
+			
 			vlDisplay.push(displayVal)
 		}
 	}
@@ -471,7 +374,7 @@ function SET_versions() {
 /**
  * @properties={typeid:24,uuid:"573F36C0-638A-494B-80D5-C24DD8BC1688"}
  */
-function FOUNDSET_restrict(returnContent, returnSite, noSutra, scrapbookScope) {
+function FOUNDSET_restrict(returnContent, noSutra, scrapbookScope) {
 	//get parent form
 	var formStack = controller.getFormContext()
 	
@@ -479,17 +382,9 @@ function FOUNDSET_restrict(returnContent, returnSite, noSutra, scrapbookScope) {
 	if (formStack.getMaxRowIndex() > 1) {
 		var formParent = formStack.getValue(formStack.getMaxRowIndex()-1,2)
 	}
-		
-	//return what scope to find records in
-	if (returnContent) {
-		return scrapbookScope
-	}
-	//scope to site unless on install scope
-	else if (returnSite && scrapbookScope != 3) {
-		return utils.hasRecords(forms.WEB_0F_site.foundset) ? forms.WEB_0F_site.id_site : null
-	}
+	
 	//when no data sutra, still try to work
-	else if (noSutra) {
+	if (noSutra) {
 		//find stuff for the selected site
 		if (utils.hasRecords(forms.WEB_0F_site.foundset)) {
 			forms[formParent].foundset.find()
@@ -503,6 +398,11 @@ function FOUNDSET_restrict(returnContent, returnSite, noSutra, scrapbookScope) {
 		else {
 			forms[formParent].foundset.clear()
 		}
+	}
+	
+	//return what scope to find records in
+	if (returnContent) {
+		return scrapbookScope
 	}
 }
 

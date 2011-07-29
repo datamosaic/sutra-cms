@@ -9,7 +9,6 @@ uuid:"31EDA0C5-218A-4C88-AB37-B5768F6A24BF"
 name:"WEB_0__startup",
 navigatorID:"-1",
 paperPrintScale:100,
-showInMenu:true,
 size:"100,50",
 styleName:"_DATASUTRA_",
 typeid:3,

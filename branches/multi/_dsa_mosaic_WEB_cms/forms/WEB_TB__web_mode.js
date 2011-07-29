@@ -469,7 +469,7 @@ function ACTION_mode(event) {
  */
 function TOGGLE_edit() {
 	//disable edits if edit flag not set
-	if (!utils.hasRecords(forms.WEB_0F_page__design__content.foundset) || !forms.WEB_0F_page__design__content.flag_edit) {
+	if (!utils.hasRecords(forms.WEB_0F_page__design__content.foundset) || forms.WEB_0F_page__design__content.flag_lock) {
 			//disable edits for active or non-latest versions
 			//utils.hasRecords(fsVersions) && fsVersions.version_number != fsVersions.getSize() || fsVersions.flag_active) {
 		var editMode = false

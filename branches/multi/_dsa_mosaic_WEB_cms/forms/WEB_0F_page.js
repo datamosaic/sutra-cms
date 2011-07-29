@@ -202,7 +202,7 @@ function FIND_post_process(count) {
  */
 function ACTION_edit_get() {
 	//disable edits if edit flag not set
-	if (!utils.hasRecords(forms.WEB_0F_page__design__content.foundset) || !forms.WEB_0F_page__design__content.flag_edit) {
+	if (!utils.hasRecords(forms.WEB_0F_page__design__content.foundset) || forms.WEB_0F_page__design__content.flag_lock) {
 		var editAllow = false
 	}
 	//enable edits if in edit mode

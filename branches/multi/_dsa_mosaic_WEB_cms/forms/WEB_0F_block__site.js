@@ -18,11 +18,9 @@ function FORM_on_load(event) {
  * @properties={typeid:24,uuid:"2FE1C8C9-8C64-47A2-9887-66A5C2FF1BC7"}
  */
 function FORM_on_show(firstShow, event) {
-	if (firstShow) {
-		//not running in frameworks, scope appropriately
-		if (!application.__parent__.solutionPrefs) {
-			FOUNDSET_restrict(null,null,true)
-		}
+	//not running in frameworks, scope appropriately
+	if (!application.__parent__.solutionPrefs) {
+		FOUNDSET_restrict(true)
 	}
 	
 	//set global for site records
@@ -71,18 +69,6 @@ function REC_delete() {
 /**
  * @properties={typeid:24,uuid:"DF8736B4-8AF2-4D25-9AA1-B92968C11944"}
  */
-function FOUNDSET_restrict(mungedData) {
-	if (mungedData) {
-		mungedData = mungedData.split('||')
-		
-		var returnContent = mungedData[0]
-		var returnSite = mungedData[1]
-		var noSutra = mungedData[2]
-		
-		return forms.WEB_0F_scrapbook.FOUNDSET_restrict(returnContent, returnSite, noSutra, 2)
-	}
-	//find everything if incorrect parameters
-	else {
-		return '^='
-	}
+function FOUNDSET_restrict(noSutra) {
+	return forms.WEB_0F_scrapbook.FOUNDSET_restrict(true, noSutra, 2)
 }

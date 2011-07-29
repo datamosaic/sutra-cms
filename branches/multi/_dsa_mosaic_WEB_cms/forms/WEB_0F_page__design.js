@@ -144,9 +144,6 @@ function REC_on_select(event,skipLoad,verIndex,fireSelect) {
 			PAGE_type_display(!pageValid ? 'Page invalid' : null)
 			forms.WEB_0F_page__design__header_display__version.TOGGLE_elements()
 			
-			//re-set page to not be in edit mode
-//			forms.WEB_A__page.TOGGLE_edit_mode(false)
-			
 			//allow additional on select firing
 			forms.WEB_0F_page__design__content_1L_block._skipSelect = false
 			

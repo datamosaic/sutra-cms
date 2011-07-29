@@ -18,11 +18,9 @@ function FORM_on_load(event) {
  * @properties={typeid:24,uuid:"B35419C5-A7AC-4548-B08F-C72388A80B4F"}
  */
 function FORM_on_show(firstShow, event) {
-	if (firstShow) {
-		//not running in frameworks, scope appropriately
-		if (!application.__parent__.solutionPrefs) {
-			FOUNDSET_restrict(null,null,true)
-		}
+	//not running in frameworks, scope appropriately
+	if (!application.__parent__.solutionPrefs) {
+		FOUNDSET_restrict(true)
 	}
 	
 	//set global for site records
@@ -37,20 +35,8 @@ function FORM_on_show(firstShow, event) {
 /**
  * @properties={typeid:24,uuid:"57648298-D5DB-4B84-90DA-FE29AAF766D1"}
  */
-function FOUNDSET_restrict(mungedData) {
-	if (mungedData) {
-		mungedData = mungedData.split('||')
-		
-		var returnContent = mungedData[0]
-		var returnSite = mungedData[1]
-		var noSutra = mungedData[2]
-		
-		return forms.WEB_0F_scrapbook.FOUNDSET_restrict(returnContent, returnSite, noSutra, 3)
-	}
-	//find everything if incorrect parameters
-	else {
-		return '^='
-	}
+function FOUNDSET_restrict(noSutra) {
+	return forms.WEB_0F_scrapbook.FOUNDSET_restrict(true, noSutra, 3)
 }
 
 /**

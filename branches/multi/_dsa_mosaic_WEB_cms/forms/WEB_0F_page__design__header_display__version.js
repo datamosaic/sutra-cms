@@ -60,8 +60,8 @@ function TOGGLE_elements() {
 	//show correct checkbox/edit graphics
 	elements.btn_check_on.visible = (forms.WEB_0F_page__design__content.flag_active) ? true : false
 	elements.btn_check_off.visible = (forms.WEB_0F_page__design__content.flag_active) ? false : true
-	elements.btn_lock_off.visible = (forms.WEB_0F_page__design__content.flag_edit) ? true : false
-	elements.btn_lock_on.visible = (forms.WEB_0F_page__design__content.flag_edit) ? false : true
+	elements.btn_lock_on.visible = (forms.WEB_0F_page__design__content.flag_lock) ? true : false
+	elements.btn_lock_off.visible = (forms.WEB_0F_page__design__content.flag_lock) ? false : true
 			
 	//toggle enabled state of combobox based on value
 	if (application.getValueListDisplayValue('WEB_page_version',null) == '<html><body>Click <strong>+</strong> button to create a version') {
@@ -163,8 +163,8 @@ function ADD_version(event) {
 				}
 				
 				//disable edits on old version
-				if (selectedVersion.flag_edit) {
-					selectedVersion.flag_edit = 0
+				if (!selectedVersion.flag_lock) {
+					selectedVersion.flag_lock = 1
 				}
 				
 				//save down information for new version
@@ -172,7 +172,7 @@ function ADD_version(event) {
 				destVersion.version_description = forms.WEB_P_version._versionDescription
 				destVersion.version_number = latestVersion.version_number + 1
 				destVersion.flag_active = null
-				destVersion.flag_edit = 1
+				destVersion.flag_lock = 0
 				globals.WEB_page_version = destVersion.id_version
 				
 				databaseManager.saveData()
@@ -328,7 +328,7 @@ function ADD_version(event) {
 					destVersion.version_name = 'Initial version'
 					destVersion.version_description = info
 					destVersion.flag_active = forms.WEB_0F_site.flag_auto_publish
-					destVersion.flag_edit = 1
+					destVersion.flag_lock = 0
 					destVersion.id_platform = forms.WEB_0F_page__design__header_display__platform._platform.id_platform
 					destVersion.id_language = forms.WEB_0F_page__design__header_display__language._language.id_language
 					destVersion.id_group = forms.WEB_0F_page__design__header_display__group._group.id_group
@@ -375,8 +375,8 @@ function LOCK_version(event) {
 	
 	if (version) {
 		//currently editable, prompt to turn off
-		if (version.flag_edit) {
-			version.flag_edit = 0
+		if (!version.flag_lock) {
+			version.flag_lock = 1
 //			databaseManager.saveData(version)
 		}
 		//non-editable, prompt to make editable
@@ -395,7 +395,7 @@ function LOCK_version(event) {
 					}
 				}
 				
-				version.flag_edit = 1
+				version.flag_lock = 0
 //				databaseManager.saveData(version)
 			}
 			else {
@@ -435,7 +435,7 @@ function ACTIVATE_version(event) {
 			
 			//redo version valuelist without touching the foundset
 			forms.WEB_0F_page__design.SET_versions(true)
-			TOGGLE_elements(selectedVersion.flag_edit)
+			TOGGLE_elements()
 			
 			break
 		case 'btn_check_off':
@@ -455,7 +455,7 @@ function ACTIVATE_version(event) {
 					
 					//set selected version as active
 					selectedVersion.flag_active = 1
-					selectedVersion.flag_edit = 0
+					selectedVersion.flag_lock = 1
 					
 //					databaseManager.saveData()
 					
