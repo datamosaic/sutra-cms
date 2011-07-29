@@ -48,10 +48,10 @@ function TOGGLE_elements() {
 		elements.btn_check_off.visible = !flagActive
 		
 		//set edit button to correct state
-		var flagEdit = forms.WEB_0F_scrapbook.ACTION_edit_get()
+		var flagLock = web_block_to_block_version__all.flag_lock ? true : false
 		
-		elements.btn_edit_on.visible = flagEdit
-		elements.btn_edit_off.visible = !flagEdit
+		elements.btn_lock_on.visible = flagLock
+		elements.btn_lock_off.visible = !flagLock
 		
 		//set actions wheelies
 		forms.WEB_0F_scrapbook__gui.elements.btn_data_actions.enabled = forms.WEB_0F_scrapbook._editMode
@@ -63,8 +63,8 @@ function TOGGLE_elements() {
 		elements.btn_check_off.visible = true
 		
 		//set edit button to correct state
-		elements.btn_edit_on.visible = false
-		elements.btn_edit_off.visible = true
+		elements.btn_lock_on.visible = false
+		elements.btn_lock_off.visible = true
 		
 		//set actions wheelies
 		forms.WEB_0F_scrapbook__gui.elements.btn_data_actions.enabled = false
@@ -350,7 +350,7 @@ function ACTION_activate(event) {
  *
  * @properties={typeid:24,uuid:"AB987B67-2BEB-416D-8975-14FB58AF42EA"}
  */
-function ACTION_edit(event) {
+function ACTION_lock(event) {
 	//don't do anything unless in edit mode
 	if (!forms.WEB_0F_scrapbook._editMode) {
 		return
