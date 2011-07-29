@@ -183,11 +183,6 @@ function FLD_version__data_change(oldValue, newValue, event) {
  * @properties={typeid:24,uuid:"41B1CA43-A985-4FA2-A028-B590248E3160"}
  */
 function ACTION_duplicate(event) {
-	//don't do anything unless in edit mode
-	if (!forms.WEB_0F_scrapbook._editMode) {
-		return
-	}
-	
 	//there is a block
 	if (utils.hasRecords(foundset)) {
 		//do we have any versions?
@@ -282,11 +277,6 @@ function ACTION_duplicate(event) {
  * @properties={typeid:24,uuid:"0B7443CA-CD8A-4DA7-85CB-65E580BFE0BF"}
  */
 function ACTION_activate(event) {
-	//don't do anything unless in edit mode
-	if (!forms.WEB_0F_scrapbook._editMode) {
-		return
-	}
-	
 	var selectedVersion = web_block_to_block_version__all.getSelectedRecord()
 	
 	switch (event.getElementName()) {
@@ -351,11 +341,6 @@ function ACTION_activate(event) {
  * @properties={typeid:24,uuid:"AB987B67-2BEB-416D-8975-14FB58AF42EA"}
  */
 function ACTION_lock(event) {
-	//don't do anything unless in edit mode
-	if (!forms.WEB_0F_scrapbook._editMode) {
-		return
-	}
-	
 	//find this version
 	var version = web_block_to_block_version__all.getSelectedRecord()
 	
