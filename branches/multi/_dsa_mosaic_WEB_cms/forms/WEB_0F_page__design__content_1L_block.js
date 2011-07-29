@@ -149,8 +149,7 @@ function BLOCK_new(input) {
 				' ',
 				true,
 				false,
-				'cmsBlockNew',
-				false
+				'cmsBlockNew'
 			)
 	
 	//created a new record

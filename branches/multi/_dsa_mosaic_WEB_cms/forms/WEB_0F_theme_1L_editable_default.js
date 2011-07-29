@@ -29,8 +29,7 @@ function BLOCK_new() {
 				' ',
 				true,
 				false,
-				'cmsBlockNew',
-				false
+				'cmsBlockNew'
 			)
 }
 
