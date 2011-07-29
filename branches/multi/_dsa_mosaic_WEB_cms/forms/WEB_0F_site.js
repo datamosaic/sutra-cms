@@ -91,7 +91,7 @@ function REC_new() {
 		globals.WEB_lock_workflow(false)
 	}
 	
-	controller.newRecord(false)
+	controller.newRecord(true)
 	
 	//create a group
 	var allGroup = web_site_to_site_group.getRecord(web_site_to_site_group.newRecord(false,true))
