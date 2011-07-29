@@ -18,28 +18,28 @@ function TRIGGER_mode_set(mode) {
 	if (mode) {
 		switch (mode) {
 			case "DESIGN":	
-				//custom block editor loaded on browser form, remove
-				if (forms.WEB_0F_page__browser.elements.tab_editor.getMaxTabIndex() && (
-					forms.WEB_0F_page__browser.elements.tab_editor.getTabFormNameAt(1) == 'WEB_0F__content' ||
-					forms.WEB_0F_page__browser.elements.tab_editor.getTabFormNameAt(1) == 'WEB_0F__image'
-					)) {
-					
-					//stop loading on main browser bean form to avoid race condition
-					forms.WEB_0F_page__browser.elements.bn_browser.stopLoading()
-					
-					forms.WEB_0F_page__browser.elements.tab_editor.removeTabAt(1)
-				}
+//				//custom block editor loaded on browser form, remove
+//				if (forms.WEB_0F_page__browser.elements.tab_editor.getMaxTabIndex() && (
+//					forms.WEB_0F_page__browser.elements.tab_editor.getTabFormNameAt(1) == 'WEB_0F__content' ||
+//					forms.WEB_0F_page__browser.elements.tab_editor.getTabFormNameAt(1) == 'WEB_0F__image'
+//					)) {
+//					
+//					//stop loading on main browser bean form to avoid race condition
+//					forms.WEB_0F_page__browser.elements.bn_browser.stopLoading()
+//					
+//					forms.WEB_0F_page__browser.elements.tab_editor.removeTabAt(1)
+//				}
 				
 				elements.tab_main.removeTabAt(2)
 				elements.tab_main.tabIndex = 1
 				
 				//reset enabled/disabled, etc.
-				forms.WEB_0F_page__design.REC_on_select()
+				forms.WEB_0F_page__design.REC_on_select(null,true)
 				
 				break;
 			case "BROWSER":	
 				//following line only needed when returning to web mode after not being in it fulltime
-				forms.WEB_0F_page__browser.REC_on_select()
+				forms.WEB_0F_page__browser.REC_on_select(null,null,true)
 				
 				elements.tab_main.addTab( forms.WEB_0F_page__browser )
 				elements.tab_main.tabIndex = 2
