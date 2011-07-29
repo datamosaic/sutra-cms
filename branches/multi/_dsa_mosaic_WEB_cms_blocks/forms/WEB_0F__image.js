@@ -110,7 +110,7 @@ function VIEW_lightbox() {
  * @properties={typeid:24,uuid:"581D1472-7339-4669-A110-353A1904B241"}
  */
 function TOGGLE_buttons(event) {
-	var editStatus = forms.WEB_0F_page.ACTION_edit_get()
+	var editStatus = globals.WEB_block_edit_get()
 	
 	var hasData = _imageData.id_asset_instance ? true : false
 	

@@ -216,3 +216,17 @@ function WEB_block_cancel() {
 		forms[formName].ACTION_cancel(null,true)
 	}
 }
+
+/**
+ * @properties={typeid:24,uuid:"BDE6D35A-5AF8-43F4-9575-04EFC6594475"}
+ */
+function WEB_block_edit_get() {
+	//page scope
+	if (globals.WEB_block_page_mode) {
+		return forms.WEB_0F_page.ACTION_edit_get()
+	}
+	//scrapbook scope
+	else {
+		return forms.WEB_0F_scrapbook.ACTION_edit_get()
+	}
+}

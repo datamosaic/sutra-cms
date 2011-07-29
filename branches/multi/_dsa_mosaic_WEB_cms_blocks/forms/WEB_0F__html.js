@@ -80,7 +80,7 @@ function REC_on_select(event,alwaysRun) {
 		_dataValue = globals.WEB_block_getData(event).data_value
 		
 		//when no data or in edit mode, enter in edit mode
-		if (!_dataValue || forms.WEB_0F_page.ACTION_edit_get()) {
+		if (!_dataValue || globals.WEB_block_edit_get()) {
 			TOGGLE_buttons(true)
 		}
 		//update display
@@ -110,7 +110,7 @@ function BLOCK_cancel(event) {
  * @properties={typeid:24,uuid:"AFC38F1A-D4AE-49AE-8C7C-C6901CC9B030"}
  */
 function TOGGLE_buttons(state) {
-	if (!forms.WEB_0F_page.ACTION_edit_get()) {
+	if (!globals.WEB_block_edit_get()) {
 		elements.btn_edit.visible = false
 		elements.lbl_edit.visible = false
 	}
