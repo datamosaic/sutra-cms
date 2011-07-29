@@ -29,14 +29,14 @@ function ACTION_edit(event) {
 //	elements.lbl_add.visible = false	
 	elements.btn_edit.visible = false	
 //	elements.lbl_edit.visible = false
-	elements.btn_groups.visible = false
-	elements.lbl_groups.visible = false	
-	elements.lbl_groups_tick.visible = false		
+//	elements.btn_groups.visible = false
+//	elements.lbl_groups.visible = false	
+//	elements.lbl_groups_tick.visible = false		
 	elements.btn_save.visible = true	
 //	elements.lbl_save.visible = true
-	elements.btn_versions.visible = false
-	elements.lbl_versions.visible = false	
-	elements.lbl_versions_tick.visible = false		
+//	elements.btn_versions.visible = false
+//	elements.lbl_versions.visible = false	
+//	elements.lbl_versions_tick.visible = false		
 	
 	elements.highlighter.setLocation(elements.btn_edit.getLocationX() - 5,0)
 	elements.highlighter.visible = true
@@ -108,15 +108,15 @@ function ACTION_group(input) {
  * @properties={typeid:24,uuid:"B84F01FA-8EB2-4E74-8095-947C184EB422"}
  */
 function TOGGLE_group(showGroups) {
-	
-	if (typeof showGroups != 'boolean') {
-		var pageGroups = application.getValueListItems('WEB_page_group')
-		showGroups = (pageGroups.getMaxRowIndex() > 1) ? true : false
-	}
-	
-	elements.btn_groups.visible = showGroups
-	elements.lbl_groups.visible = showGroups
-	elements.lbl_groups_tick.visible = showGroups
+//	
+//	if (typeof showGroups != 'boolean') {
+//		var pageGroups = application.getValueListItems('WEB_page_group')
+//		showGroups = (pageGroups.getMaxRowIndex() > 1) ? true : false
+//	}
+//	
+//	elements.btn_groups.visible = showGroups
+//	elements.lbl_groups.visible = showGroups
+//	elements.lbl_groups_tick.visible = showGroups
 }
 
 /**
@@ -124,15 +124,15 @@ function TOGGLE_group(showGroups) {
  * @properties={typeid:24,uuid:"530CE94C-E1F2-47D0-9BF9-C4FF4FD027DF"}
  */
 function TOGGLE_version(showSnapshots) {
-	
-	if (typeof showSnapshots != 'boolean') {
-		var versions = application.getValueListItems('WEB_page_version')
-		showSnapshots = (versions.getMaxRowIndex() > 1) ? true : false
-	}
-	
-	elements.btn_versions.visible = showSnapshots
-	elements.lbl_versions.visible = showSnapshots
-	elements.lbl_versions_tick.visible = showSnapshots
+//	
+//	if (typeof showSnapshots != 'boolean') {
+//		var versions = application.getValueListItems('WEB_page_version')
+//		showSnapshots = (versions.getMaxRowIndex() > 1) ? true : false
+//	}
+//	
+//	elements.btn_versions.visible = showSnapshots
+//	elements.lbl_versions.visible = showSnapshots
+//	elements.lbl_versions_tick.visible = showSnapshots
 }
 
 /**
@@ -238,26 +238,26 @@ function ACTION_version(input) {
  * @properties={typeid:24,uuid:"37CB81D0-259B-445E-9FDC-C15B3328574D"}
  */
 function BREAD_update() {
-	var simple = true
+//	var simple = true
+//	
+//	var label = '<html><body><center>'
+//	label += 'Group ' + application.getValueListDisplayValue('WEB_page_group',globals.WEB_page_group).substr(12) + '&nbsp;&nbsp;&nbsp;&nbsp;'
+//	
+//	if (simple) {
+//		label += '<br>'
+//	}
+//	
+//	label += '' + application.getValueListDisplayValue('WEB_page_version',globals.WEB_page_version)
+//	
+//	if (!simple) {
+//		label += '<br>'
+//		label += '<b>URL</b> ' + globals.WEB_preview_url + '<br>'
+//	}
+//	
+//	label += '</center></body></html>'
 	
-	var label = '<html><body><center>'
-	label += 'Group ' + application.getValueListDisplayValue('WEB_page_group',globals.WEB_page_group).substr(12) + '&nbsp;&nbsp;&nbsp;&nbsp;'
-	
-	if (simple) {
-		label += '<br>'
-	}
-	
-	label += '' + application.getValueListDisplayValue('WEB_page_version',globals.WEB_page_version)
-	
-	if (!simple) {
-		label += '<br>'
-		label += '<b>URL</b> ' + globals.WEB_preview_url + '<br>'
-	}
-	
-	label += '</center></body></html>'
-	
-	elements.lbl_detail.text = label
-	elements.lbl_detail.toolTipText = '<html><body>Click to copy URL to clipboard<br>' + globals.WEB_preview_url
+//	elements.lbl_detail.text = label
+//	elements.lbl_detail.toolTipText = '<html><body>Click to copy URL to clipboard<br>' + globals.WEB_preview_url
 }
 
 /**
@@ -404,7 +404,7 @@ function ACTION_mode(event) {
 					elements.btn_save.visible = false
 					
 					elements.highlighter.visible = false
-					elements.lbl_detail.visible = false
+//					elements.lbl_detail.visible = false
 					
 					TOGGLE_group(false)
 					TOGGLE_version(false)
@@ -436,7 +436,7 @@ function ACTION_mode(event) {
 					elements.btn_save.visible = false
 					
 					elements.highlighter.visible = false
-					elements.lbl_detail.visible = false
+//					elements.lbl_detail.visible = false
 					
 					TOGGLE_group(false)
 					TOGGLE_version(false)
@@ -449,7 +449,7 @@ function ACTION_mode(event) {
 				
 				//go to real mode if not there already
 				if (currentMode != "BROWSER") {
-					elements.lbl_detail.visible = true
+//					elements.lbl_detail.visible = true
 					
 					forms.WEB_0F_page.TRIGGER_mode_set("BROWSER")
 					
@@ -526,13 +526,13 @@ function ACTION_save(event) {
  * @properties={typeid:24,uuid:"DDB53BF6-144F-4AF7-8963-21FD2C801A99"}
  */
 function FORM_on_load() {
-	elements.btn_groups.visible = false
-	elements.lbl_groups.visible = false	
-	elements.lbl_groups_tick.visible = false		
+//	elements.btn_groups.visible = false
+//	elements.lbl_groups.visible = false	
+//	elements.lbl_groups_tick.visible = false		
 	elements.btn_save.visible = false	
-	elements.btn_versions.visible = false
-	elements.lbl_versions.visible = false
-	elements.lbl_versions_tick.visible = false	
+//	elements.btn_versions.visible = false
+//	elements.lbl_versions.visible = false
+//	elements.lbl_versions_tick.visible = false	
 	elements.btn_edit.visible = false
 	elements.lbl_edit.visible = false
 	
