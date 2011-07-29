@@ -58,21 +58,6 @@ function FORM_on_show(firstShow, event) {
 }
 
 /**
- *
- * @properties={typeid:24,uuid:"967D366C-A987-411F-8344-746E8CFE5089"}
- */
-function TOGGLE_edit() {
-	if (utils.hasRecords(foundset)) {
-		elements.btn_edit_on.visible = (web_page_to_version.flag_edit) ? true : false
-		elements.btn_edit_off.visible = (web_page_to_version.flag_edit) ? false : true
-	}
-	else {
-		elements.btn_edit_on.visible = false
-		elements.btn_edit_off.visible = false
-	}
-}
-
-/**
  * Perform the element default action.
  *
  * @param {JSEvent} event the event that triggered the action

@@ -60,8 +60,8 @@ function TOGGLE_elements() {
 	//show correct checkbox/edit graphics
 	elements.btn_check_on.visible = (forms.WEB_0F_page__design__content.flag_active) ? true : false
 	elements.btn_check_off.visible = (forms.WEB_0F_page__design__content.flag_active) ? false : true
-	elements.btn_edit_on.visible = (forms.WEB_0F_page__design__content.flag_edit) ? true : false
-	elements.btn_edit_off.visible = (forms.WEB_0F_page__design__content.flag_edit) ? false : true
+	elements.btn_lock_off.visible = (forms.WEB_0F_page__design__content.flag_edit) ? true : false
+	elements.btn_lock_on.visible = (forms.WEB_0F_page__design__content.flag_edit) ? false : true
 			
 	//toggle enabled state of combobox based on value
 	if (application.getValueListDisplayValue('WEB_page_version',null) == '<html><body>Click <strong>+</strong> button to create a version') {
@@ -369,7 +369,7 @@ function ADD_version(event) {
  *
  * @properties={typeid:24,uuid:"DAFB8B47-5EE4-4FC6-9661-34D670A373BB"}
  */
-function EDIT_version(event) {
+function LOCK_version(event) {
 	//find this version
 	var version = forms.WEB_0F_page__design__content.foundset.getSelectedRecord()
 	
@@ -384,7 +384,7 @@ function EDIT_version(event) {
 			if (globals.TRIGGER_registered_action_authenticate('cms edit version')) {
 				if (version.flag_active) {
 					var input = plugins.dialogs.showQuestionDialog(
-								'Edit?',
+								'Unlock',
 								'Do you want to allow edits to the active version?',
 								'Yes',
 								'No'
@@ -401,7 +401,7 @@ function EDIT_version(event) {
 			else {
 				plugins.dialogs.showErrorDialog(
 							'Insufficient access',
-							'You are not allowed to change the editability of a page'
+							'You are not allowed to change the lockedness of a page'
 					)
 			}
 		}
