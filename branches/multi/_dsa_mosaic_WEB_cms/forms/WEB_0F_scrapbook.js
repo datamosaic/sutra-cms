@@ -94,7 +94,8 @@ function REC_new() {
 					' ',
 					true,
 					false,
-					'cmsBlockNew'
+					'cmsBlockNew',
+					false
 				)
 		
 		//created a new record
