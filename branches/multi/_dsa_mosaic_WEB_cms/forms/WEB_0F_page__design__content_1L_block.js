@@ -98,6 +98,10 @@ function BLOCK_action_list_control(scope,copy,promote) {
 		destBlock.scope_type = scope
 		destBlock.block_name = input
 		
+		//punch in the current block type and display so will show up on site scrapbook
+		destBlock.id_block_type = blockRec.id_block_type
+		destBlock.id_block_display = blockRec.id_block_display
+		
 		if (scope == 1) {
 			destBlock.id_page = forms.WEB_0F_page.id_page
 		}
