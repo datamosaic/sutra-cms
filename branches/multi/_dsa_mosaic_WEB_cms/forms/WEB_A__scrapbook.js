@@ -88,7 +88,7 @@ function TOGGLE_edit_mode(editMode,saveData) {
 			//when in gui mode, save
 			if (forms.WEB_0F_scrapbook.elements.tab_main.tabIndex == 1) {
 				//load in correct gui representation for this block type
-				var recScrapbook = foundset.getSelectedRecord()
+				var recScrapbook = forms.WEB_0F_scrapbook.foundset.getSelectedRecord()
 		
 				if (recScrapbook && utils.hasRecords(recScrapbook.web_block_to_block_type)) {
 					var recBlockType = recScrapbook.web_block_to_block_type.getRecord(1)
@@ -96,7 +96,10 @@ function TOGGLE_edit_mode(editMode,saveData) {
 				
 				//this block definition exists as does the form and it has a save method on it
 				if (recBlockType && forms[recBlockType.form_name] && solutionModel.getForm(recBlockType.form_name).getFormMethod('BLOCK_save')) {
-					forms[recBlockType.form_name].BLOCK_save(event)
+					var pseudoEvent = new Object()
+					pseudoEvent.getFormName = function() {return recBlockType.form_name}
+					
+					forms[recBlockType.form_name].BLOCK_save(pseudoEvent)
 				}
 			}
 			

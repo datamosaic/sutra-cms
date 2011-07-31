@@ -103,11 +103,14 @@ function REC_new() {
 			globals.WEB_block_version = utils.hasRecords(web_block_to_block_version__all) ? web_block_to_block_version__all.id_block_version.toString() : null
 			REC_on_select()
 			
+			//enter edit mode
+			forms.WEB_A__scrapbook.ACTION_edit()
+			
 			//refresh screen so i can put cursor into field
-			application.updateUI(100)
+			application.updateUI(250)
 			
 			//set name of this block
-			forms.WEB_0F_scrapbook__header.LBL_block_name__action()
+//			forms.WEB_0F_scrapbook__header.LBL_block_name__action()
 			
 			//additional request focus (at end of method stack)
 			forms.WEB_0F_scrapbook__header.elements.fld_block_name.selectAll()
