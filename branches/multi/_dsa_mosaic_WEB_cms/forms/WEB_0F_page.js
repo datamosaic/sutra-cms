@@ -68,71 +68,63 @@ function TRIGGER_mode_set(mode) {
 var _lastToolbar = null;
 
 /**
- * @properties={typeid:35,uuid:"FA071178-813A-4E1E-AAEB-13E5E59D62F3",variableType:-4}
- */
-var _hackNoFire = false;
-
-/**
  * @properties={typeid:24,uuid:"10F5E463-15E2-4C0B-858D-F62E76FEDFBF"}
  */
 function FORM_on_show(firstShow, event) {
-	//this is set when scrapbook is shown to ensure that browser bean has enough time to load before rendering
-	if (!_hackNoFire) {
-		//first time go to sitemap view
-		if (firstShow) {
-			globals.TRIGGER_ul_tab_list('WEB_0T_page','Sitemap',0)
+	//first time go to sitemap view
+	if (firstShow) {
+		globals.TRIGGER_ul_tab_list('WEB_0T_page','Sitemap',0)
+	}
+	
+	//don't run in headless client
+	if (application.getApplicationType() != APPLICATION_TYPES.HEADLESS_CLIENT) {
+		//save down currently selected toolbar
+		if (application.__parent__.solutionPrefs && !solutionPrefs.config.lockStatus) {
+			_lastToolbar = solutionPrefs.panel.toolbar[forms[solutionPrefs.config.formNameBase + '__header__toolbar'].elements.tab_toolbar.tabIndex - 1].tabName
+			
+			//make sure on page toolbar
+			globals.TRIGGER_toolbar_set('Web Edit')
 		}
 		
-		//don't run in headless client
-		if (application.getApplicationType() != APPLICATION_TYPES.HEADLESS_CLIENT) {
-			//save down currently selected toolbar
-			if (application.__parent__.solutionPrefs && !solutionPrefs.config.lockStatus) {
-				_lastToolbar = solutionPrefs.panel.toolbar[forms[solutionPrefs.config.formNameBase + '__header__toolbar'].elements.tab_toolbar.tabIndex - 1].tabName
-				
-				//make sure on page toolbar
-				globals.TRIGGER_toolbar_set('Web Edit')
-			}
+		
+		//in workflow maximized view
+		if (firstShow && application.__parent__.solutionPrefs && solutionPrefs.config.activeSpace == 'workflow') {
+			//switch modes
+			TRIGGER_mode_set("BROWSER")
+			return
+		}
+		
+		if (!utils.hasRecords(foundset)) {
+			//null out variables and valuelists
+			globals.WEB_page_version = null
+			globals.WEB_page_group = null
+			globals.WEB_page_language = null
+			globals.WEB_page_platform = null
 			
+			forms.WEB_0F_page__design.REC_on_select()
 			
-			//in workflow maximized view
-			if (firstShow && application.__parent__.solutionPrefs && solutionPrefs.config.activeSpace == 'workflow') {
-				//switch modes
-				TRIGGER_mode_set("BROWSER")
-				return
-			}
+			//update tree
+			forms.WEB_0T_page.TREE_refresh()
 			
-			if (!utils.hasRecords(foundset)) {
-				//null out variables and valuelists
-				globals.WEB_page_version = null
-				globals.WEB_page_group = null
-				globals.WEB_page_language = null
-				globals.WEB_page_platform = null
-				
-				forms.WEB_0F_page__design.REC_on_select()
-				
-				//update tree
-				forms.WEB_0T_page.TREE_refresh()
-				
-				//no records, dim out
-				globals.WEB_lock_workflow(true)
-				
-				//set elements appropriately
-				forms.WEB_TB__web_mode.controller.enabled = false
-				forms.WEB_TB__web_mode.elements.gfx_tool_left.enabled = true
-				forms.WEB_TB__web_mode.elements.gfx_tool_center.enabled = true
-				forms.WEB_TB__web_mode.elements.gfx_tool_right.enabled = true
-				
-				forms.WEB_A__page.TOGGLE_edit_mode(false)
-			}
-			else {
-				//enable rec_on_select of the block type form
-				globals.WEB_block_on_select = true
-				
-				//need to reload the tree, update globals showing
-				if (forms.WEB_0T_page._refresh) {
-					_loadFilters = true
-					SET_globals()
-				}
+			//no records, dim out
+			globals.WEB_lock_workflow(true)
+			
+			//set elements appropriately
+			forms.WEB_TB__web_mode.controller.enabled = false
+			forms.WEB_TB__web_mode.elements.gfx_tool_left.enabled = true
+			forms.WEB_TB__web_mode.elements.gfx_tool_center.enabled = true
+			forms.WEB_TB__web_mode.elements.gfx_tool_right.enabled = true
+			
+			forms.WEB_A__page.TOGGLE_edit_mode(false)
+		}
+		else {
+			//enable rec_on_select of the block type form
+			globals.WEB_block_on_select = true
+			
+			//need to reload the tree, update globals showing
+			if (forms.WEB_0T_page._refresh) {
+				_loadFilters = true
+				SET_globals()
 			}
 		}
 	}
@@ -152,9 +144,6 @@ function FORM_on_hide(event) {
 	if (application.getApplicationType() != APPLICATION_TYPES.HEADLESS_CLIENT) {
 		//undo locked screen
 		globals.WEB_lock_workflow(false)
-		
-//		//refire correct enabled state for comboboxes
-//		forms.WEB_A__page.TOGGLE_edit_mode(forms.WEB_A__page._editMode)
 		
 		forms.WEB_TB__web_mode.controller.enabled = true
 		

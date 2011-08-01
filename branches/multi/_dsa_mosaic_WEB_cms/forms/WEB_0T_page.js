@@ -258,8 +258,8 @@ function FORM_on_load(event) {
 	TREE_refresh()
 	
 	//force highlightion of first record unless called from duplicate rec
-	if (utils.hasRecords(foundset) && event) {
-		elements.bean_tree.selectionPath = FIND_path(foundset.getRecord(1))
+	if (utils.hasRecords(forms.WEB_0F_page.foundset) && event) {
+		elements.bean_tree.selectionPath = FIND_path(forms.WEB_0F_page.foundset.getSelectedRecord())
 	}
 }
 
@@ -268,6 +268,17 @@ function FORM_on_load(event) {
  * @properties={typeid:24,uuid:"A4A59C5A-C5A4-4159-94EB-8E4EEFE67773"}
  */
 function FORM_on_show(firstShow,event) {
+	//full refresh of bean requested
+	if (_refresh) {
+		_refresh = false
+		TREE_refresh()
+		
+		//highlight selected record
+		if (firstShow) {
+			elements.bean_tree.selectionPath = FIND_path(forms.WEB_0F_page.foundset.getSelectedRecord())
+		}
+	}
+	
 	//not really form on show, just keeping form on load a bit cleaner
 	if (firstShow) {
 		// load tooltips from tooltip module
@@ -285,12 +296,6 @@ function FORM_on_show(firstShow,event) {
 	}
 	//return to sitemap subsequently
 	else {
-		//full refresh of bean requested
-		if (_refresh) {
-			_refresh = false
-			TREE_refresh()
-		}
-		
 		//highlight selected record
 		elements.bean_tree.selectionPath = FIND_path(forms.WEB_0F_page.foundset.getSelectedRecord())
 	}
@@ -351,7 +356,7 @@ function MOVE_generic(input) {
 	 */	//MEMO: within groupings, sort potentially breaks if there are more than 200 records
 	//TODO: check and see if move is valid first, before creating the codable foundset
 	
-	var recMove = foundset.getSelectedRecord()
+	var recMove = forms.WEB_0F_page.foundset.getSelectedRecord()
 	
 	//find current syblings
 	var fsPeers = databaseManager.getFoundSet(controller.getServerName(),controller.getTableName())
@@ -649,7 +654,7 @@ function REC_delete(record) {
 		return keys
 	}
 	
-	if (utils.hasRecords(foundset) || typeof record == 'object') {
+	if (utils.hasRecords(forms.WEB_0F_page.foundset) || typeof record == 'object') {
 		
 		if (typeof record == 'object' && record.id_page) {
 			var delRec = 'Yes'
@@ -662,7 +667,7 @@ function REC_delete(record) {
 								'Yes',
 								'No'
 							)
-			record = foundset.getSelectedRecord()
+			record = forms.WEB_0F_page.foundset.getSelectedRecord()
 		}
 		
 		if (delRec == 'Yes') {
@@ -726,20 +731,20 @@ function REC_delete(record) {
 				if (!skipSelect) {
 					//go to one above current location
 					if (orderBy != 1) {
-						foundset.find()
-						foundset.parent_id_page = parentID
-						foundset.order_by = orderBy - 1
-						var results = foundset.search()
+						forms.WEB_0F_page.foundset.find()
+						forms.WEB_0F_page.foundset.parent_id_page = parentID
+						forms.WEB_0F_page.foundset.order_by = orderBy - 1
+						var results = forms.WEB_0F_page.foundset.search()
 					}
 					else {
-						foundset.find()
-						foundset.id_page = parentID
-						var results = foundset.search()
+						forms.WEB_0F_page.foundset.find()
+						forms.WEB_0F_page.foundset.id_page = parentID
+						var results = forms.WEB_0F_page.foundset.search()
 					}
 					
 					//refire rec on select to select this one
-					REC_on_select(foundset.id_page)
-					elements.bean_tree.selectionPath = FIND_path(foundset.getRecord(foundset.getSelectedIndex()))
+					REC_on_select(forms.WEB_0F_page.foundset.id_page)
+					elements.bean_tree.selectionPath = FIND_path(forms.WEB_0F_page.foundset.getSelectedRecord())
 				}
 			}
 			//dim out the lights
@@ -768,7 +773,7 @@ function REC_delete(record) {
 function REC_duplicate() {
 	//TODO: need a better way to check than just by version number
 	
-	var srcRecord = foundset.getRecord(foundset.getSelectedIndex())
+	var srcRecord = forms.WEB_0F_page.foundset.getSelectedRecord()
 	
 	var thisVer = srcRecord.web_page_to_version.version_number
 	
@@ -891,8 +896,8 @@ function REC_new() {
 		forms.WEB_0F_page__design__header_edit._siteDefaults = siteDefaults
 		
 		//get current location in the stack
-		if (utils.hasRecords(foundset)) {
-			_oldRecord = id_page
+		if (utils.hasRecords(forms.WEB_0F_page.foundset)) {
+			_oldRecord = forms.WEB_0F_page.id_page
 		}
 		//no records created yet
 		else {
@@ -909,7 +914,7 @@ function REC_new() {
 		databaseManager.setAutoSave(false)
 		
 		//create new page
-		var pageRec = foundset.getRecord(foundset.newRecord(false,true))
+		var pageRec = forms.WEB_0F_page.foundset.getRecord(forms.WEB_0F_page.foundset.newRecord(false,true))
 		pageRec.id_site = forms.WEB_0F_site.id_site
 		pageRec.flag_publish = siteDefaults.record.flag_auto_publish
 		
@@ -943,7 +948,7 @@ function REC_new() {
 	//something wrong at the site level
 	else {
 		//not all defaults specified
-		if (utils.hasRecords(foundset)) {
+		if (utils.hasRecords(forms.WEB_0F_page.foundset)) {
 			plugins.dialogs.showErrorDialog(
 							'Error',
 							'The defaults are not set correctly for this site'
@@ -965,22 +970,22 @@ function REC_new() {
  */
 function REC_on_select(selectedRecord) {
 	//make record clicked in tree be selected on foundset also
-	if (selectedRecord && utils.hasRecords(foundset)) {
+	if (selectedRecord && utils.hasRecords(forms.WEB_0F_page.foundset)) {
 		//just select that pk
-		foundset.selectRecord(selectedRecord)
+		forms.WEB_0F_page.foundset.selectRecord(selectedRecord)
 	}
 	else {
-		foundset.loadAllRecords()
+		forms.WEB_0F_page.foundset.loadAllRecords()
 	}
 	
-	if (utils.hasRecords(foundset)) {
+	if (utils.hasRecords(forms.WEB_0F_page.foundset)) {
 		//that record not already loaded, find it
 		//TODO: this is where the error is
-		if (foundset.getSelectedRecord().id_page != selectedRecord) {
+		if (forms.WEB_0F_page.foundset.getSelectedRecord().id_page != selectedRecord) {
 			//foundset not working correctly
-			if (foundset.find()) {
-				foundset.id_page = selectedRecord
-				var results = foundset.search()
+			if (forms.WEB_0F_page.foundset.find()) {
+				forms.WEB_0F_page.foundset.id_page = selectedRecord
+				var results = forms.WEB_0F_page.foundset.search()
 			}
 			else {
 			//	application.output('ID ' + selectedRecord + ' not selected correctly')
@@ -1057,18 +1062,18 @@ function TREE_refresh() {
 	elements.bean_tree.removeAllRoots()
 	
 	//select the root nodes (the nodes without a parent) 
-	if (foundset.find()) { 
+	if (forms.WEB_0F_page.foundset.find()) { 
 		// search for null values 
-		foundset.parent_id_page = '^='
-		foundset.id_site = forms.WEB_0F_site.id_site
-		var results = foundset.search()
+		forms.WEB_0F_page.foundset.parent_id_page = '^='
+		forms.WEB_0F_page.foundset.id_site = forms.WEB_0F_site.id_site
+		var results = forms.WEB_0F_page.foundset.search()
 		
 		//manage the sort of the top-level nodes
 		if (results) {
-			foundset.sort('order_by asc')
+			forms.WEB_0F_page.foundset.sort('order_by asc')
 		}
 		
 		//load the foundset into the treeview 
-		elements.bean_tree.addRoots(foundset)
+		elements.bean_tree.addRoots(forms.WEB_0F_page.foundset)
 	}
 }
