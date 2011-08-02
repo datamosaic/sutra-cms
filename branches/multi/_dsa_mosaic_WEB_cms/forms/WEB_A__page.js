@@ -166,4 +166,8 @@ function TOGGLE_edit_mode(editMode,saveData) {
 	forms.WEB_0F_page__design__content_1F_block_data__raw.TOGGLE_elements(_editMode)
 	forms.WEB_0F_page__design__properties.TOGGLE_elements(_editMode)
 	forms.WEB_0F_page__design__content_1L_block.REC_on_select(null,true)
+	
+	//hide actions (can remove when upgrade sutra core)
+	forms.WEB_0F_scrapbook__gui.elements.btn_data_actions.enabled = false
+	forms.WEB_0F_scrapbook__data.elements.btn_data_actions.enabled = false
 }

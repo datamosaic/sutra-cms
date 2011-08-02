@@ -140,6 +140,14 @@ function TOGGLE_edit_mode(editMode,saveData) {
 		forms.WEB_0F_scrapbook_1L_block.elements.btn_delete.visible = false
 		forms.WEB_0F_scrapbook_1L_block_version.elements.btn_delete.visible = false
 		forms.WEB_0F_scrapbook_1L_block_version.elements.fld_version_description.editable = false
+		
+		//set elements appropriately (can remove when update sutra core)
+		forms.WEB_0F_page__design__header_display__version.TOGGLE_elements()
+		forms.WEB_0F_page__design__content_1L_area.TOGGLE_elements(_editMode)
+		forms.WEB_0F_page__design__content_1L_block.TOGGLE_elements(_editMode)
+		forms.WEB_0F_page__design__content_1F_block_data__raw.TOGGLE_elements(_editMode)
+		forms.WEB_0F_page__design__properties.TOGGLE_elements(_editMode)
+		forms.WEB_0F_page__design__content_1L_block.REC_on_select(null,true)
 	}
 	
 	//redo the screen
