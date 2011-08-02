@@ -436,7 +436,7 @@ function ACTION_save() {
 			globals.CODE_cursor_busy(false)
 			var input = plugins.dialogs.showWarningDialog(
 							"Warning",
-							"New theme layout selected. All current area records\nwill be deleted. Continue?", 
+							"New theme layout selected. All area records that\ndo not exist in the new theme will be deleted.\nContinue?", 
 							"Yes", 
 							"No"
 						)
@@ -499,7 +499,7 @@ function ACTION_save() {
 		}
 		
 		var fsArea = databaseManager.getFoundSet('sutra_cms','web_area')
-		fsArea.clear()		
+		fsArea.clear()
 		
 		//where to copy from
 		var fsRegions = platformRec.web_platform_to_layout.web_layout_to_editable

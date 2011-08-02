@@ -140,8 +140,8 @@ function CREATE_platform(versionOld) {
 		//create platform record (theme and layout)
 		var platformNew = pageRec.web_page_to_platform.getRecord(pageRec.web_page_to_platform.newRecord(false,true))
 		platformNew.id_site_platform = thisID
-		platformNew.id_theme = platformOld.id_theme
-		platformNew.id_layout = platformOld.id_layout
+		platformNew.id_theme = platformNew.web_platform_to_site_platform.id_theme
+		platformNew.id_layout = platformNew.web_platform_to_site_platform.id_layout
 		databaseManager.saveData()
 		
 		//save this record onto the form

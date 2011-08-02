@@ -112,84 +112,174 @@ function ADD_version(event) {
 				globals.TRIGGER_progressbar_start(null,progressText)
 				globals.CODE_cursor_busy(true)
 				
-				//duplicate selectedVersion and put at top of stack
-				var destVersion = fsVersion.getRecord(fsVersion.duplicateRecord(fsVersion.getSelectedIndex(),true,true))
-				//manually duplicating all records because depending on type of block, may not need to be duplicated
-				for (var i = 1; i <= selectedVersion.web_version_to_area.getSize(); i++) {
-					//grab this area and duplicate it
-					var srcArea = selectedVersion.web_version_to_area.getRecord(i)
-					var destArea = destVersion.web_version_to_area.getRecord(destVersion.web_version_to_area.newRecord(false,true))
-					databaseManager.copyMatchingColumns(srcArea,destArea)
+				//the new platform has a theme/layout specified
+				if (utils.hasRecords(forms.WEB_0F_page__design__header_display__platform._platform.getSelectedRecord(),'web_platform_to_layout')) {
+					var layout = forms.WEB_0F_page__design__header_display__platform._platform.getSelectedRecord().web_platform_to_layout.getSelectedRecord()
 					
-					//go through scopes
-					for (var j = 1; j <= srcArea.web_area_to_scope.getSize(); j++) {
-						var srcScope = srcArea.web_area_to_scope.getRecord(j)
-						var destScope = destArea.web_area_to_scope.getRecord(destArea.web_area_to_scope.newRecord(false,true))
-						databaseManager.copyMatchingColumns(srcScope,destScope)
+					var oldAreas = databaseManager.getFoundSetDataProviderAsArray(selectedVersion.web_version_to_area,'area_name')
+					
+					//duplicate selectedVersion and put at top of stack
+					var destVersion = fsVersion.getRecord(fsVersion.duplicateRecord(fsVersion.getSelectedIndex(),true,true))
+					
+					//create all areas for this layout, copying over existing content based on area name
+					for (var i = 1; i <= layout.web_layout_to_editable.getSize(); i++) {
+//					for (var i = 1; i <= selectedVersion.web_version_to_area.getSize(); i++) {
+						//new area to create
+						var editable =  layout.web_layout_to_editable.getRecord(i)
+						//this area existed in the theme we were copying from
+						var oldAreaSameName = oldAreas.indexOf(editable.editable_name)
 						
-						//there is a block attached to this scope
-						if (utils.hasRecords(srcScope.web_scope_to_block)) {
-							var srcBlock = srcScope.web_scope_to_block.getRecord(1)
+						//create from defaults for area
+						if (oldAreaSameName == -1) {
+							var areaRec = destVersion.web_version_to_area.getRecord(destVersion.web_version_to_area.newRecord(false,true))
 							
-							//block is a scrapbook, don't duplicate
-							if (srcBlock.scope_type) {
-								//don't need to do anything as the copyMatchingColumns in scope already hooked it up
+							areaRec.area_name = editable.editable_name
+							areaRec.id_editable = editable.id_editable
+							areaRec.row_order = i
+							
+							//create a block record for each editable default
+							for (var j = 1; j <= editable.web_editable_to_editable_default.getSize(); j++ ) {
+								var tempEditableDefaultRec = editable.web_editable_to_editable_default.getRecord(j)
+								
+								//disale/enable rec on select on the block type forms when creating scope
+								globals.WEB_block_on_select = false
+								
+								//create scope record
+								var scopeRec = areaRec.web_area_to_scope.getRecord(areaRec.web_area_to_scope.newRecord(false, true))
+								scopeRec.row_order = j
+								
+								//disable/enable rec on select on the block type forms when creating scope
+								globals.WEB_block_on_select = true
+								
+								//this is a scrapbook, just connect
+								if (tempEditableDefaultRec.id_block) {
+									scopeRec.id_block = tempEditableDefaultRec.id_block
+								}
+								//unique block
+								else {
+									//create block record
+									var fsBlock = databaseManager.getFoundSet('sutra_cms','web_block')
+									var blockRec = fsBlock.getRecord(fsBlock.newRecord(false,true))
+									
+									scopeRec.id_block = blockRec.id_block
+									
+									//create first block version record
+									var blockVersionRec = blockRec.web_block_to_block_version__all.getRecord(blockRec.web_block_to_block_version__all.newRecord(false,true))
+									blockVersionRec.flag_active = 1
+									blockVersionRec.version_number = 1
+									blockVersionRec.id_block_type = tempEditableDefaultRec.id_block_type
+									blockVersionRec.id_block_display = tempEditableDefaultRec.id_block_display
+									
+									// INPUT
+									// create a block_data record for each block_input
+									if ( utils.hasRecords(tempEditableDefaultRec.web_editable_default_to_block_input) ) {
+										for (var k = 1; k <= tempEditableDefaultRec.web_editable_default_to_block_input.getSize(); k++) {
+											var tempEditableDefaultDetailRec = tempEditableDefaultRec.web_editable_default_to_block_input.getRecord(k)
+					
+											var blockDataRec = blockVersionRec.web_block_version_to_block_data.getRecord(blockVersionRec.web_block_version_to_block_data.newRecord(false,true))
+											blockDataRec.data_key = tempEditableDefaultDetailRec.column_name
+										}
+									}
+									
+									// CONFIG
+									// create a block data configure record for each data point
+									if ( utils.hasRecords(tempEditableDefaultRec.web_editable_default_to_block_configure) ) {
+										for (var k = 1; k <= tempEditableDefaultRec.web_editable_default_to_block_configure.getSize(); k++) {
+											var configTemplate = tempEditableDefaultRec.web_editable_default_to_block_configure.getRecord(k)
+											
+											var configRec = blockVersionRec.web_block_version_to_block_data_configure.getRecord(blockVersionRec.web_block_version_to_block_data_configure.newRecord(false, true))
+											configRec.data_key = configTemplate.columnName
+										}
+									}
+								}
 							}
-							//block is unique, duplicate
-							else {
-								//create new block record
-								var fsBlock = databaseManager.getFoundSet('sutra_cms','web_block')
-								var destBlock = fsBlock.getRecord(fsBlock.newRecord(false,true))
+						}
+						//copy from chosen version
+						else {
+							//grab this area
+							var srcArea = selectedVersion.web_version_to_area.getRecord(oldAreaSameName + 1)
+							var destArea = destVersion.web_version_to_area.getRecord(destVersion.web_version_to_area.newRecord(false,true))
+							databaseManager.copyMatchingColumns(srcArea,destArea)
+							
+							destArea.row_order = i
+							
+							//go through scopes
+							for (var j = 1; j <= srcArea.web_area_to_scope.getSize(); j++) {
+								var srcScope = srcArea.web_area_to_scope.getRecord(j)
+								var destScope = destArea.web_area_to_scope.getRecord(destArea.web_area_to_scope.newRecord(false,true))
+								databaseManager.copyMatchingColumns(srcScope,destScope)
 								
-								//re-hook this unique block back in to the current scope
-								destScope.id_block = destBlock.id_block
-								
-								//get source block version
-								var srcBlockVer = srcBlock.web_block_to_block_version.getRecord(1)
-								
-								//create destination block version record
-								var destBlockVer = globals.CODE_record_duplicate(srcBlockVer,[
-																	"web_block_version_to_block_data",
-																	"web_block_version_to_block_data_configure"
-																])
-								
-								//set datapoints on new block version
-								destBlockVer.id_block = destBlock.id_block
-								destBlockVer.flag_active = 1
-								destBlockVer.version_number = 1
+								//there is a block attached to this scope
+								if (utils.hasRecords(srcScope.web_scope_to_block)) {
+									var srcBlock = srcScope.web_scope_to_block.getRecord(1)
+									
+									//block is a scrapbook, don't duplicate
+									if (srcBlock.scope_type) {
+										//don't need to do anything as the copyMatchingColumns in scope already hooked it up
+									}
+									//block is unique, duplicate
+									else {
+										//create new block record
+										var fsBlock = databaseManager.getFoundSet('sutra_cms','web_block')
+										var destBlock = fsBlock.getRecord(fsBlock.newRecord(false,true))
+										
+										//re-hook this unique block back in to the current scope
+										destScope.id_block = destBlock.id_block
+										
+										//get source block version
+										var srcBlockVer = srcBlock.web_block_to_block_version.getRecord(1)
+										
+										//create destination block version record
+										var destBlockVer = globals.CODE_record_duplicate(srcBlockVer,[
+																			"web_block_version_to_block_data",
+																			"web_block_version_to_block_data_configure"
+																		])
+										
+										//set datapoints on new block version
+										destBlockVer.id_block = destBlock.id_block
+										destBlockVer.flag_active = 1
+										destBlockVer.version_number = 1
+									}
+								}
 							}
 						}
 					}
-				}
-				
-				//disable edits on old version
-				if (!selectedVersion.flag_lock) {
-					selectedVersion.flag_lock = 1
-				}
-				
-				//save down information for new version
-				destVersion.version_name = forms.WEB_P_version._versionName
-				destVersion.version_description = forms.WEB_P_version._versionDescription
-				destVersion.version_number = latestVersion.version_number + 1
-				destVersion.flag_active = null
-				destVersion.flag_lock = 0
-				globals.WEB_page_version = destVersion.id_version
-				
-				databaseManager.saveData()
-				
-				//update versions valuelist
-				forms.WEB_0F_page__design.REC_on_select(null,null,1)
-				
-				//set selected index
-				forms.WEB_0F_page__design__content_1L_area.foundset.setSelectedIndex(1)
-				forms.WEB_0F_page__design__content_1L_block.foundset.setSelectedIndex(1)
-				
-				//turn off feedback indicators if on
-				globals.CODE_cursor_busy(false)
-				if (globals.TRIGGER_progressbar_get() instanceof Array) {
-					if (globals.TRIGGER_progressbar_get()[1] == progressText) {
-						globals.TRIGGER_progressbar_stop()
+					
+					//disable edits on old version
+					if (!selectedVersion.flag_lock) {
+						selectedVersion.flag_lock = 1
 					}
+					
+					//save down information for new version
+					destVersion.version_name = forms.WEB_P_version._versionName
+					destVersion.version_description = forms.WEB_P_version._versionDescription
+					destVersion.version_number = latestVersion.version_number + 1
+					destVersion.flag_active = null
+					destVersion.flag_lock = 0
+					globals.WEB_page_version = destVersion.id_version
+					
+					databaseManager.saveData()
+					
+					//update versions valuelist
+					forms.WEB_0F_page__design.REC_on_select(null,null,1)
+					
+					//set selected index
+					forms.WEB_0F_page__design__content_1L_area.foundset.setSelectedIndex(1)
+					forms.WEB_0F_page__design__content_1L_block.foundset.setSelectedIndex(1)
+					
+					//turn off feedback indicators if on
+					globals.CODE_cursor_busy(false)
+					if (globals.TRIGGER_progressbar_get() instanceof Array) {
+						if (globals.TRIGGER_progressbar_get()[1] == progressText) {
+							globals.TRIGGER_progressbar_stop()
+						}
+					}
+				}
+				else {
+					plugins.dialogs.showErrorDialog(
+								'Error',
+								'There is not a layout for the chosen platform'
+						)
 				}
 			}
 		}
@@ -269,79 +359,170 @@ function ADD_version(event) {
 					}
 					
 					info += '\nBased on: version ' + selectedVersion.version_number + ' (' + selectedVersion.version_name + ') of \n' +
-						'Platform: ' + forms.WEB_0F_page__design__header_display__platform._platform.platform_name + ', ' + 
-						'Language: ' + forms.WEB_0F_page__design__header_display__language._language.language_name + ', ' + 
-						'Group: ' + forms.WEB_0F_page__design__header_display__group._group.group_name
+						'Platform: ' + selectedVersion.web_version_to_platform.platform_name + ', ' + 
+						'Language: ' + selectedVersion.web_version_to_language.language_name + ', ' + 
+						'Group: ' + selectedVersion.web_version_to_group.group_name
 					
-					//create new record
-					var destVersion = fsVersion.getRecord(fsVersion.newRecord(false,true))
-					
-					//manually duplicating all records because depending on type of block, may not need to be duplicated
-					for (var i = 1; i <= selectedVersion.web_version_to_area.getSize(); i++) {
-						//grab this area and duplicate it
-						var srcArea = selectedVersion.web_version_to_area.getRecord(i)
-						var destArea = destVersion.web_version_to_area.getRecord(destVersion.web_version_to_area.newRecord(false,true))
-						databaseManager.copyMatchingColumns(srcArea,destArea)
 						
-						//go through scopes
-						for (var j = 1; j <= srcArea.web_area_to_scope.getSize(); j++) {
-							var srcScope = srcArea.web_area_to_scope.getRecord(j)
-							var destScope = destArea.web_area_to_scope.getRecord(destArea.web_area_to_scope.newRecord(false,true))
-							databaseManager.copyMatchingColumns(srcScope,destScope)
+					//the new platform has a theme/layout specified
+					if (utils.hasRecords(forms.WEB_0F_page__design__header_display__platform._platform.getSelectedRecord(),'web_platform_to_layout')) {
+						var layout = forms.WEB_0F_page__design__header_display__platform._platform.getSelectedRecord().web_platform_to_layout.getSelectedRecord()
+						
+						var oldAreas = databaseManager.getFoundSetDataProviderAsArray(selectedVersion.web_version_to_area,'area_name')
+						
+						//create new record
+						var destVersion = fsVersion.getRecord(fsVersion.newRecord(false,true))
+						
+						//create all areas for this layout, copying over existing content based on area name
+						for (var i = 1; i <= layout.web_layout_to_editable.getSize(); i++) {
+//						for (var i = 1; i <= selectedVersion.web_version_to_area.getSize(); i++) {
+							//new area to create
+							var editable =  layout.web_layout_to_editable.getRecord(i)
+							//this area existed in the theme we were copying from
+							var oldAreaSameName = oldAreas.indexOf(editable.editable_name)
 							
-							//there is a block attached to this scope
-							if (utils.hasRecords(srcScope.web_scope_to_block)) {
-								var srcBlock = srcScope.web_scope_to_block.getRecord(1)
+							//create from defaults for area
+							if (oldAreaSameName == -1) {
+								var areaRec = destVersion.web_version_to_area.getRecord(destVersion.web_version_to_area.newRecord(false,true))
 								
-								//block is a scrapbook, don't duplicate
-								if (srcBlock.scope_type) {
-									//don't need to do anything as the copyMatchingColumns in scope already hooked it up
+								areaRec.area_name = editable.editable_name
+								areaRec.id_editable = editable.id_editable
+								areaRec.row_order = i
+								
+								//create a block record for each editable default
+								for (var j = 1; j <= editable.web_editable_to_editable_default.getSize(); j++ ) {
+									var tempEditableDefaultRec = editable.web_editable_to_editable_default.getRecord(j)
+									
+									//disale/enable rec on select on the block type forms when creating scope
+									globals.WEB_block_on_select = false
+									
+									//create scope record
+									var scopeRec = areaRec.web_area_to_scope.getRecord(areaRec.web_area_to_scope.newRecord(false, true))
+									scopeRec.row_order = j
+									
+									//disable/enable rec on select on the block type forms when creating scope
+									globals.WEB_block_on_select = true
+									
+									//this is a scrapbook, just connect
+									if (tempEditableDefaultRec.id_block) {
+										scopeRec.id_block = tempEditableDefaultRec.id_block
+									}
+									//unique block
+									else {
+										//create block record
+										var fsBlock = databaseManager.getFoundSet('sutra_cms','web_block')
+										var blockRec = fsBlock.getRecord(fsBlock.newRecord(false,true))
+										
+										scopeRec.id_block = blockRec.id_block
+										
+										//create first block version record
+										var blockVersionRec = blockRec.web_block_to_block_version__all.getRecord(blockRec.web_block_to_block_version__all.newRecord(false,true))
+										blockVersionRec.flag_active = 1
+										blockVersionRec.version_number = 1
+										blockVersionRec.id_block_type = tempEditableDefaultRec.id_block_type
+										blockVersionRec.id_block_display = tempEditableDefaultRec.id_block_display
+										
+										// INPUT
+										// create a block_data record for each block_input
+										if ( utils.hasRecords(tempEditableDefaultRec.web_editable_default_to_block_input) ) {
+											for (var k = 1; k <= tempEditableDefaultRec.web_editable_default_to_block_input.getSize(); k++) {
+												var tempEditableDefaultDetailRec = tempEditableDefaultRec.web_editable_default_to_block_input.getRecord(k)
+						
+												var blockDataRec = blockVersionRec.web_block_version_to_block_data.getRecord(blockVersionRec.web_block_version_to_block_data.newRecord(false,true))
+												blockDataRec.data_key = tempEditableDefaultDetailRec.column_name
+											}
+										}
+										
+										// CONFIG
+										// create a block data configure record for each data point
+										if ( utils.hasRecords(tempEditableDefaultRec.web_editable_default_to_block_configure) ) {
+											for (var k = 1; k <= tempEditableDefaultRec.web_editable_default_to_block_configure.getSize(); k++) {
+												var configTemplate = tempEditableDefaultRec.web_editable_default_to_block_configure.getRecord(k)
+												
+												var configRec = blockVersionRec.web_block_version_to_block_data_configure.getRecord(blockVersionRec.web_block_version_to_block_data_configure.newRecord(false, true))
+												configRec.data_key = configTemplate.columnName
+											}
+										}
+									}
 								}
-								//block is unique, duplicate
-								else {
-									//create new block record
-									var fsBlock = databaseManager.getFoundSet('sutra_cms','web_block')
-									var destBlock = fsBlock.getRecord(fsBlock.newRecord(false,true))
+							}
+							//copy from chosen version
+							else {
+								//grab this area and duplicate it
+								var srcArea = selectedVersion.web_version_to_area.getRecord(oldAreaSameName + 1)
+								var destArea = destVersion.web_version_to_area.getRecord(destVersion.web_version_to_area.newRecord(false,true))
+								databaseManager.copyMatchingColumns(srcArea,destArea)
+								
+								destArea.row_order = i
+								
+								//go through scopes
+								for (var j = 1; j <= srcArea.web_area_to_scope.getSize(); j++) {
+									var srcScope = srcArea.web_area_to_scope.getRecord(j)
+									var destScope = destArea.web_area_to_scope.getRecord(destArea.web_area_to_scope.newRecord(false,true))
+									databaseManager.copyMatchingColumns(srcScope,destScope)
 									
-									//re-hook this unique block back in to the current scope
-									destScope.id_block = destBlock.id_block
-									
-									//get source block version
-									var srcBlockVer = srcBlock.web_block_to_block_version.getRecord(1)
-									
-									//create destination block version record
-									var destBlockVer = globals.CODE_record_duplicate(srcBlockVer,[
-																		"web_block_version_to_block_data",
-																		"web_block_version_to_block_data_configure"
-																	])
-									
-									//set datapoints on new block version
-									destBlockVer.id_block = destBlock.id_block
-									destBlockVer.flag_active = 1
-									destBlockVer.version_number = 1
+									//there is a block attached to this scope
+									if (utils.hasRecords(srcScope.web_scope_to_block)) {
+										var srcBlock = srcScope.web_scope_to_block.getRecord(1)
+										
+										//block is a scrapbook, don't duplicate
+										if (srcBlock.scope_type) {
+											//don't need to do anything as the copyMatchingColumns in scope already hooked it up
+										}
+										//block is unique, duplicate
+										else {
+											//create new block record
+											var fsBlock = databaseManager.getFoundSet('sutra_cms','web_block')
+											var destBlock = fsBlock.getRecord(fsBlock.newRecord(false,true))
+											
+											//re-hook this unique block back in to the current scope
+											destScope.id_block = destBlock.id_block
+											
+											//get source block version
+											var srcBlockVer = srcBlock.web_block_to_block_version.getRecord(1)
+											
+											//create destination block version record
+											var destBlockVer = globals.CODE_record_duplicate(srcBlockVer,[
+																				"web_block_version_to_block_data",
+																				"web_block_version_to_block_data_configure"
+																			])
+											
+											//set datapoints on new block version
+											destBlockVer.id_block = destBlock.id_block
+											destBlockVer.flag_active = 1
+											destBlockVer.version_number = 1
+										}
+									}
 								}
 							}
 						}
+						
+						//save down information for new version
+						destVersion.version_number = 1
+						destVersion.version_name = 'Initial version'
+						destVersion.version_description = info
+						destVersion.flag_active = forms.WEB_0F_site.flag_auto_publish
+						destVersion.flag_lock = 0
+						destVersion.id_platform = forms.WEB_0F_page__design__header_display__platform._platform.id_platform
+						destVersion.id_language = forms.WEB_0F_page__design__header_display__language._language.id_language
+						destVersion.id_group = forms.WEB_0F_page__design__header_display__group._group.id_group
+						globals.WEB_page_version = destVersion.id_version
+						
+						databaseManager.saveData()
+						
+						//update versions valuelist
+						forms.WEB_0F_page__design.REC_on_select()
+						
+						//set selected index
+						forms.WEB_0F_page__design__content_1L_area.foundset.setSelectedIndex(1)
+						forms.WEB_0F_page__design__content_1L_block.foundset.setSelectedIndex(1)
 					}
-					
-					destVersion.version_number = 1
-					destVersion.version_name = 'Initial version'
-					destVersion.version_description = info
-					destVersion.flag_active = forms.WEB_0F_site.flag_auto_publish
-					destVersion.flag_lock = 0
-					destVersion.id_platform = forms.WEB_0F_page__design__header_display__platform._platform.id_platform
-					destVersion.id_language = forms.WEB_0F_page__design__header_display__language._language.id_language
-					destVersion.id_group = forms.WEB_0F_page__design__header_display__group._group.id_group
-					globals.WEB_page_version = destVersion.id_version
-					
-					databaseManager.saveData()
-					
-					//update versions valuelist
-					forms.WEB_0F_page__design.REC_on_select()
-					
-					//set selected index
-					forms.WEB_0F_page__design__content_1L_area.foundset.setSelectedIndex(1)
-					forms.WEB_0F_page__design__content_1L_block.foundset.setSelectedIndex(1)
+					else {
+						plugins.dialogs.showErrorDialog(
+									'Error',
+									'There is not a layout for the chosen platform'
+							)
+					}
 					
 					//turn off feedback indicators if on
 					globals.CODE_cursor_busy(false)
@@ -360,6 +541,20 @@ function ADD_version(event) {
 					'No page selected'
 			)
 	}
+}
+
+/**
+ * @properties={typeid:24,uuid:"A0FF2F3C-AAFA-41B6-B113-B460680B15E4"}
+ */
+function AREA_copy(srcArea,destVersion,rowOrder) {
+	
+}
+
+/**
+ * @properties={typeid:24,uuid:"231F2D51-281C-4503-9471-BC562D3E91B3"}
+ */
+function AREA_new(srcArea,destVersion,rowOrder) {
+	
 }
 
 /**
