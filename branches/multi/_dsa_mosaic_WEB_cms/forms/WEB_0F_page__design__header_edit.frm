@@ -468,7 +468,7 @@ uuid:"BFF987EA-DB8F-4ABC-A144-CBCAF7C08DD3"
 },
 {
 anchors:11,
-dataProviderID:"page_link_internal",
+dataProviderID:"web_page_to_page__internal_link.display_page_name",
 editable:false,
 formIndex:9994,
 location:"490,44",
@@ -480,8 +480,7 @@ styleClass:"standard_table",
 toolTipText:"Page",
 transparent:true,
 typeid:4,
-uuid:"D7E6F52F-E3A4-45A2-8245-601D6789364F",
-valuelistID:"21BA19DE-3C79-418D-8FB2-EECA862DC3D0"
+uuid:"D7E6F52F-E3A4-45A2-8245-601D6789364F"
 },
 {
 anchors:11,
