@@ -46,7 +46,7 @@ function REC_on_select(event) {
 function REC_delete() {
 	var delRec = plugins.dialogs.showWarningDialog(
 				'Delete record',
-				'Do you really want to delete this record?',
+				'Do you really want to delete this site?',
 				'Yes',
 				'No'
 			)
@@ -91,7 +91,7 @@ function REC_new() {
 		globals.WEB_lock_workflow(false)
 	}
 	
-	controller.newRecord(true)
+	controller.newRecord(false)
 	
 	//create a group
 	var allGroup = web_site_to_site_group.getRecord(web_site_to_site_group.newRecord(false,true))
