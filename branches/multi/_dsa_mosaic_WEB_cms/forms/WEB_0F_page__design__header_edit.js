@@ -359,14 +359,14 @@ function ACTION_save() {
 		//create 1st version for this triumvirate
 		var fsVersion = forms.WEB_0F_page__design__content.foundset
 		fsVersion.clear()
-		var firstVersion = fsVersion.getRecord(fsVersion.newRecord(false,true))
-		firstVersion.id_platform = platformRec.id_platform
-		firstVersion.id_language = languageRec.id_language
-		firstVersion.id_group = groupRec.id_group
-		firstVersion.version_number = 1
-		firstVersion.flag_active = 1
-		firstVersion.version_name = 'Initial version'
-		globals.WEB_page_version = firstVersion.id_version
+		var newVersion = fsVersion.getRecord(fsVersion.newRecord(false,true))
+		newVersion.id_platform = platformRec.id_platform
+		newVersion.id_language = languageRec.id_language
+		newVersion.id_group = groupRec.id_group
+		newVersion.version_number = 1
+		newVersion.flag_active = 1
+		newVersion.version_name = 'Initial version'
+		globals.WEB_page_version = newVersion.id_version
 		
 		var fsPath = databaseManager.getFoundSet('sutra_cms','web_path')
 		var siteID = id_site
@@ -451,16 +451,6 @@ function ACTION_save() {
 		
 		//theme changes for non-newly created record
 		if (!addedRecord) {
-			//get all versions for this set
-//			var fsVersion = databaseManager.getFoundSet('sutra_cms','web_version')
-//			fsVersion.find()
-//			fsVersion.id_platform = globals.WEB_page_platform.toString()
-//			fsVersion.id_language = globals.WEB_page_language.toString()
-//			fsVersion.id_group = globals.WEB_page_group.toString()
-//			fsVersion.search()
-//			fsVersion.sort('version_number desc')
-//			var latestVersion = fsVersion.getRecord(1)
-			
 			//get most recent and selected versions
 			var fsVersion = forms.WEB_0F_page__design__content.foundset
 			var latestVersion = fsVersion.getRecord(1)
@@ -498,92 +488,39 @@ function ACTION_save() {
 			return 'No editables for selected layout'
 		}
 		
-		var fsArea = databaseManager.getFoundSet('sutra_cms','web_area')
-		fsArea.clear()
+		var layout = platformRec.web_platform_to_layout.getSelectedRecord()
 		
-		//where to copy from
-		var fsRegions = platformRec.web_platform_to_layout.web_layout_to_editable
+		if (selectedVersion) {
+			var oldAreas = databaseManager.getFoundSetDataProviderAsArray(selectedVersion.web_version_to_area,'area_name')
+		}
+		else {
+			var oldAreas = new Array()
+		}
 		
-		// create an area record for each editable
-		if (fsRegions.getSize()) {
-			//sort (maybe somebody changed the sort on the form)
-			fsRegions.sort('row_order asc')
+		//create all areas for this layout, copying over existing content based on area name
+		for (var i = 1; i <= layout.web_layout_to_editable.getSize(); i++) {
+			//new area to create
+			var editable =  layout.web_layout_to_editable.getRecord(i)
+			//this area existed in the theme we were copying from
+			var oldAreaSameName = oldAreas.indexOf(editable.editable_name)
 			
-			//still manually set the order in case web_editable is out of sync (kind of likely)
-			var order = 1
-			for (var i = 1; i <= fsRegions.getSize(); i++) {
-				var tempEditableRec = fsRegions.getRecord(i)
-				
-				var areaRec = fsArea.getRecord(fsArea.newRecord(false, true))
-				
-				areaRec.area_name = tempEditableRec.editable_name
-				areaRec.id_editable = tempEditableRec.id_editable
-				areaRec.row_order = order ++ 
-				areaRec.id_version = globals.WEB_page_version		
-				
-				//create a block record for each editable default
-				for (var j = 1; j <= tempEditableRec.web_editable_to_editable_default.getSize(); j++ ) {
-					var tempEditableDefaultRec = tempEditableRec.web_editable_to_editable_default.getRecord(j)
-					
-					//disale/enable rec on select on the block type forms when creating scope
-					globals.WEB_block_on_select = false
-					
-					//create scope record
-					var scopeRec = areaRec.web_area_to_scope.getRecord(areaRec.web_area_to_scope.newRecord(false, true))
-					scopeRec.row_order = j
-					
-					//disable/enable rec on select on the block type forms when creating scope
-					globals.WEB_block_on_select = true
-					
-					//this is a scrapbook, just connect
-					if (tempEditableDefaultRec.id_block) {
-						scopeRec.id_block = tempEditableDefaultRec.id_block
-					}
-					//unique block
-					else {
-						//create block record
-						var fsBlock = databaseManager.getFoundSet('sutra_cms','web_block')
-						var blockRec = fsBlock.getRecord(fsBlock.newRecord(false,true))
-						
-						scopeRec.id_block = blockRec.id_block
-						
-						//create first block version record
-						var blockVersionRec = blockRec.web_block_to_block_version__all.getRecord(blockRec.web_block_to_block_version__all.newRecord(false,true))
-						blockVersionRec.flag_active = 1
-						blockVersionRec.version_number = 1
-						blockVersionRec.id_block_type = tempEditableDefaultRec.id_block_type
-						blockVersionRec.id_block_display = tempEditableDefaultRec.id_block_display
-						
-						// INPUT
-						// create a block_data record for each block_input
-						if ( utils.hasRecords(tempEditableDefaultRec.web_editable_default_to_block_input) ) {
-							for (var k = 1; k <= tempEditableDefaultRec.web_editable_default_to_block_input.getSize(); k++) {
-								var tempEditableDefaultDetailRec = tempEditableDefaultRec.web_editable_default_to_block_input.getRecord(k)
-		
-								var blockDataRec = blockVersionRec.web_block_version_to_block_data.getRecord(blockVersionRec.web_block_version_to_block_data.newRecord(false,true))
-								blockDataRec.data_key = tempEditableDefaultDetailRec.column_name
-							}
-						}
-						
-						// CONFIG
-						// create a block data configure record for each data point
-						if ( utils.hasRecords(tempEditableDefaultRec.web_editable_default_to_block_configure) ) {
-							for (var k = 1; k <= tempEditableDefaultRec.web_editable_default_to_block_configure.getSize(); k++) {
-								var configTemplate = tempEditableDefaultRec.web_editable_default_to_block_configure.getRecord(k)
-								
-								var configRec = blockVersionRec.web_block_version_to_block_data_configure.getRecord(blockVersionRec.web_block_version_to_block_data_configure.newRecord(false, true))
-								configRec.data_key = configTemplate.columnName
-							}
-						}
-					}
-				}
+			//create from defaults for area
+			if (oldAreaSameName == -1) {
+				var newArea = forms.WEB_0F_page__design__header_display__version.AREA_new(editable,newVersion,i)
+			}
+			//copy from chosen version
+			else {
+				var newArea = forms.WEB_0F_page__design__header_display__version.AREA_copy(selectedVersion.web_version_to_area.getRecord(oldAreaSameName + 1),newVersion,i)
 			}
 		}
 		
 		// finish up
 		databaseManager.saveData()
-		fsArea.setSelectedIndex(1)
-		fsArea.web_area_to_scope.setSelectedIndex(1)
+		
+		if (newVersion) {
+			newVersion.web_version_to_area.setSelectedIndex(1)
+			newVersion.web_version_to_area.web_area_to_scope.setSelectedIndex(1)
+		}
 		
 		//theme has been successfully set
 		_themeSet = null
