@@ -34,28 +34,6 @@ function BLOCK_scale(event) {
 	fsAssetInstance.loadRecords([application.getUUID(_imageData.id_asset_instance)])
 	var recAsset = fsAssetInstance.web_asset_instance_to_asset.getRecord(1)
 	var fileOBJ = forms.WEB_0F_asset__image.ASSET_scale(recAsset)
-	
-	//the image was scaled
-	if (fileOBJ) {
-		//get block data points we need
-		var dataRows = new Object()
-		var fsBlockData = globals.WEB_block_getData(event)
-		for (var i = 1; i <= fsBlockData.getSize(); i++) {
-			var record = fsBlockData.getRecord(i)
-			dataRows[record.data_key] = record
-		}
-	
-		//update the block data
-		dataRows.image_name.data_value = fileOBJ.image_name
-		dataRows.directory.data_value = fileOBJ.directory
-		dataRows.width.data_value = fileOBJ.width
-		dataRows.height.data_value = fileOBJ.height
-		
-//		databaseManager.saveData(fsBlockData)
-			
-		//update display
-		REC_on_select(null,true)
-	}
 }
 
 /**
