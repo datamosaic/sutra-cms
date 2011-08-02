@@ -529,7 +529,7 @@ function FUNCTION_theme_directory() {
 		return forms.WEB_0F_site.directory
 	}
 	else {
-		error = "No theme site directory specified"
+		error = "No theme site directory specified. Please check your site record."
 	}
 	
 	if ( error ) {
