@@ -81,8 +81,12 @@ function ACTION_ok(event) {
 		var copyScrapbook = true
 	}
 	
-	//not already ok to close, cancel
+	//not already ok to close, continue
 	if (!globals.CODE_hide_form) {
+		//enable closing the form
+		globals.CODE_hide_form = 1
+		application.closeFormDialog('cmsBlockNew')
+		
 		//get parent form
 		var formStack = forms.WEB_0F_scrapbook.controller.getFormContext()
 		
@@ -429,12 +433,12 @@ function ACTION_ok(event) {
 		databaseManager.saveData()
 		
 		//enaable closing the form
-		globals.CODE_hide_form = 1
+//		globals.CODE_hide_form = 1
 		
 		//a record was created
 		_success = blockRec
 		
-		application.closeFormDialog('cmsBlockNew')
+//		application.closeFormDialog('cmsBlockNew')
 	}
 }
 
