@@ -12,6 +12,9 @@ var _license_dsa_mosaic_WEB_cms = 'Module: _dsa_mosaic_WEB_cms \
  */
 function ASSET_scale(assetRecord) {
 	var fidForm = 'WEB_0F_asset__image__P_scale'
+	if (!assetRecord.data) {
+		assetRecord = foundset.getSelectedRecord()
+	}
 	
 	//save outstanding data and turn autosave off
 	databaseManager.saveData()
@@ -58,125 +61,39 @@ function ASSET_scale(assetRecord) {
 		)
 	
 	//FiD not cancelled, get values and create new instance
-	var allKeys = databaseManager.getFoundSetDataProviderAsArray(assetRecord.web_asset_to_asset_instance, 'id_asset_instance').map(function(item) {return item.toString()})
-	if (allKeys.indexOf(asset.id_asset_instance.toString()) >= 0) {
+	var success = false
+	var recs	= databaseManager.getFoundSetDataProviderAsArray(assetRecord.web_asset_to_asset_instance, 'id_asset_instance')
+	for (var i = 0; i < recs.length; i++) {
+		// with UUIDs need to convert UUID to string to compare
+		success = (recs[i].toString().indexOf(asset.id_asset_instance) >= 0) ? true : false
+		if (success) break
+	}
+	if (success) {
 		var baseDirectory = forms.WEB_0F_install.ACTION_get_install() +
 							'/application_server/server/webapps/ROOT/sutraCMS/sites/' +
 							forms.WEB_0F_site.directory + '/'
 		var origLocation = 	baseDirectory + srcAsset.asset_directory + '/' + srcAsset.asset_title
 		var newLocation = 	baseDirectory + asset.asset_directory + '/' + asset.asset_title
 		
-		var fileOBJ = FILE_import(origLocation, newLocation, metaRows.width.data_value, metaRows.height.data_value)
-		
-		//save down new information
-		asset.asset_size = fileOBJ.size
-		asset.asset_directory = fileOBJ.directory
-		
-		databaseManager.saveData()
-		
-		//select correct record (should only do this if called from asset screen)
-		forms.WEB_0F_asset_1F_2L_asset_instance.foundset.selectRecord(asset.id_asset_instance)
-		
-		return fileOBJ
-	}
-}
-
-/**
- * @properties={typeid:24,uuid:"B0A3FEFE-4C3A-41AC-A3FA-07B95729C710"}
- */
-function FILE_import(origLocation, newLocation, newWidth, newHeight) {
-	// TODO: handle reading text files //TROY NOTE: probably not here...this is only for images
-	// TODO: get file from server if passed in
-	
-	//root directory for this site
-	var baseDirectory = forms.WEB_0F_install.ACTION_get_install() +
-						'/application_server/server/webapps/ROOT/sutraCMS/sites/' +
-						forms.WEB_0F_site.directory + '/'
-	
-	// prompt for input file
-	if (!origLocation) {
-		var file = plugins.file.showFileOpenDialog()
-		
-		if ( !file ) {
-			return "Selection cancelled"
+		var params 	= {origLocation : origLocation, 
+			           newLocation 	: newLocation,
+			           width		: metaRows.width.data_value,
+			           height		: metaRows.height.data_value,
+			           assetID		: asset.id_asset_instance,
+			           directory	: forms.WEB_0F_site.directory}
+		// developer or server client
+		if (application.isInDeveloper()) {
+			IMAGE_resize(params)
+			//select correct record
+			forms.WEB_0F_asset_1F_2L_asset_instance.foundset.selectRecord(asset.id_asset_instance)				
+			plugins.dialogs.showInfoDialog("Image",  "Image resized")
 		}
-		
-		var ext = file.getName().split('.')
-		
-		//file has an extension
-		if (ext && ext.length > 1) {
-			var fileExt = ext[ext.length-1].toLowerCase()
-		}
-		
-	}
-	// input file specified, get it
-	else {
-		var file = plugins.file.convertToJSFile(origLocation)
-		
-		if ( !file ) {
-			return "Source file not found"
-		}
-		
-		if (newLocation) {
-			var newName = newLocation.split('/')
-			newName = newName[newName.length - 1]
-			
-			var newDir = newLocation.substr(baseDirectory.length)
-			newDir = newDir.substr(0,newDir.length - newName.length - 1)
-			
-			var ext = newName.split('.')
-			var fileExt = ext[ext.length-1].toLowerCase()
+		else {
+			// headless client plugin
+			var jsclient = plugins.headlessclient.createClient("_dsa_mosaic_WEB_cms", null, null, null)
+			jsclient.queueMethod("WEB_0F_asset__image", "IMAGE_resize", [params], IMAGE_resize_callback)				
 		}
 	}
-	//THIS ISN'T VALID WHEN INPUT FILE SPECIFIED
-	var imageTemp =  plugins.images.getImage(file.getBytes())
-	
-	// set image details object
-	var fileOBJ = {}
-	fileOBJ.image_name	= newName || file.getName().replace(/ /g, "_")
-	fileOBJ.image_type	= file.getContentType()
-	fileOBJ.image_extension	= fileExt
-	fileOBJ.width		= newWidth || imageTemp.getWidth()
-	fileOBJ.height		= newHeight || imageTemp.getHeight()
-	fileOBJ.directory	= newDir || "images"	//TODO: this will need to be more customizable
-	fileOBJ.rec_created = new Date()
-	fileOBJ.size		= plugins.file.getFileSize(file)
-	if (fileOBJ.width > 200 || fileOBJ.height > 200) {
-		fileOBJ.thumbnail	= imageTemp.resize((200*fileOBJ.width) / fileOBJ.height, 200)
-	}
-	else {
-		fileOBJ.thumbnail	= imageTemp
-	}
-	
-	//resize image if new sizes passed in
-	if (newWidth || newHeight) {
-		//THIS LINE WILL ERROR BECAUSE OF (see above)
-		file = imageTemp.resize((utils.stringToNumber(newWidth) || imageTemp.getWidth()), (utils.stringToNumber(newHeight) || imageTemp.getHeight())).getData()
-		fileOBJ.size = file.length
-	}
-	//convert to byte array for initial import
-	else {
-		file = file.getBytes()
-	}
-	
-	// TODO: stream image upload to server from client
-	// TODO: if file already exists at location attempting to save into, abort
-	
-	//location to write to if nothing passed in
-	var outputImage	=	baseDirectory + fileOBJ.directory + '/' + fileOBJ.image_name
-	
-	//TODO: make sure the directory requested exists; if not, create directory tree until all exist before saving file
-	
-	// save file
-	var success = plugins.file.writeFile(plugins.file.convertToJSFile(newLocation || outputImage),file)
-	
-	if ( !success ) {
-		return "File save error"
-	}
-	
-	plugins.dialogs.showInfoDialog("Image",  "Image uploaded")
-	
-	return fileOBJ
 }
 
 /**
@@ -276,4 +193,94 @@ function ASSET_actions(input,assetRecord) {
 				break
 		}
 	}
+}
+
+/**
+ * @properties={typeid:24,uuid:"1D27A610-3A52-4165-B6E5-4A2AF3FBD122"}
+ */
+function IMAGE_resize(params) {
+	var origLocation 	= params.origLocation
+	var newLocation		= params.newLocation
+	var newWidth		= params.width
+	var newHeight		= params.height
+	var directory		= params.directory
+	
+	var assetFS = databaseManager.getFoundSet("sutra_cms","web_asset_instance")
+	assetFS.find()
+	assetFS.id_asset_instance = params.assetID
+	var count = assetFS.search()
+	var asset = assetFS.getSelectedRecord()
+	
+	
+	//root directory for this site
+	var baseDirectory = forms.WEB_0F_install.ACTION_get_install() +
+						'/application_server/server/webapps/ROOT/sutraCMS/sites/' +
+						directory + '/'		
+							
+	var file = plugins.file.convertToJSFile(origLocation)
+	var imageTemp =  plugins.images.getImage(file.getBytes())
+	
+	if (newLocation) {
+		var newName = newLocation.split('/')
+		newName = newName[newName.length - 1]
+		
+		var newDir = newLocation.substr(baseDirectory.length)
+		newDir = newDir.substr(0,newDir.length - newName.length - 1)
+		
+		var ext = newName.split('.')
+		var fileExt = ext[ext.length-1].toLowerCase()
+	}
+	
+	
+	// set image details object
+	var fileOBJ = {}
+	fileOBJ.image_name	= newName || file.getName().replace(/ /g, "_")
+	fileOBJ.image_type	= file.getContentType()
+	fileOBJ.image_extension	= fileExt
+	fileOBJ.width		= newWidth || imageTemp.getWidth()
+	fileOBJ.height		= newHeight || imageTemp.getHeight()
+	fileOBJ.directory	= newDir || "images"	//TODO: this will need to be more customizable
+	fileOBJ.rec_created = new Date()
+	fileOBJ.size		= plugins.file.getFileSize(file)
+	if (fileOBJ.width > 200 || fileOBJ.height > 200) {
+		fileOBJ.thumbnail	= imageTemp.resize((200*fileOBJ.width) / fileOBJ.height, 200)
+	}
+	else {
+		fileOBJ.thumbnail	= imageTemp
+	}
+	
+	//resize image if new sizes passed in
+	if (newWidth || newHeight) {
+		file = imageTemp.resize(newWidth || imageTemp.getWidth(), newHeight || imageTemp.getHeight()).getData()
+		fileOBJ.size = file.length
+	}
+	//convert to byte array for initial import
+	else {
+		file = file.getBytes()
+	}
+		
+	// save file
+	var success = plugins.file.writeFile(plugins.file.convertToJSFile(newLocation),file)
+	
+	if ( !success ) {
+		return "File save error"
+	}
+	
+	//save down new information
+	asset.asset_size = fileOBJ.size
+	asset.asset_directory = fileOBJ.directory
+	
+	databaseManager.saveData()
+	
+	// return asset instance ID so can select in callback
+	return params.assetID
+}
+
+/**
+ * @properties={typeid:24,uuid:"C889B095-3953-4BC3-BE3F-D79F2B03F0AD"}
+ */
+function IMAGE_resize_callback(callback) {
+	//select last record
+	forms.WEB_0F_asset_1F_2L_asset_instance.foundset.selectRecord(callback.data)
+	plugins.dialogs.showInfoDialog("Image",  "Image resized")
 }
