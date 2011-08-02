@@ -294,7 +294,7 @@ function ACTION_activate(event) {
 			if (utils.hasRecords(fsVersion) && !selectedVersion.flag_active) {
 				var input = plugins.dialogs.showQuestionDialog(
 								'Activate?',
-								'Do you want to flag the selected version as active?\nNOTE: this will make it live on the web',
+								'Activating this version will make it live on the web if the page is published.\nContinue?',
 								'Yes',
 								'No'
 						)
