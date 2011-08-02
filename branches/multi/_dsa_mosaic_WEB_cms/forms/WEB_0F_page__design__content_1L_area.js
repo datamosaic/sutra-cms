@@ -539,7 +539,7 @@ function AREA_reset() {
 function TOGGLE_elements(editAllow) {
 //	elements.btn_actions.enabled = editAllow
 //	elements.btn_add.enabled = editAllow
-	elements.btn_delete.visible = editAllow
+//	elements.btn_delete.visible = editAllow
 //	elements.btn_down.enabled = editAllow
 //	elements.btn_up.enabled = editAllow
 	

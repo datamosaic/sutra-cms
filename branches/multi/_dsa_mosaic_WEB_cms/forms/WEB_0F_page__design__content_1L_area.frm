@@ -148,7 +148,7 @@ uuid:"BCD0290C-0C47-47D8-B302-FDDB279F7228"
 borderType:"SpecialMatteBorder,0.0,0.0,1.0,0.0,#000000,#000000,#999999,#000000,0.0,1.0",
 formIndex:14900,
 imageMediaID:"16c4d692-c1ea-4200-a078-1150b1da4d5f",
-location:"230,31",
+location:"230,81",
 mediaOptions:1,
 name:"btn_delete",
 onActionMethodID:"A9284E95-6251-4B35-AC1D-A10CC73409B3",
