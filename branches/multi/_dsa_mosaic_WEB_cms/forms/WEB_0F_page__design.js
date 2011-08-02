@@ -184,6 +184,9 @@ function SET_versions(skipLoad,pageInvalid) {
 	
 	//we've got a version stack
 	if (utils.hasRecords(fsVersions)) {
+		//hide the bolded version when no records
+		forms.WEB_0F_page__design__header_display__version.elements.btn_new_bold.visible = false
+		
 		if (!skipLoad) {
 			fsVersions.sort('version_number desc')
 		}
@@ -241,8 +244,11 @@ function SET_versions(skipLoad,pageInvalid) {
 	}
 	//prompt to create version
 	else {
-		vlDisplay.push('<html><body>Click <strong>+</strong> button to create a version')
+		vlDisplay.push('<html><body><font color="#B00D00">Click <strong>+</strong> button to create a version</font>')
 		vlReal.push(null)
+		
+		//show bolded version of plus button
+		forms.WEB_0F_page__design__header_display__version.elements.btn_new_bold.visible = true
 	}
 	
 	application.setValueListItems('WEB_page_version',vlDisplay,vlReal)
