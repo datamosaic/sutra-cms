@@ -115,6 +115,16 @@ function WEB_simple_edit(event) {
 	
 	//only go to edit if currently on display
 	if (forms[formName].elements.tab_header_detail.tabIndex != 2) {
+		//allowed to roll-down header area?
+			//MEMO: this global method only used on pages screen; so modifcations ok
+		if (forms.WEB_0F_page.page_type == 0 && !utils.hasRecords(forms.WEB_0F_page__design__content.foundset)) {
+			plugins.dialogs.showQuestionDialog(
+						'Error',
+						'No version selected'
+				)
+			return
+		}
+		
 		//turn autosave off
 		databaseManager.setAutoSave(false)
 		
