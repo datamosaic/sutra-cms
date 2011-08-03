@@ -27,8 +27,18 @@ function FORM_on_load(event) {
  * @properties={typeid:24,uuid:"7475668E-9941-4A79-A3A2-34BD1BF73668"}
  */
 function FLD_group__data_change(oldValue, newValue, event) {
+	//area name
+	if (utils.hasRecords(forms.WEB_0F_page__design__content_1L_area.foundset)) {
+		var areaName = forms.WEB_0F_page__design__content_1L_area.area_name
+		
+		//block index
+		if (utils.hasRecords(forms.WEB_0F_page__design__content_1L_block.foundset)) {
+			var blockIndex = forms.WEB_0F_page__design__content_1L_block.foundset.getSelectedIndex()
+		}
+	}
+	
 	//call method that reloads up appropriate records
-	forms.WEB_0F_page__design.REC_on_select()
+	forms.WEB_0F_page__design.REC_on_select(null,null,null,null,areaName,blockIndex)
 	
 	return true
 }

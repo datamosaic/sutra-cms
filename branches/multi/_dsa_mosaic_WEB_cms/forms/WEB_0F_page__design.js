@@ -83,7 +83,7 @@ var _skipSelect = false;
  * 
  * @properties={typeid:24,uuid:"23B7AC31-3444-4F11-BDE4-748066C79D30"}
  */
-function REC_on_select(event,skipLoad,verIndex,fireSelect) {
+function REC_on_select(event,skipLoad,verIndex,fireSelect,areaName,blockIndex) {
 //	if (!this.someVar) {
 //		this.someVar = 1
 //	}
@@ -133,6 +133,21 @@ function REC_on_select(event,skipLoad,verIndex,fireSelect) {
 				}
 			}
 			
+			//area name
+			if (areaName && utils.hasRecords(forms.WEB_0F_page__design__content_1L_area.foundset)) {
+				var newAreas = databaseManager.getFoundSetDataProviderAsArray(forms.WEB_0F_page__design__content_1L_area.foundset,'area_name')
+				
+				//an area with the same name as the record we were just on exists
+				var areaSameName = newAreas.indexOf(areaName)
+				if (areaSameName != -1) {
+					forms.WEB_0F_page__design__content_1L_area.foundset.setSelectedIndex(areaSameName + 1)
+					
+					//the block index is less than or equal to the number of block records present
+					if (blockIndex && utils.hasRecords(forms.WEB_0F_page__design__content_1L_block.foundset) && blockIndex <= forms.WEB_0F_page__design__content_1L_block.foundset.getSize()) {
+						forms.WEB_0F_page__design__content_1L_block.foundset.setSelectedIndex(blockIndex)
+					}
+				}
+			}
 			
 		 	//when called from event (not programatically) update tooltip on visit button
 			if (event) {

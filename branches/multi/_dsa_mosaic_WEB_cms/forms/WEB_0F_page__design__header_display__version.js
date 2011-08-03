@@ -43,12 +43,22 @@ function FLD_version__data_change(oldValue, newValue, event) {
 	else {
 		var ver = utils.stringToNumber(utils.stringMiddle(displayVal,utils.stringPosition(displayVal,'Version ',0,1) + 8,utils.stringPosition(displayVal,'(',0,1) - utils.stringPosition(displayVal,'Version ',0,1) - 8))
 	}
-
+	
+	//area name
+	if (utils.hasRecords(forms.WEB_0F_page__design__content_1L_area.foundset)) {
+		var areaName = forms.WEB_0F_page__design__content_1L_area.area_name
+		
+		//block index
+		if (utils.hasRecords(forms.WEB_0F_page__design__content_1L_block.foundset)) {
+			var blockIndex = forms.WEB_0F_page__design__content_1L_block.foundset.getSelectedIndex()
+		}
+	}
+	
 	//assumption here is that foundset is in sync with this valuelist (convert version to reverse ordered record list)
 	forms.WEB_0F_page__design__content.foundset.setSelectedIndex(forms.WEB_0F_page__design__content.foundset.getSize() - ver + 1)
 	
 	//update display and reload version valuelist; don't reload versions foundset
-	forms.WEB_0F_page__design.REC_on_select(null,true)
+	forms.WEB_0F_page__design.REC_on_select(null,true,null,null,areaName,blockIndex)
 	
 	return true
 }
