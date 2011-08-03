@@ -190,16 +190,17 @@ function FIND_post_process(count) {
  * @properties={typeid:24,uuid:"C24345A2-A310-4E68-9083-1D9F656002BB"}
  */
 function ACTION_edit_get() {
-	//disable edits if edit flag not set
+	//disable edits if lock flag set
 	if (!utils.hasRecords(forms.WEB_0F_page__design__content.foundset) || forms.WEB_0F_page__design__content.flag_lock) {
 		var editAllow = false
 	}
-	//enable edits if in edit mode
-	else if (forms.WEB_A__page._editMode) {
-		var editAllow = true
+	//real mode in edit mode
+	else if (globals.WEB_page_mode == 3) {
+		var editAllow = forms.WEB_TB__web_mode.elements.btn_save.visible
 	}
+	//gui or data mode in edit mode
 	else {
-		var editAllow = false
+		var editAllow = forms.WEB_A__page._editMode
 	}
 	
 	return editAllow

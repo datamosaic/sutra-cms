@@ -120,6 +120,9 @@ function BLOCK_action_list_control(scope,copy,promote,dupe) {
 		globals.WEB_block_on_select = true
 		
 		scopeRec.id_block = destBlock.id_block
+		
+		//refire rec_on_select to get us in the right spot
+		forms.WEB_0F_page__design__content_1L_block.REC_on_select(null,true)
 	}
 	//copy or promote
 	else if (scope) {
@@ -578,16 +581,18 @@ function ACTION_gui_mode_load(fireSelect) {
  * @properties={typeid:24,uuid:"4EC7D16F-6935-4DC5-AE97-1F29D7C8E65B"}
  */
 function TOGGLE_elements(editAllow) {
-	elements.btn_actions.enabled = editAllow
-	elements.btn_add.enabled = editAllow
-	elements.btn_delete.visible = editAllow
-	elements.btn_down.enabled = editAllow
-	elements.btn_up.enabled = editAllow
+	var status = globals.WEB_block_edit_get() && editAllow
+	
+	elements.btn_actions.enabled = status
+	elements.btn_add.enabled = status
+	elements.btn_delete.visible = status
+	elements.btn_down.enabled = status
+	elements.btn_up.enabled = status
 	
 //	elements.fld_id_block_type.editable = editAllow
-	elements.fld_flag_active.enabled = editAllow
-	elements.fld_id_block_display__combo.visible = editAllow
-	elements.fld_id_block_display__field.visible = !editAllow
+	elements.fld_flag_active.enabled = status
+	elements.fld_id_block_display__combo.visible = status
+	elements.fld_id_block_display__field.visible = !status
 //	elements.fld_params.editable = editAllow	
 //	elements.fld_row_order.editable = editAllow
 }
