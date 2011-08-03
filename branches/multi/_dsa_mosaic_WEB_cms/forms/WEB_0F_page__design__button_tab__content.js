@@ -23,7 +23,7 @@ function VISIT_page(event,returnURL) {
 	
 	if (utils.hasRecords(fsPage)) {
 		
-		var urlString = globals.WEB_MRKUP_link_page(id_page)
+		var urlString = globals.WEB_MRKUP_link_page(fsPage.id_page)
 	
 		if (utils.hasRecords(forms.WEB_0F_page__design__header_display__platform._platform)) {
 			urlString += "&platform=" + forms.WEB_0F_page__design__header_display__platform._platform.url_param
