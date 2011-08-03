@@ -482,13 +482,13 @@ function ACTIVATE_version(event) {
 			break
 		case 'btn_check_off':
 			if (utils.hasRecords(fsVersion) && !fsVersion.flag_active) {
-				var input = plugins.dialogs.showQuestionDialog(
-								'Activate?',
-								'Activating this version will make it live on the web if the page is published.\nContinue?',
-								'Yes',
-								'No'
-						)
-				
+//				var input = plugins.dialogs.showQuestionDialog(
+//								'Activate?',
+//								'Activating this version will make it live on the web if the page is published.\nContinue?',
+//								'Yes',
+//								'No'
+//						)
+				var input = 'Yes'
 				if (input == 'Yes') {
 					//set all records to be inactive
 					for (var i = 1; i <= fsVersion.getSize(); i++) {

@@ -292,13 +292,13 @@ function ACTION_activate(event) {
 		case 'btn_check_off':
 			var fsVersion = web_block_to_block_version__all
 			if (utils.hasRecords(fsVersion) && !selectedVersion.flag_active) {
-				var input = plugins.dialogs.showQuestionDialog(
-								'Activate?',
-								'Activating this version will make it live on the web if the page is published.\nContinue?',
-								'Yes',
-								'No'
-						)
-				
+//				var input = plugins.dialogs.showQuestionDialog(
+//								'Activate?',
+//								'Activating this version will make it live on the web if the page is published.\nContinue?',
+//								'Yes',
+//								'No'
+//						)
+				var input = 'Yes'
 				if (input == 'Yes') {
 					//set all records to be inactive
 					for (var i = 1; i <= fsVersion.getSize(); i++) {
