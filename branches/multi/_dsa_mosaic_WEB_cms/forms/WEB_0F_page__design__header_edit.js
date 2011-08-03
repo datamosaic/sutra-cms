@@ -275,271 +275,303 @@ function ACTION_cancel() {
  * @properties={typeid:24,uuid:"2C217D68-302D-4F96-920E-E5145C9C19E9"}
  */
 function ACTION_save() {
-	globals.CODE_cursor_busy(true)
-	
-	//show label that this may take a while
-	elements.lbl_save_wait.visible = true
-	application.updateUI()
-	
-	//page was just created
-	if (forms.WEB_0T_page._addRecord) {
-		var pageRec = foundset.getSelectedRecord()
+	//check for enough data
+	if (!_pageName) {
+		plugins.dialogs.showErrorDialog(
+					"Error",
+					"Page name is required"
+				)
+		return false
+	}
+	else if (page_type == 0  && !(_idTheme || _idLayout)) {
+		plugins.dialogs.showErrorDialog(
+					"Error",
+					"Theme and layout are required"
+				)
+		return false
+	}
+	else if (page_type == 2 && !page_link) {
+		plugins.dialogs.showErrorDialog(
+					"Error",
+					"Link is required"
+				)
+		return false
+	}
+	else if (page_type == 3 && !page_link_internal) {
+		plugins.dialogs.showErrorDialog(
+					"Error",
+					"Page link is required"
+				)
+		return false
+	}
+	//all good, create/edit page
+	else {
+		globals.CODE_cursor_busy(true)
 		
-		//unfreeze screen when in frameworks
-		if (application.__parent__.solutionPrefs && solutionPrefs.config.lockStatus) {
-			globals.TRIGGER_interface_lock(false)
-		}
+		//show label that this may take a while
+		elements.lbl_save_wait.visible = true
+		application.updateUI()
 		
-		//turn on feedback indicator
-		globals.TRIGGER_progressbar_start(null,'Creating new page...')
-		
-		//put this page in the correct place; there were other records
-		if (forms.WEB_0T_page._oldRecord) {
+		//page was just created
+		if (forms.WEB_0T_page._addRecord) {
+			var pageRec = foundset.getSelectedRecord()
 			
-			//find current syblings
-			var fsPeers = databaseManager.getFoundSet(controller.getServerName(),controller.getTableName())
-			fsPeers.loadRecords(forms.WEB_0T_page._oldRecord)
-			
-			var oldRecord = fsPeers.getSelectedRecord()
-			
-			fsPeers.find()
-			fsPeers.parent_id_page = oldRecord.parent_id_page
-			fsPeers.id_site = oldRecord.id_site
-			var results = fsPeers.search()
-			
-			if (results) {
-				fsPeers.sort('order_by asc')
-				fsPeers.selectRecord(oldRecord.id_page)
+			//unfreeze screen when in frameworks
+			if (application.__parent__.solutionPrefs && solutionPrefs.config.lockStatus) {
+				globals.TRIGGER_interface_lock(false)
 			}
 			
-			//re-order everybody below current record in old foundset
-			for (var i = oldRecord.order_by + 1; i <= fsPeers.getSize(); i++) {
-				var recReorder = fsPeers.getRecord(i)
+			//turn on feedback indicator
+			globals.TRIGGER_progressbar_start(null,'Creating new page...')
+			
+			//put this page in the correct place; there were other records
+			if (forms.WEB_0T_page._oldRecord) {
 				
-				recReorder.order_by ++
+				//find current syblings
+				var fsPeers = databaseManager.getFoundSet(controller.getServerName(),controller.getTableName())
+				fsPeers.loadRecords(forms.WEB_0T_page._oldRecord)
+				
+				var oldRecord = fsPeers.getSelectedRecord()
+				
+				fsPeers.find()
+				fsPeers.parent_id_page = oldRecord.parent_id_page
+				fsPeers.id_site = oldRecord.id_site
+				var results = fsPeers.search()
+				
+				if (results) {
+					fsPeers.sort('order_by asc')
+					fsPeers.selectRecord(oldRecord.id_page)
+				}
+				
+				//re-order everybody below current record in old foundset
+				for (var i = oldRecord.order_by + 1; i <= fsPeers.getSize(); i++) {
+					var recReorder = fsPeers.getRecord(i)
+					
+					recReorder.order_by ++
+				}
+				
+				//non-top level record
+				if (oldRecord.parent_id_page) {
+					pageRec.parent_id_page = oldRecord.parent_id_page
+					pageRec.order_by = oldRecord.order_by + 1
+				}
+				//top level record
+				else {
+					pageRec.order_by = oldRecord.order_by + 1
+					
+					var treeReload = true
+				}
 			}
-			
-			//non-top level record
-			if (oldRecord.parent_id_page) {
-				pageRec.parent_id_page = oldRecord.parent_id_page
-				pageRec.order_by = oldRecord.order_by + 1
-			}
-			//top level record
+			//this is the first record
 			else {
-				pageRec.order_by = oldRecord.order_by + 1
+				pageRec.order_by = 1
 				
 				var treeReload = true
 			}
-		}
-		//this is the first record
-		else {
-			pageRec.order_by = 1
 			
-			var treeReload = true
-		}
-		
-		//grab the site defaults
-		var siteDefaults = forms.WEB_0T_page._siteDefaults
-		
-		//create platform record (theme and layout)
-		var platformRec = pageRec.web_page_to_platform.getRecord(pageRec.web_page_to_platform.newRecord(false,true))
-		platformRec.id_site_platform = _idSitePlatform
-		platformRec.id_theme = _idTheme
-		platformRec.id_layout = _idLayout
-		
-		//create language record (page name and seo)
-		var languageRec = pageRec.web_page_to_language.getRecord(pageRec.web_page_to_language.newRecord(false,true))
-		languageRec.id_site_language = _idSiteLanguage
-		languageRec.page_name = _pageName
-		
-		//create group record (nothing now)
-		var groupRec = pageRec.web_page_to_group.getRecord(pageRec.web_page_to_group.newRecord(false,true))
-		groupRec.id_site_group = _idSiteGroup
-		
-		//create 1st version for this triumvirate
-		var fsVersion = forms.WEB_0F_page__design__content.foundset
-		fsVersion.clear()
-		var newVersion = fsVersion.getRecord(fsVersion.newRecord(false,true))
-		newVersion.id_platform = platformRec.id_platform
-		newVersion.id_language = languageRec.id_language
-		newVersion.id_group = groupRec.id_group
-		newVersion.version_number = 1
-		newVersion.flag_active = 1
-		newVersion.version_name = 'Initial version'
-		globals.WEB_page_version = newVersion.id_version
-		
-		var fsPath = databaseManager.getFoundSet('sutra_cms','web_path')
-		var siteID = id_site
-		
-		//add in path for this page
-		var pathNameWanted = languageRec.page_name || 'untitled-page'
-		pathNameWanted = pathNameWanted.toLowerCase()
-		pathNameWanted = utils.stringReplace(pathNameWanted, ' ', '-')
-		
-		var pathName = pathNameWanted
-		var cnt = 1	
-		
-		//we need to get into the loop
-		results = null
-		
-		while (results != 0) {
-			fsPath.find()
-			fsPath.id_site = siteID
-			fsPath.path = pathName
-			var results = fsPath.search()
+			//grab the site defaults
+			var siteDefaults = forms.WEB_0T_page._siteDefaults
 			
-			if (results) {
-				pathName = pathNameWanted + cnt++
-			}
-		}
-		
-		var recPath = languageRec.web_language_to_path.getRecord(languageRec.web_language_to_path.newRecord(false,true))
-		recPath.flag_default = 1
-		recPath.path = pathName
-		recPath.id_site = siteID
-		recPath.id_page = pageRec.id_page
-		
-		databaseManager.saveData()
-		databaseManager.setAutoSave(true)
-		
-		//a full reload required
-		if (treeReload) {
-			forms.WEB_0T_page.TREE_refresh()
-		}
-		
-		forms.WEB_0T_page.elements.bean_tree.refresh()
-		forms.WEB_0T_page.REC_on_select(pageRec.id_page)
-		forms.WEB_0T_page.elements.bean_tree.selectionPath = forms.WEB_0T_page.FIND_path(pageRec)
-		
-		//reset flags
-		var addedRecord = true
-		forms.WEB_0T_page._addRecord = null
-		delete forms.WEB_0T_page._siteDefaults
-		
-		//update 3 globals used to control everything (done on new page creation so that what you just created is visible)
-		globals.WEB_page_platform = _idSitePlatform
-		globals.WEB_page_language = _idSiteLanguage
-		globals.WEB_page_group = _idSiteGroup
-		
-		//refresh this newly created record if it is the first one (some issue with the calcs getting fired)
-		databaseManager.recalculate(pageRec)
-	}
-	
-	//MEMO: check WEB_P_page method too
-	if (_themeSet) {
-		//don't prompt if creating page
-		if (addedRecord) {
-			var input = "Yes"
-		}
-		//prompt
-		else {
-			globals.CODE_cursor_busy(false)
-			var input = plugins.dialogs.showWarningDialog(
-							"Warning",
-							"New theme layout selected. All area records that\ndo not exist in the new theme will be deleted.\nContinue?", 
-							"Yes", 
-							"No"
-						)
-			globals.CODE_cursor_busy(true)
+			//create platform record (theme and layout)
+			var platformRec = pageRec.web_page_to_platform.getRecord(pageRec.web_page_to_platform.newRecord(false,true))
+			platformRec.id_site_platform = _idSitePlatform
+			platformRec.id_theme = _idTheme
+			platformRec.id_layout = _idLayout
 			
-		}
-
-		if ( input != "Yes") {
-			globals.CODE_cursor_busy(false)
-			return false
-		}
-		
-		//theme changes for non-newly created record
-		if (!addedRecord) {
-			//get most recent and selected versions
+			//create language record (page name and seo)
+			var languageRec = pageRec.web_page_to_language.getRecord(pageRec.web_page_to_language.newRecord(false,true))
+			languageRec.id_site_language = _idSiteLanguage
+			languageRec.page_name = _pageName
+			
+			//create group record (nothing now)
+			var groupRec = pageRec.web_page_to_group.getRecord(pageRec.web_page_to_group.newRecord(false,true))
+			groupRec.id_site_group = _idSiteGroup
+			
+			//create 1st version for this triumvirate
 			var fsVersion = forms.WEB_0F_page__design__content.foundset
-			var latestVersion = fsVersion.getRecord(1)
-			var selectedVersion = fsVersion.getSelectedRecord()
-			
-			var descriptor ='Theme/layout change.\n' +
-							'From: ' + application.getValueListDisplayValue('WEB_themes',selectedVersion.web_version_to_platform.id_theme) + '/' + application.getValueListDisplayValue('WEB_layouts',selectedVersion.web_version_to_platform.id_layout) + '\n' +
-							'To: ' + application.getValueListDisplayValue('WEB_themes',_idTheme) + '/' + application.getValueListDisplayValue('WEB_layouts',_idLayout) + '\n'
-			
-			var platformRec = _recPlatform
-			
-			//punch down data
-			_recPlatform.id_theme = _idTheme
-			_recPlatform.id_layout = _idLayout
-			
-			//halt additional on select firing
-			forms.WEB_0F_page__design__content_1L_block._skipSelect = true
-			
-			//create new version
-			var newVersion = fsVersion.getRecord(fsVersion.newRecord(1,true))
-			newVersion.id_platform = selectedVersion.id_platform
-			newVersion.id_language = selectedVersion.id_language
-			newVersion.id_group = selectedVersion.id_group
-			newVersion.version_number = latestVersion.version_number + 1
-			newVersion.version_description = descriptor
+			fsVersion.clear()
+			var newVersion = fsVersion.getRecord(fsVersion.newRecord(false,true))
+			newVersion.id_platform = platformRec.id_platform
+			newVersion.id_language = languageRec.id_language
+			newVersion.id_group = groupRec.id_group
+			newVersion.version_number = 1
+			newVersion.flag_active = 1
+			newVersion.version_name = 'Initial version'
 			globals.WEB_page_version = newVersion.id_version
 			
-			//allow additional on select firing
-			forms.WEB_0F_page__design__content_1L_block._skipSelect = false
-		}
-		
-		// get editable regions based on layout selected
-		if (!utils.hasRecords(platformRec,'web_platform_to_layout.web_layout_to_editable')) {
-			globals.CODE_cursor_busy(false)
-			return 'No editables for selected layout'
-		}
-		
-		var layout = platformRec.web_platform_to_layout.getSelectedRecord()
-		
-		if (selectedVersion) {
-			var oldAreas = databaseManager.getFoundSetDataProviderAsArray(selectedVersion.web_version_to_area,'area_name')
-		}
-		else {
-			var oldAreas = new Array()
-		}
-		
-		//create all areas for this layout, copying over existing content based on area name
-		for (var i = 1; i <= layout.web_layout_to_editable.getSize(); i++) {
-			//new area to create
-			var editable =  layout.web_layout_to_editable.getRecord(i)
-			//this area existed in the theme we were copying from
-			var oldAreaSameName = oldAreas.indexOf(editable.editable_name)
+			var fsPath = databaseManager.getFoundSet('sutra_cms','web_path')
+			var siteID = id_site
 			
-			//create from defaults for area
-			if (oldAreaSameName == -1) {
-				var newArea = forms.WEB_0F_page__design__header_display__version.AREA_new(editable,newVersion,i)
+			//add in path for this page
+			var pathNameWanted = languageRec.page_name || 'untitled-page'
+			pathNameWanted = pathNameWanted.toLowerCase()
+			pathNameWanted = utils.stringReplace(pathNameWanted, ' ', '-')
+			
+			var pathName = pathNameWanted
+			var cnt = 1	
+			
+			//we need to get into the loop
+			results = null
+			
+			while (results != 0) {
+				fsPath.find()
+				fsPath.id_site = siteID
+				fsPath.path = pathName
+				var results = fsPath.search()
+				
+				if (results) {
+					pathName = pathNameWanted + cnt++
+				}
 			}
-			//copy from chosen version
+			
+			var recPath = languageRec.web_language_to_path.getRecord(languageRec.web_language_to_path.newRecord(false,true))
+			recPath.flag_default = 1
+			recPath.path = pathName
+			recPath.id_site = siteID
+			recPath.id_page = pageRec.id_page
+			
+			databaseManager.saveData()
+			databaseManager.setAutoSave(true)
+			
+			//a full reload required
+			if (treeReload) {
+				forms.WEB_0T_page.TREE_refresh()
+			}
+			
+			forms.WEB_0T_page.elements.bean_tree.refresh()
+			forms.WEB_0T_page.REC_on_select(pageRec.id_page)
+			forms.WEB_0T_page.elements.bean_tree.selectionPath = forms.WEB_0T_page.FIND_path(pageRec)
+			
+			//reset flags
+			var addedRecord = true
+			forms.WEB_0T_page._addRecord = null
+			delete forms.WEB_0T_page._siteDefaults
+			
+			//update 3 globals used to control everything (done on new page creation so that what you just created is visible)
+			globals.WEB_page_platform = _idSitePlatform
+			globals.WEB_page_language = _idSiteLanguage
+			globals.WEB_page_group = _idSiteGroup
+			
+			//refresh this newly created record if it is the first one (some issue with the calcs getting fired)
+			databaseManager.recalculate(pageRec)
+		}
+		
+		//MEMO: check WEB_P_page method too
+		if (_themeSet) {
+			//don't prompt if creating page
+			if (addedRecord) {
+				var input = "Yes"
+			}
+			//prompt
 			else {
-				var newArea = forms.WEB_0F_page__design__header_display__version.AREA_copy(selectedVersion.web_version_to_area.getRecord(oldAreaSameName + 1),newVersion,i)
+				globals.CODE_cursor_busy(false)
+				var input = plugins.dialogs.showWarningDialog(
+								"Warning",
+								"New theme layout selected. All area records that\ndo not exist in the new theme will be deleted.\nContinue?", 
+								"Yes", 
+								"No"
+							)
+				globals.CODE_cursor_busy(true)
+				
+			}
+	
+			if ( input != "Yes") {
+				globals.CODE_cursor_busy(false)
+				return false
+			}
+			
+			//theme changes for non-newly created record
+			if (!addedRecord) {
+				//get most recent and selected versions
+				var fsVersion = forms.WEB_0F_page__design__content.foundset
+				var latestVersion = fsVersion.getRecord(1)
+				var selectedVersion = fsVersion.getSelectedRecord()
+				
+				var descriptor ='Theme/layout change.\n' +
+								'From: ' + application.getValueListDisplayValue('WEB_themes',selectedVersion.web_version_to_platform.id_theme) + '/' + application.getValueListDisplayValue('WEB_layouts',selectedVersion.web_version_to_platform.id_layout) + '\n' +
+								'To: ' + application.getValueListDisplayValue('WEB_themes',_idTheme) + '/' + application.getValueListDisplayValue('WEB_layouts',_idLayout) + '\n'
+				
+				var platformRec = _recPlatform
+				
+				//punch down data
+				_recPlatform.id_theme = _idTheme
+				_recPlatform.id_layout = _idLayout
+				
+				//halt additional on select firing
+				forms.WEB_0F_page__design__content_1L_block._skipSelect = true
+				
+				//create new version
+				var newVersion = fsVersion.getRecord(fsVersion.newRecord(1,true))
+				newVersion.id_platform = selectedVersion.id_platform
+				newVersion.id_language = selectedVersion.id_language
+				newVersion.id_group = selectedVersion.id_group
+				newVersion.version_number = latestVersion.version_number + 1
+				newVersion.version_description = descriptor
+				globals.WEB_page_version = newVersion.id_version
+				
+				//allow additional on select firing
+				forms.WEB_0F_page__design__content_1L_block._skipSelect = false
+			}
+			
+			// get editable regions based on layout selected
+			if (!utils.hasRecords(platformRec,'web_platform_to_layout.web_layout_to_editable')) {
+				globals.CODE_cursor_busy(false)
+				return 'No editables for selected layout'
+			}
+			
+			var layout = platformRec.web_platform_to_layout.getSelectedRecord()
+			
+			if (selectedVersion) {
+				var oldAreas = databaseManager.getFoundSetDataProviderAsArray(selectedVersion.web_version_to_area,'area_name')
+			}
+			else {
+				var oldAreas = new Array()
+			}
+			
+			//create all areas for this layout, copying over existing content based on area name
+			for (var i = 1; i <= layout.web_layout_to_editable.getSize(); i++) {
+				//new area to create
+				var editable =  layout.web_layout_to_editable.getRecord(i)
+				//this area existed in the theme we were copying from
+				var oldAreaSameName = oldAreas.indexOf(editable.editable_name)
+				
+				//create from defaults for area
+				if (oldAreaSameName == -1) {
+					var newArea = forms.WEB_0F_page__design__header_display__version.AREA_new(editable,newVersion,i)
+				}
+				//copy from chosen version
+				else {
+					var newArea = forms.WEB_0F_page__design__header_display__version.AREA_copy(selectedVersion.web_version_to_area.getRecord(oldAreaSameName + 1),newVersion,i)
+				}
+			}
+			
+			// finish up
+			databaseManager.saveData()
+			
+			if (newVersion) {
+				newVersion.web_version_to_area.setSelectedIndex(1)
+				newVersion.web_version_to_area.web_area_to_scope.setSelectedIndex(1)
+			}
+			
+			//theme has been successfully set
+			_themeSet = null
+		}
+		
+		forms.WEB_0F_page__design.REC_on_select(true,true,1)
+		
+		//turn off feedback indicator if on
+		if (globals.TRIGGER_progressbar_get() instanceof Array) {
+			if (globals.TRIGGER_progressbar_get()[1] == 'Creating new page...') {
+				globals.TRIGGER_progressbar_stop()
 			}
 		}
 		
-		// finish up
-		databaseManager.saveData()
+		//hide label that this may take a while
+		elements.lbl_save_wait.visible = false
+		globals.CODE_cursor_busy(false)
 		
-		if (newVersion) {
-			newVersion.web_version_to_area.setSelectedIndex(1)
-			newVersion.web_version_to_area.web_area_to_scope.setSelectedIndex(1)
-		}
-		
-		//theme has been successfully set
-		_themeSet = null
+		return true
 	}
-	
-	forms.WEB_0F_page__design.REC_on_select(true,true,1)
-	
-	//turn off feedback indicator if on
-	if (globals.TRIGGER_progressbar_get() instanceof Array) {
-		if (globals.TRIGGER_progressbar_get()[1] == 'Creating new page...') {
-			globals.TRIGGER_progressbar_stop()
-		}
-	}
-	
-	//hide label that this may take a while
-	elements.lbl_save_wait.visible = false
-	globals.CODE_cursor_busy(false)
-	
-	return true
 }
 
 /**
