@@ -117,7 +117,7 @@ function WEB_simple_edit(event) {
 	if (forms[formName].elements.tab_header_detail.tabIndex != 2) {
 		//allowed to roll-down header area?
 			//MEMO: this global method only used on pages screen; so modifcations ok
-		if (forms.WEB_0F_page.page_type == 0 && !utils.hasRecords(forms.WEB_0F_page__design__content.foundset)) {
+		if (!forms.WEB_0T_page._addRecord && forms.WEB_0F_page.page_type == 0 && !utils.hasRecords(forms.WEB_0F_page__design__content.foundset)) {
 			plugins.dialogs.showQuestionDialog(
 						'Error',
 						'No version selected'
