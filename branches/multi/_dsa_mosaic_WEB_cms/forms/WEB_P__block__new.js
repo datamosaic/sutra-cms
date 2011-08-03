@@ -467,11 +467,16 @@ function FORM_on_show() {
 	
 	//reset to block types and select content
 	globals.WEB_block_scope__new = 0
-	for (var i = 1; i <= forms.WEB_P__block__new_1L_block_type.foundset.getSize(); i++) {
-		var record = forms.WEB_P__block__new_1L_block_type.foundset.getRecord(i)
+	var fsBlockType = forms.WEB_P__block__new_1L_block_type.foundset
+	fsBlockType.find()
+	fsBlockType.id_site = forms.WEB_0F_site.id_site
+	fsBlockType.search()
+	
+	for (var i = 1; i <= fsBlockType.getSize(); i++) {
+		var record = fsBlockType.getRecord(i)
 		
 		if (record.block_name == 'Content') {
-			forms.WEB_P__block__new_1L_block_type.foundset.setSelectedIndex(i)
+			fsBlockType.setSelectedIndex(i)
 			break
 		}
 	}
@@ -500,6 +505,17 @@ function FORM_on_show() {
 			elements.tab_detail.setSize(elements.tab_detail.getWidth(),elements.tab_detail.getHeight() + 25)
 		}
 	}
+	
+	//page is not an option when on theme
+	if (_calledFrom == 'Theme') {
+		var vlDisplay = ['Unique','Site','Install']
+		var vlReal = [0,2,3]
+	}
+	else {
+		var vlDisplay = ['Unique','Page','Site','Install']
+		var vlReal = [0,1,2,3]
+	}
+	application.setValueListItems('WEB_scope_type',vlDisplay,vlReal)
 }
 
 /**
