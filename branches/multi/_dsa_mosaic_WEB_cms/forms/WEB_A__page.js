@@ -109,6 +109,9 @@ function TOGGLE_edit_mode(editMode,saveData) {
 		elements.btn_cancel.visible = true
 		elements.btn_done.visible = true
 		elements.btn_edit.visible = false
+		
+		//set up storage place for all newly created blocks
+		forms.WEB_0F_page__design__content_1L_block._newBlocks = new Array()
 	}
 	//exiting edit mode
 	else if (currentState) {
@@ -145,6 +148,14 @@ function TOGGLE_edit_mode(editMode,saveData) {
 		//rollback the data if we were in edit mode
 		else if (!databaseManager.getAutoSave()) {
 			databaseManager.rollbackEditedRecords()
+			
+			//delete all newly created scope records
+			if (forms.WEB_0F_page__design__content_1L_block._newBlocks instanceof Array) {
+				while (forms.WEB_0F_page__design__content_1L_block._newBlocks.length) {
+					var record = forms.WEB_0F_page__design__content_1L_block._newBlocks.pop()
+					record.foundset.deleteRecord(record)
+				}
+			}
 			
 			//update version valuelist (if version activated, need to undo)
 			forms.WEB_0F_page__design.SET_versions(true)

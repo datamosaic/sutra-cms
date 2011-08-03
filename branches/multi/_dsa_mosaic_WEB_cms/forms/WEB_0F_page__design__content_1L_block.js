@@ -1,4 +1,9 @@
 /**
+ * @properties={typeid:35,uuid:"176CC8B4-859B-4633-B39F-0B72FFF9EABE",variableType:-4}
+ */
+var _newBlocks = null;
+
+/**
  * @properties={typeid:35,uuid:"4FDACEFD-6F16-46F7-827B-375E23824AD6"}
  */
 var _license_dsa_mosaic_WEB_cms = 'Module: _dsa_mosaic_WEB_cms \
@@ -215,6 +220,13 @@ function BLOCK_new(input) {
 	if (forms.WEB_P__block__new._success) {
 		// refire when in gui mode
 		if (globals.WEB_page_mode == 2) {
+			//store this scope record into temp variable to delete if canceled
+			if (!_newBlocks instanceof Array) {
+				_newBlocks = new Array()
+			}
+			_newBlocks.push(foundset.getSelectedRecord())
+			
+			//update display
 			forms.WEB_0F_page__design__content_1L_block.REC_on_select(null,true)
 		}
 		// or real mode
