@@ -26,7 +26,7 @@ function BLOCK_action_list() {
 		}
 		
 		//menu items
-		var valuelist = new Array('Copy to...','Promote to...')
+		var valuelist = new Array('Duplicate','-','Copy to...','Promote to...')
 		
 		//set up menu with arguments
 		var subMenu1 = new Array()
@@ -40,8 +40,11 @@ function BLOCK_action_list() {
 		}
 		
 		var mainMenu = new Array()
-		mainMenu[0] = plugins.popupmenu.createMenuItem(valuelist[0],subMenu1)
-		mainMenu[1] = plugins.popupmenu.createMenuItem(valuelist[1],subMenu2)
+		mainMenu[0] = plugins.popupmenu.createMenuItem(valuelist[0],BLOCK_action_list_control)
+		mainMenu[0].setMethodArguments(null,null,null,true)
+		mainMenu[1] = plugins.popupmenu.createMenuItem(valuelist[1],BLOCK_action_list_control)
+		mainMenu[2] = plugins.popupmenu.createMenuItem(valuelist[2],subMenu1)
+		mainMenu[3] = plugins.popupmenu.createMenuItem(valuelist[3],subMenu2)
 		
 		//popup
 		var elem = elements[application.getMethodTriggerElementName()]
@@ -61,17 +64,11 @@ function BLOCK_action_list() {
  *
  * @properties={typeid:24,uuid:"0DE68168-7178-4FE8-B538-60456C223C6E"}
  */
-function BLOCK_action_list_control(scope,copy,promote) {
+function BLOCK_action_list_control(scope,copy,promote,dupe) {
 	var blockRec = web_scope_to_block.getSelectedRecord()
 	
-	var input = plugins.dialogs.showInputDialog(
-					'Name',
-					'Please (re)name the block you are working with',
-					blockRec.block_name
-			)
-	
-	//make a copy of this block
-	if (copy) {
+	//duplicate selected block
+	if (dupe) {
 		//create new block record
 		var fsBlock = databaseManager.getFoundSet('sutra_cms','web_block')
 		var destBlock = fsBlock.getRecord(fsBlock.newRecord(false,true))
@@ -90,39 +87,97 @@ function BLOCK_action_list_control(scope,copy,promote) {
 		destBlockVer.flag_active = 1
 		destBlockVer.version_number = 1
 		destBlockVer.version_name = 'Initial version'
-		destBlockVer.version_description = 'Copied: ' + application.getValueListDisplayValue('WEB_scope_type',blockRec.scope_type) + ' content\n' +
+		destBlockVer.version_description = 'Duplicated from: ' + 
 			'"' + blockRec.block_name + '", version ' + blockRec.web_block_to_block_version.version_number + '\n' +
 			'ID: ' + blockRec.id_block.toString()
 		
 		//assign scope to the newly copied record
-		destBlock.scope_type = scope
-		destBlock.block_name = input
+		destBlock.scope_type = blockRec.scope_type
+		destBlock.block_name = blockRec.block_name
 		
 		//punch in the current block type and display so will show up on site scrapbook
 		destBlock.id_block_type = blockRec.id_block_type
 		destBlock.id_block_display = blockRec.id_block_display
 		
-		if (scope == 1) {
-			destBlock.id_page = forms.WEB_0F_page.id_page
-		}
-		else if (scope == 2) {
-			destBlock.id_site = forms.WEB_0F_page.id_site
-		}
-	}
-	//assign this a little bit higher
-	else if (promote) {
-		blockRec.scope_type = scope
-		blockRec.block_name = input
+	//create new scope record and hook together
+		//turn off rec on select
+		_skipSelect = true
 		
-		if (scope == 1) {
-			blockRec.id_page = forms.WEB_0F_page.id_page
+		//disale/enable rec on select on the block type forms when creating scope
+		globals.WEB_block_on_select = false
+		
+		var scopeRec = foundset.getRecord(foundset.newRecord(false,true))
+		
+		scopeRec.row_order = foundset.getSize()
+		databaseManager.saveData(scopeRec)
+		
+		//disale/enable rec on select on the block type forms when creating scope
+		globals.WEB_block_on_select = true
+		
+		scopeRec.id_block = destBlock.id_block
+	}
+	//copy or promote
+	else if (scope) {
+		var input = plugins.dialogs.showInputDialog(
+						'Name',
+						'Please (re)name the block you are working with',
+						blockRec.block_name
+				)
+		
+		//make a copy of this block
+		if (copy) {
+			//create new block record
+			var fsBlock = databaseManager.getFoundSet('sutra_cms','web_block')
+			var destBlock = fsBlock.getRecord(fsBlock.newRecord(false,true))
+			
+			//get source block version
+			var srcBlockVer = blockRec.web_block_to_block_version.getRecord(1)
+			
+			//create destination block version record
+			var destBlockVer = globals.CODE_record_duplicate(srcBlockVer,[
+												"web_block_version_to_block_data",
+												"web_block_version_to_block_data_configure"
+											])
+			
+			//set datapoints on new block version
+			destBlockVer.id_block = destBlock.id_block
+			destBlockVer.flag_active = 1
+			destBlockVer.version_number = 1
+			destBlockVer.version_name = 'Initial version'
+			destBlockVer.version_description = 'Copied: ' + application.getValueListDisplayValue('WEB_scope_type',blockRec.scope_type) + ' content\n' +
+				'"' + blockRec.block_name + '", version ' + blockRec.web_block_to_block_version.version_number + '\n' +
+				'ID: ' + blockRec.id_block.toString()
+			
+			//assign scope to the newly copied record
+			destBlock.scope_type = scope
+			destBlock.block_name = input
+			
+			//punch in the current block type and display so will show up on site scrapbook
+			destBlock.id_block_type = blockRec.id_block_type
+			destBlock.id_block_display = blockRec.id_block_display
+			
+			if (scope == 1) {
+				destBlock.id_page = forms.WEB_0F_page.id_page
+			}
+			else if (scope == 2) {
+				destBlock.id_site = forms.WEB_0F_page.id_site
+			}
 		}
-		else if (scope == 2) {
-			blockRec.id_site = forms.WEB_0F_page.id_site
-		}
-		else if (scope == 3) {
-			blockRec.id_page = null
-			blockRec.id_site = null
+		//assign this a little bit higher
+		else if (promote) {
+			blockRec.scope_type = scope
+			blockRec.block_name = input
+			
+			if (scope == 1) {
+				blockRec.id_page = forms.WEB_0F_page.id_page
+			}
+			else if (scope == 2) {
+				blockRec.id_site = forms.WEB_0F_page.id_site
+			}
+			else if (scope == 3) {
+				blockRec.id_page = null
+				blockRec.id_site = null
+			}
 		}
 	}
 }
