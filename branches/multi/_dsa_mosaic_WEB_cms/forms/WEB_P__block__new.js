@@ -81,11 +81,16 @@ function ACTION_ok(event) {
 		var copyScrapbook = true
 	}
 	
-	//not already ok to close, continue
-	if (!globals.CODE_hide_form) {
+	function closeFID() {
 		//enable closing the form
 		globals.CODE_hide_form = 1
+		
+		//close it
 		application.closeFormDialog('cmsBlockNew')
+	}
+	
+	//not already ok to close, continue
+	if (!globals.CODE_hide_form) {
 		
 		//get parent form
 		var formStack = forms.WEB_0F_scrapbook.controller.getFormContext()
@@ -104,6 +109,8 @@ function ACTION_ok(event) {
 			
 			//something chosen
 			if (utils.hasRecords(forms.WEB_P__block__new_1L_block.foundset)) {
+				closeFID()
+				
 				var scrapbookRec = forms.WEB_P__block__new_1L_block.foundset.getSelectedRecord()
 				
 				//called from theme form, connect
@@ -293,6 +300,8 @@ function ACTION_ok(event) {
 		else {
 			//something chosen
 			if (utils.hasRecords(forms.WEB_P__block__new_1L_block_type.foundset)) {
+				closeFID()
+				
 				var blockTypeRec = forms.WEB_P__block__new_1L_block_type.foundset.getSelectedRecord()
 				var blockDisplayRec = utils.hasRecords(blockTypeRec.web_block_type_to_block_display__default) ? blockTypeRec.web_block_type_to_block_display__default.getSelectedRecord() : {}
 				
@@ -432,13 +441,8 @@ function ACTION_ok(event) {
 		//save data
 		databaseManager.saveData()
 		
-		//enaable closing the form
-//		globals.CODE_hide_form = 1
-		
 		//a record was created
 		_success = blockRec
-		
-//		application.closeFormDialog('cmsBlockNew')
 	}
 }
 
