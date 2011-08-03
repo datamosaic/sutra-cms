@@ -624,6 +624,8 @@ function TOGGLE_fields(pageType) {
 	elements.var_idSiteLanguage.visible = false
 	elements.lbl_group.visible = false
 	elements.var_idSiteGroup.visible = false
+	elements.lbl_flag_folder_children.visible = false
+	elements.fld_flag_folder_children.visible = false
 	
 	//passed a number, grab word
 	if (utils.stringToNumber(pageType) == pageType) {
@@ -675,6 +677,9 @@ function TOGGLE_fields(pageType) {
 			var page = false
 			var link = false
 			folderHeader.visible = true
+			
+			elements.lbl_flag_folder_children.visible = true
+			elements.fld_flag_folder_children.visible = true
 			break
 		case 'Page invalid':
 			var pageHide = true

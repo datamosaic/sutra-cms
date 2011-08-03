@@ -696,24 +696,38 @@ function CONTROLLER_setup(results, app, session, request, response, mode) {
 		
 		pageID = page.id_page
 	}
+	
+	// publishable...only matters for a live site
+	if ( !editMode && !page.flag_publish ) {
+		obj.error.code = 403
+		obj.error.message = "Page not published"
+		return obj
+	}
 		
 	//if a folder, grab child page
 	//TODO: need to keep traversing down the folder tree until first non-folder encountered
 	if (page.page_type == 1) {
-		//there is a published child page
-		if (utils.hasRecords(page.web_page_to_page__child__publish)) {
-			var pageID = page.web_page_to_page__child__publish.id_page
-			
-			page.find()
-			page.id_page = pageID
-			var count = page.search()
-			
-			groupID = null
-			versionID = null		
+		if (page.flag_folder_children) {
+			//there is a published child page
+			if (utils.hasRecords(page.web_page_to_page__child__publish)) {
+				var pageID = page.web_page_to_page__child__publish.id_page
+				
+				page.find()
+				page.id_page = pageID
+				var count = page.search()
+				
+				groupID = null
+				versionID = null		
+			}
+			else {
+				obj.error.code = 404
+				obj.error.message = "Folder has no children"
+				return obj
+			}
 		}
 		else {
 			obj.error.code = 404
-			obj.error.message = "Folder has no children"
+			obj.error.message = "Folder has no content"
 			return obj
 		}
 	}
@@ -755,13 +769,6 @@ function CONTROLLER_setup(results, app, session, request, response, mode) {
 			obj.type = true
 			return obj
 		}
-	}
-	
-	// publishable...only matters for a live site
-	if ( !editMode && !page.flag_publish ) {
-		obj.error.code = 403
-		obj.error.message = "Page not published"
-		return obj
 	}
 	
 	// obj: page
