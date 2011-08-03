@@ -133,7 +133,9 @@ function TOGGLE_edit_mode(editMode,saveData) {
 			}
 			
 			//update modification date on this record
-			forms.WEB_0F_page__design__content.rec_modified = application.getServerTimeStamp()
+			if (utils.hasRecords(forms.WEB_0F_page__design__content.foundset)) {
+				forms.WEB_0F_page__design__content.rec_modified = application.getServerTimeStamp()
+			}
 			
 			//redo valuelist for versions
 			forms.WEB_0F_page__design.SET_versions(true)
