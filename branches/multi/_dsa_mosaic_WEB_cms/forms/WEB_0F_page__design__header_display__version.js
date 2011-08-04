@@ -430,6 +430,9 @@ function LOCK_version(event) {
 		if (!version.flag_lock) {
 			version.flag_lock = 1
 //			databaseManager.saveData(version)
+			
+			//redo what is displayed to take into account
+			forms.WEB_A__page.TOGGLE_edit_mode(forms.WEB_A__page._editMode)
 		}
 		//non-editable, prompt to make editable
 		else {
@@ -449,6 +452,9 @@ function LOCK_version(event) {
 				
 				version.flag_lock = 0
 //				databaseManager.saveData(version)
+				
+				//redo what is displayed to take into account
+				forms.WEB_A__page.TOGGLE_edit_mode(forms.WEB_A__page._editMode)
 			}
 			else {
 				plugins.dialogs.showErrorDialog(

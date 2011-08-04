@@ -98,9 +98,11 @@ function TOGGLE_edit_mode(editMode,saveData) {
 	
 	//entering edit mode
 	if (_editMode) {
-		//enter pseudo-transaction
-		databaseManager.saveData()
-		databaseManager.setAutoSave(false)
+		//enter pseudo-transaction if not already in one
+		if (databaseManager.getAutoSave()) {
+			databaseManager.saveData()
+			databaseManager.setAutoSave(false)
+		}
 		
 		//lock the screen
 		globals.TRIGGER_interface_lock(true)
