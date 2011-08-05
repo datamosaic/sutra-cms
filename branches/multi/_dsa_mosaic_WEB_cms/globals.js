@@ -669,8 +669,13 @@ function WEB_page_new(pageName,pageType,parentID,themeID,layoutID) {
 		return
 	}
 	
-	//there are sites
-	if (utils.hasRecords(forms.WEB_0F_site.foundset)) {
+	//default values for selected site
+	var siteDefaults = forms.WEB_0F_site.ACTION_get_defaults()
+	
+	//TODO: prompt to modify defaults (for example, logged in as spanish, only allowed to create spanish)
+	
+	//we have enough information to create a record
+	if (siteDefaults) {
 		
 		//turn on feedback indicator
 		globals.CODE_cursor_busy(true)
@@ -695,31 +700,52 @@ function WEB_page_new(pageName,pageType,parentID,themeID,layoutID) {
 			}
 		}
 		
-		var newRecord = fsPage.getRecord(fsPage.newRecord(false,true))
+		var pageRec = fsPage.getRecord(fsPage.newRecord(false,true))
 		
 		//put this page in the correct place; there were other records
 		
 		//find current syblings (of parent rec or at the top level)
 		fsPage.find()
-		fsPage.parent_id_page = (parentRec) ? parentRec.id_page : 0
+		fsPage.parent_id_page = (parentRec) ? parentRec.id_page : '^='
 		fsPage.id_site = (parentRec) ? parentRec.id_site : forms.WEB_0F_site.id_site
 		var results = fsPage.search()
 		
-		newRecord.page_name = pageName
-		newRecord.page_type = pageType
-		newRecord.parent_id_page = (parentRec) ? parentRec.id_page : 0
-		newRecord.order_by = (parentRec) ? parentRec.web_page_to_page__child.getSize() + 1 : results + 1
-		newRecord.id_site = (parentRec) ? parentRec.id_site : forms.WEB_0F_site.id_site
+		pageRec.page_type = pageType
+		pageRec.parent_id_page = (parentRec) ? parentRec.id_page : null
+		pageRec.order_by = (parentRec) ? parentRec.web_page_to_page__child.getSize() + 1 : results + 1
+		pageRec.id_site = (parentRec) ? parentRec.id_site : forms.WEB_0F_site.id_site
 		
-		//create one version
-		var oneVersion = newRecord.web_page_to_version.getRecord(newRecord.web_page_to_version.newRecord(false,true))
-		oneVersion.version_number = 1
+		//create platform record (theme and layout)
+		var platformRec = pageRec.web_page_to_platform.getRecord(pageRec.web_page_to_platform.newRecord(false,true))
+		platformRec.id_site_platform = siteDefaults.platform.id_site_platform
+		platformRec.id_theme = themeID
+		platformRec.id_layout = layoutID
+		
+		//create language record (page name and seo)
+		var languageRec = pageRec.web_page_to_language.getRecord(pageRec.web_page_to_language.newRecord(false,true))
+		languageRec.id_site_language = siteDefaults.language.id_site_language
+		languageRec.page_name = pageName
+		
+		//create group record (nothing now)
+		var groupRec = pageRec.web_page_to_group.getRecord(pageRec.web_page_to_group.newRecord(false,true))
+		groupRec.id_site_group = siteDefaults.group.id_site_group
+		
+		//create 1st version for this triumvirate
+		var fsVersion = databaseManager.getFoundSet('sutra_cms','web_version')
+		fsVersion.clear()
+		var newVersion = fsVersion.getRecord(fsVersion.newRecord(false,true))
+		newVersion.id_platform = platformRec.id_platform
+		newVersion.id_language = languageRec.id_language
+		newVersion.id_group = groupRec.id_group
+		newVersion.version_number = 1
+		newVersion.flag_active = 1
+		newVersion.version_name = 'Initial version'
 		
 		var fsPath = databaseManager.getFoundSet('sutra_cms','web_path')
-		var siteID = newRecord.id_site
+		var siteID = pageRec.id_site
 		
 		//add in path for this page
-		var pathNameWanted = newRecord.page_name
+		var pathNameWanted = languageRec.page_name || 'untitled-page'
 		pathNameWanted = pathNameWanted.toLowerCase()
 		pathNameWanted = utils.stringReplace(pathNameWanted, ' ', '-')
 		
@@ -740,97 +766,33 @@ function WEB_page_new(pageName,pageType,parentID,themeID,layoutID) {
 			}
 		}
 		
-		var recPath = newRecord.web_page_to_path.getRecord(newRecord.web_page_to_path.newRecord(false,true))
+		var recPath = languageRec.web_language_to_path.getRecord(languageRec.web_language_to_path.newRecord(false,true))
 		recPath.flag_default = 1
 		recPath.path = pathName
-		recPath.id_site = siteID		
-		
-//		//reset flag
-//		var addedRecord = true
-//		forms.WEB_0T_page._addRecord = null		
-		
-		//update valuelists
-//		forms.WEB_0F_page__design.REC_on_select()
-		
-		//set theme
-		newRecord.id_theme = themeID
-		newRecord.id_theme_layout = layoutID
+		recPath.id_site = siteID
+		recPath.id_page = pageRec.id_page
 		
 		databaseManager.saveData()
 		
-		//only create editable if enough information specified
-		if (utils.hasRecords(newRecord,'web_page_to_layout.web_layout_to_editable')) {
-			//group to create as
-			//TODO: if they've sorted, this will not be the everybody/visitor group
-			var recGroup = newRecord.web_page_to_site.web_site_to_site_group.getRecord(1)
-			
-			var fsArea = databaseManager.getFoundSet('sutra_cms','web_area')
-			
-			// get editable regions based on layout selected
-			var fsRegions = newRecord.web_page_to_layout.web_layout_to_editable
-			
-			// create a page area record for each editable
-			if (fsRegions.getSize()) {
-				//sort
-				fsRegions.sort('row_order asc')
-				
-				//still manually set the order in case web_editable is out of sync (kind of likely)
-				var order = 1
-				for (var i = 1; i <= fsRegions.getSize(); i++) {
-					var tempEditableRec = fsRegions.getRecord(i)
-					
-					var areaRec = fsArea.getRecord(fsArea.newRecord(false, true))
-					
-					areaRec.area_name = tempEditableRec.editable_name
-					areaRec.id_editable = tempEditableRec.id_editable
-					areaRec.row_order = order ++ 
-					areaRec.id_group = recGroup.id_group
-					areaRec.id_version = oneVersion.id_version		
-					
-					//create a block record for each editable default
-					for (var j = 1; j <= tempEditableRec.web_editable_to_editable_default.getSize(); j++ ) {
-						var tempEditableDefaultRec = tempEditableRec.web_editable_to_editable_default.getRecord(j)
-						
-						var blockRec = areaRec.web_area_to_block.getRecord(areaRec.web_area_to_block.newRecord(false, true))
-						
-						blockRec.id_block_display = tempEditableDefaultRec.id_block_display
-						blockRec.id_block_type = tempEditableDefaultRec.id_block_type
-						blockRec.id_scrapbook = tempEditableDefaultRec.id_scrapbook
-						blockRec.row_order = tempEditableDefaultRec.row_order
-						
-						// INPUT
-						//create a block_data record for each block_input
-						if ( tempEditableDefaultRec.web_editable_default_to_block_input ) {
-							for (var k = 1; k <= tempEditableDefaultRec.web_editable_default_to_block_input.getSize(); k++) {
-								var tempEditableDefaultDetailRec = tempEditableDefaultRec.web_editable_default_to_block_input.getRecord(k)
-		
-								var blockDataRec = blockRec.web_block_version_to_block_data.getRecord(blockRec.web_block_version_to_block_data.newRecord(false,true))
-								blockDataRec.data_key = tempEditableDefaultDetailRec.column_name
-							}
-						}
-						
-						// CONFIG
-						// create a block data configure record for each data point
-						if ( utils.hasRecords(tempEditableDefaultRec.web_editable_default_to_block_configure) ) {
-							for (var k = 1; k <= tempEditableDefaultRec.web_editable_default_to_block_configure.getSize(); k++) {
-								var configTemplate = tempEditableDefaultRec.web_editable_default_to_block_configure.getRecord(k)
-								
-								var configRec = blockRec.web_block_version_to_block_data_configure.getRecord(blockRec.web_block_version_to_block_data_configure.newRecord(false, true))
-								configRec.data_key = configTemplate.columnName
-							}
-						}
-					}
-				}
-			}
-			
-			//thrown in so that group data is properly filled...technically shouldn't save data until we're sure this won't be cancelled
-			databaseManager.saveData()
-			
-			// finish up
-			//fsArea.sort( "row_order asc" )
-			fsArea.setSelectedIndex(1)
+		// get editable regions based on layout selected
+		if (!utils.hasRecords(platformRec,'web_platform_to_layout.web_layout_to_editable')) {
+			globals.CODE_cursor_busy(false)
+			return
 		}
-	
+		
+		var layout = platformRec.web_platform_to_layout.getSelectedRecord()
+		
+		//create all areas for this layout, copying over existing content based on area name
+		for (var i = 1; i <= layout.web_layout_to_editable.getSize(); i++) {
+			//new area to create
+			var editable =  layout.web_layout_to_editable.getRecord(i)
+			
+			var newArea = forms.WEB_0F_page__design__header_display__version.AREA_new(editable,newVersion,i)
+		}
+		
+		// finish up
+		databaseManager.saveData()
+		
 		//set flag that need to update tree view on next load
 		forms.WEB_0T_page._refresh = true
 		
@@ -842,13 +804,24 @@ function WEB_page_new(pageName,pageType,parentID,themeID,layoutID) {
 		}
 		globals.CODE_cursor_busy(false)
 		
-		return newRecord
+		return pageRec
 	}
+	//something wrong at the site level
 	else {
-		plugins.dialogs.showErrorDialog(
-						'Error',
-						'You must add a site record first'
-				)
+		//not all defaults specified
+		if (utils.hasRecords(forms.WEB_0F_page.foundset)) {
+			plugins.dialogs.showErrorDialog(
+							'Error',
+							'The defaults are not set correctly for this site'
+					)
+		}
+		//no site record
+		else {
+			plugins.dialogs.showErrorDialog(
+							'Error',
+							'You must add a site record first'
+					)
+		}
 	}
 }
 

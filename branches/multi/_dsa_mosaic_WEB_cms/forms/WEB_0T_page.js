@@ -81,6 +81,7 @@ function ACTIONS_list() {
 		
 		//disable dividers
 		if (valueList[x] == '-' || valueList[x] == '----' ||
+			x == 0 ||
 			(x == 0 && !globals.TRIGGER_registered_action_authenticate('cms page duplicate')) ||
 			((x == 5 || x == 7) && !globals.TRIGGER_registered_action_authenticate('cms page delete')) ) {
 			menu[x].setEnabled(false)
@@ -913,8 +914,16 @@ function REC_new() {
 		databaseManager.saveData()
 		databaseManager.setAutoSave(false)
 		
+		//where to create new page
+		if (webMode) {
+			var fsPage = databaseManager.getFoundSet('sutra_cms','web_page')
+		}
+		else {
+			var fsPage = forms.WEB_0F_page.foundset
+		}
+		
 		//create new page
-		var pageRec = forms.WEB_0F_page.foundset.getRecord(forms.WEB_0F_page.foundset.newRecord(false,true))
+		var pageRec = fsPage.getRecord(fsPage.newRecord(false,true))
 		pageRec.id_site = forms.WEB_0F_site.id_site
 		pageRec.flag_publish = siteDefaults.record.flag_auto_publish
 		

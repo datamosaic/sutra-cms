@@ -275,6 +275,8 @@ function ACTION_cancel() {
  * @properties={typeid:24,uuid:"2C217D68-302D-4F96-920E-E5145C9C19E9"}
  */
 function ACTION_save() {
+	//see WEB_P_page.ACTION_ok
+	
 	//check for enough data
 	if (!_pageName) {
 		plugins.dialogs.showErrorDialog(
@@ -543,6 +545,9 @@ function ACTION_save() {
 				else {
 					var newArea = forms.WEB_0F_page__design__header_display__version.AREA_copy(selectedVersion.web_version_to_area.getRecord(oldAreaSameName + 1),newVersion,i)
 				}
+				
+				//make sure that selected index doesn't move around so much
+				newArea.web_area_to_scope.setSelectedIndex(1)
 			}
 			
 			// finish up
@@ -550,7 +555,6 @@ function ACTION_save() {
 			
 			if (newVersion) {
 				newVersion.web_version_to_area.setSelectedIndex(1)
-				newVersion.web_version_to_area.web_area_to_scope.setSelectedIndex(1)
 			}
 			
 			//theme has been successfully set
