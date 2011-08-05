@@ -100,7 +100,7 @@ function BLOCK_action_list_control(scope,copy,promote,dupe) {
 		destBlock.scope_type = blockRec.scope_type
 		destBlock.block_name = blockRec.block_name
 		
-		//punch in the current block type and display so will show up on site scrapbook
+		//punch in the current block type and display (so will show up on site scrapbook)
 		destBlock.id_block_type = blockRec.id_block_type
 		destBlock.id_block_display = blockRec.id_block_display
 		
@@ -114,15 +114,25 @@ function BLOCK_action_list_control(scope,copy,promote,dupe) {
 		var scopeRec = foundset.getRecord(foundset.newRecord(false,true))
 		
 		scopeRec.row_order = foundset.getSize()
-		databaseManager.saveData(scopeRec)
+		scopeRec.id_block = destBlock.id_block
+		databaseManager.saveData()
 		
 		//disale/enable rec on select on the block type forms when creating scope
 		globals.WEB_block_on_select = true
 		
-		scopeRec.id_block = destBlock.id_block
+		//turn on rec on select
+		_skipSelect = false
 		
 		//refire rec_on_select to get us in the right spot
 		forms.WEB_0F_page__design__content_1L_block.REC_on_select(null,true)
+		
+	//store this scope record into temp variable to delete if canceled
+		if (scopeRec) {
+			if (!_newBlocks instanceof Array) {
+				_newBlocks = new Array()
+			}
+			_newBlocks.push(scopeRec)
+		}
 	}
 	//copy or promote
 	else if (scope) {
