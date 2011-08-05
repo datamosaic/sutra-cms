@@ -1,4 +1,11 @@
 /**
+ * @properties={type:12,typeid:36,uuid:"17339AC7-BCB3-48FA-A56A-12E01524DC1A"}
+ */
+function client_version_selected() {
+	//return
+}
+
+/**
  * @properties={type:12,typeid:36,uuid:"4CB99AE3-868F-424D-A778-516860FEC7E1"}
  */
 function display_page_name() {

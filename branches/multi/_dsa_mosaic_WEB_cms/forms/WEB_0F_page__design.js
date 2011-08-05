@@ -112,12 +112,35 @@ function REC_on_select(event,skipLoad,verIndex,fireSelect,areaName,blockIndex) {
 			//set version junks
 			var activeInfo = SET_versions(skipLoad,!pageValid)
 			
+			//check to see if last selected version is in current version stack
+			if (client_version_selected) {
+				var versionStack = databaseManager.getFoundSetDataProviderAsArray(forms.WEB_0F_page__design__content.foundset,'id_version')
+				versionStack = versionStack.map(function (item) {return item.toString()})
+				
+				var versionPosn = versionStack.indexOf(client_version_selected)
+				
+				if (versionPosn != -1) {
+					var clientVersion = true
+				}
+			}
+			
 			//don't change anything if we're not loading in the versions
 			if (!skipLoad) {
 				//specified index to be selected
 				if (verIndex) {
 					//set selected index
 					forms.WEB_0F_page__design__content.foundset.setSelectedIndex(verIndex)
+					
+					//set version to be whatever was specified
+					globals.WEB_page_version = forms.WEB_0F_page__design__content.id_version
+				}
+				//try to stay on last selected version in version stack
+				else if (clientVersion) {
+					//set selected index
+					forms.WEB_0F_page__design__content.foundset.setSelectedIndex(versionPosn + 1)
+					
+					//set version to be the last edited one
+					globals.WEB_page_version = application.getUUID(client_version_selected)
 				}
 				//there is info about the active version
 				else if (activeInfo) {
@@ -131,6 +154,9 @@ function REC_on_select(event,skipLoad,verIndex,fireSelect,areaName,blockIndex) {
 				else {
 					globals.WEB_page_version = application.getValueListItems('WEB_page_version').getValue(1,2)
 				}
+				
+				//store the version we're currently on
+				client_version_selected = globals.WEB_page_version.toString()
 			}
 			
 			//area name

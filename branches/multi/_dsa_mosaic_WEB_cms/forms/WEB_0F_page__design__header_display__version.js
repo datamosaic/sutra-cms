@@ -57,6 +57,9 @@ function FLD_version__data_change(oldValue, newValue, event) {
 	//assumption here is that foundset is in sync with this valuelist (convert version to reverse ordered record list)
 	forms.WEB_0F_page__design__content.foundset.setSelectedIndex(forms.WEB_0F_page__design__content.foundset.getSize() - ver + 1)
 	
+	//save down this version as last selected one
+	forms.WEB_0F_page.client_version_selected = forms.WEB_0F_page__design__content.id_version.toString()
+	
 	//update display and reload version valuelist; don't reload versions foundset
 	forms.WEB_0F_page__design.REC_on_select(null,true,null,null,areaName,blockIndex)
 	
@@ -221,7 +224,16 @@ function ADD_version(event) {
 						else {
 							var newArea = AREA_copy(selectedVersion.web_version_to_area.getRecord(oldAreaSameName + 1),destVersion,i)
 						}
+						
+						//reset scope index to be at top
+						destVersion.web_version_to_area.web_area_to_scope.setSelectedIndex(1)
 					}
+					
+					//common data points for new and subsequent versions
+					destVersion.flag_lock = 0
+					destVersion.id_platform = forms.WEB_0F_page__design__header_display__platform._platform.id_platform
+					destVersion.id_language = forms.WEB_0F_page__design__header_display__language._language.id_language
+					destVersion.id_group = forms.WEB_0F_page__design__header_display__group._group.id_group					
 					
 					//version stack exists
 					if (hasVersions) {
@@ -231,12 +243,10 @@ function ADD_version(event) {
 						}
 						
 						//save down information for new version
+						destVersion.version_number = latestVersion.version_number + 1
 						destVersion.version_name = forms.WEB_P_version._versionName
 						destVersion.version_description = forms.WEB_P_version._versionDescription
-						destVersion.version_number = latestVersion.version_number + 1
 						destVersion.flag_active = null
-						destVersion.flag_lock = 0
-						globals.WEB_page_version = destVersion.id_version
 						
 						databaseManager.saveData()
 						
@@ -250,11 +260,6 @@ function ADD_version(event) {
 						destVersion.version_name = 'Initial version'
 						destVersion.version_description = info
 						destVersion.flag_active = forms.WEB_0F_site.flag_auto_publish
-						destVersion.flag_lock = 0
-						destVersion.id_platform = forms.WEB_0F_page__design__header_display__platform._platform.id_platform
-						destVersion.id_language = forms.WEB_0F_page__design__header_display__language._language.id_language
-						destVersion.id_group = forms.WEB_0F_page__design__header_display__group._group.id_group
-						globals.WEB_page_version = destVersion.id_version
 						
 						databaseManager.saveData()
 						
@@ -262,9 +267,11 @@ function ADD_version(event) {
 						forms.WEB_0F_page__design.REC_on_select()
 					}
 					
-					//set selected index
-					forms.WEB_0F_page__design__content_1L_area.foundset.setSelectedIndex(1)
-					forms.WEB_0F_page__design__content_1L_block.foundset.setSelectedIndex(1)
+					//update selected version in combobox
+					globals.WEB_page_version = destVersion.id_version
+					
+					//reset area index to be at top
+					destVersion.web_version_to_area.setSelectedIndex(1)
 				}
 				else {
 					plugins.dialogs.showErrorDialog(
