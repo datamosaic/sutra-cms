@@ -156,7 +156,7 @@ function REC_on_select(event,skipLoad,verIndex,fireSelect,areaName,blockIndex) {
 				}
 				
 				//store the version we're currently on
-				client_version_selected = globals.WEB_page_version.toString()
+				client_version_selected = globals.WEB_page_version ? globals.WEB_page_version.toString() : null
 			}
 			
 			//area name
