@@ -1,0 +1,13 @@
+addEmptyValue:1,
+dataProviderID1:"id_block_display",
+dataProviderID2:"display_name",
+fallbackValueListID:"3E8F2ACC-0EFD-467B-9FCF-6516B9F9EFCE",
+name:"WEB_block_type_displays",
+relationName:"web_block_type_to_block_display",
+returnDataProviders:1,
+separator:" ",
+showDataProviders:2,
+sortOptions:"display_name asc",
+typeid:34,
+uuid:"90EBBCD0-BAF3-44A1-9610-B3EC167368E4",
+valueListType:1

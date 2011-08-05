@@ -49,6 +49,18 @@ function TOGGLE_edit_mode(editMode,saveData) {
 		_editMode = !_editMode
 	}
 	
+	//no records, cannot enter edit mode
+	if (_editMode && !utils.hasRecords(forms.WEB_0F_scrapbook.foundset)) {
+		_editMode = false
+		
+		plugins.dialogs.showErrorDialog(
+						'Error',
+						'You must have a scrapbook in order to enter edit mode'
+				)
+		
+		return
+	}
+	
 	//entering edit mode
 	if (_editMode) {
 		//enter pseudo-transaction
@@ -80,6 +92,9 @@ function TOGGLE_edit_mode(editMode,saveData) {
 		forms.WEB_0F_scrapbook_1L_block.elements.btn_delete.visible = true
 		forms.WEB_0F_scrapbook_1L_block_version.elements.btn_delete.visible = true
 		forms.WEB_0F_scrapbook_1L_block_version.elements.fld_version_description.editable = true
+		
+		//enable changing the view for this block
+		forms.WEB_0F_scrapbook__header.elements.fld_view.enabled = true
 	}
 	//exiting edit mode
 	else if (currentState) {
@@ -140,6 +155,9 @@ function TOGGLE_edit_mode(editMode,saveData) {
 		forms.WEB_0F_scrapbook_1L_block.elements.btn_delete.visible = false
 		forms.WEB_0F_scrapbook_1L_block_version.elements.btn_delete.visible = false
 		forms.WEB_0F_scrapbook_1L_block_version.elements.fld_version_description.editable = false
+		
+		//disable changing the view for this block
+		forms.WEB_0F_scrapbook__header.elements.fld_view.enabled = false
 		
 		//set elements appropriately (can remove when update sutra core)
 		forms.WEB_0F_page__design__header_display__version.TOGGLE_elements()

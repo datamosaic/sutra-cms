@@ -311,7 +311,7 @@ function ACTION_ok(event) {
 					var fsEditableDefault = forms.WEB_0F_theme_1L_editable_default.foundset
 					var record = fsEditableDefault.getRecord(fsEditableDefault.newRecord(false, true))
 					record.id_block_type = blockTypeRec.id_block_type
-					record.id_block_display = blockDisplayRec.id_block_display
+					record.id_block_display = blockTypeRec.client_id_block_display
 					record.row_order = fsEditableDefault.getSize()
 					databaseManager.saveData(record)
 				}
@@ -383,7 +383,7 @@ function ACTION_ok(event) {
 					blockVersionRec.version_number = 1
 					blockVersionRec.version_name = 'Initial version'
 					blockVersionRec.id_block_type = blockTypeRec.id_block_type
-					blockVersionRec.id_block_display = blockDisplayRec.id_block_display
+					blockVersionRec.id_block_display = blockTypeRec.client_id_block_display
 					databaseManager.saveData(blockVersionRec)
 					
 					databaseManager.saveData(blockRec)
@@ -469,9 +469,16 @@ function FORM_on_show() {
 	
 	_success = false
 	
+	var fsBlockType = forms.WEB_P__block__new_1L_block_type.foundset
+	
+	//prefill default view for each block type
+	for (var i = 1; i <= fsBlockType.getSize(); i++) {
+		var record = fsBlockType.getRecord(i)
+		record.client_id_block_display = record.web_block_type_to_block_display__default.id_block_display
+	}
+	
 	//reset to block types and select content
 	globals.WEB_block_scope__new = 0
-	var fsBlockType = forms.WEB_P__block__new_1L_block_type.foundset
 	fsBlockType.find()
 	fsBlockType.id_site = forms.WEB_0F_site.id_site
 	fsBlockType.search()
