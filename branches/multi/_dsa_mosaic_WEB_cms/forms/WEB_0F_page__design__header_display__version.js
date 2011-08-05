@@ -199,6 +199,17 @@ function ADD_version(event) {
 						'Language: ' + selectedVersion.web_version_to_language.language_name + ', ' + 
 						'Group: ' + selectedVersion.web_version_to_group.group_name
 				}
+				//prompt for version details
+				else {
+					application.showFormInDialog(
+									forms.WEB_P_version,
+									-1,-1,-1,-1,
+									' ',
+									true,
+									false,
+									'cmsVersionDupe'
+								)
+				}
 				
 				//the new platform has a theme/layout specified
 				if (utils.hasRecords(forms.WEB_0F_page__design__header_display__platform._platform.getSelectedRecord(),'web_platform_to_layout')) {
@@ -244,8 +255,11 @@ function ADD_version(event) {
 						
 						//save down information for new version
 						destVersion.version_number = latestVersion.version_number + 1
-						destVersion.version_name = forms.WEB_P_version._versionName
-						destVersion.version_description = forms.WEB_P_version._versionDescription
+						
+						if (forms.WEB_P_version._fidAccept) {
+							destVersion.version_name = forms.WEB_P_version._versionName
+							destVersion.version_description = forms.WEB_P_version._versionDescription
+						}
 						destVersion.flag_active = null
 						
 						databaseManager.saveData()
