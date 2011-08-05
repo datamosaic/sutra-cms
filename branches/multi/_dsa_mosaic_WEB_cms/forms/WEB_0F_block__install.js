@@ -1,4 +1,16 @@
 /**
+ * @properties={typeid:35,uuid:"05AD2F46-2DB3-4588-AAAE-F7AB1C93C10B",variableType:-4}
+ */
+var _skipSelect = false;
+
+/**
+ * @properties={typeid:35,uuid:"4FDACEED-6F16-46F7-807B-375E25824AD6"}
+ */
+var _license_dsa_mosaic_WEB_cms = 'Module: _dsa_mosaic_WEB_cms \
+									Copyright (C) 2011 Data Mosaic \
+									MIT Licensed';
+
+/**
  * Callback method when form is (re)loaded.
  *
  * @param {JSEvent} event the event that triggered the action
@@ -10,17 +22,31 @@ function FORM_on_load(event) {
 }
 
 /**
- * Callback method for when form is shown.
- *
- * @param {Boolean} firstShow form is shown first time after load
- * @param {JSEvent} event the event that triggered the action
- *
+ * @properties={typeid:35,uuid:"A29A45BC-AF85-431C-9770-50DEE6E993BC"}
+ */
+var _selected = null;
+
+/**
  * @properties={typeid:24,uuid:"B35419C5-A7AC-4548-B08F-C72388A80B4F"}
  */
 function FORM_on_show(firstShow, event) {
 	//not running in frameworks, scope appropriately
 	if (!application.__parent__.solutionPrefs) {
 		FOUNDSET_restrict(true)
+	}
+	//in sutra, re-fire restriction enzyme
+	else {
+//		//don't run rec_on_select until we're done
+//		_skipSelect = true
+		
+		globals.TRIGGER_navigation_filter_update(true)
+		
+//		if (_selected) {
+//			foundset.selectRecord(application.getUUID(_selected))
+//		}
+//		
+//		//ok to run rec_on_select
+//		_skipSelect = false
 	}
 	
 	//set global for site records
@@ -29,6 +55,20 @@ function FORM_on_show(firstShow, event) {
 	//disable workflow form if no records
 	if (!utils.hasRecords(foundset)) {
 		globals.WEB_lock_workflow(true)
+	}
+}
+
+/**
+ * Handle record selected.
+ *
+ * @param {JSEvent} event the event that triggered the action
+ *
+ * @properties={typeid:24,uuid:"7DA9C974-4445-403F-AB8E-3E749E23B079"}
+ */
+function REC_on_select(event) {
+	//don't run too much at the beginning
+	if (!_skipSelect) {
+		_selected = id_block.toString()
 	}
 }
 
