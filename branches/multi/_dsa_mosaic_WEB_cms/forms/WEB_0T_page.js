@@ -893,9 +893,6 @@ function REC_new() {
 		//set flag that a new record getting created
 		_addRecord = 1
 		
-		//punch down site default
-		forms.WEB_0F_page__design__header_edit._siteDefaults = siteDefaults
-		
 		//get current location in the stack
 		if (utils.hasRecords(forms.WEB_0F_page.foundset)) {
 			_oldRecord = forms.WEB_0F_page.id_page
@@ -916,10 +913,16 @@ function REC_new() {
 		
 		//where to create new page
 		if (webMode) {
-			var fsPage = databaseManager.getFoundSet('sutra_cms','web_page')
+			var fsPage = forms.WEB_P_page.foundset
+			
+			//punch down site default
+			forms.WEB_P_page._siteDefaults = siteDefaults
 		}
 		else {
 			var fsPage = forms.WEB_0F_page.foundset
+			
+			//punch down site default
+			forms.WEB_0F_page__design__header_edit._siteDefaults = siteDefaults
 		}
 		
 		//create new page

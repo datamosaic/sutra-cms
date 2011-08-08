@@ -12,7 +12,7 @@ var _license_dsa_mosaic_WEB_cms = 'Module: _dsa_mosaic_WEB_cms \
  *
  * @properties={typeid:24,uuid:"60C0F66F-9740-428F-8C64-BE5870650741"}
  */
-function REC_on_select(event,webMode,skipLoad,verIndex,fireSelect) {
+function  (event,webMode,skipLoad,verIndex,fireSelect) {
 	//this method is the same as...
 	var formName = 'WEB_0F_page__design'
 	

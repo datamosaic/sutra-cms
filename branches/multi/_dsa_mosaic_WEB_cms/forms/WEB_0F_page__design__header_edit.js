@@ -51,6 +51,11 @@ var _themeSet = null;
 var _idSiteLanguage = '';
 
 /**
+ * @properties={typeid:35,uuid:"83AB2103-85F5-4138-B635-CBB0370DB1D8"}
+ */
+var _pageName = null;
+
+/**
  *
  * @properties={typeid:24,uuid:"74D490E2-0E2D-4AA6-A808-8D64A2B7640C"}
  */
@@ -86,11 +91,6 @@ function TAB_display() {
 function TAB_sec_actions() {
 	globals.TAB_btn_actions_list(null,'tab_secondary')
 }
-
-/**
- * @properties={typeid:35,uuid:"83AB2103-85F5-4138-B635-CBB0370DB1D8"}
- */
-var _pageName = null;
 
 /**
  *
@@ -129,10 +129,10 @@ function FORM_on_show(firstShow, event) {
 	//hide saving, please wait label
 	elements.lbl_save_wait.visible = false
 	
+	TOGGLE_fields(page_type)
+	
 	//if we're not adding a record, make sure that the correct things are showing
 	if (!forms.WEB_0T_page._addRecord) {
-		TOGGLE_fields(page_type)
-		
 		//hook up related records to form variables
 		var fsPlatform = databaseManager.getFoundSet('sutra_cms','web_platform')
 		fsPlatform.find()
@@ -188,14 +188,6 @@ function FORM_on_show(firstShow, event) {
 		//fill in group defaults (nothing now)
 		_idSiteGroup = _siteDefaults.group.id_site_group
 		
-		//show new page fields
-		elements.lbl_platform.visible = true
-		elements.var_idSitePlatform.visible = true
-		elements.lbl_language.visible = true
-		elements.var_idSiteLanguage.visible = true
-		elements.lbl_group.visible = true
-		elements.var_idSiteGroup.visible = true
-		
 		//request focus in the page name field
 		elements.var_pageName.requestFocus(false)
 	}
@@ -246,7 +238,7 @@ function ACTION_cancel() {
 	//MEMO: check WEB_P_page method too
 	if (forms.WEB_0T_page._addRecord) {
 		
-		delete forms.WEB_0T_page._siteDefaults
+		delete _siteDefaults
 		_idSitePlatform = null
 		_idSiteLanguage = null
 		_idSiteGroup = null
@@ -275,7 +267,7 @@ function ACTION_cancel() {
  * @properties={typeid:24,uuid:"2C217D68-302D-4F96-920E-E5145C9C19E9"}
  */
 function ACTION_save() {
-	//see WEB_P_page.ACTION_ok
+	//see forms.WEB_P_page.ACTION_ok
 	
 	//check for enough data
 	if (!_pageName) {
@@ -371,9 +363,6 @@ function ACTION_save() {
 				var treeReload = true
 			}
 			
-			//grab the site defaults
-			var siteDefaults = forms.WEB_0T_page._siteDefaults
-			
 			//create platform record (theme and layout)
 			var platformRec = pageRec.web_page_to_platform.getRecord(pageRec.web_page_to_platform.newRecord(false,true))
 			platformRec.id_site_platform = _idSitePlatform
@@ -447,7 +436,7 @@ function ACTION_save() {
 			//reset flags
 			var addedRecord = true
 			forms.WEB_0T_page._addRecord = null
-			delete forms.WEB_0T_page._siteDefaults
+			delete _siteDefaults
 			
 			//update 3 globals used to control everything (done on new page creation so that what you just created is visible)
 			globals.WEB_page_platform = _idSitePlatform
@@ -694,6 +683,16 @@ function TOGGLE_fields(pageType) {
 	linkHeader.toolTipText = headerToolTip
 	
 	if ( utils.hasRecords(foundset) ) {
+		//show new page fields when adding a new record
+		var newPage = (forms.WEB_0T_page._addRecord && page) ? true : false
+		
+		elements.lbl_platform.visible = newPage
+		elements.var_idSitePlatform.visible = newPage
+		elements.lbl_language.visible = newPage
+		elements.var_idSiteLanguage.visible = newPage
+		elements.lbl_group.visible = newPage
+		elements.var_idSiteGroup.visible = newPage
+		
 		elements.lbl_idTheme.visible = page
 		elements.var_idTheme.visible = page
 		elements.lbl_idLayout.visible = page
