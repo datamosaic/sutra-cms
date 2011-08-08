@@ -140,6 +140,13 @@ function TOGGLE_edit_mode(editMode,saveData) {
 			//update modification date on this record
 			if (utils.hasRecords(forms.WEB_0F_page__design__content.foundset)) {
 				forms.WEB_0F_page__design__content.rec_modified = application.getServerTimeStamp()
+				
+				//log the edit
+				globals.TRIGGER_log_create(
+							//type of log
+							'CMS page version edited',
+							forms.WEB_0F_page__design__content.id_version.toString()
+						)
 			}
 			
 			//redo valuelist for versions

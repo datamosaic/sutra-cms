@@ -539,7 +539,7 @@ function ACTIVATE_version(event) {
 					//create log record when version set as active
 					globals.TRIGGER_log_create(
 										//type of log
-										'CMS Page version created',
+										'CMS page version activated',
 		//								//id_site
 		//								id_site,
 		//								//id_page

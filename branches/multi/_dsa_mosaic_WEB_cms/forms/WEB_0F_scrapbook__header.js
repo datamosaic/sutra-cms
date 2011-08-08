@@ -314,7 +314,7 @@ function ACTION_activate(event) {
 					//create log record when version set as active
 					globals.TRIGGER_log_create(
 										//type of log
-										'CMS content version created',
+										'CMS scrapbook version activated',
 										selectedVersion.id_block_version.toString()
 									)
 					
