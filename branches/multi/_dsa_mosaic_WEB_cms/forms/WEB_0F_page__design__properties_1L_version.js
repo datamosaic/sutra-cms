@@ -41,7 +41,16 @@ if (utils.hasRecords(foundset)) {
 			
 	if (delRec == 'Yes') {
 		controller.deleteRecord()
-		forms.WEB_0F_page__design.REC_on_select()
+		
+		//refresh version valuelist
+		forms.WEB_0F_page__design.SET_versions(true)
+		//set version to be whatever was specified
+		globals.WEB_page_version = forms.WEB_0F_page__design__content.id_version
+		
+		//update all valuelists to show correct bolded status
+		if (!utils.hasRecords(foundset)) {
+			forms.WEB_0F_page.SET_valuelists()
+		}
 	}
 }
 else {

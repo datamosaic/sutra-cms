@@ -158,6 +158,11 @@ function REC_on_select(event,skipLoad,verIndex,fireSelect,areaName,blockIndex) {
 			//set version junks
 			var activeInfo = SET_versions(skipLoad,!pageValid)
 			
+			//if no versions, flag page as invalid
+			if (!utils.hasRecords(forms.WEB_0F_page__design__content.foundset)) {
+				pageValid = false
+			}
+			
 			//check to see if last selected version is in current version stack
 			if (client_version_selected) {
 				var versionStack = databaseManager.getFoundSetDataProviderAsArray(forms.WEB_0F_page__design__content.foundset,'id_version')
@@ -267,6 +272,7 @@ function SET_versions(skipLoad,pageInvalid) {
 	//clear versions
 	if (pageInvalid) {
 		fsVersions.clear()
+		forms.WEB_0F_page__design__properties_1L_version.foundset.clear()
 	}
 	//get versions records loaded
 	else if (!skipLoad) {

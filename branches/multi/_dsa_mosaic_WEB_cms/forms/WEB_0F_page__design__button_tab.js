@@ -22,9 +22,15 @@ elements.btn_cancel.visible = false
 function TAB_change(formName,elemName) {
 	globals.TAB_change_inline('WEB_0F_page__design__button_tab',elemName,'tab_button','tab_b')
 	
+	//set main tab appropriately
 	forms.WEB_0F_page__design.elements.tab_main.tabIndex = elements.tab_button.tabIndex
 	
-	//put on custom header for content
+	//toggle display to show nothing for page when no valid version stack
+	if (forms.WEB_0F_page__design.elements.tab_main.tabIndex == 1 && !utils.hasRecords(forms.WEB_0F_page__design__content.foundset)) {
+		forms.WEB_0F_page__design.elements.tab_main.tabIndex = 4
+	}
+	
+	//put on custom header for scrapbook
 	if (elements.tab_button.tabIndex == 3) {
 		forms.WEB_0F_page__design.elements.tab_header_detail.tabIndex = 3
 	}
