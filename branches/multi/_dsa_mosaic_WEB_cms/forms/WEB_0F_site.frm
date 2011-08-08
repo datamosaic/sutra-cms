@@ -469,7 +469,7 @@ uuid:"AE310531-D9BC-4407-9D69-5641CF0FF9B2"
 },
 {
 anchors:3,
-dataProviderID:"flag_logging",
+dataProviderID:"flag_session",
 displayType:4,
 formIndex:10500,
 horizontalAlignment:2,
