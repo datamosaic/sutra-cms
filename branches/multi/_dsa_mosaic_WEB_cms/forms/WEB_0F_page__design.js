@@ -96,6 +96,52 @@ function REC_on_select(event,skipLoad,verIndex,fireSelect,areaName,blockIndex) {
 	
 	//wrapper to keep from firing too much on initial load
 	if (!_skipSelect) {
+		//when in data sutra and notifications enabled (and they're not already on, do them)
+		if (application.__parent__.solutionPrefs && solutionPrefs.config && solutionPrefs.config.currentFormName) {
+			var formName = solutionPrefs.config.currentFormName
+			var serverName = forms[formName].controller.getServerName()
+			var tableName = forms[formName].controller.getTableName()
+			var currentNavItem = solutionPrefs.config.currentFormID
+			var rowSelected = forms[formName].foundset.getSelectedIndex()
+			
+			//show busy indicator while changing record
+			if (navigationPrefs.byNavItemID[currentNavItem].navigationItem.ulBusyIndicator) {
+				var busyIndicator = true
+				
+				globals.CODE_cursor_busy(true)
+				application.updateUI()
+			}
+			
+			//LOG record navigation
+			//only run when using query based way to hit repository
+			if (solutionPrefs.repository && solutionPrefs.repository.allFormsByTable && solutionPrefs.repository.allFormsByTable[serverName] && solutionPrefs.repository.allFormsByTable[serverName][tableName] && solutionPrefs.repository.allFormsByTable[serverName][tableName].primaryKey) {
+				var pkName = solutionPrefs.repository.allFormsByTable[serverName][tableName].primaryKey
+				var pkActedOn = forms[formName][pkName]
+			}
+			else {
+				var pkName = 'repositoryAPINotImplemented'
+				var pkActedOn = 0
+			}
+			
+			//record not clicked on before, throw up busy bar and busy cursor
+			var record = forms[formName].foundset.getRecord(rowSelected)
+			if (navigationPrefs.byNavItemID[currentNavItem].navigationItem.initialRecord && !navigationPrefs.byNavItemID[currentNavItem].listData.visitedPKs[record[pkName]]) {
+				var recNotLoaded = true
+				
+				//don't turn busy indicator on if it is already on
+				if (!busyIndicator) {
+					globals.CODE_cursor_busy(true)
+				}
+				globals.TRIGGER_progressbar_start(-273, navigationPrefs.byNavItemID[currentNavItem].navigationItem.initialRecordLabel)
+			}
+			
+			//save currently selected index
+			navigationPrefs.byNavItemID[currentNavItem].listData.index.selected = rowSelected
+			
+			//save time when pk of this record last accessed
+			navigationPrefs.byNavItemID[currentNavItem].listData.visitedPKs[(forms[formName][pkName] != 'repositoryAPINotImplemented') ? forms[formName][pkName] : 0] = application.getServerTimeStamp()
+		}
+		
 		_skipSelect = true
 	
 		//when newly added page, skip this
@@ -190,6 +236,16 @@ function REC_on_select(event,skipLoad,verIndex,fireSelect,areaName,blockIndex) {
 			
 			//may fire too frequently
 			forms.WEB_0F_page__design__content_1L_block.ACTION_gui_mode_load(fireSelect)
+		}
+		
+		//record was not in memory, turn off busy bar and busy cursor
+		if (recNotLoaded) {
+			globals.TRIGGER_progressbar_stop()
+			globals.CODE_cursor_busy(false)	
+		}
+		//changing record, finished turn off busy indicatar
+		else if (busyIndicator) {
+			globals.CODE_cursor_busy(false)	
 		}
 		
 		//allow to fire again
