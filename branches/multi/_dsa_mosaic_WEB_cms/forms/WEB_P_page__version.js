@@ -64,7 +64,36 @@ function ACTION_cancel() {
  * @properties={typeid:24,uuid:"80C37B56-7ACA-4577-8F30-0EDBE90CDED7"}
  */
 function ACTION_ok() {
-
+	//check for enough data
+	if (!_idPlatform) {
+		plugins.dialogs.showErrorDialog(
+					"Error",
+					"Platform is required"
+				)
+		return false
+	}
+	else if (!_idLanguage) {
+		plugins.dialogs.showErrorDialog(
+					"Error",
+					"Language is required"
+				)
+		return false
+	}
+	else if (!_idGroup) {
+		plugins.dialogs.showErrorDialog(
+					"Error",
+					"Group is required"
+				)
+		return false
+	}
+	else if (typeof _posnVersion != 'number') {
+		plugins.dialogs.showErrorDialog(
+					"Error",
+					"Version is required"
+				)
+		return false
+	}
+	
 	//enaable closing the form
 	globals.CODE_hide_form = 1
 	
