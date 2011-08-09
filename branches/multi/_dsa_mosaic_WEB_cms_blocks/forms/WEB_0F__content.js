@@ -65,11 +65,7 @@ function TINYMCE_init(mode) {
 		var cssFile = globals.WEB_MRKUP_link_base()
 		
 		//rewrite mode
-		var fsInstall = databaseManager.getFoundSet('sutra_cms','web_install')
-		fsInstall.loadAllRecords()
-		if (utils.hasRecords(fsInstall)) {
-			var rewriteMode = fsInstall.rewrite_enabled
-		}
+		var rewriteMode = globals.WEB_install_rewrite()
 		
 		//no pages, no css
 		if (utils.hasRecords(forms.WEB_0F_page)) {
