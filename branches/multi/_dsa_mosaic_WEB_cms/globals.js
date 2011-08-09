@@ -702,6 +702,10 @@ function WEB_page_new(pageName,pageType,parentID,themeID,layoutID) {
 		
 		var pageRec = fsPage.getRecord(fsPage.newRecord(false,true))
 		
+		if ( siteDefaults.record.flag_auto_publish ) {
+			pageRec.flag_publish = 1
+		}
+		
 		//put this page in the correct place; there were other records
 		
 		//find current syblings (of parent rec or at the top level)
