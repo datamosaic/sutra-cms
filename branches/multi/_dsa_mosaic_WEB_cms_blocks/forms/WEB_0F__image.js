@@ -33,7 +33,43 @@ function BLOCK_scale(event) {
 	var fsAssetInstance = databaseManager.getFoundSet('sutra_cms','web_asset_instance')
 	fsAssetInstance.loadRecords([application.getUUID(_imageData.id_asset_instance)])
 	var recAsset = fsAssetInstance.web_asset_instance_to_asset.getRecord(1)
-	var fileOBJ = forms.WEB_0F_asset__image.ASSET_scale(recAsset)
+	
+	var newAsset = forms.WEB_0F_asset__image.ASSET_scale(recAsset,true)
+	
+	//there is something and it's different than what was there before
+	if (newAsset) {
+		//get meta data points we need
+		var metaRows = new Object()
+		for (var j = 1; j <= newAsset.web_asset_instance_to_asset_instance_meta.getSize(); j++) {
+			var record = newAsset.web_asset_instance_to_asset_instance_meta.getRecord(j)
+			metaRows[record.data_key] = record
+		}
+		
+		//the data we're working with here
+		var data = globals.WEB_block_getData(event)
+		
+		//see INIT_block for all keys
+		for (var i = 1; i <= data.getSize(); i++) {
+			var record = data.getRecord(i)
+			switch (record.data_key) {
+				case 'height':
+				case 'width':
+					record.data_value = metaRows[record.data_key].data_value
+					break
+				case 'image_name':
+					record.data_value = newAsset.asset_title
+					break
+				case 'directory':
+					record.data_value = newAsset.asset_directory
+					break
+				default:
+					record.data_value = newAsset[record.data_key]
+			}
+		}
+		
+		//refresh the block
+		REC_on_select(event,true)
+	}
 }
 
 /**
@@ -44,6 +80,8 @@ function BLOCK_scale(event) {
 function BLOCK_import(event) {
 	
 	forms.WEB_0C__file_stream.IMAGE_import("images")
+	
+	application.output('2')
 	
 }
 
