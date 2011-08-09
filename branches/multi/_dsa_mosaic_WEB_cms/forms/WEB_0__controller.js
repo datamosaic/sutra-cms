@@ -297,8 +297,8 @@ function CONTROLLER_setup(results, app, session, request, response, mode) {
 	// initialize data object passed to block markup methods
 	var obj		= { site	: { record : '', path : '', id	: '', name	: '', tracking : ''},
 	       		    page	: { record : '', id	: '', name	: '', parent : '', attribute	: {}},
-	       		    platform: { record : '', id	: '', name	: '', parent : '', attribute	: {}},
-	       		    language: { record : '', id	: '', name	: '', attribute	: {}},
+	       		    platform: { record : '', id	: ''},
+	       		    language: { record : '', id	: ''},
 	       		    group	: { record : '', id	: ''},
 	       		    version : { record : '', id : ''},
 	       		    home	: { record : ''},
@@ -1113,28 +1113,31 @@ function CONTROLLER_setup(results, app, session, request, response, mode) {
 		results.addRow(["cmsTitle",obj.page.name])
 	}
 	
-	// HEAD & FOOTER INCLUDE STRING (note: relative path "up" from template directory where it is included from)
+	// HEAD & FOOT INCLUDE STRING (note: relative path "up" from template directory where it is included from)
 	if (editMode) {
 		results.addRow(["cmsHead", "../../../../controllers/head_edit.jsp"])
-		results.addRow(["cmsFooter", "../../../../controllers/footer_edit.jsp"])
+		results.addRow(["cmsFoot", "../../../../controllers/foot_edit.jsp"])
 	}
 	else {
 		results.addRow(["cmsHead", "../../../../controllers/head.jsp"]) 
-		results.addRow(["cmsFooter", "../../../../controllers/footer.jsp"])
+		results.addRow(["cmsFoot", "../../../../controllers/foot.jsp"])
 	}
 	
 	// SEO
 	if ( page.description )	{
-		results.addRow(["cmsDescription",page.description])
+		results.addRow(["seoDescription",page.description])
 	}
-	else {
-		results.addRow(["cmsDescription",""])
-	}
-	if ( page.keywords ) {
-		results.addRow(["cmsKeywords",page.keywords])
-	}
-	else {
-		results.addRow(["cmsKeywords",""])
+	
+	// go through all key value pairs for this particular language
+		//TODO: modify the jsp to use only the ones passed in
+	databaseManager.refreshRecordFromDatabase(obj.language.record.web_language_to_seo,-1)
+	for (var i = 1; i <= obj.language.record.web_language_to_seo.getSize(); i++) {
+		var record = obj.language.record.web_language_to_seo.getRecord(i)
+		
+		if (record.data_key) {
+			var keyName = 'seo' + utils.stringInitCap(record.data_key)
+			results.addRow([keyName,record.data_value])
+		}
 	}
 	
 	return obj
