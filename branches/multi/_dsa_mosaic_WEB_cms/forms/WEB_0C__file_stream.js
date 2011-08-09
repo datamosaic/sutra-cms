@@ -742,7 +742,7 @@ function IMAGE_import(directory) {
 	else {
 		var monitor = plugins.file.streamFilesToServer(file, uploadFile, IMAGE_import_callback)
 	}
-
+	
 }
 
 /**
@@ -810,6 +810,8 @@ function IMAGE_import_callback(result, e) {
 	if (application.__parent__.solutionPrefs && solutionPrefs.design.statusLockWorkflow) {
 		globals.WEB_lock_workflow(false)
 	}
+	
+	application.output('1')
 }
 
 /**

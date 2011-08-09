@@ -6,19 +6,35 @@ var _license_dsa_mosaic_WEB_cms = 'Module: _dsa_mosaic_WEB_cms \
 									MIT Licensed';
 
 /**
- * @param	{JSRecord}	[assetGroupRecord] Record that we are working with
+ * @properties={typeid:35,uuid:"192EB21C-EA84-456F-928C-31AF9D68BEAF",variableType:-4}
+ */
+var _editMode = false;
+
+/**
+ * @param	{JSRecord}	[assetRecord] Record that we are working with
+ * @param	{Boolean}	[editMode] Save data or leave in pseudo-transaction
  * 
  * @properties={typeid:24,uuid:"C27CDF64-0B6B-4908-9DD2-52593E9A0F1D"}
  */
-function ASSET_scale(assetRecord) {
+function ASSET_scale(assetRecord,editMode) {
 	var fidForm = 'WEB_0F_asset__image__P_scale'
+	
 	if (!assetRecord.data) {
 		assetRecord = foundset.getSelectedRecord()
 	}
 	
+//	if (editMode) {
+//		_editMode = true
+//	}
+//	else {
+//		_editMode = false
+//	}
+	
 	//save outstanding data and turn autosave off
-	databaseManager.saveData()
-	databaseManager.setAutoSave(false)
+//	if (!_editMode) {
+		databaseManager.saveData()
+		databaseManager.setAutoSave(false)
+//	}
 	
 	//get default asset instance
 	var srcAsset = assetRecord.web_asset_to_asset_instance__initial.getRecord(1)
@@ -93,6 +109,8 @@ function ASSET_scale(assetRecord) {
 			var jsclient = plugins.headlessclient.createClient("_dsa_mosaic_WEB_cms", null, null, null)
 			jsclient.queueMethod("WEB_0F_asset__image", "IMAGE_resize", [params], IMAGE_resize_callback)				
 		}
+		
+		return asset
 	}
 }
 
