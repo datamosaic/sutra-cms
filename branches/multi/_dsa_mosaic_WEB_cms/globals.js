@@ -336,11 +336,7 @@ function WEB_MRKUP_link_page(pageID, siteURL, linkType, webMode) {
 	//page/folder within the cms, generate link
 	else {
 		//rewrite mode
-		var fsInstall = databaseManager.getFoundSet('sutra_cms','web_install')
-		fsInstall.loadAllRecords()
-		if (utils.hasRecords(fsInstall)) {
-			var rewriteMode = fsInstall.rewrite_enabled
-		}
+		var rewriteMode = globals.WEB_install_rewrite()
 		
 		//use default link type if none specified
 		if (!linkType) {
@@ -403,11 +399,7 @@ function WEB_MRKUP_link_page(pageID, siteURL, linkType, webMode) {
  */
 function WEB_MRKUP_link_base(pageID, siteURL) {
 	//rewrite mode
-	var fsInstall = databaseManager.getFoundSet('sutra_cms','web_install')
-	fsInstall.loadAllRecords()
-	if (utils.hasRecords(fsInstall)) {
-		var rewriteMode = fsInstall.rewrite_enabled
-	}
+	var rewriteMode = globals.WEB_install_rewrite()
 	
 	//get page requested
 	var fsPage = databaseManager.getFoundSet("sutra_cms","web_page")
@@ -486,11 +478,7 @@ function WEB_MRKUP_link_resources(pageID, siteURL, linkType) {
 	var siteDirectory = ''
 	
 	//rewrite mode
-	var fsInstall = databaseManager.getFoundSet('sutra_cms','web_install')
-	fsInstall.loadAllRecords()
-	if (utils.hasRecords(fsInstall)) {
-		var rewriteMode = fsInstall.rewrite_enabled
-	}
+	var rewriteMode = globals.WEB_install_rewrite()
 	
 	//get page requested
 	var fsPage = databaseManager.getFoundSet("sutra_cms","web_page")
