@@ -173,16 +173,22 @@ function FIND_post_process(count) {
 	//show correct list
 	var baseForm = solutionPrefs.config.formNameBase
 	
-	//something found as a result of this find, show flat view
-	if (count) {
-		forms[baseForm].elements.tab_content_B.tabIndex = (navigationPrefs.byNavItemID[solutionPrefs.config.currentFormID].listData.withButtons) ? 2 : 3
-	}
-	//show tree view
-	else {
-		forms[baseForm].elements.tab_content_B.tabIndex = navigationPrefs.byNavSetName.configPanes.itemsByName['Custom tab ' + solutionPrefs.config.currentFormID + ': WEB_0T_page'].listData.tabNumber
-		
-		//force to select correct record
-		forms.WEB_0T_page.elements.bean_tree.selectionPath = forms.WEB_0T_page.FIND_path(foundset.getSelectedRecord())
+	//which tab is this UL on
+	var ulTab = (navigationPrefs.byNavItemID[solutionPrefs.config.currentFormID].listData.withButtons) ? 2 : 3
+	
+	//only change tabs when we're not already in the right place
+	if (forms[baseForm].elements.tab_content_B.tabIndex != ulTab) {
+		//something found as a result of this find, show flat view
+		if (count) {
+			forms[baseForm].elements.tab_content_B.tabIndex = ulTab
+		}
+		//show tree view when currently on it
+		else {
+			forms[baseForm].elements.tab_content_B.tabIndex = navigationPrefs.byNavSetName.configPanes.itemsByName['Custom tab ' + solutionPrefs.config.currentFormID + ': WEB_0T_page'].listData.tabNumber
+			
+			//force to select correct record
+			forms.WEB_0T_page.elements.bean_tree.selectionPath = forms.WEB_0T_page.FIND_path(foundset.getSelectedRecord())
+		}
 	}
 }
 

@@ -15,15 +15,20 @@ function display_page_name() {
 	}
 	//page already created
 	else {
-		for (var i = 1; i <= web_page_to_language.getSize(); i++) {
-			var languageRec = web_page_to_language.getRecord(i)
-			
-			//if we have the default language, return it
-			if (languageRec.id_site_language == globals.WEB_page_language) {
-				var pageName =  languageRec.page_name
-			}
+//		for (var i = 1; i <= web_page_to_language.getSize(); i++) {
+//			var languageRec = web_page_to_language.getRecord(i)
+//			
+//			//if we have the selected language, return it
+//			if (languageRec.id_site_language == globals.WEB_page_language) {
+//				var pageName =  languageRec.page_name
+//			}
+//		}
+		//page name for selected language
+		if (utils.hasRecords(web_page_to_language__selected)) {
+			var pageName = web_page_to_language__selected.page_name
 		}
 	}
+	
 	//no page name, we must not have a valid language record
 	if (!pageName && utils.hasRecords(web_page_to_language__default)) {
 		var pageName = web_page_to_language__default.page_name
@@ -87,21 +92,40 @@ function id_language__default() {
  * @properties={type:12,typeid:36,uuid:"33576727-2FBF-4718-8F0A-ED5A68D652AA"}
  */
 function page_name() {
-	//we have a default language, serve it up
-	if (utils.hasRecords(web_page_to_language__default)) {
-		var pageName = web_page_to_language__default.page_name
-	}
-	//no default language, go hunting
-	else {
-		//new record mode
-		if (forms.WEB_0T_page._addRecord) {
-			return "Newly created page"
-		}
-		
-		//grab first language related record alphabetically
-		var pageName =  web_page_to_language.page_name
+//	//we have a default language, serve it up
+//	if (utils.hasRecords(web_page_to_language__default)) {
+//		var pageName = web_page_to_language__default.page_name
+//	}
+//	//no default language, go hunting
+//	else {
+//		//new record mode
+//		if (forms.WEB_0T_page._addRecord) {
+//			return "Newly created page"
+//		}
+//		
+//		//grab first language related record alphabetically
+//		var pageName =  web_page_to_language.page_name
+//	}
+
+//	for (var i = 1; i <= web_page_to_language.getSize(); i++) {
+//		var languageRec = web_page_to_language.getRecord(i)
+//		
+//		//if we have the selected language, return it
+//		if (languageRec.id_site_language == globals.WEB_page_language) {
+//			var pageName =  languageRec.page_name
+//			break
+//		}
+//	}
+	//page name for selected language
+	if (utils.hasRecords(web_page_to_language__selected)) {
+		var pageName = web_page_to_language__selected.page_name
 	}
 	
+	//no page name, we must not have a valid language record
+	if (!pageName && utils.hasRecords(web_page_to_language__default)) {
+		var pageName = web_page_to_language__default.page_name
+	}
+
 	//no page name, we must not have a valid language record
 	if (!pageName) {
 		return  "Selected language hasn't been added to page yet"
