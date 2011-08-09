@@ -1,13 +1,20 @@
 <%@ page import = "java.util.*" %>
-<% HashMap pageData = (HashMap)request.getAttribute("pageData");%>
-<title><%=pageData.get("cmsTitle")%></title>
-<meta name="generator" content="<%=request.getAttribute("version")%>" />
-<% if ( !request.getAttribute("description").equals("") ) {%>
-	<meta name="description" content="<%=request.getAttribute("description")%>" />
-<%}%>
-<% if ( !request.getAttribute("keywords").equals("") ) {%>
-	<meta name="keywords" content="<%=request.getAttribute("keywords")%>" />
-<%}%>
+
+<title><%=request.getAttribute("title")%></title>
+	<meta name="generator" content="<%=request.getAttribute("version")%>" />
+<%
+	//grab all seo attributes for the selected page's language
+	for (Enumeration e = request.getAttributeNames(); e.hasMoreElements(); ) {
+		String attribute = (String)e.nextElement();
+		
+		//only output seo stuff
+		if (attribute.substring(0,3).equals("seo")) {
+			String attributeName = attribute.substring(3).toLowerCase();
+			out.print("\t<meta name=\"" + attributeName + "\" content=\"" + request.getAttribute(attribute) + "\" />\n");
+		}
+	}
+%>
+
 <% if ( !request.getAttribute("analytics").equals("") ) {%>
 <script type="text/javascript">
 

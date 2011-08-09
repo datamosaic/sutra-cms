@@ -1,8 +1,7 @@
 <%@ page import = "java.util.*" %>
 <% HashMap pageData = (HashMap)request.getAttribute("pageData");%>
-<title><%=pageData.get("cmsTitle")%></title>
-<meta name="description" content="<%=request.getAttribute("description")%>" />
-<meta name="generator" content="<%=request.getAttribute("version")%>" />
+	<title><%=pageData.get("cmsTitle")%></title>
+	<meta name="generator" content="<%=request.getAttribute("version")%>" />
 
 <!-- site resources -->
 <script src="resources/js/jquery-1.4.min.js" language="JavaScript" type="text/javascript"></script>
