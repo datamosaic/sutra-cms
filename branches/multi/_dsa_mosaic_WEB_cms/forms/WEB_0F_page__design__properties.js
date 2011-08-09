@@ -284,6 +284,7 @@ function TOGGLE_elements(editAllow) {
 	forms.WEB_0F_page__design__properties_1L_platform.elements.btn_delete.visible = editAllow
 	
 	//languages
+	forms.WEB_0F_page__design__properties_1L_language.elements.fld_page_name.editable = editAllow
 	forms.WEB_0F_page__design__properties_1L_language.elements.btn_delete.visible = editAllow
 	forms.WEB_0F_page__design__properties_1F_language.elements.btn_add.visible = editAllow
 	
