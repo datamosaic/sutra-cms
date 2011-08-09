@@ -1,0 +1,11 @@
+allowCreationRelatedRecords:true,
+deleteRelatedRecords:true,
+foreignDataSource:"db:/sutra_cms/web_group",
+initialSort:"rec_created asc",
+items:[
+{foreignColumnName:"id_site",primaryDataProviderID:"id_site",typeid:23,uuid:"8596A5D2-ABEC-4069-983E-26E5D055AE7E"}
+],
+name:"web_site_to_group",
+primaryDataSource:"db:/sutra_cms/web_site",
+typeid:22,
+uuid:"84E9D7F4-486E-4088-80D5-6E05D75C75C5"

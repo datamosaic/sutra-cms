@@ -1,0 +1,11 @@
+allowCreationRelatedRecords:true,
+deleteRelatedRecords:true,
+foreignDataSource:"db:/sutra_cms/web_editable",
+items:[
+{foreignColumnName:"id_layout",primaryDataProviderID:"globals.WEB_layout_selected",typeid:23,uuid:"91DAF233-0C86-42BA-81C4-4C08E7504CB5"}
+],
+joinType:1,
+name:"web_layout_to_editable__selected",
+primaryDataSource:"db:/sutra_cms/web_layout",
+typeid:22,
+uuid:"BF7F958C-A505-47A4-8965-0B8E3C3CA378"

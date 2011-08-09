@@ -1,0 +1,9 @@
+allowCreationRelatedRecords:true,
+foreignDataSource:"db:/sutra_cms/web_multisite",
+items:[
+{foreignColumnName:"id_multisite",primaryDataProviderID:"id_multisite",typeid:23,uuid:"36A000E2-DCE4-48F7-9999-6167523900E3"}
+],
+name:"web_multisite_to_multisite",
+primaryDataSource:"db:/sutra_cms/web_multisite",
+typeid:22,
+uuid:"CDCCB61B-47B9-475C-B290-9ADE621167E5"
