@@ -702,10 +702,6 @@ function WEB_page_new(pageName,pageType,parentID,themeID,layoutID) {
 		
 		var pageRec = fsPage.getRecord(fsPage.newRecord(false,true))
 		
-		if ( siteDefaults.record.flag_auto_publish ) {
-			pageRec.flag_publish = 1
-		}
-		
 		//put this page in the correct place; there were other records
 		
 		//find current syblings (of parent rec or at the top level)
@@ -714,10 +710,12 @@ function WEB_page_new(pageName,pageType,parentID,themeID,layoutID) {
 		fsPage.id_site = (parentRec) ? parentRec.id_site : forms.WEB_0F_site.id_site
 		var results = fsPage.search()
 		
+		//fill in columns of page
 		pageRec.page_type = pageType
 		pageRec.parent_id_page = (parentRec) ? parentRec.id_page : null
 		pageRec.order_by = (parentRec) ? parentRec.web_page_to_page__child.getSize() + 1 : results + 1
 		pageRec.id_site = (parentRec) ? parentRec.id_site : forms.WEB_0F_site.id_site
+		pageRec.flag_publish = siteDefaults.record.flag_auto_publish
 		
 		//create platform record (theme and layout)
 		var platformRec = pageRec.web_page_to_platform.getRecord(pageRec.web_page_to_platform.newRecord(false,true))
