@@ -131,41 +131,43 @@ function ACTION_get_server() {
  */
 function FUNCTION_getInstallDirectory() {
 	var error = null
-		if ( type_server ) {
-			switch (type_server) {
-				case "Mac":	
-					if ( directory_mac ) {
-						return directory_mac
-					}
-					else {
-						error = "Install directory not specified"
-					}
-				break;
-				case "Windows":
-					if ( directory_windows ) {
-						return directory_windows
-					}
-					else {
-						error = "Install directory not specified"
-					}
-				break
-				case "Linux":	
-					if ( directory_linux ) {
-						return directory_linux
-					}
-					else {
-						error = "Install directory not specified"
-					}
-				break
-			}
+	
+	if ( type_server ) {
+		switch (type_server) {
+			case "Mac":	
+				if ( directory_mac ) {
+					return directory_mac
+				}
+				else {
+					error = "Install directory not specified"
+				}
+			break;
+			case "Windows":
+				if ( directory_windows ) {
+					return directory_windows
+				}
+				else {
+					error = "Install directory not specified"
+				}
+			break
+			case "Linux":	
+				if ( directory_linux ) {
+					return directory_linux
+				}
+				else {
+					error = "Install directory not specified"
+				}
+			break
 		}
-		else {
-			error = "Installation record not setup"
-		}
-		if ( error ) {
-			plugins.dialogs.showErrorDialog( "Error", error )
-			return error
-		}
+	}
+	else {
+		error = "Installation record not setup"
+	}
+	
+	if ( error ) {
+		plugins.dialogs.showErrorDialog( "Error", error )
+		return error
+	}
 }
 
 /**

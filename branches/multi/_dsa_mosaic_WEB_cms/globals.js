@@ -1283,3 +1283,21 @@ function WEB_browser_error() {
 function WEB_site_find_restrict() {
 	return forms.WEB_0F_site.id_site
 }
+
+/**
+ * @returns	{Boolean}	Status of rewrite mode.  Note: must be in sync with urlrewrite.
+ * 
+ * @properties={typeid:24,uuid:"7593B3FF-C349-48C0-893B-35A63738535D"}
+ */
+function WEB_install_rewrite() {
+	var fsInstall = databaseManager.getFoundSet('sutra_cms','web_install')
+	fsInstall.loadAllRecords()
+	databaseManager.refreshRecordFromDatabase(fsInstall,0)
+	
+	if (utils.hasRecords(fsInstall) && fsInstall.rewrite_enabled) {
+		return true
+	}
+	else {
+		return false
+	}
+}
