@@ -24,6 +24,6 @@
 		<%=pageData.get("Footer")%>
 	</div>
 </div>
-<jsp:include page='<%= (String)request.getAttribute("footer") %>' />
+<jsp:include page='<%= (String)request.getAttribute("foot") %>' />
 </body>
 </html>
