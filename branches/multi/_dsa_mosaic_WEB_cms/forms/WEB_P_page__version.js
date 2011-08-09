@@ -19,7 +19,7 @@ var _idLanguage = null;
 var _idPlatform = null;
 
 /**
- * @properties={typeid:35,uuid:"884E78BA-3B15-43CF-B187-7B319F4F4DF2"}
+ * @properties={typeid:35,uuid:"884E78BA-3B15-43CF-B187-7B319F4F4DF2",variableType:4}
  */
 var _posnVersion = null;
 
@@ -86,7 +86,7 @@ function ACTION_ok() {
 				)
 		return false
 	}
-	else if (typeof _posnVersion != 'number') {
+	else if (!_posnVersion) {
 		plugins.dialogs.showErrorDialog(
 					"Error",
 					"Version is required"
