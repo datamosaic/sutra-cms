@@ -201,8 +201,7 @@ styleClass:"standard_table_noedit",
 tabSeq:-2,
 transparent:true,
 typeid:4,
-uuid:"BBF053D0-0A15-4915-9CFC-282A61AE84A9",
-valuelistID:"03d33abc-4f01-4144-9714-e651789f5183"
+uuid:"BBF053D0-0A15-4915-9CFC-282A61AE84A9"
 },
 {
 anchors:11,
@@ -358,7 +357,6 @@ uuid:"F9CF945C-0060-4153-84C9-1ECF5A5EC874"
 },
 {
 anchors:11,
-dataProviderID:"id_theme",
 formIndex:10500,
 location:"134,80",
 scrollbars:36,

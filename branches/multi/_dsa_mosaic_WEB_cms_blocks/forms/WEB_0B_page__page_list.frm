@@ -253,8 +253,7 @@ styleClass:"standard_table_noedit",
 tabSeq:-2,
 transparent:true,
 typeid:4,
-uuid:"C1CFD459-4847-497A-A5C9-3DFD37E15277",
-valuelistID:"03d33abc-4f01-4144-9714-e651789f5183"
+uuid:"C1CFD459-4847-497A-A5C9-3DFD37E15277"
 },
 {
 formIndex:10400,

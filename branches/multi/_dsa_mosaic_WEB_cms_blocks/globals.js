@@ -60,11 +60,11 @@ function WEB_block_methods(formName, type) {
 function WEB_block_form_refresh() {
 //	//update display
 //	if (globals.WEB_page_mode == 2) {
-//		forms.WEB_0F_page__design__content_1L_block.ACTION_gui_mode_refresh()
+//		forms.WEB_0F_page__design_1F_version_2L_scope.ACTION_gui_mode_refresh()
 //	}
 //	else 
 	if (globals.WEB_page_mode == 3) {
-		forms.WEB_0F_page__browser__editor.FORM_on_show()
+		forms.WEB_0F_page__browser_1F_block__editor.FORM_on_show()
 	}
 }
 
@@ -227,6 +227,6 @@ function WEB_block_edit_get() {
 	}
 	//scrapbook scope
 	else {
-		return forms.WEB_0F_scrapbook.ACTION_edit_get()
+		return forms.WEB_0F_block__scrapbook.ACTION_edit_get()
 	}
 }

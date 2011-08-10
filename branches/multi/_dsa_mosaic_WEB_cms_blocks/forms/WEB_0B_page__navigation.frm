@@ -173,8 +173,7 @@ styleClass:"standard_table_noedit",
 tabSeq:-2,
 transparent:true,
 typeid:4,
-uuid:"7F90DF96-FF94-406B-AA26-28A7C38E0ED7",
-valuelistID:"03d33abc-4f01-4144-9714-e651789f5183"
+uuid:"7F90DF96-FF94-406B-AA26-28A7C38E0ED7"
 },
 {
 anchors:11,
