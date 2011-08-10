@@ -92,7 +92,7 @@ function ACTION_cancel() {
  * @properties={typeid:24,uuid:"836DDC99-6CFF-499B-8949-E79373BD1DFB"}
  */
 function ACTION_ok() {
-	//see forms.WEB_0F_page__design__header_edit.ACTION_save
+	//see forms.WEB_0F_page__design_1F__header_edit.ACTION_save
 	
 	//check for enough data
 	if (!_pageName) {
@@ -204,7 +204,7 @@ function ACTION_ok() {
 			groupRec.id_site_group = _idSiteGroup
 			
 			//create 1st version for this triumvirate
-			var fsVersion = forms.WEB_0F_page__design__content.foundset
+			var fsVersion = forms.WEB_0F_page__design_1F_version.foundset
 			fsVersion.clear()
 			var newVersion = fsVersion.getRecord(fsVersion.newRecord(false,true))
 			newVersion.id_platform = platformRec.id_platform
@@ -305,7 +305,7 @@ function ACTION_ok() {
 			//theme changes for non-newly created record
 			if (!addedRecord) {
 				//get most recent and selected versions
-				var fsVersion = forms.WEB_0F_page__design__content.foundset
+				var fsVersion = forms.WEB_0F_page__design_1F_version.foundset
 				var latestVersion = fsVersion.getRecord(1)
 				var selectedVersion = fsVersion.getSelectedRecord()
 				
@@ -320,7 +320,7 @@ function ACTION_ok() {
 				_recPlatform.id_layout = _idLayout
 				
 				//halt additional on select firing
-				forms.WEB_0F_page__design__content_1L_block._skipSelect = true
+				forms.WEB_0F_page__design_1F_version_2L_scope._skipSelect = true
 				
 				//create new version
 				var newVersion = fsVersion.getRecord(fsVersion.newRecord(1,true))
@@ -332,7 +332,7 @@ function ACTION_ok() {
 				globals.WEB_page_version = newVersion.id_version
 				
 				//allow additional on select firing
-				forms.WEB_0F_page__design__content_1L_block._skipSelect = false
+				forms.WEB_0F_page__design_1F_version_2L_scope._skipSelect = false
 			}
 			
 			// get editable regions based on layout selected
@@ -359,11 +359,11 @@ function ACTION_ok() {
 				
 				//create from defaults for area
 				if (oldAreaSameName == -1) {
-					var newArea = forms.WEB_0F_page__design__header_display__version.AREA_new(editable,newVersion,i)
+					var newArea = forms.WEB_0F_page__design_1F__header_display__version.AREA_new(editable,newVersion,i)
 				}
 				//copy from chosen version
 				else {
-					var newArea = forms.WEB_0F_page__design__header_display__version.AREA_copy(selectedVersion.web_version_to_area.getRecord(oldAreaSameName + 1),newVersion,i)
+					var newArea = forms.WEB_0F_page__design_1F__header_display__version.AREA_copy(selectedVersion.web_version_to_area.getRecord(oldAreaSameName + 1),newVersion,i)
 				}
 				
 				//make sure that selected index doesn't move around so much

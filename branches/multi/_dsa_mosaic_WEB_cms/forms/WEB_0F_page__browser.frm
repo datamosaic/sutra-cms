@@ -120,7 +120,7 @@ items:[
 {
 containsFormID:"5870F778-8D64-4E47-9C13-748A0B07ACB7",
 location:"100,160",
-text:"WEB_0F_page__browser__editor",
+text:"WEB_0F_page__browser_1F_block__editor",
 typeid:15,
 uuid:"99E836F8-784A-4F89-8A96-0B35A172A33D"
 }

@@ -93,7 +93,7 @@ function ACTION_ok(event) {
 	if (!globals.CODE_hide_form) {
 		
 		//get parent form
-		var formStack = forms.WEB_0F_scrapbook.controller.getFormContext()
+		var formStack = forms.WEB_0F_block__scrapbook.controller.getFormContext()
 		
 		//this form is included on some other form
 		if (formStack.getMaxRowIndex() > 1) {
@@ -133,8 +133,8 @@ function ACTION_ok(event) {
 						//create block record on scrapbook form
 						if (_calledFrom == 'Scrapbook') {
 							//turn off rec on select
-							forms.WEB_0F_scrapbook._skipSelect = true
-							forms.WEB_0F_scrapbook_1L_block_version._skipSelect = true
+							forms.WEB_0F_block__scrapbook._skipSelect = true
+							forms.WEB_0F_block__scrapbook_1F__sidebar_2L_block_version._skipSelect = true
 							
 							//choose context where to create scrapbook
 //							var fsBlock = forms[formParent].foundset
@@ -154,7 +154,7 @@ function ACTION_ok(event) {
 						//create scope and block on page form
 						else {
 							//turn off rec on select
-							forms.WEB_0F_page__design__content_1L_block._skipSelect = true
+							forms.WEB_0F_page__design_1F_version_2L_scope._skipSelect = true
 							
 							//disale/enable rec on select on the block type forms when creating scope
 							globals.WEB_block_on_select = false
@@ -174,7 +174,7 @@ function ACTION_ok(event) {
 							}
 							//create scope record in gui mode
 							else if (_calledFrom == 'GUI') {
-								var fsScope = forms.WEB_0F_page__design__content_1L_block.foundset
+								var fsScope = forms.WEB_0F_page__design_1F_version_2L_scope.foundset
 								var scopeRec = fsScope.getRecord(fsScope.newRecord(false,true))
 								
 								scopeRec.row_order = fsScope.getSize()
@@ -236,12 +236,12 @@ function ACTION_ok(event) {
 						
 						//resume normal operations for scrapbook
 						if (_calledFrom == 'Scrapbook') {
-							forms.WEB_0F_scrapbook_1L_block_version._skipSelect = false
-							forms.WEB_0F_scrapbook._skipSelect = false
+							forms.WEB_0F_block__scrapbook_1F__sidebar_2L_block_version._skipSelect = false
+							forms.WEB_0F_block__scrapbook._skipSelect = false
 						}
 						//resume normal operations for page
 						else {
-							forms.WEB_0F_page__design__content_1L_block._skipSelect = false
+							forms.WEB_0F_page__design_1F_version_2L_scope._skipSelect = false
 						}
 						
 						databaseManager.saveData()
@@ -249,7 +249,7 @@ function ACTION_ok(event) {
 					// connect selected scrapbook
 					else {
 						//turn off rec on select
-						forms.WEB_0F_page__design__content_1L_block._skipSelect = true
+						forms.WEB_0F_page__design_1F_version_2L_scope._skipSelect = true
 						
 						//disale/enable rec on select on the block type forms when creating scope
 						globals.WEB_block_on_select = false
@@ -269,7 +269,7 @@ function ACTION_ok(event) {
 						}
 						//create scope record in gui mode
 						else if (_calledFrom == 'GUI') {
-							var fsScope = forms.WEB_0F_page__design__content_1L_block.foundset
+							var fsScope = forms.WEB_0F_page__design_1F_version_2L_scope.foundset
 							var scopeRec = fsScope.getRecord(fsScope.newRecord(false,true))
 							
 							scopeRec.row_order = fsScope.getSize()
@@ -282,7 +282,7 @@ function ACTION_ok(event) {
 						scopeRec.id_block = scrapbookRec.id_block
 						
 						//resume normal operations for page
-						forms.WEB_0F_page__design__content_1L_block._skipSelect = false
+						forms.WEB_0F_page__design_1F_version_2L_scope._skipSelect = false
 						
 						databaseManager.saveData()
 					}
@@ -321,8 +321,8 @@ function ACTION_ok(event) {
 					//create block record on scrapbook form
 					if (_calledFrom == 'Scrapbook') {
 						//turn off rec on select
-						forms.WEB_0F_scrapbook._skipSelect = true
-						forms.WEB_0F_scrapbook_1L_block_version._skipSelect = true
+						forms.WEB_0F_block__scrapbook._skipSelect = true
+						forms.WEB_0F_block__scrapbook_1F__sidebar_2L_block_version._skipSelect = true
 						
 						//choose context where to create scrapbook
 //						var fsBlock = forms[formParent].foundset
@@ -341,7 +341,7 @@ function ACTION_ok(event) {
 					//create scope and block on page form
 					else {
 						//turn off rec on select
-						forms.WEB_0F_page__design__content_1L_block._skipSelect = true
+						forms.WEB_0F_page__design_1F_version_2L_scope._skipSelect = true
 						
 						//disale/enable rec on select on the block type forms when creating scope
 						globals.WEB_block_on_select = false
@@ -361,7 +361,7 @@ function ACTION_ok(event) {
 						}
 						//create scope record in gui mode
 						else if (_calledFrom == 'GUI') {
-							var fsScope = forms.WEB_0F_page__design__content_1L_block.foundset
+							var fsScope = forms.WEB_0F_page__design_1F_version_2L_scope.foundset
 							var scopeRec = fsScope.getRecord(fsScope.newRecord(false,true))
 							
 							scopeRec.row_order = fsScope.getSize()
@@ -418,12 +418,12 @@ function ACTION_ok(event) {
 					
 					//resume normal operations for scrapbook
 					if (_calledFrom == 'Scrapbook') {
-						forms.WEB_0F_scrapbook_1L_block_version._skipSelect = false
-						forms.WEB_0F_scrapbook._skipSelect = false
+						forms.WEB_0F_block__scrapbook_1F__sidebar_2L_block_version._skipSelect = false
+						forms.WEB_0F_block__scrapbook._skipSelect = false
 					}
 					//resume normal operations for page
 					else {
-						forms.WEB_0F_page__design__content_1L_block._skipSelect = false
+						forms.WEB_0F_page__design_1F_version_2L_scope._skipSelect = false
 					}
 					
 					databaseManager.saveData()

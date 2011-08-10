@@ -17,7 +17,7 @@ function REC_on_select(event) {
 	//only do this when not running in data sutra
 	if (!application.__parent__.solutionPrefs) {
 //		forms.WEB_0T_page.FORM_on_load() //covered with refresh flag on tree view bean
-		forms.WEB_0F_scrapbook.FORM_on_load()
+		forms.WEB_0F_block__scrapbook.FORM_on_load()
 		forms.WEB_0F_asset.FORM_on_load()
 		forms.WEB_0F_theme.FORM_on_load()
 		forms.WEB_0F_block_type.FORM_on_load()
@@ -167,7 +167,7 @@ function ACTION_blow_in_missing_areas_to_all_pages() {
 						forms.WEB_0F_page.controller.setSelectedIndex(i)
 						
 						//run area diff method
-						forms.WEB_0F_page__design__content_1L_area.AREA_add_missing()
+						forms.WEB_0F_page__design_1F_version_2L_area.AREA_add_missing()
 	//				}
 	//				
 	//				input = 'No'

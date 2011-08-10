@@ -303,7 +303,7 @@ function LAYOUTS_action_list_control(selected) {
 							var thePage = fsPages.getRecord(i)
 							
 							//TODO: set global variabls for group/version combo where id_version >= the active version
-//							forms.WEB_0F_page__design__content_1L_area.AREA_reorder(thePage)
+//							forms.WEB_0F_page__design_1F_version_2L_area.AREA_reorder(thePage)
 						}
 					}
 				}

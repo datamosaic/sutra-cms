@@ -6,6 +6,17 @@ var _license_dsa_mosaic_WEB_cms = 'Module: _dsa_mosaic_WEB_cms \
 									MIT Licensed';
 
 /**
+ * Perform the element default action.
+ *
+ * @param {JSEvent} event the event that triggered the action
+ *
+ * @properties={typeid:24,uuid:"CBA4256A-1CF7-42E4-A265-237E6AB08408"}
+ */
+function BLOCK_click(event) {
+	
+}
+
+/**
  * Callback method for when form is shown.
  *
  * @param {Boolean} firstShow form is shown first time after load
@@ -18,7 +29,7 @@ function FORM_on_show(firstShow, event) {
 	globals.WEB_block_scope = 1
 	
 	//show the block picker pane
-	forms.WEB_0F_scrapbook.SPLIT_set(true)
+	forms.WEB_0F_block__scrapbook.SPLIT_set(true)
 	
 	//things to do on first showing
 	if (firstShow) {
@@ -42,7 +53,7 @@ function FORM_on_show(firstShow, event) {
  * @properties={typeid:24,uuid:"C9BACEDC-DE86-4198-9361-D096BBCC4A15"}
  */
 function FORM_on_hide(event) {
-	forms.WEB_0F_scrapbook.SPLIT_set(false)
+	forms.WEB_0F_block__scrapbook.SPLIT_set(false)
 	
 	return true
 }
@@ -149,7 +160,7 @@ function REC_on_select(event,skipLoad,verIndex,fireSelect,areaName,blockIndex) {
 		//when newly added page, skip this
 		if (!forms.WEB_0T_page._addRecord) {
 			//halt additional on select firing
-			forms.WEB_0F_page__design__content_1L_block._skipSelect = true
+			forms.WEB_0F_page__design_1F_version_2L_scope._skipSelect = true
 			
 			//select page version of tri globals
 		 	forms.WEB_0F_page.SET_globals()
@@ -161,13 +172,13 @@ function REC_on_select(event,skipLoad,verIndex,fireSelect,areaName,blockIndex) {
 			var activeInfo = SET_versions(skipLoad,!pageValid)
 			
 			//if no versions, flag page as invalid
-			if (!utils.hasRecords(forms.WEB_0F_page__design__content.foundset)) {
+			if (!utils.hasRecords(forms.WEB_0F_page__design_1F_version.foundset)) {
 				pageValid = false
 			}
 			
 			//check to see if last selected version is in current version stack
 			if (client_version_selected) {
-				var versionStack = databaseManager.getFoundSetDataProviderAsArray(forms.WEB_0F_page__design__content.foundset,'id_version')
+				var versionStack = databaseManager.getFoundSetDataProviderAsArray(forms.WEB_0F_page__design_1F_version.foundset,'id_version')
 				versionStack = versionStack.map(function (item) {return item.toString()})
 				
 				var versionPosn = versionStack.indexOf(client_version_selected)
@@ -182,15 +193,15 @@ function REC_on_select(event,skipLoad,verIndex,fireSelect,areaName,blockIndex) {
 				//specified index to be selected
 				if (verIndex) {
 					//set selected index
-					forms.WEB_0F_page__design__content.foundset.setSelectedIndex(verIndex)
+					forms.WEB_0F_page__design_1F_version.foundset.setSelectedIndex(verIndex)
 					
 					//set version to be whatever was specified
-					globals.WEB_page_version = forms.WEB_0F_page__design__content.id_version
+					globals.WEB_page_version = forms.WEB_0F_page__design_1F_version.id_version
 				}
 				//try to stay on last selected version in version stack
 				else if (clientVersion) {
 					//set selected index
-					forms.WEB_0F_page__design__content.foundset.setSelectedIndex(versionPosn + 1)
+					forms.WEB_0F_page__design_1F_version.foundset.setSelectedIndex(versionPosn + 1)
 					
 					//set version to be the last edited one
 					globals.WEB_page_version = application.getUUID(client_version_selected)
@@ -198,7 +209,7 @@ function REC_on_select(event,skipLoad,verIndex,fireSelect,areaName,blockIndex) {
 				//there is info about the active version
 				else if (activeInfo) {
 					//set selected index
-					forms.WEB_0F_page__design__content.foundset.setSelectedIndex(activeInfo.position)
+					forms.WEB_0F_page__design_1F_version.foundset.setSelectedIndex(activeInfo.position)
 					
 					//set version to be the active one
 					globals.WEB_page_version = activeInfo.record.id_version
@@ -213,17 +224,17 @@ function REC_on_select(event,skipLoad,verIndex,fireSelect,areaName,blockIndex) {
 			}
 			
 			//area name
-			if (areaName && utils.hasRecords(forms.WEB_0F_page__design__content_1L_area.foundset)) {
-				var newAreas = databaseManager.getFoundSetDataProviderAsArray(forms.WEB_0F_page__design__content_1L_area.foundset,'area_name')
+			if (areaName && utils.hasRecords(forms.WEB_0F_page__design_1F_version_2L_area.foundset)) {
+				var newAreas = databaseManager.getFoundSetDataProviderAsArray(forms.WEB_0F_page__design_1F_version_2L_area.foundset,'area_name')
 				
 				//an area with the same name as the record we were just on exists
 				var areaSameName = newAreas.indexOf(areaName)
 				if (areaSameName != -1) {
-					forms.WEB_0F_page__design__content_1L_area.foundset.setSelectedIndex(areaSameName + 1)
+					forms.WEB_0F_page__design_1F_version_2L_area.foundset.setSelectedIndex(areaSameName + 1)
 					
 					//the block index is less than or equal to the number of block records present
-					if (blockIndex && utils.hasRecords(forms.WEB_0F_page__design__content_1L_block.foundset) && blockIndex <= forms.WEB_0F_page__design__content_1L_block.foundset.getSize()) {
-						forms.WEB_0F_page__design__content_1L_block.foundset.setSelectedIndex(blockIndex)
+					if (blockIndex && utils.hasRecords(forms.WEB_0F_page__design_1F_version_2L_scope.foundset) && blockIndex <= forms.WEB_0F_page__design_1F_version_2L_scope.foundset.getSize()) {
+						forms.WEB_0F_page__design_1F_version_2L_scope.foundset.setSelectedIndex(blockIndex)
 					}
 				}
 			}
@@ -231,18 +242,18 @@ function REC_on_select(event,skipLoad,verIndex,fireSelect,areaName,blockIndex) {
 		 	//when called from event (not programatically) update tooltip on visit button
 			if (event) {
 			 	//set tooltip of visit with link
-				forms.WEB_0F_page__design__button_tab__content.elements.btn_visit.toolTipText = forms.WEB_0F_page__design__button_tab__content.VISIT_page(null,true)
+				forms.WEB_0F_page__design_1F__button_tab_2F__content.elements.btn_visit.toolTipText = forms.WEB_0F_page__design_1F__button_tab_2F__content.VISIT_page(null,true)
 			}
 			
 			//page type ui differences
 			PAGE_type_display(!pageValid ? 'Page invalid' : null)
-			forms.WEB_0F_page__design__header_display__version.TOGGLE_elements()
+			forms.WEB_0F_page__design_1F__header_display__version.TOGGLE_elements()
 			
 			//allow additional on select firing
-			forms.WEB_0F_page__design__content_1L_block._skipSelect = false
+			forms.WEB_0F_page__design_1F_version_2L_scope._skipSelect = false
 			
 			//may fire too frequently
-			forms.WEB_0F_page__design__content_1L_block.ACTION_gui_mode_load(fireSelect)
+			forms.WEB_0F_page__design_1F_version_2L_scope.ACTION_gui_mode_load(fireSelect)
 		}
 		
 		//record was not in memory, turn off busy bar and busy cursor
@@ -269,28 +280,28 @@ function SET_versions(skipLoad,pageInvalid) {
 	
 	var vlReal = new Array()
 	var vlDisplay = new Array()	
-	var fsVersions = forms.WEB_0F_page__design__content.foundset
+	var fsVersions = forms.WEB_0F_page__design_1F_version.foundset
 	
 	//clear versions
 	if (pageInvalid) {
 		fsVersions.clear()
-		forms.WEB_0F_page__design__properties_1L_version.foundset.clear()
+		forms.WEB_0F_page__design_1F__properties_2L_version.foundset.clear()
 	}
 	//get versions records loaded
 	else if (!skipLoad) {
 		fsVersions.find()
-		fsVersions.id_platform = forms.WEB_0F_page__design__header_display__platform._platform.id_platform.toString()
-		fsVersions.id_language = forms.WEB_0F_page__design__header_display__language._language.id_language.toString()
-		fsVersions.id_group = forms.WEB_0F_page__design__header_display__group._group.id_group.toString()
+		fsVersions.id_platform = forms.WEB_0F_page__design_1F__header_display_2F_platform._platform.id_platform.toString()
+		fsVersions.id_language = forms.WEB_0F_page__design_1F__header_display_2F_language._language.id_language.toString()
+		fsVersions.id_group = forms.WEB_0F_page__design_1F__header_display_2F_group._group.id_group.toString()
 		var results = fsVersions.search()
 		
-		forms.WEB_0F_page__design__properties_1L_version.foundset.loadRecords(fsVersions)
+		forms.WEB_0F_page__design_1F__properties_2L_version.foundset.loadRecords(fsVersions)
 	}
 	
 	//we've got a version stack
 	if (utils.hasRecords(fsVersions)) {
 		//hide the bolded version when no records
-		forms.WEB_0F_page__design__header_display__version.elements.btn_new_bold.visible = false
+		forms.WEB_0F_page__design_1F__header_display__version.elements.btn_new_bold.visible = false
 		
 		if (!skipLoad) {
 			fsVersions.sort('version_number desc')
@@ -353,7 +364,7 @@ function SET_versions(skipLoad,pageInvalid) {
 		vlReal.push(null)
 		
 		//show bolded version of plus button
-		forms.WEB_0F_page__design__header_display__version.elements.btn_new_bold.visible = true
+		forms.WEB_0F_page__design_1F__header_display__version.elements.btn_new_bold.visible = true
 	}
 	
 	application.setValueListItems('WEB_page_version',vlDisplay,vlReal)
@@ -377,6 +388,6 @@ function FORM_on_load(event) {
  */
 function PAGE_type_display(pageType) {
 	if (!forms.WEB_0T_page._addRecord) {
-		forms.WEB_0F_page__design__header_edit.TOGGLE_fields(pageType || page_type)
+		forms.WEB_0F_page__design_1F__header_edit.TOGGLE_fields(pageType || page_type)
 	}
 }

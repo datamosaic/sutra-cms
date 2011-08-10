@@ -85,7 +85,7 @@ function TOGGLE_edit_mode(editMode,saveData) {
 	}
 	else {
 		//disable edits if edit flag not set
-		if (!utils.hasRecords(forms.WEB_0F_page__design__content.foundset) || forms.WEB_0F_page__design__content.flag_lock) {
+		if (!utils.hasRecords(forms.WEB_0F_page__design_1F_version.foundset) || forms.WEB_0F_page__design_1F_version.flag_lock) {
 				//disable edits for active or non-latest versions
 				//utils.hasRecords(fsVersions) && fsVersions.version_number != fsVersions.getSize() || fsVersions.flag_active) {
 			_editMode = false
@@ -113,15 +113,15 @@ function TOGGLE_edit_mode(editMode,saveData) {
 		elements.btn_edit.visible = false
 		
 		//set up storage place for all newly created blocks
-		forms.WEB_0F_page__design__content_1L_block._newBlocks = new Array()
+		forms.WEB_0F_page__design_1F_version_2L_scope._newBlocks = new Array()
 	}
 	//exiting edit mode
 	else if (currentState) {
 		//save the data
 		if (saveData) {
 			//when in gui mode, save
-			if (globals.WEB_page_mode == 2 && utils.hasRecords(forms.WEB_0F_page__design__content_1L_block.foundset.getSelectedRecord(),'web_scope_to_block')) {
-				var recBlock = forms.WEB_0F_page__design__content_1L_block.web_scope_to_block.getSelectedRecord()
+			if (globals.WEB_page_mode == 2 && utils.hasRecords(forms.WEB_0F_page__design_1F_version_2L_scope.foundset.getSelectedRecord(),'web_scope_to_block')) {
+				var recBlock = forms.WEB_0F_page__design_1F_version_2L_scope.web_scope_to_block.getSelectedRecord()
 		
 				if (recBlock && utils.hasRecords(recBlock.web_block_to_block_type)) {
 					var recBlockType = recBlock.web_block_to_block_type.getRecord(1)
@@ -138,14 +138,14 @@ function TOGGLE_edit_mode(editMode,saveData) {
 			}
 			
 			//update modification date on this record
-			if (utils.hasRecords(forms.WEB_0F_page__design__content.foundset)) {
-				forms.WEB_0F_page__design__content.rec_modified = application.getServerTimeStamp()
+			if (utils.hasRecords(forms.WEB_0F_page__design_1F_version.foundset)) {
+				forms.WEB_0F_page__design_1F_version.rec_modified = application.getServerTimeStamp()
 				
 				//log the edit
 				globals.TRIGGER_log_create(
 							//type of log
 							'CMS page version edited',
-							forms.WEB_0F_page__design__content.id_version.toString()
+							forms.WEB_0F_page__design_1F_version.id_version.toString()
 						)
 			}
 			
@@ -159,9 +159,9 @@ function TOGGLE_edit_mode(editMode,saveData) {
 			databaseManager.rollbackEditedRecords()
 			
 			//delete all newly created scope records
-			if (forms.WEB_0F_page__design__content_1L_block._newBlocks instanceof Array) {
-				while (forms.WEB_0F_page__design__content_1L_block._newBlocks.length) {
-					var record = forms.WEB_0F_page__design__content_1L_block._newBlocks.pop()
+			if (forms.WEB_0F_page__design_1F_version_2L_scope._newBlocks instanceof Array) {
+				while (forms.WEB_0F_page__design_1F_version_2L_scope._newBlocks.length) {
+					var record = forms.WEB_0F_page__design_1F_version_2L_scope._newBlocks.pop()
 					record.foundset.deleteRecord(record)
 				}
 			}
@@ -182,14 +182,14 @@ function TOGGLE_edit_mode(editMode,saveData) {
 	}
 	
 	//set elements appropriately
-	forms.WEB_0F_page__design__header_display__version.TOGGLE_elements()
-	forms.WEB_0F_page__design__content_1L_area.TOGGLE_elements(_editMode)
-	forms.WEB_0F_page__design__content_1L_block.TOGGLE_elements(_editMode)
-	forms.WEB_0F_page__design__content_1F_block_data__raw.TOGGLE_elements(_editMode)
-	forms.WEB_0F_page__design__properties.TOGGLE_elements(_editMode)
-	forms.WEB_0F_page__design__content_1L_block.REC_on_select(null,true)
+	forms.WEB_0F_page__design_1F__header_display__version.TOGGLE_elements()
+	forms.WEB_0F_page__design_1F_version_2L_area.TOGGLE_elements(_editMode)
+	forms.WEB_0F_page__design_1F_version_2L_scope.TOGGLE_elements(_editMode)
+	forms.WEB_0F_page__design_1F_version_2F_block__data.TOGGLE_elements(_editMode)
+	forms.WEB_0F_page__design_1F__properties.TOGGLE_elements(_editMode)
+	forms.WEB_0F_page__design_1F_version_2L_scope.REC_on_select(null,true)
 	
 	//hide actions (can remove when upgrade sutra core)
-	forms.WEB_0F_scrapbook__gui.elements.btn_data_actions.enabled = false
-	forms.WEB_0F_scrapbook__data.elements.btn_data_actions.enabled = false
+	forms.WEB_0F_block__scrapbook_1F__gui.elements.btn_data_actions.enabled = false
+	forms.WEB_0F_block__scrapbook_1F__data.elements.btn_data_actions.enabled = false
 }

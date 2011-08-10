@@ -149,7 +149,7 @@ function ACTION_version(input) {
 //		var versions = application.getValueListItems('WEB_page_version')
 //		var vlDisplay = versions.getColumnAsArray(1)
 //		var vlReal = versions.getColumnAsArray(2)
-		var fsVersions = forms.WEB_0F_page__design__content.foundset
+		var fsVersions = forms.WEB_0F_page__design_1F_version.foundset
 		
 		//set up menu with arguments
 		var menu = new Array()
@@ -219,14 +219,14 @@ function ACTION_version(input) {
 //		
 //		//use display value to track down actual record
 //		if (displayVal == 'Working copy') {
-//			var ver = forms.WEB_0F_page__design__content.foundset.getSize()
+//			var ver = forms.WEB_0F_page__design_1F_version.foundset.getSize()
 //		}
 //		else {
 //			var ver = utils.stringToNumber(utils.stringMiddle(displayVal,utils.stringPosition(displayVal,'Version ',0,1) + 8,utils.stringPosition(displayVal,'(',0,1) - utils.stringPosition(displayVal,'Version ',0,1) - 8))
 //		}
 	
 		//assumption here is that foundset is in sync with this valuelist (convert version to reverse ordered record list)
-		forms.WEB_0F_page__design__content.foundset.selectRecord(globals.WEB_page_version)
+		forms.WEB_0F_page__design_1F_version.foundset.selectRecord(globals.WEB_page_version)
 		
 		//update display and reload version valuelist; don't reload versions foundset
 		forms.WEB_0F_page__browser.REC_on_select(null,null,true)
@@ -288,7 +288,7 @@ function ACTION_dashboard(event) {
 //	if (application.__parent__.solutionPrefs && !solutionPrefs.design.statusLockWorkflow && globals.TRIGGER_registered_action_authenticate('cms page mode toggle')) {
 //		
 //		//in edit mode with unsaved changes
-//		if (elements.btn_save.visible && forms.WEB_0F_page__browser__editor.GET_modify()) {
+//		if (elements.btn_save.visible && forms.WEB_0F_page__browser_1F_block__editor.GET_modify()) {
 //			var input = plugins.dialogs.showWarningDialog(
 //						'Unsaved changes',
 //						'There are unsaved changes.  Continue without saving?',
@@ -316,7 +316,7 @@ function ACTION_dashboard(event) {
 //			TOGGLE_version(false)
 //			
 //			//refire toggle
-//			forms.WEB_0F_page__design__header_display.FLD_data_change__version_selected()
+//			forms.WEB_0F_page__design_1F__header_display.FLD_data_change__version_selected()
 //		}
 //		else {
 //			elements.highlighter_dash.visible = true
@@ -349,9 +349,9 @@ function ACTION_mode(event) {
 		var currentMode = forms.WEB_0F_page.TRIGGER_mode_set()
 		
 		//in real mode with unsaved changes OR
-		if ((currentMode == 'BROWSER' && elements.btn_save.visible && forms.WEB_0F_page__browser__editor.GET_modify()) ||
+		if ((currentMode == 'BROWSER' && elements.btn_save.visible && forms.WEB_0F_page__browser_1F_block__editor.GET_modify()) ||
 		//in gui mode with unsaved changes (//TODO: abstract to work with all content types)
-			(currentMode == 'DESIGN' && forms.WEB_0F_page__design__content_1F_block_data.elements.tab_detail.getTabFormNameAt(2) == 'WEB_0F__content' &&
+			(currentMode == 'DESIGN' && forms.WEB_0F_page__design_1F_version_2F_block__gui.elements.tab_detail.getTabFormNameAt(2) == 'WEB_0F__content' &&
 			forms.WEB_0F__content.elements.btn_save.enabled)) {
 			
 			var input = plugins.dialogs.showWarningDialog(
@@ -393,7 +393,7 @@ function ACTION_mode(event) {
 				elements.gfx_switch_1.visible = true
 				
 				globals.WEB_page_mode = 1
-				forms.WEB_0F_page__design__content.elements.tab_content.tabIndex = 2
+				forms.WEB_0F_page__design_1F_version.elements.tab_content.tabIndex = 2
 				
 				//go to non-real mode if not there already
 				if (currentMode != "DESIGN") {
@@ -410,22 +410,22 @@ function ACTION_mode(event) {
 					TOGGLE_version(false)
 					
 					//refire toggle
-					forms.WEB_0F_page__design__header_display__version.FLD_version__data_change()
+					forms.WEB_0F_page__design_1F__header_display__version.FLD_version__data_change()
 				}
 				break
 			case 'lbl_mode_gui':
 				elements.gfx_switch_2.visible = true
 				
 				//reset pretty form (//TODO: make work for all block types)
-				if (forms.WEB_0F_page__design__content_1F_block_data.elements.tab_detail.getTabFormNameAt(forms.WEB_0F_page__design__content_1F_block_data.elements.tab_detail.tabIndex) == 'WEB_0F__content') {
+				if (forms.WEB_0F_page__design_1F_version_2F_block__gui.elements.tab_detail.getTabFormNameAt(forms.WEB_0F_page__design_1F_version_2F_block__gui.elements.tab_detail.tabIndex) == 'WEB_0F__content') {
 					forms.WEB_0F__content.BLOCK_cancel(event)
 				}			
 				
 				globals.WEB_page_mode = 2
-				forms.WEB_0F_page__design__content.elements.tab_content.tabIndex = 1
+				forms.WEB_0F_page__design_1F_version.elements.tab_content.tabIndex = 1
 				
 				//refire toggle (may fire too frequently)
-				forms.WEB_0F_page__design__content_1L_block.ACTION_gui_mode_load(true)
+				forms.WEB_0F_page__design_1F_version_2L_scope.ACTION_gui_mode_load(true)
 				
 				//go to non-real mode if not there already
 				if (currentMode != "DESIGN") {
@@ -469,7 +469,7 @@ function ACTION_mode(event) {
  */
 function TOGGLE_edit() {
 	//disable edits if edit flag not set
-	if (!utils.hasRecords(forms.WEB_0F_page__design__content.foundset) || forms.WEB_0F_page__design__content.flag_lock) {
+	if (!utils.hasRecords(forms.WEB_0F_page__design_1F_version.foundset) || forms.WEB_0F_page__design_1F_version.flag_lock) {
 			//disable edits for active or non-latest versions
 			//utils.hasRecords(fsVersions) && fsVersions.version_number != fsVersions.getSize() || fsVersions.flag_active) {
 		var editMode = false
@@ -493,7 +493,7 @@ function TOGGLE_edit() {
  */
 function ACTION_save(event) {
 	//any unsaved changes?
-	if (forms.WEB_0F_page__browser__editor.GET_modify()) {
+	if (forms.WEB_0F_page__browser_1F_block__editor.GET_modify()) {
 		var input = plugins.dialogs.showWarningDialog(
 					'Unsaved changes',
 					'There are unsaved changes.  Continue without saving?',
@@ -505,7 +505,7 @@ function ACTION_save(event) {
 			return
 		}
 //		else {
-//			forms.WEB_0F_page__browser__editor._dataRec = null
+//			forms.WEB_0F_page__browser_1F_block__editor._dataRec = null
 //		}
 	}
 		
@@ -564,7 +564,7 @@ function ACTION_sitemap(event) {
 //	if (application.__parent__.solutionPrefs && !solutionPrefs.design.statusLockWorkflow) {// && globals.TRIGGER_registered_action_authenticate('cms page sitemap')) {
 //		
 //		//in edit mode with unsaved changes
-//		if (elements.btn_save.visible && forms.WEB_0F_page__browser__editor.GET_modify()) {
+//		if (elements.btn_save.visible && forms.WEB_0F_page__browser_1F_block__editor.GET_modify()) {
 //			var input = plugins.dialogs.showWarningDialog(
 //						'Unsaved changes',
 //						'There are unsaved changes.  Continue without saving?',

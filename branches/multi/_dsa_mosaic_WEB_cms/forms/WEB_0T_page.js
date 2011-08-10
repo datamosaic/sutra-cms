@@ -215,11 +215,11 @@ function ACTIONS_list_control(input,scopeType,scopeValue) {
 			break
 	
 		case 1: //update theme
-			forms.WEB_0F_page__design__content_1L_area.AREA_add_missing()
+			forms.WEB_0F_page__design_1F_version_2L_area.AREA_add_missing()
 			break
 		
 		case 2: //reset theme
-			forms.WEB_0F_page__design__content_1L_area.AREA_reset()
+			forms.WEB_0F_page__design_1F_version_2L_area.AREA_reset()
 			break
 			
 		case 4: //toggle open
@@ -748,7 +748,7 @@ function REC_column_publish(pagePK) {
 //			
 //			//re-draw the header area
 //			forms.WEB_0F_page__design.SET_globals()
-//			forms.WEB_0F_page__design__header_display.FLD_data_change__version_selected()
+//			forms.WEB_0F_page__design_1F__header_display.FLD_data_change__version_selected()
 //		}
 //		else {
 //			//flag_publish
@@ -870,7 +870,7 @@ function REC_delete(record) {
 			//dim out the lights
 			else {
 				controller.loadAllRecords()
-				forms.WEB_0F_page__design__button_tab.TAB_change(null,'tab_b1')
+				forms.WEB_0F_page__design_1F__button_tab.TAB_change(null,'tab_b1')
 				forms.WEB_0F_page.FORM_on_show()
 			}
 			
@@ -1041,7 +1041,7 @@ function REC_new() {
 			var fsPage = forms.WEB_0F_page.foundset
 			
 			//punch down site default
-			forms.WEB_0F_page__design__header_edit._siteDefaults = siteDefaults
+			forms.WEB_0F_page__design_1F__header_edit._siteDefaults = siteDefaults
 		}
 		
 		//create new page
@@ -1068,10 +1068,10 @@ function REC_new() {
 		//design mode
 		else {
 			//hide everything except the bare necessities
-			forms.WEB_0F_page__design__header_edit.TOGGLE_fields(0)
+			forms.WEB_0F_page__design_1F__header_edit.TOGGLE_fields(0)
 			
 			//show pop-down
-			globals.WEB_simple_edit('WEB_0F_page__design__button_tab')
+			globals.WEB_simple_edit('WEB_0F_page__design_1F__button_tab')
 			
 			globals.CODE_cursor_busy(false)
 		}

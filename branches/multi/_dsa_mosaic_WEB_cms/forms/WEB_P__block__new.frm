@@ -1,4 +1,3 @@
-borderType:"EmptyBorder,0,0,0,0",
 items:[
 {
 formIndex:10601,

@@ -65,12 +65,12 @@ function REC_on_select(event,webMode,skipLoad,verIndex,fireSelect) {
 	//when newly added page, skip this
 	if (!forms.WEB_0T_page._addRecord) {
 		//halt additional on select firing
-//		forms.WEB_0F_page__design__content_1L_block._skipSelect = true
+//		forms.WEB_0F_page__design_1F_version_2L_scope._skipSelect = true
 		
 	 	//when called with event (not programatically)
 //		if (event) {
 //		 	//set tooltip of visit with link
-//			forms.WEB_0F_page__design__button_tab__content.elements.btn_visit.toolTipText = globals.WEB_MRKUP_link_page(id_page)
+//			forms.WEB_0F_page__design_1F__button_tab_2F__content.elements.btn_visit.toolTipText = globals.WEB_MRKUP_link_page(id_page)
 //		}
 		
 		//select page version of tri globals
@@ -87,12 +87,12 @@ function REC_on_select(event,webMode,skipLoad,verIndex,fireSelect) {
 			//specified index to be selected
 			if (verIndex) {
 				//set selected index
-				forms.WEB_0F_page__design__content.foundset.setSelectedIndex(verIndex)
+				forms.WEB_0F_page__design_1F_version.foundset.setSelectedIndex(verIndex)
 			}
 			//there is info about the active version
 			else if (activeInfo) {
 				//set selected index
-				forms.WEB_0F_page__design__content.foundset.setSelectedIndex(activeInfo.position)
+				forms.WEB_0F_page__design_1F_version.foundset.setSelectedIndex(activeInfo.position)
 				
 				//set version to be the active one
 				globals.WEB_page_version = activeInfo.record.id_version
@@ -177,7 +177,7 @@ function URL_update(webMode) {
 				//also, the version here is wrong, need to get for internal link
 //			globals.WEB_preview_url = 
 //				globals.WEB_MRKUP_link_page(page_link_internal,null,'Edit',webMode) + 
-//				"&version=" + forms.WEB_0F_page__browser__editor.url_param
+//				"&version=" + forms.WEB_0F_page__browser_1F_block__editor.url_param
 //			plugins.dialogs.showInfoDialog('Coming soon...','Internal links can not be edited in real mode yet')
 			var fsPage = databaseManager.getFoundSet('sutra_cms','web_page')
 			fsPage.find()
@@ -197,20 +197,20 @@ function URL_update(webMode) {
 		else {
 			var urlString = globals.WEB_MRKUP_link_page(id_page,null,'Edit',webMode)
 			
-			if (utils.hasRecords(forms.WEB_0F_page__design__header_display__platform._platform)) {
-				urlString += "&platform=" + forms.WEB_0F_page__design__header_display__platform._platform.url_param
+			if (utils.hasRecords(forms.WEB_0F_page__design_1F__header_display_2F_platform._platform)) {
+				urlString += "&platform=" + forms.WEB_0F_page__design_1F__header_display_2F_platform._platform.url_param
 			}
 			
-			if (utils.hasRecords(forms.WEB_0F_page__design__header_display__language._language)) {
-				urlString += "&language=" + forms.WEB_0F_page__design__header_display__language._language.url_param
+			if (utils.hasRecords(forms.WEB_0F_page__design_1F__header_display_2F_language._language)) {
+				urlString += "&language=" + forms.WEB_0F_page__design_1F__header_display_2F_language._language.url_param
 			}
 			
-			if (utils.hasRecords(forms.WEB_0F_page__design__header_display__group._group)) {
-				urlString += "&group=" + forms.WEB_0F_page__design__header_display__group._group.url_param
+			if (utils.hasRecords(forms.WEB_0F_page__design_1F__header_display_2F_group._group)) {
+				urlString += "&group=" + forms.WEB_0F_page__design_1F__header_display_2F_group._group.url_param
 			}
 			
-			if (utils.hasRecords(forms.WEB_0F_page__design__content.foundset)) {
-				urlString += "&version=" + forms.WEB_0F_page__design__content.url_param
+			if (utils.hasRecords(forms.WEB_0F_page__design_1F_version.foundset)) {
+				urlString += "&version=" + forms.WEB_0F_page__design_1F_version.url_param
 			}
 			
 			globals.WEB_preview_url = urlString
@@ -257,23 +257,23 @@ function BLOCK_edit(idBlock) {
 	
 	var blockID = idBlock.split("-")
 	
-	forms.WEB_0F_page__browser__editor._dataID = convertUUID(blockID[blockID.length - 1])
+	forms.WEB_0F_page__browser_1F_block__editor._dataID = convertUUID(blockID[blockID.length - 1])
 	
 	var content = databaseManager.getFoundSet(controller.getServerName(),"web_block")
-	content.loadRecords(application.getUUID(forms.WEB_0F_page__browser__editor._dataID))
+	content.loadRecords(application.getUUID(forms.WEB_0F_page__browser_1F_block__editor._dataID))
 	
 	//load correct record
-	forms.WEB_0F_page__browser__editor.foundset.loadRecords(content)
+	forms.WEB_0F_page__browser_1F_block__editor.foundset.loadRecords(content)
 	
 	//load in correct forms
-	var statusBlock = forms.WEB_0F_page__browser__editor.FORM_on_show()
+	var statusBlock = forms.WEB_0F_page__browser_1F_block__editor.FORM_on_show()
 	
 	//only show block edit if something successfully loaded in
 	if (statusBlock) {
 		SPLIT_set(true)
 	}
 	else {
-		forms.WEB_0F_page__browser__editor.ACTION_hide()
+		forms.WEB_0F_page__browser_1F_block__editor.ACTION_hide()
 	}
 }
 
@@ -302,7 +302,7 @@ function FORM_on_show(firstShow, event) {
  */
 function SPLIT_set(editMode) {
 	
-	var editLocation = forms.WEB_0F_page__browser__editor._editLocation
+	var editLocation = forms.WEB_0F_page__browser_1F_block__editor._editLocation
 	
 	//edit mode on
 	if (editMode) {
@@ -367,7 +367,7 @@ function FORM_on_load(event) {
 function BLOCK_new(areaID) {
 	
 	//show picker for type of block and create
-	var newBlock = forms.WEB_0F_page__design__content_1L_block.BLOCK_new(areaID)
+	var newBlock = forms.WEB_0F_page__design_1F_version_2L_scope.BLOCK_new(areaID)
 	
 	//add editor to the screen if new block not cancelled
 	if (newBlock) {
@@ -375,7 +375,7 @@ function BLOCK_new(areaID) {
 	}
 	//resume edit mode
 	else {
-		forms.WEB_0F_page__browser__editor.ACTION_hide()
+		forms.WEB_0F_page__browser_1F_block__editor.ACTION_hide()
 	}
 	
 	//MEMO: page will be redrawn if block saved after edit mode

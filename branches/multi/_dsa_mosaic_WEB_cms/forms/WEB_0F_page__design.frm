@@ -8,7 +8,7 @@ items:[
 {
 containsFormID:"AF305FBE-058C-4407-9B8E-A74CDA373875",
 location:"0,25",
-text:"WEB_0F_page__design__header_display",
+text:"WEB_0F_page__design_1F__header_display",
 typeid:15,
 uuid:"9B68F4D7-B3C1-4504-910F-E2EBAC031786"
 },
@@ -16,7 +16,7 @@ uuid:"9B68F4D7-B3C1-4504-910F-E2EBAC031786"
 containsFormID:"07ED1214-BA49-4CEC-8FA2-394EB66E6123",
 location:"80,53",
 relationName:"web_page_to_block__scope",
-text:"WEB_0F_scrapbook__header",
+text:"WEB_0F_block__scrapbook__header",
 typeid:15,
 uuid:"9CFF764E-8F9C-4A85-B283-C6E27D95F265"
 },
@@ -43,7 +43,7 @@ items:[
 {
 containsFormID:"ECA50472-3D91-4AB9-8D8C-6092A114FD3D",
 location:"0,0",
-text:"WEB_0F_page__design__button_tab",
+text:"WEB_0F_page__design_1F__button_tab",
 typeid:15,
 uuid:"7977F74B-FF1F-4E80-B7F7-90FA6117DA17"
 }
@@ -60,7 +60,7 @@ uuid:"1AEB74DE-DABA-4616-8AEE-7F0608FA9B95"
 anchors:15,
 background:"#323a4b",
 formIndex:12001,
-location:"60,0",
+location:"10,0",
 mediaOptions:4,
 name:"gfx_curtain",
 onActionMethodID:"CBA4256A-1CF7-42E4-A265-237E6AB08408",
@@ -86,7 +86,7 @@ items:[
 containsFormID:"6894EB97-1D0D-485F-B59A-EE011A7D0EB0",
 location:"30,130",
 relationName:"web_page_to_block__scope",
-text:"WEB_0F_scrapbook",
+text:"WEB_0F_block__scrapbook",
 typeid:15,
 uuid:"2DE33751-1170-4D19-B4C6-3D8F39153B72"
 },

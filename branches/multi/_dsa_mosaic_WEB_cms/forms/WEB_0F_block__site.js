@@ -58,7 +58,7 @@ function FORM_on_show(firstShow, event) {
 	}
 	
 	//refire rec on select
-	forms.WEB_0F_scrapbook.REC_on_select()
+	forms.WEB_0F_block__scrapbook.REC_on_select()
 }
 
 /**
@@ -82,21 +82,21 @@ function FORM_on_hide(event) {
  * @properties={typeid:24,uuid:"CD3AFEB7-E52F-41CE-A386-1B1ADD6DBCDA"}
  */
 function REC_new() {
-	forms.WEB_0F_scrapbook.REC_new()
+	forms.WEB_0F_block__scrapbook.REC_new()
 }
 
 /**
  * @properties={typeid:24,uuid:"C6370DDA-EC65-4BE2-9127-A873867C2674"}
  */
 function REC_delete() {
-	forms.WEB_0F_scrapbook.REC_delete()
+	forms.WEB_0F_block__scrapbook.REC_delete()
 }
 
 /**
  * @properties={typeid:24,uuid:"DF8736B4-8AF2-4D25-9AA1-B92968C11944"}
  */
 function FOUNDSET_restrict(noSutra) {
-	return forms.WEB_0F_scrapbook.FOUNDSET_restrict(true, noSutra, 2)
+	return forms.WEB_0F_block__scrapbook.FOUNDSET_restrict(true, noSutra, 2)
 }
 
 /**

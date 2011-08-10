@@ -14,7 +14,7 @@ var _license_dsa_mosaic_WEB_cms = 'Module: _dsa_mosaic_WEB_cms \
  */
 function ACTION_mode(event) {
 	//switch between gui and data mode
-	forms.WEB_0F_scrapbook__header.TOGGLE_mode(event)
+	forms.WEB_0F_block__scrapbook__header.TOGGLE_mode(event)
 }
 
 /**
@@ -50,7 +50,7 @@ function TOGGLE_edit_mode(editMode,saveData) {
 	}
 	
 	//no records, cannot enter edit mode
-	if (_editMode && !utils.hasRecords(forms.WEB_0F_scrapbook.foundset)) {
+	if (_editMode && !utils.hasRecords(forms.WEB_0F_block__scrapbook.foundset)) {
 		_editMode = false
 		
 		plugins.dialogs.showErrorDialog(
@@ -71,16 +71,16 @@ function TOGGLE_edit_mode(editMode,saveData) {
 		globals.TRIGGER_interface_lock(true)
 		
 		//show actions
-		forms.WEB_0F_scrapbook__gui.elements.btn_data_actions.enabled = true
-		forms.WEB_0F_scrapbook__data.elements.btn_data_actions.enabled = true
+		forms.WEB_0F_block__scrapbook_1F__gui.elements.btn_data_actions.enabled = true
+		forms.WEB_0F_block__scrapbook_1F__data.elements.btn_data_actions.enabled = true
 		
 		//enable raw data mode fields for editing
-		forms.WEB_0F_page__design__content_1F_block_data__raw_2L_block_data.elements.edit_data_value.editable = true
-		forms.WEB_0F_page__design__content_1F_block_data__raw_2L_block_data_configure.elements.edit_data_value.editable = true
-		forms.WEB_0F_page__design__content_1F_block_data__raw_2L_block_data_response.elements.edit_data_value.editable = true
+		forms.WEB_0F_page__design_1F_version_2F_block__data_3L_block_data.elements.edit_data_value.editable = true
+		forms.WEB_0F_page__design_1F_version_2F_block__data_3L_block_data_configure.elements.edit_data_value.editable = true
+		forms.WEB_0F_page__design_1F_version_2F_block__data_3L_block_data_response.elements.edit_data_value.editable = true
 		
 		//allow to rename scrapbook
-		forms.WEB_0F_scrapbook__header.LBL_block_name__action()
+		forms.WEB_0F_block__scrapbook__header.LBL_block_name__action()
 		
 		//toggle elements
 		elements.btn_cancel.visible = true
@@ -88,22 +88,22 @@ function TOGGLE_edit_mode(editMode,saveData) {
 		elements.btn_edit.visible = false
 		
 		//deleting
-		forms.WEB_0F_scrapbook__blocks.elements.btn_add.visible = true
-		forms.WEB_0F_scrapbook_1L_block.elements.btn_delete.visible = true
-		forms.WEB_0F_scrapbook_1L_block_version.elements.btn_delete.visible = true
-		forms.WEB_0F_scrapbook_1L_block_version.elements.fld_version_description.editable = true
+		forms.WEB_0F_block__scrapbook_1F_page__blocks.elements.btn_add.visible = true
+		forms.WEB_0F_block__scrapbook_1F_page__blocks_2L_block.elements.btn_delete.visible = true
+		forms.WEB_0F_block__scrapbook_1F__sidebar_2L_block_version.elements.btn_delete.visible = true
+		forms.WEB_0F_block__scrapbook_1F__sidebar_2L_block_version.elements.fld_version_description.editable = true
 		
 		//enable changing the view for this block
-		forms.WEB_0F_scrapbook__header.elements.fld_view.enabled = true
+		forms.WEB_0F_block__scrapbook__header.elements.fld_view.enabled = true
 	}
 	//exiting edit mode
 	else if (currentState) {
 		//save the data
 		if (saveData) {
 			//when in gui mode, save
-			if (forms.WEB_0F_scrapbook.elements.tab_main.tabIndex == 1) {
+			if (forms.WEB_0F_block__scrapbook.elements.tab_main.tabIndex == 1) {
 				//load in correct gui representation for this block type
-				var recScrapbook = forms.WEB_0F_scrapbook.foundset.getSelectedRecord()
+				var recScrapbook = forms.WEB_0F_block__scrapbook.foundset.getSelectedRecord()
 		
 				if (recScrapbook && utils.hasRecords(recScrapbook.web_block_to_block_type)) {
 					var recBlockType = recScrapbook.web_block_to_block_type.getRecord(1)
@@ -119,7 +119,7 @@ function TOGGLE_edit_mode(editMode,saveData) {
 			}
 			
 			//update modification date on this record
-			forms.WEB_0F_scrapbook.web_block_to_block_version.rec_modified = application.getServerTimeStamp()
+			forms.WEB_0F_block__scrapbook.web_block_to_block_version.rec_modified = application.getServerTimeStamp()
 			
 			databaseManager.saveData()
 		}
@@ -134,16 +134,16 @@ function TOGGLE_edit_mode(editMode,saveData) {
 		globals.TRIGGER_interface_lock(false)
 		
 		//hide actions
-		forms.WEB_0F_scrapbook__gui.elements.btn_data_actions.enabled = false
-		forms.WEB_0F_scrapbook__data.elements.btn_data_actions.enabled = false
+		forms.WEB_0F_block__scrapbook_1F__gui.elements.btn_data_actions.enabled = false
+		forms.WEB_0F_block__scrapbook_1F__data.elements.btn_data_actions.enabled = false
 		
 		//disable raw data mode fields for editing
-		forms.WEB_0F_page__design__content_1F_block_data__raw_2L_block_data.elements.edit_data_value.editable = false
-		forms.WEB_0F_page__design__content_1F_block_data__raw_2L_block_data_configure.elements.edit_data_value.editable = false
-		forms.WEB_0F_page__design__content_1F_block_data__raw_2L_block_data_response.elements.edit_data_value.editable = false
+		forms.WEB_0F_page__design_1F_version_2F_block__data_3L_block_data.elements.edit_data_value.editable = false
+		forms.WEB_0F_page__design_1F_version_2F_block__data_3L_block_data_configure.elements.edit_data_value.editable = false
+		forms.WEB_0F_page__design_1F_version_2F_block__data_3L_block_data_response.elements.edit_data_value.editable = false
 		
 		//save scrapbook name
-		forms.WEB_0F_scrapbook__header.FLD_block_name__save()
+		forms.WEB_0F_block__scrapbook__header.FLD_block_name__save()
 		
 		//toggle elements
 		forms.WEB_A__scrapbook.elements.btn_cancel.visible = false
@@ -151,25 +151,25 @@ function TOGGLE_edit_mode(editMode,saveData) {
 		forms.WEB_A__scrapbook.elements.btn_edit.visible = true
 		
 		//deleting
-		forms.WEB_0F_scrapbook__blocks.elements.btn_add.visible = false
-		forms.WEB_0F_scrapbook_1L_block.elements.btn_delete.visible = false
-		forms.WEB_0F_scrapbook_1L_block_version.elements.btn_delete.visible = false
-		forms.WEB_0F_scrapbook_1L_block_version.elements.fld_version_description.editable = false
+		forms.WEB_0F_block__scrapbook_1F_page__blocks.elements.btn_add.visible = false
+		forms.WEB_0F_block__scrapbook_1F_page__blocks_2L_block.elements.btn_delete.visible = false
+		forms.WEB_0F_block__scrapbook_1F__sidebar_2L_block_version.elements.btn_delete.visible = false
+		forms.WEB_0F_block__scrapbook_1F__sidebar_2L_block_version.elements.fld_version_description.editable = false
 		
 		//disable changing the view for this block
-		forms.WEB_0F_scrapbook__header.elements.fld_view.enabled = false
+		forms.WEB_0F_block__scrapbook__header.elements.fld_view.enabled = false
 		
 		//set elements appropriately (can remove when update sutra core)
-		forms.WEB_0F_page__design__header_display__version.TOGGLE_elements()
-		forms.WEB_0F_page__design__content_1L_area.TOGGLE_elements(_editMode)
-		forms.WEB_0F_page__design__content_1L_block.TOGGLE_elements(_editMode)
-		forms.WEB_0F_page__design__content_1F_block_data__raw.TOGGLE_elements(_editMode)
-		forms.WEB_0F_page__design__properties.TOGGLE_elements(_editMode)
-		forms.WEB_0F_page__design__content_1L_block.REC_on_select(null,true)
+		forms.WEB_0F_page__design_1F__header_display__version.TOGGLE_elements()
+		forms.WEB_0F_page__design_1F_version_2L_area.TOGGLE_elements(_editMode)
+		forms.WEB_0F_page__design_1F_version_2L_scope.TOGGLE_elements(_editMode)
+		forms.WEB_0F_page__design_1F_version_2F_block__data.TOGGLE_elements(_editMode)
+		forms.WEB_0F_page__design_1F__properties.TOGGLE_elements(_editMode)
+		forms.WEB_0F_page__design_1F_version_2L_scope.REC_on_select(null,true)
 	}
 	
 	//redo the screen
-	forms.WEB_0F_scrapbook.REC_on_select()
+	forms.WEB_0F_block__scrapbook.REC_on_select()
 }
 
 /**

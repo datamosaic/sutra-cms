@@ -40,7 +40,7 @@ items:[
 containsFormID:"6894EB97-1D0D-485F-B59A-EE011A7D0EB0",
 location:"0,110",
 relationName:"web_block_to_block",
-text:"WEB_0F_scrapbook",
+text:"WEB_0F_block__scrapbook",
 typeid:15,
 uuid:"B595F927-1368-47F9-A325-368416C96B99"
 }
@@ -67,7 +67,7 @@ items:[
 containsFormID:"07ED1214-BA49-4CEC-8FA2-394EB66E6123",
 location:"10,30",
 relationName:"web_block_to_block",
-text:"WEB_0F_scrapbook__header",
+text:"WEB_0F_block__scrapbook__header",
 typeid:15,
 uuid:"8A4E9FA2-D0B2-41DB-B933-A557FEB4C392"
 }

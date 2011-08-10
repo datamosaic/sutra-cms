@@ -197,7 +197,7 @@ function FIND_post_process(count) {
  */
 function ACTION_edit_get() {
 	//disable edits if lock flag set
-	if (!utils.hasRecords(forms.WEB_0F_page__design__content.foundset) || forms.WEB_0F_page__design__content.flag_lock) {
+	if (!utils.hasRecords(forms.WEB_0F_page__design_1F_version.foundset) || forms.WEB_0F_page__design_1F_version.flag_lock) {
 		var editAllow = false
 	}
 	//real mode in edit mode
@@ -271,10 +271,10 @@ function SET_globals() {
 		}
 	}
 	if (pageVersion) {
-		forms.WEB_0F_page__design__header_display__platform._platform.loadRecords(pageVersion.id_platform)
+		forms.WEB_0F_page__design_1F__header_display_2F_platform._platform.loadRecords(pageVersion.id_platform)
 	}
 	else {
-		forms.WEB_0F_page__design__header_display__platform._platform.clear()
+		forms.WEB_0F_page__design_1F__header_display_2F_platform._platform.clear()
 	}
 	
 	//store page version of language
@@ -289,10 +289,10 @@ function SET_globals() {
 		}
 	}
 	if (pageVersion) {
-		forms.WEB_0F_page__design__header_display__language._language.loadRecords(pageVersion.id_language)
+		forms.WEB_0F_page__design_1F__header_display_2F_language._language.loadRecords(pageVersion.id_language)
 	}
 	else {
-		forms.WEB_0F_page__design__header_display__language._language.clear()
+		forms.WEB_0F_page__design_1F__header_display_2F_language._language.clear()
 	}
 	
 	//store page version of group
@@ -306,17 +306,17 @@ function SET_globals() {
 			}
 		}
 		if (pageVersion) {
-			forms.WEB_0F_page__design__header_display__group._group.loadRecords(pageVersion.id_group)
+			forms.WEB_0F_page__design_1F__header_display_2F_group._group.loadRecords(pageVersion.id_group)
 		}
 		else {
-			forms.WEB_0F_page__design__header_display__group._group.clear()
+			forms.WEB_0F_page__design_1F__header_display_2F_group._group.clear()
 		}
 	}
 	
 	//update tooltips for page version globals
-	forms.WEB_0F_page__design__header_display__platform.SET_tooltip()
-	forms.WEB_0F_page__design__header_display__language.SET_tooltip()
-	forms.WEB_0F_page__design__header_display__group.SET_tooltip()
+	forms.WEB_0F_page__design_1F__header_display_2F_platform.SET_tooltip()
+	forms.WEB_0F_page__design_1F__header_display_2F_language.SET_tooltip()
+	forms.WEB_0F_page__design_1F__header_display_2F_group.SET_tooltip()
 }
 
 /**
@@ -376,7 +376,7 @@ function SET_valuelists() {
 					valid = true
 					
 					//this is the selected record and it's valid
-					if (utils.hasRecords(forms.WEB_0F_page__design__header_display__platform._platform) && forms.WEB_0F_page__design__header_display__platform._platform.id_platform.toString() == recPage.id_platform.toString()) {
+					if (utils.hasRecords(forms.WEB_0F_page__design_1F__header_display_2F_platform._platform) && forms.WEB_0F_page__design_1F__header_display_2F_platform._platform.id_platform.toString() == recPage.id_platform.toString()) {
 						var platformValid = true
 					}
 				}
@@ -425,14 +425,14 @@ function SET_valuelists() {
 					
 					//2- is there a version stack
 					fsVersions.find()
-					fsVersions.id_platform = forms.WEB_0F_page__design__header_display__platform._platform.id_platform.toString()
+					fsVersions.id_platform = forms.WEB_0F_page__design_1F__header_display_2F_platform._platform.id_platform.toString()
 					fsVersions.id_language = recPage.id_language.toString()
 					var results = fsVersions.search()
 					if (results) {
 						valid = true
 						
 						//this is the selected record and it's valid
-						if (utils.hasRecords(forms.WEB_0F_page__design__header_display__language._language) && forms.WEB_0F_page__design__header_display__language._language.id_language.toString() == recPage.id_language.toString()) {
+						if (utils.hasRecords(forms.WEB_0F_page__design_1F__header_display_2F_language._language) && forms.WEB_0F_page__design_1F__header_display_2F_language._language.id_language.toString() == recPage.id_language.toString()) {
 							var languageValid = true
 						}
 					}
@@ -483,15 +483,15 @@ function SET_valuelists() {
 					
 					//2- is there a version stack
 					fsVersions.find()
-					fsVersions.id_platform = forms.WEB_0F_page__design__header_display__platform._platform.id_platform.toString()
-					fsVersions.id_language = forms.WEB_0F_page__design__header_display__language._language.id_language.toString()
+					fsVersions.id_platform = forms.WEB_0F_page__design_1F__header_display_2F_platform._platform.id_platform.toString()
+					fsVersions.id_language = forms.WEB_0F_page__design_1F__header_display_2F_language._language.id_language.toString()
 					fsVersions.id_group = recPage.id_group.toString()
 					var results = fsVersions.search()
 					if (results) {
 						valid = true
 						
 						//this is the selected record and it's valid
-						if (utils.hasRecords(forms.WEB_0F_page__design__header_display__group._group) && forms.WEB_0F_page__design__header_display__group._group.id_group.toString() == recPage.id_group.toString()) {
+						if (utils.hasRecords(forms.WEB_0F_page__design_1F__header_display_2F_group._group) && forms.WEB_0F_page__design_1F__header_display_2F_group._group.id_group.toString() == recPage.id_group.toString()) {
 							var groupValid = true
 						}
 					}

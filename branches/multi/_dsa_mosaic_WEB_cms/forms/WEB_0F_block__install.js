@@ -76,7 +76,7 @@ function REC_on_select(event) {
  * @properties={typeid:24,uuid:"57648298-D5DB-4B84-90DA-FE29AAF766D1"}
  */
 function FOUNDSET_restrict(noSutra) {
-	return forms.WEB_0F_scrapbook.FOUNDSET_restrict(true, noSutra, 3)
+	return forms.WEB_0F_block__scrapbook.FOUNDSET_restrict(true, noSutra, 3)
 }
 
 /**
@@ -100,12 +100,12 @@ function FORM_on_hide(event) {
  * @properties={typeid:24,uuid:"8863C66D-CB58-44AF-BB28-7E3D36825E26"}
  */
 function REC_new() {
-	forms.WEB_0F_scrapbook.REC_new()
+	forms.WEB_0F_block__scrapbook.REC_new()
 }
 
 /**
  * @properties={typeid:24,uuid:"A5DEC027-0B50-487E-9B5A-518297598C05"}
  */
 function REC_delete() {
-	forms.WEB_0F_scrapbook.REC_delete()
+	forms.WEB_0F_block__scrapbook.REC_delete()
 }

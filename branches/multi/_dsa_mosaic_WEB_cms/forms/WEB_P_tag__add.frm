@@ -12,7 +12,7 @@ onDataChangeMethodID:"-1",
 scrollbars:33,
 size:"245,114",
 styleClass:"valuelist",
-tabSeq:2,
+tabSeq:3,
 typeid:4,
 uuid:"1d87d9a1-c32b-4f9c-b63f-02a21c5b1c9a",
 valuelistID:"A44FFBB5-DE14-41FB-94FD-94E11C1F779D"

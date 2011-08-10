@@ -104,7 +104,7 @@ var WEB_tag_choose = null;
  */
 function WEB_simple_edit(event) {
 
-	var append = '__button_tab'
+	var append = '_1F__button_tab'
 	var buttonsName = (event.getFormName) ? event.getFormName() : event
 	var formName = buttonsName.substring(0,buttonsName.length - append.length)
 	
@@ -117,7 +117,7 @@ function WEB_simple_edit(event) {
 	if (forms[formName].elements.tab_header_detail.tabIndex != 2) {
 		//allowed to roll-down header area?
 			//MEMO: this global method only used on pages screen; so modifcations ok
-		if (!forms.WEB_0T_page._addRecord && forms.WEB_0F_page.page_type == 0 && !utils.hasRecords(forms.WEB_0F_page__design__content.foundset)) {
+		if (!forms.WEB_0T_page._addRecord && forms.WEB_0F_page.page_type == 0 && !utils.hasRecords(forms.WEB_0F_page__design_1F_version.foundset)) {
 			plugins.dialogs.showQuestionDialog(
 						'Error',
 						'No version selected'
@@ -217,7 +217,7 @@ function WEB_simple_save() {
 	
 	//if false returned from custom method, don't save
 	if ((typeof proceed == 'boolean') ? proceed : true) {
-		var suffix = '__header_edit'
+		var suffix = '_1F__header_edit'
 		var parentForm = formName.substring(0,formName.length - suffix.length)
 		
 		//get offset from forms
@@ -242,8 +242,8 @@ function WEB_simple_save() {
 		forms[parentForm].elements.tab_main.setSize(forms[parentForm].elements.tab_header_button.getWidth(),forms[parentForm].elements.tab_main.getHeight() + offset)
 		
 		//flip graphic
-		forms[parentForm + '__button_tab'].elements.btn_cancel.visible = false
-		forms[parentForm + '__button_tab'].elements.btn_edit.visible = true
+		forms[parentForm + '_1F__button_tab'].elements.btn_cancel.visible = false
+		forms[parentForm + '_1F__button_tab'].elements.btn_edit.visible = true
 		
 		//unfreeze screen if locked
 		if (solutionPrefs.config.lockStatus) {
@@ -269,11 +269,11 @@ function WEB_simple_cancel() {
 	
 	var callingForm = application.getMethodTriggerFormName()
 	
-	var suffix = '__header_edit'
+	var suffix = '_1F__header_edit'
 	
 	var formName = callingForm.substring(0,callingForm.length - suffix.length)
 	
-	var buttonsForm = formName + '__button_tab'
+	var buttonsForm = formName + '_1F__button_tab'
 	
 	globals.WEB_simple_edit(buttonsForm)
 
@@ -777,7 +777,7 @@ function WEB_page_new(pageName,pageType,parentID,themeID,layoutID) {
 			//new area to create
 			var editable =  layout.web_layout_to_editable.getRecord(i)
 			
-			var newArea = forms.WEB_0F_page__design__header_display__version.AREA_new(editable,newVersion,i)
+			var newArea = forms.WEB_0F_page__design_1F__header_display__version.AREA_new(editable,newVersion,i)
 		}
 		
 		// finish up

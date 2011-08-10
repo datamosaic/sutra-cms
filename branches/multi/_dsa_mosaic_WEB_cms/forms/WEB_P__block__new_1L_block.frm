@@ -37,7 +37,7 @@ uuid:"4C175AC4-9E78-4C3A-B2E7-50BB9247449B"
 },
 {
 anchors:15,
-dataProviderID:"block_description",
+dataProviderID:"web_block_to_block_version.version_description",
 displayType:1,
 editable:false,
 formIndex:10700,
