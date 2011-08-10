@@ -1,4 +1,19 @@
 /**
+ * @properties={typeid:35,uuid:"9369E074-5F4A-46A1-BFA4-741F442248F6"}
+ */
+var _scopePlatform = null;
+
+/**
+ * @properties={typeid:35,uuid:"AD05F666-8B75-40D6-BD00-B381C4C503B4"}
+ */
+var _scopeGroup = null;
+
+/**
+ * @properties={typeid:35,uuid:"3937DFE9-2396-4648-9CFC-22A6D98FC82E"}
+ */
+var _scopeLanguage = null;
+
+/**
  * @properties={typeid:35,uuid:"D30001EE-2E04-408B-87BA-0DE1CFC32E23",variableType:-4}
  */
 var _refresh = false;
@@ -50,8 +65,7 @@ function ACTIONS_list() {
 		}
 	}
 	
-		
-	//get menu list from a value list
+	//list of actions
 	var valueList = [
 			'Duplicate record',
 			'Update theme...',
@@ -60,6 +74,8 @@ function ACTIONS_list() {
 			'Toggle open',
 			'Toggle closed',
 			'-',
+			'Scope',
+			'-',
 			'Delete record',
 			'-',
 //			'Delete all unnamed pages',
@@ -67,10 +83,83 @@ function ACTIONS_list() {
 			'Flush client cache'
 		]
 	
+	//get site record for this page; or the record selected on the site form; or blank
+	var siteRec = utils.hasRecords(foundset) ? web_page_to_site.getSelectedRecord() : (utils.hasRecords(forms.WEB_0F_site.foundset) ? forms.WEB_0F_site.foundset.getSelectedRecord() : null)
+	
+	if (siteRec) {
+		//loop over all platforms
+		var platforms = new Array()
+		for (var i = 1; i <= siteRec.web_site_to_site_platform.getSize(); i++) {
+			var record = siteRec.web_site_to_site_platform.getRecord(i)
+			
+			//selected platform
+			if (record.id_site_platform.toString() == _scopePlatform) {
+				platforms.push(plugins.popupmenu.createCheckboxMenuItem(record.platform_name + "", ACTIONS_list_control))
+				platforms[platforms.length - 1].setMethodArguments(7,'Platform',null)
+				platforms[platforms.length - 1].setSelected(true)
+			}
+			//non-selected platform
+			else {
+				platforms.push(plugins.popupmenu.createMenuItem(record.platform_name + "", ACTIONS_list_control))
+				platforms[platforms.length - 1].setMethodArguments(7,'Platform',record.id_site_platform.toString())
+			}
+		}
+		
+		//loop over all languages
+		var languages = new Array()
+		for (var i = 1; i <= siteRec.web_site_to_site_language.getSize(); i++) {
+			var record = siteRec.web_site_to_site_language.getRecord(i)
+			
+			//selected platform
+			if (record.id_site_language.toString() == _scopeLanguage) {
+				languages.push(plugins.popupmenu.createCheckboxMenuItem(record.language_name + "", ACTIONS_list_control))
+				languages[languages.length - 1].setMethodArguments(7,'Language',null)
+				languages[languages.length - 1].setSelected(true)
+			}
+			//non-selected platform
+			else {
+				languages.push(plugins.popupmenu.createMenuItem(record.language_name + "", ACTIONS_list_control))
+				languages[languages.length - 1].setMethodArguments(7,'Language',record.id_site_language.toString())
+			}
+		}
+		
+		//loop over all groups
+		var groups = new Array()
+		for (var i = 1; i <= siteRec.web_site_to_site_group.getSize(); i++) {
+			var record = siteRec.web_site_to_site_group.getRecord(i)
+			
+			//selected platform
+			if (record.id_site_group.toString() == _scopeGroup) {
+				groups.push(plugins.popupmenu.createCheckboxMenuItem(record.group_name + "", ACTIONS_list_control))
+				groups[groups.length - 1].setMethodArguments(7,'Group',null)
+				groups[groups.length - 1].setSelected(true)
+			}
+			//non-selected platform
+			else {
+				groups.push(plugins.popupmenu.createMenuItem(record.group_name + "", ACTIONS_list_control))
+				groups[groups.length - 1].setMethodArguments(7,'Group',record.id_site_group.toString())
+			}
+		}
+		
+		//list of scopes
+		var scopes = new Array()
+		scopes.push(plugins.popupmenu.createMenuItem('Platform', platforms))
+		scopes.push(plugins.popupmenu.createMenuItem('Language', languages))
+		scopes.push(plugins.popupmenu.createMenuItem('Group', groups))
+	}
+	//remove option for scoping
+	else {
+		var noScope = true
+	}
+	
 	//build menu
-	var menu = new Array
+	var menu = new Array()
 	for ( var i = 0 ; i < valueList.length ; i++ ) {
 		menu[i] = plugins.popupmenu.createMenuItem(valueList[i] + "", ACTIONS_list_control)
+	}
+	
+	if (!noScope) {
+		menu[7] = plugins.popupmenu.createMenuItem(valueList[7] + "", scopes)
 	}
 	
 	//set menu method arguments
@@ -81,9 +170,15 @@ function ACTIONS_list() {
 		
 		//disable dividers
 		if (valueList[x] == '-' || valueList[x] == '----' ||
+			//duplicate not an option until coding finished
 			x == 0 ||
+			//unauthorized to duplicate
 			(x == 0 && !globals.TRIGGER_registered_action_authenticate('cms page duplicate')) ||
-			((x == 5 || x == 7) && !globals.TRIGGER_registered_action_authenticate('cms page delete')) ) {
+			//unauthorized to delete
+			((x == 9) && !globals.TRIGGER_registered_action_authenticate('cms page delete')) ||
+			//no page records, scoping isn't an option
+			noScope && x == 7) {
+			
 			menu[x].setEnabled(false)
 		}
 		
@@ -112,9 +207,9 @@ function ACTIONS_list() {
  *
  * @properties={typeid:24,uuid:"C271B727-FA9C-49A1-BBFC-C1EABE4BEB36"}
  */
-function ACTIONS_list_control() {
+function ACTIONS_list_control(input,scopeType,scopeValue) {
 	
-	switch (arguments[0]) {
+	switch (input) {
 		case 0: //duplicate record
 			REC_duplicate()
 			break
@@ -134,8 +229,32 @@ function ACTIONS_list_control() {
 		case 5: //toggle closed
 			TOGGLE_nodes(0)
 			break
-		
-		case 7:	//delete record
+			
+		case 7: //scoping
+			//set appropriate globals
+			switch (scopeType) {
+				case 'Platform':
+					_scopePlatform = scopeValue
+					break
+				case 'Language':
+					_scopeLanguage = scopeValue
+					break
+				case 'Group':
+					_scopeGroup = scopeValue
+					break
+			}
+			
+			//reload the tree
+			TREE_refresh()
+			
+			//highlight correct record (things are firing too frequently here...if i comment out the selection path; 3 less rec_on_selects happen
+			application.updateUI()
+			elements.bean_tree.selectionPath = FIND_path(forms.WEB_0F_page.foundset.getSelectedRecord())
+//			REC_on_select(forms.WEB_0F_page.foundset.getSelectedRecord().id_page.toString())
+			
+			break
+			
+		case 9:	//delete record
 			REC_delete()
 			break	
 		
@@ -170,7 +289,7 @@ function ACTIONS_list_control() {
 //			}
 //			break
 			
-		case 9: //flush client cache
+		case 11: //flush client cache
 			//TODO: a progressbar indicator...better yet, spawn a headless client on the server
 			globals.CODE_cursor_busy(true)
 			var tables = databaseManager.getTableNames('sutra_cms')
@@ -247,7 +366,7 @@ function FORM_on_load(event) {
 	beanTree.setMethodToCallOnCheckBoxChange(REC_column_publish,'id_page')
 	
 	//relation to build tree on
-	beanTree.setNRelationName('web_page_to_page__child') 
+	beanTree.setNRelationName('web_page_to_page__child')
 	
 	//sorting of children
 	beanTree.setChildSortDataprovider('globals.WEB_page_sort')
@@ -1240,6 +1359,15 @@ function TREE_refresh() {
 		// search for null values 
 		forms.WEB_0F_page.foundset.parent_id_page = '^='
 		forms.WEB_0F_page.foundset.id_site = forms.WEB_0F_site.id_site
+		if (_scopePlatform) {
+			forms.WEB_0F_page.web_page_to_platform.id_site_platform = _scopePlatform
+		}
+		if (_scopeLanguage) {
+			forms.WEB_0F_page.web_page_to_language.id_site_language = _scopeLanguage
+		}
+		if (_scopeGroup) {
+			forms.WEB_0F_page.web_page_to_group.id_site_group = _scopeGroup
+		}
 		var results = forms.WEB_0F_page.foundset.search()
 		
 		//manage the sort of the top-level nodes
