@@ -521,27 +521,6 @@ function FOUNDSET_restrict(returnContent, noSutra, scrapbookScope) {
 }
 
 /**
- * Handle hide window.
- *
- * @param {JSEvent} event the event that triggered the action
- *
- * @returns {Boolean}
- *
- * @properties={typeid:24,uuid:"B6058009-92CF-486A-A193-0B1CB44C736B"}
- */
-function FORM_on_hide(event) {
-//	//show bean lines on resource tabpanel forms
-//	forms.WEB_0F_page__design_1F_version_2F_block__gui.elements.lbl_lefthand.visible = true
-//	forms.WEB_0F_page__design_1F_version_2F_block__data.elements.lbl_lefthand.visible = true
-//	
-//	//hide tab panel bordering
-//	forms.WEB_0F_page__design_1F_version_2F_block__gui.elements.tab_detail.setBorder('SpecialMatteBorder,0.0,0.0,0.0,0.0,#647B95,#A1B0CF,#A1B0CF,#A1B0CF,0.0,')
-//	forms.WEB_0F_page__design_1F_version_2F_block__data.elements.tab_detail.setBorder('SpecialMatteBorder,0.0,0.0,0.0,0.0,#647B95,#A1B0CF,#A1B0CF,#A1B0CF,0.0,')
-	
-	return true
-}
-
-/**
  * @properties={typeid:24,uuid:"CB7E7C07-4E17-4542-B7BE-B59820F4E885"}
  */
 function SPLIT_set(show) {
