@@ -126,6 +126,74 @@ function REC_new() {
 }
 
 /**
+ * Handle hide window.
+ *
+ * @param {JSEvent} event the event that triggered the action
+ *
+ * @returns {Boolean}
+ *
+ * @properties={typeid:24,uuid:"35F6C3C6-F764-4864-8624-2F19A13FB579"}
+ */
+function FORM_on_hide(event) {
+	if (application.__parent__.solutionPrefs && solutionPrefs.design.statusLockWorkflow) {
+		globals.WEB_lock_workflow(false)
+	}
+	
+	return true
+}
+
+/**
+ * Perform the element default action.
+ *
+ * @param {JSEvent} event the event that triggered the action
+ *
+ * @properties={typeid:24,uuid:"69B72F68-C6D4-4949-BEA5-2C2C8058CCE2"}
+ */
+function ACTION_toggle(event) {
+	if (!_editMode) {
+		_editMode = 1
+		elements.lbl_edit.text = 'Done'
+		elements.btn_edit.toolTipText = 'Click when finished editing'
+	}
+	else {
+		//punch down the save button
+		if (utils.hasRecords(foundset)) {
+			//load in correct gui representation for this block type
+			var recScrapbook = foundset.getSelectedRecord()
+	
+			if (recScrapbook && utils.hasRecords(recScrapbook.web_scrapbook_to_block_type)) {
+				var recBlockType = recScrapbook.web_scrapbook_to_block_type.getRecord(1)
+			}
+			
+			//editable status
+			var flagEdit = (_editMode) ? true : false
+			
+			//this block definition exists as does the form
+			if (recBlockType && forms[recBlockType.form_name]) {
+				//check for method existence on form
+				if (solutionModel.getForm(recBlockType.form_name).getFormMethod('BLOCK_save')) {
+					var hasInit = true
+				}
+				
+				//there is a custom form to show
+				if (hasInit) {
+					forms[recBlockType.form_name].BLOCK_save()
+				}
+			}
+		}
+		
+		_editMode = 0
+		elements.lbl_edit.text = 'Edit'
+		elements.btn_edit.toolTipText = 'Click to begin editing...'
+	}
+	
+	//when toggled from the button, redo the screen
+	if (event) {
+		REC_on_select()
+	}
+}
+
+/**
  * Callback method for when form is shown.
  *
  * @param {Boolean} firstShow form is shown first time after load
@@ -228,6 +296,49 @@ function LOAD_used_on() {
 	fsPages.loadRecords(dataset)
 	
 	globals.CODE_cursor_busy(false)
+}
+
+/**
+ * Perform the element default action.
+ *
+ * @param {JSEvent} event the event that triggered the action
+ *
+ * @properties={typeid:24,uuid:"8990F4CA-2618-4392-9AB6-ABE40B6A2626"}
+ */
+function TAB_change(event,elemName) {
+	globals.TAB_change_grid(null,elemName)
+	
+	//on first tab now and it's not blank or raw, refresh
+	if (elements.tab_detail.tabIndex == 1 && (elements.tab_detail.getTabFormNameAt(1) != 'CODE__blank' || elements.tab_detail.getTabFormNameAt(1) != 'WEB_0F_scrapbook_1L_scrapbook_data')) {
+		if (utils.hasRecords(foundset)) {
+			//load in correct gui representation for this block type
+			var recScrapbook = foundset.getSelectedRecord()
+	
+			if (recScrapbook && utils.hasRecords(recScrapbook.web_scrapbook_to_block_type)) {
+				var recBlockType = recScrapbook.web_scrapbook_to_block_type.getRecord(1)
+			}
+			
+			//editable status
+			var flagEdit = (_editMode) ? true : false
+			
+			//this block definition exists as does the form
+			if (recBlockType && forms[recBlockType.form_name]) {
+				//check for method existence on form
+				if (solutionModel.getForm(recBlockType.form_name).getFormMethod('LOADER_refresh')) {
+					var hasInit = true
+				}
+				
+				//there is a custom form to show
+				if (hasInit) {
+					forms[recBlockType.form_name].LOADER_refresh(
+														recScrapbook.web_scrapbook_to_scrapbook_data,
+														flagEdit
+													)
+	
+				}
+			}
+		}
+	}
 }
 
 /**
