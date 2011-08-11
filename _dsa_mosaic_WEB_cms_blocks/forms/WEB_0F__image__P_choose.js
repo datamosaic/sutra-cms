@@ -57,16 +57,10 @@ function ACTION_ok() {
 		}
 		// copy image details to block data points
 		else {
-			//real mode
-			if (globals.WEB_page_mode == 3) {
-				var data = forms.WEB_0F_page__browser__editor._dataRec
-			}
-			//structure (data or gui) mode
-			else {
-				var data = forms.WEB_0F_page__design.web_page_to_block_data_by_area_by_block
-			}
+			//the data we're working with here
+			var data = globals.WEB_block_getData(null,'WEB_0F__image')
 			
-			//see WEB_0F__image.INIT_block for all block keys; WEB_0F__image.INIT_asset for all asset keys
+			//see WEB_0F__image.INIT_block for all keys
 			for (var i = 1; i <= data.getSize(); i++) {
 				var record = data.getRecord(i)
 				switch (record.data_key) {
@@ -94,6 +88,13 @@ function ACTION_ok() {
 		
 		//close the form
 		application.closeFormDialog('CMS_imageChoose')
+		
+		//pseudo-event comes from the scope of where this is fired
+		var pseudoEvent = new Object()
+		pseudoEvent.getFormName = function() {return 'WEB_0F__image'}
+		
+		//refresh the block
+		forms.WEB_0F__image.REC_on_select(pseudoEvent,true)
 	}
 	//nothing selected
 	else {

@@ -1,3 +1,4 @@
+dataSource:"db:/sutra_cms/web_block",
 items:[
 {
 anchors:6,
@@ -246,6 +247,7 @@ uuid:"E96BF1E2-CA69-4953-9DC5-9CF1E87AEC38"
 name:"WEB_0F__html",
 navigatorID:"-1",
 onLoadMethodID:"27048A75-8641-49AD-8E44-D614410947B0",
+onRecordSelectionMethodID:"136705A2-5A67-4E9C-8AC9-DABCA1BABD5D",
 onShowMethodID:"0B60D003-5C1F-4432-94D9-EA53C7A29887",
 paperPrintScale:100,
 scrollbars:36,

@@ -1,5 +1,5 @@
 dataSource:"db:/sutra_cms/web_page",
-initialSort:"name_last asc, name_first asc",
+initialSort:"",
 items:[
 {
 formIndex:10400,
@@ -253,8 +253,7 @@ styleClass:"standard_table_noedit",
 tabSeq:-2,
 transparent:true,
 typeid:4,
-uuid:"C1CFD459-4847-497A-A5C9-3DFD37E15277",
-valuelistID:"03d33abc-4f01-4144-9714-e651789f5183"
+uuid:"C1CFD459-4847-497A-A5C9-3DFD37E15277"
 },
 {
 formIndex:10400,
@@ -371,10 +370,10 @@ uuid:"FB6F1223-4505-49DD-ACDE-B1AD610895BD"
 ],
 name:"WEB_0B_page__page_list",
 navigatorID:"-1",
-onLoadMethodID:"2811ff94-2e9d-4adb-9568-10fb27838324",
+onLoadMethodID:"-1",
 onRecordEditStopMethodID:"50d8a27a-2321-4118-b4f7-db097f8c0f0a",
-onRecordSelectionMethodID:"60dca133-a72b-4eed-9740-50b1c5aa2f0a",
-onShowMethodID:"c7dcf4f4-9c8a-404d-a30c-5c8a8ea00c35",
+onRecordSelectionMethodID:"-1",
+onShowMethodID:"-1",
 paperPrintScale:100,
 size:"780,470",
 styleName:"_DATASUTRA_",
