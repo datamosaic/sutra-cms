@@ -1,0 +1,10 @@
+foreignDataSource:"db:/sutra_cms/web_layout",
+initialSort:"layout_name asc",
+items:[
+{foreignColumnName:"id_theme",primaryDataProviderID:"id_theme",typeid:23,uuid:"2867D8A0-9203-4F6B-B5F3-56CE9AE80ECB"}
+],
+joinType:1,
+name:"web_site_platform_to_layout__all",
+primaryDataSource:"db:/sutra_cms/web_site_platform",
+typeid:22,
+uuid:"2715011B-C484-4198-BCAA-97A9BAB0D49B"

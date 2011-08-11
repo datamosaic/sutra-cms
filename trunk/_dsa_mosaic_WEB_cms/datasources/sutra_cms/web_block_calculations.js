@@ -1,75 +1,39 @@
 /**
- *
- * @properties={type:4,typeid:36,uuid:"A371075D-3203-4227-A346-4557DEA741D4"}
+ * @properties={type:12,typeid:36,uuid:"BBF552BD-916F-4671-B9D2-44DBD232841B"}
+ */
+function display_block_name() {
+	if (block_name) {
+		return block_name
+	}
+	else {
+		return 'No name'
+	}
+}
+
+/**
+ * @properties={type:12,typeid:36,uuid:"6C866905-554B-4628-97C5-54FD489C1530"}
+ */
+function display_scope_type() {
+	if (typeof scope_type == 'number') {
+		return 'Scope: ' + application.getValueListDisplayValue('WEB_scope_type',scope_type)
+	}
+	else {
+		return null
+	}
+}
+
+/**
+ * @properties={type:12,typeid:36,uuid:"2BAB7813-E340-4B29-81B2-0D4C51A808C8"}
  */
 function id_block_display()
 {
-	if (id_scrapbook) {
-		return web_block_to_scrapbook.id_block_display
-	}
-	else {
-		return id_block_display
-	}
+	return web_block_to_block_version.id_block_display
 }
 
 /**
- *
- * @properties={type:4,typeid:36,uuid:"A75445DB-3E62-46C3-ACA4-176EE31CC307"}
+ * @properties={type:12,typeid:36,uuid:"4DAD7CFA-4415-4751-83FF-5B0FFDF017C5"}
  */
 function id_block_type()
 {
-	if (id_scrapbook) {
-		return web_block_to_scrapbook.id_block_type
-	}
-	else {
-		return id_block_type
-	}
-}
-
-/**
- *
- * @properties={type:12,typeid:36,uuid:"B9AE4773-F5E7-468E-8A08-076CD774CD46"}
- */
-function params()
-{
-	if (id_scrapbook) {
-		return web_block_to_scrapbook.params
-	}
-	else {
-		return params
-	}
-}
-
-/**
- *
- * @properties={type:12,typeid:36,uuid:"12906DFC-E969-45E6-86B6-C91DE92F4735"}
- */
-function row_background()
-{
-	//white/tan with medium blue highlighter and green if a scrapbook
-	
-	var index = arguments[0]
-	var selected = arguments[1]
-	
-	if (selected) {
-		if (id_scrapbook) {
-			return '#B6E6B6'
-		}
-		else {
-			return '#BED7F7'
-		}
-	}
-	else {
-		if (id_scrapbook) {
-			return '#DBF5DB'
-		}
-		else {
-			if (index % 2 == 0) {
-				return '#F7F8EF'
-			}
-			else {
-				return '#FFFFFF'
-			}
-		}
-	}
+	return web_block_to_block_version.id_block_type
 }

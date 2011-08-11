@@ -24,7 +24,7 @@ function CONTROLLER(app, session, request, response, mode) {
 	
 	// initialize good dataset to return to jsp
 	var results = databaseManager.createEmptyDataSet(0,["key","value"])
-	results.addRow(["cmsVersion","Sutra CMS - 2.0 alpha 3"])
+	results.addRow(["cmsVersion","Sutra CMS - 2.5 alpha 1"])
 	
 	// STEP 1: Setup
 	var obj = CONTROLLER_setup(results, app, session, request, response, mode)
@@ -67,7 +67,7 @@ function CONTROLLER_session(obj) {
 	// PROCESS: session management
 
 	// if logging turned on, record sesion and page access
-	if ( obj.site.record.flag_logging ) {	
+	if ( obj.site.record.flag_session ) {	
 
 		// find matching session record 
 		var sessionWeb = obj.session_web.record
@@ -118,188 +118,145 @@ function CONTROLLER_session(obj) {
  * @properties={typeid:24,uuid:"AFD23FBD-CE21-4C2C-BDA2-75C68969ACDB"}
  */
 function CONTROLLER_builder(results, obj) {
-	// AREA(S)	
 	var markup = ''
 	
-	var areas = databaseManager.getFoundSet("sutra_cms","web_area")
-	areas.find()
-	areas.id_page = obj.page.record.id_page
-	areas.id_group = obj.group.id
-	areas.id_version = obj.snapshot.id
-	var count = areas.search()
-	if ( !count ) {
-		// send results back to web client
+	// AREA(S)	
+	// refresh all areas from database
+	if ( utils.hasRecords(obj.version.record,'web_version_to_area') ) {
+		databaseManager.refreshRecordFromDatabase(obj.version.record.web_version_to_area, -1)
+	}
+	// send results back to headless client
+	else {
 		return results
 	}
-	else {
-		areas.sort('row_order')
-	}	
-
+	
 	// PROCESS: AREA
-	for (var i = 0; i < areas.getSize(); i++) {
+	for (var i = 1; i <= obj.version.record.web_version_to_area.getSize(); i++) {
 		
 		var areaMarkup = ""
 		
-		databaseManager.refreshRecordFromDatabase(areas, i + 1)
-		var area = areas.getRecord(i + 1)
+		var area = obj.version.record.web_version_to_area.getRecord(i)
 		
 		// obj: area
 		obj.area.record	= area
 		obj.area.id		= area.id_area
 		obj.area.name	= area.area_name
 		
-		// BLOCK(S)
-		var blocks = databaseManager.getFoundSet("sutra_cms","web_block")
-		blocks.find()
-		blocks.id_area = area.id_area
-		var count = blocks.search()
+		// SCOPE(S)
+		var scopes = area.web_area_to_scope
+		databaseManager.refreshRecordFromDatabase(scopes, -1)
 		
-		if ( count ) {
-			blocks.sort("row_order")
-		}
-		
-		// PROCESS: BLOCK
-		for (var j = 0; j < blocks.getSize(); j++) {
+		// PROCESS: SCOPE
+		for (var j = 1; j <= scopes.getSize(); j++) {
+			var scope = scopes.getRecord(j)
 			
-			databaseManager.refreshRecordFromDatabase(blocks, j + 1)			
-			var block = blocks.getRecord(j + 1)
-			
-			// obj: block
-			obj.block.record	= block
-			obj.block.id 		= block.id_block
-			obj.block.params 	= block.params
-			
-			// BLOCK TYPE
-			var type = databaseManager.getFoundSet("sutra_cms","web_block_type")
-			type.find()
-			type.id_block_type = block.id_block_type
-			var count = type.search()
-			
-			//normal non-linked items
-			if (!block.id_scrapbook) {
-				// BLOCK DATA
-				var data = databaseManager.getFoundSet("sutra_cms","web_block_data")
-				data.find()
-				data.id_block = block.id_block
-				var count = data.search()
+			// the selected scope is published on the web or we're showing all blocks
+			if (scope.flag_active || obj.allblocks) {
 				
-				// obj: data
-				if (count) {
-					for (var k = 0; k < data.getSize(); k++) {
-						databaseManager.refreshRecordFromDatabase(data, k + 1)	
-						var point = data.getRecord(k + 1)
-						obj.data[point.data_key] = point.data_value
+				// BLOCK(S)
+				if (utils.hasRecords(scope.web_scope_to_block)) {
+					databaseManager.refreshRecordFromDatabase(scope.web_scope_to_block, 0)
+					var block = scope.web_scope_to_block.getSelectedRecord()
+					
+					// if no block, skip it
+					if (!block) {
+						if (obj.type == 'Edit') {
+							areaMarkup += 'Error with block configuration\n<br />\n'
+						}
+						continue
 					}
-				}
-				
-				// BLOCK CONFIGURATION
-				var configureData = databaseManager.getFoundSet("sutra_cms","web_block_data_configure")
-				configureData.find()
-				configureData.id_block = block.id_block
-				var count = configureData.search()
-				
-				// obj: configuration
-				if (count) {
-					for (var k = 0; k < configureData.getSize(); k++) {
-						databaseManager.refreshRecordFromDatabase(configureData, k + 1)	
-						var point = configureData.getRecord(k + 1)
-						obj.block_configure[point.data_key] = point.data_value
+					// if no active version for this block, skip it
+					else if (!utils.hasRecords(block,'web_block_to_block_version')) {
+						if (obj.type == 'Edit') {
+							var prettyBlock = block.block_name ? (' for "' + block.block_name + '" block') : ''
+							areaMarkup += 'Error: No active block version' + prettyBlock + '\n<br />\n'
+						}
+						continue
 					}
-				}
-				
-				// BLOCK RESPONSE
-				var responseData = databaseManager.getFoundSet("sutra_cms","web_block_data_response")
-				responseData.find()
-				responseData.id_block = block.id_block
-				var count = responseData.search()
-				
-				// obj: response
-				if (count) {
-					for (var k = 0; k < responseData.getSize(); k++) {
-						databaseManager.refreshRecordFromDatabase(responseData, k + 1)	
-						var point = responseData.getRecord(k + 1)
-						obj.block_response[point.data_key] = point.data_value
-					}
-				}
-				
-			}
-			//this is a linked scrapbook
-			else {
-				
-				// SCRAPBOOK DATA
-				if (utils.hasRecords(block.web_block_to_scrapbook) && utils.hasRecords(block.web_block_to_scrapbook.web_scrapbook_to_scrapbook_data)) {
-					var data = block.web_block_to_scrapbook.web_scrapbook_to_scrapbook_data
+					
+					// obj: block
+					databaseManager.refreshRecordFromDatabase(block.web_block_to_block_version__all,-1)
+					obj.block.record	= block
+					obj.block.version	= block.web_block_to_block_version.getSelectedRecord()
+					obj.block.id 		= block.id_block
+					
+					// BLOCK TYPE
+					var type = obj.block.version.web_block_to_block_type
+					databaseManager.refreshRecordFromDatabase(type,0)
+					
+					// BLOCK DATA
+					var data = obj.block.version.web_block_version_to_block_data
+					databaseManager.refreshRecordFromDatabase(data,-1)
 					
 					// obj: data
-					for (var k = 0; k < data.getSize(); k++) {
-						var point = data.getRecord(k + 1)
-						obj.data[point.data_key] = point.data_value
+					if ( utils.hasRecords(data) ) {
+						for (var k = 1; k <= data.getSize(); k++) {
+							var point = data.getRecord(k)
+							obj.data[point.data_key] = point.data_value
+						}
 					}
-				}
-				
-				// SCRAPBOOK CONFIGURATION
-				if (utils.hasRecords(block.web_block_to_scrapbook) && utils.hasRecords(block.web_block_to_scrapbook.web_scrapbook_to_scrapbook_configure)) {
-					var configureData = block.web_block_to_scrapbook.web_scrapbook_to_scrapbook_configure
+					
+					// BLOCK CONFIGURATION
+					var configureData = obj.block.version.web_block_version_to_block_data_configure
+					databaseManager.refreshRecordFromDatabase(configureData,-1)
 					
 					// obj: configuration
-					for (var k = 0; k < configureData.getSize(); k++) {
-						var point = configureData.getRecord(k + 1)
-						obj.block_configure[point.data_key] = point.data_value
+					if ( utils.hasRecords(configureData) ) {
+						for (var k = 1; k <= configureData.getSize(); k++) {
+							var point = configureData.getRecord(k)
+							obj.block_configure[point.data_key] = point.data_value
+						}
 					}
-				}
-				
-				// SCRAPBOOK RESPONSE
-				if (utils.hasRecords(block.web_block_to_scrapbook) && utils.hasRecords(block.web_block_to_scrapbook.web_scrapbook_to_scrapbook_response)) {
-					var responseData = block.web_block_to_scrapbook.web_scrapbook_to_scrapbook_response
+					
+					// BLOCK RESPONSE
+					var responseData = obj.block.version.web_block_version_to_block_data_response
+					databaseManager.refreshRecordFromDatabase(responseData,-1)
 					
 					// obj: response
-					for (var k = 0; k < responseData.getSize(); k++) {
-						var point = responseData.getRecord(k + 1)
-						obj.block_response[point.data_key] = point.data_value
+					if ( utils.hasRecords(responseData) ) {
+						for (var k = 1; k <= responseData.getSize(); k++) {
+							var point = responseData.getRecord(k)
+							obj.block_response[point.data_key] = point.data_value
+						}
 					}
+											
+					// BLOCK DISPLAY
+					var display = obj.block.version.web_block_to_block_display
+					databaseManager.refreshRecordFromDatabase(display,0)
+					
+					// MARKUP CALL
+					// edit mode (needs div wrappers)
+					if ( obj.type == "Edit" ) {
+						if (FX_method_exists(display.method_name,type.form_name)) {
+							var markupedData = forms[type.form_name][display.method_name](obj, results) || "<br>"
+						}
+						else {
+							var markupedData = 'Error with block configuration'
+						}
+						
+						areaMarkup += '<div id="sutra-block-data-' + utils.stringReplace(block.id_block.toString(),'-','') + '">\n'
+						areaMarkup += markupedData + '\n'
+						areaMarkup += "</div>\n"
+		
+					}
+					// deployed (no divs)
+					else {
+						if (FX_method_exists(display.method_name,type.form_name)) {
+							areaMarkup += forms[type.form_name][display.method_name](obj, results) + '\n'
+						}
+						else {
+							areaMarkup += 'Error with block configuration\n'
+						}
+					}	
+					
+					// obj: block...CLEAR
+					obj.block.record	= ''
+					obj.block.id 		= ''
+					
+					// obj: data...CLEAR
+					obj.data = {}
 				}
-
 			}
-									
-			// BLOCK DISPLAY
-			var display = databaseManager.getFoundSet("sutra_cms","web_block_display")
-			display.find()
-			display.id_block_display = block.id_block_display
-			var count = display.search()
-			
-			// MARKUP CALL
-			// edit mode (needs div wrappers)
-			if ( obj.type == "Edit" ) {
-				if (FX_method_exists(display.method_name,type.form_name)) {
-					var markupedData = forms[type.form_name][display.method_name](obj, results) || "<br>"
-				}
-				else {
-					var markupedData = 'Error with block configuration'
-				}
-				
-				areaMarkup += '<div id="sutra-block-data-' + block.id_block + '">\n'
-				areaMarkup += markupedData + '\n'
-				areaMarkup += "</div>\n"
-
-			}
-			// deployed (no divs)
-			else {
-				if (FX_method_exists(display.method_name,type.form_name)) {
-					areaMarkup += forms[type.form_name][display.method_name](obj, results) + '\n'
-				}
-				else {
-					areaMarkup += 'Error with block configuration\n'
-				}
-			}	
-			
-			// obj: block...CLEAR
-			obj.block.record	= ''
-			obj.block.id 		= ''
-			obj.block.params 	= ''
-			
-			// obj: data...CLEAR
-			obj.data = {}
-				
 		}
 
 	
@@ -336,16 +293,18 @@ function CONTROLLER_setup(results, app, session, request, response, mode) {
 	/*
 	 * INITIALIZE, SETUP, FORMS, COOKIES, PAGE DATA
 	 */	
-
+	
 	// initialize data object passed to block markup methods
 	var obj		= { site	: { record : '', path : '', id	: '', name	: '', tracking : ''},
-	       		    group	: { record : '', id	: ''},
-	       		    snapshot : { record : '', id : ''},
-	       		    home	: { record : ''},
 	       		    page	: { record : '', id	: '', name	: '', parent : '', attribute	: {}},
+	       		    platform: { record : '', id	: ''},
+	       		    language: { record : '', id	: ''},
+	       		    group	: { record : '', id	: ''},
+	       		    version : { record : '', id : ''},
+	       		    home	: { record : ''},
 	       		    theme	: { directory : '', markup : { link : '' } },
 	       		    area	: { record : '', id	: '', name	: ''},
-	       		    block	: { record : '', id	: '', params : ''},   // TODO: depricate params
+	       		    block	: { record : '', version	: '', id	: ''},
 	       		    data	: {},
 	       		    block_configure : {},
 	       		    block_response : {},
@@ -368,14 +327,19 @@ function CONTROLLER_setup(results, app, session, request, response, mode) {
 	var pageURI		= request.getRequestURI()
 	var pageQuery	= request.getQueryString()
 	var pagePath	= request.getParameter("path")
-	var pageID 		= (request.getParameter("id")) ? utils.stringToNumber(request.getParameter("id")) : 0
+	var pageID 		= request.getParameter("id")
 	
 	// these paramaters will be passed in when index_edit used (only internal to browser mode now)
 		// TODO: track group in session based on login and pass to dispatcher
-		// TODO: may add in ability to see snapshots on a live server
-	var groupID		= (request.getParameter("group")) ? utils.stringToNumber(request.getParameter("group")) : 0
-	var versionID	= (request.getParameter("snapshot")) ? utils.stringToNumber(request.getParameter("snapshot")) : 0
-			
+		// TODO: may add in ability to see versions on a live server
+	var platformID		= request.getParameter("platform")
+	var languageID		= request.getParameter("language")
+	var groupID		= request.getParameter("group")
+	var versionID	= request.getParameter("version")
+	
+	// are we using rewrites or not
+	var rewriteMode = globals.WEB_install_rewrite()
+	
 	// "get" form data (does not return "post" form data)
 	var getPairs	= {}
 	var items = (pageQuery) ? pageQuery.split("&") : new Array()
@@ -640,13 +604,16 @@ function CONTROLLER_setup(results, app, session, request, response, mode) {
 		
 		//variable for easy access
 		var editMode = true
+		
+		// show all block datapoints
+		obj.allblocks	= request.getParameter("showall") ? true : false
 	}
 	
 	// PAGE
 	if ( pageID ) {
 		var page = databaseManager.getFoundSet("sutra_cms","web_page")
 		page.find()
-		page.id_page = pageID
+		page.url_param = pageID
 		var count = page.search()
 		if (count != 1) {
 			obj.error.code = 404
@@ -654,7 +621,8 @@ function CONTROLLER_setup(results, app, session, request, response, mode) {
 			return obj
 		}
 		else {
-			databaseManager.refreshRecordFromDatabase(page, 1)
+			pageID = page.id_page
+			databaseManager.refreshRecordFromDatabase(page, 0)
 		}
 	}
 	else if (pagePath) {
@@ -688,11 +656,9 @@ function CONTROLLER_setup(results, app, session, request, response, mode) {
 			return obj
 		}
 		else {
-			databaseManager.refreshRecordFromDatabase(page, 1)
+			pageID = path.id_page
+			databaseManager.refreshRecordFromDatabase(page, 0)
 		}
-		
-		pageID = path.id_page
-		
 	}
 	// request home page as nothing specifically requested
 	else {
@@ -723,7 +689,7 @@ function CONTROLLER_setup(results, app, session, request, response, mode) {
 		
 		var page = databaseManager.getFoundSet("sutra_cms","web_page")
 		page.find()
-		page.id_page = site.id_page
+		page.id_page = site.id_page__home
 		var count = page.search()
 		if (count != 1) {
 			obj.error.code = 404
@@ -731,34 +697,55 @@ function CONTROLLER_setup(results, app, session, request, response, mode) {
 			return obj
 		}
 		else {
-			databaseManager.refreshRecordFromDatabase(page, 1)
+			pageID = page.id_page
+			databaseManager.refreshRecordFromDatabase(page, 0)
 		}
-		
-		pageID = page.id_page
+	}
+	
+	// publishable...only matters for a live site
+	if ( !editMode && !page.flag_publish ) {
+		obj.error.code = 403
+		obj.error.message = "Page not published"
+		return obj
 	}
 		
 	//if a folder, grab child page
-	//TODO: need to keep traversing down the folder tree until first non-folder encountered
-	if (page.page_type == 1) {
-		//there is a published child page
-		if (utils.hasRecords(page.web_page_to_page__child__publish)) {
-			var pageID = page.web_page_to_page__child__publish.id_page
+	//keep traversing down the folder tree until first non-folder encountered
+	while (page.page_type == 1) {
+		if (page.flag_folder_children) {
+			//refresh over all children in case one of them was activated
+			databaseManager.refreshRecordFromDatabase(page.web_page_to_page__child,-1)
 			
-			page.find()
-			page.id_page = pageID
-			var count = page.search()
-			
-			groupID = 0
-			versionID = 0		
+			//there is a published child page
+			if (utils.hasRecords(page.web_page_to_page__child__publish)) {
+				var pageID = page.web_page_to_page__child__publish.id_page
+				
+				page.find()
+				page.id_page = pageID
+				var count = page.search()
+				
+				databaseManager.refreshRecordFromDatabase(page, 0)
+				
+				platformID = null
+				languageID = null
+				groupID = null
+				versionID = null		
+			}
+			else {
+				obj.error.code = 404
+				obj.error.message = "Folder has no children"
+				return obj
+			}
 		}
 		else {
 			obj.error.code = 404
-			obj.error.message = "Folder has no children"
+			obj.error.message = "Folder has no content"
 			return obj
 		}
 	}
+	
 	//an external link, navigate there as a 301 response status
-	else if (page.page_type == 2) {
+	if (page.page_type == 2) {
 		if (page.page_link) {
 			response.setStatus(301)
 			response.setHeader("Location", page.page_link)
@@ -768,7 +755,7 @@ function CONTROLLER_setup(results, app, session, request, response, mode) {
 			obj.error.code = 301
 			obj.type = true
 //			obj.error.message = "Redirecting to external link"			
-			return obj			
+			return obj
 		}
 		else {
 			obj.error.code = 404
@@ -781,9 +768,9 @@ function CONTROLLER_setup(results, app, session, request, response, mode) {
 		var fsPage = databaseManager.getFoundSet('sutra_cms','web_page')
 		fsPage.find()
 		fsPage.id_page = page.page_link_internal
-		var results = fsPage.search()
+		var count = fsPage.search()
 		
-		if (results && page.page_link_internal) {
+		if (count && page.page_link_internal) {
 			//this changes the url
 			obj.response.record.sendRedirect(globals.WEB_MRKUP_link_page(page.page_link_internal))
 		}
@@ -797,35 +784,26 @@ function CONTROLLER_setup(results, app, session, request, response, mode) {
 		}
 	}
 	
-	// publishable...only matters for a live site
-	if ( !editMode && !page.flag_publish ) {
-		obj.error.code = 403
-		obj.error.message = "Page not published"
-		return obj
-	}
-	
 	// obj: page
-	obj.page.record	= page.getRecord(1)
+	obj.page.record	= page.getSelectedRecord()
 	obj.page.id 	= page.id_page
-	obj.page.name 	= page.page_name
 	obj.page.parent	= page.parent_id_page
 	
 	// ATTRIBUTES
-	var attributes = databaseManager.getFoundSet("sutra_cms","web_attribute")
-	attributes.find()
-	attributes.id_page = pageID
-	var count = attributes.search()
-	if (count) {
+	if (utils.hasRecords(page.web_page_to_attribute)) {
+		//refresh all attributes with latest data
+		databaseManager.refreshRecordFromDatabase(page.web_page_to_attribute,-1)
+		
 		// obj: attributes
-		for (var i = 0; i < attributes.getSize(); i++) {
-			databaseManager.refreshRecordFromDatabase(attributes, i + 1)
-			var attribute = attributes.getRecord(i + 1)
+		for (var i = 1; i <= page.web_page_to_attribute.getSize(); i++) {
+			var attribute = page.web_page_to_attribute.getRecord(i)
 			obj.page.attribute[attribute.attribute_key] = attribute.attribute_value
 		}
 	}
 
 	// obj: site
-	obj.site.record = page.web_page_to_site.getRecord(1)
+	databaseManager.refreshRecordFromDatabase(page.web_page_to_site,0)
+	obj.site.record = page.web_page_to_site.getSelectedRecord()
 	obj.site.id = page.id_site
 	obj.site.name = page.web_page_to_site.site_name
 	obj.site.tracking = page.web_page_to_site.google_tracking_code
@@ -840,141 +818,254 @@ function CONTROLLER_setup(results, app, session, request, response, mode) {
 	
 	// obj: home
 	if ( utils.hasRecords(page.web_page_to_site.web_site_to_page__home )) {
-		obj.home.record = page.web_page_to_site.web_site_to_page__home.getRecord(1)
+		databaseManager.refreshRecordFromDatabase(page.web_page_to_site.web_site_to_page__home,0)
+		obj.home.record = page.web_page_to_site.web_site_to_page__home.getSelectedRecord()
 	}
 	
-	// page title
-	if ( page.title_override ) {
-		results.addRow(["cmsTitle",page.title_override])
-	}
-	else if ( page.web_page_to_site.site_name_publish_flag ) {
-			var windowTitle = ''
-			if (page.web_page_to_site.site_name) {
-				windowTitle += page.web_page_to_site.site_name
-				
-				if (page.web_page_to_site.site_name_publish_separator) {
-					windowTitle += page.web_page_to_site.site_name_publish_separator
-				}
-				else {
-					windowTitle += ' '
-				}
-			}
-			windowTitle += page.page_name
-			
-			results.addRow(["cmsTitle", windowTitle])
-		}
-		else {
-			results.addRow(["cmsTitle",page.page_name])
-		}
+	// PLATFORM
+	// if not specified, use default platform
+	var platformSite = databaseManager.getFoundSet("sutra_cms","web_site_platform")
+	var platform = databaseManager.getFoundSet("sutra_cms","web_platform")
 	
-	// HEAD & FOOTER INCLUDE STRING (note: relative path "up" from template directory where it is included from)
-	if (editMode) {
-		results.addRow(["cmsHead", "../../../../controllers/head_edit.jsp"])
-		results.addRow(["cmsFooter", "../../../../controllers/footer_edit.jsp"])
-	}
-	else {
-		results.addRow(["cmsHead", "../../../../controllers/head.jsp"]) 
-		results.addRow(["cmsFooter", "../../../../controllers/footer.jsp"])
-	}
-	
-	// SEO
-	if ( page.description )	{
-		results.addRow(["cmsDescription",page.description])
-	}
-	else {
-		results.addRow(["cmsDescription",""])
-	}
-	if ( page.keywords ) {
-		results.addRow(["cmsKeywords",page.keywords])
-	}
-	else {
-		results.addRow(["cmsKeywords",""])
-	}
-	
-	// SECURITY GROUP
-	//if not specified, use group from this session
-	var group = databaseManager.getFoundSet("sutra_cms","web_group")
-	if (!groupID) {
-		group.find()
-		group.id_site = page.id_site
-		var count = group.search()
+	// no platform specified
+	if (!platformID) {
+		platformSite.find()
+		platformSite.id_site = page.id_site
+		platformSite.flag_default = 1
+		var count = platformSite.search()
 		if (!count) {
 			obj.error.code = 500
-			obj.error.message = "No site groups setup"
+			obj.error.message = "No default site platform"
 			return obj
 		}
 		else {
-			//put in order so oldest one is at top
-			group.sort('rec_created asc')
+			platform.find()
+			platform.id_site_platform = platformSite.id_site_platform
+			platform.id_page = page.id_page
+			var count = platform.search()
 			
-			//select oldest one (aka everybody)
-			group.setSelectedIndex(1)
-			var groupID = group.id_group
+			// site default isn't present on this page, just grab the page default
+			if (!count) {
+				platform.find()
+				platform.id_page = page.id_page
+				var count = platform.search()
+				
+				if (count) {
+					platform.sort('rec_created asc')
+				}
+			}
 		}
 	}
+	// platform specified
 	else {
-		group.loadRecords(databaseManager.convertToDataSet([groupID]))
+		platform.find()
+		platform.url_param = platformID
+		var count = platform.search()
+		
+		//check to make sure that it is in the correct page
+		if (!(count && platform.id_page == page.id_page)) {
+			// return error that no such version
+			obj.error.code = 500
+			obj.error.message = "Platform requested does not exist"
+			return obj
+		}		
+	}
+	
+	// obj: platform
+	databaseManager.refreshRecordFromDatabase(platform,0)
+	databaseManager.refreshRecordFromDatabase(platform.web_platform_to_theme,-1)
+	databaseManager.refreshRecordFromDatabase(platform.web_platform_to_layout,-1)
+	obj.platform.record = platform.getSelectedRecord()
+	obj.platform.id = platform.id_platform
+	
+	
+	// LANGUAGE
+	// if not specified, use default language
+	var languageSite = databaseManager.getFoundSet("sutra_cms","web_site_language")
+	var language = databaseManager.getFoundSet("sutra_cms","web_language")
+	
+	// no language specified
+	if (!languageID) {
+		languageSite.find()
+		languageSite.id_site = page.id_site
+		languageSite.flag_default = 1
+		var count = languageSite.search()
+		if (!count) {
+			obj.error.code = 500
+			obj.error.message = "No default site language"
+			return obj
+		}
+		else {
+			language.find()
+			language.id_site_language = languageSite.id_site_language
+			language.id_page = page.id_page
+			var count = language.search()
+			
+			// site default isn't present on this page, just grab the page default
+			if (!count) {
+				language.find()
+				language.id_page = page.id_page
+				var count = language.search()
+				
+				if (count) {
+					language.sort('rec_created asc')
+				}
+			}
+		}
+	}
+	// language specified
+	else {
+		language.find()
+		language.url_param = languageID
+		var count = language.search()
+		
+		//check to make sure that it is in the correct page
+		if (!(count && language.id_page == page.id_page)) {
+			// return error that no such version
+			obj.error.code = 500
+			obj.error.message = "Language requested does not exist"
+			return obj
+		}
+	}
+	
+	// obj: language
+	databaseManager.refreshRecordFromDatabase(language,0)
+	obj.language.record = language.getSelectedRecord()
+	obj.language.id = language.id_language
+	obj.page.name 	= language.page_name
+	
+	
+	// SECURITY GROUP
+	// if not specified, use group from this session
+	var groupSite = databaseManager.getFoundSet("sutra_cms","web_site_group")
+	var group = databaseManager.getFoundSet("sutra_cms","web_group")
+	
+	// no group specified
+	if (!groupID) {
+		groupSite.find()
+		groupSite.id_site = page.id_site
+		groupSite.flag_default = 1
+		var count = groupSite.search()
+		if (!count) {
+			obj.error.code = 500
+			obj.error.message = "No default site group"
+			return obj
+		}
+		else {
+			group.find()
+			group.id_site_group = groupSite.id_site_group
+			group.id_page = page.id_page
+			var count = group.search()
+			
+			// site default isn't present on this page, just grab the page default
+			if (!count) {
+				group.find()
+				group.id_page = page.id_page
+				var count = group.search()
+				
+				if (count) {
+					group.sort('rec_created asc')
+				}
+			}
+		}
+	}
+	// group specified
+	else {
+		group.find()
+		group.url_param = groupID
+		var count = group.search()
+		
+		//check to make sure that it is in the correct page
+		if (!(count && group.id_page == page.id_page)) {
+			// return error that no such version
+			obj.error.code = 500
+			obj.error.message = "Group requested does not exist"
+			return obj
+		}
 	}
 	
 	// obj: group
-	obj.group.record = group.getRecord(1)
-	obj.group.id = groupID
+	databaseManager.refreshRecordFromDatabase(group,0)
+	obj.group.record = group.getSelectedRecord()
+	obj.group.id = group.id_group
 	
-	// ACTIVE SNAPSHOT
+	
+	// ACTIVE VERSION
 	//if not specified, use active version
-	var snapshot = databaseManager.getFoundSet("sutra_cms","web_version")
-	if (!versionID) {
-		snapshot.find()
-		snapshot.id_page = page.id_page
-		snapshot.flag_active = 1
-		var count = snapshot.search()
+	var version = databaseManager.getFoundSet("sutra_cms","web_version")
+	
+	//version not specified (or incorrectly specified)
+	if (!versionID) { 
+		version.find()
+		version.id_platform = platform.id_platform
+		version.id_language = language.id_language
+		version.id_group = group.id_group
+		version.flag_active = 1
+		var count = version.search()
+		
+		//check through all active languages to see if we have a different one to display
 		if (count != 1) {
-			// TODO: insufficent access to view this page's content
-			obj.error.code = 500
-			obj.error.message = "No active snapshot"
-			return obj
-		}
-		else {
-			var versionID = snapshot.id_version
+			version.find()
+			version.id_platform = platform.id_platform
+			version.id_group = group.id_group
+			version.flag_active = 1
+			var count = version.search()
+			
+			if (count != 1) {
+				// TODO: insufficent access to view this page's content
+				obj.error.code = 500
+				obj.error.message = "No active version"
+				return obj
+			}
 		}
 	}
+	//version was specified
 	else {
-		snapshot.loadRecords(databaseManager.convertToDataSet([versionID]))
-	}	
+		version.find()
+		version.url_param = versionID
+		var count = version.search()
+		
+		//check to make sure that it is in the correct page, platform, language, group
+		if (!(count && utils.hasRecords(version.getSelectedRecord(),'web_version_to_platform') && 
+			version.web_version_to_platform.id_page == page.id_page &&
+			version.id_platform == platform.id_platform &&
+			version.id_language == language.id_language &&
+			version.id_group == group.id_group)) {
+			
+			// return error that no such version
+			obj.error.code = 500
+			obj.error.message = "Version requested does not exist"
+			return obj
+		}
+	}
 	
-	obj.snapshot.record	= snapshot.getRecord(1)
-	obj.snapshot.id		= versionID
+	// obj: version
+	databaseManager.refreshRecordFromDatabase(version,0)
+	obj.version.record	= version.getSelectedRecord()
+	obj.version.id		= version.id_version
 	
 	// THEME
-	var theme = databaseManager.getFoundSet("sutra_cms","web_theme")
-	theme.find()
-	theme.id_theme = page.id_theme
-	var count = theme.search()
-	if (count != 1) {
+	if (!utils.hasRecords(obj.platform.record,'web_platform_to_theme')) {
 		obj.error.code = 500
 		obj.error.message = "No theme specified"
 		return obj
 	}
 	
 	// LAYOUT
-	var layout = databaseManager.getFoundSet("sutra_cms","web_layout")
-	layout.find()
-	layout.id_layout = page.id_theme_layout
-	var count = layout.search()
-	if (count != 1) {
+	if (!utils.hasRecords(obj.platform.record,'web_platform_to_layout')) {
 		obj.error.code = 500
 		obj.error.message = "No layout specified"
 		return obj
 	}
-	databaseManager.refreshRecordFromDatabase(layout, 1)
+	databaseManager.refreshRecordFromDatabase(obj.platform.record.web_platform_to_layout, 0)
 	
 	// theme directory with rewrites
-	if (forms.WEB_0F_install.rewrite_enabled) {
-		obj.theme.directory = "themes/" + theme.theme_directory
+	if (rewriteMode) {
+		obj.theme.directory = "themes/" + obj.platform.record.web_platform_to_theme.theme_directory
 	}
 	// theme directory without rewrites
 	else {
-		obj.theme.directory = "sites/" + page.web_page_to_site.directory + "/themes/" + theme.theme_directory
+		obj.theme.directory = "sites/" + obj.site.record.directory + "/themes/" + obj.platform.record.web_platform_to_theme.theme_directory
 	}
 	
 	obj.theme.markup.link = obj.theme.directory
@@ -982,17 +1073,71 @@ function CONTROLLER_setup(results, app, session, request, response, mode) {
 	//theme will be included on html, so accessed by client (external)
 	results.addRow(["cmsThemeDirectory", obj.theme.directory])
 	//layout will be referenced from within jsp, so internal and needs full path
-	results.addRow(["cmsLayout", "sites/" + page.web_page_to_site.directory + "/themes/" + theme.theme_directory + "/" + layout.layout_path])
+	results.addRow(["cmsLayout", "sites/" + obj.site.record.directory + "/themes/" + obj.platform.record.web_platform_to_theme.theme_directory + "/" + obj.platform.record.web_platform_to_layout.layout_path])
 	
 	// site directory with rewrites
-	if (forms.WEB_0F_install.rewrite_enabled) {
+	if (rewriteMode) {
 		obj.site.path = ""
 		results.addRow(["cmsSiteDirectory", obj.site.path])
 	}
 	// theme directory without rewrites
 	else {
-		obj.site.path = "sites/" + page.web_page_to_site.directory
+		obj.site.path = "sites/" + obj.site.record.directory
 		results.addRow(["cmsSiteDirectory", obj.site.path])
+	}
+	
+	// page-specific title
+	if ( page.title_override ) {
+		results.addRow(["cmsTitle",page.title_override])
+	}
+	// site-wide page name prefix
+	else if ( obj.site.record.site_name_publish_flag ) {
+		var windowTitle = ''
+		if (obj.site.record.site_name) {
+			windowTitle += obj.site.record.site_name
+			
+			// custom separator
+			if (obj.site.record.site_name_publish_separator) {
+				windowTitle += obj.site.record.site_name_publish_separator
+			}
+			// default separator
+			else {
+				windowTitle += ' '
+			}
+		}
+		windowTitle += page.page_name
+		
+		results.addRow(["cmsTitle", windowTitle])
+	}
+	else {
+		results.addRow(["cmsTitle",obj.page.name])
+	}
+	
+	// HEAD & FOOT INCLUDE STRING (note: relative path "up" from template directory where it is included from)
+	if (editMode) {
+		results.addRow(["cmsHead", "../../../../controllers/head_edit.jsp"])
+		results.addRow(["cmsFoot", "../../../../controllers/foot_edit.jsp"])
+	}
+	else {
+		results.addRow(["cmsHead", "../../../../controllers/head.jsp"]) 
+		results.addRow(["cmsFoot", "../../../../controllers/foot.jsp"])
+	}
+	
+	// SEO
+	if ( page.description )	{
+		results.addRow(["seoDescription",page.description])
+	}
+	
+	// go through all key value pairs for this particular language
+		//TODO: modify the jsp to use only the ones passed in
+	databaseManager.refreshRecordFromDatabase(obj.language.record.web_language_to_seo,-1)
+	for (var i = 1; i <= obj.language.record.web_language_to_seo.getSize(); i++) {
+		var record = obj.language.record.web_language_to_seo.getRecord(i)
+		
+		if (record.data_key) {
+			var keyName = 'seo' + utils.stringInitCap(record.data_key)
+			results.addRow([keyName,record.data_value])
+		}
 	}
 	
 	return obj
@@ -1015,8 +1160,9 @@ function CONTROLLER_error(obj) {
 	// initialize bad dataset to return to the jsp
 	var error =  databaseManager.createEmptyDataSet(0, ["error"])
 	
-	//display error message
-	if (mode) {
+	//display error message in edit mode or when running in developer
+		//MEMO application.isInDeveloper doesn't work with headless client
+	if (mode || (plugins.sutra && plugins.sutra.getWorkspace && plugins.sutra.getWorkspace())) {
 		error.addRow([message])
 		return error
 	}
@@ -1032,13 +1178,13 @@ function CONTROLLER_error(obj) {
 			return error
 		}
 		
-		if (!site.id_page) {
+		if (!site.id_page__home) {
 			error.addRow(["No default page specified for this site"])
 			return error
 		}
 		
 		// redirect to the home page
-		obj.response.record.sendRedirect(globals.WEB_MRKUP_link_page(site.id_page, pageServer))
+		obj.response.record.sendRedirect(globals.WEB_MRKUP_link_page(site.id_page__home, pageServer))
 	}
 }
 

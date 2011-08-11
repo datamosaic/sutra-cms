@@ -57,9 +57,12 @@ var _metaWidth = null;
 function ACTION_cancel() {
 	//not already ok to close, cancel
 	if (!globals.CODE_hide_form) {
+		
 		//rollback and turn autosave on
-		databaseManager.rollbackEditedRecords()
-		databaseManager.setAutoSave(true)
+//		if (!forms.WEB_0F_asset__image._editMode) {
+			databaseManager.rollbackEditedRecords()
+			databaseManager.setAutoSave(true)
+//		}
 		
 		//enaable closing the form
 		globals.CODE_hide_form = 1
@@ -73,9 +76,11 @@ function ACTION_cancel() {
  */
 function ACTION_ok() {
 	//data save ok
-	databaseManager.saveData()
-	databaseManager.setAutoSave(true)
-
+//	if (!forms.WEB_0F_asset__image._editMode) {
+		databaseManager.saveData()
+		databaseManager.setAutoSave(true)
+//	}
+	
 	//enable closing the form
 	globals.CODE_hide_form = 1
 	

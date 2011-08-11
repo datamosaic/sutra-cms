@@ -6,6 +6,7 @@ name:"WEB_themes",
 returnDataProviders:2,
 separator:" ",
 showDataProviders:1,
+sortOptions:"theme_name asc",
 typeid:34,
 uuid:"5CDBB4FD-FA53-4709-9E2B-6AB4AB26A1BE",
 valueListType:1

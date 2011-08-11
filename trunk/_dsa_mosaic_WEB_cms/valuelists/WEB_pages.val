@@ -1,6 +1,6 @@
 addEmptyValue:1,
 dataProviderID1:"id_page",
-dataProviderID2:"page_name",
+dataProviderID2:"display_page_name",
 dataSource:"db:/sutra_cms/web_page",
 name:"WEB_pages",
 returnDataProviders:1,

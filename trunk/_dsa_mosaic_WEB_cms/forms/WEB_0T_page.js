@@ -1,7 +1,22 @@
 /**
- * @properties={typeid:35,uuid:"D30001EE-2E04-408B-87BA-0DE1CFC32E23",variableType:4}
+ * @properties={typeid:35,uuid:"9369E074-5F4A-46A1-BFA4-741F442248F6"}
  */
-var _refresh = null;
+var _scopePlatform = null;
+
+/**
+ * @properties={typeid:35,uuid:"AD05F666-8B75-40D6-BD00-B381C4C503B4"}
+ */
+var _scopeGroup = null;
+
+/**
+ * @properties={typeid:35,uuid:"3937DFE9-2396-4648-9CFC-22A6D98FC82E"}
+ */
+var _scopeLanguage = null;
+
+/**
+ * @properties={typeid:35,uuid:"D30001EE-2E04-408B-87BA-0DE1CFC32E23",variableType:-4}
+ */
+var _refresh = false;
 
 /**
  * @properties={typeid:35,uuid:"04fde543-69cc-4de9-af47-7f7c22221f66"}
@@ -50,8 +65,7 @@ function ACTIONS_list() {
 		}
 	}
 	
-		
-	//get menu list from a value list
+	//list of actions
 	var valueList = [
 			'Duplicate record',
 			'Update theme...',
@@ -60,17 +74,92 @@ function ACTIONS_list() {
 			'Toggle open',
 			'Toggle closed',
 			'-',
+			'Scope',
+			'-',
 			'Delete record',
 			'-',
-			'Delete all unnamed pages',
-			'-',
+//			'Delete all unnamed pages',
+//			'-',
 			'Flush client cache'
 		]
 	
+	//get site record for this page; or the record selected on the site form; or blank
+	var siteRec = utils.hasRecords(foundset) ? web_page_to_site.getSelectedRecord() : (utils.hasRecords(forms.WEB_0F_site.foundset) ? forms.WEB_0F_site.foundset.getSelectedRecord() : null)
+	
+	if (siteRec) {
+		//loop over all platforms
+		var platforms = new Array()
+		for (var i = 1; i <= siteRec.web_site_to_site_platform.getSize(); i++) {
+			var record = siteRec.web_site_to_site_platform.getRecord(i)
+			
+			//selected platform
+			if (record.id_site_platform.toString() == _scopePlatform) {
+				platforms.push(plugins.popupmenu.createCheckboxMenuItem(record.platform_name + "", ACTIONS_list_control))
+				platforms[platforms.length - 1].setMethodArguments(7,'Platform',null)
+				platforms[platforms.length - 1].setSelected(true)
+			}
+			//non-selected platform
+			else {
+				platforms.push(plugins.popupmenu.createMenuItem(record.platform_name + "", ACTIONS_list_control))
+				platforms[platforms.length - 1].setMethodArguments(7,'Platform',record.id_site_platform.toString())
+			}
+		}
+		
+		//loop over all languages
+		var languages = new Array()
+		for (var i = 1; i <= siteRec.web_site_to_site_language.getSize(); i++) {
+			var record = siteRec.web_site_to_site_language.getRecord(i)
+			
+			//selected platform
+			if (record.id_site_language.toString() == _scopeLanguage) {
+				languages.push(plugins.popupmenu.createCheckboxMenuItem(record.language_name + "", ACTIONS_list_control))
+				languages[languages.length - 1].setMethodArguments(7,'Language',null)
+				languages[languages.length - 1].setSelected(true)
+			}
+			//non-selected platform
+			else {
+				languages.push(plugins.popupmenu.createMenuItem(record.language_name + "", ACTIONS_list_control))
+				languages[languages.length - 1].setMethodArguments(7,'Language',record.id_site_language.toString())
+			}
+		}
+		
+		//loop over all groups
+		var groups = new Array()
+		for (var i = 1; i <= siteRec.web_site_to_site_group.getSize(); i++) {
+			var record = siteRec.web_site_to_site_group.getRecord(i)
+			
+			//selected platform
+			if (record.id_site_group.toString() == _scopeGroup) {
+				groups.push(plugins.popupmenu.createCheckboxMenuItem(record.group_name + "", ACTIONS_list_control))
+				groups[groups.length - 1].setMethodArguments(7,'Group',null)
+				groups[groups.length - 1].setSelected(true)
+			}
+			//non-selected platform
+			else {
+				groups.push(plugins.popupmenu.createMenuItem(record.group_name + "", ACTIONS_list_control))
+				groups[groups.length - 1].setMethodArguments(7,'Group',record.id_site_group.toString())
+			}
+		}
+		
+		//list of scopes
+		var scopes = new Array()
+		scopes.push(plugins.popupmenu.createMenuItem('Platform', platforms))
+		scopes.push(plugins.popupmenu.createMenuItem('Language', languages))
+		scopes.push(plugins.popupmenu.createMenuItem('Group', groups))
+	}
+	//remove option for scoping
+	else {
+		var noScope = true
+	}
+	
 	//build menu
-	var menu = new Array
+	var menu = new Array()
 	for ( var i = 0 ; i < valueList.length ; i++ ) {
 		menu[i] = plugins.popupmenu.createMenuItem(valueList[i] + "", ACTIONS_list_control)
+	}
+	
+	if (!noScope) {
+		menu[7] = plugins.popupmenu.createMenuItem(valueList[7] + "", scopes)
 	}
 	
 	//set menu method arguments
@@ -81,8 +170,15 @@ function ACTIONS_list() {
 		
 		//disable dividers
 		if (valueList[x] == '-' || valueList[x] == '----' ||
+			//duplicate not an option until coding finished
+			x == 0 ||
+			//unauthorized to duplicate
 			(x == 0 && !globals.TRIGGER_registered_action_authenticate('cms page duplicate')) ||
-			((x == 5 || x == 7) && !globals.TRIGGER_registered_action_authenticate('cms page delete')) ) {
+			//unauthorized to delete
+			((x == 9) && !globals.TRIGGER_registered_action_authenticate('cms page delete')) ||
+			//no page records, scoping isn't an option
+			noScope && x == 7) {
+			
 			menu[x].setEnabled(false)
 		}
 		
@@ -111,19 +207,19 @@ function ACTIONS_list() {
  *
  * @properties={typeid:24,uuid:"C271B727-FA9C-49A1-BBFC-C1EABE4BEB36"}
  */
-function ACTIONS_list_control() {
+function ACTIONS_list_control(input,scopeType,scopeValue) {
 	
-	switch (arguments[0]) {
+	switch (input) {
 		case 0: //duplicate record
 			REC_duplicate()
 			break
 	
 		case 1: //update theme
-			forms.WEB_0F_page__design__content_1L_area.AREA_add_missing()
+			forms.WEB_0F_page__design_1F_version_2L_area.AREA_add_missing()
 			break
 		
 		case 2: //reset theme
-			forms.WEB_0F_page__design__content_1L_area.AREA_reset()
+			forms.WEB_0F_page__design_1F_version_2L_area.AREA_reset()
 			break
 			
 		case 4: //toggle open
@@ -133,40 +229,65 @@ function ACTIONS_list_control() {
 		case 5: //toggle closed
 			TOGGLE_nodes(0)
 			break
-		
-		case 7:	//delete record
+			
+		case 7: //scoping
+			//set appropriate globals
+			switch (scopeType) {
+				case 'Platform':
+					_scopePlatform = scopeValue
+					break
+				case 'Language':
+					_scopeLanguage = scopeValue
+					break
+				case 'Group':
+					_scopeGroup = scopeValue
+					break
+			}
+			
+			//reload the tree
+			TREE_refresh()
+			
+			//highlight correct record (things are firing too frequently here...if i comment out the selection path; 3 less rec_on_selects happen
+			application.updateUI()
+			elements.bean_tree.selectionPath = FIND_path(forms.WEB_0F_page.foundset.getSelectedRecord())
+//			REC_on_select(forms.WEB_0F_page.foundset.getSelectedRecord().id_page.toString())
+			
+			break
+			
+		case 9:	//delete record
 			REC_delete()
 			break	
 		
-		case 9: //delete all unnamed
-			var fsPages = forms.WEB_0F_site.web_site_to_page
-			
-			var input = plugins.dialogs.showQuestionDialog(
-						'Delete record?',
-						'Do you want to delete all unnamed records from this site?',
-						'Yes',
-						'No'
-				)
-			
-			if (input == 'Yes') {
-				var flagDidSomething
-				
-				for (var i = 1; i <= fsPages.getSize(); i++) {
-					var record = fsPages.getRecord(i)
-					
-					if (!record.page_name) {
-						REC_delete(record)
-						i--
-						flagDidSomething = true
-					}
-				}
-				
-				//reload tree view
-				if (flagDidSomething) {
-					TREE_refresh()
-				}
-			}
-			break
+//		case 9: //delete all unnamed
+//			//MEMO: this option was put in because blank pages were created when canceling a new page...this bug should be gone
+//			var fsPages = forms.WEB_0F_site.web_site_to_page
+//			
+//			var input = plugins.dialogs.showQuestionDialog(
+//						'Delete record?',
+//						'Do you want to delete all unnamed records from this site?',
+//						'Yes',
+//						'No'
+//				)
+//			
+//			if (input == 'Yes') {
+//				var flagDidSomething
+//				
+//				for (var i = 1; i <= fsPages.getSize(); i++) {
+//					var record = fsPages.getRecord(i)
+//					
+//					if (!record.display_page_name) {
+//						REC_delete(record)
+//						i--
+//						flagDidSomething = true
+//					}
+//				}
+//				
+//				//reload tree view
+//				if (flagDidSomething) {
+//					TREE_refresh()
+//				}
+//			}
+//			break
 			
 		case 11: //flush client cache
 			//TODO: a progressbar indicator...better yet, spawn a headless client on the server
@@ -237,7 +358,7 @@ function FORM_on_load(event) {
 	var beanTree = elements.bean_tree.createBinding(controller.getServerName(),controller.getTableName()) 
 	
 	//name of field to show in tree
-	beanTree.setTextDataprovider('page_name') 
+	beanTree.setTextDataprovider('page_name')
 	
 	// publish flag
 	beanTree.setCheckBoxValueDataprovider('flag_publish')
@@ -245,7 +366,7 @@ function FORM_on_load(event) {
 	beanTree.setMethodToCallOnCheckBoxChange(REC_column_publish,'id_page')
 	
 	//relation to build tree on
-	beanTree.setNRelationName('web_page_to_page__child') 
+	beanTree.setNRelationName('web_page_to_page__child')
 	
 	//sorting of children
 	beanTree.setChildSortDataprovider('globals.WEB_page_sort')
@@ -257,8 +378,8 @@ function FORM_on_load(event) {
 	TREE_refresh()
 	
 	//force highlightion of first record unless called from duplicate rec
-	if (utils.hasRecords(foundset) && event) {
-		elements.bean_tree.selectionPath = FIND_path(foundset.getRecord(1))
+	if (utils.hasRecords(forms.WEB_0F_page.foundset) && event) {
+		elements.bean_tree.selectionPath = FIND_path(forms.WEB_0F_page.foundset.getSelectedRecord())
 	}
 }
 
@@ -267,6 +388,17 @@ function FORM_on_load(event) {
  * @properties={typeid:24,uuid:"A4A59C5A-C5A4-4159-94EB-8E4EEFE67773"}
  */
 function FORM_on_show(firstShow,event) {
+	//full refresh of bean requested
+	if (_refresh) {
+		_refresh = false
+		TREE_refresh()
+		
+		//highlight selected record
+		if (firstShow) {
+			elements.bean_tree.selectionPath = FIND_path(forms.WEB_0F_page.foundset.getSelectedRecord())
+		}
+	}
+	
 	//not really form on show, just keeping form on load a bit cleaner
 	if (firstShow) {
 		// load tooltips from tooltip module
@@ -284,15 +416,8 @@ function FORM_on_show(firstShow,event) {
 	}
 	//return to sitemap subsequently
 	else {
-		//full refresh of bean requested
-		if (_refresh) {
-			_refresh = null
-			TREE_refresh()
-		}
 		//highlight selected record
-		else {
-			elements.bean_tree.selectionPath = FIND_path(forms.WEB_0F_page.foundset.getSelectedRecord())
-		}
+		elements.bean_tree.selectionPath = FIND_path(forms.WEB_0F_page.foundset.getSelectedRecord())
 	}
 	
 	//set record navigator to blank
@@ -351,7 +476,7 @@ function MOVE_generic(input) {
 	 */	//MEMO: within groupings, sort potentially breaks if there are more than 200 records
 	//TODO: check and see if move is valid first, before creating the codable foundset
 	
-	var recMove = foundset.getSelectedRecord()
+	var recMove = forms.WEB_0F_page.foundset.getSelectedRecord()
 	
 	//find current syblings
 	var fsPeers = databaseManager.getFoundSet(controller.getServerName(),controller.getTableName())
@@ -453,7 +578,7 @@ function MOVE_generic(input) {
 			break
 		case 'out':
 			//only move out if node level not 0
-			if (recMove.parent_id_page != 0) {
+			if (recMove.parent_id_page) {
 				//find new parent
 				var idParent = recMove['web_page_to_page__parent'].parent_id_page
 				
@@ -558,31 +683,79 @@ function REC_column_publish(pagePK) {
 	fsPage.id_page = pagePK
 	var results = fsPage.search()
 	
-	if (results) {
-		//if no active snapshot, active working copy
-		for (var i = 1; i <= fsPage.web_page_to_version.getSize(); i++) {
-			var record = fsPage.web_page_to_version.getRecord(i)
-			
-			if (record.flag_active) {
-				var found = true
-			}
-		}
-		
-		//no active found, set working copy to be active
-		if (!found) {
-			var record = fsPage.web_page_to_version.getRecord(1)
-			record.flag_active = 1
-			
-			//re-draw the header area
-			forms.WEB_0F_page__design.SET_globals()
-			forms.WEB_0F_page__design__header_display.FLD_data_change__version_selected()
-		}
-		else {
-			//flag_publish
-		}
-		
-		databaseManager.saveData()
-	}
+	//TODO: what to activate?
+//	if (results) {
+//		
+//		var fsVersions = databaseManager.getFoundSet('sutra_cms','web_version')
+//		
+//		//get versions records
+//		fsVersions.find()
+//		fsVersions.id_platform = globals.WEB_page_platform
+//		fsVersions.id_language = globals.WEB_page_language
+//		fsVersions.id_group = globals.WEB_page_group
+//		var results = fsVersions.search(false,true)
+//		
+//		if (utils.hasRecords(fsVersions)) {
+//			if (!skipLoad) {
+//				fsVersions.sort('version_number desc')
+//			}
+//			
+//			for (var i = 1; i <= fsVersions.getSize(); i++) {
+//				var recVersion = fsVersions.getRecord(i)
+//				
+//				vlReal.push(recVersion.id_version)
+//				
+//				var displayVal = ''
+//				
+//				if (recVersion.flag_active) {
+//					displayVal += '<html><body><strong>ACTIVE</strong> '
+//					var active = {
+//						position: i,
+//						record: recVersion
+//					}
+//				}
+//				
+//				if (!recVersion.flag_active && i == 1) {
+//					displayVal += 'Working copy'
+//				}
+//				else {
+//					displayVal += 'Version ' + recVersion.version_number + ' (' + globals.CODE_date_format(recVersion.rec_modified,'current') + ')'
+//					
+//					if (recVersion.version_name) {
+//						displayVal += ': ' + recVersion.version_name
+//					}
+//				}	
+//				vlDisplay.push(displayVal)
+//			}
+//		}
+//		
+//		
+//		
+//		
+//		//if no active version, active working copy
+//		for (var i = 1; i <= fsPage.web_page_to_version.getSize(); i++) {
+//			var record = fsPage.web_page_to_version.getRecord(i)
+//			
+//			if (record.flag_active) {
+//				var found = true
+//			}
+//		}
+//		
+//		//no active found, set working copy to be active
+//		if (!found) {
+//			var record = fsPage.web_page_to_version.getRecord(1)
+//			record.flag_active = 1
+//			
+//			//re-draw the header area
+//			forms.WEB_0F_page__design.SET_globals()
+//			forms.WEB_0F_page__design_1F__header_display.FLD_data_change__version_selected()
+//		}
+//		else {
+//			//flag_publish
+//		}
+//		
+//		databaseManager.saveData()
+//	}
 }
 
 /**
@@ -590,8 +763,18 @@ function REC_column_publish(pagePK) {
  * @properties={typeid:24,uuid:"952D8326-37DC-44A3-B6E9-F2212C1A87BE"}
  */
 function REC_delete(record) {
-
-	if (utils.hasRecords(foundset) || typeof record == 'object') {
+	
+	function getKeys(relation,keyName) {
+		var keys = new Array()
+		
+		for (var i = 1; i <= record[relation].getSize(); i++) {
+			keys.push(record[relation].getRecord(i)[keyName])
+		}
+		
+		return keys
+	}
+	
+	if (utils.hasRecords(forms.WEB_0F_page.foundset) || typeof record == 'object') {
 		
 		if (typeof record == 'object' && record.id_page) {
 			var delRec = 'Yes'
@@ -604,16 +787,45 @@ function REC_delete(record) {
 								'Yes',
 								'No'
 							)
-			record = foundset.getRecord(foundset.getSelectedIndex())
+			record = forms.WEB_0F_page.foundset.getSelectedRecord()
 		}
 		
 		if (delRec == 'Yes') {
+			
+			if (utils.hasRecords(record,'web_page_to_page__child')) {
+				var delRec = plugins.dialogs.showWarningDialog(
+								'Delete child records',
+								'This page has sub-pages. All will be deleted.\nContinue with delete?',
+								'Yes',
+								'No'
+							)
+				if (delRec != 'Yes') {
+					return
+				}
+			}
+			
 			//busy on
 			globals.CODE_cursor_busy(true)
 			
 			//where do we want to end up
 			var parentID = record.parent_id_page
 			var orderBy = record.order_by
+			
+			//delete all versions (doing on one of the three should get them all)
+			//TODO: this has been removed...there will be workflow to clean up orphaned children
+//			var fsVersions = databaseManager.getFoundSet('sutra_cms','web_version')
+//			fsVersions.find()
+//			fsVersions.id_platform = getKeys('web_page_to_platform','id_platform').join('||')
+//			fsVersions.search(false,false)
+//			fsVersions.deleteAllRecords()
+//			fsVersions.find()
+//			fsVersions.id_language = getKeys('web_page_to_language','id_language').join('||')
+//			fsVersions.search(false,false)
+//			fsVersions.deleteAllRecords()
+//			fsVersions.find()
+//			fsVersions.id_group = getKeys('web_page_to_platform','id_group').join('||')
+//			fsVersions.search(false,false)
+//			fsVersions.deleteAllRecords()
 			
 			//delete it
 			record.deleteRecord()
@@ -639,25 +851,26 @@ function REC_delete(record) {
 				if (!skipSelect) {
 					//go to one above current location
 					if (orderBy != 1) {
-						foundset.find()
-						foundset.parent_id_page = parentID
-						foundset.order_by = orderBy - 1
-						var results = foundset.search()
+						forms.WEB_0F_page.foundset.find()
+						forms.WEB_0F_page.foundset.parent_id_page = parentID
+						forms.WEB_0F_page.foundset.order_by = orderBy - 1
+						var results = forms.WEB_0F_page.foundset.search()
 					}
 					else {
-						foundset.find()
-						foundset.id_page = parentID
-						var results = foundset.search()
+						forms.WEB_0F_page.foundset.find()
+						forms.WEB_0F_page.foundset.id_page = parentID
+						var results = forms.WEB_0F_page.foundset.search()
 					}
 					
 					//refire rec on select to select this one
-					REC_on_select(foundset.id_page)
-					elements.bean_tree.selectionPath = FIND_path(foundset.getRecord(foundset.getSelectedIndex()))
+					REC_on_select(forms.WEB_0F_page.foundset.id_page)
+					elements.bean_tree.selectionPath = FIND_path(forms.WEB_0F_page.foundset.getSelectedRecord())
 				}
 			}
 			//dim out the lights
 			else {
 				controller.loadAllRecords()
+				forms.WEB_0F_page__design_1F__button_tab.TAB_change(null,'tab_b1')
 				forms.WEB_0F_page.FORM_on_show()
 			}
 			
@@ -680,7 +893,7 @@ function REC_delete(record) {
 function REC_duplicate() {
 	//TODO: need a better way to check than just by version number
 	
-	var srcRecord = foundset.getRecord(foundset.getSelectedIndex())
+	var srcRecord = forms.WEB_0F_page.foundset.getSelectedRecord()
 	
 	var thisVer = srcRecord.web_page_to_version.version_number
 	
@@ -704,7 +917,7 @@ function REC_duplicate() {
 	
 	//copy selected version
 	var destRecord = globals.CODE_record_duplicate(srcRecord,[
-										"web_page_to_version.web_version_to_area.web_area_to_block.web_block_to_block_data",
+										"web_page_to_version.web_version_to_area.web_area_to_block.web_block_version_to_block_data",
 										"web_page_to_attribute"
 									])
 	
@@ -725,7 +938,7 @@ function REC_duplicate() {
 	destRecord.parent_id_page = srcRecord.parent_id_page
 	destRecord.flag_publish = 0
 	thisVersionToDo.flag_active = 0
-	thisVersionToDo.flag_edit = 1
+	thisVersionToDo.flag_lock = 0
 	thisVersionToDo.version_number = 1
 	destRecord.order_by ++
 	
@@ -784,7 +997,13 @@ function REC_new() {
 		return
 	}
 	
-	if (utils.hasRecords(forms.WEB_0F_site.foundset)) {
+	//default values for selected site
+	var siteDefaults = forms.WEB_0F_site.ACTION_get_defaults()
+	
+	//TODO: prompt to modify defaults (for example, logged in as spanish, only allowed to create spanish)
+	
+	//we have enough information to create a record
+	if (siteDefaults) {
 		globals.CODE_cursor_busy(true)
 		
 		//how is this record getting added
@@ -794,41 +1013,41 @@ function REC_new() {
 		_addRecord = 1
 		
 		//get current location in the stack
-		if (utils.hasRecords(foundset)) {
-			_oldRecord = id_page
+		if (utils.hasRecords(forms.WEB_0F_page.foundset)) {
+			_oldRecord = forms.WEB_0F_page.id_page
 		}
 		//no records created yet
 		else {
 			if (application.__parent__.solutionPrefs && solutionPrefs.design.statusLockWorkflow) {
+				//turn off disabled screen
 				globals.WEB_lock_workflow(false)
+				forms.WEB_TB__web_mode.controller.enabled = true
 			}
+			_oldRecord = null
 		}
 		
 		//save outstanding data and then turn autosave off until we don't get cancelled
 		databaseManager.saveData()
 		databaseManager.setAutoSave(false)
 		
-		var newRecord = foundset.getRecord(foundset.newRecord(false,true))
-		newRecord.id_site = forms.WEB_0F_site.id_site
-		
-		//fill in defaults
-		if (utils.hasRecords(newRecord.web_page_to_site.web_site_to_theme__default)) {
-			//set theme
-			newRecord.id_theme = newRecord.web_page_to_site.web_site_to_theme__default.id_theme
+		//where to create new page
+		if (webMode) {
+			var fsPage = forms.WEB_P_page.foundset
 			
-			//set layout
-			if (utils.hasRecords(newRecord.web_page_to_site.web_site_to_theme__default.web_theme_to_layout__default)) {
-				newRecord.id_theme_layout = newRecord.web_page_to_site.web_site_to_theme__default.web_theme_to_layout__default.id_layout
-			}
-			
-			//set flag that theme has been set and all areas should be blown in
-			if (webMode) {
-				forms.WEB_P_page._themeSet = 1
-			}
-			else {
-				forms.WEB_0F_page__design__header_edit._themeSet = 1
-			}
+			//punch down site default
+			forms.WEB_P_page._siteDefaults = siteDefaults
 		}
+		else {
+			var fsPage = forms.WEB_0F_page.foundset
+			
+			//punch down site default
+			forms.WEB_0F_page__design_1F__header_edit._siteDefaults = siteDefaults
+		}
+		
+		//create new page
+		var pageRec = fsPage.getRecord(fsPage.newRecord(false,true))
+		pageRec.id_site = forms.WEB_0F_site.id_site
+		pageRec.flag_publish = siteDefaults.record.flag_auto_publish
 		
 		//if in browser mode, FiD to define page
 		if (webMode) {
@@ -844,24 +1063,35 @@ function REC_new() {
 						true,
 						false,
 						'cmsNewPage'
-					)	
+					)
 		}
 		//design mode
 		else {
 			//hide everything except the bare necessities
-			forms.WEB_0F_page__design__header_edit.TOGGLE_fields(0)
+			forms.WEB_0F_page__design_1F__header_edit.TOGGLE_fields(0)
 			
 			//show pop-down
-			globals.WEB_simple_edit('WEB_0F_page__design__button_tab')
+			globals.WEB_simple_edit('WEB_0F_page__design_1F__button_tab')
 			
 			globals.CODE_cursor_busy(false)
 		}
 	}
+	//something wrong at the site level
 	else {
-		plugins.dialogs.showErrorDialog(
-						'Error',
-						'You must add a site record first'
-				)
+		//not all defaults specified
+		if (utils.hasRecords(forms.WEB_0F_page.foundset)) {
+			plugins.dialogs.showErrorDialog(
+							'Error',
+							'The defaults are not set correctly for this site'
+					)
+		}
+		//no site record
+		else {
+			plugins.dialogs.showErrorDialog(
+							'Error',
+							'You must add a site record first'
+					)
+		}
 	}
 }
 
@@ -870,29 +1100,29 @@ function REC_new() {
  * @properties={typeid:24,uuid:"6C822BD6-4F1B-4B48-B0A2-C695A0DDC47B"}
  */
 function REC_on_select(selectedRecord) {
-
 	//make record clicked in tree be selected on foundset also
-	if (selectedRecord && utils.hasRecords(foundset)) {
+	if (selectedRecord && utils.hasRecords(forms.WEB_0F_page.foundset)) {
 		//just select that pk
-		foundset.selectRecord(selectedRecord)
+		forms.WEB_0F_page.foundset.selectRecord(selectedRecord)
 	}
 	else {
-		foundset.loadAllRecords()
+		forms.WEB_0F_page.foundset.loadAllRecords()
 	}
 	
-	//that record not already loaded, find it
-	//TODO: this is where the error is
-	if (foundset.getSelectedRecord().id_page != selectedRecord) {
-		//foundset not working correctly
-		if (foundset.find()) {
-			foundset.id_page = selectedRecord
-			var results = foundset.search()
-		}
-		else {
-		//	application.output('ID ' + selectedRecord + ' not selected correctly')
+	if (utils.hasRecords(forms.WEB_0F_page.foundset)) {
+		//that record not already loaded, find it
+		//TODO: this is where the error is
+		if (forms.WEB_0F_page.foundset.getSelectedRecord().id_page != selectedRecord) {
+			//foundset not working correctly
+			if (forms.WEB_0F_page.foundset.find()) {
+				forms.WEB_0F_page.foundset.id_page = selectedRecord
+				var results = forms.WEB_0F_page.foundset.search()
+			}
+			else {
+			//	application.output('ID ' + selectedRecord + ' not selected correctly')
+			}
 		}
 	}
-	
 }
 
 /**
@@ -924,7 +1154,7 @@ function TOGGLE_nodes() {
 var _addRecord = null;
 
 /**
- * @properties={typeid:35,uuid:"47BDFB27-EBF0-4C38-B435-7289D1C2CDEE",variableType:4}
+ * @properties={typeid:35,uuid:"47BDFB27-EBF0-4C38-B435-7289D1C2CDEE",variableType:-4}
  */
 var _oldRecord = null;
 
@@ -935,7 +1165,7 @@ var _oldRecord = null;
 function SET_page(pageID) {
 	var fsPage = databaseManager.getFoundSet(controller.getServerName(),"web_page")
 	fsPage.find()
-	fsPage.id_page = pageID
+	fsPage.url_param = pageID
 	var results = fsPage.search()
 	
 	//called from headless client in browser bean
@@ -951,8 +1181,170 @@ function SET_page(pageID) {
  *
  * @properties={typeid:24,uuid:"00D5F9DC-EFC1-45AD-8AB1-D7574EB41971"}
  */
-function TABS_list(event) {
-	globals.TRIGGER_ul_tab_list(event)
+function TABS_list(input) {
+	//should just call this method, but need to do something different when chosen
+//	globals.TRIGGER_ul_tab_list(event)
+	
+	function somethingDifferent() {
+		//if ul tab chosen, load all records and select the chosen one
+		if (globals.NAV_universal_selected_tab != 'WEB_0T_page') {
+			globals.CODE_cursor_busy(true)
+			
+//			var fsPage = forms[forms[globals.NAV_universal_selected_tab].elements.tab_ul.getTabFormNameAt(forms[globals.NAV_universal_selected_tab].elements.tab_ul.tabIndex)].foundset
+			var fsPage = databaseManager.getFoundSet('sutra_cms','web_page')
+			var selected = forms.WEB_0F_page.foundset.getSelectedRecord()
+			
+			fsPage.find()
+			fsPage.id_site = globals.WEB_site_find_restrict()
+			var results = fsPage.search()
+			
+			//something was found, try to select this record
+			if (results) {
+				while (fsPage.getSelectedRecord().id_page != selected.id_page) {
+					fsPage.selectRecord(selected.id_page)
+				}
+				
+				//finding done on separate foundset and then reloaded in to eliminate screen flicker
+					//MEMO: this is probably slower than with flicker
+				forms.WEB_0F_page.foundset.loadRecords(fsPage)
+			}
+			
+			globals.CODE_cursor_busy(false)
+		}
+	}
+	
+	//only run if meta-objects defined
+	if (application.__parent__.navigationPrefs && application.__parent__.solutionPrefs) {
+		//grab the actions to this
+		var valueList = new Array()
+		var formNames = new Array()
+		for (var i = 0; i < navigationPrefs.byNavItemID[solutionPrefs.config.currentFormID].universalList.buttons.tabs.length ; i++) {
+			var actionItem = navigationPrefs.byNavItemID[solutionPrefs.config.currentFormID].universalList.buttons.tabs[i]
+			valueList.push(actionItem.menuName)
+			formNames.push(actionItem.formToLoad)
+		}
+		
+		//tack on the selected UL to the top of the pop-down
+		valueList.unshift(navigationPrefs.byNavItemID[solutionPrefs.config.currentFormID].universalList.displays[navigationPrefs.byNavItemID[solutionPrefs.config.currentFormID].universalList.displays.displayPosn].listTitle || navigationPrefs.byNavItemID[solutionPrefs.config.currentFormID].navigationItem.fwListTitle)
+		formNames.unshift((navigationPrefs.byNavItemID[solutionPrefs.config.currentFormID].listData.withButtons) ? 'NAV_T_universal_list' : 'NAV_T_universal_list__no_buttons')
+		
+		//called to depress menu
+		if (input instanceof JSEvent) {
+			var popForm = input.getFormName()
+			var popElem = input.getElementName()
+			
+			//only show pop-up if there are enabled values
+			if (valueList.length > 1) {
+				
+				//build menu, load tabs, and set menu method arguments
+				var menu = new Array()
+				for ( var i = 0 ; i < valueList.length ; i++ ) {
+				    //set check on universal list
+					if (formNames[i] == forms.DATASUTRA_0F_solution.elements.tab_content_B.getTabFormNameAt(forms.DATASUTRA_0F_solution.elements.tab_content_B.tabIndex)) {
+						menu[i] = plugins.popupmenu.createCheckboxMenuItem(valueList[i] + "", TABS_list)
+						menu[i].setSelected(true)
+					}
+					else {
+						menu[i] = plugins.popupmenu.createMenuItem(valueList[i] + "", TABS_list)
+					}
+					
+					//pass form name as parameter if that form is currently included
+					if (forms[formNames[i]]) {
+						menu[i].setMethodArguments(formNames[i],valueList[i])
+					}
+					else {
+						menu[i].setEnabled(false)
+					}
+					
+					//disable dividers
+					if (valueList[i] == '-') {
+						menu[i].setEnabled(false)
+					}
+				}
+				
+				//are we using a second element to get pop up to align correctly
+				var btnInvisible = popElem + "_down"
+				
+				//push menu down to the header line
+				if (forms[popForm].elements[btnInvisible]) {
+					var elem = forms[popForm].elements[btnInvisible]
+					
+					var currentLocationX = elem.getLocationX()
+					var currentLocationY = elem.getLocationY()
+					
+					elem.setLocation(currentLocationX, currentLocationY + 3)
+				}
+				else {
+					var elem = forms[popForm].elements[popElem]
+				}
+				
+				//popup menu
+				if (elem != null) {
+				    plugins.popupmenu.showPopupMenu(elem, menu)
+				}
+				
+				//set invisible btn back to original location
+				if (forms[popForm].elements[btnInvisible]) {
+					elem.setLocation(currentLocationX, currentLocationY)
+				}
+			}
+		}
+		//menu shown and item chosen
+		else {
+			var formName = arguments[0]
+			var itemName = arguments[1]
+			var tabSelected = arguments[2]
+			var baseForm = solutionPrefs.config.formNameBase
+			var prefName = 'Custom tab ' + solutionPrefs.config.currentFormID + ': ' + formName
+			
+			if (forms[formName]) {
+				//set global that end users use in their code
+				globals.NAV_universal_selected_tab = formName
+				
+				//if not loaded, add tab
+				if (formName != 'DATASUTRA_0F_solution__blank_2' && !navigationPrefs.byNavSetName.configPanes.itemsByName[prefName]) {
+					
+					//assign to list tab panel
+					forms[baseForm].elements.tab_content_B.addTab(forms[formName],'',null,null,null,null)
+					forms[baseForm].elements.tab_content_B.tabIndex = forms[baseForm].elements.tab_content_B.getMaxTabIndex()
+					
+					//save status info
+					navigationPrefs.byNavSetName.configPanes.itemsByName[prefName] = new Object()
+					navigationPrefs.byNavSetName.configPanes.itemsByName[prefName].listData = {
+												tabNumber : forms[baseForm].elements.tab_content_B.tabIndex,
+												dateAdded : application.getServerTimeStamp()
+										}
+					
+				}
+				//blank form, set to blank tab
+				else if (formName == 'DATASUTRA_0F_solution__blank_2') {
+					forms[baseForm].elements.tab_content_B.tabIndex = 1
+				}
+				//set tab to this preference
+				else {
+					forms[baseForm].elements.tab_content_B.tabIndex = navigationPrefs.byNavSetName.configPanes.itemsByName[prefName].listData.tabNumber
+				}
+				
+				//using a custom tab, note which one it is
+				if (tabSelected >= 0) {
+					navigationPrefs.byNavItemID[solutionPrefs.config.currentFormID].universalList.buttons.tabs.tabPosn = tabSelected
+				}
+				//using default list (UL or other)
+				else if (navigationPrefs.byNavItemID[solutionPrefs.config.currentFormID].universalList.buttons.tabs) {
+					delete navigationPrefs.byNavItemID[solutionPrefs.config.currentFormID].universalList.buttons.tabs.tabPosn
+				}
+				
+				//LOG ul tab change
+				globals.TRIGGER_log_create('UL Tabs',
+									itemName,
+									formName
+								)
+				
+				somethingDifferent()
+			}
+		}
+	}
+	
 }
 
 /**
@@ -963,18 +1355,27 @@ function TREE_refresh() {
 	elements.bean_tree.removeAllRoots()
 	
 	//select the root nodes (the nodes without a parent) 
-	if (foundset.find()) { 
+	if (forms.WEB_0F_page.foundset.find()) { 
 		// search for null values 
-		foundset.parent_id_page = '^='
-		foundset.id_site = forms.WEB_0F_site.id_site
-		var results = foundset.search()
+		forms.WEB_0F_page.foundset.parent_id_page = '^='
+		forms.WEB_0F_page.foundset.id_site = forms.WEB_0F_site.id_site
+		if (_scopePlatform) {
+			forms.WEB_0F_page.web_page_to_platform.id_site_platform = _scopePlatform
+		}
+		if (_scopeLanguage) {
+			forms.WEB_0F_page.web_page_to_language.id_site_language = _scopeLanguage
+		}
+		if (_scopeGroup) {
+			forms.WEB_0F_page.web_page_to_group.id_site_group = _scopeGroup
+		}
+		var results = forms.WEB_0F_page.foundset.search()
 		
 		//manage the sort of the top-level nodes
 		if (results) {
-			foundset.sort('order_by asc')
+			forms.WEB_0F_page.foundset.sort('order_by asc')
 		}
 		
 		//load the foundset into the treeview 
-		elements.bean_tree.addRoots(foundset)
+		elements.bean_tree.addRoots(forms.WEB_0F_page.foundset)
 	}
 }

@@ -120,7 +120,7 @@ items:[
 {
 containsFormID:"5870F778-8D64-4E47-9C13-748A0B07ACB7",
 location:"100,160",
-text:"WEB_0F_page__browser__editor",
+text:"WEB_0F_page__browser_1F_block__editor",
 typeid:15,
 uuid:"99E836F8-784A-4F89-8A96-0B35A172A33D"
 }
@@ -137,6 +137,7 @@ uuid:"72A0BC31-462D-4BF4-9F93-77ED1EC7C315"
 ],
 name:"WEB_0F_page__browser",
 navigatorID:"-1",
+onHideMethodID:"1A00D0BD-4B72-4185-B038-44F2419A5D6E",
 onLoadMethodID:"341E923E-40EF-4E1D-9C25-802AC05D4789",
 onRecordSelectionMethodID:"60C0F66F-9740-428F-8C64-BE5870650741",
 onShowMethodID:"054DD2AE-9EC2-4214-AF1C-5612B58E4E77",

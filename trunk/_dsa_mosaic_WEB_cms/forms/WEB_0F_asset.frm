@@ -306,7 +306,6 @@ uuid:"E6512F93-1308-438B-B4D6-8BE3BBD88E19"
 name:"WEB_0F_asset",
 navigatorID:"-1",
 onHideMethodID:"6F9735E5-4802-4370-9526-80C07653820B",
-onLoadMethodID:"CFCBF7B5-C038-4D04-AFF3-41AEA18ED580",
 onRecordEditStopMethodID:"-1",
 onRecordSelectionMethodID:"-1",
 onShowMethodID:"16C7820E-528E-495C-A409-E0EA923E2429",

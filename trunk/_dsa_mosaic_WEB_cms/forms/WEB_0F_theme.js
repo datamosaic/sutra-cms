@@ -71,30 +71,6 @@ var _themesProgressCount = 0;
 var _themesDone = 0;
 
 /**
- *
- * @properties={typeid:24,uuid:"F2CB4A41-BEEE-4317-9FA2-4976302B50EA"}
- */
-function ACTION_new_editable()
-{
-	
-	if (utils.hasRecords(web_theme_to_layout)) {
-		web_theme_to_layout.web_layout_to_editable__selected.newRecord(false, true)
-		databaseManager.saveData()
-		web_theme_to_layout.web_layout_to_editable__selected.editable_name = ''
-		forms.WEB_0F_theme_1L_editable.elements.fld_name.requestFocus()
-		application.updateUI()
-	}
-	else {
-		plugins.dialogs.showErrorDialog(
-					'Error',
-					'No theme or layout selected.'
-			)
-	}	
-
-
-}
-
-/**
  * @properties={typeid:35,uuid:"563E0740-3E65-4C43-84B2-5EE80C9D81C3",variableType:-4}
  */
 var _themesPaths = [];
@@ -327,7 +303,7 @@ function LAYOUTS_action_list_control(selected) {
 							var thePage = fsPages.getRecord(i)
 							
 							//TODO: set global variabls for group/version combo where id_version >= the active version
-//							forms.WEB_0F_page__design__content_1L_area.AREA_reorder(thePage)
+//							forms.WEB_0F_page__design_1F_version_2L_area.AREA_reorder(thePage)
 						}
 					}
 				}
@@ -387,16 +363,6 @@ function FIELD_directory_onLost(event) {
  */
 function FORM_on_show(firstShow, event) {
 	if (firstShow) {
-		//find stuff for the selected site
-		if (utils.hasRecords(forms.WEB_0F_site.foundset)) {
-			foundset.find()
-			foundset.id_site = forms.WEB_0F_site.id_site
-			var results = foundset.search()
-		}
-		else {
-			foundset.clear()
-		}
-		
 		//set divider locations
 		var aThird = (controller.getFormWidth() - 22) / 3
 		elements.bean_split_1.dividerLocation = aThird
@@ -405,8 +371,30 @@ function FORM_on_show(firstShow, event) {
 		elements.bean_split_4.dividerLocation = aThird
 	}
 	
+	//only do this when not running in data sutra
+	if (!application.__parent__.solutionPrefs) {
+		FILTER_records(event)
+	}
+	
 	if (!utils.hasRecords(foundset)) {
 		globals.WEB_lock_workflow(true)
+	}
+}
+
+/**
+ * @param {JSEvent} event the event that triggered the action
+ * 
+ * @properties={typeid:24,uuid:"A7C0E994-A29D-4BBA-9677-8F7608F29578"}
+ */
+function FILTER_records(event) {
+	//find stuff for the selected site
+	if (utils.hasRecords(forms.WEB_0F_site.foundset)) {
+		foundset.find()
+		foundset.id_site = forms.WEB_0F_site.id_site
+		var results = foundset.search()
+	}
+	else {
+		foundset.clear()
 	}
 }
 

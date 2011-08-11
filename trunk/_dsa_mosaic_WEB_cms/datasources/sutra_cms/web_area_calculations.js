@@ -1,6 +1,6 @@
 /**
  *
- * @properties={type:4,typeid:36,uuid:"32825AF8-DAA9-47D2-986C-6953DB237E7B"}
+ * @properties={type:12,typeid:36,uuid:"32825AF8-DAA9-47D2-986C-6953DB237E7B"}
  */
 function id_page()
 {

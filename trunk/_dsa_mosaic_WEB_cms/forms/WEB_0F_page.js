@@ -1,329 +1,14 @@
 /**
+ * @properties={typeid:35,uuid:"BA09B348-4B82-45BC-9ABB-BBC73E3CC672",variableType:-4}
+ */
+var _loadFilters = true;
+
+/**
  * @properties={typeid:35,uuid:"04fde543-69cc-4de9-af47-7f7c22221f28"}
  */
 var _license_dsa_mosaic_WEB_cms = 'Module: _dsa_mosaic_WEB_cms \
 									Copyright (C) 2011 Data Mosaic \
 									MIT Licensed';
-
-/**
- *
- * @properties={typeid:24,uuid:"E678611B-86D2-4045-B97E-BF6A669DC56D"}
- */
-function AREA_new(event)
-{
-
-	// ONE-OFF (shift key)
-	if (event.getModifiers() & JSEvent.MODIFIER_SHIFT) {
-		var size = web_page_to_area.getSize() 
-		var record = web_page_to_area.getRecord(web_page_to_area.newRecord(false, true))
-		record.row_order = size + 1
-		databaseManager.saveData(true)
-		return "one-off record added"
-	}
-
-	// ERROR CHECK: PAGE AREA RECORDS DELETE
-	if (utils.hasRecords(web_page_to_area)) {
-		var input = plugins.dialogs.showWarningDialog( "Warning",
-		"This action will delete current area records. Continue?", "Yes", "No")
-
-		if ( input != "Yes") {
-			return
-		}
-	}
-
-	// ERROR CHECK: THEME SELECTED FOR PAGE
-	if ( !id_theme ) {
-		plugins.dialogs.showErrorDialog( "Error",
-		"No theme selected for this page")
-		return
-	}
-
-	// get layouts from current page theme
-	var dataset = databaseManager.getDataSetByQuery(
-	controller.getServerName(),
-	"select id_layout, layout_name from web_layout where id_theme = ?",
-	[id_theme], -1)
-
-	// setup associative array
-	var IDs = dataset.getColumnAsArray(1)
-	var values = dataset.getColumnAsArray(2)
-	var valueListObj = {}
-	for (var i = 0; i < IDs.length; i++) {
-		valueListObj[values[i]] = IDs[i]
-	}
-
-	// choose layout
-	var selection = plugins.dialogs.showSelectDialog(
-	"Select",
-	"Choose layout", 
-	values)
-
-	// ERROR CHECK: NO LAYOUT SELECTED
-	if ( !selection ) {
-		return
-	}
-
-	// get editable regions based on layout selected
-	var dataset = databaseManager.getDataSetByQuery(
-	controller.getServerName(),
-	"select editable_name from web_editable where id_layout = ?",
-	[valueListObj[selection]], -1)
-	var editableNames = dataset.getColumnAsArray(1)
-
-	// ERROR CHECK: NO EDITABLES
-	if ( !editableNames.length ) {
-		plugins.dialogs.showErrorDialog( "Error",
-		"No editable regions set up in layout selected.")
-		return
-	}
-
-	// delete current area records
-	if (utils.hasRecords(web_page_to_area)) {
-		web_page_to_area.deleteAllRecords()
-	}
-
-	// create a page area record for each editable
-	order = 1
-	for (var i = 0; i < editableNames.length; i++) {
-		var record = web_page_to_area.getRecord(web_page_to_area.newRecord(false, true))
-		record.area_name = editableNames[i]
-		record.row_order = order ++                                
-		databaseManager.saveData()
-	}
-
-	// finish up
-	web_page_to_area.sort( "row_order asc" )
-	web_page_to_area.setSelectedIndex(1)
-	id_theme_layout = valueListObj[selection]
-	databaseManager.saveData()
-
-}
-
-/**
- *
- * @properties={typeid:24,uuid:"CCA0668E-6769-4FCE-92AA-A6D861DAFCCB"}
- */
-function BLOCK_action_list()
-{
-
-	//menu items
-	var valuelist = new Array('Save to scrapbook')
-	
-	//set up menu with arguments
-	var menu = new Array()
-	for ( var i = 0 ; i < valuelist.length ; i++ ) {
-		menu[i] = plugins.popupmenu.createMenuItem(valuelist[i],BLOCK_action_list_control)
-	
-		menu[i].setMethodArguments(i)
-	
-		if (menu[i].text == '----') {
-			menu[i].setEnabled(false)
-		}
-	}
-	
-	//popup
-	var elem = elements[application.getMethodTriggerElementName()]
-	if (elem != null && valuelist.length) {
-		plugins.popupmenu.showPopupMenu(elem, menu)
-	}
-
-}
-
-/**
- *
- * @properties={typeid:24,uuid:"8FE827CA-B29B-4409-AF80-74C919E0FC8D"}
- */
-function BLOCK_action_list_control()
-{
-	switch (arguments[0]) {
-		case 0:  // save block and data points to scrapbook and scrapbook data
-			
-			// block to scrapbook
-			var source 		= forms.WEB_0F_page__design__content_1L_block.foundset.getRecord(forms.WEB_0F_page__design__content_1L_block.foundset.getSelectedIndex())
-			var destination	= forms.WEB_0F_scrapbook.foundset.getRecord(forms.WEB_0F_scrapbook.foundset.newRecord(true))
-			var success		= databaseManager.copyMatchingColumns(source,destination)
-			databaseManager.saveData()
-			
-			// block_data to scrapbook data
-			var source		= forms.WEB_0F_page__design__content_1L_block.web_block_to_block_data
-			
-			for (var i = 0; i < source.getSize(); i++) {
-				var record		= source.getRecord(i + 1)
-				var destination	= forms.WEB_0F_scrapbook.web_scrapbook_to_scrapbook_data.getRecord(forms.WEB_0F_scrapbook.web_scrapbook_to_scrapbook_data.newRecord(true))
-				databaseManager.copyMatchingColumns(record,destination)
-			}
-			databaseManager.saveData()
-			
-			break;
-		default:
-			break;
-	}
-
-}
-
-/**
- *
- * @properties={typeid:24,uuid:"038013BF-721C-4922-B361-5A19F6007D49"}
- */
-function BLOCK_new()
-{
-	if (utils.hasRecords(foundset)) {
-	
-		// get blocks
-		var dataset = databaseManager.getDataSetByQuery(
-			controller.getServerName(),
-			"select id_block_type, block_name from web_block_type",
-			null, -1)
-		
-		// ERROR CHECK: NO BLOCKS INSTALLED
-		if ( !dataset ) {
-			return
-		}
-		
-		// setup associative array
-		var IDs = dataset.getColumnAsArray(1)
-		var values = dataset.getColumnAsArray(2)
-		var valueListObj = {}
-		for (var i = 0; i < IDs.length; i++) {
-			valueListObj[values[i]] = IDs[i]
-		}
-		
-		// add scrapbook option
-		values.push("---", "Scrapbook...")
-		
-		// choose block type
-		var selection = plugins.dialogs.showSelectDialog(
-		"Select",
-		"Choose block type", 
-		values)
-		
-		// ERROR CHECK: NO SELECTED
-		if ( !selection ) {
-			return
-		}
-		
-		if (selection != "Scrapbook...") {
-		
-			// get block data points
-			var dataset = databaseManager.getDataSetByQuery(
-			controller.getServerName(),
-			"select column_name, column_type, " +
-				"(select id_block_display from web_block_display where id_block_type = ? and flag_default = 1) as display " +
-			"from web_block_input where id_block_type = ?",
-			new Array(valueListObj[selection],valueListObj[selection]), -1)
-			
-			var dataNames = dataset.getColumnAsArray(1)
-			var display = dataset.getValue(1,3)
-			
-			// create block record
-			if (utils.hasRecords(web_page_to_area)) {
-				var count = web_page_to_block_by_area.getSize()
-				var record = web_page_to_block_by_area.getRecord(web_page_to_block_by_area.newRecord(false, true))
-				record.id_block_type = valueListObj[selection]
-				record.id_block_display = ( display ) ? display : null
-				record.row_order = count + 1
-				databaseManager.saveData()
-			}
-			
-			// create a block data record for each data point
-			for (var i = 0; i < dataNames.length; i++) {
-				var record = web_page_to_block_data_by_area_by_block.getRecord(web_page_to_block_data_by_area_by_block.newRecord(false, true))
-				record.data_key = dataNames[i]
-				databaseManager.saveData()
-			}
-			
-			// finish up
-			web_page_to_block_data_by_area_by_block.setSelectedIndex(1)
-			
-			forms.WEB_0F_page__design__content_1L_block.REC_selected()
-		}
-		else {
-			
-			application.showFormInDialog(forms.WEB_0F_scrapbook_1P__choose,-1,-1,-1,-1,"Scrapbook", false, false, "chooseScrapbook")
-
-		}
-	}
-}
-
-/**
- *
- * @properties={typeid:24,uuid:"BFFA0ACE-EB53-44D1-9360-DBF3128DF80F"}
- */
-function DATA_action_list()
-{
-	// get block type
-	var params = new Array(id_page, globals.WEB_page_id_area_selected, globals.WEB_page_id_block_selected)
-	var sql =	"select id_block_type, form_name from web_block_type where " +
-					"web_block_type.id_block_type = " +
-					"(select id_block_type from web_block where " +
-					"web_block.id_page = ? and " +
-					"web_block.id_area = ? and " +
-					"web_block.id_block = ?)"
-	var dataset = databaseManager.getDataSetByQuery(
-					controller.getServerName(), sql, params, -1)	
-	
-	if ( dataset.getMaxRowIndex() ) {
-		var typeID = dataset.getValue(1,1)
-		var formName = dataset.getValue(1,2)
-	}
-	else { 
-		return "No mathing block type found"
-	}
-
-	
-	// input method names for block type
-	var params = [typeID]
-	var sql =	"select input_name, method_name from web_block_input where " +
-					"web_block_input.id_block_type = ?"
-	var dataset = databaseManager.getDataSetByQuery(
-					controller.getServerName(), sql, params, -1)
-
-	if ( dataset.getMaxRowIndex() ) {
-
-		//menu items
-		var valuelist 	= dataset.getColumnAsArray(1)
-		var methods		= dataset.getColumnAsArray(2)
-		
-		//set up menu with arguments
-		var menu = new Array()
-		for ( var i = 0 ; i < valuelist.length ; i++ ) {
-			menu[i] = plugins.popupmenu.createMenuItem(valuelist[i],DATA_action_list_control)
-		
-			menu[i].setMethodArguments(formName, methods[i])
-		
-			if (menu[i].text == '----') {
-				menu[i].setEnabled(false)
-			}
-		}
-		
-		//popup
-		var elem = elements[application.getMethodTriggerElementName()]
-		if (elem != null && valuelist.length) {
-			plugins.popupmenu.showPopupMenu(elem, menu)
-		}
-	}
-}
-
-/**
- *
- * @properties={typeid:24,uuid:"38B9C448-9713-49F3-8BF1-40BFBF0953BE"}
- */
-function DATA_action_list_control()
-{
-	// forms[type.form_name][display.method_name](dataObject)
-	forms[arguments[0]][arguments[1]]()
-}
-
-/**
- * 
- * @properties={typeid:24,uuid:"22B28FF1-9C43-4F31-935E-2928B472FCE8"}
- */
-function BROWSER_block_new(areaName) {
-	// id_area from areaName passed in
-	// TODO: put a div wrapper around areas. then can pass in id_area directly. 
-	// TODO: write in the area block_new div when wrapper is created
-	application.beep()
-}
 
 /**
  *
@@ -333,28 +18,28 @@ function TRIGGER_mode_set(mode) {
 	if (mode) {
 		switch (mode) {
 			case "DESIGN":	
-				//custom block editor loaded on browser form, remove
-				if (forms.WEB_0F_page__browser.elements.tab_editor.getMaxTabIndex() && (
-					forms.WEB_0F_page__browser.elements.tab_editor.getTabFormNameAt(1) == 'WEB_0F__content' ||
-					forms.WEB_0F_page__browser.elements.tab_editor.getTabFormNameAt(1) == 'WEB_0F__image'
-					)) {
-					
-					//stop loading on main browser bean form to avoid race condition
-					forms.WEB_0F_page__browser.elements.bn_browser.stopLoading()
-					
-					forms.WEB_0F_page__browser.elements.tab_editor.removeTabAt(1)
-				}
+//				//custom block editor loaded on browser form, remove
+//				if (forms.WEB_0F_page__browser.elements.tab_editor.getMaxTabIndex() && (
+//					forms.WEB_0F_page__browser.elements.tab_editor.getTabFormNameAt(1) == 'WEB_0F__content' ||
+//					forms.WEB_0F_page__browser.elements.tab_editor.getTabFormNameAt(1) == 'WEB_0F__image'
+//					)) {
+//					
+//					//stop loading on main browser bean form to avoid race condition
+//					forms.WEB_0F_page__browser.elements.bn_browser.stopLoading()
+//					
+//					forms.WEB_0F_page__browser.elements.tab_editor.removeTabAt(1)
+//				}
 				
 				elements.tab_main.removeTabAt(2)
 				elements.tab_main.tabIndex = 1
 				
 				//reset enabled/disabled, etc.
-				forms.WEB_0F_page__design__header_display.FLD_data_change__version_selected()
+				forms.WEB_0F_page__design.REC_on_select(null,true)
 				
 				break;
 			case "BROWSER":	
 				//following line only needed when returning to web mode after not being in it fulltime
-				forms.WEB_0F_page__browser.REC_selected()
+				forms.WEB_0F_page__browser.REC_on_select(null,null,true)
 				
 				elements.tab_main.addTab( forms.WEB_0F_page__browser )
 				elements.tab_main.tabIndex = 2
@@ -383,58 +68,63 @@ function TRIGGER_mode_set(mode) {
 var _lastToolbar = null;
 
 /**
- * @properties={typeid:35,uuid:"FA071178-813A-4E1E-AAEB-13E5E59D62F3",variableType:-4}
- */
-var _hackNoFire = false;
-
-/**
  * @properties={typeid:24,uuid:"10F5E463-15E2-4C0B-858D-F62E76FEDFBF"}
  */
 function FORM_on_show(firstShow, event) {
-	//this is set when scrapbook is shown to ensure that browser bean has enough time to load before rendering
-	if (!_hackNoFire) {
-		//first time go to sitemap view
-		if (firstShow) {
-			globals.TRIGGER_ul_tab_list('WEB_0T_page','Sitemap',0)
+	//first time go to sitemap view
+	if (firstShow) {
+		globals.TRIGGER_ul_tab_list('WEB_0T_page','Sitemap',0)
+	}
+	
+	//don't run in headless client
+	if (application.getApplicationType() != APPLICATION_TYPES.HEADLESS_CLIENT) {
+		//save down currently selected toolbar
+		if (application.__parent__.solutionPrefs && !solutionPrefs.config.lockStatus) {
+			_lastToolbar = solutionPrefs.panel.toolbar[forms[solutionPrefs.config.formNameBase + '__header__toolbar'].elements.tab_toolbar.tabIndex - 1].tabName
+			
+			//make sure on page toolbar
+			globals.TRIGGER_toolbar_set('Web Edit')
 		}
 		
-		//don't run in headless client
-		if (application.getApplicationType() != APPLICATION_TYPES.HEADLESS_CLIENT) {
-			//save down currently selected toolbar
-			if (application.__parent__.solutionPrefs && !solutionPrefs.config.lockStatus) {
-				_lastToolbar = solutionPrefs.panel.toolbar[forms[solutionPrefs.config.formNameBase + '__header__toolbar'].elements.tab_toolbar.tabIndex - 1].tabName
-				
-				//make sure on page toolbar
-				globals.TRIGGER_toolbar_set('Web Edit')
-			}
+		
+		//in workflow maximized view
+		if (firstShow && application.__parent__.solutionPrefs && solutionPrefs.config.activeSpace == 'workflow') {
+			//switch modes
+			TRIGGER_mode_set("BROWSER")
+			return
+		}
+		
+		if (!utils.hasRecords(foundset)) {
+			//null out variables and valuelists
+			globals.WEB_page_version = null
+			globals.WEB_page_group = null
+			globals.WEB_page_language = null
+			globals.WEB_page_platform = null
 			
+			forms.WEB_0F_page__design.REC_on_select()
 			
-			//in workflow maximized view
-			if (firstShow && application.__parent__.solutionPrefs && solutionPrefs.config.activeSpace == 'workflow') {
-				//remove possible heavyweight stuff
-				if (forms.WEB_0F_page__design__content_1F_block_data.elements.tab_detail.getMaxTabIndex() >= 2 && (
-					forms.WEB_0F_page__design__content_1F_block_data.elements.tab_detail.getTabFormNameAt(2) == 'WEB_0F__content' ||
-					forms.WEB_0F_page__design__content_1F_block_data.elements.tab_detail.getTabFormNameAt(2) == 'WEB_0F__image' //||
-					)) {
-					
-					forms.WEB_0F_page__design__content_1F_block_data.elements.tab_detail.removeTabAt(2)
-				}
-				
-				//switch modes
-				TRIGGER_mode_set("BROWSER")
-				return
-			}
+			//update tree
+			forms.WEB_0T_page.TREE_refresh()
 			
-			if (!utils.hasRecords(foundset)) {
-				//no records, dim out
-				globals.WEB_version_selected = null
-				globals.WEB_group_selected = null
-				
-				globals.WEB_lock_workflow(true)
-			}
-			else {// if (TRIGGER_mode_set() != "BROWSER") {
-				// trigger correct block simple display
-				forms.WEB_0F_page__design__content_1L_block.ACTION_gui_mode_load()
+			//no records, dim out
+			globals.WEB_lock_workflow(true)
+			
+			//set elements appropriately
+			forms.WEB_TB__web_mode.controller.enabled = false
+			forms.WEB_TB__web_mode.elements.gfx_tool_left.enabled = true
+			forms.WEB_TB__web_mode.elements.gfx_tool_center.enabled = true
+			forms.WEB_TB__web_mode.elements.gfx_tool_right.enabled = true
+			
+			forms.WEB_A__page.TOGGLE_edit_mode(false)
+		}
+		else {
+			//enable rec_on_select of the block type form
+			globals.WEB_block_on_select = true
+			
+			//need to reload the tree, update globals showing
+			if (forms.WEB_0T_page._refresh) {
+				_loadFilters = true
+				SET_globals()
 			}
 		}
 	}
@@ -452,7 +142,10 @@ function FORM_on_show(firstShow, event) {
 function FORM_on_hide(event) {
 	//don't run in headless client
 	if (application.getApplicationType() != APPLICATION_TYPES.HEADLESS_CLIENT) {
+		//undo locked screen
 		globals.WEB_lock_workflow(false)
+		
+		forms.WEB_TB__web_mode.controller.enabled = true
 		
 		//restore last selected toolbar
 		if (application.__parent__.solutionPrefs && !solutionPrefs.config.lockStatus) {
@@ -470,7 +163,7 @@ function FORM_on_hide(event) {
  * @properties={typeid:24,uuid:"6DF88FF6-B5B2-4C20-BECB-5199AA95F932"}
  */
 function FIND_restrict_site() {
-	return forms.WEB_0F_site.id_site
+	return globals.WEB_site_find_restrict()
 }
 
 /**
@@ -480,15 +173,349 @@ function FIND_post_process(count) {
 	//show correct list
 	var baseForm = solutionPrefs.config.formNameBase
 	
-	//something found as a result of this find, show flat view
-	if (count) {
-		forms[baseForm].elements.tab_content_B.tabIndex = (navigationPrefs.byNavItemID[solutionPrefs.config.currentFormID].listData.withButtons) ? 2 : 3
+	//which tab is this UL on
+	var ulTab = (navigationPrefs.byNavItemID[solutionPrefs.config.currentFormID].listData.withButtons) ? 2 : 3
+	
+	//only change tabs when we're not already in the right place
+	if (forms[baseForm].elements.tab_content_B.tabIndex != ulTab) {
+		//something found as a result of this find, show flat view
+		if (count) {
+			forms[baseForm].elements.tab_content_B.tabIndex = ulTab
+		}
+		//show tree view when currently on it
+		else {
+			forms[baseForm].elements.tab_content_B.tabIndex = navigationPrefs.byNavSetName.configPanes.itemsByName['Custom tab ' + solutionPrefs.config.currentFormID + ': WEB_0T_page'].listData.tabNumber
+			
+			//force to select correct record
+			forms.WEB_0T_page.elements.bean_tree.selectionPath = forms.WEB_0T_page.FIND_path(foundset.getSelectedRecord())
+		}
 	}
-	//show tree view
+}
+
+/**
+ * @properties={typeid:24,uuid:"C24345A2-A310-4E68-9083-1D9F656002BB"}
+ */
+function ACTION_edit_get() {
+	//disable edits if lock flag set
+	if (!utils.hasRecords(forms.WEB_0F_page__design_1F_version.foundset) || forms.WEB_0F_page__design_1F_version.flag_lock) {
+		var editAllow = false
+	}
+	//real mode in edit mode
+	else if (globals.WEB_page_mode == 3) {
+		var editAllow = forms.WEB_TB__web_mode.elements.btn_save.visible
+	}
+	//gui or data mode in edit mode
 	else {
-		forms[baseForm].elements.tab_content_B.tabIndex = navigationPrefs.byNavSetName.configPanes.itemsByName['Custom tab ' + solutionPrefs.config.currentFormID + ': WEB_0T_page'].listData.tabNumber
-		
-		//force to select correct record
-		forms.WEB_0T_page.elements.bean_tree.selectionPath = forms.WEB_0T_page.FIND_path(foundset.getSelectedRecord())
+		var editAllow = forms.WEB_A__page._editMode
 	}
+	
+	return editAllow
+}
+
+/**
+ * @properties={typeid:24,uuid:"BBDA7706-C829-49AD-A0C6-C6738AFE0402"}
+ */
+function SET_globals() {
+	//this is initial run; set filters to site defaults
+	if (_loadFilters && utils.hasRecords(forms.WEB_0F_site.foundset)) {
+		//turn off default load
+		_loadFilters = false
+		
+		if (utils.hasRecords(foundset)) {
+			var siteRec = web_page_to_site.getSelectedRecord()
+		}
+		else {
+			var siteRec = forms.WEB_0F_site.foundset.getSelectedRecord()
+		}
+		
+		for (var i = 1; i <= siteRec.web_site_to_site_platform.getSize(); i++) {
+			var record = siteRec.web_site_to_site_platform.getRecord(i)
+			if (record.flag_default) {
+				var platform = record
+				break
+			}
+		}
+		
+		for (var i = 1; i <= siteRec.web_site_to_site_language.getSize(); i++) {
+			var record = siteRec.web_site_to_site_language.getRecord(i)
+			if (record.flag_default) {
+				var language = record
+				break
+			}
+		}
+		
+		for (var i = 1; i <= siteRec.web_site_to_site_group.getSize(); i++) {
+			var record = siteRec.web_site_to_site_group.getRecord(i)
+			if (record.flag_default) {
+				var group = record
+				break
+			}
+		}
+		
+		//set globals 
+		globals.WEB_page_platform = platform.id_site_platform.toString()
+		globals.WEB_page_language = language.id_site_language.toString()
+		globals.WEB_page_group = group.id_site_group.toString()
+	}
+	
+	
+	//store page version of platform
+	var pageVersion = null
+	if (utils.hasRecords(web_page_to_platform)) {
+		for (var i = 1; i <= web_page_to_platform.getSize(); i++) {
+			var record = web_page_to_platform.getRecord(i)
+			if (record.id_site_platform.toString() == globals.WEB_page_platform) {
+				pageVersion = record
+				break
+			}
+		}
+	}
+	if (pageVersion) {
+		forms.WEB_0F_page__design_1F__header_display_2F_platform._platform.loadRecords(pageVersion.id_platform)
+	}
+	else {
+		forms.WEB_0F_page__design_1F__header_display_2F_platform._platform.clear()
+	}
+	
+	//store page version of language
+	pageVersion = null
+	if (utils.hasRecords(web_page_to_language)) {
+		for (var i = 1; i <= web_page_to_language.getSize(); i++) {
+			var record = web_page_to_language.getRecord(i)
+			if (record.id_site_language.toString() == globals.WEB_page_language) {
+				pageVersion = record
+				break
+			}
+		}
+	}
+	if (pageVersion) {
+		forms.WEB_0F_page__design_1F__header_display_2F_language._language.loadRecords(pageVersion.id_language)
+	}
+	else {
+		forms.WEB_0F_page__design_1F__header_display_2F_language._language.clear()
+	}
+	
+	//store page version of group
+	pageVersion = null
+	if (utils.hasRecords(web_page_to_group)) {
+		for (var i = 1; i <= web_page_to_group.getSize(); i++) {
+			var record = web_page_to_group.getRecord(i)
+			if (record.id_site_group.toString() == globals.WEB_page_group) {
+				pageVersion = record
+				break
+			}
+		}
+		if (pageVersion) {
+			forms.WEB_0F_page__design_1F__header_display_2F_group._group.loadRecords(pageVersion.id_group)
+		}
+		else {
+			forms.WEB_0F_page__design_1F__header_display_2F_group._group.clear()
+		}
+	}
+	
+	//update tooltips for page version globals
+	forms.WEB_0F_page__design_1F__header_display_2F_platform.SET_tooltip()
+	forms.WEB_0F_page__design_1F__header_display_2F_language.SET_tooltip()
+	forms.WEB_0F_page__design_1F__header_display_2F_group.SET_tooltip()
+}
+
+/**
+ * @properties={typeid:24,uuid:"4F5E8573-8472-4F69-913D-6029EFFE9D26"}
+ */
+function SET_valuelists() {
+	//from left to right...
+	//set up valuelists showing all values for site, but with enabled versions for what selected
+		//return value is site dictionary pk
+	//TODO: big todo....all these finds for every combination in the versions table has to be slow
+	
+	var fsPlatformAll = forms.WEB_0F_site.web_site_to_site_platform
+	var fsLanguageAll = forms.WEB_0F_site.web_site_to_site_language
+	var fsGroupAll = forms.WEB_0F_site.web_site_to_site_group
+	
+	var fsPlatform = web_page_to_platform
+	var fsLanguage = web_page_to_language
+	var fsGroup = web_page_to_group
+	
+	var fsVersions = databaseManager.getFoundSet('sutra_cms','web_version')
+	
+	var valid
+	
+	var vlPlatformDisplay = new Array()
+	var vlPlatformReal = new Array()
+	var vlLanguageDisplay = new Array()
+	var vlLanguageReal = new Array()
+	var vlGroupDisplay = new Array()
+	var vlGroupReal = new Array()
+	
+//PLATFORMS
+	
+	//grab all created platforms for this page (used to check and see if page version created)
+	var keysPlatform = databaseManager.getFoundSetDataProviderAsArray(fsPlatform, 'id_site_platform')
+	keysPlatform = keysPlatform.map(function(item) {return item.toString()})
+	
+	//loop over all platforms and only show valid ones as an option
+	if (utils.hasRecords(fsPlatformAll)) {
+		for (var i = 1; i <= fsPlatformAll.getSize(); i++) {
+			//reset the check for validity to not valid
+			valid = false
+			
+			//site level record
+			var recSite = fsPlatformAll.getRecord(i)
+			
+			//1- is there a page scoped record
+			var posn = keysPlatform.indexOf(recSite.id_site_platform.toString())
+			if (posn >= 0) {
+				//page level record
+				var recPage = fsPlatform.getRecord(posn + 1)
+				
+				//2- is there a version stack
+				fsVersions.find()
+				fsVersions.id_platform = recPage.id_platform.toString()
+				var results = fsVersions.search()
+				if (results) {
+					valid = true
+					
+					//this is the selected record and it's valid
+					if (utils.hasRecords(forms.WEB_0F_page__design_1F__header_display_2F_platform._platform) && forms.WEB_0F_page__design_1F__header_display_2F_platform._platform.id_platform.toString() == recPage.id_platform.toString()) {
+						var platformValid = true
+					}
+				}
+			}
+			
+			//push on as valid
+			if (valid) {
+				var display = '<html><body><font color="#333333"><strong>' + recSite.platform_name + '</strong></font>'
+				vlPlatformDisplay.push(display)
+			}
+			//invalid option, push greyed out
+			else {
+				var display = '<html><body><font color="#4C4C4C">' + recSite.platform_name + '</font>'
+				vlPlatformDisplay.push(display)
+			}
+			vlPlatformReal.push(recSite.id_site_platform)
+		}
+	}
+	
+	//set valuelist
+	application.setValueListItems('WEB_page_platform',vlPlatformDisplay,vlPlatformReal)
+	
+	
+//LANGUAGES
+	
+	//grab all created languages for this page (used to check and see if page version created)
+	var keysLanguage = databaseManager.getFoundSetDataProviderAsArray(fsLanguage, 'id_site_language')
+	keysLanguage = keysLanguage.map(function(item) {return item.toString()})
+	
+	//loop over all languages and only show valid ones as an option
+	if (utils.hasRecords(fsLanguageAll)) {
+		for (var i = 1; i <= fsLanguageAll.getSize(); i++) {
+			//reset the check for validity to not valid
+			valid = false
+			
+			//site level record
+			var recSite = fsLanguageAll.getRecord(i)
+			
+			//selected platform valid, keep checking
+			if (platformValid) {
+				//1- is there a page scoped record
+				var posn = keysLanguage.indexOf(recSite.id_site_language.toString())
+				if (posn >= 0) {
+					//page level record
+					var recPage = fsLanguage.getRecord(posn + 1)
+					
+					//2- is there a version stack
+					fsVersions.find()
+					fsVersions.id_platform = forms.WEB_0F_page__design_1F__header_display_2F_platform._platform.id_platform.toString()
+					fsVersions.id_language = recPage.id_language.toString()
+					var results = fsVersions.search()
+					if (results) {
+						valid = true
+						
+						//this is the selected record and it's valid
+						if (utils.hasRecords(forms.WEB_0F_page__design_1F__header_display_2F_language._language) && forms.WEB_0F_page__design_1F__header_display_2F_language._language.id_language.toString() == recPage.id_language.toString()) {
+							var languageValid = true
+						}
+					}
+				}
+			}
+			
+			//push on as valid
+			if (valid) {
+				var display = '<html><body><font color="#333333"><strong>' + recSite.language_name + '</strong></font>'
+				vlLanguageDisplay.push(display)
+			}
+			//invalid option, push greyed out
+			else {
+				var display = '<html><body><font color="#4C4C4C">' + recSite.language_name + '</font>'
+				vlLanguageDisplay.push(display)
+			}
+			vlLanguageReal.push(recSite.id_site_language)
+		}
+	}
+	
+	//set valuelist
+	application.setValueListItems('WEB_page_language',vlLanguageDisplay,vlLanguageReal)
+	
+	
+//GROUPS
+	
+	//grab all created groups for this page (used to check and see if page version created)
+	var keysGroup = databaseManager.getFoundSetDataProviderAsArray(fsGroup, 'id_site_group')
+	keysGroup = keysGroup.map(function(item) {return item.toString()})
+	
+	//loop over all groups and only show valid ones as an option
+	if (utils.hasRecords(fsGroupAll)) {
+		for (var i = 1; i <= fsGroupAll.getSize(); i++) {
+			//reset the check for validity to not valid
+			valid = false
+			
+			//site level record
+			var recSite = fsGroupAll.getRecord(i)
+			
+			//selected platform and language valid, keep checking
+			if (platformValid && languageValid) {
+				
+				//1- is there a page scoped record
+				var posn = keysGroup.indexOf(recSite.id_site_group.toString())
+				if (posn >= 0) {
+					//page level record
+					var recPage = fsGroup.getRecord(posn + 1)
+					
+					//2- is there a version stack
+					fsVersions.find()
+					fsVersions.id_platform = forms.WEB_0F_page__design_1F__header_display_2F_platform._platform.id_platform.toString()
+					fsVersions.id_language = forms.WEB_0F_page__design_1F__header_display_2F_language._language.id_language.toString()
+					fsVersions.id_group = recPage.id_group.toString()
+					var results = fsVersions.search()
+					if (results) {
+						valid = true
+						
+						//this is the selected record and it's valid
+						if (utils.hasRecords(forms.WEB_0F_page__design_1F__header_display_2F_group._group) && forms.WEB_0F_page__design_1F__header_display_2F_group._group.id_group.toString() == recPage.id_group.toString()) {
+							var groupValid = true
+						}
+					}
+				}
+			}
+			
+			//push on as valid
+			if (valid) {
+				var display = '<html><body><font color="#333333"><strong>' + recSite.group_name + '</strong></font>'
+				vlGroupDisplay.push(display)
+			}
+			//invalid option, push greyed out
+			else {
+				var display = '<html><body><font color="#4C4C4C">' + recSite.group_name + '</font>'
+				vlGroupDisplay.push(display)
+			}
+			vlGroupReal.push(recSite.id_site_group)
+		}
+	}
+	
+	//set valuelist
+	application.setValueListItems('WEB_page_group',vlGroupDisplay,vlGroupReal)
+	
+	
+	//the platform-language-group combo selected is valid
+	return platformValid && languageValid && groupValid
 }

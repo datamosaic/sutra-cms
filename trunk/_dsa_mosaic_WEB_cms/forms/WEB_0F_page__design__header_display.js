@@ -75,6 +75,36 @@ function FLD_data_change__version_selected(oldValue, newValue, event) {
 }
 
 /**
+ * Callback method for when form is shown.
+ *
+ * @param {Boolean} firstShow form is shown first time after load
+ * @param {JSEvent} event the event that triggered the action
+ *
+ * @properties={typeid:24,uuid:"EDA657C6-3547-40F8-956C-5E8541E4930C"}
+ */
+function FORM_on_show(firstShow, event) {
+	if (firstShow) {
+		//set up beans 1/3 to version, 2/9 to all else, unless screen size too large, then max for small and the rest to versions
+		var fullWidth = elements.lbl_display.getWidth()
+		var minWidth = 140
+		var smallMax = (fullWidth * 2 / 9) > minWidth
+		
+		//fire several times to make sure splitpanes know how big they are
+		var cnt = 3
+		while (cnt) {
+			elements.split_picker_2.dividerLocation = smallMax ? minWidth : fullWidth * 2 / 9
+			
+			elements.split_picker_3.dividerLocation = smallMax ? minWidth + 10 : (fullWidth * 2 / 9 + 10)
+			
+			elements.split_picker_1.dividerLocation = smallMax ? minWidth * 3 : fullWidth * 2 / 3
+			cnt --
+			
+			application.updateUI()
+		}
+	}
+}
+
+/**
  * Handle changed data.
  *
  * @param {Object} oldValue old value

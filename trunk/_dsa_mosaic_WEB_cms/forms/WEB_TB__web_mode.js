@@ -13,7 +13,7 @@ var _license_dsa_mosaic_WEB_cms = 'Module: _dsa_mosaic_WEB_cms \
  * @properties={typeid:24,uuid:"6963A7EB-B2F7-4485-9AD8-491BD890CF28"}
  */
 function ACTION_add(event) {
-	// TODO Auto-generated method stub
+	
 }
 
 /**
@@ -29,14 +29,14 @@ function ACTION_edit(event) {
 //	elements.lbl_add.visible = false	
 	elements.btn_edit.visible = false	
 //	elements.lbl_edit.visible = false
-	elements.btn_groups.visible = false
-	elements.lbl_groups.visible = false	
-	elements.lbl_groups_tick.visible = false		
+//	elements.btn_groups.visible = false
+//	elements.lbl_groups.visible = false	
+//	elements.lbl_groups_tick.visible = false		
 	elements.btn_save.visible = true	
 //	elements.lbl_save.visible = true
-	elements.btn_versions.visible = false
-	elements.lbl_versions.visible = false	
-	elements.lbl_versions_tick.visible = false		
+//	elements.btn_versions.visible = false
+//	elements.lbl_versions.visible = false	
+//	elements.lbl_versions_tick.visible = false		
 	
 	elements.highlighter.setLocation(elements.btn_edit.getLocationX() - 5,0)
 	elements.highlighter.visible = true
@@ -59,18 +59,17 @@ function ACTION_edit(event) {
  * @properties={typeid:24,uuid:"970B75AD-2B4F-4916-9C7E-4FF9FD591844"}
  */
 function ACTION_group(input) {
-	
 	//called to depress menu
-	if (typeof input != 'number') {
+	if (input instanceof JSEvent) {
 		//menu items
-		var siteGroups = application.getValueListItems('WEB_group')
+		var siteGroups = application.getValueListItems('WEB_page_group')
 		var vlDisplay = siteGroups.getColumnAsArray(1)
 		var vlReal = siteGroups.getColumnAsArray(2)
 		
 		//set up menu with arguments
 		var menu = new Array()
 		for ( var i = 0 ; i < vlDisplay.length ; i++ ) {
-			if (globals.WEB_group_selected == vlReal[i]) {
+			if (globals.WEB_page_group == vlReal[i]) {
 				menu[i] = plugins.popupmenu.createCheckboxMenuItem(vlDisplay[i],ACTION_group)
 				menu[i].setSelected(true)
 			}
@@ -80,7 +79,7 @@ function ACTION_group(input) {
 			
 			menu[i].setMethodArguments(vlReal[i])
 			
-			if (menu[i].text == '----') {
+			if (menu[i].text == '-') {
 				menu[i].setEnabled(false)
 			}
 		}
@@ -94,7 +93,7 @@ function ACTION_group(input) {
 	//menu shown and item chosen
 	else {
 		//update selected group
-		globals.WEB_group_selected = input
+		globals.WEB_page_group = input
 		
 		//show/hide edit button
 		TOGGLE_edit()		
@@ -109,15 +108,15 @@ function ACTION_group(input) {
  * @properties={typeid:24,uuid:"B84F01FA-8EB2-4E74-8095-947C184EB422"}
  */
 function TOGGLE_group(showGroups) {
-	
-	if (typeof showGroups != 'boolean') {
-		var pageGroups = application.getValueListItems('WEB_group')
-		showGroups = (pageGroups.getMaxRowIndex() > 1) ? true : false
-	}
-	
-	elements.btn_groups.visible = showGroups
-	elements.lbl_groups.visible = showGroups
-	elements.lbl_groups_tick.visible = showGroups
+//	
+//	if (typeof showGroups != 'boolean') {
+//		var pageGroups = application.getValueListItems('WEB_page_group')
+//		showGroups = (pageGroups.getMaxRowIndex() > 1) ? true : false
+//	}
+//	
+//	elements.btn_groups.visible = showGroups
+//	elements.lbl_groups.visible = showGroups
+//	elements.lbl_groups_tick.visible = showGroups
 }
 
 /**
@@ -125,15 +124,15 @@ function TOGGLE_group(showGroups) {
  * @properties={typeid:24,uuid:"530CE94C-E1F2-47D0-9BF9-C4FF4FD027DF"}
  */
 function TOGGLE_version(showSnapshots) {
-	
-	if (typeof showSnapshots != 'boolean') {
-		var snapshots = application.getValueListItems('WEB_snapshot')
-		showSnapshots = (snapshots.getMaxRowIndex() > 1) ? true : false
-	}
-	
-	elements.btn_versions.visible = showSnapshots
-	elements.lbl_versions.visible = showSnapshots
-	elements.lbl_versions_tick.visible = showSnapshots
+//	
+//	if (typeof showSnapshots != 'boolean') {
+//		var versions = application.getValueListItems('WEB_page_version')
+//		showSnapshots = (versions.getMaxRowIndex() > 1) ? true : false
+//	}
+//	
+//	elements.btn_versions.visible = showSnapshots
+//	elements.lbl_versions.visible = showSnapshots
+//	elements.lbl_versions_tick.visible = showSnapshots
 }
 
 /**
@@ -145,26 +144,46 @@ function TOGGLE_version(showSnapshots) {
  */
 function ACTION_version(input) {
 	//called to depress menu
-	if (typeof input != 'number') {
+	if (input instanceof JSEvent) {
 		//menu items
-		var snapshots = application.getValueListItems('WEB_snapshot')
-		var vlDisplay = snapshots.getColumnAsArray(1)
-		var vlReal = snapshots.getColumnAsArray(2)
+//		var versions = application.getValueListItems('WEB_page_version')
+//		var vlDisplay = versions.getColumnAsArray(1)
+//		var vlReal = versions.getColumnAsArray(2)
+		var fsVersions = forms.WEB_0F_page__design_1F_version.foundset
 		
 		//set up menu with arguments
 		var menu = new Array()
-		for ( var i = 0 ; i < vlDisplay.length ; i++ ) {
-			if (globals.WEB_version_selected == vlReal[i]) {
-				menu[i] = plugins.popupmenu.createCheckboxMenuItem(vlDisplay[i],ACTION_version)
+		for ( var i = 1 ; i <= fsVersions.getSize() ; i++ ) {
+			var recVersion = fsVersions.getRecord(i)
+			
+			var displayVal = ''
+			
+			if (recVersion.flag_active) {
+				displayVal += '<html><body><strong>ACTIVE</strong> '
+			}
+			else if (i == 1) {
+				displayVal += 'Working copy'
+			}
+			
+			if (i > 1 || recVersion.flag_active) {
+				displayVal += 'Version ' + recVersion.version_number + ' (' + globals.CODE_date_format(recVersion.rec_modified,'current') + ')'
+				
+				if (recVersion.version_name) {
+					displayVal += ': ' + recVersion.version_name
+				}
+			}
+			
+			if (globals.WEB_page_version.toString() == recVersion.id_version.toString()) {
+				menu[i] = plugins.popupmenu.createCheckboxMenuItem(displayVal,ACTION_version)
 				menu[i].setSelected(true)
 			}
 			else {
-				menu[i] = plugins.popupmenu.createMenuItem(vlDisplay[i],ACTION_version)
+				menu[i] = plugins.popupmenu.createMenuItem(displayVal,ACTION_version)
 			}
 			
-			menu[i].setMethodArguments(vlReal[i])
+			menu[i].setMethodArguments(recVersion.id_version)
 			
-			if (menu[i].text == '----') {
+			if (menu[i].text == '-') {
 				menu[i].setEnabled(false)
 			}
 		}
@@ -177,14 +196,40 @@ function ACTION_version(input) {
 	}
 	//menu shown and item chosen
 	else {
-		//update selected group
-		globals.WEB_version_selected = input
+		//update selected version
+		globals.WEB_page_version = input
 		
 		//show/hide edit button
 		TOGGLE_edit()
 		
 		//regenerate html
 		forms.WEB_0F_page__browser.URL_update()
+		
+//		//compare value in global with valuelist
+//		var dataset = application.getValueListItems('WEB_page_version')
+//		var vlReal = dataset.getColumnAsArray(2)
+//		for (var i = 0; i < vlReal.length; i++) {
+//			if (vlReal[i] == newValue) {
+//				break
+//			}
+//		}
+//		
+//		//match found
+//		var displayVal = dataset.getValue(i + 1,1)
+//		
+//		//use display value to track down actual record
+//		if (displayVal == 'Working copy') {
+//			var ver = forms.WEB_0F_page__design_1F_version.foundset.getSize()
+//		}
+//		else {
+//			var ver = utils.stringToNumber(utils.stringMiddle(displayVal,utils.stringPosition(displayVal,'Version ',0,1) + 8,utils.stringPosition(displayVal,'(',0,1) - utils.stringPosition(displayVal,'Version ',0,1) - 8))
+//		}
+	
+		//assumption here is that foundset is in sync with this valuelist (convert version to reverse ordered record list)
+		forms.WEB_0F_page__design_1F_version.foundset.selectRecord(globals.WEB_page_version)
+		
+		//update display and reload version valuelist; don't reload versions foundset
+		forms.WEB_0F_page__browser.REC_on_select(null,null,true)
 	}
 }
 
@@ -193,25 +238,26 @@ function ACTION_version(input) {
  * @properties={typeid:24,uuid:"37CB81D0-259B-445E-9FDC-C15B3328574D"}
  */
 function BREAD_update() {
-	var simple = true
+//	var simple = true
+//	
+//	var label = '<html><body><center>'
+//	label += 'Group ' + application.getValueListDisplayValue('WEB_page_group',globals.WEB_page_group).substr(12) + '&nbsp;&nbsp;&nbsp;&nbsp;'
+//	
+//	if (simple) {
+//		label += '<br>'
+//	}
+//	
+//	label += '' + application.getValueListDisplayValue('WEB_page_version',globals.WEB_page_version)
+//	
+//	if (!simple) {
+//		label += '<br>'
+//		label += '<b>URL</b> ' + globals.WEB_preview_url + '<br>'
+//	}
+//	
+//	label += '</center></body></html>'
 	
-	var label = '<html><body><center>'
-	label += '<b>Group</b> ' + application.getValueListDisplayValue('WEB_group',globals.WEB_group_selected) + '&nbsp;&nbsp;&nbsp;&nbsp;'
-	
-	if (simple) {
-		label += '<br>'
-	}
-	
-	label += '<b>Snapshot</b> ' + application.getValueListDisplayValue('WEB_snapshot',globals.WEB_version_selected)
-	
-	if (!simple) {
-		label += '<br>'
-		label += '<b>URL</b> ' + globals.WEB_preview_url + '<br>'
-	}
-	
-	label += '</center></body></html>'
-	
-	elements.lbl_detail.text = label
+//	elements.lbl_detail.text = label
+//	elements.lbl_detail.toolTipText = '<html><body>Click to copy URL to clipboard<br>' + globals.WEB_preview_url
 }
 
 /**
@@ -222,7 +268,12 @@ function BREAD_update() {
  * @properties={typeid:24,uuid:"11FEB286-BF39-4E8D-8276-C3A3DBE71FAF"}
  */
 function BREAD_url_clipboard(event) {
-	application.setClipboardContent(globals.WEB_preview_url)
+	if (globals.CODE_key_pressed('shift')) {
+		globals.CODE_url_handler(globals.WEB_preview_url)
+	}
+	else {
+		application.setClipboardContent(globals.WEB_preview_url)
+	}
 }
 
 /**
@@ -233,53 +284,53 @@ function BREAD_url_clipboard(event) {
  * @properties={typeid:24,uuid:"95133A53-BDB0-4591-8709-20EAEC851693"}
  */
 function ACTION_dashboard(event) {
-	//don't enter if workflow form locked for some reason or not enough access
-	if (application.__parent__.solutionPrefs && !solutionPrefs.design.statusLockWorkflow && globals.TRIGGER_registered_action_authenticate('cms page mode toggle')) {
-		
-		//in edit mode with unsaved changes
-		if (elements.btn_save.visible && forms.WEB_0F_page__browser__editor.GET_modify()) {
-			var input = plugins.dialogs.showWarningDialog(
-						'Unsaved changes',
-						'There are unsaved changes.  Continue without saving?',
-						'Yes',
-						'No'
-				)
-			
-			if (input != 'Yes') {
-				return
-			}
-		}
-		
-		if (forms.WEB_0F_page.TRIGGER_mode_set() == "BROWSER") {
-			forms.WEB_0F_page.TRIGGER_mode_set("DESIGN")
-			
-			elements.lbl_edit.visible = false
-			elements.btn_edit.visible = false
-			elements.btn_save.visible = false
-			
-			elements.highlighter_dash.visible = false
-			elements.highlighter.visible = false
-			elements.lbl_detail.visible = false
-			
-			TOGGLE_group(false)
-			TOGGLE_version(false)
-			
-			//refire toggle
-			forms.WEB_0F_page__design__header_display.FLD_data_change__version_selected()
-		}
-		else {
-			elements.highlighter_dash.visible = true
-			elements.lbl_detail.visible = true
-			
-//			forms.WEB_0F_page__browser.elements.bn_browser.reload()
-			forms.WEB_0F_page.TRIGGER_mode_set("BROWSER")	
-			
-			//toggle edit, groups, snapshots
-			TOGGLE_edit()
-			TOGGLE_group()
-			TOGGLE_version()		
-		}
-	}
+//	//don't enter if workflow form locked for some reason or not enough access
+//	if (application.__parent__.solutionPrefs && !solutionPrefs.design.statusLockWorkflow && globals.TRIGGER_registered_action_authenticate('cms page mode toggle')) {
+//		
+//		//in edit mode with unsaved changes
+//		if (elements.btn_save.visible && forms.WEB_0F_page__browser_1F_block__editor.GET_modify()) {
+//			var input = plugins.dialogs.showWarningDialog(
+//						'Unsaved changes',
+//						'There are unsaved changes.  Continue without saving?',
+//						'Yes',
+//						'No'
+//				)
+//			
+//			if (input != 'Yes') {
+//				return
+//			}
+//		}
+//		
+//		if (forms.WEB_0F_page.TRIGGER_mode_set() == "BROWSER") {
+//			forms.WEB_0F_page.TRIGGER_mode_set("DESIGN")
+//			
+//			elements.lbl_edit.visible = false
+//			elements.btn_edit.visible = false
+//			elements.btn_save.visible = false
+//			
+//			elements.highlighter_dash.visible = false
+//			elements.highlighter.visible = false
+//			elements.lbl_detail.visible = false
+//			
+//			TOGGLE_group(false)
+//			TOGGLE_version(false)
+//			
+//			//refire toggle
+//			forms.WEB_0F_page__design_1F__header_display.FLD_data_change__version_selected()
+//		}
+//		else {
+//			elements.highlighter_dash.visible = true
+//			elements.lbl_detail.visible = true
+//			
+////			forms.WEB_0F_page__browser.elements.bn_browser.reload()
+//			forms.WEB_0F_page.TRIGGER_mode_set("BROWSER")	
+//			
+//			//toggle edit, groups, versions
+//			TOGGLE_edit()
+//			TOGGLE_group()
+//			TOGGLE_version()		
+//		}
+//	}
 }
 
 /**
@@ -298,9 +349,9 @@ function ACTION_mode(event) {
 		var currentMode = forms.WEB_0F_page.TRIGGER_mode_set()
 		
 		//in real mode with unsaved changes OR
-		if ((currentMode == 'BROWSER' && elements.btn_save.visible && forms.WEB_0F_page__browser__editor.GET_modify()) ||
+		if ((currentMode == 'BROWSER' && elements.btn_save.visible && forms.WEB_0F_page__browser_1F_block__editor.GET_modify()) ||
 		//in gui mode with unsaved changes (//TODO: abstract to work with all content types)
-			(currentMode == 'DESIGN' && forms.WEB_0F_page__design__content_1F_block_data.elements.tab_detail.getTabFormNameAt(2) == 'WEB_0F__content' &&
+			(currentMode == 'DESIGN' && forms.WEB_0F_page__design_1F_version_2F_block__gui.elements.tab_detail.getTabFormNameAt(2) == 'WEB_0F__content' &&
 			forms.WEB_0F__content.elements.btn_save.enabled)) {
 			
 			var input = plugins.dialogs.showWarningDialog(
@@ -342,7 +393,7 @@ function ACTION_mode(event) {
 				elements.gfx_switch_1.visible = true
 				
 				globals.WEB_page_mode = 1
-				forms.WEB_0F_page__design__content.elements.tab_content.tabIndex = 2
+				forms.WEB_0F_page__design_1F_version.elements.tab_content.tabIndex = 2
 				
 				//go to non-real mode if not there already
 				if (currentMode != "DESIGN") {
@@ -353,28 +404,28 @@ function ACTION_mode(event) {
 					elements.btn_save.visible = false
 					
 					elements.highlighter.visible = false
-					elements.lbl_detail.visible = false
+//					elements.lbl_detail.visible = false
 					
 					TOGGLE_group(false)
 					TOGGLE_version(false)
 					
 					//refire toggle
-					forms.WEB_0F_page__design__header_display.FLD_data_change__version_selected()
+					forms.WEB_0F_page__design_1F__header_display__version.FLD_version__data_change()
 				}
 				break
 			case 'lbl_mode_gui':
 				elements.gfx_switch_2.visible = true
 				
 				//reset pretty form (//TODO: make work for all block types)
-				if (forms.WEB_0F_page__design__content_1F_block_data.elements.tab_detail.getTabFormNameAt(2) == 'WEB_0F__content') {
-					forms.WEB_0F__content.BLOCK_cancel()
+				if (forms.WEB_0F_page__design_1F_version_2F_block__gui.elements.tab_detail.getTabFormNameAt(forms.WEB_0F_page__design_1F_version_2F_block__gui.elements.tab_detail.tabIndex) == 'WEB_0F__content') {
+					forms.WEB_0F__content.BLOCK_cancel(event)
 				}			
 				
 				globals.WEB_page_mode = 2
-				forms.WEB_0F_page__design__content.elements.tab_content.tabIndex = 1
+				forms.WEB_0F_page__design_1F_version.elements.tab_content.tabIndex = 1
 				
-				//refire toggle
-				forms.WEB_0F_page__design__header_display.FLD_data_change__version_selected()
+				//refire toggle (may fire too frequently)
+				forms.WEB_0F_page__design_1F_version_2L_scope.ACTION_gui_mode_load(true)
 				
 				//go to non-real mode if not there already
 				if (currentMode != "DESIGN") {
@@ -385,7 +436,7 @@ function ACTION_mode(event) {
 					elements.btn_save.visible = false
 					
 					elements.highlighter.visible = false
-					elements.lbl_detail.visible = false
+//					elements.lbl_detail.visible = false
 					
 					TOGGLE_group(false)
 					TOGGLE_version(false)
@@ -398,11 +449,11 @@ function ACTION_mode(event) {
 				
 				//go to real mode if not there already
 				if (currentMode != "BROWSER") {
-					elements.lbl_detail.visible = true
+//					elements.lbl_detail.visible = true
 					
 					forms.WEB_0F_page.TRIGGER_mode_set("BROWSER")
 					
-					//toggle edit, groups, snapshots
+					//toggle edit, groups, versions
 					TOGGLE_edit()
 					TOGGLE_group()
 					TOGGLE_version()	
@@ -417,23 +468,20 @@ function ACTION_mode(event) {
  * @properties={typeid:24,uuid:"0E2D3D14-9796-4F16-880A-22F672A2E6A4"}
  */
 function TOGGLE_edit() {
-	//find this version
-	var fsVersion = databaseManager.getFoundSet('sutra_cms','web_version')
-	fsVersion.find()
-	fsVersion.id_version = globals.WEB_version_selected
-	var results = fsVersion.search()	
-	
-	if (results) {
-		//if version editable
-		if (fsVersion.flag_edit) {
-			elements.lbl_edit.visible = true
-			elements.btn_edit.visible = true
-		}
-		else {
-			elements.lbl_edit.visible = false
-			elements.btn_edit.visible = false
-		}
+	//disable edits if edit flag not set
+	if (!utils.hasRecords(forms.WEB_0F_page__design_1F_version.foundset) || forms.WEB_0F_page__design_1F_version.flag_lock) {
+			//disable edits for active or non-latest versions
+			//utils.hasRecords(fsVersions) && fsVersions.version_number != fsVersions.getSize() || fsVersions.flag_active) {
+		var editMode = false
 	}
+	//toggle edits
+	else {
+		var editMode = true
+	}
+	
+	//set status of edit button
+	elements.lbl_edit.visible = editMode
+	elements.btn_edit.visible = editMode
 }
 
 /**
@@ -445,7 +493,7 @@ function TOGGLE_edit() {
  */
 function ACTION_save(event) {
 	//any unsaved changes?
-	if (forms.WEB_0F_page__browser__editor.GET_modify()) {
+	if (forms.WEB_0F_page__browser_1F_block__editor.GET_modify()) {
 		var input = plugins.dialogs.showWarningDialog(
 					'Unsaved changes',
 					'There are unsaved changes.  Continue without saving?',
@@ -456,9 +504,9 @@ function ACTION_save(event) {
 		if (input != 'Yes') {
 			return
 		}
-		else {
-			forms.WEB_0F_page__browser__editor._dataRec = null
-		}
+//		else {
+//			forms.WEB_0F_page__browser_1F_block__editor._dataRec = null
+//		}
 	}
 		
 	elements.btn_edit.visible = true
@@ -478,13 +526,13 @@ function ACTION_save(event) {
  * @properties={typeid:24,uuid:"DDB53BF6-144F-4AF7-8963-21FD2C801A99"}
  */
 function FORM_on_load() {
-	elements.btn_groups.visible = false
-	elements.lbl_groups.visible = false	
-	elements.lbl_groups_tick.visible = false		
+//	elements.btn_groups.visible = false
+//	elements.lbl_groups.visible = false	
+//	elements.lbl_groups_tick.visible = false		
 	elements.btn_save.visible = false	
-	elements.btn_versions.visible = false
-	elements.lbl_versions.visible = false
-	elements.lbl_versions_tick.visible = false	
+//	elements.btn_versions.visible = false
+//	elements.lbl_versions.visible = false
+//	elements.lbl_versions_tick.visible = false	
 	elements.btn_edit.visible = false
 	elements.lbl_edit.visible = false
 	
@@ -512,32 +560,32 @@ function FORM_on_load() {
  * @properties={typeid:24,uuid:"CA41B609-7116-4C2E-8C07-56BD3D16EADD"}
  */
 function ACTION_sitemap(event) {
-	//don't enter if workflow form locked for some reason or not enough access
-	if (application.__parent__.solutionPrefs && !solutionPrefs.design.statusLockWorkflow) {// && globals.TRIGGER_registered_action_authenticate('cms page sitemap')) {
-		
-		//in edit mode with unsaved changes
-		if (elements.btn_save.visible && forms.WEB_0F_page__browser__editor.GET_modify()) {
-			var input = plugins.dialogs.showWarningDialog(
-						'Unsaved changes',
-						'There are unsaved changes.  Continue without saving?',
-						'Yes',
-						'No'
-				)
-			
-			if (input != 'Yes') {
-				return
-			}
-		}
-		
-		//switch space to sitemap
-		if (!elements.highlighter_dash.visible) {
-			globals.TRIGGER_spaces_set('list')
-			elements.highlighter_dash.visible = true
-		}
-		//switch space to browser only
-		else {
-			globals.TRIGGER_spaces_set('workflow')
-			elements.highlighter_dash.visible = false
-		}
-	}
+//	//don't enter if workflow form locked for some reason or not enough access
+//	if (application.__parent__.solutionPrefs && !solutionPrefs.design.statusLockWorkflow) {// && globals.TRIGGER_registered_action_authenticate('cms page sitemap')) {
+//		
+//		//in edit mode with unsaved changes
+//		if (elements.btn_save.visible && forms.WEB_0F_page__browser_1F_block__editor.GET_modify()) {
+//			var input = plugins.dialogs.showWarningDialog(
+//						'Unsaved changes',
+//						'There are unsaved changes.  Continue without saving?',
+//						'Yes',
+//						'No'
+//				)
+//			
+//			if (input != 'Yes') {
+//				return
+//			}
+//		}
+//		
+//		//switch space to sitemap
+//		if (!elements.highlighter_dash.visible) {
+//			globals.TRIGGER_spaces_set('list')
+//			elements.highlighter_dash.visible = true
+//		}
+//		//switch space to browser only
+//		else {
+//			globals.TRIGGER_spaces_set('workflow')
+//			elements.highlighter_dash.visible = false
+//		}
+//	}
 }
