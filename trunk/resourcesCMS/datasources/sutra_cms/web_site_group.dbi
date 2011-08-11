@@ -12,8 +12,7 @@ name:"id_site_group"
 {
 allowNull:true,
 creationOrderIndex:6,
-dataType:12,
-length:50,
+dataType:4,
 name:"flag_default"
 },
 {
