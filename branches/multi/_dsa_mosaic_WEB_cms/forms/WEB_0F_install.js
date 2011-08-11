@@ -13,51 +13,6 @@ var _license_dsa_mosaic_WEB_cms = 'Module: _dsa_mosaic_WEB_cms \
  * @properties={typeid:24,uuid:"AA87953D-FECC-4DFD-A81E-783EBC4E875D"}
  */
 function FORM_on_load(event) {
-}
-
-/**
- * @properties={typeid:24,uuid:"76B2ACAE-4C52-4779-9E61-71CE1C8AB97B"}
- */
-function TAB_change()
-{
-
-/*
- *	TITLE    :	TAB_change
- *			  	
- *	MODULE   :	wf_PRJ_project
- *			  	
- *	ABOUT    :	changes tab, shows correct buttons, shows/hides edit arrow
- *			  	
- *	INPUT    :	1- (optional) tab to navigate to
- *			  	
- *	OUTPUT   :	
- *			  	
- *	REQUIRES :	
- *			  	
- *	USAGE    :	TAB_change
- *			  	
- *	MODIFIED :	January 21, 2009 -- Troy Elliott, Data Mosaic
- *			  	
- */
-	
-	//MEMO: need to somehow put this section in a Function of it's own
-	//running in Tano...strip out jsevents for now
-	if (utils.stringToNumber(application.getVersion()) >= 5) {
-		//cast Arguments to array
-		var Arguments = new Array()
-		for (var i = 0; i < arguments.length; i++) {
-			Arguments.push(arguments[i])
-		}
-		
-		//reassign arguments without jsevents
-		arguments = Arguments.filter(globals.CODE_jsevent_remove)
-	}
-	
-	//tab clicked on
-	var elemName = (arguments[0]) ? 'tab_b' + arguments[0] : null
-	var formName = (elemName) ? controller.getName() : null
-	
-	globals.TAB_change_inline(formName,elemName,'tab_main','tab_b')
 	
 }
 
@@ -170,29 +125,3 @@ function FUNCTION_getInstallDirectory() {
 	}
 }
 
-/**
- * Handle focus element loosing focus.
- *
- * @param {JSEvent} event the event that triggered the action
- *
- * @returns {Boolean}
- *
- * @properties={typeid:24,uuid:"051111AA-C22E-4FC5-8586-D26223A2327F"}
- */
-function FIELD_directory_onLost(event) {
-	// don't allow trailing "/"
-	databaseManager.saveData()
-	var provider = elements[event.getElementName()].getDataProviderID()
-	
-	if ( this[provider] && this[provider].search(/\/*$/) > 0 ) {
-		this[provider] = this[provider].replace(/\/*$/, "")
-		databaseManager.saveData()
-	}
-	// don't allow trailing "\\"
-	if ( event.getElementName() == "fld_directory_windows" &&
-		 this[provider] && this[provider].search(/\/*$/) > 0 ) {
-		
-		this[provider] = this[provider].replace(/\\*$/, "")
-		databaseManager.saveData()		
-	}
-}
