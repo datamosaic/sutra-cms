@@ -124,6 +124,11 @@ function THEME_new(progress) {
 		var install = forms.WEB_0F_install.FUNCTION_getInstallDirectory() 
 		var theme = FUNCTION_theme_directory()
 		
+		//errorer out
+		if (theme == "No theme site directory specified") {
+			return
+		}
+		
 		var directory = install + "/application_server/server/webapps/ROOT/sutraCMS/sites/" + theme + "/themes/"
 		directory = utils.stringReplace(directory,"\\", "/")	// windows backslashes to js standard forward slashes
 		
@@ -524,7 +529,7 @@ function FUNCTION_theme_directory() {
 		return forms.WEB_0F_site.directory
 	}
 	else {
-		error = "No theme site directory specified"
+		error = "No theme site directory specified. Please check your site record."
 	}
 	
 	if ( error ) {
@@ -715,7 +720,7 @@ function IMAGE_import(directory) {
 	}
 	
 	// setup upload image
-	var uploadFile = baseDirectory + directory + "/" + file.getName()
+	var uploadFile = baseDirectory + directory + "/" + file.getName().replace(/ /g, "_")
 	
 	// grab file stats
 	_file.size = file.size()
@@ -737,7 +742,7 @@ function IMAGE_import(directory) {
 	else {
 		var monitor = plugins.file.streamFilesToServer(file, uploadFile, IMAGE_import_callback)
 	}
-
+	
 }
 
 /**
@@ -805,6 +810,8 @@ function IMAGE_import_callback(result, e) {
 	if (application.__parent__.solutionPrefs && solutionPrefs.design.statusLockWorkflow) {
 		globals.WEB_lock_workflow(false)
 	}
+	
+	application.output('1')
 }
 
 /**

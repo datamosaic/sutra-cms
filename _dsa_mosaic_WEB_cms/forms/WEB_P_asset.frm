@@ -1,4 +1,3 @@
-borderType:"EmptyBorder,0,0,0,0",
 dataSource:"db:/sutra_cms/web_asset",
 items:[
 {

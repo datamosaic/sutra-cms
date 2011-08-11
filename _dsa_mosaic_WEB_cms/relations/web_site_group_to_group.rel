@@ -1,0 +1,9 @@
+foreignDataSource:"db:/sutra_cms/web_group",
+items:[
+{foreignColumnName:"id_site_group",primaryDataProviderID:"id_site_group",typeid:23,uuid:"1B231906-6399-4507-883B-E738D2A54FDE"}
+],
+joinType:1,
+name:"web_site_group_to_group",
+primaryDataSource:"db:/sutra_cms/web_site_group",
+typeid:22,
+uuid:"EF21488D-9A1D-4309-B33E-40EA35690879"

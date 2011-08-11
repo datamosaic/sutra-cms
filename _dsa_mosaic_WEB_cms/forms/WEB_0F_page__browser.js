@@ -12,37 +12,126 @@ var _license_dsa_mosaic_WEB_cms = 'Module: _dsa_mosaic_WEB_cms \
  *
  * @properties={typeid:24,uuid:"60C0F66F-9740-428F-8C64-BE5870650741"}
  */
-function REC_selected(event,webMode) {
-	//make sure variable set correctly
-	var vlReal = forms.WEB_0F_page__design.SET_globals()
+function REC_on_select(event,webMode,skipLoad,verIndex,fireSelect) {
+	//when in data sutra and notifications enabled (and they're not already on, do them)
+	if (application.__parent__.solutionPrefs && solutionPrefs.config && solutionPrefs.config.currentFormName) {
+		var formName = solutionPrefs.config.currentFormName
+		var serverName = forms[formName].controller.getServerName()
+		var tableName = forms[formName].controller.getTableName()
+		var currentNavItem = solutionPrefs.config.currentFormID
+		var rowSelected = forms[formName].foundset.getSelectedIndex()
+		
+		//show busy indicator while changing record
+		if (navigationPrefs.byNavItemID[currentNavItem].navigationItem.ulBusyIndicator) {
+			var busyIndicator = true
+			
+			globals.CODE_cursor_busy(true)
+			application.updateUI()
+		}
+		
+		//LOG record navigation
+		//only run when using query based way to hit repository
+		if (solutionPrefs.repository && solutionPrefs.repository.allFormsByTable && solutionPrefs.repository.allFormsByTable[serverName] && solutionPrefs.repository.allFormsByTable[serverName][tableName] && solutionPrefs.repository.allFormsByTable[serverName][tableName].primaryKey) {
+			var pkName = solutionPrefs.repository.allFormsByTable[serverName][tableName].primaryKey
+			var pkActedOn = forms[formName][pkName]
+		}
+		else {
+			var pkName = 'repositoryAPINotImplemented'
+			var pkActedOn = 0
+		}
+		
+		//record not clicked on before, throw up busy bar and busy cursor
+		var record = forms[formName].foundset.getRecord(rowSelected)
+		if (navigationPrefs.byNavItemID[currentNavItem].navigationItem.initialRecord && !navigationPrefs.byNavItemID[currentNavItem].listData.visitedPKs[record[pkName]]) {
+			var recNotLoaded = true
+			
+			//don't turn busy indicator on if it is already on
+			if (!busyIndicator) {
+				globals.CODE_cursor_busy(true)
+			}
+			globals.TRIGGER_progressbar_start(-273, navigationPrefs.byNavItemID[currentNavItem].navigationItem.initialRecordLabel)
+		}
+		
+		//save currently selected index
+		navigationPrefs.byNavItemID[currentNavItem].listData.index.selected = rowSelected
+		
+		//save time when pk of this record last accessed
+		navigationPrefs.byNavItemID[currentNavItem].listData.visitedPKs[(forms[formName][pkName] != 'repositoryAPINotImplemented') ? forms[formName][pkName] : 0] = application.getServerTimeStamp()
+	}
 	
-	//update version to most recent one if selected version is not in this page stack
-	for (var i = 0; i < vlReal.length; i++) {
-		if (globals.WEB_version_selected == vlReal[i]) {
-			var found = true
-			break
+	//this method is the same as...
+	var formName = 'WEB_0F_page__design'
+	
+	//when newly added page, skip this
+	if (!forms.WEB_0T_page._addRecord) {
+		//halt additional on select firing
+//		forms.WEB_0F_page__design_1F_version_2L_scope._skipSelect = true
+		
+	 	//when called with event (not programatically)
+//		if (event) {
+//		 	//set tooltip of visit with link
+//			forms.WEB_0F_page__design_1F__button_tab_2F__content.elements.btn_visit.toolTipText = globals.WEB_MRKUP_link_page(id_page)
+//		}
+		
+		//select page version of tri globals
+	 	forms.WEB_0F_page.SET_globals()
+		
+		//set up valuelists for tri globals
+		var pageValid = forms.WEB_0F_page.SET_valuelists()
+		
+		//set version junks
+		var activeInfo = forms[formName].SET_versions(skipLoad,!pageValid)
+		
+		//don't change anything if we're not loading in the versions
+		if (!skipLoad) {
+			//specified index to be selected
+			if (verIndex) {
+				//set selected index
+				forms.WEB_0F_page__design_1F_version.foundset.setSelectedIndex(verIndex)
+			}
+			//there is info about the active version
+			else if (activeInfo) {
+				//set selected index
+				forms.WEB_0F_page__design_1F_version.foundset.setSelectedIndex(activeInfo.position)
+				
+				//set version to be the active one
+				globals.WEB_page_version = activeInfo.record.id_version
+			}
+			//set to first thing in the list (most recent)
+			else {
+				globals.WEB_page_version = application.getValueListItems('WEB_page_version').getValue(1,2)
+			}
+		}
+		
+		//are edits allowed
+//		var editAllow = forms.WEB_0F_page.ACTION_edit_get()
+		
+		//make sure edit button not showing if not supposed to be
+			//MEMO: probably don't want to force a save here...just need edit/save button reset to normal
+		forms.WEB_TB__web_mode.ACTION_save()
+		forms.WEB_TB__web_mode.TOGGLE_edit()
+		
+		//only show versions and groups if there is more than one defined
+		forms.WEB_TB__web_mode.TOGGLE_group()
+		forms.WEB_TB__web_mode.TOGGLE_version()
+		
+		//fill the browser bean with url to load
+		URL_update(webMode)
+		
+		//highlight edit mode
+		if (webMode) {
+			forms.WEB_TB__web_mode.ACTION_edit()
 		}
 	}
 	
-	if (!found) {
-		globals.WEB_version_selected = (vlReal.length) ? vlReal[0] : 0
+	//record was not in memory, turn off busy bar and busy cursor
+	if (recNotLoaded) {
+		globals.TRIGGER_progressbar_stop()
+		globals.CODE_cursor_busy(false)	
 	}
-	
-	//make sure edit button not showing if not supposed to be
-		//MEMO: probably don't want to force a save here...just need edit/save button reset to normal
-	forms.WEB_TB__web_mode.ACTION_save()
-	forms.WEB_TB__web_mode.TOGGLE_edit()
-	
-	//only show snapshots and groups if there is more than one defined
-	forms.WEB_TB__web_mode.TOGGLE_group()
-	forms.WEB_TB__web_mode.TOGGLE_version()
-	
-	//fill the browser bean with url to load
-	URL_update(webMode)
-	
-	//highlight edit mode
-	if (webMode) {
-		forms.WEB_TB__web_mode.ACTION_edit()
+	//changing record, finished turn off busy indicatar
+	else if (busyIndicator) {
+		globals.CODE_cursor_busy(false)	
 	}
 }
 
@@ -52,7 +141,13 @@ function REC_selected(event,webMode) {
  */
 function EDIT_on() {
 	var prefix = 'sutra-block-data-'
-	elements.bn_browser.executeJavaScript("editOn('" + prefix + "');")
+	
+	if (elements.bn_browser) {
+		elements.bn_browser.executeJavaScript("editOn('" + prefix + "');")
+	}
+	else {
+		globals.WEB_browser_error()
+	}
 }
 
 /**
@@ -62,9 +157,13 @@ function EDIT_on() {
 function URL_update(webMode) {
 	//see forms.WEB_0F_page__design__buton_tab__content.VISIT_page
 	
+	if (!elements.bn_browser) {
+		globals.WEB_browser_error()
+	}
+	
 	//newly created page...show filler
 	if (forms.WEB_0T_page._addRecord) {
-		elements.bn_browser.html = '<html><body><h1>Newly created page</h1></body></head>'
+		elements.bn_browser.html = '<html><body><h1>Newly created page</h1></body></html>'
 	}
 	//go to page
 	else {
@@ -72,12 +171,49 @@ function URL_update(webMode) {
 		if (page_type == 2 && page_link) {
 			globals.WEB_preview_url = page_link	
 		}
-		//show selected group/snapshot
+		//this is an internal link
+		else if (page_type == 3) {
+			//TODO: put wrapper "header" on page to alert that on an internal link
+				//also, the version here is wrong, need to get for internal link
+//			globals.WEB_preview_url = 
+//				globals.WEB_MRKUP_link_page(page_link_internal,null,'Edit',webMode) + 
+//				"&version=" + forms.WEB_0F_page__browser_1F_block__editor.url_param
+//			plugins.dialogs.showInfoDialog('Coming soon...','Internal links can not be edited in real mode yet')
+			var fsPage = databaseManager.getFoundSet('sutra_cms','web_page')
+			fsPage.find()
+			fsPage.id_page = page_link_internal
+			var results = fsPage.search()
+			
+			if (results) {
+				elements.bn_browser.html = '<html><body><h2>Internal link page</h2><p>Internal links cannot be edited in real mode.<br /> <a href="#" onclick="sendNSCommand(\'WEB_0T_page.SET_page\',' + fsPage.url_param + '); return false;">Click here</a> to visit and edit the "' + fsPage.page_name + '" page.</p></body></html>'
+			}
+			else {
+				elements.bn_browser.html = '<html><body><h2>Internal link page</h2><p>The internal link this page references is not valid</p></body></html>'
+			}
+			
+			return
+		}
+		//show version for selected platform-language-group combo
 		else {
-			globals.WEB_preview_url = 
-				globals.WEB_MRKUP_link_page(id_page,null,'Edit',webMode) + 
-				"&group=" + globals.WEB_group_selected +
-				"&snapshot=" + globals.WEB_version_selected
+			var urlString = globals.WEB_MRKUP_link_page(id_page,null,'Edit',webMode)
+			
+			if (utils.hasRecords(forms.WEB_0F_page__design_1F__header_display_2F_platform._platform)) {
+				urlString += "&platform=" + forms.WEB_0F_page__design_1F__header_display_2F_platform._platform.url_param
+			}
+			
+			if (utils.hasRecords(forms.WEB_0F_page__design_1F__header_display_2F_language._language)) {
+				urlString += "&language=" + forms.WEB_0F_page__design_1F__header_display_2F_language._language.url_param
+			}
+			
+			if (utils.hasRecords(forms.WEB_0F_page__design_1F__header_display_2F_group._group)) {
+				urlString += "&group=" + forms.WEB_0F_page__design_1F__header_display_2F_group._group.url_param
+			}
+			
+			if (utils.hasRecords(forms.WEB_0F_page__design_1F_version.foundset)) {
+				urlString += "&version=" + forms.WEB_0F_page__design_1F_version.url_param
+			}
+			
+			globals.WEB_preview_url = urlString
 		}
 		
 		elements.bn_browser.navigateTo(globals.WEB_preview_url)
@@ -96,7 +232,13 @@ function URL_update(webMode) {
  */
 function EDIT_off() {
 	var prefix = 'sutra-block-data-'
-	elements.bn_browser.executeJavaScript("editOff('" + prefix + "');")
+	
+	if (elements.bn_browser) {
+		elements.bn_browser.executeJavaScript("editOff('" + prefix + "');")
+	}
+	else {
+		globals.WEB_browser_error()
+	}
 	
 	if (elements.bean_split.bottomComponent) {
 		SPLIT_set(false)
@@ -108,50 +250,31 @@ function EDIT_off() {
  * @properties={typeid:24,uuid:"AE8C14E7-851C-475B-A830-A03AF6B7BFE3"}
  */
 function BLOCK_edit(idBlock) {
+	
+	function convertUUID(item) {
+		return item.substr(0,8) + '-' + item.substr(8,4) + '-' + item.substr(12,4) + '-' + item.substr(16,4)  + '-' + item.substr(20,12)
+	}
+	
 	var blockID = idBlock.split("-")
-	forms.WEB_0F_page__browser__editor._dataID = blockID[blockID.length - 1]
 	
-	var content = databaseManager.getFoundSet(controller.getServerName(),"web_block_data")
-	content.find()
-	content.id_block = blockID[blockID.length - 1]
-	var count = content.search()
+	forms.WEB_0F_page__browser_1F_block__editor._dataID = convertUUID(blockID[blockID.length - 1])
 	
-	if (count) {
-		forms.WEB_0F_page__browser__editor._dataRec = content
-	}
+	var content = databaseManager.getFoundSet(controller.getServerName(),"web_block")
+	content.loadRecords(application.getUUID(forms.WEB_0F_page__browser_1F_block__editor._dataID))
 	
-	forms.WEB_0F_page__browser__editor.elements.tab_edit.removeTabAt(1)
-	
-	//currently used elsewhere, remove
-	if (forms.WEB_0F_page__design__content_1F_block_data.elements.tab_detail.getMaxTabIndex() >= 2 && (
-		forms.WEB_0F_page__design__content_1F_block_data.elements.tab_detail.getTabFormNameAt(2) == 'WEB_0F__content' ||
-		forms.WEB_0F_page__design__content_1F_block_data.elements.tab_detail.getTabFormNameAt(2) == 'WEB_0F__image' //||
-		)) {
-		
-		forms.WEB_0F_page__design__content_1F_block_data.elements.tab_detail.removeTabAt(2)
-	}
+	//load correct record
+	forms.WEB_0F_page__browser_1F_block__editor.foundset.loadRecords(content)
 	
 	//load in correct forms
-	var statusBlock = forms.WEB_0F_page__browser__editor.FORM_on_show()
+	var statusBlock = forms.WEB_0F_page__browser_1F_block__editor.FORM_on_show()
 	
 	//only show block edit if something successfully loaded in
 	if (statusBlock) {
 		SPLIT_set(true)
 	}
 	else {
-		forms.WEB_0F_page__browser__editor.ACTION_hide()
+		forms.WEB_0F_page__browser_1F_block__editor.ACTION_hide()
 	}
-	
-	
-//	application.showFormInDialog(
-//			forms.WEB_0F_page__browser__editor,
-//			-1,-1,-1,-1,
-//			" ",
-//			true,
-//			false,
-//			"cmsEditHover",
-//			true
-//		)
 }
 
 /**
@@ -164,6 +287,13 @@ function BLOCK_edit(idBlock) {
  */
 function FORM_on_show(firstShow, event) {
 	SPLIT_set(false)
+	
+	//entering page mode (only active version of block used)
+	globals.WEB_block_page_mode = true	
+	
+	if (firstShow) {
+		elements.bn_browser.navigateTo(globals.WEB_preview_url)
+	}
 }
 
 /**
@@ -172,7 +302,7 @@ function FORM_on_show(firstShow, event) {
  */
 function SPLIT_set(editMode) {
 	
-	var editLocation = forms.WEB_0F_page__browser__editor._editLocation
+	var editLocation = forms.WEB_0F_page__browser_1F_block__editor._editLocation
 	
 	//edit mode on
 	if (editMode) {
@@ -184,8 +314,6 @@ function SPLIT_set(editMode) {
 		//only switch orientation if needed
 		if (elements.bean_split.orientation != editLocation) {
 			elements.bean_split.orientation = editLocation
-			
-			//TODO: null out required?
 		}
 		
 		//side-wise location
@@ -237,27 +365,34 @@ function FORM_on_load(event) {
  * @properties={typeid:24,uuid:"FE79BE16-34CC-4556-8485-B6F9211A87D2"}
  */
 function BLOCK_new(areaID) {
-//	
-//	var area = databaseManager.getFoundSet("sutra_cms","web_area")
-//	area.find()
-//	area.id_area = areaID
-//	var count = area.search()
-//	
-	//set globals so that global relations work
-	globals.WEB_page_id_area_selected = areaID
 	
 	//show picker for type of block and create
-	//TODO: scrapbook doesn't work yet
-	var newBlock = forms.WEB_0F_page__design__content_1L_block.BLOCK_new()
+	var newBlock = forms.WEB_0F_page__design_1F_version_2L_scope.BLOCK_new(areaID)
 	
 	//add editor to the screen if new block not cancelled
 	if (newBlock) {
-		BLOCK_edit('sutra-block-data-' + globals.WEB_page_id_block_selected)
+		BLOCK_edit('sutra-block-data-' + utils.stringReplace(newBlock.id_block.toString(),'-',''))
 	}
 	//resume edit mode
 	else {
-		forms.WEB_0F_page__browser__editor.ACTION_hide()
+		forms.WEB_0F_page__browser_1F_block__editor.ACTION_hide()
 	}
 	
 	//MEMO: page will be redrawn if block saved after edit mode
+}
+
+/**
+ * Handle hide window.
+ *
+ * @param {JSEvent} event the event that triggered the action
+ *
+ * @returns {Boolean}
+ *
+ * @properties={typeid:24,uuid:"1A00D0BD-4B72-4185-B038-44F2419A5D6E"}
+ */
+function FORM_on_hide(event) {
+	//leaving page mode (only active version of block used)
+	globals.WEB_block_page_mode = false	
+	
+	return true
 }

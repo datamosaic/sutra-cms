@@ -1,9 +1,0 @@
-foreignDataSource:"db:/sutra_cms/web_block_type",
-items:[
-{foreignColumnName:"id_block_type",primaryDataProviderID:"id_block_type",typeid:23,uuid:"667727DC-ACDD-4F77-B73C-9D9B5D55FB9B"}
-],
-joinType:1,
-name:"web_scrapbook_to_block_type",
-primaryDataSource:"db:/sutra_cms/web_scrapbook",
-typeid:22,
-uuid:"6DE01E7B-E6EF-46B3-97DB-8E6E2DE7FD34"

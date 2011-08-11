@@ -12,94 +12,25 @@ var _license_dsa_mosaic_WEB_cms = 'Module: _dsa_mosaic_WEB_cms \
 function BLOCK_new() {
 	// no editable area selected
 	if (!utils.hasRecords(forms.WEB_0F_theme_1L_editable.foundset)) {
+		plugins.dialogs.showErrorDialog(
+							'Error',
+							'No editable area selected'
+					)
 		return
 	}
 	
-	// get blocks
-	var dataset = databaseManager.getDataSetByQuery(
-				controller.getServerName(),
-				"SELECT id_block_type, block_name FROM web_block_type WHERE id_site = ?",
-				[forms.WEB_0F_site.id_site], 
-				-1
+	//scope block creation to themes
+	forms.WEB_P__block__new._calledFrom = 'Theme'
+	
+	//show FiD for adding a new block
+	application.showFormInDialog(
+				forms.WEB_P__block__new,
+				-1,-1,-1,-1,
+				' ',
+				true,
+				false,
+				'cmsBlockNew'
 			)
-	
-	// ERROR CHECK: NO BLOCKS INSTALLED
-	if ( !dataset ) {
-		return
-	}
-	
-	// setup associative array
-	var IDs = dataset.getColumnAsArray(1)
-	var values = dataset.getColumnAsArray(2)
-	var valueListObj = {}
-	for (var i = 0; i < IDs.length; i++) {
-		valueListObj[values[i]] = IDs[i]
-	}
-	
-	// add scrapbook option
-	values.push("---", "Scrapbook connect...")
-	
-	// choose block type
-	var selection = plugins.dialogs.showSelectDialog(
-	"Select",
-	"Choose block type", 
-	values)
-	
-	// ERROR CHECK: NO SELECTED
-	if ( !selection ) {
-		return
-	}
-	
-	if (! utils.stringPatternCount(selection,"Scrapbook")) {
-	
-		// get block data points
-		var dataset = databaseManager.getDataSetByQuery(
-		controller.getServerName(),
-		"select display_name, method_name, " +
-			"(select id_block_display from web_block_display where id_block_type = ? and flag_default = 1) as display " +
-		"from web_block_display where id_block_type = ?",
-//		"select column_name, column_type, " +
-//			"(select id_block_display from web_block_display where id_block_type = ? and flag_default = 1) as display " +
-//		"from web_block_input where id_block_type = ?",
-		new Array(valueListObj[selection],valueListObj[selection]), -1)
-		
-//		var dataNames = dataset.getColumnAsArray(1)
-		var display = dataset.getValue(1,3)
-		
-		// create block record
-		if (utils.hasRecords(forms.WEB_0F_theme_1L_editable.foundset)) {
-			var count = foundset.getSize()
-			var record = forms.WEB_0F_theme_1L_editable.web_editable_to_editable_default.getRecord(forms.WEB_0F_theme_1L_editable.web_editable_to_editable_default.newRecord(false, true))
-			record.id_block_type = valueListObj[selection]
-			record.id_block_display = ( display ) ? display : null
-			record.row_order = count + 1
-			databaseManager.saveData()
-		}
-		/*
-		// create a block data record for each data point
-		for (var i = 0; i < dataNames.length; i++) {
-			var record = web_page_to_block_data_by_area_by_block.getRecord(web_page_to_block_data_by_area_by_block.newRecord(false, true))
-			record.data_key = dataNames[i]
-			databaseManager.saveData()
-		}
-		*/
-		// finish up
-//		web_page_to_block_data_by_area_by_block.setSelectedIndex(1)
-		
-	}
-	else {
-		forms.WEB_0F_scrapbook_1P__choose._source = "Theme"
-		if (selection == "Scrapbook copy...") {
-			forms.WEB_0F_scrapbook_1P__choose._typeScrapbook = 0
-		}
-		else if (selection == "Scrapbook connect...") {
-			forms.WEB_0F_scrapbook_1P__choose._typeScrapbook = 1
-		}
-		
-		application.showFormInDialog(forms.WEB_0F_scrapbook_1P__choose,-1,-1,-1,-1,"Scrapbook", false, false, "chooseScrapbook")
-
-		
-	}
 }
 
 /**

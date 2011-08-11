@@ -3,7 +3,7 @@ items:[
 {
 anchors:11,
 borderType:"SpecialMatteBorder,0.0,0.0,1.0,0.0,#000000,#000000,#999999,#000000,0.0,1.0",
-dataProviderID:"page_name",
+dataProviderID:"display_page_name",
 editable:false,
 formIndex:10700,
 location:"60,30",
@@ -17,7 +17,7 @@ uuid:"02391B58-720F-4596-80CB-7618BB20B4DA"
 {
 anchors:11,
 borderType:"SpecialMatteBorder,0.0,0.0,1.0,0.0,#000000,#000000,#999999,#000000,0.0,1.0",
-dataProviderID:"id_page",
+dataProviderID:"url_param",
 editable:false,
 formIndex:10700,
 location:"20,31",

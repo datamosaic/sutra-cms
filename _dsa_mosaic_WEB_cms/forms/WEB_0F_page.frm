@@ -1,5 +1,5 @@
 dataSource:"db:/sutra_cms/web_page",
-initialSort:"name asc",
+initialSort:"",
 items:[
 {
 anchors:15,

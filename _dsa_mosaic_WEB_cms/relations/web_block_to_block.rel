@@ -1,9 +1,8 @@
 foreignDataSource:"db:/sutra_cms/web_block",
 items:[
-{foreignColumnName:"id_block",primaryDataProviderID:"id_block",typeid:23,uuid:"E41D40C3-3A69-49A6-A465-440520905D3B"}
+{foreignColumnName:"id_block",primaryDataProviderID:"id_block",typeid:23,uuid:"77B01469-F5E4-4C85-836F-047FA9AE885C"}
 ],
-joinType:1,
 name:"web_block_to_block",
 primaryDataSource:"db:/sutra_cms/web_block",
 typeid:22,
-uuid:"EC7AB43A-D1B1-452A-8085-D585FD4687FA"
+uuid:"FD0BA8B0-9D3C-4A97-BB23-295050C509E0"

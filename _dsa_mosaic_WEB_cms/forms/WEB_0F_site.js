@@ -13,61 +13,48 @@ var _license_dsa_mosaic_WEB_cms = 'Module: _dsa_mosaic_WEB_cms \
  * @properties={typeid:24,uuid:"F4E09655-F0E2-402A-907F-B5B944590FA8"}
  */
 function REC_on_select(event) {
-	var fsGroups = web_site_to_group
-	
-	//set group valuelist
-	var vlReal = new Array()
-	var vlDisplay = new Array()	
-	
-	if (utils.hasRecords(fsGroups)) {
-		for (var i = 1; i <= fsGroups.getSize(); i++) {
-			var recGroup = fsGroups.getRecord(i)
-			
-//			vlReal.push(recGroup.id_group)
-//			vlDisplay.push(recGroup.group_name)
-			
-			if (recGroup.group_name == 'Everybody') {
-				//set group to everybody
-				globals.WEB_group_selected = recGroup.id_group
-			}
-		}
-	}
-	
 	//find site-specific stuff
-	forms.WEB_0F_asset.FORM_on_load()
-	forms.WEB_0F_block_type.FORM_on_load()
-	forms.WEB_0F_scrapbook.FORM_on_load()
-	forms.WEB_0F_theme.FORM_on_load()
-	forms.WEB_0T_page.FORM_on_load()
-	
-//	application.setValueListItems('WEB_group',vlDisplay,vlReal)
+	//only do this when not running in data sutra
+	if (!application.__parent__.solutionPrefs) {
+//		forms.WEB_0T_page.FORM_on_load() //covered with refresh flag on tree view bean
+		forms.WEB_0F_block__scrapbook.FORM_on_load()
+		forms.WEB_0F_asset.FORM_on_load()
+		forms.WEB_0F_theme.FORM_on_load()
+		forms.WEB_0F_block_type.FORM_on_load()
+	}
 	
 	//set global with site info
 	globals.WEB_site_display = 'Site: ' + site_name
 	
 	//null out used-on page foundset if selected tab doesn't have any records
-	if ((elements.tab_detail.tabIndex == 1 && !utils.hasRecords(web_site_to_group)) ||
-		(elements.tab_detail.tabIndex == 2 && !utils.hasRecords(web_site_to_site_attribute))) {
+	if ((elements.tab_detail.tabIndex == 1 && !utils.hasRecords(web_site_to_site_platform)) ||
+		(elements.tab_detail.tabIndex == 2 && !utils.hasRecords(web_site_to_site_language)) ||
+		(elements.tab_detail.tabIndex == 3 && !utils.hasRecords(web_site_to_site_group)) ||
+		(elements.tab_detail.tabIndex == 4 && !utils.hasRecords(web_site_to_site_attribute))) {
 		
-		forms.WEB_0F_site_1L_page.foundset.clear()
+		forms.WEB_0F_site_1L_page__groups.foundset.clear()
 	}
+	
+	//set flag for page tree to be refreshed
+	forms.WEB_0T_page._refresh = true
 }
 
 /**
  *
  * @properties={typeid:24,uuid:"5F06FB01-8EE2-4283-A5F5-E2C1E4802045"}
  */
-function REC_delete()
-{
+function REC_delete() {
 	var delRec = plugins.dialogs.showWarningDialog(
 				'Delete record',
-				'Do you really want to delete this record?',
+				'Do you really want to delete this site?',
 				'Yes',
 				'No'
 			)
 
 	if (delRec == 'Yes') {
 		globals.WEB_site_display = null
+		
+		//TODO: not deleteing versions and below....need to fix this
 		controller.deleteRecord()
 		
 		//dim out the lights
@@ -107,8 +94,20 @@ function REC_new() {
 	controller.newRecord(false)
 	
 	//create a group
-	var allGroup = web_site_to_group.getRecord(web_site_to_group.newRecord(false,true))
+	var allGroup = web_site_to_site_group.getRecord(web_site_to_site_group.newRecord(false,true))
 	allGroup.group_name = 'Everybody'
+	allGroup.flag_default = 1
+	
+	//create a language
+	var enLanguage = web_site_to_site_language.getRecord(web_site_to_site_language.newRecord(false,true))
+	enLanguage.language_name = 'English'
+	enLanguage.language_code = 'en'
+	enLanguage.flag_default = 1
+	
+	//create a platform
+	var platform = web_site_to_site_platform.getRecord(web_site_to_site_platform.newRecord(false,true))
+	platform.platform_name = application.getValueListItems('WEB_platform').getValue(1,1)
+	platform.flag_default = 1
 	
 	//save
 	databaseManager.saveData()
@@ -119,6 +118,8 @@ function REC_new() {
 	//refire on select
 	REC_on_select()
 	
+	//bring focus back to this window
+	application.updateUI(5)
 	elements.fld_site_name.requestFocus()
 }
 
@@ -127,51 +128,53 @@ function REC_new() {
  * @properties={typeid:24,uuid:"DE93701D-6639-40BE-B977-D24295C1932F"}
  */
 function ACTION_blow_in_missing_areas_to_all_pages() {
-if (globals.TRIGGER_registered_action_authenticate('cms site page update')) {
-	var input = plugins.dialogs.showWarningDialog(
-					'Continue?',
-					'Are you sure you want to modify all pages.\nWarning! This is irreversible.',
-					'Yes',
-					'No'
-			)
+	return
 	
-	if (input == 'Yes') {
-		//go to page layout
-		forms.WEB_0F_page.controller.show()
+	if (globals.TRIGGER_registered_action_authenticate('cms site page update')) {
+		var input = plugins.dialogs.showWarningDialog(
+						'Continue?',
+						'Are you sure you want to modify all pages.\nWarning! This is irreversible.',
+						'Yes',
+						'No'
+				)
 		
-		forms.WEB_0F_page.controller.find()
-		forms.WEB_0F_page.id_site = id_site
-		forms.WEB_0F_page.controller.search()
-		
-//		if (globals.TRIGGER_navigation_set('CMS_page',true,web_site_to_page)) {
-			application.updateUI(4000)
+		if (input == 'Yes') {
+			//go to page layout
+			forms.WEB_0F_page.controller.show()
 			
+			forms.WEB_0F_page.controller.find()
+			forms.WEB_0F_page.id_site = id_site
+			forms.WEB_0F_page.controller.search()
 			
-			//loop over all pages in site
-			for (var i = 1; i <= forms.WEB_0F_page.controller.getMaxRecordIndex(); i++) {
-//				var input = plugins.dialogs.showQuestionDialog(
-//							'Continue ' + i + '?',
-//							'Meh.',
-//							'Yes',
-//							'No'
-//					)
-//				
-//				if (input == 'No') {
-//					return
-//				}
-//				else if (input == 'Yes') {
-					//set selected index
-					forms.WEB_0F_page.controller.setSelectedIndex(i)
-					
-					//run area diff method
-					forms.WEB_0F_page__design__content_1L_area.AREA_add_missing()
-//				}
-//				
-//				input = 'No'
-			}
-//		}
+	//		if (globals.TRIGGER_navigation_set('CMS_page',true,web_site_to_page)) {
+				application.updateUI(4000)
+				
+				
+				//loop over all pages in site
+				for (var i = 1; i <= forms.WEB_0F_page.controller.getMaxRecordIndex(); i++) {
+	//				var input = plugins.dialogs.showQuestionDialog(
+	//							'Continue ' + i + '?',
+	//							'Meh.',
+	//							'Yes',
+	//							'No'
+	//					)
+	//				
+	//				if (input == 'No') {
+	//					return
+	//				}
+	//				else if (input == 'Yes') {
+						//set selected index
+						forms.WEB_0F_page.controller.setSelectedIndex(i)
+						
+						//run area diff method
+						forms.WEB_0F_page__design_1F_version_2L_area.AREA_add_missing()
+	//				}
+	//				
+	//				input = 'No'
+				}
+	//		}
+		}
 	}
-}
 }
 
 /**
@@ -240,77 +243,6 @@ function ACTION_path_generate(event) {
 
 /**
  * Perform the element default action.
- * @param method callback method to trigger when tree item is selected
- *
- * @properties={typeid:24,uuid:"FE1B37B7-F621-48C8-B232-E078047FED9E"}
- */
-function SITE_tree(method) {
-	
-	function GET_page(pageRec) {
-		if (utils.hasRecords(pageRec[relnPage])) {
-			var subArray = new Array()
-			
-			subArray.push(
-						//choose this page
-							plugins.popupmenu.createMenuItem('Choose parent (' + pageRec.page_name + ')', method),
-						//blank line
-							plugins.popupmenu.createMenuItem('-', method)
-					)
-			
-			// set arguments
-			subArray[0].setMethodArguments(pageRec.id_page)
-					
-			// turn off '----'
-			subArray[1].setEnabled(false)
-			
-			for (var j = 1; j <= pageRec[relnPage].getSize(); j++ ) {
-				subArray.push(GET_page(pageRec[relnPage].getRecord(j)))
-			}
-			
-			return plugins.popupmenu.createMenuItem(pageRec.page_name + "", subArray)
-		}
-		else {
-			var item = plugins.popupmenu.createMenuItem(pageRec.page_name + "", method)
-			item.setMethodArguments(pageRec.id_page)
-			
-			//disable dividers
-			if (item.text == '----') {
-				item.setEnabled(false)
-			}
-			
-			return item
-		}
-	}
-	
-	var fsPages = databaseManager.getFoundSet(controller.getServerName(), 'web_page')
-	var relnPage = 'web_page_to_page__child'
-	
-	fsPages.find()
-	fsPages.parent_id_page = 0
-	fsPages.id_site = id_site
-	var results = fsPages.search()
-	
-	if (results) {
-		fsPages.sort('order_by asc')
-		
-		//make array
-		var menu = new Array()
-		
-		for (var i = 1 ; i <= fsPages.getSize() ; i++) {
-			menu.push(GET_page(fsPages.getRecord(i)))
-		}
-		
-		//pop up the popup menu
-		var elem = forms[application.getMethodTriggerFormName()].elements[application.getMethodTriggerElementName()]
-		if (elem != null) {
-		    plugins.popupmenu.showPopupMenu(elem, menu);
-		}
-		
-	}
-}
-
-/**
- * Perform the element default action.
  *
  * @param {JSEvent} event the event that triggered the action
  *
@@ -335,9 +267,10 @@ function ACTION_choose_error(event) {
  *
  * @properties={typeid:24,uuid:"28287505-5072-4F40-BDBF-C3A0717BB35A"}
  */
-function ACTION_set_home(inputID) {
+function ACTION_set_home(inputID,inputRec) {
 	if (inputID) {
-		id_page = inputID
+		id_page__home = inputRec.id_page
+		id_page__home__display = inputRec.page_name
 		databaseManager.saveData()
 	}
 }
@@ -346,9 +279,10 @@ function ACTION_set_home(inputID) {
  *
  * @properties={typeid:24,uuid:"28287505-5072-4F40-BEBF-C3A0717BB35A"}
  */
-function ACTION_set_error(inputID) {
+function ACTION_set_error(inputID,inputRec) {
 	if (inputID) {
-		id_page_error = inputID
+		id_page__error = inputRec.id_page
+		id_page__error__display = inputRec.page_name
 		databaseManager.saveData()
 	}
 }
@@ -411,7 +345,7 @@ function TAB_change(event) {
 	
 	elements.tab_used_on.tabIndex = elements.tab_detail.tabIndex
 	
-	if (elements.tab_used_on.tabIndex == 2) {
+	if (elements.tab_used_on.tabIndex == 4) {
 		elements.btn_add_page_attrib.visible = true
 	}
 	else {
@@ -516,6 +450,64 @@ function FIELD_publish() {
 	if ( site_name_publish_flag ) {
 		if ( !site_name_publish_separator ) {
 			site_name_publish_separator = " | "
+		}
+	}
+}
+
+/**
+ * @param	{JSRecord}	[siteRec] Site record to retrieve defaults for; if left blank will use selected record. 
+ * 
+ * @returns	{Object}	thisSite Object containing default platform, language, and group records for a site.
+ * 
+ * @properties={typeid:24,uuid:"739BF19F-5BF7-433F-9CAB-408DE15D2205"}
+ */
+function ACTION_get_defaults(siteRec) {
+	//no site specified, get the selected site
+	if (!siteRec) {
+		siteRec = foundset.getSelectedRecord()
+	}
+	
+	//we have a site to work with
+	if (siteRec) {
+		var thisSite = new Object()
+		thisSite.record = siteRec
+		
+		//loop over all platforms
+		for (var i = 1; i <= siteRec.web_site_to_site_platform.getSize(); i++) {
+			var record = siteRec.web_site_to_site_platform.getRecord(i)
+			
+			//grab default platform
+			if (record.flag_default) {
+				thisSite.platform = record
+				break
+			}
+		}
+		
+		//loop over all languages
+		for (var i = 1; i <= siteRec.web_site_to_site_language.getSize(); i++) {
+			var record = siteRec.web_site_to_site_language.getRecord(i)
+			
+			//grab default platform
+			if (record.flag_default) {
+				thisSite.language = record
+				break
+			}
+		}
+		
+		//loop over all groups
+		for (var i = 1; i <= siteRec.web_site_to_site_group.getSize(); i++) {
+			var record = siteRec.web_site_to_site_group.getRecord(i)
+			
+			//grab default platform
+			if (record.flag_default) {
+				thisSite.group = record
+				break
+			}
+		}
+		
+		//only return if there are defaults specified for all
+		if (thisSite && thisSite.platform && thisSite.language && thisSite.group) {
+			return thisSite
 		}
 	}
 }

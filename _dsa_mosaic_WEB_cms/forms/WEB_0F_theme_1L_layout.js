@@ -50,9 +50,8 @@ controller.deleteRecord()
  *
  * @properties={typeid:24,uuid:"DBF7019B-9E07-4637-B4E3-F598E32F4D1A"}
  */
-function REC_selected()
-{
-	globals.WEB_layout_selected = id_layout
+function REC_on_select() {
+
 }
 
 /**

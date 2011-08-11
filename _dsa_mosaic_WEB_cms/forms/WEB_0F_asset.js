@@ -115,7 +115,7 @@ function REC_new(assetType) {
  *
  * @properties={typeid:24,uuid:"CFCBF7B5-C038-4D04-AFF3-41AEA18ED580"}
  */
-function FORM_on_load(event) {
+function FILTER_records(event) {
 	//find stuff for the selected site
 	if (utils.hasRecords(forms.WEB_0F_site.foundset)) {
 		foundset.find()
@@ -136,6 +136,11 @@ function FORM_on_load(event) {
  * @properties={typeid:24,uuid:"16C7820E-528E-495C-A409-E0EA923E2429"}
  */
 function FORM_on_show(firstShow, event) {
+	//only do this when not running in data sutra
+	if (!application.__parent__.solutionPrefs) {
+		FILTER_records(event)
+	}
+	
 	if (!utils.hasRecords(foundset)) {
 		globals.WEB_lock_workflow(true)
 	}
