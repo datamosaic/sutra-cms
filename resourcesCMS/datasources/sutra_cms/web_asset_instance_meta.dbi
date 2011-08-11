@@ -1,11 +1,12 @@
 columns:[
 {
 allowNull:false,
-autoEnterSubType:0,
+autoEnterSubType:3,
 autoEnterType:2,
 creationOrderIndex:3,
-dataType:4,
-flags:1,
+dataType:12,
+flags:5,
+length:50,
 name:"id_asset_instance_meta"
 },
 {
@@ -39,7 +40,9 @@ name:"data_value_blob"
 {
 allowNull:true,
 creationOrderIndex:4,
-dataType:4,
+dataType:12,
+flags:4,
+length:50,
 name:"id_asset_instance"
 },
 {
