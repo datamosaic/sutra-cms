@@ -1,4 +1,4 @@
-dataSource:"db:/sutra_cms/web_block_data",
+dataSource:"db:/sutra_cms/web_block",
 items:[
 {
 height:170,
@@ -21,7 +21,7 @@ uuid:"D6BCE419-EF25-487F-AEB0-E0020C3BDE40"
 name:"WEB_0F___starter_block",
 navigatorID:"-1",
 onRecordSelectionMethodID:"D0B09ECA-F3FA-4035-A0DD-62166343DF4E",
-onShowMethodID:"4D6E53A3-3D2F-41DA-82CF-F8E1FB7381C9",
+onShowMethodID:"-1",
 paperPrintScale:100,
 scrollbars:36,
 size:"300,170",

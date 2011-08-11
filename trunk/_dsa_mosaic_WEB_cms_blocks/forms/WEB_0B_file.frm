@@ -1,5 +1,5 @@
 dataSource:"db:/sutra_cms/web_block_configure",
-initialSort:"name_last asc, name_first asc",
+initialSort:"",
 items:[
 {
 anchors:11,
@@ -139,10 +139,10 @@ uuid:"D25CE6D4-6617-44C4-8ECD-F712B875538A"
 ],
 name:"WEB_0B_file",
 navigatorID:"-1",
-onLoadMethodID:"2811ff94-2e9d-4adb-9568-10fb27838324",
+onLoadMethodID:"-1",
 onRecordEditStopMethodID:"50d8a27a-2321-4118-b4f7-db097f8c0f0a",
-onRecordSelectionMethodID:"60dca133-a72b-4eed-9740-50b1c5aa2f0a",
-onShowMethodID:"c7dcf4f4-9c8a-404d-a30c-5c8a8ea00c35",
+onRecordSelectionMethodID:"-1",
+onShowMethodID:"-1",
 paperPrintScale:100,
 size:"780,470",
 styleName:"_DATASUTRA_",

@@ -4,21 +4,11 @@
 var _codeType = null;
 
 /**
- * @properties={typeid:35,uuid:"F1C27564-A716-45E9-A1D4-ED185DCF4FA0",variableType:-4}
- */
-var _editsAllowed = null;
-
-/**
  * @properties={typeid:35,uuid:"F9C97E5D-97C9-449E-A979-716462FAFB00"}
  */
 var _license_dsa_mosaic_WEB_cms = 'Module: _dsa_mosaic_WEB_cms \
 									Copyright (C) 2011 Data Mosaic \
 									MIT Licensed';
-
-/**
- * @properties={typeid:35,uuid:"6B8AEDAD-985E-4000-ADDB-091F6C4B3B70",variableType:-4}
- */
-var _recBlockData = null;
 
 /**
  * param {} obj Data object passed to all markup methods
@@ -36,24 +26,22 @@ function VIEW_default(obj) {
  * @properties={typeid:24,uuid:"F33BE9B2-F674-4F60-BBE6-666F668D5657"}
  */
 function FORM_on_load() {
-	//set combobox to be square on os x
-	globals.CODE_property_combobox(true)
+	//don't run in headless client
+	if (application.getApplicationType() != APPLICATION_TYPES.HEADLESS_CLIENT) {
+		//set combobox to be square on os x
+		globals.CODE_property_combobox(true)
+	}
 }
 
 /**
+ * @param {JSEvent} event the event that triggered the action
+ * 
  * @properties={typeid:24,uuid:"596AC1D2-C10E-435B-A670-B17748C36852"}
  */
-function BLOCK_save() {
-	_recBlockData.data_value = _dataValue
-	databaseManager.saveData(_recBlockData)
-	databaseManager.setAutoSave(true)
+function BLOCK_save(event) {
+	globals.WEB_block_getData(event).data_value = _dataValue
 	
-	ACTION_colorize()
-	
-	//called from browser bean, hide form
-	if (globals.WEB_page_mode == 3) {
-		forms.WEB_0F_page__browser__editor.ACTION_hide()
-	}
+	ACTION_colorize(event)
 }
 
 /**
@@ -64,17 +52,7 @@ function BLOCK_save() {
  * @properties={typeid:24,uuid:"FD3FDA15-9CCB-46E7-81A4-CD1D2F6C1193"}
  */
 function ACTION_edit(event) {
-	if (_editsAllowed) {
-		databaseManager.saveData()
-		databaseManager.setAutoSave(false)
-		TOGGLE_buttons(true)
-	}
-	else {
-		plugins.dialogs.showErrorDialog(
-						'Error',
-						'This page is non-editable'
-					)
-	}
+	TOGGLE_buttons(true)
 }
 
 /**
@@ -86,28 +64,35 @@ function ACTION_edit(event) {
  * @properties={typeid:24,uuid:"3270E304-F977-48C3-97BF-FE5A7F9551D1"}
  */
 function FORM_on_show(firstShow, event) {
-	if (!firstShow) {
-		ACTION_colorize()
-	}
+//	if (!firstShow) {
+//		ACTION_colorize()
+//	}
 }
 
 /**
- * @properties={typeid:35,uuid:"6F280884-1453-4C3C-B026-7FC70457CB7D",variableType:-4}
- */
-var _recBlockDataConfigure = null;
-
-/**
+ * Update display as needed when block selected.
+ *
+ * @param 	{JSEvent}	event The event that triggered the action.
+ * @param	{Boolean}	[alwaysRun] Force the on select method to refire.
+ * 
  * @properties={typeid:24,uuid:"CC43FDE6-F4F9-4BEB-AF5D-D8FDB80E9AA7"}
  */
-function REC_on_select(event) {
-	ACTION_colorize()
-	
-	//update formvar used for whatever
-	if (utils.hasRecords(foundset.getSelectedRecord(),'web_block_data_to_block.web_block_to_block_data_configure')) {
-		var record = web_block_data_to_block.web_block_to_block_data_configure.getRecord(1)
-		_codeType = record.data_value
+function REC_on_select(event,alwaysRun) {
+	//run on select only when it is 'enabled'
+	if (alwaysRun || globals.WEB_block_enable(event)) {
+		//save down form variables so records can be changed
+		_dataValue = globals.WEB_block_getData(event).data_value
+		_codeType = globals.WEB_block_getConfig(event).data_value
 		
-		_recBlockDataConfigure = record
+		//when no data or in edit mode, enter in edit mode
+		if (!_dataValue || globals.WEB_block_edit_get()) {
+			TOGGLE_buttons(true)
+		}
+		//update display
+		else {
+			TOGGLE_buttons(false)
+			ACTION_colorize(event)
+		}
 	}
 }
 
@@ -119,16 +104,12 @@ function REC_on_select(event) {
  * @properties={typeid:24,uuid:"8F3FE07B-111D-4858-ABD2-3373302B5FBE"}
  */
 function BLOCK_cancel(event) {
-	databaseManager.rollbackEditedRecords()
-	databaseManager.setAutoSave(true)
+	//reset codeType var
+	_codeType = globals.WEB_block_getConfig(event).data_value
 	
-	//called from browser bean, hide form
-	if (globals.WEB_page_mode == 3) {
-		forms.WEB_0F_page__browser__editor.ACTION_hide()
-	}
 	//refresh the colored version
-	else if (globals.WEB_page_mode == 2) {
-		ACTION_colorize()
+	if (globals.WEB_page_mode == 2) {
+		ACTION_colorize(event)
 	}
 }
 
@@ -141,7 +122,7 @@ var _dataValue = null;
  * @properties={typeid:24,uuid:"1DD58AA1-41B8-44A1-BDAE-FE0ADBF7F314"}
  */
 function TOGGLE_buttons(state) {
-	if (!_editsAllowed) {
+	if (!globals.WEB_block_edit_get()) {
 		elements.btn_edit.visible = false
 		elements.lbl_edit.visible = false
 	}
@@ -160,8 +141,13 @@ function TOGGLE_buttons(state) {
 	elements.gfx_graphic.enabled = state
 	
 	elements.fld_data_value.visible = state
-	elements.bn_browser.visible = !state
-	elements.var_codeType.enabled = !state
+	if (elements.bn_browser) {
+		elements.bn_browser.visible = !state
+	}
+	else {
+		globals.WEB_browser_error()
+	}
+	elements.var_codeType.enabled = state
 	
 	//cancel is always an option if in browser mode
 	if (globals.WEB_page_mode == 3) {
@@ -213,9 +199,11 @@ function ACTION_add_token(inputID,pageRec) {
 	
 	elem.replaceSelectedText(linkStart + linkPage + linkEnd)
 	
-	_recBlockData.data_value = _dataValue
+	var recBlockData = globals.WEB_block_getData(event).getRecord(1)
+	
+	recBlockData.data_value = _dataValue
 		
-	databaseManager.saveData(_recBlockData)
+	databaseManager.saveData(recBlockData)
 	
 	elem.caretPosition = cursor + offset
 	elem.requestFocus()
@@ -263,9 +251,11 @@ function ACTION_insert_image(event) {
 		
 		elem.replaceSelectedText(html)
 		
-		_recBlockData.data_value = _dataValue
+		var recBlockData = globals.WEB_block_getData(event).getRecord(1)
 		
-		databaseManager.saveData(_recBlockData)
+		recBlockData.data_value = _dataValue
+			
+		databaseManager.saveData(recBlockData)
 		
 		elem.caretPosition = cursor + offset
 		elem.requestFocus()
@@ -327,32 +317,11 @@ function INIT_block() {
 }
 
 /**
- * @properties={typeid:24,uuid:"79BC12DD-3EBB-4708-9A39-4238787249C9"}
- */
-function LOADER_init(fsBlockData, flagEdit, flagScrapbook, contextForm) {
-	//save down pertinent records
-	_recBlockData = fsBlockData.getRecord(1)
-	_dataValue = _recBlockData.data_value
-	_recBlockDataConfigure = _recBlockData.web_block_data_to_block.web_block_to_block_data_configure.getRecord(1)
-	_codeType = _recBlockDataConfigure.data_value
-	
-	//update display
-	_editsAllowed = flagEdit
-	LOADER_refresh(fsBlockData,false,flagScrapbook)
-	
-	//load correct form
-	if (flagScrapbook) {
-		globals.WEB_block_form_loader('WEB_0F__code',"SCRAPBOOK: Code block",null,contextForm)
-	}
-	else {
-		globals.WEB_block_form_loader('WEB_0F__code',"Code block",null,contextForm)
-	}
-}
-
-/**
+ * @param {JSEvent} event Upstream event that gives context.
+ * 
  * @properties={typeid:24,uuid:"145AE1D1-D199-44AE-9F61-9F1AD0DF7097"}
  */
-function ACTION_colorize(recBlockData) {
+function ACTION_colorize(event) {
 	var brushMap = new Object()
 	brushMap.html = 'shBrushXml.js'
 	brushMap.js = 'shBrushJScript.js'
@@ -366,9 +335,7 @@ function ACTION_colorize(recBlockData) {
 	var html = ''
 	var prefix = ''
 	
-	if (!recBlockData && _recBlockData) {
-		recBlockData = _recBlockData
-	}
+	var recBlockData = globals.WEB_block_getData(event).getSelectedRecord()
 	
 	//if there's data, color it
 	if (recBlockData && recBlockData.data_value) {
@@ -407,7 +374,13 @@ function ACTION_colorize(recBlockData) {
 		
 	}
 	
-	elements.bn_browser.html = html
+	if (elements.bn_browser) {
+		elements.bn_browser.html = html
+	}
+	else {
+		globals.WEB_browser_error()
+	}
+	
 	TOGGLE_buttons(false)
 }
 
@@ -423,35 +396,5 @@ function ACTION_colorize(recBlockData) {
  * @properties={typeid:24,uuid:"1975546E-4E95-4C97-8332-E8135178C526"}
  */
 function FLD_data_change__code_type(oldValue, newValue, event) {
-	if (_recBlockDataConfigure) {
-		_recBlockDataConfigure.data_value = newValue
-	}
-	
-	ACTION_colorize()
-}
-
-/**
- * @properties={typeid:24,uuid:"2032938A-9A16-4FE2-BB20-EF2015D21E7E"}
- */
-function LOADER_refresh(fsBlockData,flagEdit,flagScrapbook) {
-	ACTION_colorize(_recBlockData)
-	
-	TOGGLE_buttons(flagEdit)
-	
-//	//hack to get scrapbook to display
-//	if (flagScrapbook && application.__parent__.solutionPrefs) {
-//		globals.CODE_cursor_busy(true)
-//		
-//		forms.WEB_0F_page._hackNoFire = true
-//		forms.CODE__blank.controller.show()
-//		forms.DATASUTRA_0F_solution.controller.show()
-//		//this needs to be long enough for it to finish rendering
-//		application.updateUI(1000)
-//		forms.WEB_0F_page._hackNoFire = false
-//		
-//		//reset the window's title
-//		forms.DATASUTRA_0F_solution.elements.fld_trigger_name.requestFocus(true)
-//		
-//		globals.CODE_cursor_busy(false)
-//	}
+	globals.WEB_block_getConfig(event).data_value = newValue
 }

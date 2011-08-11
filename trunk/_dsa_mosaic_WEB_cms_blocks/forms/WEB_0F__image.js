@@ -6,10 +6,11 @@ var _license_dsa_mosaic_WEB_cms = 'Module: _dsa_mosaic_WEB_cms \
 									MIT Licensed';
 
 /**
+ * @param {JSEvent} event the event that triggered the action
  *
  * @properties={typeid:24,uuid:"FFE14AC8-BECE-4D27-9AC1-0EE22A0032FF"}
  */
-function BLOCK_choose() {
+function BLOCK_choose(event) {
 	//show image chooser
 	application.showFormInDialog(
 					forms.WEB_0F__image__P_choose,
@@ -21,82 +22,67 @@ function BLOCK_choose() {
 				)
 	
 	//save down of what chosen happen in forms.WEB_0F__image__P_choose.ACTION_ok
-	
-	//update display
-	globals.WEB_block_form_refresh()
 }
 
 /**
+ * @param {JSEvent} event the event that triggered the action
  *
  * @properties={typeid:24,uuid:"43C94817-C701-46EF-809A-33BE2CFC738C"}
  */
-function BLOCK_scale() {
-	var fileOBJ = forms.WEB_0F_asset__image.ASSET_scale(foundset.getRecord(1))
+function BLOCK_scale(event) {
+	var fsAssetInstance = databaseManager.getFoundSet('sutra_cms','web_asset_instance')
+	fsAssetInstance.loadRecords([application.getUUID(_imageData.id_asset_instance)])
+	var recAsset = fsAssetInstance.web_asset_instance_to_asset.getRecord(1)
 	
-	//the image was scaled
-	if (fileOBJ) {
-		//get block data points we need
-		var dataRows = new Object()
-		for (var i = 1; i <= forms.WEB_0F_page__design__content_1L_block.web_block_to_block_data.getSize(); i++) {
-			var record = forms.WEB_0F_page__design__content_1L_block.web_block_to_block_data.getRecord(i)
-			dataRows[record.data_key] = record
+	var newAsset = forms.WEB_0F_asset__image.ASSET_scale(recAsset,true)
+	
+	//there is something and it's different than what was there before
+	if (newAsset) {
+		//get meta data points we need
+		var metaRows = new Object()
+		for (var j = 1; j <= newAsset.web_asset_instance_to_asset_instance_meta.getSize(); j++) {
+			var record = newAsset.web_asset_instance_to_asset_instance_meta.getRecord(j)
+			metaRows[record.data_key] = record
 		}
-	
-		//update the block data
-		dataRows.image_name.data_value = fileOBJ.image_name
-		dataRows.directory.data_value = fileOBJ.directory
-		dataRows.width.data_value = fileOBJ.width
-		dataRows.height.data_value = fileOBJ.height
 		
-		databaseManager.saveData()
-			
-		//update display
-		globals.WEB_block_form_refresh()
+		//the data we're working with here
+		var data = globals.WEB_block_getData(event)
+		
+		//see INIT_block for all keys
+		for (var i = 1; i <= data.getSize(); i++) {
+			var record = data.getRecord(i)
+			switch (record.data_key) {
+				case 'height':
+				case 'width':
+					record.data_value = metaRows[record.data_key].data_value
+					break
+				case 'image_name':
+					record.data_value = newAsset.asset_title
+					break
+				case 'directory':
+					record.data_value = newAsset.asset_directory
+					break
+				default:
+					record.data_value = newAsset[record.data_key]
+			}
+		}
+		
+		//refresh the block
+		REC_on_select(event,true)
 	}
 }
 
 /**
- *
+ * @param {JSEvent} event the event that triggered the action
+ * 
  * @properties={typeid:24,uuid:"D5507344-C123-4997-A29D-32181865B93F"}
  */
-function BLOCK_import() {
+function BLOCK_import(event) {
 	
 	forms.WEB_0C__file_stream.IMAGE_import("images")
-	return
 	
-	var file = plugins.file.showFileOpenDialog()
+	application.output('2')
 	
-	// create new asset with one file
-	if (file) {
-		var fsAsset = databaseManager.getFoundSet('sutra_cms','web_asset')
-		var assetRec = fsAsset.getRecord(fsAsset.newRecord(false,true))
-		assetRec.id_site = forms.WEB_0F_site.id_site
-		assetRec.asset_type = 1
-		
-		//create asset
-		var assetInstanceRec = assetRec.web_asset_to_asset_instance.getRecord(assetRec.web_asset_to_asset_instance.newRecord(false,true))
-		
-		//get template for this type of asset
-		var template = forms.WEB_0F_asset.MAP_asset(assetRec.asset_type)
-		
-		//add all meta data rows
-		for (var i in template.meta) {
-			var metaRec = assetInstanceRec.web_asset_instance_to_asset_instance_meta.getRecord(assetInstanceRec.web_asset_instance_to_asset_instance_meta.newRecord(false,true))
-			
-			metaRec.data_key = i
-			metaRec.data_type = template.meta[i]
-			
-			databaseManager.saveData(metaRec)
-		}
-		
-		//pseudo-record
-		var asset = forms.WEB_0F_asset_1F_2L_asset_instance.REC_on_select(assetInstanceRec)
-		
-		forms.WEB_0F_asset__image.ASSET_import(asset,file.getAbsolutePath())
-		
-		//select the file just imported
-		
-	}
 }
 
 /**
@@ -106,18 +92,18 @@ function BLOCK_import() {
 function VIEW_default(obj) {
 	
 	// template					
-	var markup = 	'<img width="<<width>>" height="<<height>>" border="0"' +
-					'src="<<directory>><<image_name>>"' +
+	var markup = 	'<img width="<<width>>" height="<<height>>" border="0" ' +
+					'src="<<directory>>/<<image_name>>" ' +
 					'alt="" />'
 	
 	// replace
 	markup = markup.replace(/<<width>>/ig, obj.data.width)
 	markup = markup.replace(/<<height>>/ig, obj.data.height)
 	markup = markup.replace(/<<image_name>>/ig, obj.data.image_name)
-	markup = markup.replace(/<<directory>>/ig, obj.data.directory)
+	markup = markup.replace(/<<directory>>/ig, '/' + globals.WEB_MRKUP_link_resources(obj.page.id) + obj.data.directory)
 	
 	// return
-	return markup	
+	return markup
 }
 
 /**
@@ -135,11 +121,14 @@ function VIEW_lightbox() {
 }
 
 /**
- *
+ * @param {JSEvent} event the event that triggered the action
+ * 
  * @properties={typeid:24,uuid:"581D1472-7339-4669-A110-353A1904B241"}
  */
-function TOGGLE_buttons(editStatus) {
-	var hasData = utils.hasRecords(foundset)
+function TOGGLE_buttons(event) {
+	var editStatus = globals.WEB_block_edit_get()
+	
+	var hasData = _imageData.id_asset_instance ? true : false
 	
 	elements.btn_choose.enabled = editStatus
 	elements.btn_import.enabled = editStatus
@@ -147,78 +136,6 @@ function TOGGLE_buttons(editStatus) {
 	elements.lbl_choose.enabled = editStatus
 	elements.lbl_import.enabled = editStatus
 	elements.lbl_scale.enabled = editStatus && hasData
-}
-
-/**
- * @properties={typeid:24,uuid:"E9062B39-C69D-4841-A367-94BDC60849FF"}
- */
-function LOADER_init(fsBlockData,flagEdit,flagScrapbook,contextForm) {
-	//clear foundset //handled with onShow
-//	foundset.clear()
-	
-	//update display
-	var objImage = LOADER_refresh(fsBlockData,flagEdit,flagScrapbook)
-	
-	//laod asset that we're working with onto this form
-	controller.loadRecords(utils.stringToNumber(objImage.id_asset_instance))
-	
-	//refire button state
-	TOGGLE_buttons(flagEdit)
-	
-	//load form
-	globals.WEB_block_form_loader(controller.getName(), ((flagScrapbook) ? "SCRAPBOOK: Image block" : "Image block"), null, contextForm)
-}
-
-/**
- * @properties={typeid:24,uuid:"CA20C98A-927F-484F-960F-73E9FC28634B"}
- */
-function LOADER_refresh(fsBlockData,flagEdit,flagScrapbook) {
-	//create object with all properties
-	var objImage = new Object()
-	for (var i = 1; i <= fsBlockData.getSize(); i++) {
-		var record = fsBlockData.getRecord(i)
-		objImage[record.data_key] = record.data_value
-	}
-	
-	//no image set yet
-	if (!objImage.image_name){
-		var html = 	'<html><head></head><body>' +
-					'No image chosen yet' +
-					'</body></html>'
-	}
-	// image is set
-	else {
-		//both the base and resource url methods will return with "sutraCMS/"; need to remove from one so no doubling
-		var siteURL = utils.stringReplace(globals.WEB_MRKUP_link_base(forms.WEB_0F_page__design__content.id_page),'sutraCMS/','') + globals.WEB_MRKUP_link_resources(forms.WEB_0F_page__design__content.id_page)
-		
-		var html = 	'<html><head></head><body>' +
-					'<img src="' + siteURL + 
-					objImage.directory + '/' + objImage.image_name + 
-					'" height="' + objImage.height + '" width="' + objImage.width +'"' + '>' +
-					'</body></html>'
-	}
-	
-	TOGGLE_buttons(flagEdit)
-	elements.bn_browser.html = html	
-	
-//	//hack to get scrapbook to display
-//	if (flagScrapbook && application.__parent__.solutionPrefs) {
-//		globals.CODE_cursor_busy(true)
-//		
-//		forms.WEB_0F_page._hackNoFire = true
-//		forms.CODE__blank.controller.show()
-//		forms.DATASUTRA_0F_solution.controller.show()
-//		//this needs to be long enough for it to finish rendering
-//		application.updateUI(1000)
-//		forms.WEB_0F_page._hackNoFire = false
-//		
-//		//reset the window's title
-//		forms.DATASUTRA_0F_solution.elements.fld_trigger_name.requestFocus(true)
-//		
-//		globals.CODE_cursor_busy(false)
-//	}
-	
-	return objImage
 }
 
 /**
@@ -281,7 +198,59 @@ function INIT_block() {
  * @properties={typeid:24,uuid:"6DABA0D5-F686-47B6-8F76-860D5D0B0209"}
  */
 function FORM_on_show(firstShow, event) {
-	if (firstShow) {
-		foundset.clear()
+	
+}
+
+/**
+ * @properties={typeid:35,uuid:"17B73F45-DF8E-47BD-9B5B-914A05F52899",variableType:-4}
+ */
+var _imageData = null;
+
+/**
+ * Update display as needed when block selected.
+ *
+ * @param 	{JSEvent}	event The event that triggered the action.
+ * @param	{Boolean}	[alwaysRun] Force the on select method to refire.
+ * 
+ * @properties={typeid:24,uuid:"9E7A1253-45B6-4996-AEDE-56585F0B8394"}
+ */
+function REC_on_select(event,alwaysRun) {
+	//run on select only when it is 'enabled'
+	if (alwaysRun || globals.WEB_block_enable(event)) {
+		//create object with all properties
+		_imageData = new Object()
+
+		var fsBlockData = globals.WEB_block_getData(event)
+		
+		for (var i = 1; i <= fsBlockData.getSize(); i++) {
+			var record = fsBlockData.getRecord(i)
+			_imageData[record.data_key] = record.data_value
+		}
+		
+		//no image set yet
+		if (!_imageData.image_name){
+			var html = 	'<html><head></head><body>' +
+						'No image chosen yet' +
+						'</body></html>'
+		}
+		// image is set
+		else {
+			//both the base and resource url methods will return with "sutraCMS/"; need to remove from one so no doubling
+			var siteURL = utils.stringReplace(globals.WEB_MRKUP_link_base(forms.WEB_0F_page__design.id_page),'sutraCMS/','') + globals.WEB_MRKUP_link_resources(forms.WEB_0F_page__design.id_page)
+			
+			var html = 	'<html><head></head><body>' +
+						'<img src="' + siteURL + 
+						_imageData.directory + '/' + _imageData.image_name + 
+						'" height="' + _imageData.height + '" width="' + _imageData.width +'"' + '>' +
+						'</body></html>'
+		}
+		
+		TOGGLE_buttons()
+		if (elements.bn_browser) {
+			elements.bn_browser.html = html
+		}
+		else {
+			globals.WEB_browser_error()
+		}
 	}
 }

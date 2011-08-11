@@ -9,19 +9,13 @@ var _license_dsa_mosaic_WEB_cms = 'Module: _dsa_mosaic_WEB_cms \
  * param {} obj Data object passed to all markup methods
  * @properties={typeid:24,uuid:"9F686D38-C923-456D-AA26-356F9D67BA5F"}
  */
-function VIEW_default(obj)
-{
+function VIEW_default(obj) {
 	// template
 	var markup = obj.data.Content	
 	
 	// return
 	return markup
 }
-
-/**
- * @properties={typeid:35,uuid:"F01848BB-5EC3-40CC-BE6B-001526B4F291",variableType:-4}
- */
-var _recBlockData = null;
 
 /**
  * @properties={typeid:35,uuid:"A5E7C6DE-46F3-4090-AECA-E3CA22A9EB84",variableType:4}
@@ -71,11 +65,7 @@ function TINYMCE_init(mode) {
 		var cssFile = globals.WEB_MRKUP_link_base()
 		
 		//rewrite mode
-		var fsInstall = databaseManager.getFoundSet('sutra_cms','web_install')
-		fsInstall.loadAllRecords()
-		if (utils.hasRecords(fsInstall)) {
-			var rewriteMode = fsInstall.rewrite_enabled
-		}
+		var rewriteMode = globals.WEB_install_rewrite()
 		
 		//no pages, no css
 		if (utils.hasRecords(forms.WEB_0F_page)) {
@@ -83,7 +73,11 @@ function TINYMCE_init(mode) {
 			if (!rewriteMode) {
 				cssFile += 'sites/' + forms.WEB_0F_page.web_page_to_site.directory
 			}
-			cssFile += '/themes/' + forms.WEB_0F_page.web_page_to_theme.theme_directory + '/css/tinymce.css'
+			
+			if (utils.hasRecords(forms.WEB_0F_page__design_1F__header_display_2F_platform._platform,'web_platform_to_theme' && forms.WEB_0F_page__design_1F__header_display_2F_platform._platform.web_platform_to_theme.theme_directory)) {
+				cssFile += '/themes/' + forms.WEB_0F_page__design_1F__header_display_2F_platform._platform.web_platform_to_theme.theme_directory + '/css/tinymce.css'
+			}
+			
 			
 			//read in cssFile to see if exists
 			var fileExists = plugins.http.getPageData(cssFile)
@@ -176,19 +170,16 @@ function TINYMCE_init(mode) {
 }
 
 /**
+ * @param {JSEvent} event the event that triggered the action
+ * 
  * @properties={typeid:24,uuid:"553CBBDB-2269-49ED-BEC5-A585CBC2011A"}
  */
-function BLOCK_save() {
-	_recBlockData.data_value = elements.bn_tinymce.html
-	databaseManager.saveData()
+function BLOCK_save(event) {
+	globals.WEB_block_getData(event).data_value = elements.bn_tinymce.html
+//	databaseManager.saveData()
 	elements.bn_tinymce.clearDirtyState()
 	
 	TOGGLE_buttons(false)
-	
-	//called from browser bean, hide form
-	if (forms.WEB_0F_page.TRIGGER_mode_set() == "BROWSER") {
-		forms.WEB_0F_page__browser__editor.ACTION_hide()
-	}
 }
 
 /**
@@ -218,14 +209,31 @@ function FORM_on_show(firstShow, event) {
 }
 
 /**
- * Handle record selected.
+ * Update display as needed when block selected.
  *
- * @param {JSEvent} event the event that triggered the action
+ * @param 	{JSEvent}	event The event that triggered the action.
+ * @param	{Boolean}	[alwaysRun] Force the on select method to refire.
  *
  * @properties={typeid:24,uuid:"BD06F60E-C5F0-4770-B6F0-7C6287A1C7DB"}
  */
-function REC_on_select(event) {
-	TOGGLE_buttons(false)
+function REC_on_select(event,alwaysRun) {
+	//run on select only when it is 'enabled'
+	if (alwaysRun || globals.WEB_block_enable(event)) {
+		var fsBlockData = globals.WEB_block_getData(event)
+		
+		TOGGLE_buttons(false)
+		
+		if (elements.bn_tinymce) {
+			elements.bn_tinymce.clearHtml()
+		}
+		else {
+			globals.WEB_browser_error()
+		}
+		
+		if (utils.hasRecords(fsBlockData)) {
+			elements.bn_tinymce.html = fsBlockData.data_value
+		}
+	}
 }
 
 /**
@@ -235,14 +243,9 @@ function REC_on_select(event) {
  *
  * @properties={typeid:24,uuid:"8DA68D80-88B6-47F7-857C-6CE05373251D"}
  */
-function BLOCK_cancel(event) {
-	elements.bn_tinymce.html = _recBlockData.data_value
+function BLOCK_cancel(event,stayEdit) {
+	elements.bn_tinymce.html = globals.WEB_block_getData(event).data_value
 	TOGGLE_buttons(false)
-	
-	//called from browser bean, hide form
-	if (forms.WEB_0F_page.TRIGGER_mode_set() == "BROWSER") {
-		forms.WEB_0F_page__browser__editor.ACTION_hide()
-	}
 }
 
 /**
@@ -298,7 +301,12 @@ function BLOCK_reset(event) {
 		elements.bn_tinymce.setCustomConfiguration(TINYMCE_init('simple'))
 	}
 	
-	BLOCK_cancel()
+	//pseudo-event comes from the scope of where this is fired
+	var pseudoEvent = new Object()
+	pseudoEvent.getFormName = function() {return controller.getName()}
+	
+	//cancel current edits, but don't leave edit mode
+	BLOCK_cancel(pseudoEvent,true)
 	
 }
 
@@ -430,76 +438,4 @@ function INIT_block() {
 	
 	return block
 	
-}
-
-/**
- * 
- * @param {JSFoundset} fsBlockData block data points
- * @param {Boolean} flagEdit page version is editable or not
- * @param {Boolean} flagScrapbook true if showing scrapbook
- * @param {String}	contextForm Form where this will be loaded in.
- * 
- * @properties={typeid:24,uuid:"8947A3D9-5C5E-4766-9C2C-C2F1BE5D6B8A"}
- */
-function LOADER_init(fsBlockData, flagEdit, flagScrapbook, contextForm) {
-	//show tinymce
-	if (flagEdit) {
-		// load form
-		globals.WEB_block_form_loader("WEB_0F__content", "Content block", null, contextForm)
-	}
-	//show browser bean
-	else {
-		// load form
-		globals.WEB_block_form_loader("WEB_0F__content_view", ((flagScrapbook) ? "SCRAPBOOK: Content block" : "Content block"), null, contextForm)
-	}
-	
-	//refresh display
-	LOADER_refresh(fsBlockData,flagEdit,flagScrapbook)
-}
-
-/**
- * @properties={typeid:24,uuid:"24C27F8E-25F9-4334-993A-389A21BE71E5"}
- */
-function PAGE_popup_test() {
-	plugins.dialogs.showInfoDialog( "Demo", "Block page actions added to this menu")
-}
-
-/**
- * @properties={typeid:24,uuid:"37C06D1C-1BA1-4D07-988D-055070467F54"}
- */
-function LOADER_refresh(fsBlockData,flagEdit,flagScrapbook) {
-	var recBlockData = fsBlockData.getRecord(1)
-	
-	//show tinymce
-	if (flagEdit) {
-		forms.WEB_0F__content._recBlockData = recBlockData
-		forms.WEB_0F__content.elements.bn_tinymce.clearHtml()
-		
-		forms.WEB_0F__content.elements.bn_tinymce.html = recBlockData.data_value
-	}
-	//show browser bean
-	else {
-		var html = '<html><body>'
-		html += recBlockData.data_value
-		html += '</body></html>'
-		
-		forms.WEB_0F__content_view.elements.bn_browser.html = html
-		
-//		//hack to get scrapbook to display
-//		if (flagScrapbook && application.__parent__.solutionPrefs) {
-//			globals.CODE_cursor_busy(true)
-//			
-//			forms.WEB_0F_page._hackNoFire = true
-//			forms.CODE__blank.controller.show()
-//			forms.DATASUTRA_0F_solution.controller.show()
-//			//this needs to be long enough for it to finish rendering
-//			application.updateUI(1000)
-//			forms.WEB_0F_page._hackNoFire = false
-//			
-//			//reset the window's title
-//			forms.DATASUTRA_0F_solution.elements.fld_trigger_name.requestFocus(true)
-//			
-//			globals.CODE_cursor_busy(false)
-//		}
-	}
 }
