@@ -638,7 +638,7 @@ function THEME_callback_element(result, e) {
 		if (fileData) { 
 			
 			// #1 find and store editable regions			                        		
-			var regexp = /pageData\.get\(\"(.*)\"/gi   // match: <%=pageData.get("Sidebar")%>, any combination of letters, numbers, spaces and undersores
+			var regexp = /pageData\.get\(\"(.[^"]*)\"/gi   // match: <%=pageData.get("Sidebar")%>, any combination of letters, numbers, spaces and undersores
 			var occurrence = null;
 			var editables = []
 			while (occurrence = regexp.exec( fileData )){	
