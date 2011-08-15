@@ -119,7 +119,7 @@ function REC_new() {
 	REC_on_select()
 	
 	//bring focus back to this window
-	application.updateUI(5)
+	application.updateUI()
 	elements.fld_site_name.requestFocus()
 }
 
