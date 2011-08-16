@@ -122,34 +122,102 @@ function ADD_version(event) {
 			var validLanguage = languageRec && languageRec.id_site_language.toString() == globals.WEB_page_language
 			var validGroup = groupRec && groupRec.id_site_group.toString() == globals.WEB_page_group
 			
-			var dialogText = ''
-			
-			if (!validPlatform) {
-				dialogText += 'platform'
-			}
-			if (!validLanguage) {
-				if (dialogText.length) {
-					dialogText += ', '
-					var multi = true
+			function allPKs(fs) {
+				var returnVal = ''
+				
+				for (var i = 1; i <= fs.getSize(); i++) {
+					returnVal += fs.getRecord(i).id_platform.toString()
+					
+					if (i != fs.getSize()) {
+						returnVal += '||'
+					}
 				}
-				dialogText += 'language'
+				
+				return returnVal
 			}
-			if (!validGroup) {
-				if (dialogText.length) {
-					dialogText += ', '
-					var multi = true
+			
+			//check for any valid versions for this page
+			var fsVersions = databaseManager.getFoundSet('sutra_cms','web_version')
+			fsVersions.find()
+			fsVersions.id_platform = allPKs(forms.WEB_0F_page__design_1F__header_display_2F_platform.foundset)
+			var results = fsVersions.search()
+			
+			//no page versions, create from selected platform
+			if (!results) {
+				//get editable regions based on layout selected
+				if (utils.hasRecords(platformRec,'web_platform_to_layout.web_layout_to_editable')) {
+					var layout = platformRec.web_platform_to_layout.getSelectedRecord()
+					
+					//create new record
+					var newVersion = fsVersions.getRecord(fsVersions.newRecord(false,true))
+					newVersion.flag_lock = 0
+					newVersion.id_platform = platformRec.id_platform
+					newVersion.id_language = languageRec.id_language
+					newVersion.id_group = groupRec.id_group
+					newVersion.version_number = 1
+					newVersion.version_name = 'Initial version'
+					newVersion.flag_active = forms.WEB_0F_site.flag_auto_publish
+					
+					//create all areas for this layout, copying over existing content based on area name
+					for (var i = 1; i <= layout.web_layout_to_editable.getSize(); i++) {
+						//new area to create
+						var editable =  layout.web_layout_to_editable.getRecord(i)
+						
+						//create from defaults for area
+						var newArea = AREA_new(editable,newVersion,i)
+						
+						//make sure that selected index doesn't move around so much
+						newArea.web_area_to_scope.setSelectedIndex(1)
+					}
+					
+					// finish up
+					databaseManager.saveData()
+					
+					newVersion.web_version_to_area.setSelectedIndex(1)
+					
+					//update versions valuelist
+					forms.WEB_0F_page__design.REC_on_select()
 				}
-				dialogText += 'group'
+				else {
+					plugins.dialogs.showInfoDialog(
+								'Error',
+								'No editables for selected layout'
+						)
+				}
+				
+				//stop rest of method from running
+				return
 			}
 			
-			if (dialogText.length) {
-				dialogText = 'Add selected ' + dialogText + ' record' + (multi ? 's' : '') + ' and create new version?'
-			}
-			else {
-				dialogText = 'Create new version?'
-			}
-			
-			var input = 'Yes'
+			//prompt to create platform, language, group as needed
+//			var dialogText = ''
+//			
+//			if (!validPlatform) {
+//				dialogText += 'platform'
+//			}
+//			if (!validLanguage) {
+//				if (dialogText.length) {
+//					dialogText += ', '
+//					var multi = true
+//				}
+//				dialogText += 'language'
+//			}
+//			if (!validGroup) {
+//				if (dialogText.length) {
+//					dialogText += ', '
+//					var multi = true
+//				}
+//				dialogText += 'group'
+//			}
+//			
+//			if (dialogText.length) {
+//				dialogText = 'Add selected ' + dialogText + ' record' + (multi ? 's' : '') + ' and create new version?'
+//			}
+//			else {
+//				dialogText = 'Create new version?'
+//			}
+//			
+//			var input = 'Yes'
 			
 //			var input = plugins.dialogs.showQuestionDialog(
 //							'Empty version stack',
@@ -251,7 +319,7 @@ function ADD_version(event) {
 						destVersion.flag_lock = 0
 						destVersion.id_platform = forms.WEB_0F_page__design_1F__header_display_2F_platform._platform.id_platform
 						destVersion.id_language = forms.WEB_0F_page__design_1F__header_display_2F_language._language.id_language
-						destVersion.id_group = forms.WEB_0F_page__design_1F__header_display_2F_group._group.id_group					
+						destVersion.id_group = forms.WEB_0F_page__design_1F__header_display_2F_group._group.id_group
 						
 						//version stack exists
 						if (hasVersions) {
