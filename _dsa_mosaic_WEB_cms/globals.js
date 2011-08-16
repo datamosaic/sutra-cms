@@ -1137,10 +1137,7 @@ function WEB_MRKUP_pages_down(obj, record) {
 	if ( utils.hasRecords( record.web_page_to_page__child__publish ) ) {
 		pages = iterate(record.web_page_to_page__child__publish, pages)
 	}
-	else {
-		pages = null
-	}
-
+	
 	return pages
 }
 
