@@ -439,9 +439,10 @@ function ACTION_save() {
 				forms.WEB_0T_page.TREE_refresh()
 			}
 			
-			forms.WEB_0T_page.elements.bean_tree.refresh()
-			forms.WEB_0T_page.REC_on_select(pageRec.id_page)
-			forms.WEB_0T_page.elements.bean_tree.selectionPath = forms.WEB_0T_page.FIND_path(pageRec)
+			//commented out to get rid of flickering to correct record and then landing on incorrect record
+//			forms.WEB_0T_page.elements.bean_tree.refresh()
+//			forms.WEB_0T_page.elements.bean_tree.selectionPath = forms.WEB_0T_page.FIND_path(pageRec)
+//			forms.WEB_0T_page.REC_on_select(pageRec.id_page)
 			
 			//reset flags
 			var addedRecord = true
