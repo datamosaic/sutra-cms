@@ -147,13 +147,14 @@ function FORM_on_hide(event) {
 		
 		forms.WEB_TB__web_mode.controller.enabled = true
 		
-		//restore last selected toolbar
-		if (application.__parent__.solutionPrefs && !solutionPrefs.config.lockStatus) {
-			//make sure on whatever last toolbar was
-			globals.TRIGGER_toolbar_set(_lastToolbar)
-			
-			_lastToolbar = null
-		}
+		//moved to onShow of all other Sutra CMS forms
+//		//restore last selected toolbar
+//		if (application.__parent__.solutionPrefs && !solutionPrefs.config.lockStatus) {
+//			//make sure on whatever last toolbar was
+//			globals.TRIGGER_toolbar_set(_lastToolbar)
+//			
+//			_lastToolbar = null
+//		}
 	}
 	
 	return true

@@ -714,6 +714,14 @@ function FORM_on_show(firstShow, event) {
 	if (!utils.hasRecords(foundset)) {
 		globals.WEB_lock_workflow(true)
 	}
+	
+	//restore last selected toolbar
+	if (application.__parent__.solutionPrefs && !solutionPrefs.config.lockStatus && forms.WEB_0F_page._lastToolbar) {
+		//make sure on whatever last toolbar was
+		globals.TRIGGER_toolbar_set(forms.WEB_0F_page._lastToolbar)
+		
+		forms.WEB_0F_page._lastToolbar = null
+	}
 }
 
 /**

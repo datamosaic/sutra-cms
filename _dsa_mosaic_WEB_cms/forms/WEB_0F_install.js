@@ -34,7 +34,17 @@ function FORM_on_show(firstShow, event) {
 		//on first show of form, show correct field
 		forms.WEB_0F_install__setup.FLD_data_change__type_server(null,type_server)
 	}
+	
 	forms.WEB_0F_install__rewrite.TOGGLE_sample_rewrite()
+	
+	//restore last selected toolbar
+	if (application.__parent__.solutionPrefs && !solutionPrefs.config.lockStatus && forms.WEB_0F_page._lastToolbar) {
+		//make sure on whatever last toolbar was
+		globals.TRIGGER_toolbar_set(forms.WEB_0F_page._lastToolbar)
+		
+		forms.WEB_0F_page._lastToolbar = null
+	}
+	
 	globals.TRIGGER_toolbar_record_navigator_set(false)
 }
 
@@ -124,4 +134,3 @@ function FUNCTION_getInstallDirectory() {
 		return error
 	}
 }
-
