@@ -242,7 +242,7 @@ function REC_on_select(event,skipLoad,verIndex,fireSelect,areaName,blockIndex) {
 		 	//when called from event (not programatically) update tooltip on visit button
 			if (event) {
 			 	//set tooltip of visit with link
-				forms.WEB_0F_page__design_1F__button_tab_2F__content.elements.btn_visit.toolTipText = forms.WEB_0F_page__design_1F__button_tab_2F__content.VISIT_page(null,true)
+				forms.WEB_0F_page__design_1F__button_tab.elements.btn_visit.toolTipText = forms.WEB_0F_page__design_1F__button_tab.VISIT_page(null,true)
 			}
 			
 			//page type ui differences
