@@ -439,11 +439,17 @@ function ACTION_save() {
 				forms.WEB_0T_page.TREE_refresh()
 			}
 			
-			//commented out to get rid of flickering to correct record and then landing on incorrect record
+			//select this new record
 			forms.WEB_0T_page.elements.bean_tree.refresh()
 			application.updateUI()
-			forms.WEB_0T_page.elements.bean_tree.selectionPath = forms.WEB_0T_page.FIND_path(pageRec)
-//			forms.WEB_0T_page.REC_on_select(pageRec.id_page)
+			//same level as before
+			if (true) {
+				forms.WEB_0T_page.elements.bean_tree.selectionPath = forms.WEB_0T_page.FIND_path(pageRec)
+			}
+			//different level
+			else {
+				forms.WEB_0T_page.REC_on_select(pageRec.id_page)
+			}
 			
 			//reset flags
 			var addedRecord = true

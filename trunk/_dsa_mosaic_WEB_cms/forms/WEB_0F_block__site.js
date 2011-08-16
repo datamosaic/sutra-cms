@@ -59,6 +59,14 @@ function FORM_on_show(firstShow, event) {
 	
 	//refire rec on select
 	forms.WEB_0F_block__scrapbook.REC_on_select()
+	
+	//restore last selected toolbar
+	if (application.__parent__.solutionPrefs && !solutionPrefs.config.lockStatus && forms.WEB_0F_page._lastToolbar) {
+		//make sure on whatever last toolbar was
+		globals.TRIGGER_toolbar_set(forms.WEB_0F_page._lastToolbar)
+		
+		forms.WEB_0F_page._lastToolbar = null
+	}
 }
 
 /**
