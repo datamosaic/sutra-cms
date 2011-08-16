@@ -833,7 +833,7 @@ function REC_delete(record) {
 			//find current syblings
 			var fsPeers = databaseManager.getFoundSet(controller.getServerName(),controller.getTableName())
 			fsPeers.find()
-			fsPeers.parent_id_page = parentID
+			fsPeers.parent_id_page = (parentID) ? parentID : '^='
 			fsPeers.id_site = forms.WEB_0F_site.id_site
 			var results = fsPeers.search()
 			
