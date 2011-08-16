@@ -147,13 +147,13 @@ function ACTION_ok() {
 			if (forms.WEB_0T_page._oldRecord) {
 				
 				//find current syblings
-				var fsPeers = databaseManager.getFoundSet(controller.getServerName(),controller.getTableName())
+				var fsPeers = databaseManager.getFoundSet('sutra_cms','web_page')
 				fsPeers.loadRecords(forms.WEB_0T_page._oldRecord)
 				
 				var oldRecord = fsPeers.getSelectedRecord()
 				
 				fsPeers.find()
-				fsPeers.parent_id_page = oldRecord.parent_id_page
+				fsPeers.parent_id_page = (oldRecord.parent_id_page) ? oldRecord.parent_id_page : '^='
 				fsPeers.id_site = oldRecord.id_site
 				var results = fsPeers.search()
 				

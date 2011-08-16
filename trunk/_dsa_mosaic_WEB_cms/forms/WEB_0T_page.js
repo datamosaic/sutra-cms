@@ -479,9 +479,9 @@ function MOVE_generic(input) {
 	var recMove = forms.WEB_0F_page.foundset.getSelectedRecord()
 	
 	//find current syblings
-	var fsPeers = databaseManager.getFoundSet(controller.getServerName(),controller.getTableName())
+	var fsPeers = databaseManager.getFoundSet('sutra_cms','web_page')
 	fsPeers.find()
-	fsPeers.parent_id_page = recMove.parent_id_page
+	fsPeers.parent_id_page = (recMove.parent_id_page) ? recMove.parent_id_page : '^='
 	fsPeers.id_site = forms.WEB_0F_site.id_site
 	var results = fsPeers.search()
 	
@@ -495,7 +495,7 @@ function MOVE_generic(input) {
 			//only move up if there are records above selected one
 			if (fsPeers.getSelectedIndex() != 1) {
 				//flag to redraw tree
-				if (recMove.parent_id_page == 0) {
+				if (recMove.parent_id_page == null) {
 					var redraw = true
 				}
 				
@@ -517,12 +517,12 @@ function MOVE_generic(input) {
 			//only move down if there are records below selected one
 			if (fsPeers.getSelectedIndex() != databaseManager.getFoundSetCount(fsPeers)) {
 				//flag to redraw tree
-				if (recMove.parent_id_page == 0) {
+				if (recMove.parent_id_page == null) {
 					var redraw = true
 				}
 				
 				//flag to select
-				var reselect = true			
+				var reselect = true
 				
 				//get next record
 				var recordNext = fsPeers.getRecord(fsPeers.getSelectedIndex() + 1)
@@ -539,7 +539,7 @@ function MOVE_generic(input) {
 			//only move in if this record isn't the first in the group AND there are syblings
 			if (fsPeers.getSelectedIndex() != 1 && fsPeers.getSize() > 1) {
 				//flag to redraw tree
-				if (recMove.parent_id_page == 0) {
+				if (recMove.parent_id_page == null) {
 					var redraw = true
 				}
 				
@@ -551,9 +551,9 @@ function MOVE_generic(input) {
 				var idParent = fsPeers.id_page
 				
 				//find new syblings
-				var fsPeersNew = databaseManager.getFoundSet(controller.getServerName(),controller.getTableName())
+				var fsPeersNew = databaseManager.getFoundSet('sutra_cms','web_page')
 				fsPeersNew.find()
-				fsPeersNew.parent_id_page = idParent
+				fsPeersNew.parent_id_page = (idParent) ? idParent : '^='
 				var results = fsPeersNew.search()
 		
 				if (results) {
@@ -580,10 +580,10 @@ function MOVE_generic(input) {
 			//only move out if node level not 0
 			if (recMove.parent_id_page) {
 				//find new parent
-				var idParent = recMove['web_page_to_page__parent'].parent_id_page
+				var idParent = recMove.web_page_to_page__parent.parent_id_page
 				
 				//flag to redraw tree
-				if (idParent == 0) {
+				if (idParent == null) {
 					var redraw = true
 				}
 				
@@ -593,7 +593,7 @@ function MOVE_generic(input) {
 				//find new syblings
 				var fsPeersNew = databaseManager.getFoundSet(controller.getServerName(),controller.getTableName())
 				fsPeersNew.find()
-				fsPeersNew.parent_id_page = idParent
+				fsPeersNew.parent_id_page = (idParent) ? idParent : '^='
 				var results = fsPeersNew.search()
 		
 				if (results) {
@@ -608,14 +608,14 @@ function MOVE_generic(input) {
 				}
 				
 				//re-order everybody below current record in new foundset
-				for (var i = recMove['web_page_to_page__parent'].order_by + 1; i <= fsPeersNew.getSize(); i++) {
+				for (var i = recMove.web_page_to_page__parent.order_by + 1; i <= fsPeersNew.getSize(); i++) {
 					var recReorder = fsPeersNew.getRecord(i)
 					
 					recReorder.order_by ++
 				}
 				
 				//insert recMove directly below former parent in new foundset
-				recMove.order_by = recMove['web_page_to_page__parent'].order_by + 1
+				recMove.order_by = recMove.web_page_to_page__parent.order_by + 1
 				recMove.parent_id_page = idParent
 				
 			}
@@ -900,7 +900,7 @@ function REC_duplicate() {
 	//find current syblings
 	var fsPeers = databaseManager.getFoundSet(controller.getServerName(),controller.getTableName())
 	fsPeers.find()
-	fsPeers.parent_id_page = srcRecord.parent_id_page
+	fsPeers.parent_id_page = (srcRecord.parent_id_page) ? srcRecord.parent_id_page : '^='
 	var results = fsPeers.search()
 	
 	if (results) {
