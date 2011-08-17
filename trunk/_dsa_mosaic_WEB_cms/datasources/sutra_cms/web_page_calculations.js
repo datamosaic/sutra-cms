@@ -131,22 +131,7 @@ function page_name() {
 		return  "Selected language hasn't been added to page yet"
 	}
 	
-	//this is a folder
-	if (page_type == 1) {
-		return 'Folder: ' + pageName
-	}
-	//this is an external link
-	else if (page_type == 2) {
-		return 'External link: ' + pageName
-	}
-	//this is an internal link
-	else if (page_type == 3) {
-		return 'Internal link: ' + pageName
-	}	
-	//this is a page
-	else {
-		return pageName
-	}
+	return pageName
 }
 
 /**
