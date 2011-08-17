@@ -77,7 +77,7 @@
 	
 	$(function() {
 		//on load method that attaches callback to every index_edit link
-		$("a[href*='index_edit.jsp'],a[href*='index.jsp']").click(function(event){
+		$("a[href*='index_edit.jsp']").click(function(event){
 			
 			//stop default browser behaviour
 			event.preventDefault();
