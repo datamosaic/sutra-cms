@@ -76,7 +76,7 @@ function VIEW_default_recurse()
 			
 			// markup for top level
 			markup += 	'<h2 style="margin:10px 0px 5px 0px; width:180px;">\n' +
-							'\t<a href="' + globals.WEB_MRKUP_link_page(record.id_page,obj.request.server,obj.type) + '">' + record.page_name +
+							'\t<a href="' + globals.WEB_block_link(record) + '">' + record.page_name +
 								'<img style="float:right; margin:0px 0px 0px 0px;" ' + 
 								'src="/datasutra/site/themes/datasutra/images/' + ornamentJPG + '"' +
 								'alt="' + record.page_name + '"></a>' +
@@ -99,14 +99,14 @@ function VIEW_default_recurse()
 				
 				// blue link
 				markup += 	'<p id="gamma-inner-blue">' + 
-								'\t<a href="' + globals.WEB_MRKUP_link_page(record.id_page,obj.request.server,obj.type) + '">' + record.page_name + '</a>' +
+								'\t<a href="' + globals.WEB_block_link(record) + '">' + record.page_name + '</a>' +
 							'</p>\n'			}	
 			else {
 				linkLoop = 0
 				
 				// default (orange) link
 				markup += 	'<p>' + 
-								'\t<a href="' + globals.WEB_MRKUP_link_page(record.id_page,obj.request.server,obj.type) + '">' + record.page_name + '</a>' +
+								'\t<a href="' + globals.WEB_block_link(record) + '">' + record.page_name + '</a>' +
 							'</p>\n'
 			}			
 		}
