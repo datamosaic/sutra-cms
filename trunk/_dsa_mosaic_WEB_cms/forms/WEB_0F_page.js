@@ -80,7 +80,16 @@ function FORM_on_show(firstShow, event) {
 	if (application.getApplicationType() != APPLICATION_TYPES.HEADLESS_CLIENT) {
 		//save down currently selected toolbar
 		if (application.__parent__.solutionPrefs && !solutionPrefs.config.lockStatus) {
-			_lastToolbar = solutionPrefs.panel.toolbar[forms[solutionPrefs.config.formNameBase + '__header__toolbar'].elements.tab_toolbar.tabIndex - 1].tabName
+			//when progressbar is active, take from previous toolbar
+			if (solutionPrefs.config.lastSelectedToolbar) {
+				var posn = solutionPrefs.config.lastSelectedToolbar
+			}
+			//progressbar not active, take currently selected toolbar
+			else {
+				var posn = forms[solutionPrefs.config.formNameBase + '__header__toolbar'].elements.tab_toolbar.tabIndex - 1
+			}
+			
+			_lastToolbar = solutionPrefs.panel.toolbar[posn].tabName
 			
 			//make sure on page toolbar
 			globals.TRIGGER_toolbar_set('Web Edit')
