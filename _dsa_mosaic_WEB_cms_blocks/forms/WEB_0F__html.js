@@ -166,7 +166,7 @@ function ACTION_internal_link(event) {
  * @properties={typeid:24,uuid:"4432AB1D-AFD0-4AEC-8EDE-80BABA0450C4"}
  */
 function ACTION_add_token(inputID,pageRec) {
-	var token = "{DS:ID_" + inputID + "}"
+	var token = globals.WEB_block_link(inputID)
 	
 	//wrap currently selected text with link
 	var elem = elements.fld_data_value
@@ -222,7 +222,7 @@ function ACTION_insert_image(event) {
 		var elem = elements.fld_data_value
 	
 		var image = forms.WEB_0F__image__P_choose._imageChosen
-		var token = "{DS:IMG_" + image.asset.id_asset_instance + "}"
+		var token = globals.WEB_block_link(image.asset)
 		
 		//insert image at current location
 		var html = '<img src="' + token + '" width="' + image.meta.width.data_value + '" height="' + image.meta.height.data_value + '" alt="' + image.asset.asset_title +'">'

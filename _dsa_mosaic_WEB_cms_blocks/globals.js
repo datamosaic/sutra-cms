@@ -9,6 +9,13 @@ var WEB_block_page_mode = false;
 var WEB_block_on_select = true;
 
 /**
+ * Populate meta data for selected block.
+ * 
+ * @param	{String}	formName The block_type form.
+ * @param	{String}	type The type of meta information we're interested in.
+ * 
+ * @returns	{JSObject}	Pretty names and methods for requested meta information.
+ * 
  * @properties={typeid:24,uuid:"81DC790B-61A4-4895-BD4A-65F2BB1ABC21"}
  */
 function WEB_block_methods(formName, type) {
@@ -69,7 +76,11 @@ function WEB_block_form_refresh() {
 }
 
 /**
- * @param {JSEvent} event Event that triggered onSelect of the block_type form
+ * (Dis)Allows the REC_on_select method to fire for a block.
+ * 
+ * @param {JSEvent} event Event that triggered onSelect of the block_type form.
+ * 
+ * @returns {Boolean} Run the method.
  * 
  * @properties={typeid:24,uuid:"E81AB531-F187-476A-9EE0-455D12DE6B5D"}
  */
@@ -96,7 +107,8 @@ function WEB_block_enable(event) {
 /**
  * Returns the correct web_block_data foundset to work with.
  * 
- * @param	{JSEvent}	event Event that triggered onSelect of the block_type form
+ * @param	{JSEvent}	event Event that triggered onSelect of the block_type form.
+ * @param	{JSForm}	[formName] Scope where called from.
  * 
  * @returns	{JSFoundset}	web_block_data foundset.
  * 
@@ -132,7 +144,8 @@ function WEB_block_getData(event, formName) {
 /**
  * Returns the correct web_block_data_configure foundset to work with.
  * 
- * @param	{JSEvent}	event Event that triggered onSelect of the block_type form
+ * @param	{JSEvent}	event Event that triggered onSelect of the block_type form.
+ * @param	{JSForm}	[formName] Scope where called from.
  * 
  * @returns	{JSFoundset}	web_block_data_configure foundset.
  * 
@@ -159,7 +172,8 @@ function WEB_block_getConfig(event) {
 /**
  * Returns the correct web_block_data_response foundset to work with.
  * 
- * @param	{JSEvent}	event Event that triggered onSelect of the block_type form
+ * @param	{JSEvent}	event Event that triggered onSelect of the block_type form.
+ * @param	{JSForm}	[formName] Scope where called from.
  * 
  * @returns	{JSFoundset}	web_block_data_response foundset.
  * 
@@ -218,6 +232,10 @@ function WEB_block_cancel() {
 }
 
 /**
+ * Can selected block be edited.
+ * 
+ * @returns {Boolean}	Edit-mode status.
+ * 
  * @properties={typeid:24,uuid:"BDE6D35A-5AF8-43F4-9575-04EFC6594475"}
  */
 function WEB_block_edit_get() {
@@ -229,4 +247,18 @@ function WEB_block_edit_get() {
 	else {
 		return forms.WEB_0F_block__scrapbook.ACTION_edit_get()
 	}
+}
+
+/**
+ * Gives a token that will represent a Sutra CMS object appropriately, given the context from which called.
+ * 
+ * @param 	{JSRecord|String|UUID}	input The thing to be tokenized.
+ * @param 	{String}				[tokenType] Type of CMS object. When passed a JSRecord, tokenType will be automatically determined.
+ * 
+ * @returns	{String}	Token to reference a Sutra CMS object.
+ * 
+ * @properties={typeid:24,uuid:"7F487623-AD66-4B6A-BEF0-90A4B1DEE499"}
+ */
+function WEB_block_link(input,tokenType) {
+	return globals.WEB_MRKUP_link_token(input,tokenType)
 }

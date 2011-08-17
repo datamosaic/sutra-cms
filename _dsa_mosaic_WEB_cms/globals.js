@@ -1286,3 +1286,74 @@ function WEB_install_rewrite() {
 		return false
 	}
 }
+
+/**
+ * Gives a token that will represent a Sutra CMS object appropriately, given the context from which called.
+ * 
+ * @param {JSRecord|String|UUID}	input The thing to be tokenized.
+ * @param {String}					[tokenType] Type of CMS object. When passed a JSRecord, tokenType will be automatically determined.
+ * 
+ * @returns	{String}	Token to reference a Sutra CMS object.
+ * 
+ * @properties={typeid:24,uuid:"9726B488-8A41-44E9-B0D0-02EABA98587C"}
+ */
+function WEB_MRKUP_link_token(input,tokenType) {
+	var token = null
+	
+	var tokenPage = '{DS:ID_'
+	var tokenAsset = '{DS:IMG_'
+	
+	//no type specified, try to determine
+	if (!tokenType) {
+		if (input instanceof JSRecord) {
+			switch (input.foundset.getDataSource()) {
+				case 'db:/sutra_cms/web_page':	//page record
+					tokenType = 'page'
+					break
+				case 'db:/sutra_cms/web_asset_instance':	//asset record
+					tokenType = 'asset'
+					break
+				default:	//passed in a record from strange foundset
+					
+			}
+		}
+		//default to page
+		else {
+			tokenType = 'page'
+		}
+	}
+	
+	//prefix for token
+	switch (tokenType) {
+		case 'page':
+			token = tokenPage
+			break
+		case 'asset':
+			token = tokenAsset
+			break
+		default:
+			return token
+	}
+	
+	//passed in a page record
+	if (input instanceof JSRecord && input.foundset.getDataSource() == 'db:/sutra_cms/web_page' && input.id_page) {
+		token += input.id_page.toString()
+	}
+	//passed in an asset instance record
+	else if (input instanceof JSRecord && input.foundset.getDataSource() == 'db:/sutra_cms/web_asset_instance' && input.id_asset_instance) {
+		token += input.id_asset_instance.toString()
+	}
+	//passed in a uuid string
+	else if (typeof input == 'string' && application.getUUID(input)) {
+		token += input
+	}
+	//passed in a uuid
+	else if (input && typeof input.toString == 'function' && input.toString() && application.getUUID(input.toString())) {
+		token += input.toString()
+	}
+	
+	//suffix for token
+	token += '}'
+	
+	return token
+}
