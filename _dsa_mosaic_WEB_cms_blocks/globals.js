@@ -109,35 +109,49 @@ function WEB_block_enable(event) {
  * 
  * @param	{JSEvent}	event Event that triggered onSelect of the block_type form.
  * @param	{JSForm}	[formName] Scope where called from.
+ * @param	{Object}	[obj] Object used to drive headless client.
  * 
  * @returns	{JSFoundset}	web_block_data foundset.
  * 
  * @properties={typeid:24,uuid:"C8DFEF81-D9D8-4742-96C3-3BA32FFCF62C"}
  */
-function WEB_block_getData(event, formName) {
-	//get form from event
-	if (!formName && event && event.getFormName) {
-		formName = event.getFormName()
-	}
+function WEB_block_getData(event, formName, obj) {
+	//dummy foundset that will return 0 for size
+	var fsBad = { getSize: function() {return 0}}
 	
-	//we know where this is being called from
-	if (formName) {
-		//get the block record they were on
-		/** @type {JSRecord<db:/sutra_cms/web_block>}*/
-		var blockRec = forms[formName].foundset
-		
-		//on the page and not viewing page scrapbooks, just use active version
-		if (globals.WEB_block_page_mode) {
-			return (utils.hasRecords(blockRec,'web_block_to_block_version.web_block_version_to_block_data')) ? blockRec.web_block_to_block_version.web_block_version_to_block_data : {}
-		}
-		//on a scrapbook, go through all relation (selected index determines which version)
-		else {
-			return (utils.hasRecords(blockRec,'web_block_to_block_version__all.web_block_version_to_block_data')) ? blockRec.web_block_to_block_version__all.web_block_version_to_block_data : {}
-		}
+	//get from object (headless client)
+	if (obj && obj.block && obj.block.record instanceof JSRecord) {
+		/** @type {JSRecord<db:/sutra_cms/web_block_data>}*/
+		return (utils.hasRecords(obj.block.record,'web_block_to_block_version.web_block_version_to_block_data')) ? blockRec.web_block_to_block_version.web_block_version_to_block_data : fsBad
 	}
-	//return something empty so won't fail as hard
+	//get from context (smart client)
 	else {
-		return new Object()
+		//get form from event
+		if (!formName && event && event.getFormName) {
+			formName = event.getFormName()
+		}
+		
+		//we know where this is being called from
+		if (formName) {
+			//get the block record they were on
+			/** @type {JSRecord<db:/sutra_cms/web_block>}*/
+			var blockRec = forms[formName].foundset
+			
+			//on the page and not viewing page scrapbooks, just use active version
+			if (globals.WEB_block_page_mode) {
+				/** @type {JSRecord<db:/sutra_cms/web_block_data>}*/
+				return (utils.hasRecords(blockRec,'web_block_to_block_version.web_block_version_to_block_data')) ? blockRec.web_block_to_block_version.web_block_version_to_block_data : fsBad
+			}
+			//on a scrapbook, go through all relation (selected index determines which version)
+			else {
+				/** @type {JSRecord<db:/sutra_cms/web_block_data>}*/
+				return (utils.hasRecords(blockRec,'web_block_to_block_version__all.web_block_version_to_block_data')) ? blockRec.web_block_to_block_version__all.web_block_version_to_block_data : fsBad
+			}
+		}
+		//return something empty so won't fail as hard
+		else {
+			return fsBad
+		}
 	}
 }
 
@@ -146,25 +160,48 @@ function WEB_block_getData(event, formName) {
  * 
  * @param	{JSEvent}	event Event that triggered onSelect of the block_type form.
  * @param	{JSForm}	[formName] Scope where called from.
+ * @param	{Object}	[obj] Object used to drive headless client.
  * 
  * @returns	{JSFoundset}	web_block_data_configure foundset.
  * 
  * @properties={typeid:24,uuid:"C8DFEF81-D9D7-4742-96C3-3BA32FFCF62C"}
  */
-function WEB_block_getConfig(event) {
-	//we know where this is being called from
-	if (event && event.getFormName) {
-		//get the block record they were on
-		/** @type {JSRecord<db:/sutra_cms/web_block>}*/
-		var blockRec = forms[event.getFormName()].foundset
-		
-		//on the page and not viewing page scrapbooks, just use active version
-		if (globals.WEB_block_page_mode) {
-			return utils.hasRecords(blockRec,'web_block_to_block_version.web_block_version_to_block_data_configure') ? blockRec.web_block_to_block_version.web_block_version_to_block_data_configure : {}
+function WEB_block_getConfig(event, formName, obj) {
+	//dummy foundset that will return 0 for size
+	var fsBad = { getSize: function() {return 0}}
+	
+	//get from object (headless client)
+	if (obj && obj.block && obj.block.record instanceof JSRecord) {
+		/** @type {JSRecord<db:/sutra_cms/web_block_data_configure>}*/
+		return (utils.hasRecords(obj.block.record,'web_block_to_block_version.web_block_version_to_block_data_configure')) ? blockRec.web_block_to_block_version.web_block_version_to_block_data_configure : fsBad
+	}
+	//get from context (smart client)
+	else {
+		//get form from event
+		if (!formName && event && event.getFormName) {
+			formName = event.getFormName()
 		}
-		//on a scrapbook, go through all relation (selected index determines which version)
+		
+		//we know where this is being called from
+		if (formName) {
+			//get the block record they were on
+			/** @type {JSRecord<db:/sutra_cms/web_block>}*/
+			var blockRec = forms[formName].foundset
+			
+			//on the page and not viewing page scrapbooks, just use active version
+			if (globals.WEB_block_page_mode) {
+				/** @type {JSRecord<db:/sutra_cms/web_block_data_configure>}*/
+				return (utils.hasRecords(blockRec,'web_block_to_block_version.web_block_version_to_block_data_configure')) ? blockRec.web_block_to_block_version.web_block_version_to_block_data_configure : fsBad
+			}
+			//on a scrapbook, go through all relation (selected index determines which version)
+			else {
+				/** @type {JSRecord<db:/sutra_cms/web_block_data_configure>}*/
+				return (utils.hasRecords(blockRec,'web_block_to_block_version__all.web_block_version_to_block_data_configure')) ? blockRec.web_block_to_block_version__all.web_block_version_to_block_data_configure : fsBad
+			}
+		}
+		//return something empty so won't fail as hard
 		else {
-			return utils.hasRecords(blockRec,'web_block_to_block_version__all.web_block_version_to_block_data_configure') ? blockRec.web_block_to_block_version__all.web_block_version_to_block_data_configure : {}
+			return fsBad
 		}
 	}
 }
@@ -174,25 +211,48 @@ function WEB_block_getConfig(event) {
  * 
  * @param	{JSEvent}	event Event that triggered onSelect of the block_type form.
  * @param	{JSForm}	[formName] Scope where called from.
+ * @param	{Object}	[obj] Object used to drive headless client.
  * 
  * @returns	{JSFoundset}	web_block_data_response foundset.
  * 
  * @properties={typeid:24,uuid:"B0D3D289-08E8-4820-9998-70F18D96C9B0"}
  */
-function WEB_block_getResponse(event) {
-	//we know where this is being called from
-	if (event && event.getFormName) {
-		//get the block record they were on
-		/** @type {JSRecord<db:/sutra_cms/web_block>}*/
-		var blockRec = forms[event.getFormName()].foundset
-		
-		//on the page and not viewing page scrapbooks, just use active version
-		if (globals.WEB_block_page_mode) {
-			return utils.hasRecords(blockRec,'web_block_to_block_version.web_block_version_to_block_data_response') ? blockRec.web_block_to_block_version.web_block_version_to_block_data_response : {}
+function WEB_block_getResponse(event, formName, obj) {
+	//dummy foundset that will return 0 for size
+	var fsBad = { getSize: function() {return 0}}
+	
+	//get from object (headless client)
+	if (obj && obj.block && obj.block.record instanceof JSRecord) {
+		/** @type {JSRecord<db:/sutra_cms/web_block_data_response>}*/
+		return (utils.hasRecords(obj.block.record,'web_block_to_block_version.web_block_version_to_block_data_response')) ? blockRec.web_block_to_block_version.web_block_version_to_block_data_response : fsBad
+	}
+	//get from context (smart client)
+	else {
+		//get form from event
+		if (!formName && event && event.getFormName) {
+			formName = event.getFormName()
 		}
-		//on a scrapbook, go through all relation (selected index determines which version)
+		
+		//we know where this is being called from
+		if (formName) {
+			//get the block record they were on
+			/** @type {JSRecord<db:/sutra_cms/web_block>}*/
+			var blockRec = forms[formName].foundset
+			
+			//on the page and not viewing page scrapbooks, just use active version
+			if (globals.WEB_block_page_mode) {
+				/** @type {JSRecord<db:/sutra_cms/web_block_data_response>}*/
+				return (utils.hasRecords(blockRec,'web_block_to_block_version.web_block_version_to_block_data_response')) ? blockRec.web_block_to_block_version.web_block_version_to_block_data_response : fsBad
+			}
+			//on a scrapbook, go through all relation (selected index determines which version)
+			else {
+				/** @type {JSRecord<db:/sutra_cms/web_block_data_response>}*/
+				return (utils.hasRecords(blockRec,'web_block_to_block_version__all.web_block_version_to_block_data_response')) ? blockRec.web_block_to_block_version__all.web_block_version_to_block_data_response : fsBad
+			}
+		}
+		//return something empty so won't fail as hard
 		else {
-			return utils.hasRecords(blockRec,'web_block_to_block_version__all.web_block_version_to_block_data_response') ? blockRec.web_block_to_block_version__all.web_block_version_to_block_data_response : {}
+			return fsBad
 		}
 	}
 }
