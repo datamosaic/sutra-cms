@@ -575,7 +575,7 @@ function WEB_page_tree_to_popup(method,elem) {
 					)
 			
 			// set arguments
-			subArray[0].setMethodArguments(pageRec.id_page.toString(),pageRec)
+			subArray[0].setMethodArguments(pageRec.id_page.toString(),pageRec,event)
 					
 			// turn off '----'
 			subArray[1].setEnabled(false)
@@ -599,6 +599,17 @@ function WEB_page_tree_to_popup(method,elem) {
 		}
 	}
 	
+	//get the element from event
+	if (elem instanceof JSEvent) {
+		var event = elem
+		var formName = event.getFormName()
+		var elemName = event.getElementName()
+		
+		if (formName && elemName) {
+			elem = forms[formName].elements[elemName]
+		}
+	}
+	//otherwise try to get from deprecated calls
 	if (!elem) {
 		elem = forms[application.getMethodTriggerFormName()].elements[application.getMethodTriggerElementName()]
 	}
