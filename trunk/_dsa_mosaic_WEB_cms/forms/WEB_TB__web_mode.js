@@ -42,8 +42,8 @@ function ACTION_edit(event) {
 	elements.highlighter.visible = true
 	
 	// toggle to browser if not there already
-	if (forms.WEB_0F_page.TRIGGER_mode_set() == "DESIGN") {
-		forms.WEB_0F_page.TRIGGER_mode_set("BROWSER")
+	if (globals.WEB_page_mode != 3) {
+		MODE_set("Real")
 	}
 	
 	// turn on jquery edit stuff
@@ -123,16 +123,16 @@ function TOGGLE_group(showGroups) {
  *
  * @properties={typeid:24,uuid:"530CE94C-E1F2-47D0-9BF9-C4FF4FD027DF"}
  */
-function TOGGLE_version(showSnapshots) {
+function TOGGLE_version(showVersion) {
 //	
-//	if (typeof showSnapshots != 'boolean') {
+//	if (typeof showVersion != 'boolean') {
 //		var versions = application.getValueListItems('WEB_page_version')
-//		showSnapshots = (versions.getMaxRowIndex() > 1) ? true : false
+//		showVersion = (versions.getMaxRowIndex() > 1) ? true : false
 //	}
 //	
-//	elements.btn_versions.visible = showSnapshots
-//	elements.lbl_versions.visible = showSnapshots
-//	elements.lbl_versions_tick.visible = showSnapshots
+//	elements.btn_versions.visible = showVersion
+//	elements.lbl_versions.visible = showVersion
+//	elements.lbl_versions_tick.visible = showVersion
 }
 
 /**
@@ -301,8 +301,8 @@ function ACTION_dashboard(event) {
 //			}
 //		}
 //		
-//		if (forms.WEB_0F_page.TRIGGER_mode_set() == "BROWSER") {
-//			forms.WEB_0F_page.TRIGGER_mode_set("DESIGN")
+//		if (globals.WEB_page_mode == 3) {
+//			MODE_set("Design")
 //			
 //			elements.lbl_edit.visible = false
 //			elements.btn_edit.visible = false
@@ -323,7 +323,7 @@ function ACTION_dashboard(event) {
 //			elements.lbl_detail.visible = true
 //			
 ////			forms.WEB_0F_page__browser.elements.bn_browser.reload()
-//			forms.WEB_0F_page.TRIGGER_mode_set("BROWSER")	
+//			MODE_set("Real")	
 //			
 //			//toggle edit, groups, versions
 //			TOGGLE_edit()
@@ -346,26 +346,35 @@ function ACTION_mode(event) {
 	if (application.__parent__.solutionPrefs && !solutionPrefs.design.statusLockWorkflow && globals.TRIGGER_registered_action_authenticate('cms page mode toggle')) {
 		
 		//what is the current mode
-		var currentMode = forms.WEB_0F_page.TRIGGER_mode_set()
+		var currentMode = globals.WEB_page_mode
 		
-		//in real mode with unsaved changes OR
-		if ((currentMode == 'BROWSER' && elements.btn_save.visible && forms.WEB_0F_page__browser_1F_block__editor.GET_modify()) ||
-		//in gui mode with unsaved changes (//TODO: abstract to work with all content types)
-			(currentMode == 'DESIGN' && forms.WEB_0F_page__design_1F_version_2F_block__gui.elements.tab_detail.getTabFormNameAt(2) == 'WEB_0F__content' &&
-			forms.WEB_0F__content.elements.btn_save.enabled)) {
-			
-			var input = plugins.dialogs.showWarningDialog(
-						'Unsaved changes',
-						'There are unsaved changes.  Continue without saving?',
-						'Yes',
-						'No'
-				)
-			
-			//they want to keep their changes, abort
-			if (input != 'Yes') {
-				return
-			}
-		}
+//		//in real mode with unsaved changes OR
+//		if ((currentMode == 'BROWSER' && elements.btn_save.visible && forms.WEB_0F_page__browser_1F_block__editor.GET_modify()) ||
+//		//in gui mode with unsaved changes (//TODO: abstract to work with all content types)
+//			(currentMode == 'DESIGN' && forms.WEB_0F_page__design_1F_version_2F_block__gui.elements.tab_detail.getTabFormNameAt(2) == 'WEB_0F__content' &&
+//			forms.WEB_0F__content.elements.btn_save.enabled)) {
+//			
+//			var input = plugins.dialogs.showWarningDialog(
+//						'Unsaved changes',
+//						'There are unsaved changes.  Continue without saving?',
+//						'Yes',
+//						'No'
+//				)
+//			
+//			//they want to keep their changes, abort
+//			if (input != 'Yes') {
+//				return
+//			}
+//		}
+		
+		//turn off everything
+		elements.lbl_edit.visible = false
+		elements.btn_edit.visible = false
+		elements.btn_save.visible = false
+		elements.highlighter.visible = false
+//		elements.lbl_detail.visible = false
+//		TOGGLE_group(false)
+//		TOGGLE_version(false)
 		
 		//turn off all switches
 		elements.gfx_switch_1.visible = false
@@ -390,74 +399,63 @@ function ACTION_mode(event) {
 		
 		switch (mode) {
 			case 'lbl_mode_data':
-				elements.gfx_switch_1.visible = true
-				
-				globals.WEB_page_mode = 1
-				forms.WEB_0F_page__design_1F_version.elements.tab_content.tabIndex = 2
-				
 				//go to non-real mode if not there already
-				if (currentMode != "DESIGN") {
-					forms.WEB_0F_page.TRIGGER_mode_set("DESIGN")
-					
-					elements.lbl_edit.visible = false
-					elements.btn_edit.visible = false
-					elements.btn_save.visible = false
-					
-					elements.highlighter.visible = false
-//					elements.lbl_detail.visible = false
-					
-					TOGGLE_group(false)
-					TOGGLE_version(false)
-					
+				if (currentMode == 3) {
+					//go to non-real mode
+					MODE_set("Design")
+								
 					//refire toggle
 					forms.WEB_0F_page__design_1F__header_display__version.FLD_version__data_change()
 				}
+				
+				//set mode
+				globals.WEB_page_mode = 1
+				elements.gfx_switch_1.visible = true
+				
+				//show data
+				forms.WEB_0F_page__design_1F_version.elements.tab_content.tabIndex = 2
+				
 				break
 			case 'lbl_mode_gui':
+				//go to non-real mode if not there already
+				if (currentMode == 3) {
+					//go to non-real mode
+					MODE_set("Design")
+					
+					//refire toggle (may fire too frequently)
+					forms.WEB_0F_page__design_1F_version_2L_scope.ACTION_gui_mode_load(true)
+				}
+				
+				//set mode
+				globals.WEB_page_mode = 2
 				elements.gfx_switch_2.visible = true
 				
 				//reset pretty form (//TODO: make work for all block types)
-				if (forms.WEB_0F_page__design_1F_version_2F_block__gui.elements.tab_detail.getTabFormNameAt(forms.WEB_0F_page__design_1F_version_2F_block__gui.elements.tab_detail.tabIndex) == 'WEB_0F__content') {
-					forms.WEB_0F__content.BLOCK_cancel(event)
-				}			
+//				if (forms.WEB_0F_page__design_1F_version_2F_block__gui.elements.tab_detail.getTabFormNameAt(forms.WEB_0F_page__design_1F_version_2F_block__gui.elements.tab_detail.tabIndex) == 'WEB_0F__content') {
+//					forms.WEB_0F__content.BLOCK_cancel(event)
+//				}			
 				
-				globals.WEB_page_mode = 2
+				//show gui
 				forms.WEB_0F_page__design_1F_version.elements.tab_content.tabIndex = 1
 				
-				//refire toggle (may fire too frequently)
-				forms.WEB_0F_page__design_1F_version_2L_scope.ACTION_gui_mode_load(true)
-				
-				//go to non-real mode if not there already
-				if (currentMode != "DESIGN") {
-					forms.WEB_0F_page.TRIGGER_mode_set("DESIGN")
-					
-					elements.lbl_edit.visible = false
-					elements.btn_edit.visible = false
-					elements.btn_save.visible = false
-					
-					elements.highlighter.visible = false
-//					elements.lbl_detail.visible = false
-					
-					TOGGLE_group(false)
-					TOGGLE_version(false)
-				}
 				break
 			case 'lbl_mode_real':
-				elements.gfx_switch_3.visible = true
-				
-				globals.WEB_page_mode = 3
-				
 				//go to real mode if not there already
-				if (currentMode != "BROWSER") {
-//					elements.lbl_detail.visible = true
+				if (currentMode != 3) {
+					//set mode
+					globals.WEB_page_mode = 3
+					elements.gfx_switch_3.visible = true
+					MODE_set("Real")
 					
-					forms.WEB_0F_page.TRIGGER_mode_set("BROWSER")
+					//show breadcrumb url info
+//					elements.lbl_detail.visible = true
 					
 					//toggle edit, groups, versions
 					TOGGLE_edit()
-					TOGGLE_group()
-					TOGGLE_version()	
+//					TOGGLE_group()
+//					TOGGLE_version()	
 				}
+				
 				break
 		}	
 	}
@@ -467,16 +465,16 @@ function ACTION_mode(event) {
  *
  * @properties={typeid:24,uuid:"0E2D3D14-9796-4F16-880A-22F672A2E6A4"}
  */
-function TOGGLE_edit() {
+function TOGGLE_edit(editMode) {
 	//disable edits if edit flag not set
 	if (!utils.hasRecords(forms.WEB_0F_page__design_1F_version.foundset) || forms.WEB_0F_page__design_1F_version.flag_lock) {
 			//disable edits for active or non-latest versions
 			//utils.hasRecords(fsVersions) && fsVersions.version_number != fsVersions.getSize() || fsVersions.flag_active) {
-		var editMode = false
+		editMode = false
 	}
-	//toggle edits
-	else {
-		var editMode = true
+	//toggle edits (unless passed in false)
+	else if (typeof editMode != 'boolean') {
+		editMode = true
 	}
 	
 	//set status of edit button
@@ -588,4 +586,45 @@ function ACTION_sitemap(event) {
 //			elements.highlighter_dash.visible = false
 //		}
 //	}
+}
+
+/**
+ * @properties={typeid:24,uuid:"8BF29838-56DB-4911-B5B0-D9A24C8231B8"}
+ */
+function MODE_set(mode) {
+	switch (mode) {
+		case "Design":	
+			forms.WEB_0F_page.elements.tab_main.removeTabAt(2)
+			forms.WEB_0F_page.elements.tab_main.tabIndex = 1
+			
+			//reset enabled/disabled, etc.
+			forms.WEB_0F_page__design.REC_on_select(null,true)
+			
+			//clear out browser bean
+			forms.WEB_0F_page__browser.elements.bn_browser.html = '<html><body></body></html>'
+			
+			break;
+		case "Real":	
+			//following line only needed when returning to web mode after not being in it fulltime
+			forms.WEB_0F_page__browser.REC_on_select(null,null,true)
+			
+			forms.WEB_0F_page.elements.tab_main.addTab( forms.WEB_0F_page__browser )
+			forms.WEB_0F_page.elements.tab_main.tabIndex = 2
+			break;
+	}
+}
+
+/**
+ * Callback method for when form is shown.
+ *
+ * @param {Boolean} firstShow form is shown first time after load
+ * @param {JSEvent} event the event that triggered the action
+ *
+ * @properties={typeid:24,uuid:"4917AF30-667D-4A3E-BAE1-0A82F2A8CA25"}
+ */
+function FORM_on_show(firstShow, event) {
+	//don't know why my edit button is showing...turn it off
+	if (firstShow) {
+		TOGGLE_edit(false)
+	}
 }
