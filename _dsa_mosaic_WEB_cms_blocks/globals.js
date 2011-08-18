@@ -122,7 +122,7 @@ function WEB_block_getData(event, formName, obj) {
 	//get from object (headless client)
 	if (obj && obj.block && obj.block.record instanceof JSRecord) {
 		/** @type {JSRecord<db:/sutra_cms/web_block_data>}*/
-		return (utils.hasRecords(obj.block.record,'web_block_to_block_version.web_block_version_to_block_data')) ? blockRec.web_block_to_block_version.web_block_version_to_block_data : fsBad
+		return (utils.hasRecords(obj.block.record,'web_block_to_block_version.web_block_version_to_block_data')) ? obj.block.record.web_block_to_block_version.web_block_version_to_block_data : fsBad
 	}
 	//get from context (smart client)
 	else {
@@ -173,7 +173,7 @@ function WEB_block_getConfig(event, formName, obj) {
 	//get from object (headless client)
 	if (obj && obj.block && obj.block.record instanceof JSRecord) {
 		/** @type {JSRecord<db:/sutra_cms/web_block_data_configure>}*/
-		return (utils.hasRecords(obj.block.record,'web_block_to_block_version.web_block_version_to_block_data_configure')) ? blockRec.web_block_to_block_version.web_block_version_to_block_data_configure : fsBad
+		return (utils.hasRecords(obj.block.record,'web_block_to_block_version.web_block_version_to_block_data_configure')) ? obj.block.record.web_block_to_block_version.web_block_version_to_block_data_configure : fsBad
 	}
 	//get from context (smart client)
 	else {
@@ -224,7 +224,7 @@ function WEB_block_getResponse(event, formName, obj) {
 	//get from object (headless client)
 	if (obj && obj.block && obj.block.record instanceof JSRecord) {
 		/** @type {JSRecord<db:/sutra_cms/web_block_data_response>}*/
-		return (utils.hasRecords(obj.block.record,'web_block_to_block_version.web_block_version_to_block_data_response')) ? blockRec.web_block_to_block_version.web_block_version_to_block_data_response : fsBad
+		return (utils.hasRecords(obj.block.record,'web_block_to_block_version.web_block_version_to_block_data_response')) ? obj.block.record.web_block_to_block_version.web_block_version_to_block_data_response : fsBad
 	}
 	//get from context (smart client)
 	else {
