@@ -18,6 +18,7 @@ name:"data_key"
 },
 {
 allowNull:true,
+converterName:"StringSerializer",
 creationOrderIndex:3,
 dataType:-1,
 length:16777215,
