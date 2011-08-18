@@ -481,7 +481,12 @@ function FORM_on_show() {
 	globals.WEB_block_scope__new = 0
 	fsBlockType.find()
 	fsBlockType.id_site = forms.WEB_0F_site.id_site
-	fsBlockType.search()
+	var results = fsBlockType.search()
+	
+	//sort by block type
+	if (results) {
+		fsBlockType.sort('block_name asc')
+	}
 	
 	for (var i = 1; i <= fsBlockType.getSize(); i++) {
 		var record = fsBlockType.getRecord(i)

@@ -1,4 +1,5 @@
 dataSource:"db:/sutra_cms/web_block",
+initialSort:"web_block_to_block_type.block_name asc, block_name asc",
 items:[
 {
 height:45,
