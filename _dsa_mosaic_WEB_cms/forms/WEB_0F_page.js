@@ -11,58 +11,6 @@ var _license_dsa_mosaic_WEB_cms = 'Module: _dsa_mosaic_WEB_cms \
 									MIT Licensed';
 
 /**
- *
- * @properties={typeid:24,uuid:"F1DF07A7-B3D8-4A8B-A4CF-9CB5A79A5D1D"}
- */
-function TRIGGER_mode_set(mode) {
-	if (mode) {
-		switch (mode) {
-			case "DESIGN":	
-//				//custom block editor loaded on browser form, remove
-//				if (forms.WEB_0F_page__browser.elements.tab_editor.getMaxTabIndex() && (
-//					forms.WEB_0F_page__browser.elements.tab_editor.getTabFormNameAt(1) == 'WEB_0F__content' ||
-//					forms.WEB_0F_page__browser.elements.tab_editor.getTabFormNameAt(1) == 'WEB_0F__image'
-//					)) {
-//					
-//					//stop loading on main browser bean form to avoid race condition
-//					forms.WEB_0F_page__browser.elements.bn_browser.stopLoading()
-//					
-//					forms.WEB_0F_page__browser.elements.tab_editor.removeTabAt(1)
-//				}
-				
-				elements.tab_main.removeTabAt(2)
-				elements.tab_main.tabIndex = 1
-				
-				//reset enabled/disabled, etc.
-				forms.WEB_0F_page__design.REC_on_select(null,true)
-				
-				break;
-			case "BROWSER":	
-				//following line only needed when returning to web mode after not being in it fulltime
-				forms.WEB_0F_page__browser.REC_on_select(null,null,true)
-				
-				elements.tab_main.addTab( forms.WEB_0F_page__browser )
-				elements.tab_main.tabIndex = 2
-				break;
-			default:
-			break;
-		}
-	}
-	else {
-		switch (elements.tab_main.tabIndex) {
-			case 1:	
-				return "DESIGN"
-				break;
-			case 2:	
-				return "BROWSER"
-				break;
-			default:
-			break;
-		}
-	}
-}
-
-/**
  * @properties={typeid:35,uuid:"41D49272-FB3B-4284-B2AB-C3233F1D9C3D"}
  */
 var _lastToolbar = null;
@@ -99,7 +47,7 @@ function FORM_on_show(firstShow, event) {
 		//in workflow maximized view
 		if (firstShow && application.__parent__.solutionPrefs && solutionPrefs.config.activeSpace == 'workflow') {
 			//switch modes
-			TRIGGER_mode_set("BROWSER")
+			forms.WEB_TB__web_mode.MODE_set('Real')
 			return
 		}
 		

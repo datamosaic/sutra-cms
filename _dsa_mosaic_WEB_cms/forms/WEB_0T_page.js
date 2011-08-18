@@ -1007,7 +1007,7 @@ function REC_new() {
 		globals.CODE_cursor_busy(true)
 		
 		//how is this record getting added
-		var webMode = forms.WEB_0F_page.TRIGGER_mode_set() == 'BROWSER'
+		var webMode = globals.WEB_page_mode == 3
 		
 		//set flag that a new record getting created
 		_addRecord = 1
