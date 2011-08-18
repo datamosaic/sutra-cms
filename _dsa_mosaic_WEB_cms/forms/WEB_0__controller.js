@@ -66,7 +66,7 @@ function CONTROLLER_session(obj) {
 
 	// PROCESS: session management
 
-	// if logging turned on, record sesion and page access
+	// if logging turned on, record session and page access
 	if ( obj.site.record.flag_session ) {	
 
 		// find matching session record 
