@@ -486,6 +486,13 @@ function REC_new(flagRefresh) {
 			}
 			
 			databaseManager.saveData()
+			
+			if (flagRefresh) {
+				plugins.dialogs.showInfoDialog(
+							'Done',
+							'Block successfully refreshed'
+					)
+			}
 		}
 	}
 	else {
