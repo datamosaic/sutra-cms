@@ -588,7 +588,7 @@ function WEB_page_tree_to_popup(method,elem) {
 		}
 		else {
 			var item = plugins.popupmenu.createMenuItem(pageRec.page_name + "", method)
-			item.setMethodArguments(pageRec.id_page.toString(),pageRec)
+			item.setMethodArguments(pageRec.id_page.toString(),pageRec,event)
 			
 			//disable dividers
 			if (item.text == '-') {
