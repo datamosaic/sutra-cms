@@ -1035,7 +1035,6 @@ function WEB_startup_hack() {
 	//disable rec_on_select of the block type form
 	globals.WEB_block_on_select = false
 	
-	
 	//show all forms with browser beans so they don't error out on initial view
 	forms.WEB_0F__image.controller.show()
 	forms.WEB_0F__html.controller.show()
@@ -1043,6 +1042,10 @@ function WEB_startup_hack() {
 	forms.WEB_0F__content.controller.show()
 	application.sleep(1500)
 	forms.WEB_0F__content_view.controller.show()
+	forms.WEB_0F_page__browser.controller.show()
+	
+	//hit up headless client so get zooming effect on first load
+//	plugins.http.getPageData(globals.WEB_MRKUP_link_base() + 'index.jsp')
 	
 	forms.DATASUTRA_0F_solution.controller.show()
 }
