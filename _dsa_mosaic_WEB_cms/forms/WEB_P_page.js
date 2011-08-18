@@ -613,8 +613,18 @@ function SET_valuelist_layout() {
 	fsLayout.id_theme = _idTheme
 	var results = fsLayout.search()
 	
+	if (results) {
+		fsLayout.sort('layout_name asc')
+		var layoutNames = databaseManager.getFoundSetDataProviderAsArray(fsLayout,'layout_name')
+		var layoutIDs = databaseManager.getFoundSetDataProviderAsArray(fsLayout,'id_layout')
+	}
+	else {
+		var layoutNames = new Array()
+		var layoutIDs = new Array()
+	}
+	
 	//populate layout valuelist
-	application.setValueListItems('WEB_layouts__by_theme_by_page',databaseManager.getFoundSetDataProviderAsArray(fsLayout,'layout_name'),databaseManager.getFoundSetDataProviderAsArray(fsLayout,'id_layout'))
+	application.setValueListItems('WEB_layouts__by_theme_by_page',layoutNames,layoutIDs)
 }
 
 /**
