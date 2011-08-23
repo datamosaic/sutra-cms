@@ -310,34 +310,88 @@ function WEBc_block_getEdit() {
 }
 
 /**
+ * Return session data object given session ID and object key
+ * 
+ * @param {String} sessionID Pass in either session.getId() from web session object
+ * or obj.session_server.record.session_id from controller object.
+ * @param {String} dataKey Key name of data object to return
+ * 
+ * @returns {Object} Javascript object with your data or null.
+ * 
  * @properties={typeid:24,uuid:"15B7A603-F30F-4772-9AF6-AA7BB70AAE83"}
  */
-function WEBc_session_getData() {
-	// TODO Auto-generated method stub
+function WEBc_session_getData(sessionID, dataKey) {
+	// get session	
+	var snRec = globals.WEBc_session_getSession(sessionID)
+
+	// find matching session data record 
+	var sd = databaseManager.getFoundSet("sutra_cms","web_session_data")
+	sd.find()
+	sd.id_session = snRec.id_session
+	sd.data_key = dataKey
+	var count = sd.search()
+	// get specified session data
+	if (count == 1) {
+		return sd.getRecord(1).data_value
+	}
+	else {
+		return null
+	}
 }
 
 /**
+ * Store session data object given session ID and object key. Creates a record if needed.
+ * 
+ * @param {String} sessionID Pass in either session.getId() from web session object
+ * or obj.session_server.record.session_id from controller object.
+ * @param {String} dataKey Key name of data object to return
+ * @param {Object} dataValue Javascript object to store
+ * 
+ * @returns {Object} Javascript object with your data.
+ * 
  * @properties={typeid:24,uuid:"6839C1C3-962D-40B9-BE58-D22880BD5BBE"}
  */
-function WEBc_session_setData() {
-	// TODO Auto-generated method stub
+function WEBc_session_setData(sessionID, dataKey, dataValue) {
+	// get session	
+	var snRec = globals.WEBc_session_getSession(sessionID)	
+	
+	// find matching session data record 
+	var sd = databaseManager.getFoundSet("sutra_cms","web_session_data")
+	sd.find()
+	sd.session_id = snRec.id_session
+	sd.data_key = dataKey
+	var count = sd.search()
+	// get specified session data
+	if (count != 1) {		
+		// create session data record
+		var sdRec = snRec.web_session_to_session_data.getRecord(snRec.web_session_to_session_data.newRecord())
+		sdRec.data_key = dataKey
+	}
+	else {
+		var sdRec = sd.getRecord(1)
+	}
+	// store data
+	sdRec.data_value = dataValue
+	databaseManager.saveData(sdRec)
+	
+	return sdRec
 }
 
 /**
- * Use this method from AJAX method calls where you know session.getId().
- * Otherwise, use obj.session_server.record.
+ * Use this method from AJAX method calls where you know pass in session.getId().
+ * Otherwise, pass in obj.session_server.record.session_id.
  * 
  * @param {Javax.servlet.http.httpsession} session Web session to pass in 
  * @returns {JSRecord} session record or null
  * 
  * @properties={typeid:24,uuid:"F2E852B4-71FA-4A91-A9BA-87781B082C6C"}
  */
-function WEBc_session_getSession(session) {
+function WEBc_session_getSession(sessionID) {
 	
 	// find matching session record 
 	var sn = databaseManager.getFoundSet("sutra_cms","web_session")
 	sn.find()
-	sn.session_id = session.getId()
+	sn.session_id = sessionID
 	var count = sn.search()
 	
 	// get existing session record
