@@ -261,7 +261,7 @@ function CONTROLLER_builder(results, obj) {
 
 	
 		// add area to the results object
-		results.addRow([area.area_name, globals.WEB_MRKUP_link_internal(areaMarkup,obj.request.server,obj.type,area.id_area)])
+		results.addRow([area.area_name, globals.WEBc_markup_link_internal(areaMarkup,obj.request.server,obj.type,area.id_area)])
 		
 		// obj: area...CLEAR
 		obj.area.record = ''
@@ -338,7 +338,7 @@ function CONTROLLER_setup(results, app, session, request, response, mode) {
 	var versionID	= request.getParameter("version")
 	
 	// are we using rewrites or not
-	var rewriteMode = globals.WEB_install_rewrite()
+	var rewriteMode = globals.WEBc_install_getRewrite()
 	
 	// "get" form data (does not return "post" form data)
 	var getPairs	= {}
@@ -772,7 +772,7 @@ function CONTROLLER_setup(results, app, session, request, response, mode) {
 		
 		if (count && page.page_link_internal) {
 			//this changes the url
-			obj.response.record.sendRedirect(globals.WEB_MRKUP_link_page(page.page_link_internal))
+			obj.response.record.sendRedirect(globals.WEBc_markup_link_page(page.page_link_internal))
 		}
 		else {
 			obj.error.code = 404
@@ -1184,7 +1184,7 @@ function CONTROLLER_error(obj) {
 		}
 		
 		// redirect to the home page
-		obj.response.record.sendRedirect(globals.WEB_MRKUP_link_page(site.id_page__home, pageServer))
+		obj.response.record.sendRedirect(globals.WEBc_markup_link_page(site.id_page__home, pageServer))
 	}
 }
 

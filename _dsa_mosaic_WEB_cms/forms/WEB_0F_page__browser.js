@@ -70,7 +70,7 @@ function REC_on_select(event,webMode,skipLoad,verIndex,fireSelect) {
 	 	//when called with event (not programatically)
 //		if (event) {
 //		 	//set tooltip of visit with link
-//			forms.WEB_0F_page__design_1F__button_tab_2F__content.elements.btn_visit.toolTipText = globals.WEB_MRKUP_link_page(id_page)
+//			forms.WEB_0F_page__design_1F__button_tab_2F__content.elements.btn_visit.toolTipText = globals.WEBc_markup_link_page(id_page)
 //		}
 		
 		//select page version of tri globals
@@ -176,7 +176,7 @@ function URL_update(webMode) {
 			//TODO: put wrapper "header" on page to alert that on an internal link
 				//also, the version here is wrong, need to get for internal link
 //			globals.WEB_preview_url = 
-//				globals.WEB_MRKUP_link_page(page_link_internal,null,'Edit',webMode) + 
+//				globals.WEBc_markup_link_page(page_link_internal,null,'Edit',webMode) + 
 //				"&version=" + forms.WEB_0F_page__browser_1F_block__editor.url_param
 //			plugins.dialogs.showInfoDialog('Coming soon...','Internal links can not be edited in real mode yet')
 			var fsPage = databaseManager.getFoundSet('sutra_cms','web_page')
@@ -195,7 +195,7 @@ function URL_update(webMode) {
 		}
 		//show version for selected platform-language-group combo
 		else {
-			var urlString = globals.WEB_MRKUP_link_page(id_page,null,'Edit',webMode)
+			var urlString = globals.WEBc_markup_link_page(id_page,null,'Edit',webMode)
 			
 			if (utils.hasRecords(forms.WEB_0F_page__design_1F__header_display_2F_platform._platform)) {
 				urlString += "&platform=" + forms.WEB_0F_page__design_1F__header_display_2F_platform._platform.url_param

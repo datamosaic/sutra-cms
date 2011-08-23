@@ -124,7 +124,7 @@ function CURTAIN_block(event) {
 		globals.CODE_url_handler(page_link)
 	}
 	else if (page_type == 3 && page_link_internal) {
-		globals.CODE_url_handler(globals.WEB_MRKUP_link_page(page_link_internal))
+		globals.CODE_url_handler(globals.WEBc_markup_link_page(page_link_internal))
 	}
 }
 
@@ -439,7 +439,7 @@ function NEW_group(event) {
  * @properties={typeid:24,uuid:"41ACF34C-2DCE-405F-A819-5658BCFD2293"}
  */
 function ACTION_copy_link(event) {
-	application.setClipboardContent(globals.WEB_MRKUP_link_page(id_page)/* + 
+	application.setClipboardContent(globals.WEBc_markup_link_page(id_page)/* + 
 			"&group=" + globals.WEB_group_selected +
 			"&snapshot=" + globals.WEB_version_selected*/)
 }

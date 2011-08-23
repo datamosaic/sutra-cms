@@ -11,7 +11,7 @@ var _license_dsa_mosaic_WEB_cms = 'Module: _dsa_mosaic_WEB_cms \
 function ACTIONS_list() {
 	if (utils.hasRecords(forms.WEB_0F_site_1L_site_attribute.foundset)) {
 		//call page picker method, pass in element to use
-		globals.WEB_page_tree_to_popup(ACTION_add_attribute,arguments[0])
+		globals.WEBc_page_picker(ACTION_add_attribute,arguments[0])
 	}
 	else {
 		plugins.dialogs.showErrorDialog(

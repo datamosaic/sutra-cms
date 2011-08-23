@@ -58,7 +58,7 @@ function ACTION_ok() {
 		// copy image details to block data points
 		else {
 			//the data we're working with here
-			var data = globals.WEB_block_getData(null,'WEB_0F__image')
+			var data = globals.WEBc_block_getData(null,'WEB_0F__image')
 			
 			//see WEB_0F__image.INIT_block for all keys
 			for (var i = 1; i <= data.getSize(); i++) {

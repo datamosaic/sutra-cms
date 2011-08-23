@@ -28,10 +28,10 @@ function VIEW_main(obj) {
 		for (var i = 0; i < pages.getSize(); i++) {		
 			var record = pages.getRecord(i + 1)
 			if ( record.id_page == obj.page.record.id_page ) {
-				markup += '<li class=""><a href="' + globals.WEB_block_link(record) + '" class="active"><span>' + record.page_name + '</span></a>\n'			
+				markup += '<li class=""><a href="' + globals.WEBc_markup_token(record) + '" class="active"><span>' + record.page_name + '</span></a>\n'			
 			}
 			else {
-				markup += '<li><a href="' + globals.WEB_block_link(record) + '"><span>' + record.page_name + '</span></a>\n'			
+				markup += '<li><a href="' + globals.WEBc_markup_token(record) + '"><span>' + record.page_name + '</span></a>\n'			
 			}	
 			
 			// sub menu 1 pages
@@ -40,10 +40,10 @@ function VIEW_main(obj) {
 				for (var j = 0; j < record.web_page_to_page__child.getSize(); j++) {
 					var sub1Record = record.web_page_to_page__child.getRecord(j + 1)
 					if ( j == 0 ) {
-						markup += ' <li class="top_space"><a href="' + globals.WEB_block_link(sub1Record) + '">' + sub1Record.page_name + '</a>'
+						markup += ' <li class="top_space"><a href="' + globals.WEBc_markup_token(sub1Record) + '">' + sub1Record.page_name + '</a>'
 					}
 					else {
-						markup += ' <li><a href="' + globals.WEB_block_link(sub1Record) + '">' + sub1Record.page_name + '</a>'
+						markup += ' <li><a href="' + globals.WEBc_markup_token(sub1Record) + '">' + sub1Record.page_name + '</a>'
 					}
 					
 					// sub menu 2 pages
@@ -52,10 +52,10 @@ function VIEW_main(obj) {
 						for (var k = 0; k < sub1Record.web_page_to_page__child.getSize(); k++) {
 							var sub2Record = sub1Record.web_page_to_page__child.getRecord(k + 1)
 							if ( k == sub1Record.web_page_to_page__child.getSize() - 1) {
-								markup += '<li class=""><a href="' + globals.WEB_block_link(sub2Record) +  '">' + sub2Record.page_name + '</a></li>'	
+								markup += '<li class=""><a href="' + globals.WEBc_markup_token(sub2Record) +  '">' + sub2Record.page_name + '</a></li>'	
 							}
 							else {
-								markup += '<li><a href="' + globals.WEB_block_link(sub2Record) +  '">' + sub2Record.page_name + '</a></li>'	
+								markup += '<li><a href="' + globals.WEBc_markup_token(sub2Record) +  '">' + sub2Record.page_name + '</a></li>'	
 							}			
 						}	
 						markup += '</ul>'
@@ -105,16 +105,16 @@ function VIEW_head(obj) {
 			var record = pages.getRecord(i + 1)
 			
 			if ( record.id_page == obj.page.record.id_page && i == (pages.getSize() - 1)  ) {
-				markup += '<li class="ends-active"><a href="' + globals.WEB_block_link(record) + '">' + record.page_name + '</a></li>\n'
+				markup += '<li class="ends-active"><a href="' + globals.WEBc_markup_token(record) + '">' + record.page_name + '</a></li>\n'
 			}
 			else if ( i == (pages.getSize() - 1) ) {
-				markup += '<li class="ends"><a href="' + globals.WEB_block_link(record) + '">' + record.page_name + '</a></li>\n'
+				markup += '<li class="ends"><a href="' + globals.WEBc_markup_token(record) + '">' + record.page_name + '</a></li>\n'
 			}
 			else if ( record.id_page == obj.page.record.id_page ) {
-				markup += '<li class="active"><a href="' + globals.WEB_block_link(record) + '">' + record.page_name + '</a></li>\n'
+				markup += '<li class="active"><a href="' + globals.WEBc_markup_token(record) + '">' + record.page_name + '</a></li>\n'
 			}
 			else {
-				markup += '<li><a href="' + globals.WEB_block_link(record)  + '">' + record.page_name + '</a></li>\n'
+				markup += '<li><a href="' + globals.WEBc_markup_token(record)  + '">' + record.page_name + '</a></li>\n'
 			}
 		}
 			
@@ -167,7 +167,7 @@ function VIEW_footer(obj) {
 				subPages.sort('order_by asc')
 				for (var j = 0; j < subPages.getSize(); j++) {
 					var subRecord = subPages.getRecord(j + 1)
-					markup += '<li><a href="' + globals.WEB_block_link(subRecord) + '">' + subRecord.page_name + '</a></li>\n'
+					markup += '<li><a href="' + globals.WEBc_markup_token(subRecord) + '">' + subRecord.page_name + '</a></li>\n'
 				}
 			}
 			markup += '</ul>'
@@ -204,10 +204,10 @@ function VIEW_actions(obj) {
 
 		// action #1
 		var record = pages.getRecord(1)
-		markup += '<li><a href="' + globals.WEB_block_link(record)  + '">' + record.page_name + '</a></li>\n'
+		markup += '<li><a href="' + globals.WEBc_markup_token(record)  + '">' + record.page_name + '</a></li>\n'
 		// action #2
 		var record = pages.getRecord(2)
-		markup += '<li class="ends"><a href="' + globals.WEB_block_link(record)  + '">' + record.page_name + '</a></li>\n'
+		markup += '<li class="ends"><a href="' + globals.WEBc_markup_token(record)  + '">' + record.page_name + '</a></li>\n'
 
 		markup += '</ul>'
 		
@@ -258,10 +258,10 @@ function VIEW_breadcrumb(obj) {
 	var markup = '<ul id="breadcrumb">\n'
 	for (var i = 0; i < breadcrumb.length; i++) {
 		if ( i == 0 ) {
-			markup += '<li class="first"><a href="' + globals.WEB_block_link(breadcrumb[i].id_page) + '">' + breadcrumb[i].page_name + '</a></li>\n'
+			markup += '<li class="first"><a href="' + globals.WEBc_markup_token(breadcrumb[i].id_page) + '">' + breadcrumb[i].page_name + '</a></li>\n'
 		}
 		else if ( i != (breadcrumb.length - 1) ) {
-			markup += '<li><a href="' + globals.WEB_block_link(breadcrumb[i].id_page) + '">' + breadcrumb[i].page_name + '</a></li>\n'
+			markup += '<li><a href="' + globals.WEBc_markup_token(breadcrumb[i].id_page) + '">' + breadcrumb[i].page_name + '</a></li>\n'
 		}
 		else {
 			markup += '<li class="active">' + breadcrumb[i].page_name + '</li>\n'

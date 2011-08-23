@@ -249,7 +249,7 @@ function ACTION_path_generate(event) {
  * @properties={typeid:24,uuid:"EA6CC115-5079-415E-8E35-5B2FA942814C"}
  */
 function ACTION_choose_home(event) {
-	globals.WEB_page_tree_to_popup(forms.WEB_0F_site.ACTION_set_home)
+	globals.WEBc_page_picker(forms.WEB_0F_site.ACTION_set_home)
 }
 
 /**
@@ -260,7 +260,7 @@ function ACTION_choose_home(event) {
  * @properties={typeid:24,uuid:"EA6CC115-5079-415E-8E36-5B2FA942814C"}
  */
 function ACTION_choose_error(event) {
-	globals.WEB_page_tree_to_popup(forms.WEB_0F_site.ACTION_set_error)
+	globals.WEBc_page_picker(forms.WEB_0F_site.ACTION_set_error)
 }
 
 /**
@@ -418,7 +418,7 @@ function FORM_on_show(firstShow, event) {
 	}
 	
 	//disable rewrites if turned off
-	if (globals.WEB_install_rewrite()) {
+	if (globals.WEBc_install_getRewrite()) {
 		elements.fld_pref_links.enabled = true
 	}
 	else {
