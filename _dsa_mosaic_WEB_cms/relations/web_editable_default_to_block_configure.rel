@@ -1,9 +1,0 @@
-allowCreationRelatedRecords:true,
-foreignDataSource:"db:/sutra_cms/web_block_configure",
-items:[
-{foreignColumnName:"id_block_type",primaryDataProviderID:"id_block_type",typeid:23,uuid:"2D1A9C8C-7513-4B58-9CF3-8686D5D6C374"}
-],
-name:"web_editable_default_to_block_configure",
-primaryDataSource:"db:/sutra_cms/web_editable_default",
-typeid:22,
-uuid:"841ABA0F-CDAA-4974-B17D-F4EEB0C75A44"

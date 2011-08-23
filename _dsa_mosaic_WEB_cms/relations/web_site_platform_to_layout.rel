@@ -1,8 +1,0 @@
-foreignDataSource:"db:/sutra_cms/web_layout",
-items:[
-{foreignColumnName:"id_layout",primaryDataProviderID:"id_layout",typeid:23,uuid:"A76CBD86-6540-4C79-8784-B60FC241857C"}
-],
-name:"web_site_platform_to_layout",
-primaryDataSource:"db:/sutra_cms/web_site_platform",
-typeid:22,
-uuid:"F61D83FC-D211-4363-9CA6-031FC3FE0D97"

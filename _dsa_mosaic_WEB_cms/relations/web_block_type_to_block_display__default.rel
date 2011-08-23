@@ -1,9 +1,0 @@
-foreignDataSource:"db:/sutra_cms/web_block_display",
-items:[
-{foreignColumnName:"id_block_type",primaryDataProviderID:"id_block_type",typeid:23,uuid:"377EC119-88B5-47FE-8C81-FEE5A6E6B693"},
-{foreignColumnName:"flag_default",primaryDataProviderID:"globals.CODE_constant_1",typeid:23,uuid:"EF03D2F6-1939-44C2-9751-2FD9300209A9"}
-],
-name:"web_block_type_to_block_display__default",
-primaryDataSource:"db:/sutra_cms/web_block_type",
-typeid:22,
-uuid:"4E964BD0-CDB9-4944-BEE7-FA017CD57829"

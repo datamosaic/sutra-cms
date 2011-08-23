@@ -1,0 +1,8 @@
+foreignDataSource:"db:/sutra_cms/web_language",
+items:[
+{foreignColumnName:"id_language",primaryDataProviderID:"id_language",typeid:23,uuid:"4BDABD27-58CA-40DC-A6CE-8A4B4BF9A0F0"}
+],
+name:"web_version_to_language",
+primaryDataSource:"db:/sutra_cms/web_version",
+typeid:22,
+uuid:"EB44123A-232C-4202-AF1F-6D96E2620E56"

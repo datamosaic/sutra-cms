@@ -1,9 +1,0 @@
-foreignDataSource:"db:/sutra_cms/web_block",
-initialSort:"web_block_to_block_type.block_name asc, block_name asc",
-items:[
-{foreignColumnName:"scope_type",primaryDataProviderID:"globals.WEB_block_scope",typeid:23,uuid:"CDF3F494-96AF-48A5-819C-35D15D02802E"}
-],
-name:"web_install_to_block__scope",
-primaryDataSource:"db:/sutra_cms/web_install",
-typeid:22,
-uuid:"7CC96E0F-26C8-4C1C-9B70-F6FD36F8F4F5"

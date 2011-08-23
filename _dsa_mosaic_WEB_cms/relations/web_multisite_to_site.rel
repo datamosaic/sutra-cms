@@ -1,8 +1,0 @@
-foreignDataSource:"db:/sutra_cms/web_site",
-items:[
-{foreignColumnName:"multisite_key",primaryDataProviderID:"multisite_key",typeid:23,uuid:"8C5E25FF-76ED-4C6F-BFE0-46A809B10FF1"}
-],
-name:"web_multisite_to_site",
-primaryDataSource:"db:/sutra_cms/web_multisite",
-typeid:22,
-uuid:"28D3E390-7712-41F8-A99F-2B152A5EC45C"
