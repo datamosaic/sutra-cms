@@ -1166,7 +1166,7 @@ function CONTROLLER_error(obj) {
 		error.addRow([message])
 		return error
 	}
-	//go to home page	//TODO: display error page
+	//go to error page
 	else {
 		var site = databaseManager.getFoundSet("sutra_cms","web_site")
 		site.find()
@@ -1178,13 +1178,13 @@ function CONTROLLER_error(obj) {
 			return error
 		}
 		
-		if (!site.id_page__home) {
-			error.addRow(["No default page specified for this site"])
+		if (!site.id_page__error) {
+			error.addRow(["No error page specified for this site"])
 			return error
 		}
 		
 		// redirect to the home page
-		obj.response.record.sendRedirect(globals.WEBc_markup_link_page(site.id_page__home, pageServer))
+		obj.response.record.sendRedirect(globals.WEBc_markup_link_page(site.id_page__error, pageServer))
 	}
 }
 
