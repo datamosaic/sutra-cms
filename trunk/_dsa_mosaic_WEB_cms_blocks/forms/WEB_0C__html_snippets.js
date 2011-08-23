@@ -70,31 +70,47 @@ function SNIPPET_states_us(selected) {
 /**
  * @properties={typeid:24,uuid:"B96A5D9D-B6CA-4785-B4EB-03BD34B11FD2"}
  */
-function SNIPPET_credit_card_month() {
-	var html = '<option value="01">1</option>\n\
-  				<option value="02">2</option>\n\
-  				<option value="03">3</option>\n\
-				<option value="04">4</option>\n\
-				<option value="05">5</option>\n\
-				<option value="06">6</option>\n\
-				<option value="07">7</option>\n\
-				<option value="08">8</option>\n\
-				<option value="09">9</option>\n\
-				<option value="10">10</option>\n\
-				<option value="11">11</option>\n\
-				<option value="12">12</option>\n'
+function SNIPPET_credit_card_month(selected) {
+	
+	function isSelected(month) {
+		if (month == selected) {
+			return ' selected="selected"'
+		}
+		else {
+			return ''
+		}
+	}
+	
+	var html = '<option' + isSelected("01") + ' value="01">1</option>\n\
+  				<option' + isSelected("02") + ' value="02">2</option>\n\
+  				<option' + isSelected("03") + ' value="03">3</option>\n\
+				<option' + isSelected("04") + ' value="04">4</option>\n\
+				<option' + isSelected("05") + ' value="05">5</option>\n\
+				<option' + isSelected("06") + ' value="06">6</option>\n\
+				<option' + isSelected("07") + ' value="07">7</option>\n\
+				<option' + isSelected("08") + ' value="08">8</option>\n\
+				<option' + isSelected("09") + ' value="09">9</option>\n\
+				<option' + isSelected("10") + ' value="10">10</option>\n\
+				<option' + isSelected("11") + ' value="11">11</option>\n\
+				<option' + isSelected("12") + ' value="12">12</option>\n'
 	return html
 }
 
 /**
  * @properties={typeid:24,uuid:"5AD0C261-20CA-4EAB-BDAD-BC675C223D1E"}
  */
-function SNIPPET_credit_card_year() {
+function SNIPPET_credit_card_year(selected) {
 	var html =''
 	var today = new Date()
 	var thisYear = today.getFullYear()
+	
 	for (var i=thisYear; i<thisYear+11; i++) {
-		html += '<option value="'+i+'">'+i+'</option>\n'
+		if (utils.numberFormat(i,'####') == selected) {
+			html += '<option selected="selected" value="'+i+'">'+i+'</option>\n'
+		}
+		else {
+			html += '<option value="'+i+'">'+i+'</option>\n'
+		}
 	}
 
 	return html
