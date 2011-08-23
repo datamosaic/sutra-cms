@@ -1,58 +1,68 @@
 /**
  * @properties={typeid:24,uuid:"679E98F4-990B-4543-9FDC-8A65A0047E7B"}
  */
-function SNIPPET_states_us() {
-	var html = '<option value="AL">Alabama</option>\n\
-  	<option value="AK">Alaska</option>\n\
-  	<option value="AZ">Arizona</option>\n\
-	<option value="AR">Arkansas</option>\n\
-	<option value="CA">California</option>\n\
-	<option value="CO">Colorado</option>\n\
-	<option value="CT">Connecticut</option>\n\
-	<option value="DE">Delaware</option>\n\
-	<option value="DC">Dist of Columbia</option>\n\
-	<option value="FL">Florida</option>\n\
-	<option value="GA">Georgia</option>\n\
-	<option value="HI">Hawaii</option>\n\
-	<option value="ID">Idaho</option>\n\
-	<option value="IL">Illinois</option>\n\
-	<option value="IN">Indiana</option>\n\
-	<option value="IA">Iowa</option>\n\
-	<option value="KS">Kansas</option>\n\
-	<option value="KY">Kentucky</option>\n\
-	<option value="LA">Louisiana</option>\n\
-	<option value="ME">Maine</option>\n\
-	<option value="MD">Maryland</option>\n\
-	<option value="MA">Massachusetts</option>\n\
-	<option value="MI">Michigan</option>\n\
-	<option value="MN">Minnesota</option>\n\
-	<option value="MS">Mississippi</option>\n\
-	<option value="MO">Missouri</option>\n\
-	<option value="MT">Montana</option>\n\
-	<option value="NE">Nebraska</option>\n\
-	<option value="NV">Nevada</option>\n\
-	<option value="NH">New Hampshire</option>\n\
-	<option value="NJ">New Jersey</option>\n\
-	<option value="NM">New Mexico</option>\n\
-	<option value="NY">New York</option>\n\
-	<option value="NC">North Carolina</option>\n\
-	<option value="ND">North Dakota</option>\n\
-	<option value="OH">Ohio</option>\n\
-	<option value="OK">Oklahoma</option>\n\
-	<option value="OR">Oregon</option>\n\
-	<option value="PA">Pennsylvania</option>\n\
-	<option value="RI">Rhode Island</option>\n\
-	<option value="SC">South Carolina</option>\n\
-	<option value="SD">South Dakota</option>\n\
-	<option value="TN">Tennessee</option>\n\
-	<option value="TX">Texas</option>\n\
-	<option value="UT">Utah</option>\n\
-	<option value="VT">Vermont</option>\n\
-	<option value="VA">Virginia</option>\n\
-	<option value="WA">Washington</option>\n\
-	<option value="WV">West Virginia</option>\n\
-	<option value="WI">Wisconsin</option>\n\
-	<option value="WY">Wyoming</option>\n'
+function SNIPPET_states_us(selected) {
+	
+	function isSelected(state) {
+		if (state == selected) {
+			return ' selected="selected"'
+		}
+		else {
+			return ''
+		}
+	}
+	
+	var html = '<option' + isSelected("AL") + ' value="AL">Alabama</option>\n\
+  	<option' + isSelected("AK") + ' value="AK">Alaska</option>\n\
+  	<option' + isSelected("AZ") + ' value="AZ">Arizona</option>\n\
+	<option' + isSelected("AR") + ' value="AR">Arkansas</option>\n\
+	<option' + isSelected("CA") + ' value="CA">California</option>\n\
+	<option' + isSelected("CO") + ' value="CO">Colorado</option>\n\
+	<option' + isSelected("CT") + ' value="CT">Connecticut</option>\n\
+	<option' + isSelected("DE") + ' value="DE">Delaware</option>\n\
+	<option' + isSelected("DC") + ' value="DC">Dist of Columbia</option>\n\
+	<option' + isSelected("FL") + ' value="FL">Florida</option>\n\
+	<option' + isSelected("GA") + ' value="GA">Georgia</option>\n\
+	<option' + isSelected("HI") + ' value="HI">Hawaii</option>\n\
+	<option' + isSelected("ID") + ' value="ID">Idaho</option>\n\
+	<option' + isSelected("IL") + ' value="IL">Illinois</option>\n\
+	<option' + isSelected("IN") + ' value="IN">Indiana</option>\n\
+	<option' + isSelected("IA") + ' value="IA">Iowa</option>\n\
+	<option' + isSelected("KS") + ' value="KS">Kansas</option>\n\
+	<option' + isSelected("KY") + ' value="KY">Kentucky</option>\n\
+	<option' + isSelected("LA") + ' value="LA">Louisiana</option>\n\
+	<option' + isSelected("ME") + ' value="ME">Maine</option>\n\
+	<option' + isSelected("MD") + ' value="MD">Maryland</option>\n\
+	<option' + isSelected("MA") + ' value="MA">Massachusetts</option>\n\
+	<option' + isSelected("MI") + ' value="MI">Michigan</option>\n\
+	<option' + isSelected("MN") + ' value="MN">Minnesota</option>\n\
+	<option' + isSelected("MS") + ' value="MS">Mississippi</option>\n\
+	<option' + isSelected("MO") + ' value="MO">Missouri</option>\n\
+	<option' + isSelected("MT") + ' value="MT">Montana</option>\n\
+	<option' + isSelected("NE") + ' value="NE">Nebraska</option>\n\
+	<option' + isSelected("NV") + ' value="NV">Nevada</option>\n\
+	<option' + isSelected("NH") + ' value="NH">New Hampshire</option>\n\
+	<option' + isSelected("NJ") + ' value="NJ">New Jersey</option>\n\
+	<option' + isSelected("NM") + ' value="NM">New Mexico</option>\n\
+	<option' + isSelected("NY") + ' value="NY">New York</option>\n\
+	<option' + isSelected("NC") + ' value="NC">North Carolina</option>\n\
+	<option' + isSelected("ND") + ' value="ND">North Dakota</option>\n\
+	<option' + isSelected("OH") + ' value="OH">Ohio</option>\n\
+	<option' + isSelected("OK") + ' value="OK">Oklahoma</option>\n\
+	<option' + isSelected("OR") + ' value="OR">Oregon</option>\n\
+	<option' + isSelected("PA") + ' value="PA">Pennsylvania</option>\n\
+	<option' + isSelected("RI") + ' value="RI">Rhode Island</option>\n\
+	<option' + isSelected("SC") + ' value="SC">South Carolina</option>\n\
+	<option' + isSelected("SD") + ' value="SD">South Dakota</option>\n\
+	<option' + isSelected("TN") + ' value="TN">Tennessee</option>\n\
+	<option' + isSelected("TX") + ' value="TX">Texas</option>\n\
+	<option' + isSelected("UT") + ' value="UT">Utah</option>\n\
+	<option' + isSelected("VT") + ' value="VT">Vermont</option>\n\
+	<option' + isSelected("VA") + ' value="VA">Virginia</option>\n\
+	<option' + isSelected("WA") + ' value="WA">Washington</option>\n\
+	<option' + isSelected("WV") + ' value="WV">West Virginia</option>\n\
+	<option' + isSelected("WI") + ' value="WI">Wisconsin</option>\n\
+	<option' + isSelected("WY") + ' value="WY">Wyoming</option>\n'
 		
 	return html
 }
