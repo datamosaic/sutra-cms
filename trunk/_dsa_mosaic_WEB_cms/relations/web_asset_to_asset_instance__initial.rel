@@ -1,9 +1,0 @@
-foreignDataSource:"db:/sutra_cms/web_asset_instance",
-items:[
-{foreignColumnName:"flag_initial",primaryDataProviderID:"globals.CODE_constant_1",typeid:23,uuid:"7617AF56-D2BE-41B1-A8CA-F4DF71D61D7B"},
-{foreignColumnName:"id_asset",primaryDataProviderID:"id_asset",typeid:23,uuid:"B29E8241-4427-4336-AF64-6606DB20C6D9"}
-],
-name:"web_asset_to_asset_instance__initial",
-primaryDataSource:"db:/sutra_cms/web_asset",
-typeid:22,
-uuid:"35E3B8E1-89A5-432F-B7D2-62D15237B179"

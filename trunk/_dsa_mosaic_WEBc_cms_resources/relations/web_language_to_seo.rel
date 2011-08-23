@@ -1,0 +1,12 @@
+allowCreationRelatedRecords:true,
+deleteRelatedRecords:true,
+foreignDataSource:"db:/sutra_cms/web_seo",
+initialSort:"",
+items:[
+{foreignColumnName:"id_language",primaryDataProviderID:"id_language",typeid:23,uuid:"D5C267D6-9885-4107-BA25-48E83E95AF99"}
+],
+joinType:1,
+name:"web_language_to_seo",
+primaryDataSource:"db:/sutra_cms/web_language",
+typeid:22,
+uuid:"0164BD7E-69DA-4C5C-AFF7-3387BCE51043"
