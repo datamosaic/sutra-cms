@@ -104,7 +104,7 @@ uuid:"E79F0D8A-BCD7-4C6B-8222-7B25820F4218"
 anchors:11,
 borderType:"SpecialMatteBorder,0.0,0.0,1.0,0.0,#000000,#000000,#999999,#000000,0.0,1.0",
 dataProviderID:"method_name",
-displayType:2,
+editable:false,
 formIndex:10700,
 location:"115,10",
 selectOnEnter:true,
@@ -113,8 +113,7 @@ styleClass:"tableview",
 tabSeq:-2,
 text:"Method",
 typeid:4,
-uuid:"FAE56E79-57BC-4B41-BF32-84268053E342",
-valuelistID:"7C559789-63D9-4A16-AB6A-5662563E8330"
+uuid:"FAE56E79-57BC-4B41-BF32-84268053E342"
 }
 ],
 name:"WEB_0F_block_type_1L_block_display",
