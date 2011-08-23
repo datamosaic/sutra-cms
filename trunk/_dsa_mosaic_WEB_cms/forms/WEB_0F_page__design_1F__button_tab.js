@@ -59,7 +59,7 @@ function VISIT_page(event,returnURL) {
 	
 	if (utils.hasRecords(fsPage)) {
 		
-		var urlString = globals.WEB_MRKUP_link_page(fsPage.id_page)
+		var urlString = globals.WEBc_markup_link_page(fsPage.id_page)
 	
 		if (utils.hasRecords(forms.WEB_0F_page__design_1F__header_display_2F_platform._platform)) {
 			urlString += "&platform=" + forms.WEB_0F_page__design_1F__header_display_2F_platform._platform.url_param

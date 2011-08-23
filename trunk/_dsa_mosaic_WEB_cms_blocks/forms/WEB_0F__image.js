@@ -46,7 +46,7 @@ function BLOCK_scale(event) {
 		}
 		
 		//the data we're working with here
-		var data = globals.WEB_block_getData(event)
+		var data = globals.WEBc_block_getData(event)
 		
 		//see INIT_block for all keys
 		for (var i = 1; i <= data.getSize(); i++) {
@@ -100,7 +100,7 @@ function VIEW_default(obj) {
 	markup = markup.replace(/<<width>>/ig, obj.data.width)
 	markup = markup.replace(/<<height>>/ig, obj.data.height)
 	markup = markup.replace(/<<image_name>>/ig, obj.data.image_name)
-	markup = markup.replace(/<<directory>>/ig, '/' + globals.WEB_MRKUP_link_resources(obj.page.id) + obj.data.directory)
+	markup = markup.replace(/<<directory>>/ig, '/' + globals.WEBc_markup_link_resources(obj.page.id) + obj.data.directory)
 	
 	// return
 	return markup
@@ -126,7 +126,7 @@ function VIEW_lightbox() {
  * @properties={typeid:24,uuid:"581D1472-7339-4669-A110-353A1904B241"}
  */
 function TOGGLE_buttons(event) {
-	var editStatus = globals.WEB_block_edit_get()
+	var editStatus = globals.WEBc_block_getEdit()
 	
 	var hasData = _imageData.id_asset_instance ? true : false
 	
@@ -155,16 +155,16 @@ function INIT_block() {
 	
 	
 	// block views
-	block.views = globals.WEB_block_methods(controller.getName(),"VIEW")
+	block.views = globals.WEBc_block_type_getMethods(controller.getName(),"VIEW")
 	
 	// block client actions - Block
-	block.clientActionsBlock = globals.WEB_block_methods(controller.getName(),"BLOCK")
+	block.clientActionsBlock = globals.WEBc_block_type_getMethods(controller.getName(),"BLOCK")
 	
 	// block client actions - Page
-	block.clientActionsPage = globals.WEB_block_methods(controller.getName(),"PAGE")
+	block.clientActionsPage = globals.WEBc_block_type_getMethods(controller.getName(),"PAGE")
 	
 	// block web actions
-	block.webActions = globals.WEB_block_methods(controller.getName(),"WEB")
+	block.webActions = globals.WEBc_block_type_getMethods(controller.getName(),"WEB")
 	
 	// block data points
 	block.data = {
@@ -216,11 +216,11 @@ var _imageData = null;
  */
 function REC_on_select(event,alwaysRun) {
 	//run on select only when it is 'enabled'
-	if (alwaysRun || globals.WEB_block_enable(event)) {
+	if (alwaysRun || globals.WEBc_block_enable(event)) {
 		//create object with all properties
 		_imageData = new Object()
 
-		var fsBlockData = globals.WEB_block_getData(event)
+		var fsBlockData = globals.WEBc_block_getData(event)
 		
 		for (var i = 1; i <= fsBlockData.getSize(); i++) {
 			var record = fsBlockData.getRecord(i)
@@ -236,7 +236,7 @@ function REC_on_select(event,alwaysRun) {
 		// image is set
 		else {
 			//both the base and resource url methods will return with "sutraCMS/"; need to remove from one so no doubling
-			var siteURL = utils.stringReplace(globals.WEB_MRKUP_link_base(forms.WEB_0F_page__design.id_page),'sutraCMS/','') + globals.WEB_MRKUP_link_resources(forms.WEB_0F_page__design.id_page)
+			var siteURL = utils.stringReplace(globals.WEBc_markup_link_base(forms.WEB_0F_page__design.id_page),'sutraCMS/','') + globals.WEBc_markup_link_resources(forms.WEB_0F_page__design.id_page)
 			
 			var html = 	'<html><head></head><body>' +
 						'<img src="' + siteURL + 

@@ -44,7 +44,7 @@ function BLOCK_sample_method() {
  */
 function REC_on_select(event,alwaysRun) {
 	//run on select only when it is 'enabled'
-	if (alwaysRun || globals.WEB_block_enable(event)) {
+	if (alwaysRun || globals.WEBc_block_enable(event)) {
 		
 	}
 }
@@ -72,16 +72,16 @@ function INIT_block() {
 		}
 	
 	// block views
-	block.views = globals.WEB_block_methods(controller.getName(),"VIEW")
+	block.views = globals.WEBc_block_type_getMethods(controller.getName(),"VIEW")
 	
 	// block client actions - Block
-	block.clientActionsBlock = globals.WEB_block_methods(controller.getName(),"BLOCK")
+	block.clientActionsBlock = globals.WEBc_block_type_getMethods(controller.getName(),"BLOCK")
 	
 	// block client actions - Page
-	block.clientActionsPage = globals.WEB_block_methods(controller.getName(),"PAGE")
+	block.clientActionsPage = globals.WEBc_block_type_getMethods(controller.getName(),"PAGE")
 	
 	// block web actions
-	block.webActions = globals.WEB_block_methods(controller.getName(),"WEB")
+	block.webActions = globals.WEBc_block_type_getMethods(controller.getName(),"WEB")
 	
 	// block data points
 	block.data = {
@@ -116,7 +116,7 @@ function BLOCK_save() {
 	// your code goes here
 	
 	// exit edit mode
-	globals.WEB_block_save()
+	globals.WEBc_block_save()
 }
 
 /**
@@ -126,5 +126,5 @@ function BLOCK_cancel() {
 	// your code goes here
 	
 	// exit edit mode
-	globals.WEB_block_cancel()
+	globals.WEBc_block_cancel()
 }

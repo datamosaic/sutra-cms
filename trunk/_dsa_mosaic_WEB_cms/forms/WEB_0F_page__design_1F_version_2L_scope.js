@@ -591,7 +591,7 @@ function ACTION_gui_mode_load(fireSelect) {
  * @properties={typeid:24,uuid:"4EC7D16F-6935-4DC5-AE97-1F29D7C8E65B"}
  */
 function TOGGLE_elements(editAllow) {
-	var status = globals.WEB_block_edit_get() && editAllow
+	var status = globals.WEBc_block_getEdit() && editAllow
 	
 	elements.btn_actions.enabled = status
 	elements.btn_add.enabled = status

@@ -636,7 +636,7 @@ function SET_valuelist_layout() {
  */
 function PAGE_picker(event) {
 	if (event instanceof JSEvent) {
-		globals.WEB_page_tree_to_popup(PAGE_picker,elements[event.getElementName()])
+		globals.WEBc_page_picker(PAGE_picker,elements[event.getElementName()])
 	}
 	else {
 		page_link_internal = event

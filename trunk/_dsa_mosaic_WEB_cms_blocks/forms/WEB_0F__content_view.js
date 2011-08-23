@@ -15,8 +15,8 @@ var _license_dsa_mosaic_WEB_cms = 'Module: _dsa_mosaic_WEB_cms \
  */
 function REC_on_select(event,alwaysRun) {
 	//run on select only when it is 'enabled'
-	if (alwaysRun || globals.WEB_block_enable(event)) {
-		var fsBlockData = globals.WEB_block_getData(event)
+	if (alwaysRun || globals.WEBc_block_enable(event)) {
+		var fsBlockData = globals.WEBc_block_getData(event)
 		
 		var html = '<html><body>'
 		if (utils.hasRecords(fsBlockData)) {

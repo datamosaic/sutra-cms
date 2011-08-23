@@ -39,7 +39,7 @@ function FORM_on_load() {
  * @properties={typeid:24,uuid:"596AC1D2-C10E-435B-A670-B17748C36852"}
  */
 function BLOCK_save(event) {
-	globals.WEB_block_getData(event).data_value = _dataValue
+	globals.WEBc_block_getData(event).data_value = _dataValue
 	
 	ACTION_colorize(event)
 }
@@ -79,13 +79,13 @@ function FORM_on_show(firstShow, event) {
  */
 function REC_on_select(event,alwaysRun) {
 	//run on select only when it is 'enabled'
-	if (alwaysRun || globals.WEB_block_enable(event)) {
+	if (alwaysRun || globals.WEBc_block_enable(event)) {
 		//save down form variables so records can be changed
-		_dataValue = globals.WEB_block_getData(event).data_value
-		_codeType = globals.WEB_block_getConfig(event).data_value
+		_dataValue = globals.WEBc_block_getData(event).data_value
+		_codeType = globals.WEBc_block_getConfig(event).data_value
 		
 		//when no data or in edit mode, enter in edit mode
-		if (!_dataValue || globals.WEB_block_edit_get()) {
+		if (!_dataValue || globals.WEBc_block_getEdit()) {
 			TOGGLE_buttons(true)
 		}
 		//update display
@@ -105,7 +105,7 @@ function REC_on_select(event,alwaysRun) {
  */
 function BLOCK_cancel(event) {
 	//reset codeType var
-	_codeType = globals.WEB_block_getConfig(event).data_value
+	_codeType = globals.WEBc_block_getConfig(event).data_value
 	
 	//refresh the colored version
 	if (globals.WEB_page_mode == 2) {
@@ -122,7 +122,7 @@ var _dataValue = null;
  * @properties={typeid:24,uuid:"1DD58AA1-41B8-44A1-BDAE-FE0ADBF7F314"}
  */
 function TOGGLE_buttons(state) {
-	if (!globals.WEB_block_edit_get()) {
+	if (!globals.WEBc_block_getEdit()) {
 		elements.btn_edit.visible = false
 		elements.lbl_edit.visible = false
 	}
@@ -170,7 +170,7 @@ function TOGGLE_buttons(state) {
  */
 function ACTION_internal_link(event) {
 
-	globals.WEB_page_tree_to_popup(ACTION_add_token)
+	globals.WEBc_page_picker(ACTION_add_token)
 
 }
 
@@ -179,7 +179,7 @@ function ACTION_internal_link(event) {
  * @properties={typeid:24,uuid:"60C5247A-7183-48A9-8E0D-463E7401E8BB"}
  */
 function ACTION_add_token(inputID,pageRec) {
-	var token = globals.WEB_block_link(inputID)
+	var token = globals.WEBc_markup_token(inputID)
 	
 	//wrap currently selected text with link
 	var elem = elements.fld_data_value
@@ -199,7 +199,7 @@ function ACTION_add_token(inputID,pageRec) {
 	
 	elem.replaceSelectedText(linkStart + linkPage + linkEnd)
 	
-	var recBlockData = globals.WEB_block_getData(event).getRecord(1)
+	var recBlockData = globals.WEBc_block_getData(event).getRecord(1)
 	
 	recBlockData.data_value = _dataValue
 		
@@ -235,7 +235,7 @@ function ACTION_insert_image(event) {
 		var elem = elements.fld_data_value
 	
 		var image = forms.WEB_0F__image__P_choose._imageChosen
-		var token = globals.WEB_block_link(image.asset)
+		var token = globals.WEBc_markup_token(image.asset)
 		
 		//insert image at current location
 		var html = '<img src="' + token + '" width="' + image.meta.width.data_value + '" height="' + image.meta.height.data_value + '" alt="' + image.asset.asset_title +'">'
@@ -251,7 +251,7 @@ function ACTION_insert_image(event) {
 		
 		elem.replaceSelectedText(html)
 		
-		var recBlockData = globals.WEB_block_getData(event).getRecord(1)
+		var recBlockData = globals.WEBc_block_getData(event).getRecord(1)
 		
 		recBlockData.data_value = _dataValue
 			
@@ -286,16 +286,16 @@ function INIT_block() {
 		}
 	
 	// block views
-	block.views = globals.WEB_block_methods(controller.getName(),"VIEW")
+	block.views = globals.WEBc_block_type_getMethods(controller.getName(),"VIEW")
 	
 	// block client actions - Block
-	block.clientActionsBlock = globals.WEB_block_methods(controller.getName(),"BLOCK")
+	block.clientActionsBlock = globals.WEBc_block_type_getMethods(controller.getName(),"BLOCK")
 	
 	// block client actions - Page
-	block.clientActionsPage = globals.WEB_block_methods(controller.getName(),"PAGE")
+	block.clientActionsPage = globals.WEBc_block_type_getMethods(controller.getName(),"PAGE")
 	
 	// block web actions
-	block.webActions = globals.WEB_block_methods(controller.getName(),"WEB")
+	block.webActions = globals.WEBc_block_type_getMethods(controller.getName(),"WEB")
 	
 	// block data points
 	block.data = {
@@ -335,7 +335,7 @@ function ACTION_colorize(event) {
 	var html = ''
 	var prefix = ''
 	
-	var recBlockData = globals.WEB_block_getData(event).getSelectedRecord()
+	var recBlockData = globals.WEBc_block_getData(event).getSelectedRecord()
 	
 	//if there's data, color it
 	if (recBlockData && recBlockData.data_value) {
@@ -346,7 +346,7 @@ function ACTION_colorize(event) {
 		colorize = colorize.replace(/</g,'&lt;')
 		
 		//when running in tinymce
-		prefix = globals.WEB_MRKUP_link_base()
+		prefix = globals.WEBc_markup_link_base()
 		
 		//show html markup
 		var html = 
@@ -396,5 +396,5 @@ function ACTION_colorize(event) {
  * @properties={typeid:24,uuid:"1975546E-4E95-4C97-8332-E8135178C526"}
  */
 function FLD_data_change__code_type(oldValue, newValue, event) {
-	globals.WEB_block_getConfig(event).data_value = newValue
+	globals.WEBc_block_getConfig(event).data_value = newValue
 }

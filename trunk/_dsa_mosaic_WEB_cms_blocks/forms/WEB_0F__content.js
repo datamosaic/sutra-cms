@@ -62,10 +62,10 @@ function TINYMCE_init(mode) {
 //		js.spellchecker_rpc_url = 
 	
 		//styles for tinymce
-		var cssFile = globals.WEB_MRKUP_link_base()
+		var cssFile = globals.WEBc_markup_link_base()
 		
 		//rewrite mode
-		var rewriteMode = globals.WEB_install_rewrite()
+		var rewriteMode = globals.WEBc_install_getRewrite()
 		
 		//no pages, no css
 		if (utils.hasRecords(forms.WEB_0F_page)) {
@@ -175,7 +175,7 @@ function TINYMCE_init(mode) {
  * @properties={typeid:24,uuid:"553CBBDB-2269-49ED-BEC5-A585CBC2011A"}
  */
 function BLOCK_save(event) {
-	globals.WEB_block_getData(event).data_value = elements.bn_tinymce.html
+	globals.WEBc_block_getData(event).data_value = elements.bn_tinymce.html
 //	databaseManager.saveData()
 	elements.bn_tinymce.clearDirtyState()
 	
@@ -218,8 +218,8 @@ function FORM_on_show(firstShow, event) {
  */
 function REC_on_select(event,alwaysRun) {
 	//run on select only when it is 'enabled'
-	if (alwaysRun || globals.WEB_block_enable(event)) {
-		var fsBlockData = globals.WEB_block_getData(event)
+	if (alwaysRun || globals.WEBc_block_enable(event)) {
+		var fsBlockData = globals.WEBc_block_getData(event)
 		
 		TOGGLE_buttons(false)
 		
@@ -244,7 +244,7 @@ function REC_on_select(event,alwaysRun) {
  * @properties={typeid:24,uuid:"8DA68D80-88B6-47F7-857C-6CE05373251D"}
  */
 function BLOCK_cancel(event,stayEdit) {
-	elements.bn_tinymce.html = globals.WEB_block_getData(event).data_value
+	elements.bn_tinymce.html = globals.WEBc_block_getData(event).data_value
 	TOGGLE_buttons(false)
 }
 
@@ -319,7 +319,7 @@ function BLOCK_reset(event) {
  */
 function ACTION_internal_link(event) {
 
-	globals.WEB_page_tree_to_popup(forms.WEB_0F__content.ACTION_add_token)
+	globals.WEBc_page_picker(forms.WEB_0F__content.ACTION_add_token)
 
 }
 
@@ -328,7 +328,7 @@ function ACTION_internal_link(event) {
  * @properties={typeid:24,uuid:"AC4E3BFF-07E7-4A72-A3C1-24F4D8E8C2C0"}
  */
 function ACTION_add_token(inputID,pageRec) {
-	var token = globals.WEB_block_link(inputID)
+	var token = globals.WEBc_markup_token(inputID)
 	
 	//set clipboard content if shift-key held
 	if (globals.CODE_key_pressed('shift')) {
@@ -375,7 +375,7 @@ function ACTION_insert_image(event) {
 	//something chosen, insert image link at cursor location
 	if (forms.WEB_0F__image__P_choose._imageChosen) {
 		var image = forms.WEB_0F__image__P_choose._imageChosen
-		var token = globals.WEB_block_link(image.asset)
+		var token = globals.WEBc_markup_token(image.asset)
 		
 		var html = '<img src="' + token + '" width="' + image.meta.width.data_value + '" height="' + image.meta.height.data_value + '" alt="' + image.asset.asset_title +'">'
 		
@@ -410,16 +410,16 @@ function INIT_block() {
 		}
 	
 	// block views
-	block.views = globals.WEB_block_methods(controller.getName(),"VIEW")
+	block.views = globals.WEBc_block_type_getMethods(controller.getName(),"VIEW")
 	
 	// block client actions - Block
-	block.clientActionsBlock = globals.WEB_block_methods(controller.getName(),"BLOCK")
+	block.clientActionsBlock = globals.WEBc_block_type_getMethods(controller.getName(),"BLOCK")
 	
 	// block client actions - Page
-	block.clientActionsPage = globals.WEB_block_methods(controller.getName(),"PAGE")
+	block.clientActionsPage = globals.WEBc_block_type_getMethods(controller.getName(),"PAGE")
 	
 	// block web actions
-	block.webActions = globals.WEB_block_methods(controller.getName(),"WEB")
+	block.webActions = globals.WEBc_block_type_getMethods(controller.getName(),"WEB")
 	
 	// block data points
 	block.data = {
