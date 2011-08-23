@@ -1,8 +1,0 @@
-foreignDataSource:"db:/sutra_cms/web_editable",
-items:[
-{foreignColumnName:"id_editable",primaryDataProviderID:"id_editable",typeid:23,uuid:"D78159B5-DF90-4EE9-AA0B-4C87DB416A9B"}
-],
-name:"web_area_to_editable",
-primaryDataSource:"db:/sutra_cms/web_area",
-typeid:22,
-uuid:"7F790A74-268D-454E-A825-D6D1B1F0E8DE"

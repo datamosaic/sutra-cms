@@ -1,8 +1,0 @@
-foreignDataSource:"db:/sutra_cms/web_version",
-items:[
-{foreignColumnName:"id_version",primaryDataProviderID:"id_version",typeid:23,uuid:"9E39F86F-F7C3-4417-81B6-C082D89A89C1"}
-],
-name:"web_area_to_version",
-primaryDataSource:"db:/sutra_cms/web_area",
-typeid:22,
-uuid:"4443609B-E40C-4D07-877B-22596D9BF97A"
