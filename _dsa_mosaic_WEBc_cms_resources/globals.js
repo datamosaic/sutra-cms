@@ -324,6 +324,32 @@ function WEBc_session_setData() {
 }
 
 /**
+ * Use this method from AJAX method calls where you know session.getId().
+ * Otherwise, use obj.session_server.record.
+ * 
+ * @param {Javax.servlet.http.httpsession} session Web session to pass in 
+ * @returns {JSRecord} session record or null
+ * 
+ * @properties={typeid:24,uuid:"F2E852B4-71FA-4A91-A9BA-87781B082C6C"}
+ */
+function WEBc_session_getSession(session) {
+	
+	// find matching session record 
+	var sn = databaseManager.getFoundSet("sutra_cms","web_session")
+	sn.find()
+	sn.session_id = session.getId()
+	var count = sn.search()
+	
+	// get existing session record
+	if (count == 1) {
+		return sn.getRecord(1)
+	}
+	else {
+		return null
+	}	
+}
+
+/**
  * Delete cookie from response. Note that cookie still exists in current request.
  * 
  * @param {Javax.servlet.http.httpservletresponse} response implicit jsp response obj 
