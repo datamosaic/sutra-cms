@@ -1183,7 +1183,7 @@ function CONTROLLER_error(obj) {
 			return error
 		}
 		
-		// redirect to the home page
+		// redirect to the error page
 		obj.response.record.sendRedirect(globals.WEBc_markup_link_page(site.id_page__error, pageServer))
 	}
 }
