@@ -374,7 +374,7 @@ function WEBc_session_setData(sessionID, dataKey, dataValue) {
 	sdRec.data_value = dataValue
 	databaseManager.saveData(sdRec)
 	
-	return sdRec
+	return dataValue
 }
 
 /**
