@@ -358,9 +358,10 @@ function WEBc_session_setData(sessionID, dataKey, dataValue) {
 	// find matching session data record 
 	var sd = databaseManager.getFoundSet("sutra_cms","web_session_data")
 	sd.find()
-	sd.session_id = snRec.id_session
+	sd.id_session = snRec.id_session
 	sd.data_key = dataKey
-	var count = sd.search()
+	var count = sd.search()	
+	
 	// get specified session data
 	if (count != 1) {		
 		// create session data record
