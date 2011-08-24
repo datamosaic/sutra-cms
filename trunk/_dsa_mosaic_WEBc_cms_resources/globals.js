@@ -678,10 +678,10 @@ function WEBc_markup_link_page(pageID, siteURL, linkType, webMode) {
 		var fsPage = databaseManager.getFoundSet("sutra_cms","web_page")
 		fsPage.find()
 		fsPage.id_page = pageID.toString()
-		//when in developer, all pages are valid for our purposes
-		if (!application.isInDeveloper()) {
-			fsPage.flag_publish = 1
-		}
+//		//when in developer, all pages are valid for our purposes
+//		if (!application.isInDeveloper()) {
+//			fsPage.flag_publish = 1
+//		}
 		var count = fsPage.search()
 	}
 	
