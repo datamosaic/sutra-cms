@@ -68,6 +68,27 @@ function SNIPPET_states_us(selected) {
 }
 
 /**
+ * @properties={typeid:24,uuid:"689E98F4-990B-4543-9FDC-8A65A0047E7B"}
+ */
+function SNIPPET_countries_short(selected) {
+	
+	function isSelected(country) {
+		if (country == selected) {
+			return ' selected="selected"'
+		}
+		else {
+			return ''
+		}
+	}
+	
+	var html = '<option' + isSelected("usa") + ' value="AL">United States</option>\n\
+  	<option' + isSelected("ca") + ' value="AK">Canada</option>\n\
+	<option' + isSelected("mx") + ' value="WI">Mexico</option>\n'
+		
+	return html
+}
+
+/**
  * @properties={typeid:24,uuid:"B96A5D9D-B6CA-4785-B4EB-03BD34B11FD2"}
  */
 function SNIPPET_credit_card_month(selected) {
