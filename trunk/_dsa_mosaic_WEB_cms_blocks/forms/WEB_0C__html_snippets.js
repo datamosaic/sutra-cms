@@ -81,8 +81,8 @@ function SNIPPET_countries_short(selected) {
 		}
 	}
 	
-	var html = '<option' + isSelected("usa") + ' value="AL">United States</option>\n\
-  	<option' + isSelected("ca") + ' value="AK">Canada</option>\n'
+	var html = '<option' + isSelected("usa") + ' value="US">United States</option>\n\
+  	<option' + isSelected("ca") + ' value="CA">Canada</option>\n'
 		
 	return html
 }
