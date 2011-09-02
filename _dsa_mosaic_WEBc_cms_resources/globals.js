@@ -907,27 +907,35 @@ function WEBc_page_picker(method,elem) {
 		elem = forms[application.getMethodTriggerFormName()].elements[application.getMethodTriggerElementName()]
 	}
 	
-	var fsPages = databaseManager.getFoundSet('sutra_cms', 'web_page')
-	var relnPage = 'web_page_to_page__child'
-	
-	fsPages.find()
-	fsPages.parent_id_page = '^='
-	fsPages.id_site = forms.WEB_0F_site.id_site
-	var results = fsPages.search()
-	
-	if (results) {
-		fsPages.sort('order_by asc')
+	//there is an element for this popup to be attached, build!
+	if (elem != null) {
+		globals.CODE_cursor_busy(true)
 		
-		//make array
-		var menu = new Array()
+		var fsPages = databaseManager.getFoundSet('sutra_cms', 'web_page')
+		var relnPage = 'web_page_to_page__child'
 		
-		for (var i = 1 ; i <= fsPages.getSize() ; i++) {
-			menu.push(GET_page(fsPages.getRecord(i)))
-		}
+		fsPages.find()
+		fsPages.parent_id_page = '^='
+		fsPages.id_site = forms.WEB_0F_site.id_site
+		var results = fsPages.search()
 		
-		//pop up the popup menu
-		if (elem != null) {
+		if (results) {
+			fsPages.sort('order_by asc')
+			
+			//make array
+			var menu = new Array()
+			
+			for (var i = 1 ; i <= fsPages.getSize() ; i++) {
+				menu.push(GET_page(fsPages.getRecord(i)))
+			}
+			
+			globals.CODE_cursor_busy(false)
+			
+			//pop up the popup menu
 		    plugins.popupmenu.showPopupMenu(elem, menu);
+		}
+		else {
+			globals.CODE_cursor_busy(false)
 		}
 	}
 }
