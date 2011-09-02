@@ -129,7 +129,6 @@ function REC_new() {
  */
 function ACTION_blow_in_missing_areas_to_all_pages() {
 	return
-	
 	if (globals.TRIGGER_registered_action_authenticate('cms site page update')) {
 		var input = plugins.dialogs.showWarningDialog(
 						'Continue?',
@@ -139,40 +138,18 @@ function ACTION_blow_in_missing_areas_to_all_pages() {
 				)
 		
 		if (input == 'Yes') {
-			//go to page layout
-			forms.WEB_0F_page.controller.show()
+			//get foundset of pages
 			
-			forms.WEB_0F_page.controller.find()
-			forms.WEB_0F_page.id_site = id_site
-			forms.WEB_0F_page.controller.search()
+			//loop over pages
 			
-	//		if (globals.TRIGGER_navigation_set('CMS_page',true,web_site_to_page)) {
-				application.updateUI(4000)
+				//get platform/language/groups and loop all combinations
 				
 				
-				//loop over all pages in site
-				for (var i = 1; i <= forms.WEB_0F_page.controller.getMaxRecordIndex(); i++) {
-	//				var input = plugins.dialogs.showQuestionDialog(
-	//							'Continue ' + i + '?',
-	//							'Meh.',
-	//							'Yes',
-	//							'No'
-	//					)
-	//				
-	//				if (input == 'No') {
-	//					return
-	//				}
-	//				else if (input == 'Yes') {
-						//set selected index
-						forms.WEB_0F_page.controller.setSelectedIndex(i)
-						
+					//loop version stack and pass in to add missing areas
+				
+			
 						//run area diff method
-						forms.WEB_0F_page__design_1F_version_2L_area.AREA_add_missing()
-	//				}
-	//				
-	//				input = 'No'
-				}
-	//		}
+						forms.WEB_0F_page__design_1F_version_2L_area.AREA_add_missing(fsVersion,latestVersion,activeVersion)
 		}
 	}
 }
