@@ -636,9 +636,9 @@ function MOVE_generic(input) {
 	//MEMO: as it turns out, when resorting, we need to blow out the whole tree
 	TREE_refresh()
 	
-	
 	//need to reselect
 	if (reselect) {
+		REC_on_select(recMove.id_page)
 		elements.bean_tree.selectionPath = FIND_path(recMove)
 	}
 }
@@ -1351,6 +1351,9 @@ function TABS_list(input) {
  * @properties={typeid:24,uuid:"FF2A28E9-E80B-4ECE-B76D-34E9765F7640"}
  */
 function TREE_refresh() {
+	//disable record selection of page
+	forms.WEB_0F_page__design._skipSelect = true
+	
 	//remove all roots from tree
 	elements.bean_tree.removeAllRoots()
 	
@@ -1378,4 +1381,7 @@ function TREE_refresh() {
 		//load the foundset into the treeview 
 		elements.bean_tree.addRoots(forms.WEB_0F_page.foundset)
 	}
+	
+	//enable record selection of page
+	forms.WEB_0F_page__design._skipSelect = false
 }
