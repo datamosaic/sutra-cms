@@ -261,7 +261,7 @@ function CONTROLLER_builder(results, obj) {
 
 	
 		// add area to the results object
-		results.addRow([area.area_name, globals.WEBc_markup_link_internal(areaMarkup,obj.request.server,obj.type,area.id_area)])
+		results.addRow([area.area_name, globals.WEBc_markup_link_internal(areaMarkup,obj.request.server,obj.type,area.id_area,obj)])
 		
 		// obj: area...CLEAR
 		obj.area.record = ''
@@ -1130,9 +1130,9 @@ function CONTROLLER_setup(results, app, session, request, response, mode) {
 	
 	// go through all key value pairs for this particular language
 		//TODO: modify the jsp to use only the ones passed in
-	databaseManager.refreshRecordFromDatabase(obj.language.record.web_language_to_seo,-1)
-	for (var i = 1; i <= obj.language.record.web_language_to_seo.getSize(); i++) {
-		var record = obj.language.record.web_language_to_seo.getRecord(i)
+	databaseManager.refreshRecordFromDatabase(obj.language.record.web_language_to_meta_data,-1)
+	for (var i = 1; i <= obj.language.record.web_language_to_meta_data.getSize(); i++) {
+		var record = obj.language.record.web_language_to_meta_data.getRecord(i)
 		
 		if (record.data_key) {
 			var keyName = 'seo' + utils.stringInitCap(record.data_key)
