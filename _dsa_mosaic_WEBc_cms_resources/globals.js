@@ -621,7 +621,7 @@ function WEBc_markup_link_resources(pageID, siteURL, linkType) {
  * @param markup text that contain internal page link keys
  * @properties={typeid:24,uuid:"19AD8258-86F2-48AB-AA1B-713A2D08D77D"}
  */
-function WEBc_markup_link_internal(markup,siteURL,linkType,areaID) {
+function WEBc_markup_link_internal(markup,siteURL,linkType,areaID,obj) {
 	
 	while ( utils.stringPosition(markup, "{DS:ID_", 0, 0) >= 0 ) {
 		var newMarkup = ''
@@ -636,7 +636,7 @@ function WEBc_markup_link_internal(markup,siteURL,linkType,areaID) {
 		markup 		= utils.stringMiddle(markup, end + 1, 100000)
 		
 		// add markup link
-		newMarkup	+= globals.WEBc_markup_link_page(id,siteURL,linkType)
+		newMarkup	+= globals.WEBc_markup_link_page(id,siteURL,linkType,null,obj)
 		
 		markup		= newMarkup + markup
 		
@@ -670,7 +670,7 @@ function WEBc_markup_link_internal(markup,siteURL,linkType,areaID) {
  * @param pageID ID of the page to link to
  * @properties={typeid:24,uuid:"8D473D49-2039-49AC-B633-72E88E736CA9"}
  */
-function WEBc_markup_link_page(pageID, siteURL, linkType, webMode) {
+function WEBc_markup_link_page(pageID, siteURL, linkType, webMode, obj) {
 	//get url up to sutraCMS directory
 	var pageLink = globals.WEBc_markup_link_base(pageID, siteURL, linkType)
 	
@@ -745,19 +745,58 @@ function WEBc_markup_link_page(pageID, siteURL, linkType, webMode) {
 				
 				break
 			case "Pretty":
-				//are there paths configured for this page?
-				if (pageRec && utils.hasRecords(pageRec.web_page_to_path)) {
+				//get the site's language record
+				if (obj && obj.language && obj.language.record && utils.hasRecords(obj.language.record.web_language_to_site_language)) {
+					var siteLangRec = obj.language.record.web_language_to_site_language.getRecord(1)
+				}
+				
+				//try to get requested language's path
+				if (pageRec && utils.hasRecords(pageRec.web_page_to_language) && siteLangRec) {
+					//loop to find selected language
+					for (var i = 1; i <= pageRec.web_page_to_language.getSize(); i++) {
+						var languageRec = pageRec.web_page_to_language.getRecord(i)
+						
+						if (languageRec.id_site_language == siteLangRec.id_site_language) {
+							var pageLangRec = languageRec
+						}
+					}
+					
+					//loop to find default language
+					for (var i = 1; i <= pageRec.web_page_to_language.getSize(); i++) {
+						var languageRec = pageRec.web_page_to_language.getRecord(i)
+						
+						if (languageRec.flag_default == 1) {
+							var pageLangDefaultRec = languageRec
+						}
+					}
+				}
+				
+				//are there paths configured for this page/language
+				if (pageLangRec && utils.hasRecords(pageLangRec.web_language_to_path)) {
 					//loop to find default
-					for (var i = 1; i <= pageRec.web_page_to_path.getSize(); i++) {
-						var pathRec = pageRec.web_page_to_path.getRecord(i)
+					for (var i = 1; i <= pageLangRec.web_language_to_path.getSize(); i++) {
+						var pathRec = pageLangRec.web_language_to_path.getRecord(i)
 						
 						if (pathRec.flag_default == 1) {
+							var pretty = pathRec.path
+							break
+						}
+					}
+				}
+				//pull path from default page's language
+				else if (pageLangDefaultRec && utils.hasRecords(pageLangDefaultRec.web_language_to_path)) {
+					//loop to find default
+					for (var i = 1; i <= pageLangDefaultRec.web_language_to_path.getSize(); i++) {
+						var pathRec = pageLangDefaultRec.web_language_to_path.getRecord(i)
+						
+						if (pathRec.flag_default == 1) {
+							var pretty = pathRec.path
 							break
 						}
 					}
 				}
 				
-				var urlString = (pathRec) ? pathRec.path : 'error'
+				var urlString = (pretty) ? pretty : 'error'
 				
 				pageLink += urlString + '.html'
 				break
