@@ -1,4 +1,4 @@
-dataSource:"db:/sutra_cms/web_seo",
+dataSource:"db:/sutra_cms/web_meta_data",
 items:[
 {
 anchors:11,
@@ -100,7 +100,7 @@ typeid:7,
 uuid:"F1D264E2-0663-452F-BBD6-8F397F8F8C50"
 }
 ],
-name:"WEB_0F_page__design_1F__properties_2F_language_3L_seo",
+name:"WEB_0F_page__design_1F__properties_2F_language_3L_meta_data",
 onRecordSelectionMethodID:"-1",
 onShowMethodID:"-1",
 paperPrintScale:100,

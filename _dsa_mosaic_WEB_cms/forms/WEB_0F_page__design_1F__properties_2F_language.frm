@@ -23,8 +23,8 @@ items:[
 {
 containsFormID:"42B3180B-E838-46CF-AE3A-191A478C8991",
 location:"20,40",
-relationName:"web_language_to_seo",
-text:"WEB_0F_page__design_1F__properties_2F_language_3L_seo",
+relationName:"web_language_to_meta_data",
+text:"WEB_0F_page__design_1F__properties_2F_language_3L_meta_data",
 typeid:15,
 uuid:"8A4D7631-F5D2-4F85-9337-C10DC3A54591"
 },
@@ -87,9 +87,9 @@ onActionMethodID:"9E8FCA21-C145-4CDD-ABD6-AEC851E91994",
 rolloverCursor:12,
 showClick:false,
 showFocus:false,
-size:"40,18",
+size:"70,18",
 styleClass:"grid_pri_tab_unselect",
-text:"SEO",
+text:"Meta Data",
 transparent:true,
 typeid:7,
 uuid:"8D60DCF0-8E93-41E4-A719-5DD651E60AD4"

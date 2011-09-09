@@ -223,10 +223,6 @@ function FORM_on_load(event) {
 }
 
 /**
- * Perform the element default action.
- *
- * @param {JSEvent} event the event that triggered the action
- *
  * @properties={typeid:24,uuid:"18A5DA18-8E96-4E36-B92C-2BDC0BE065A6"}
  */
 function TAB_change(event) {
@@ -235,7 +231,12 @@ function TAB_change(event) {
 	//on language, show bottom
 	if (elements.tab_detail.tabIndex == 4) {
 		elements.split_details.bottomComponent	= elements.tab_detail_bottom
-		elements.split_details.dividerLocation = elements.split_details.getHeight() - 170
+		
+		if (_splitDivider + 10 >= elements.split_details.getHeight()) {
+			_splitDivider = 110
+		}
+		
+		elements.split_details.dividerLocation = _splitDivider
 		
 		//set tabpanel bordering to be thinner
 //		elements.tab_detail.setBorder('SpecialMatteBorder,1.0,1.0,1.0,1.0,#647B95,#A1B0CF,#A1B0CF,#A1B0CF,0.0,')
@@ -259,6 +260,11 @@ function TAB_change(event) {
 //	
 //	forms[elements.tab_detail.getTabFormNameAt(elements.tab_detail.tabIndex)].REC_on_select()
 }
+
+/**
+ * @properties={typeid:35,uuid:"8FD80689-2C57-47BA-9E8C-FECF47A8CD19",variableType:4}
+ */
+var _splitDivider = 110;
 
 /**
  * @properties={typeid:24,uuid:"90ABEFE5-34A2-4007-89FA-AF32062CD7F1"}
@@ -294,7 +300,7 @@ function TOGGLE_elements(editAllow) {
 	forms.WEB_0F_page__design_1F__properties_2F_language_3L_path.elements.fld_flag_default.enabled = editAllow
 	
 	//seo
-	forms.WEB_0F_page__design_1F__properties_2F_language_3L_seo.elements.btn_delete.visible = editAllow
-	forms.WEB_0F_page__design_1F__properties_2F_language_3L_seo.elements.edit_data_value.editable = editAllow
-	forms.WEB_0F_page__design_1F__properties_2F_language_3L_seo.elements.fld_data_key.editable = editAllow
+	forms.WEB_0F_page__design_1F__properties_2F_language_3L_meta_data.elements.btn_delete.visible = editAllow
+	forms.WEB_0F_page__design_1F__properties_2F_language_3L_meta_data.elements.edit_data_value.editable = editAllow
+	forms.WEB_0F_page__design_1F__properties_2F_language_3L_meta_data.elements.fld_data_key.editable = editAllow
 }

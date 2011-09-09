@@ -24,6 +24,8 @@ function dragDivider(mouseEvent) {
 	var splitPane = forms.WEB_0F_page__design_1F__properties.elements.split_details
 	
 	splitPane.dividerLocation = splitPane.dividerLocation + mouseEvent.getY()
+	
+	forms.WEB_0F_page__design_1F__properties._splitDivider = splitPane.dividerLocation
 }
 
 /**
