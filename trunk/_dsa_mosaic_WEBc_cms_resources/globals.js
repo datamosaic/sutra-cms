@@ -540,7 +540,7 @@ function WEBc_markup_link_base(pageID, siteURL) {
 	}
 	//use whatever url the request came in on
 	else {
-		siteURL = accessURL
+		siteURL = (accessURL == '127.0.0.1') ? 'localhost' : accessURL
 	}
 	
 //	//advanced apache setup, reference by correct url
