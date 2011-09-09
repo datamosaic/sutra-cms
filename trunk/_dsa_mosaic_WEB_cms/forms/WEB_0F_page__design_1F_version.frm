@@ -29,6 +29,7 @@ name:"tab_content",
 printable:false,
 size:"130,100",
 tabOrientation:-1,
+transparent:true,
 typeid:16,
 uuid:"20E36769-1F21-4D38-AD5A-946E3E2F3312"
 },
@@ -50,7 +51,7 @@ beanXML:"<?xml version=\"1.0\" encoding=\"UTF-8\"?>
   <void property=\"size\"> 
    <object class=\"java.awt.Dimension\"> 
     <int>580<\/int> 
-    <int>290<\/int> 
+    <int>300<\/int> 
    <\/object> 
   <\/void> 
   <void property=\"UI\"> 
@@ -81,6 +82,9 @@ beanXML:"<?xml version=\"1.0\" encoding=\"UTF-8\"?>
   <\/void> 
   <void property=\"oneTouchExpandable\"> 
    <boolean>true<\/boolean> 
+  <\/void> 
+  <void property=\"opaque\"> 
+   <boolean>false<\/boolean> 
   <\/void> 
   <void property=\"requestFocusEnabled\"> 
    <boolean>false<\/boolean> 
@@ -116,6 +120,7 @@ name:"tab_area",
 printable:false,
 size:"130,100",
 tabOrientation:-1,
+transparent:true,
 typeid:16,
 uuid:"3A0CD1A7-08F2-4A02-8D20-E59E375ED1C1"
 },
@@ -139,6 +144,7 @@ name:"tab_block",
 printable:false,
 size:"130,100",
 tabOrientation:-1,
+transparent:true,
 typeid:16,
 uuid:"73398AE1-7B71-4E21-8796-C981C6DDDFD9"
 },
@@ -188,6 +194,9 @@ beanXML:"<?xml version=\"1.0\" encoding=\"UTF-8\"?>
   <\/void> 
   <void property=\"name\"> 
    <string>bean_split_2<\/string> 
+  <\/void> 
+  <void property=\"opaque\"> 
+   <boolean>false<\/boolean> 
   <\/void> 
   <void property=\"resizeWeight\"> 
    <double>0.25<\/double> 
