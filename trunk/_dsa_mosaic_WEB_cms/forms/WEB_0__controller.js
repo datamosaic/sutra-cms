@@ -334,6 +334,7 @@ function CONTROLLER_setup(results, app, session, request, response, mode) {
 		// TODO: may add in ability to see versions on a live server
 	var platformID		= request.getParameter("platform")
 	var languageID		= request.getParameter("language")
+	var languageName	= request.getAttribute("language")
 	var groupID		= request.getParameter("group")
 	var versionID	= request.getParameter("version")
 	
@@ -628,9 +629,27 @@ function CONTROLLER_setup(results, app, session, request, response, mode) {
 	else if (pagePath) {
 		var site = databaseManager.getFoundSet("sutra_cms","web_site")
 		site.find()
-		site.url = pageServer //"%" + pageServer + "%"
+		site.url = pageServer
 		var count = site.search()
-		if (count != 1) {
+		
+		//no site found, but we know what language this is requested on
+		if (languageName && count != 1) {
+			var siteLanguage = databaseManager.getFoundSet("sutra_cms","web_site_language")
+			siteLanguage.find()
+			siteLanguage.language_code = languageName
+			var count = siteLanguage.search()
+			
+			if (count != 1) {
+				obj.error.code = 500
+				obj.error.message = "No site found"
+				return obj
+			}
+			else {
+				site.loadRecords([siteLanguage.id_site])
+			}
+		}
+		//no site found
+		else if (count != 1) {
 			obj.error.code = 500
 			obj.error.message = "No site found"
 			return obj
@@ -671,7 +690,7 @@ function CONTROLLER_setup(results, app, session, request, response, mode) {
 		
 		var site = databaseManager.getFoundSet("sutra_cms","web_site")
 		site.find()
-		site.url = pageServer //"%" + pageServer + "%"
+		site.url = pageServer
 		var count = site.search()
 		
 		//try finding blank cms url
@@ -681,7 +700,24 @@ function CONTROLLER_setup(results, app, session, request, response, mode) {
 			var count = site.search()
 		}
 		
-		if (count != 1) {
+		//no site found, but we know what language this is requested on
+		if (languageName && count != 1) {
+			var siteLanguage = databaseManager.getFoundSet("sutra_cms","web_site_language")
+			siteLanguage.find()
+			siteLanguage.language_code = languageName
+			var count = siteLanguage.search()
+			
+			if (count != 1) {
+				obj.error.code = 500
+				obj.error.message = "No site found"
+				return obj
+			}
+			else {
+				site.loadRecords([siteLanguage.id_site])
+			}
+		}
+		//no site found
+		else if (count != 1) {
 			obj.error.code = 500
 			obj.error.message = "No site found"
 			return obj
@@ -884,8 +920,37 @@ function CONTROLLER_setup(results, app, session, request, response, mode) {
 	var languageSite = databaseManager.getFoundSet("sutra_cms","web_site_language")
 	var language = databaseManager.getFoundSet("sutra_cms","web_language")
 	
+	// language specified by folder in url
+	if (languageName) {
+		languageSite.find()
+		languageSite.id_site = page.id_site
+		languageSite.language_code = languageName
+		var count = languageSite.search()
+		if (!count) {
+			obj.error.code = 500
+			obj.error.message = "Site language \"" + languageName + "\" does not exist"
+			return obj
+		}
+		else {
+			language.find()
+			language.id_site_language = languageSite.id_site_language
+			language.id_page = page.id_page
+			var count = language.search()
+			
+			// requested language isn't present on this page, just grab the page's default language
+			if (!count) {
+				language.find()
+				language.id_page = page.id_page
+				var count = language.search()
+				
+				if (count) {
+					language.sort('rec_created asc')
+				}
+			}
+		}
+	}
 	// no language specified
-	if (!languageID) {
+	else if (!languageID) {
 		languageSite.find()
 		languageSite.id_site = page.id_site
 		languageSite.flag_default = 1
@@ -913,7 +978,7 @@ function CONTROLLER_setup(results, app, session, request, response, mode) {
 			}
 		}
 	}
-	// language specified
+	// language specified by parameter
 	else {
 		language.find()
 		language.url_param = languageID

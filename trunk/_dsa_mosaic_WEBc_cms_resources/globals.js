@@ -505,7 +505,7 @@ function WEBc_cookie_getValue(request, name) {
 /**
  * @properties={typeid:24,uuid:"AFA318BF-7E29-4E7D-BE9D-CE4085851DF3"}
  */
-function WEBc_markup_link_base(pageID, siteURL) {
+function WEBc_markup_link_base(pageID, siteURL, siteLanguageRec) {
 	//rewrite mode
 	var rewriteMode = globals.WEBc_install_getRewrite()
 	
@@ -537,6 +537,11 @@ function WEBc_markup_link_base(pageID, siteURL) {
 	//url specified
 	if (siteRec.url) {
 		siteURL = siteRec.url
+		
+		//language as a domain
+		if (siteLanguageRec && siteLanguageRec.url) {
+			siteURL = siteLanguageRec.url
+		}
 	}
 	//use whatever url the request came in on
 	else {
@@ -565,6 +570,11 @@ function WEBc_markup_link_base(pageID, siteURL) {
 	
 	if (port && port != 80) {
 		siteURL += ':' + port
+	}
+	
+	//language as a folder
+	if (siteLanguageRec && siteLanguageRec.directory && !siteLanguageRec.flag_default) {
+		siteURL += '/' + siteLanguageRec.directory
 	}
 	
 	//no url rewrite OR running off localhost and site name not specified as localhost
@@ -671,9 +681,6 @@ function WEBc_markup_link_internal(markup,siteURL,linkType,areaID,obj) {
  * @properties={typeid:24,uuid:"8D473D49-2039-49AC-B633-72E88E736CA9"}
  */
 function WEBc_markup_link_page(pageID, siteURL, linkType, webMode, obj) {
-	//get url up to sutraCMS directory
-	var pageLink = globals.WEBc_markup_link_base(pageID, siteURL, linkType)
-	
 	//get page requested
 	if (pageID) {
 		var fsPage = databaseManager.getFoundSet("sutra_cms","web_page")
@@ -705,7 +712,7 @@ function WEBc_markup_link_page(pageID, siteURL, linkType, webMode, obj) {
 			}
 			//internal link deleted or not published, error out (go home)
 			else {
-				return pageLink
+				var goHome = true
 			}
 		}
 	}
@@ -713,6 +720,35 @@ function WEBc_markup_link_page(pageID, siteURL, linkType, webMode, obj) {
 	else {
 		var pageRec = new Object()
 		var siteRec = new Object()
+	}
+	
+	//get the site's language record
+	if (obj && obj.language && obj.language.record && utils.hasRecords(obj.language.record.web_language_to_site_language)) {
+		var siteLangRec = obj.language.record.web_language_to_site_language.getRecord(1)
+	}
+	
+	//try to get requested language's path
+	if (pageRec && utils.hasRecords(pageRec.web_page_to_language) && siteLangRec) {
+		//loop to find selected language
+		for (var i = 1; i <= pageRec.web_page_to_language.getSize(); i++) {
+			var languageRec = pageRec.web_page_to_language.getRecord(i)
+			
+			if (languageRec.id_site_language == siteLangRec.id_site_language) {
+				var pageLangRec = languageRec
+			}
+		}
+		
+		//find default language
+		pageRec.web_page_to_language.sort('rec_created desc')
+		var pageLangDefaultRec =  pageRec.web_page_to_language.getRecord(1)
+	}
+	
+	//get url up to sutraCMS directory
+	var pageLink = globals.WEBc_markup_link_base(pageID, siteURL, siteLangRec)
+	
+	//internal link error; go home
+	if (goHome) {
+		return pageLink
 	}
 	
 	//this is an external link type of page, pageLink == its link
@@ -745,32 +781,6 @@ function WEBc_markup_link_page(pageID, siteURL, linkType, webMode, obj) {
 				
 				break
 			case "Pretty":
-				//get the site's language record
-				if (obj && obj.language && obj.language.record && utils.hasRecords(obj.language.record.web_language_to_site_language)) {
-					var siteLangRec = obj.language.record.web_language_to_site_language.getRecord(1)
-				}
-				
-				//try to get requested language's path
-				if (pageRec && utils.hasRecords(pageRec.web_page_to_language) && siteLangRec) {
-					//loop to find selected language
-					for (var i = 1; i <= pageRec.web_page_to_language.getSize(); i++) {
-						var languageRec = pageRec.web_page_to_language.getRecord(i)
-						
-						if (languageRec.id_site_language == siteLangRec.id_site_language) {
-							var pageLangRec = languageRec
-						}
-					}
-					
-					//loop to find default language
-					for (var i = 1; i <= pageRec.web_page_to_language.getSize(); i++) {
-						var languageRec = pageRec.web_page_to_language.getRecord(i)
-						
-						if (languageRec.flag_default == 1) {
-							var pageLangDefaultRec = languageRec
-						}
-					}
-				}
-				
 				//are there paths configured for this page/language
 				if (pageLangRec && utils.hasRecords(pageLangRec.web_language_to_path)) {
 					//loop to find default
