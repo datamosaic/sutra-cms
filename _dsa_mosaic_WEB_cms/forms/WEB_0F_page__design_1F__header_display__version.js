@@ -106,6 +106,9 @@ function TOGGLE_elements() {
  * @properties={typeid:24,uuid:"3EDEB7C9-1778-4C96-ABF2-A5F21035BF98"}
  */
 function ADD_version(event) {
+	//disable pop-ups
+	var input = 'Yes'
+	
 	//there is a page
 	if (utils.hasRecords(forms.WEB_0F_page__design.foundset)) {
 		//do we have any versions?
