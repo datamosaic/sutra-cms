@@ -573,7 +573,7 @@ function WEBc_markup_link_base(pageID, siteURL, siteLanguageRec) {
 	}
 	
 	//language as a folder
-	if (siteLanguageRec && siteLanguageRec.directory && !siteLanguageRec.flag_default) {
+	if (rewriteMode && siteLanguageRec && siteLanguageRec.directory && !siteLanguageRec.flag_default) {
 		siteURL += '/' + siteLanguageRec.directory
 	}
 	
@@ -790,6 +790,25 @@ function WEBc_markup_link_page(pageID, siteURL, linkType, webMode, obj) {
 		switch (linkType) {
 			case "Index":
 				pageLink += 'index.jsp?id=' + pageRec.url_param
+				
+				//rewrite mode turned off and language specified is not the default
+				if (!rewriteMode && !siteLanguageRec.flag_default) {
+					
+					//pull from page's specified language
+					if (pageLanguageRec) {
+						var param = pageLanguageRec.url_param
+					}
+					//pullfrom page's default language
+					else if (pageLanguageDefaultRec) {
+						var param = pageLanguageDefaultRec.url_param
+					}
+					
+					//a language parameter specified
+					if (param) {
+						pageLink += '&language=' + param
+					}
+				}
+				
 				break
 			case "Folder":
 				//on home page, don't specify a path
