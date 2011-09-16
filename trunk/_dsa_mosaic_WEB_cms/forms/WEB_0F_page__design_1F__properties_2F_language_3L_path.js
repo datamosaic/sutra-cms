@@ -160,5 +160,10 @@ function FLD_data_change__path(oldValue, newValue, event) {
 function REC_new() {
 	controller.newRecord(false)
 	id_site = forms.WEB_0F_site.id_site
+	
+	if (foundset.getSize() == 1) {
+		flag_default = 1
+	}
+	
 	elements.fld_path.requestFocus(false)
 }

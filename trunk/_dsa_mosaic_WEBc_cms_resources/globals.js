@@ -820,6 +820,8 @@ function WEBc_markup_link_page(pageID, siteURL, linkType, webMode, obj) {
 				var pageStack = globals.WEBc_markup_pages_up(null,null,pageRec)
 				
 				var folder = ''
+				pageLanguageRec = null
+				pageLanguageDefaultRec = null
 				
 				//loop over page stack to get folder structure
 				for (var h = 0; h < pageStack.length; h++) {
@@ -832,7 +834,7 @@ function WEBc_markup_link_page(pageID, siteURL, linkType, webMode, obj) {
 							var languageRec = folderRec.web_page_to_language.getRecord(i)
 							
 							if (languageRec.id_site_language == siteLanguageRec.id_site_language) {
-								var pageLanguageRec = languageRec
+								pageLanguageRec = languageRec
 								break
 							}
 						}
@@ -840,7 +842,7 @@ function WEBc_markup_link_page(pageID, siteURL, linkType, webMode, obj) {
 					
 					//find default language
 					folderRec.web_page_to_language.sort('rec_created asc')
-					var pageLanguageDefaultRec =  folderRec.web_page_to_language.getRecord(1)
+					pageLanguageDefaultRec =  folderRec.web_page_to_language.getRecord(1)
 					
 					//are there paths configured for this page/language
 					if (pageLanguageRec && utils.hasRecords(pageLanguageRec.web_language_to_path)) {

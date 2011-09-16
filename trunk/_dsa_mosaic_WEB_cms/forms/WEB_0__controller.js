@@ -675,7 +675,7 @@ function CONTROLLER_setup(results, app, session, request, response, mode) {
 			var pageFound = false
 			
 			//get page stack
-			var pageStack = globals.WEBc_markup_pages_up(null,null,record)
+			var pageStack = globals.WEBc_markup_pages_up(null,null,null,record)
 			
 			//comapre all possible paths for this page with this slot in pagePathPages
 			loop_page:
@@ -691,7 +691,7 @@ function CONTROLLER_setup(results, app, session, request, response, mode) {
 					for (var l = 1; l <= pathLanguageRec.web_language_to_path.getSize(); l++) {
 						var pathPathRec = pathLanguageRec.web_language_to_path.getRecord(l)
 						
-						if (pathPathRec.path == pagePathPages[pagePathPages.length - 1]) {
+						if (pathPathRec.path == pagePathPages[j]) {
 							pathFound = true
 							continue loop_page
 						}
