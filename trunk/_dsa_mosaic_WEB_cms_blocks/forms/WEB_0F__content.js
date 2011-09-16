@@ -319,7 +319,7 @@ function BLOCK_reset(event) {
  */
 function ACTION_internal_link(event) {
 
-	globals.WEBc_page_picker(forms.WEB_0F__content.ACTION_add_token)
+	globals.WEBc_page_picker(forms.WEB_0F__content.ACTION_add_token,null,true)
 
 }
 

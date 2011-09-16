@@ -170,7 +170,7 @@ function TOGGLE_buttons(state) {
  */
 function ACTION_internal_link(event) {
 
-	globals.WEBc_page_picker(ACTION_add_token)
+	globals.WEBc_page_picker(ACTION_add_token,null,true)
 
 }
 
