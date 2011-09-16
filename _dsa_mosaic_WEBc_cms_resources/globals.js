@@ -683,6 +683,13 @@ function WEBc_markup_link_internal(markup,siteURL,linkType,areaID,obj) {
 function WEBc_markup_link_page(pageID, siteURL, linkType, webMode, obj) {
 	//get page requested
 	if (pageID) {
+		//particular language specified
+		if (typeof pageID == 'string') {
+			var reference = pageID.split('_')
+			pageID = reference[0]
+			var languageID = reference[1]
+		}
+		
 		var fsPage = databaseManager.getFoundSet("sutra_cms","web_page")
 		fsPage.find()
 		fsPage.id_page = pageID.toString()
@@ -706,9 +713,10 @@ function WEBc_markup_link_page(pageID, siteURL, linkType, webMode, obj) {
 				pageRec = fsPage.getRecord(1)
 				siteRec = pageRec.web_page_to_site.getRecord(1)
 			}
-			//internal link deleted or not published, error out (go home)
+			//internal link deleted or not published, error out
 			else {
-				var goHome = true
+				pageRec = siteRec.web_site_to_page__error.getRecord(1)
+				siteRec = pageRec.web_page_to_site.getRecord(1)
 			}
 		}
 	}
@@ -718,34 +726,44 @@ function WEBc_markup_link_page(pageID, siteURL, linkType, webMode, obj) {
 		var siteRec = new Object()
 	}
 	
-	//get the site's language record
-	if (obj && obj.language && obj.language.record && utils.hasRecords(obj.language.record.web_language_to_site_language)) {
-		var siteLanguageRec = obj.language.record.web_language_to_site_language.getRecord(1)
+	//specific language specified for this link
+	if (languageID) {
+		var fsLanguage = databaseManager.getFoundSet("sutra_cms","web_language")
+		fsLanguage.find()
+		fsLanguage.id_language = languageID
+		var count = fsLanguage.search()
+		
+		if (count) {
+			var pageLanguageRec = fsLanguage.getRecord(1)
+			var siteLanguageRec = pageLanguageRec.web_language_to_site_language.getRecord(1)
+		}
 	}
-	
-	//try to get requested language's path
-	if (pageRec && utils.hasRecords(pageRec.web_page_to_language) && siteLanguageRec) {
-		//loop to find selected language
-		for (var i = 1; i <= pageRec.web_page_to_language.getSize(); i++) {
-			var languageRec = pageRec.web_page_to_language.getRecord(i)
-			
-			if (languageRec.id_site_language == siteLanguageRec.id_site_language) {
-				var pageLanguageRec = languageRec
-			}
+	else {
+		//get the site's language record
+		if (obj && obj.language && obj.language.record && utils.hasRecords(obj.language.record.web_language_to_site_language)) {
+			var siteLanguageRec = obj.language.record.web_language_to_site_language.getRecord(1)
 		}
 		
-		//find default language
-		pageRec.web_page_to_language.sort('rec_created desc')
-		var pageLanguageDefaultRec =  pageRec.web_page_to_language.getRecord(1)
+		//get the page's language record
+		if (pageRec && utils.hasRecords(pageRec.web_page_to_language) && siteLanguageRec) {
+			//loop to find selected language
+			for (var i = 1; i <= pageRec.web_page_to_language.getSize(); i++) {
+				var languageRec = pageRec.web_page_to_language.getRecord(i)
+				
+				if (languageRec.id_site_language == siteLanguageRec.id_site_language) {
+					var pageLanguageRec = languageRec
+					break
+				}
+			}
+		}
 	}
+	
+	//find default language
+	pageRec.web_page_to_language.sort('rec_created asc')
+	var pageLanguageDefaultRec =  pageRec.web_page_to_language.getRecord(1)
 	
 	//get url up to sutraCMS directory
 	var pageLink = globals.WEBc_markup_link_base(pageID, siteURL, siteLanguageRec)
-	
-	//internal link error; go home
-	if (goHome) {
-		return pageLink
-	}
 	
 	//this is an external link type of page, pageLink == its link
 	if (pageRec.page_type == 2 && pageRec.page_link) {
@@ -774,9 +792,76 @@ function WEBc_markup_link_page(pageID, siteURL, linkType, webMode, obj) {
 				pageLink += 'index.jsp?id=' + pageRec.url_param
 				break
 			case "Folder":
+				//on home page, don't specify a path
+				if (siteRec.id_page__home == pageRec.id_page) {
+					break
+				}
 				
+				//get page stack
+				var pageStack = globals.WEBc_markup_pages_up(null,null,pageRec)
+				
+				var folder = ''
+				
+				//loop over page stack to get folder structure
+				for (var h = 0; h < pageStack.length; h++) {
+					var folderRec = pageStack[h]
+					
+					//get the page's language record
+					if (folderRec && utils.hasRecords(folderRec.web_page_to_language) && siteLanguageRec) {
+						//loop to find selected language
+						for (var i = 1; i <= folderRec.web_page_to_language.getSize(); i++) {
+							var languageRec = folderRec.web_page_to_language.getRecord(i)
+							
+							if (languageRec.id_site_language == siteLanguageRec.id_site_language) {
+								var pageLanguageRec = languageRec
+								break
+							}
+						}
+					}
+					
+					//find default language
+					folderRec.web_page_to_language.sort('rec_created asc')
+					var pageLanguageDefaultRec =  folderRec.web_page_to_language.getRecord(1)
+					
+					//are there paths configured for this page/language
+					if (pageLanguageRec && utils.hasRecords(pageLanguageRec.web_language_to_path)) {
+						//loop to find default
+						for (var i = 1; i <= pageLanguageRec.web_language_to_path.getSize(); i++) {
+							var pathRec = pageLanguageRec.web_language_to_path.getRecord(i)
+							
+							if (pathRec.flag_default == 1) {
+								folder += pathRec.path
+								break
+							}
+						}
+					}
+					//pull path from default page's language
+					else if (pageLanguageDefaultRec && utils.hasRecords(pageLanguageDefaultRec.web_language_to_path)) {
+						//loop to find default
+						for (var i = 1; i <= pageLanguageDefaultRec.web_language_to_path.getSize(); i++) {
+							var pathRec = pageLanguageDefaultRec.web_language_to_path.getRecord(i)
+							
+							if (pathRec.flag_default == 1) {
+								folder += pathRec.path
+								break
+							}
+						}
+					}
+					
+					//add slash to all but last occurence
+					if ( h < pageStack.length - 1) {
+						folder += '/'
+					}
+				}
+				
+				pageLink += folder
 				break
 			case "Pretty":
+				//on home page, don't specify a path
+				if (siteRec.id_page__home == pageRec.id_page) {
+					break
+				}
+				
 				//are there paths configured for this page/language
 				if (pageLanguageRec && utils.hasRecords(pageLanguageRec.web_language_to_path)) {
 					//loop to find default
@@ -804,7 +889,7 @@ function WEBc_markup_link_page(pageID, siteURL, linkType, webMode, obj) {
 				
 				var urlString = (pretty) ? pretty : 'error'
 				
-				pageLink += urlString + '.html'
+				pageLink += urlString
 				break
 			case "Edit":
 				//selection set in site tree which will trigger a loading in the main workflow
@@ -881,8 +966,8 @@ function WEBc_markup_token(input,tokenType) {
 	else if (input instanceof JSRecord && input.foundset.getDataSource() == 'db:/sutra_cms/web_asset_instance' && input.id_asset_instance) {
 		token += input.id_asset_instance.toString()
 	}
-	//passed in a uuid string
-	else if (typeof input == 'string' && application.getUUID(input)) {
+	//passed in a (uuid) string
+	else if (typeof input == 'string') {
 		token += input
 	}
 	//passed in a uuid
@@ -900,21 +985,51 @@ function WEBc_markup_token(input,tokenType) {
  *
  * @properties={typeid:24,uuid:"D05AA53E-5D46-4534-A2AC-A55D700F29C0"}
  */
-function WEBc_page_picker(method,elem) {
+function WEBc_page_picker(method,elem,showLanguage) {
 	function GET_page(pageRec) {
 		if (utils.hasRecords(pageRec[relnPage])) {
+			//check to see what languages this page has; give option when more than one
+			if (showLanguage && utils.hasRecords(pageRec.web_page_to_language) && pageRec.web_page_to_language.getSize() > 1) {
+				var languageArray = new Array()
+				
+				var oldDate = application.getServerTimeStamp()
+				var defaultLang = 1
+				
+				for (var j = 1; j <= pageRec.web_page_to_language.getSize(); j++) {
+					var languageRec = pageRec.web_page_to_language.getRecord(j)
+					
+					if (languageRec.rec_created < oldDate) {
+						oldData = languageRec.rec_created
+						defaultLang = j
+					}
+					
+					var language = plugins.popupmenu.createCheckboxMenuItem(languageRec.language_name + "", method)
+					language.setMethodArguments(pageRec.id_page.toString() + '_' + languageRec.id_language.toString(),pageRec,event)
+					
+					languageArray.push(language)
+				}
+				
+				//flag which language is the default
+//				languageArray[defaultLang - 1].label = languageArray[defaultLang - 1].label + ' (default)'
+				languageArray[defaultLang - 1].setSelected(true)
+				
+				var item = plugins.popupmenu.createMenuItem('Choose parent (' + pageRec.page_name + ')', languageArray)
+			}
+			//only one language, options not required
+			else {
+				var item = plugins.popupmenu.createMenuItem('Choose parent (' + pageRec.page_name + ')', method)
+				item.setMethodArguments(pageRec.id_page.toString(),pageRec,event)	
+			}
+			
 			var subArray = new Array()
 			
 			subArray.push(
 						//choose this page
-							plugins.popupmenu.createMenuItem('Choose parent (' + pageRec.page_name + ')', method),
+							item,
 						//blank line
 							plugins.popupmenu.createMenuItem('-', method)
 					)
 			
-			// set arguments
-			subArray[0].setMethodArguments(pageRec.id_page.toString(),pageRec,event)
-					
 			// turn off '----'
 			subArray[1].setEnabled(false)
 			
@@ -925,8 +1040,50 @@ function WEBc_page_picker(method,elem) {
 			return plugins.popupmenu.createMenuItem(pageRec.page_name + "", subArray)
 		}
 		else {
-			var item = plugins.popupmenu.createMenuItem(pageRec.page_name + "", method)
-			item.setMethodArguments(pageRec.id_page.toString(),pageRec,event)
+			//check to see what languages this page has; give option when more than one
+			if (showLanguage && utils.hasRecords(pageRec.web_page_to_language) && pageRec.web_page_to_language.getSize() > 1) {
+				var languageArray = new Array()
+				
+				pageRec.web_page_to_language.sort('web_language_to_site_language.language_name asc')
+				
+				var oldDate = application.getServerTimeStamp()
+				var defaultLang = 1
+				
+				for (var j = 1; j <= pageRec.web_page_to_language.getSize(); j++) {
+					var languageRec = pageRec.web_page_to_language.getRecord(j)
+					
+					if (languageRec.rec_created < oldDate) {
+						oldDate = languageRec.rec_created
+						defaultLang = j
+					}
+					
+					var language = plugins.popupmenu.createCheckboxMenuItem(languageRec.language_name + "", method)
+					language.setMethodArguments(pageRec.id_page.toString() + '_' + languageRec.id_language.toString(),pageRec,event)
+					
+					languageArray.push(language)
+				}
+				
+				//tack on spacer
+				language = plugins.popupmenu.createCheckboxMenuItem('-', method)
+				language.setEnabled(false)
+				languageArray.push(language)
+				
+				//tack on option to not specify language
+				language = plugins.popupmenu.createCheckboxMenuItem('Don\'t specify a language', method)
+				language.setMethodArguments(pageRec.id_page.toString(),pageRec,event)
+				languageArray.push(language)
+				
+				//flag which language is the default
+//				languageArray[defaultLang - 1].label = languageArray[defaultLang - 1].label + ' (default)'
+				languageArray[defaultLang - 1].setSelected(true)
+				
+				var item = plugins.popupmenu.createMenuItem(pageRec.page_name + "", languageArray)
+			}
+			//only one language, options not required
+			else {
+				var item = plugins.popupmenu.createMenuItem(pageRec.page_name + "", method)
+				item.setMethodArguments(pageRec.id_page.toString(),pageRec,event)	
+			}
 			
 			//disable dividers
 			if (item.text == '-') {
@@ -1182,27 +1339,32 @@ function WEBc_page_new(pageName,pageType,parentID,themeID,layoutID) {
  * 
  * @properties={typeid:24,uuid:"541905F0-9B0C-474D-968C-F85408B3B05A"}
  */
-function WEBc_markup_pages_up(obj, order, record) {
+function WEBc_markup_pages_up(obj, order, pageRec, pathRec) {
 	
+	//given a path (language); get primed
+	if (pathRec) {
+		pageRec = pathRec.web_path_to_language.web_language_to_page.getSelectedRecord()
+		var siteLanguageRec = pathRec.web_path_to_language.web_language_to_site_language.getSelectedRecord()
+	}
 	//no record specified, lookup from obj
-	if (!record) {
-		record = obj.page.record
+	else if (!pageRec) {
+		pageRec = obj.page.record
 	}
 	
-	var pages = [record]
+	var pages = [pageRec]
 	var order = (order == "desc") ? order : "asc"
 		
-	while ( record.parent_id_page ) {
+	while ( pageRec.parent_id_page ) {
 		
 		// reasign record var
-		record = record.web_page_to_page__parent.getRecord(1)
+		pageRec = pageRec.web_page_to_page__parent.getRecord(1)
 		
 		// store in return array
 		if ( order == "asc" ) {
-			pages.unshift(record)
+			pages.unshift(pageRec)
 		}
 		else {
-			pages.push(record)
+			pages.push(pageRec)
 		}
 	}
 	

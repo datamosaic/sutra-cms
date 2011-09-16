@@ -322,20 +322,17 @@ function CONTROLLER_setup(results, app, session, request, response, mode) {
 
 
 	// directly expose some data points used in this method
-	// TODO: remove some redundancy with obj
 	var pageServer	= request.getServerName()
 	var pageURI		= request.getRequestURI()
 	var pageQuery	= request.getQueryString()
-	var pagePath	= request.getParameter("path")
+	var pagePath	= request.getAttribute("path")
 	var pageID 		= request.getParameter("id")
-	
-	// these paramaters will be passed in when index_edit used (only internal to browser mode now)
-		// TODO: track group in session based on login and pass to dispatcher
-		// TODO: may add in ability to see versions on a live server
-	var platformID		= request.getParameter("platform")
-	var languageID		= request.getParameter("language")
-	var languageName	= request.getAttribute("language")
+	var platformID	= request.getParameter("platform")
+	var languageID	= request.getParameter("language")
+	var languageName= request.getAttribute("language")
+	// TODO: track group in session based on login and pass to dispatcher
 	var groupID		= request.getParameter("group")
+	// TODO: may add in ability to see versions on a live server
 	var versionID	= request.getParameter("version")
 	
 	// are we using rewrites or not
@@ -654,28 +651,76 @@ function CONTROLLER_setup(results, app, session, request, response, mode) {
 			obj.error.message = "No site found"
 			return obj
 		}
-
+		
+		//if first character is a slash (it will be), trim
+		if (pagePath[0] == '/') {
+			pagePath = pagePath.substr(1)
+		}
+		
+		//get last page in folder tree
+		var pagePathPages = pagePath.split('/')
+		
+		//find all pages that have the same path as the last page requested
 		var path = databaseManager.getFoundSet("sutra_cms","web_path")
 		path.find()
-		path.path = pagePath
+		path.path = pagePathPages[pagePathPages.length - 1]
 		path.id_site = site.id_site
 		var count = path.search()
-		if (count != 1) {
+		
+		//TODO: step through this code and make more restrictive (will catch too many paths that don't exist)
+		//loop over found pages to find one at the correct place in the hierarchy
+		loop_potential:
+		for (var i = 1; i <= path.getSize(); i++) {
+			var record = path.getRecord(i)
+			var pageFound = false
+			
+			//get page stack
+			var pageStack = globals.WEBc_markup_pages_up(null,null,record)
+			
+			//comapre all possible paths for this page with this slot in pagePathPages
+			loop_page:
+			for (var j = 0; j < pageStack.length; j++) {
+				var pathPageRec = pageStack[j]
+				var pathFound = false
+				
+				loop_language:
+				for (var k = 1; k <= pathPageRec.web_page_to_language.getSize(); k++) {
+					var pathLanguageRec = pathPageRec.web_page_to_language.getRecord(k)
+					
+					loop_path:
+					for (var l = 1; l <= pathLanguageRec.web_language_to_path.getSize(); l++) {
+						var pathPathRec = pathLanguageRec.web_language_to_path.getRecord(l)
+						
+						if (pathPathRec.path == pagePathPages[pagePathPages.length - 1]) {
+							pathFound = true
+							continue loop_page
+						}
+					}
+				}
+			}
+			
+			if (j == pageStack.length && pathFound) {
+				pageID = pathPageRec.id_page
+			}
+		}
+		
+		if (!pageID) {
 			obj.error.code = 404
 			obj.error.message = "No web_path record found"
 			return obj
 		}
+		
 		var page = databaseManager.getFoundSet("sutra_cms","web_page")
 		page.find()
-		page.id_page = path.id_page
+		page.id_page = pageID
 		var count = page.search()
+		
 		if (count != 1) {
 			obj.error.code = 404
 			obj.error.message = "No page with supplied path found"
 			return obj
 		}
 		else {
-			pageID = path.id_page
 			databaseManager.refreshRecordFromDatabase(page, 0)
 		}
 	}
@@ -920,8 +965,22 @@ function CONTROLLER_setup(results, app, session, request, response, mode) {
 	var languageSite = databaseManager.getFoundSet("sutra_cms","web_site_language")
 	var language = databaseManager.getFoundSet("sutra_cms","web_language")
 	
-	// language specified by folder in url
-	if (languageName) {
+	// language specified by parameter
+	if (languageID) {
+		language.find()
+		language.url_param = languageID
+		var count = language.search()
+		
+		//check to make sure that it is in the correct page
+		if (!(count && language.id_page == page.id_page)) {
+			// return error that no such version
+			obj.error.code = 500
+			obj.error.message = "Language requested does not exist"
+			return obj
+		}
+	}
+	// language specified by folder/domain
+	else if (languageName) {
 		languageSite.find()
 		languageSite.id_site = page.id_site
 		languageSite.language_code = languageName
@@ -950,7 +1009,7 @@ function CONTROLLER_setup(results, app, session, request, response, mode) {
 		}
 	}
 	// no language specified
-	else if (!languageID) {
+	else {
 		languageSite.find()
 		languageSite.id_site = page.id_site
 		languageSite.flag_default = 1
@@ -976,20 +1035,6 @@ function CONTROLLER_setup(results, app, session, request, response, mode) {
 					language.sort('rec_created asc')
 				}
 			}
-		}
-	}
-	// language specified by parameter
-	else {
-		language.find()
-		language.url_param = languageID
-		var count = language.search()
-		
-		//check to make sure that it is in the correct page
-		if (!(count && language.id_page == page.id_page)) {
-			// return error that no such version
-			obj.error.code = 500
-			obj.error.message = "Language requested does not exist"
-			return obj
 		}
 	}
 	
@@ -1054,6 +1099,12 @@ function CONTROLLER_setup(results, app, session, request, response, mode) {
 	obj.group.record = group.getSelectedRecord()
 	obj.group.id = group.id_group
 	
+	//if page requested is using different link type (folder, pretty, index), send redirect so site is uniform
+	var goodLink = globals.WEBc_markup_link_page(page.id_page, null, (editMode ? 'Edit' : null), null, obj)
+	var thisLink = request.getAttribute("javax.servlet.forward.request_uri") || pageURI
+	if (!utils.stringPatternCount(goodLink,thisLink)) {
+		obj.response.record.sendRedirect(goodLink)
+	}
 	
 	// ACTIVE VERSION
 	//if not specified, use active version
@@ -1126,7 +1177,7 @@ function CONTROLLER_setup(results, app, session, request, response, mode) {
 	
 	// theme directory with rewrites
 	if (rewriteMode) {
-		obj.theme.directory = "themes/" + obj.platform.record.web_platform_to_theme.theme_directory
+		obj.theme.directory = "/themes/" + obj.platform.record.web_platform_to_theme.theme_directory
 	}
 	// theme directory without rewrites
 	else {
@@ -1235,10 +1286,26 @@ function CONTROLLER_error(obj) {
 	else {
 		var site = databaseManager.getFoundSet("sutra_cms","web_site")
 		site.find()
-		site.url = "%" + pageServer + "%"
+		site.url = pageServer
 		var count = site.search()
 		
-		if (count != 1) {
+		//no site found, but we know what language this is requested on
+		if (obj.language.record && count != 1) {
+			var siteLanguage = databaseManager.getFoundSet("sutra_cms","web_site_language")
+			siteLanguage.find()
+			siteLanguage.id_site_language = obj.language.record.id_site_language
+			var count = siteLanguage.search()
+			
+			if (count != 1) {
+				error.addRow(["No site found"])
+				return error
+			}
+			else {
+				site.loadRecords([siteLanguage.id_site])
+			}
+		}
+		//no site found
+		else if (count != 1) {
 			error.addRow(["No site found"])
 			return error
 		}
