@@ -792,7 +792,7 @@ function WEBc_markup_link_page(pageID, siteURL, linkType, webMode, obj) {
 				pageLink += 'index.jsp?id=' + pageRec.url_param
 				
 				//rewrite mode turned off and language specified is not the default
-				if (!rewriteMode && !siteLanguageRec.flag_default) {
+				if (siteLanguageRec && !rewriteMode && !siteLanguageRec.flag_default) {
 					
 					//pull from page's specified language
 					if (pageLanguageRec) {
