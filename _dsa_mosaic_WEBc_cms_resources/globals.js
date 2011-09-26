@@ -538,26 +538,17 @@ function WEBc_markup_link_base(pageID, siteURL, siteLanguageRec) {
 	if (siteRec.url || (siteLanguageRec && siteLanguageRec.url)) {
 		siteURL = siteRec.url
 		
-		//language as a domain
+		//language as a domain or advanced apache setup
+			//MEMO: obviously, the port (if non-standard) is entered in the siteLanguageRec.url column
 		if (siteLanguageRec && siteLanguageRec.url) {
 			siteURL = siteLanguageRec.url
+			port = null
 		}
 	}
 	//use whatever url the request came in on
 	else {
 		siteURL = (accessURL == '127.0.0.1') ? 'localhost' : accessURL
 	}
-	
-//	//advanced apache setup, reference by correct url
-//	if (siteRec.url_2) {
-//		siteURL = siteRec.url_2
-//		port = null
-//	}
-//	//take port into consideration
-//		//MEMO: obviously, the port (if non-standard) is entered in the url_2 column above
-//	else {
-//		
-//	}
 	
 	//force to be secure
 	if (pageRec.flag_ssl) {
