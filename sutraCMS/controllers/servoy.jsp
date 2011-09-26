@@ -1,7 +1,7 @@
 <%
 	// start servoy session
 	ISessionBean servoy_hc = (ISessionBean)application.getAttribute("servoy");
-	if (servoy_hc == null) {
+	if (servoy_hc == null || !servoy_hc.setMainForm("WEB_0__controller")) {
 		servoy_hc = HeadlessClientFactory.createSessionBean(request,"_dsa_mosaic_WEB_cms");
 		application.setAttribute("servoy",servoy_hc);
 	}
