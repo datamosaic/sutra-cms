@@ -1,6 +1,7 @@
 allowCreationRelatedRecords:true,
 deleteRelatedRecords:true,
 foreignDataSource:"db:/sutra_cms/web_layout",
+initialSort:"layout_name asc",
 items:[
 {foreignColumnName:"id_theme",primaryDataProviderID:"id_theme",typeid:23,uuid:"3145BC70-BCA0-40BE-8BB4-73982BFC1BCC"}
 ],
