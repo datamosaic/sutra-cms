@@ -319,8 +319,7 @@ function CONTROLLER_setup(results, app, session, request, response, mode) {
 	       		    app		: { record : app },
 	       		    error	: { code : '', message : ''}
 	}
-
-
+	
 	// directly expose some data points used in this method
 	var pageServer	= request.getServerName()
 	var pageURI		= request.getRequestURI()
@@ -1254,6 +1253,10 @@ function CONTROLLER_setup(results, app, session, request, response, mode) {
 			results.addRow([keyName,record.data_value])
 		}
 	}
+	
+	//TODO: only set this if character encoding not specified in the header
+	// set connection to use utf
+	response.characterEncoding = "UTF-8"
 	
 	return obj
 }
