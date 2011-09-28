@@ -315,10 +315,6 @@ function ACTION_ok() {
 				
 				var platformRec = _recPlatform
 				
-				//punch down data
-				_recPlatform.id_theme = _idTheme
-				_recPlatform.id_layout = _idLayout
-				
 				//halt additional on select firing
 				forms.WEB_0F_page__design_1F_version_2L_scope._skipSelect = true
 				
@@ -331,17 +327,21 @@ function ACTION_ok() {
 				newVersion.version_description = descriptor
 				globals.WEB_page_version = newVersion.id_version
 				
+				//punch down theme change data
+				newVersion.id_theme = _idTheme
+				newVersion.id_layout = _idLayout				
+				
 				//allow additional on select firing
 				forms.WEB_0F_page__design_1F_version_2L_scope._skipSelect = false
 			}
 			
 			// get editable regions based on layout selected
-			if (!utils.hasRecords(platformRec,'web_platform_to_layout.web_layout_to_editable')) {
+			if (!utils.hasRecords(newVersion,'web_version_to_layout.web_layout_to_editable')) {
 				globals.CODE_cursor_busy(false)
 				return 'No editables for selected layout'
 			}
 			
-			var layout = platformRec.web_platform_to_layout.getSelectedRecord()
+			var layout = newVersion.web_version_to_layout.getSelectedRecord()
 			
 			if (selectedVersion) {
 				var oldAreas = databaseManager.getFoundSetDataProviderAsArray(selectedVersion.web_version_to_area,'area_name')

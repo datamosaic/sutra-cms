@@ -1,0 +1,9 @@
+foreignDataSource:"db:/sutra_cms/web_layout",
+items:[
+{foreignColumnName:"id_layout",primaryDataProviderID:"id_layout",typeid:23,uuid:"81E29677-9124-4448-8961-27D0A305308D"}
+],
+joinType:1,
+name:"web_version_to_layout",
+primaryDataSource:"db:/sutra_cms/web_version",
+typeid:22,
+uuid:"8C38B660-BAA8-4238-A34A-39DCB5FF10C0"

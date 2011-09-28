@@ -267,10 +267,11 @@ function ADD_version(event) {
 					globals.TRIGGER_progressbar_start(null,progressText)
 					globals.CODE_cursor_busy(true)
 					
+					//version that was selected
+					var selectedVersion = forms.WEB_P_page__version._fsVersion.getRecord(forms.WEB_P_page__version._posnVersion)
+					
 					//first version in the stack
 					if (!hasVersions) {
-						var selectedVersion = forms.WEB_P_page__version._fsVersion.getRecord(forms.WEB_P_page__version._posnVersion)
-							
 						var info = ''
 						//create prerequisite page-level records
 						if (!validPlatform) {
@@ -290,8 +291,8 @@ function ADD_version(event) {
 					}
 					
 					//the new platform has a theme/layout specified
-					if (utils.hasRecords(forms.WEB_0F_page__design_1F__header_display_2F_platform._platform.getSelectedRecord(),'web_platform_to_layout')) {
-						var layout = forms.WEB_0F_page__design_1F__header_display_2F_platform._platform.getSelectedRecord().web_platform_to_layout.getSelectedRecord()
+					if (utils.hasRecords(selectedVersion,'web_version_to_layout')) {
+						var layout = selectedVersion.web_version_to_layout.getSelectedRecord()
 						
 						var oldAreas = databaseManager.getFoundSetDataProviderAsArray(selectedVersion.web_version_to_area,'area_name')
 						
@@ -336,6 +337,8 @@ function ADD_version(event) {
 							destVersion.version_name = forms.WEB_P__version._versionName
 							destVersion.version_description = forms.WEB_P__version._versionDescription
 							destVersion.flag_active = null
+							destVersion.id_theme = selectedVersion.id_theme
+							destVersion.id_layout = selectedVersion.id_layout
 							
 							databaseManager.saveData()
 							
