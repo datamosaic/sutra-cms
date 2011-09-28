@@ -15,5 +15,10 @@ var _license_dsa_mosaic_WEB_cms = 'Module: _dsa_mosaic_WEB_cms \
 function GOTO_page(event) {
 	globals.TRIGGER_navigation_set('CMS_page')
 	
-	forms.WEB_0T_page.SET_page(id_page)
+	//set language to selected site language; we're jumping to this record because it has this language, should probably be on it
+	globals.WEB_page_language = forms.WEB_0F_site_1L_site_language.id_site_language.toString()
+	
+	forms.WEB_0F_page.foundset.find()
+	forms.WEB_0F_page.foundset.id_page = id_page
+	forms.WEB_0F_page.foundset.search()
 }

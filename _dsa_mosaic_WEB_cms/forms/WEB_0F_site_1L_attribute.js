@@ -65,5 +65,7 @@ function REC_delete(event) {
 function GOTO_page(event) {
 	globals.TRIGGER_navigation_set('CMS_page')
 	
-	forms.WEB_0T_page.SET_page(id_page)
+	forms.WEB_0F_page.foundset.find()
+	forms.WEB_0F_page.foundset.id_page = id_page
+	forms.WEB_0F_page.foundset.search()
 }

@@ -15,5 +15,10 @@ var _license_dsa_mosaic_WEB_cms = 'Module: _dsa_mosaic_WEB_cms \
 function GOTO_page(event) {
 	globals.TRIGGER_navigation_set('CMS_page')
 	
-	forms.WEB_0T_page.SET_page(id_page)
+	//set group to selected site group; we're jumping to this record because it has this group, should probably be on it
+	globals.WEB_page_group = forms.WEB_0F_site_1L_site_group.id_site_group.toString()
+	
+	forms.WEB_0F_page.foundset.find()
+	forms.WEB_0F_page.foundset.id_page = id_page
+	forms.WEB_0F_page.foundset.search()
 }
