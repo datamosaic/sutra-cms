@@ -954,8 +954,6 @@ function CONTROLLER_setup(results, app, session, request, response, mode) {
 	
 	// obj: platform
 	databaseManager.refreshRecordFromDatabase(platform,0)
-	databaseManager.refreshRecordFromDatabase(platform.web_platform_to_theme,-1)
-	databaseManager.refreshRecordFromDatabase(platform.web_platform_to_layout,-1)
 	obj.platform.record = platform.getSelectedRecord()
 	obj.platform.id = platform.id_platform
 	
@@ -1157,31 +1155,32 @@ function CONTROLLER_setup(results, app, session, request, response, mode) {
 	
 	// obj: version
 	databaseManager.refreshRecordFromDatabase(version,0)
+	databaseManager.refreshRecordFromDatabase(version.web_version_to_theme,-1)
+	databaseManager.refreshRecordFromDatabase(version.web_version_to_layout,-1)
 	obj.version.record	= version.getSelectedRecord()
 	obj.version.id		= version.id_version
 	
 	// THEME
-	if (!utils.hasRecords(obj.platform.record,'web_platform_to_theme')) {
+	if (!utils.hasRecords(obj.version.record,'web_version_to_theme')) {
 		obj.error.code = 500
 		obj.error.message = "No theme specified"
 		return obj
 	}
 	
 	// LAYOUT
-	if (!utils.hasRecords(obj.platform.record,'web_platform_to_layout')) {
+	if (!utils.hasRecords(obj.version.record,'web_version_to_layout')) {
 		obj.error.code = 500
 		obj.error.message = "No layout specified"
 		return obj
 	}
-	databaseManager.refreshRecordFromDatabase(obj.platform.record.web_platform_to_layout, 0)
 	
 	// theme directory with rewrites
 	if (rewriteMode) {
-		obj.theme.directory = "/themes/" + obj.platform.record.web_platform_to_theme.theme_directory
+		obj.theme.directory = "/themes/" + obj.version.record.web_version_to_theme.theme_directory
 	}
 	// theme directory without rewrites
 	else {
-		obj.theme.directory = "sites/" + obj.site.record.directory + "/themes/" + obj.platform.record.web_platform_to_theme.theme_directory
+		obj.theme.directory = "sites/" + obj.site.record.directory + "/themes/" + obj.version.record.web_version_to_theme.theme_directory
 	}
 	
 	obj.theme.markup.link = obj.theme.directory
@@ -1189,7 +1188,7 @@ function CONTROLLER_setup(results, app, session, request, response, mode) {
 	//theme will be included on html, so accessed by client (external)
 	results.addRow(["cmsThemeDirectory", obj.theme.directory])
 	//layout will be referenced from within jsp, so internal and needs full path
-	results.addRow(["cmsLayout", "sites/" + obj.site.record.directory + "/themes/" + obj.platform.record.web_platform_to_theme.theme_directory + "/" + obj.platform.record.web_platform_to_layout.layout_path])
+	results.addRow(["cmsLayout", "sites/" + obj.site.record.directory + "/themes/" + obj.version.record.web_version_to_theme.theme_directory + "/" + obj.version.record.web_version_to_layout.layout_path])
 	
 	// site directory with rewrites
 	if (rewriteMode) {

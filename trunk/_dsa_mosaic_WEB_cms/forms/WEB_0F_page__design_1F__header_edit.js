@@ -148,8 +148,8 @@ function FORM_on_show(firstShow, event) {
 		_recLanguage = fsLanguage.getSelectedRecord()
 		
 		//punch in current values to other form variables
-		_idLayout = _recPlatform.id_layout
-		_idTheme = _recPlatform.id_theme
+		_idLayout = forms.WEB_0F_page__design_1F_version.id_layout
+		_idTheme = forms.WEB_0F_page__design_1F_version.id_theme
 		_pageName = _recLanguage.page_name
 		
 		//if there is a theme set, populate layout valuelist
@@ -502,10 +502,6 @@ function ACTION_save() {
 				
 				var platformRec = _recPlatform
 				
-				//punch down data
-				_recPlatform.id_theme = _idTheme
-				_recPlatform.id_layout = _idLayout
-				
 				//halt additional on select firing
 				forms.WEB_0F_page__design_1F_version_2L_scope._skipSelect = true
 				
@@ -518,17 +514,24 @@ function ACTION_save() {
 				newVersion.version_description = descriptor
 				globals.WEB_page_version = newVersion.id_version
 				
+				//punch down theme change data
+				newVersion.id_theme = _idTheme
+				newVersion.id_layout = _idLayout
+				
+				//load version foundset onto properties tab
+				forms.WEB_0F_page__design_1F__properties_2L_version.foundset.loadRecords(fsVersion)
+				
 				//allow additional on select firing
 				forms.WEB_0F_page__design_1F_version_2L_scope._skipSelect = false
 			}
 			
 			// get editable regions based on layout selected
-			if (!utils.hasRecords(platformRec,'web_platform_to_layout.web_layout_to_editable')) {
+			if (!utils.hasRecords(newVersion,'web_version_to_layout.web_layout_to_editable')) {
 				globals.CODE_cursor_busy(false)
 				return 'No editables for selected layout'
 			}
 			
-			var layout = platformRec.web_platform_to_layout.getSelectedRecord()
+			var layout = newVersion.web_version_to_layout.getSelectedRecord()
 			
 			if (selectedVersion) {
 				var oldAreas = databaseManager.getFoundSetDataProviderAsArray(selectedVersion.web_version_to_area,'area_name')
@@ -767,7 +770,7 @@ function FLD_data_change__idLayout(oldValue, newValue, event) {
 	//if this is a newly created record, no need to save anything
 	if (!forms.WEB_0T_page._addRecord) {
 		//different value than before and old value existed (not selecting for first time)
-		if (_recPlatform.id_layout != newValue) {
+		if (forms.WEB_0F_page__design_1F_version.id_layout != newValue) {
 			_themeSet = 1
 		}
 		else {
