@@ -405,7 +405,7 @@ function FORM_on_show(firstShow,event) {
 		// globals.TRIGGER_set_tooltips()
 	
 		//check if can add record
-		elements.btn_new.enabled = globals.TRIGGER_registered_action_authenticate('cms page add')	
+		elements.btn_new.enabled = globals.WEBc_sutra_trigger('TRIGGER_registered_action_authenticate',['cms page add'])//globals.TRIGGER_registered_action_authenticate('cms page add')	
 		
 		//check on reordering
 		var reorderOK = globals.TRIGGER_registered_action_authenticate('cms page reorder')	

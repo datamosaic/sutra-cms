@@ -1435,8 +1435,83 @@ function WEBc_install_getRewrite() {
 }
 
 /**
+ * Any function that calls something in the data sutra CODE module comes through 
+ * here first in the event that not running in data sutra framework or no code module
+ * 
+ * @param	{String}	method Name of method to check against
+ * 
+ * @returns	something
+ * 
  * @properties={typeid:24,uuid:"E97E5A2E-734D-4D7C-B3FF-9FDA95493B8F"}
  */
-function WEBc_sutra_trigger() {
-	//any function that calls something in the CODE module comes through here first in the event that not running in data sutra framework
+function WEBc_sutra_trigger(method,arguments) {
+	//do we have the code module and the method requested
+	if (solutionModel.getGlobalMethod(method)) {
+		return globals[method](arguments ? arguments.join(',') : null)
+	}
+	//look up how to fail
+	else {
+		switch (method) {
+			case 'TRIGGER_registered_action_authenticate':	//check action for logged in user
+				//allow all actions
+				return true
+				break
+			case 'TRIGGER_progressbar_set':					//set status of progress bar
+				//no return
+				break
+			case 'TRIGGER_progressbar_get':					//check status of progress bar
+				//[progressValue,explanationText,explanationToolTip,progressMaxValue]
+				return [0,'','',100]
+				break
+			case 'TRIGGER_progressbar_start':				//start progress bar
+				//sets some stuff; no return
+				break
+			case 'TRIGGER_progressbar_stop':				//stop progress bar
+				//no return
+				break
+			case 'TRIGGER_interface_lock':					//lock everything except the workflow form
+				return false
+				break
+			case 'TRIGGER_toolbar_set':						//set toolbar in top center of frame
+				return false
+				break
+			case 'TRIGGER_navigation_filter_update':		//filter navigation item per meta data
+				return false
+				break
+			case 'TRIGGER_log_create':		//TODO: put cms logging into separate table
+				
+				break
+			case 'TRIGGER_navigation_set':					//move to specified navigation item
+				plugins.dialogs.showWarningDialog(
+							'Warning',
+							'Unable to view the request form outside of the Data Sutra framework.'
+					)
+				return null
+				break
+			case 'TRIGGER_toolbar_record_navigator_set':	//turn off record navigator toolbar
+				//no return
+				break
+			case 'TRIGGER_ul_tab_list':						//go between universal and custom lists
+				//no return
+				break
+			case 'TRIGGER_tooltip_set':						//set tooltips per meta data on calling form
+				
+				break
+			case 'TRIGGER_spaces_set':
+				
+				break
+			case '':
+				
+				break
+			case '':
+				
+				break
+			case '':
+				
+				break
+			default:
+				return false
+		}
+	}
+	
 }
