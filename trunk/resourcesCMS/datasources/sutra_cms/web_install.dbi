@@ -44,6 +44,13 @@ dataType:12,
 defaultValue:"Mac",
 length:50,
 name:"type_server"
+},
+{
+allowNull:true,
+creationOrderIndex:6,
+dataType:12,
+length:255,
+name:"url_install"
 }
 ],
 name:"web_install",

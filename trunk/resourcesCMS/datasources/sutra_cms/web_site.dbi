@@ -136,6 +136,13 @@ creationOrderIndex:4,
 dataType:12,
 length:255,
 name:"url"
+},
+{
+allowNull:true,
+creationOrderIndex:18,
+dataType:12,
+length:255,
+name:"url_servlet"
 }
 ],
 name:"web_site",
