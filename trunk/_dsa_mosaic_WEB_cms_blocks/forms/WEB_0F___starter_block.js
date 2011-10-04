@@ -114,9 +114,6 @@ function PAGE_sample_method() {
  */
 function BLOCK_save() {
 	// your code goes here
-	
-	// exit edit mode
-	globals.WEBc_block_save()
 }
 
 /**
@@ -124,7 +121,4 @@ function BLOCK_save() {
  */
 function BLOCK_cancel() {
 	// your code goes here
-	
-	// exit edit mode
-	globals.WEBc_block_cancel()
 }
