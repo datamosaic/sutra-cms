@@ -397,9 +397,13 @@ function FORM_on_show(firstShow, event) {
 	//disable rewrites if turned off
 	if (globals.WEBc_install_getRewrite()) {
 		elements.fld_pref_links.enabled = true
+		elements.fld_url_servlet.enabled = true
+		elements.fld_url_servlet.transparent = true
 	}
 	else {
 		elements.fld_pref_links.enabled = false
+		elements.fld_url_servlet.enabled = false
+		elements.fld_url_servlet.transparent = false
 	}
 	
 	//disable multisite if there aren't any
