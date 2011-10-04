@@ -1437,7 +1437,7 @@ function WEBc_install_getRewrite() {
 /**
  * @properties={typeid:24,uuid:"CFD41FEB-A2F8-4CC3-87B9-3458CA5E74F3"}
  */
-function WEBc_markup_link_servlet(obj,siteID,siteLanguageID) {
+function WEBc_markup_link_servlet(obj,siteID) {
 	//how requested
 	var appServer = application.getServerURL()
 	appServer = appServer.split(':')
@@ -1476,37 +1476,10 @@ function WEBc_markup_link_servlet(obj,siteID,siteLanguageID) {
 		var siteRec = new Object()
 	}
 	
-	//specific language specified for this link
-	if (siteLanguageID) {
-		var fsSiteLanguage = databaseManager.getFoundSet("sutra_cms","web_site_language")
-		fsSiteLanguage.find()
-		fsSiteLanguage.id_site_language = siteLanguageID
-		var count = fsSiteLanguage.search()
-		
-		if (count) {
-			var siteLanguageRec = fsSiteLanguage.getRecord(1)
-		}
-	}
-	//get the site's language record from obj
-	else if (obj && obj.language && obj.language.record && utils.hasRecords(obj.language.record.web_language_to_site_language)) {
-		var siteLanguageRec = obj.language.record.web_language_to_site_language.getRecord(1)
-	}
-	
 	//url specified
 	var siteURL = ''
-	if (siteRec.url || (siteLanguageRec && siteLanguageRec.url)) {
-		siteURL = siteRec.url
-		
-		if (port) {
-			siteURL += ':' + port
-		}
-		
-		//language as a domain or advanced apache setup
-			//MEMO: obviously, the port (if non-standard) is entered in the siteLanguageRec.url column
-		if (siteLanguageRec && siteLanguageRec.url) {
-			siteURL = siteLanguageRec.url
-			port = null
-		}
+	if (siteRec.url_servlet) {
+		siteURL = siteRec.url_servlet
 	}
 	
 	//if rewrites on
