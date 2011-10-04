@@ -496,23 +496,30 @@ if (application.__parent__.solutionPrefs) {
 /**
  * @properties={typeid:24,uuid:"48FC5C3F-2354-442E-BE6A-4963B953E080"}
  */
-function WEB_startup_hack() {
-	//disable rec_on_select of the block type form
-	globals.WEB_block_on_select = false
-	
-	//show all forms with browser beans so they don't error out on initial view
-	forms.WEB_0F__image.controller.show()
-	forms.WEB_0F__html.controller.show()
-	forms.WEB_0F__code.controller.show()
-	forms.WEB_0F__content.controller.show()
-	application.sleep(1500)
-	forms.WEB_0F__content_view.controller.show()
-	forms.WEB_0F_page__browser.controller.show()
-	
-	//hit up headless client so get zooming effect on first load
-//	plugins.http.getPageData(globals.WEBc_markup_link_base() + 'index.jsp')
-	
-	forms.DATASUTRA_0F_solution.controller.show()
+function WEB_startup() {
+	//over ride style for webclient
+	if (application.getApplicationType() == APPLICATION_TYPES.HEADLESS_CLIENT) {
+		application.setUIProperty(APP_WEB_PROPERTY.WEBCLIENT_TEMPLATES_DIR, 'harjo_alternate')
+	}
+	//hacks to load in all browser bean forms
+	else if (application.getApplicationType() == APPLICATION_TYPES.SMART_CLIENT) {
+		//disable rec_on_select of the block type form
+		globals.WEB_block_on_select = false
+		
+		//show all forms with browser beans so they don't error out on initial view
+		forms.WEB_0F__image.controller.show()
+		forms.WEB_0F__html.controller.show()
+		forms.WEB_0F__code.controller.show()
+		forms.WEB_0F__content.controller.show()
+		application.sleep(1500)
+		forms.WEB_0F__content_view.controller.show()
+		forms.WEB_0F_page__browser.controller.show()
+		
+		//hit up headless client so get zooming effect on first load
+	//	plugins.http.getPageData(globals.WEBc_markup_link_base() + 'index.jsp')
+		
+		forms.DATASUTRA_0F_solution.controller.show()
+	}
 }
 
 /**
