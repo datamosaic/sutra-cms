@@ -318,22 +318,21 @@ function REC_new(flagRefresh) {
 		//a form picked and it exists in the solution
 		if (formName && forms[formName]) {
 			
-			if (!flagRefresh) {	
-				function uniqueNameCheck(name) {  // returns true if duplicate name detected
-					var nameArray = []
-					var result = false
-					for (var i = 0; i < foundset.getSize(); i++) {
-						nameArray.push(foundset.getRecord(i + 1).block_name)
-					}
-					for (var j in nameArray) {
-						if ( nameArray[j] == name ) {
-							result = true
-							break
-						}
-					}
-					return result
+			function uniqueNameCheck(name) {  // returns true if duplicate name detected
+				var nameArray = []
+				var result = false
+				for (var i = 0; i < foundset.getSize(); i++) {
+					nameArray.push(foundset.getRecord(i + 1).block_name)
 				}
+				for (var j in nameArray) {
+					if ( nameArray[j] == name ) {
+						result = true
+						break
+					}
+				}
+				return result
 			}
+		
 			// 2) get block init() and associated meta data to build data object
 			if ( forms[formName] ) {
 				//form not loaded yet, get solution model to check for method existence
@@ -360,6 +359,7 @@ function REC_new(flagRefresh) {
 					incrementer ++
 				}
 			}
+			
 			block.block_name = name
 			block.block_description = obj.record.block_description
 			block.form_name = obj.record.form_name
@@ -379,11 +379,17 @@ function REC_new(flagRefresh) {
 			var displayCurrent = new Object()
 			var displayDelete = new Array()
 			
-			for (var i = 1; i <= web_block_type_to_block_display.getSize(); i++) {
-				var displayRec = web_block_type_to_block_display.getRecord(i)
+			for (var i = 1; i <= block.web_block_type_to_block_display.getSize(); i++) {
+				var displayRec = block.web_block_type_to_block_display.getRecord(i)
 				
-				//todo: needs to work with view and controller
-				displayCurrent[displayRec.method_name.substr(5,100)] = displayRec
+				// needs to work with view and controller
+				if (displayRec.method_name.substr(0,4) == 'VIEW') {
+					displayCurrent[displayRec.method_name.substr(5,100)] = displayRec
+				}
+				else if (displayRec.method_name.substr(0,10) == 'CONTROLLER') {
+					displayCurrent[displayRec.method_name.substr(11,100)] = displayRec
+				}
+				
 				displayDelete.push(displayRec)
 			}
 			
