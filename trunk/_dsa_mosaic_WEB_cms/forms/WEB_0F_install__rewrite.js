@@ -18,6 +18,8 @@ function TOGGLE_sample_rewrite(input) {
 		input = (rewrite_enabled) ? true : false
 	}
 	
+	elements.lbl_url_install.visible = input
+	elements.fld_url_install.visible = input
 	elements.lbl_rewriteSample.visible = input
 	elements.var_rewriteSample.visible = input
 }
