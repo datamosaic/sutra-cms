@@ -498,11 +498,11 @@ if (application.__parent__.solutionPrefs) {
  */
 function WEB_startup() {
 	//over ride style for webclient
-	if (application.getApplicationType() == APPLICATION_TYPES.HEADLESS_CLIENT) {
+	if (application.getApplicationType() == APPLICATION_TYPES.WEB_CLIENT) {
 		application.setUIProperty(APP_WEB_PROPERTY.WEBCLIENT_TEMPLATES_DIR, 'harjo_alternate')
 	}
 	//hacks to load in all browser bean forms
-	else if (application.getApplicationType() == APPLICATION_TYPES.SMART_CLIENT) {
+	else if (application.getApplicationType() == APPLICATION_TYPES.SMART_CLIENT || application.getApplicationType() == APPLICATION_TYPES.RUNTIME_CLIENT) {
 		//disable rec_on_select of the block type form
 		globals.WEB_block_on_select = false
 		
