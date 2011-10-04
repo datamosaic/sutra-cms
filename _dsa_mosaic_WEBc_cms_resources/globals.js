@@ -261,34 +261,34 @@ function WEBc_block_getResponse(event, formName, obj) {
  * @properties={typeid:24,uuid:"B82E9E1D-9201-47C8-8FF7-D606643DCD6A"}
  */
 function WEBc_block_save() {
-	//don't run when in real mode
-	if (globals.WEB_page_mode != 3) {
-		var formName = 'WEB_A__scrapbook'
-		//on page gui detail
-		if (globals.WEB_block_scope == 1 && globals.WEB_page_mode == 2 && forms.WEB_0F_page__design.elements.tab_main.tabIndex == 1) {
-			formName = 'WEB_A__page'
-		}
-		
-		//toggle upstream _editMode, but don't retrigger a save
-		forms[formName].ACTION_save(null,true)
-	}
+//	//don't run when in real mode
+//	if (globals.WEB_page_mode != 3) {
+//		var formName = 'WEB_A__scrapbook'
+//		//on page gui detail
+//		if (globals.WEB_block_scope == 1 && globals.WEB_page_mode == 2 && forms.WEB_0F_page__design.elements.tab_main.tabIndex == 1) {
+//			formName = 'WEB_A__page'
+//		}
+//		
+//		//toggle upstream _editMode, but don't retrigger a save
+//		forms[formName].ACTION_save(null,true)
+//	}
 }
 
 /**
  * @properties={typeid:24,uuid:"44816F74-9845-4672-BE53-3D9C070DB6BC"}
  */
 function WEBc_block_cancel() {
-	//don't run when in real mode
-	if (globals.WEB_page_mode != 3) {
-		var formName = 'WEB_A__scrapbook'
-		//on page gui detail
-		if (globals.WEB_block_scope == 1 && globals.WEB_page_mode == 2 && forms.WEB_0F_page__design.elements.tab_main.tabIndex == 1) {
-			formName = 'WEB_A__page'
-		}
-		
-		//toggle upstream _editMode, but don't retrigger a save
-		forms[formName].ACTION_cancel(null,true)
-	}
+//	//don't run when in real mode
+//	if (globals.WEB_page_mode != 3) {
+//		var formName = 'WEB_A__scrapbook'
+//		//on page gui detail
+//		if (globals.WEB_block_scope == 1 && globals.WEB_page_mode == 2 && forms.WEB_0F_page__design.elements.tab_main.tabIndex == 1) {
+//			formName = 'WEB_A__page'
+//		}
+//		
+//		//toggle upstream _editMode, but don't retrigger a save
+//		forms[formName].ACTION_cancel(null,true)
+//	}
 }
 
 /**
@@ -1431,6 +1431,102 @@ function WEBc_install_getRewrite() {
 	}
 	else {
 		return false
+	}
+}
+
+/**
+ * @properties={typeid:24,uuid:"CFD41FEB-A2F8-4CC3-87B9-3458CA5E74F3"}
+ */
+function WEBc_markup_link_servlet(obj,siteID,siteLanguageID) {
+	//how requested
+	var appServer = application.getServerURL()
+	appServer = appServer.split(':')
+	var accessURL = appServer[1].slice(2)
+	var requestURL = (accessURL == '127.0.0.1') ? 'localhost' : accessURL
+	if (appServer.length > 2) {
+		var port = utils.stringToNumber(appServer[2])
+		requestURL += ':' + port
+	}
+	
+	var fsInstall = databaseManager.getFoundSet('sutra_cms','web_install')
+	fsInstall.loadAllRecords()
+	databaseManager.refreshRecordFromDatabase(fsInstall,0)
+	
+	//grab site
+	if (siteID) {
+		var fsSite = databaseManager.getFoundSet('sutra_cms','web_site')
+		fsSite.find()
+		fsSite.id_site = siteID
+		var results = fsSite.search()
+		
+		//this site exists
+		if (results == 1) {
+			var siteRec = fsSite.getRecord(1)
+		}
+		//site specified doesn't exist, try to fail gracefully
+		else {
+			var siteRec = new Object()
+		}
+	}
+	else if (obj && obj.site && obj.site.record){
+		var siteRec = obj.site.record
+	}
+	//no site, try to fail gracefully
+	else {
+		var siteRec = new Object()
+	}
+	
+	//specific language specified for this link
+	if (siteLanguageID) {
+		var fsSiteLanguage = databaseManager.getFoundSet("sutra_cms","web_site_language")
+		fsSiteLanguage.find()
+		fsSiteLanguage.id_site_language = siteLanguageID
+		var count = fsSiteLanguage.search()
+		
+		if (count) {
+			var siteLanguageRec = fsSiteLanguage.getRecord(1)
+		}
+	}
+	//get the site's language record from obj
+	else if (obj && obj.language && obj.language.record && utils.hasRecords(obj.language.record.web_language_to_site_language)) {
+		var siteLanguageRec = obj.language.record.web_language_to_site_language.getRecord(1)
+	}
+	
+	//url specified
+	var siteURL = ''
+	if (siteRec.url || (siteLanguageRec && siteLanguageRec.url)) {
+		siteURL = siteRec.url
+		
+		if (port) {
+			siteURL += ':' + port
+		}
+		
+		//language as a domain or advanced apache setup
+			//MEMO: obviously, the port (if non-standard) is entered in the siteLanguageRec.url column
+		if (siteLanguageRec && siteLanguageRec.url) {
+			siteURL = siteLanguageRec.url
+			port = null
+		}
+	}
+	
+	//if rewrites on
+	if (utils.hasRecords(fsInstall) && fsInstall.rewrite_enabled) {
+		//check to see if servlet url specified for site
+		if (siteURL) {
+			return siteURL
+		}
+		//use default install servlet url
+		else if (fsInstall.url_install) {
+			return fsInstall.url_install
+		}
+		//use whatever url the request came in on
+		else {
+			return requestURL
+		}
+	}
+	//rewrites off
+	else {
+		return requestURL
 	}
 }
 
