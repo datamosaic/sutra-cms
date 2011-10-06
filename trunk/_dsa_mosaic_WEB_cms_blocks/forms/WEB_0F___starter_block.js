@@ -1,9 +1,4 @@
 /**
- * @properties={typeid:35,uuid:"2AFDC806-15C2-4F4C-B003-D71264F8119B",variableType:-4}
- */
-var _skipSelect = true;
-
-/**
  * @properties={typeid:35,uuid:"4FDACEFD-6F26-46F7-827B-375E25824AD6"}
  */
 var _license_dsa_mosaic_WEB_cms = 'Module: _dsa_mosaic_WEB_cms \
