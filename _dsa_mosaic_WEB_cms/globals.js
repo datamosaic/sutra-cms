@@ -523,6 +523,16 @@ function WEB_startup() {
 }
 
 /**
+ * @properties={typeid:24,uuid:"577656F1-7609-4521-AABD-A8A3D7A026F2"}
+ */
+function WEB_servoy_wc_controller(startup, args) {
+	// TODO: error checking
+
+	// call iFrame loader
+	forms[args.form].CMS_iFrame_load(args.id)
+}
+
+/**
  * @properties={typeid:24,uuid:"88B20E7F-82B4-4235-87EE-C291469E681A"}
  */
 function WEB_browser_error() {
