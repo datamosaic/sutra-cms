@@ -91,20 +91,23 @@ function VIEW_default(obj, results) {
 		mapp[record.data_key] = record.data_value
 	}
 	
+	var login = globals.WEBc_session_getData(obj.session_server.record.session_id, "login")
+	
 	var url 		= globals.WEBc_markup_link_servlet(obj)
 	var module		= '_dsa_mosaic_WEB_cms'
 	var method		= 'WEB_servoy_wc_controller'
-	var record		= '4'
+	//abstract the passing in of record
+	var record		= (login && login.customer && login.customer.loginID) ? login.customer.loginID : ''
 	var template	= '<iframe src="http://{{url}}/\
-						servoy-webclient/ss/s/{{module}}/m/{{method}}/a/\
-						1/form/{{form}}/\
-						id/{{record}}" width="{{width}}" height="{{height}}" frameborder="0" \
-						scrolling="auto" id="{{id}}" '
+						servoy-webclient/ss?s={{module}}&m={{method}}&a=\
+						sutraCMS&form={{form}}&\
+						id={{record}}" width="{{width}}" height="{{height}}" frameborder="0" \
+						scrolling="no" id="{{id}}" '
 						//only assign a class if one was specified
 						if (mapp.cssClass) {
 							template += 'class="{{class}}" '
 						}
-template +=	'	allowtransparency="{{transparent}}">\n\
+template +=	'	>\n\
 							Servoy Web Client cannot load\n\
 						</iframe>'
 	var html = template.replace(/\t/g, '')
@@ -118,7 +121,9 @@ template +=	'	allowtransparency="{{transparent}}">\n\
 	html = utils.stringReplace(html, "{{id}}", mapp.id || 'swc')
 	html = utils.stringReplace(html, "{{class}}", mapp.cssClass)
 	html = utils.stringReplace(html, "{{transparent}}", (mapp.transparent ? 'true' : 'false'))
-
+	
+	//servlets:8080/servoy-webclient/ss/s/_dsa_mosaic_WEB_cms/m/WEB_servoy_wc_controller/a/sutraCMS/form/WLOGIN_0W_keys/id/4
+	
 	return html
 }
 
