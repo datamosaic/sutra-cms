@@ -513,12 +513,12 @@ function WEB_startup() {
 		forms.WEB_0F__content.controller.show()
 		application.sleep(1500)
 		forms.WEB_0F__content_view.controller.show()
+		//also hits up headless client so get zooming effect on first load
 		forms.WEB_0F_page__browser.controller.show()
 		
-		//hit up headless client so get zooming effect on first load
-	//	plugins.http.getPageData(globals.WEBc_markup_link_base() + 'index.jsp')
-		
-		forms.DATASUTRA_0F_solution.controller.show()
+		if (solutionModel.getForm('DATASUTRA_0F_solution')) {
+			forms.DATASUTRA_0F_solution.controller.show()
+		}
 	}
 }
 
@@ -527,9 +527,18 @@ function WEB_startup() {
  */
 function WEB_servoy_wc_controller(startup, args) {
 	// TODO: error checking
-
-	// call iFrame loader
-	forms[args.form].CMS_iFrame_load(args.id)
+	
+	// do something if the form requested is present
+	if (args && args.form && solutionModel.getForm(args.form)) {
+		// call iFrame loader if there is a method on the form specified
+		if (solutionModel.getForm(args.form).getFormMethod('CMS_iFrame_load')) {
+			forms[args.form].CMS_iFrame_load(args)
+		}
+		// show the form without changing the url
+		else {
+			forms[args.form].controller.show()
+		}
+	}
 }
 
 /**
