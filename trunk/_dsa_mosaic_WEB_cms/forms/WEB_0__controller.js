@@ -760,11 +760,21 @@ function CONTROLLER_setup(results, app, session, request, response, mode) {
 				site.loadRecords([siteLanguage.id_site])
 			}
 		}
-		//no site found
 		else if (count != 1) {
-			obj.error.code = 500
-			obj.error.message = "No site found"
-			return obj
+			var siteLanguage = databaseManager.getFoundSet("sutra_cms","web_site_language")
+			siteLanguage.find()
+			siteLanguage.url = '%' + pageServer + '%'
+			var count = siteLanguage.search()
+			
+			//if there is any language record with the requested url, try it
+			if (count == 1) {
+				site.loadRecords([siteLanguage.id_site])
+			}
+			else {
+				obj.error.code = 500
+				obj.error.message = "No site found"
+				return obj
+			}
 		}
 		
 		var page = databaseManager.getFoundSet("sutra_cms","web_page")
@@ -894,12 +904,6 @@ function CONTROLLER_setup(results, app, session, request, response, mode) {
 	}
 	else {
 		results.addRow(["cmsAnalytics",""])
-	}
-	
-	// obj: home
-	if ( utils.hasRecords(page.web_page_to_site.web_site_to_page__home )) {
-		databaseManager.refreshRecordFromDatabase(page.web_page_to_site.web_site_to_page__home,0)
-		obj.home.record = page.web_page_to_site.web_site_to_page__home.getSelectedRecord()
 	}
 	
 	// PLATFORM
@@ -1095,6 +1099,14 @@ function CONTROLLER_setup(results, app, session, request, response, mode) {
 	databaseManager.refreshRecordFromDatabase(group,0)
 	obj.group.record = group.getSelectedRecord()
 	obj.group.id = group.id_group
+	
+	// obj: home
+	if ( utils.hasRecords(page.web_page_to_site.web_site_to_page__home )) {
+		databaseManager.refreshRecordFromDatabase(page.web_page_to_site.web_site_to_page__home,0)
+		obj.home.record = page.web_page_to_site.web_site_to_page__home.getSelectedRecord()
+		
+		results.addRow(["cmsHomePage",globals.WEBc_markup_link_page(obj.home.record.id_page,pageServer,(editMode ? 'Edit' : ''),null,obj)])
+	}
 	
 	//if page requested is using different link type (folder, pretty, index), send redirect so site is uniform
 	var goodLink = globals.WEBc_markup_link_page(page.id_page, null, (editMode ? 'Edit' : null), null, obj)
