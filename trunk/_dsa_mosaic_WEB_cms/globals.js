@@ -528,11 +528,26 @@ function WEB_startup() {
 function WEB_servoy_wc_controller(startup, args) {
 	// TODO: error checking
 	
+	function findMethod(formName, methodName) {
+		if (formName && methodName) {
+			var smForm = solutionModel.getForm(formName)
+			var smFormParent = smForm.extendsForm
+			
+			if (smForm.getFormMethod('CMS_iFrame_load')) {
+				forms[formName][methodName](args)
+				return true
+			}
+			else if (smFormParent) {
+				return findMethod(smFormParent.name, methodName)
+			}
+		}
+	}
+	
 	// do something if the form requested is present
 	if (args && args.form && solutionModel.getForm(args.form)) {
 		// call iFrame loader if there is a method on the form specified
-		if (solutionModel.getForm(args.form).getFormMethod('CMS_iFrame_load')) {
-			forms[args.form].CMS_iFrame_load(args)
+		if (findMethod(args.form,'CMS_iFrame_load')) {
+			
 		}
 		// show the form without changing the url
 		else {
