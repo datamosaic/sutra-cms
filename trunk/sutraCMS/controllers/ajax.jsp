@@ -5,7 +5,7 @@
 <%
 	// start servoy session
 	ISessionBean servoy_hc = (ISessionBean)application.getAttribute("servoy_cms");
-	if (servoy_hc == null || !servoy_hc.setMainForm("WEB_0__controller") {
+	if (servoy_hc == null || !servoy_hc.setMainForm("WEB_0__controller")) {
 		// module
 		String module = request.getParameter("svs");
 		servoy_hc = HeadlessClientFactory.createSessionBean(request, module);
