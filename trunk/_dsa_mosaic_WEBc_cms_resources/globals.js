@@ -1584,3 +1584,26 @@ function WEBc_sutra_trigger(method,arguments) {
 	}
 	
 }
+
+/**
+ * Return all pages for current site that contain given attribute or 0 if no pages found
+ *
+ * @param {String} att Look for pages that have this attribute
+ * @param {Object} obj CMS object.
+ *
+ * @returns {JSFoundset|Integer} Foundset of pages that have attribute
+ * 
+ * @properties={typeid:24,uuid:"66B67CD6-DBF9-4EF4-B330-EC7562A8E415"}
+ */
+function WEBc_markup_pages_attribute(att, obj) {
+    // find pages with supplied attribute
+	if ( att ) {
+    	var pages = databaseManager.getFoundSet("sutra_cms", "web_page")
+	    pages.find()
+	    pages.id_site = obj.site.id
+	    pages.web_page_to_attribute.attribute_key = att
+	    var count = pages.search()
+		return (count) ? pages : 0
+	}
+	else return 0
+}
