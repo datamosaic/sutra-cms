@@ -8,7 +8,6 @@ uuid:"4520017B-6F19-4F26-B803-DE2D70DD5A75"
 ],
 name:"WEB_0C__html_snippets",
 paperPrintScale:100,
-showInMenu:true,
 size:"640,480",
 typeid:3,
 uuid:"D9AD52A7-146A-4F37-A758-093D7ED41340"
