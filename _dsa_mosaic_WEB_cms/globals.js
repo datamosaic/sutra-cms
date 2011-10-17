@@ -516,8 +516,13 @@ function WEB_startup() {
 		//also hits up headless client so get zooming effect on first load
 		forms.WEB_0F_page__browser.controller.show()
 		
+		//return to main data sutra form when using the data sutra framework
 		if (solutionModel.getForm('DATASUTRA_0F_solution')) {
 			forms.DATASUTRA_0F_solution.controller.show()
+		}
+		//go to blank form when running standalone
+		else {
+			forms.WEB_0__startup.controller.show()
 		}
 	}
 }
