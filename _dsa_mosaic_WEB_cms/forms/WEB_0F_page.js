@@ -24,8 +24,8 @@ function FORM_on_show(firstShow, event) {
 		globals.TRIGGER_ul_tab_list('WEB_0T_page','Sitemap',0)
 	}
 	
-	//don't run in headless client
-	if (application.getApplicationType() != APPLICATION_TYPES.HEADLESS_CLIENT) {
+	//don't run in headless or web client (they use whatever solution is activated as context)
+	if (application.getApplicationType() == APPLICATION_TYPES.SMART_CLIENT || application.getApplicationType() == APPLICATION_TYPES.RUNTIME_CLIENT) {
 		//save down currently selected toolbar
 		if (application.__parent__.solutionPrefs && !solutionPrefs.config.lockStatus) {
 			//when progressbar is active, take from previous toolbar
@@ -97,8 +97,8 @@ function FORM_on_show(firstShow, event) {
  * @properties={typeid:24,uuid:"C35E32F1-37B2-4324-84F2-347A223A6871"}
  */
 function FORM_on_hide(event) {
-	//don't run in headless client
-	if (application.getApplicationType() != APPLICATION_TYPES.HEADLESS_CLIENT) {
+	//don't run in headless or web client (they use whatever solution is activated as context)
+	if (application.getApplicationType() == APPLICATION_TYPES.SMART_CLIENT || application.getApplicationType() == APPLICATION_TYPES.RUNTIME_CLIENT) {
 		//undo locked screen
 		globals.WEB_lock_workflow(false)
 		
