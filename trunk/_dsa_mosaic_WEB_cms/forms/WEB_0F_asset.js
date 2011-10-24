@@ -183,3 +183,75 @@ function MAP_asset(assetType) {
 			break
 	}
 }
+
+/**
+ * Perform the element default action.
+ *
+ * @param {JSEvent} event the event that triggered the action
+ *
+ * @properties={typeid:24,uuid:"750A29D4-2647-475B-BA2F-B86562F6C9B2"}
+ */
+function TAB_change(event) {
+	globals.TAB_change_grid(null,null,'tab_list','tab_l')
+	
+	elements.btn_tag_add.visible = elements.tab_list.tabIndex == 2
+	elements.btn_tag_delete.visible = elements.tab_list.tabIndex == 2
+}
+
+/**
+ * Handle record selected.
+ *
+ * @param {JSEvent} event the event that triggered the action
+ *
+ * @properties={typeid:24,uuid:"49E7AA78-EDBA-4820-BD16-BDB92BD63793"}
+ */
+function REC_on_select(event) {
+	var fsPages = forms.WEB_0F_asset_1L_page.foundset
+	
+	//there is something to do on this page
+	if (utils.hasRecords(foundset)) {
+		globals.CODE_cursor_busy(true)
+		var args = [1,'id_asset_instance']
+		
+		var query = 
+"SELECT DISTINCT c.id_page FROM web_platform a, web_version b, web_page c WHERE b.id_version IN ( \
+	SELECT DISTINCT c.id_version from web_block a, web_scope b, web_area c, web_block_version d, web_block_data e WHERE \
+	c.id_area = b.id_area AND \
+	b.id_block = a.id_block AND \
+	d.id_block = a.id_block AND \
+	e.id_block_version = d.id_block_version AND \
+	d.flag_active = ? AND \
+	e.data_key = ? AND \
+	e.data_value IN ("
+		for (var i = 1; i <= web_asset_to_asset_instance.getSize(); i++) {
+			var record = web_asset_to_asset_instance.getRecord(i)
+			//build up query
+			query += '?'
+			if (i < web_asset_to_asset_instance.getSize()) {
+				query += ','
+			}
+			//tack on to arguments
+			args.push(record.id_asset_instance.toString())
+		}
+query += ") \
+) AND \
+	a.id_platform = b.id_platform AND \
+	a.id_page = c.id_page"
+		
+		var dataset = databaseManager.getDataSetByQuery(
+					'sutra_cms', 
+					query, 
+					args, 
+					-1
+				)
+		
+		//load correct pages that this is used on
+		fsPages.loadRecords(dataset)
+		
+		globals.CODE_cursor_busy(false)
+	}
+	//clear out the related pages link
+	else {
+		fsPages.clear()
+	}
+}

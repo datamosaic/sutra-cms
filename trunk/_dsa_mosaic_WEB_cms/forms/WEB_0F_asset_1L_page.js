@@ -1,0 +1,21 @@
+/**
+ * @properties={typeid:35,uuid:"A6D51F39-3808-42DD-87E3-1C1873C0FFF5"}
+ */
+var _license_dsa_mosaic_WEB_cms = 'Module: _dsa_mosaic_WEB_cms \
+									Copyright (C) 2011 Data Mosaic \
+									MIT Licensed';
+
+/**
+ * Perform the element default action.
+ *
+ * @param {JSEvent} event the event that triggered the action
+ *
+ * @properties={typeid:24,uuid:"8D155492-FBF6-48A3-B75C-F0125289B3A1"}
+ */
+function GOTO_page(event) {
+	globals.TRIGGER_navigation_set('CMS_page')
+	
+	forms.WEB_0F_page.foundset.find()
+	forms.WEB_0F_page.foundset.id_page = id_page
+	forms.WEB_0F_page.foundset.search()
+}
