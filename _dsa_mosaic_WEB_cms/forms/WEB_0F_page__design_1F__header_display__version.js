@@ -625,7 +625,7 @@ function ACTIVATE_version(event) {
 					
 					//set selected version as active
 					selectedVersion.flag_active = 1
-					selectedVersion.flag_lock = 1
+//					selectedVersion.flag_lock = 1
 					
 					//save data when not in edit mode
 					if (!forms.WEB_A__page._editMode) {
