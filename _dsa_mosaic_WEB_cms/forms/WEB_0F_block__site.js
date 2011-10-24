@@ -98,6 +98,10 @@ function REC_new() {
  */
 function REC_delete() {
 	forms.WEB_0F_block__scrapbook.REC_delete()
+	
+	if (!utils.hasRecords(foundset)) {
+		FORM_on_show()
+	}
 }
 
 /**
