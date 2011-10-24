@@ -144,3 +144,17 @@ function DIR_up()
 
 	 foundset.sort('row_order asc')
 }
+
+/**
+ * Handle record selected.
+ *
+ * @param {JSEvent} event the event that triggered the action
+ *
+ * @properties={typeid:24,uuid:"69CED4A3-3E2B-46C0-83DF-FD0DC1AFC1C2"}
+ */
+function REC_on_select(event) {
+	//give the triple-level relation forms a little extra help
+	if (utils.hasRecords(foundset)) {
+		forms.WEB_0F_theme_1L_editable_default.foundset.loadRecords(web_editable_to_editable_default)
+	}
+}

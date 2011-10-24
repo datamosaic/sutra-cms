@@ -131,6 +131,7 @@ uuid:"CBC1CFA4-F5C7-4EC3-AF76-9DAD44216B53"
 ],
 name:"WEB_0F_theme_1L_editable",
 navigatorID:"-1",
+onRecordSelectionMethodID:"69CED4A3-3E2B-46C0-83DF-FD0DC1AFC1C2",
 onShowMethodID:"-1",
 paperPrintScale:100,
 rowBGColorCalculation:"globals.CODE_row_background",
