@@ -569,10 +569,10 @@ function FIND_forms() {
 				if (dataSource) {
 					var serverName = databaseManager.getDataSourceServerName(dataSource)
 					var tableName = databaseManager.getDataSourceTableName(dataSource)
-					var moduleName = solutionPrefs.repository.allFormsByTable[serverName][tableName][formNames[i]].moduleName
+					var moduleName = solutionPrefs.repository.allFormsByTable[serverName][tableName][formNames[i]] ? solutionPrefs.repository.allFormsByTable[serverName][tableName][formNames[i]].moduleName : ''
 				}
 				else {
-					var moduleName = solutionPrefs.repository.allFormsByTable["No datasource"][formNames[i]].moduleName
+					var moduleName = solutionPrefs.repository.allFormsByTable["No datasource"][formNames[i]] ? solutionPrefs.repository.allFormsByTable["No datasource"][formNames[i]].moduleName : ''
 				}
 				
 				//grab out unique identifier from module name
@@ -585,8 +585,8 @@ function FIND_forms() {
 					}
 				}
 				
-				//don't show 'WEB' prefix for 'Default' blocks
-				if (moduleID == 'WEB') {
+				//don't show 'WEB' prefix for 'Default' blocks or blocks added in since smart client opened (when in developer)
+				if (moduleID == 'WEB' || moduleID == null) {
 					continue
 				}
 				
