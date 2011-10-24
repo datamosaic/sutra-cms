@@ -13,8 +13,8 @@ var _license_dsa_mosaic_WEB_cms = 'Module: _dsa_mosaic_WEB_cms \
  * @properties={typeid:24,uuid:"668D91EA-CDE9-4DC7-8A9F-DD87FBC1C702"}
  */
 function FORM_on_load(event) {
-	//don't run in headless client
-	if (application.getApplicationType() != APPLICATION_TYPES.HEADLESS_CLIENT) {
+	//don't run in headless or web client (they use whatever solution is activated as context)
+	if (application.getApplicationType() == APPLICATION_TYPES.SMART_CLIENT || application.getApplicationType() == APPLICATION_TYPES.RUNTIME_CLIENT) {
 		//set combobox to be square on os x
 		globals.CODE_property_combobox(false, 'mini')
 	}
