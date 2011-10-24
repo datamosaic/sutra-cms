@@ -23,8 +23,17 @@ function ACTION_edit(event) {
 //	elements.btn_done.visible = true
 //	elements.btn_edit.visible = false
 	
+	//locked version
+	if (!utils.hasRecords(forms.WEB_0F_page__design_1F_version.foundset) || forms.WEB_0F_page__design_1F_version.flag_lock) {
+		plugins.dialogs.showErrorDialog(
+					'Error',
+					'The selected version is locked.  To enter edit mode it must be unlocked.'
+			)
+	}
 	//enter edit mode
-	TOGGLE_edit_mode(true)
+	else {
+		TOGGLE_edit_mode(true)
+	}
 }
 
 /**

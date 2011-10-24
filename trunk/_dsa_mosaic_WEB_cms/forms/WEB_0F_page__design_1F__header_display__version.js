@@ -529,7 +529,11 @@ function LOCK_version(event) {
 		//currently editable, prompt to turn off
 		if (!version.flag_lock) {
 			version.flag_lock = 1
-//			databaseManager.saveData(version)
+			
+			//save data when not in edit mode
+			if (!forms.WEB_A__page._editMode) {
+				databaseManager.saveData(version)
+			}
 			
 			//redo what is displayed to take into account
 			forms.WEB_A__page.TOGGLE_edit_mode(forms.WEB_A__page._editMode)
@@ -551,7 +555,11 @@ function LOCK_version(event) {
 				}
 				
 				version.flag_lock = 0
-//				databaseManager.saveData(version)
+				
+				//save data when not in edit mode
+				if (!forms.WEB_A__page._editMode) {
+					databaseManager.saveData(version)
+				}
 				
 				//redo what is displayed to take into account
 				forms.WEB_A__page.TOGGLE_edit_mode(forms.WEB_A__page._editMode)
@@ -589,7 +597,11 @@ function ACTIVATE_version(event) {
 	switch (event.getElementName()) {
 		case 'btn_check_on':
 			selectedVersion.flag_active = 0
-//			databaseManager.saveData(selectedVersion)
+			
+			//save data when not in edit mode
+			if (!forms.WEB_A__page._editMode) {
+				databaseManager.saveData(selectedVersion)
+			}
 			
 			//redo version valuelist without touching the foundset
 			forms.WEB_0F_page__design.SET_versions(true)
@@ -615,7 +627,10 @@ function ACTIVATE_version(event) {
 					selectedVersion.flag_active = 1
 					selectedVersion.flag_lock = 1
 					
-//					databaseManager.saveData()
+					//save data when not in edit mode
+					if (!forms.WEB_A__page._editMode) {
+						databaseManager.saveData(selectedVersion)
+					}
 					
 					//create log record when version set as active
 					globals.TRIGGER_log_create(
