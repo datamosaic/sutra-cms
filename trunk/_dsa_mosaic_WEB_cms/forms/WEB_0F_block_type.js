@@ -662,29 +662,30 @@ function REC_on_select(event) {
 	
 	//there is something to do on this page
 	if (utils.hasRecords(foundset)) {
-//		FLD_data_change__form_name()
+		globals.CODE_cursor_busy(true)
 		
-//		var query = 
-//'SELECT DISTINCT id_page FROM web_page WHERE id_page IN (\
-//	SELECT id_page FROM web_platform WHERE id_platform IN (\
-//		SELECT id_platform FROM web_version WHERE id_version IN (\
-//			SELECT id_version FROM web_area WHERE id_area IN (\
-//				SELECT id_area FROM web_scope WHERE id_block IN (\
-//					SELECT id_block FROM web_block WHERE id_block_type = ?\
-//				)\
-//			)\
-//		)\
-//	)\
-//)'
-//		var dataset = databaseManager.getDataSetByQuery(
-//					'sutra_cms', 
-//					query, 
-//					[id_block_type.toString()], 
-//					-1
-//				)
-		var dataset = databaseManager.createEmptyDataSet()
+		var query = 
+"SELECT DISTINCT c.id_page FROM web_platform a, web_version b, web_page c WHERE  \
+b.id_version IN ( \
+SELECT DISTINCT c.id_version from web_block a, web_scope b, web_area c WHERE  \
+c.id_area = b.id_area AND \
+b.id_block = a.id_block AND \
+a.id_block_type = ? \
+) AND \
+a.id_platform = b.id_platform AND \
+a.id_page = c.id_page"
+		
+		var dataset = databaseManager.getDataSetByQuery(
+					'sutra_cms', 
+					query, 
+					[id_block_type.toString()], 
+					-1
+				)
+		
 		//load correct pages that this is used on
 		fsPages.loadRecords(dataset)
+		
+		globals.CODE_cursor_busy(false)
 	}
 	//clear out the related pages link
 	else {
