@@ -109,9 +109,6 @@ function REC_new() {
 			//refresh screen so i can put cursor into field
 			application.updateUI(250)
 			
-			//set name of this block
-//			forms.WEB_0F_block__scrapbook__header.LBL_block_name__action()
-			
 			//additional request focus (at end of method stack)
 			forms.WEB_0F_block__scrapbook__header.elements.fld_block_name.selectAll()
 			forms.WEB_0F_block__scrapbook__header.elements.fld_block_name.requestFocus(false)
