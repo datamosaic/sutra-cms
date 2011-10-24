@@ -51,7 +51,32 @@ controller.deleteRecord()
  * @properties={typeid:24,uuid:"DBF7019B-9E07-4637-B4E3-F598E32F4D1A"}
  */
 function REC_on_select() {
-
+	var fsPage = forms.WEB_0F_theme_1L_page.foundset
+	
+	if (utils.hasRecords(foundset)) {
+		globals.CODE_cursor_busy(true)
+		
+		var query = 
+"SELECT DISTINCT c.id_page FROM web_platform a, web_version b, web_page c WHERE \
+	a.id_platform = b.id_platform AND \
+	a.id_page = c.id_page AND \
+	b.id_layout = ?"
+		
+		var dataset = databaseManager.getDataSetByQuery(
+					'sutra_cms', 
+					query, 
+					[id_layout.toString()], 
+					-1
+				)
+		
+		//load correct pages that this is used on
+		fsPage.loadRecords(dataset)
+		
+		globals.CODE_cursor_busy(false)
+	}
+	else {
+		fsPage.clear()
+	}
 }
 
 /**
