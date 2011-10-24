@@ -26,8 +26,8 @@ function VIEW_default(obj) {
  * @properties={typeid:24,uuid:"F33BE9B2-F674-4F60-BBE6-666F668D5657"}
  */
 function FORM_on_load() {
-	//don't run in headless client
-	if (application.getApplicationType() != APPLICATION_TYPES.HEADLESS_CLIENT) {
+	//don't run in headless or web client (they use whatever solution is activated as context)
+	if (application.getApplicationType() == APPLICATION_TYPES.SMART_CLIENT || application.getApplicationType() == APPLICATION_TYPES.RUNTIME_CLIENT) {
 		//set combobox to be square on os x
 		globals.CODE_property_combobox(true)
 	}
