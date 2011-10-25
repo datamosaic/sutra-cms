@@ -68,7 +68,7 @@ function ACTIONS_list() {
 	//list of actions
 	var valueList = [
 			'Duplicate record',
-			'Update theme...',
+			'Refresh theme...',
 			'-',
 			'Toggle open',
 			'Toggle closed',
@@ -213,7 +213,7 @@ function ACTIONS_list_control(input,scopeType,scopeValue) {
 			REC_duplicate()
 			break
 	
-		case 1:
+		case 1: //refresh theme
 			var input = plugins.dialogs.showQuestionDialog(
 						'Update theme',
 						'Do you want to keep current data ore reset to the theme\'s defaults?',
