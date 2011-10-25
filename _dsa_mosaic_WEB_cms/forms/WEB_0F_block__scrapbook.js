@@ -483,6 +483,165 @@ function SET_versions() {
 }
 
 /**
+ * @properties={typeid:24,uuid:"6A5E7546-310A-453E-850A-6E2E4DB0CC82"}
+ */
+function REC_refresh(allVersions, selectedVersion) {
+	
+	if (allVersions && selectedVersion) {
+		var progressText = 'Refreshing block meta data...'
+	}
+	else {
+		var progressText = 'Refreshing scrapbook meta data...'
+	}
+	
+	//there is a block
+	if ((allVersions && selectedVersion) || utils.hasRecords(foundset)) {
+		//do we have any versions?
+		var fsVersion = allVersions || web_block_to_block_version__all
+		
+		if (utils.hasRecords(fsVersion)) {
+			//get most recent version
+			if (fsVersion.getCurrentSort() != 'version_number desc') {
+				var fsVersionSort = fsVersion.duplicateFoundSet()
+				fsVersionSort.sort('version_number desc')
+				var latestVersion = fsVersionSort.getRecord(1)
+			}
+			//foundset already sorted, grab top record
+			else {
+				var latestVersion = fsVersion.getRecord(1)
+			}
+			
+			//get selected version if not passed in
+			if (!selectedVersion) {
+				selectedVersion = fsVersion.getSelectedRecord()
+			}
+			
+			//turn on feedback indicators
+			globals.TRIGGER_progressbar_start(null,progressText)
+			globals.CODE_cursor_busy(true)
+			
+			//create destination block version record
+			var newVersion = globals.CODE_record_duplicate(selectedVersion,[
+												"web_block_version_to_block_data",
+												"web_block_version_to_block_data_configure"
+											])
+			
+			
+			//set datapoints on new block version
+			newVersion.id_block = selectedVersion.id_block
+			newVersion.version_number = latestVersion.version_number + 1
+			newVersion.version_name = forms.WEB_P__version._versionName
+			newVersion.version_description = forms.WEB_P__version._versionDescription
+			newVersion.flag_active = 1
+			newVersion.flag_lock = 0
+			
+			//set datapoints on old block version
+			selectedVersion.flag_active = 0
+			selectedVersion.flag_lock = 1
+			
+			// map existing data so know what to do
+			var blockDataCurrent = new Object()
+			var blockDataDelete = new Array()
+			var blockConfigCurrent = new Object()
+			var blockConfigDelete = new Array()
+			
+		// block data
+			for (var i = 1; i <= newVersion.web_block_version_to_block_data.getSize(); i++) {
+				var record = newVersion.web_block_version_to_block_data.getRecord(i)
+				
+				blockDataCurrent[record.data_key] = record
+				blockDataDelete.push(record)
+			}
+			
+			// compare block data against template
+			if (utils.hasRecords(newVersion.web_block_to_block_type)) {
+				for (var i = 1; i <= newVersion.web_block_to_block_type.web_block_type_to_block_input.getSize(); i++) {
+					var record = newVersion.web_block_to_block_type.web_block_type_to_block_input.getRecord(i)
+					
+					//this input already exists, continue
+					if (blockDataCurrent[record.column_name]) {
+						//remove from delete array
+						blockDataDelete.splice(blockDataDelete.indexOf(blockDataCurrent[record.column_name]),1)
+						continue
+					}
+					
+					//input doesn't exist
+					var input = newVersion.web_block_version_to_block_data.getRecord(newVersion.web_block_version_to_block_data.newRecord())
+					input.data_key = record.column_name
+				}
+			}
+			
+			//if anything left in delete array, whack it 
+			for (var i = 0; i < blockDataDelete.length; i++) {
+				blockDataDelete[i].foundset.deleteRecord(blockDataDelete[i])
+			}
+			
+		// block config data
+			for (var i = 1; i <= newVersion.web_block_version_to_block_data_configure.getSize(); i++) {
+				var record = newVersion.web_block_version_to_block_data_configure.getRecord(i)
+				
+				blockConfigCurrent[record.data_key] = record
+				blockConfigDelete.push(record)
+			}
+			
+			// compare block data against template
+			if (utils.hasRecords(newVersion.web_block_to_block_type)) {
+				for (var i = 1; i <= newVersion.web_block_to_block_type.web_block_type_to_block_configure.getSize(); i++) {
+					var record = newVersion.web_block_to_block_type.web_block_type_to_block_configure.getRecord(i)
+					
+					//this input already exists, continue
+					if (blockConfigCurrent[record.column_name]) {
+						//remove from delete array
+						blockConfigDelete.splice(blockConfigDelete.indexOf(blockConfigCurrent[record.column_name]),1)
+						continue
+					}
+					
+					//input doesn't exist
+					var input = newVersion.web_block_version_to_block_data_configure.getRecord(newVersion.web_block_version_to_block_data_configure.newRecord())
+					input.data_key = record.column_name
+				}
+			}
+			
+			//if anything left in delete array, whack it 
+			for (var i = 0; i < blockConfigDelete.length; i++) {
+				blockConfigDelete[i].foundset.deleteRecord(blockConfigDelete[i])
+			}
+			
+			databaseManager.saveData()
+			
+			//resort version list
+			fsVersion.sort('version_number desc')
+			fsVersion.setSelectedIndex(1)
+			
+			//turn off feedback indicators if on
+			globals.CODE_cursor_busy(false)
+			if (globals.TRIGGER_progressbar_get() instanceof Array) {
+				if (globals.TRIGGER_progressbar_get()[1] == progressText) {
+					globals.TRIGGER_progressbar_stop()
+				}
+			}
+			
+			//redo content view when called from scrapbook form
+			if (!allVersions) {
+				REC_on_select()
+			}
+		}
+		else {
+			plugins.dialogs.showErrorDialog(
+						'Error',
+						'No content version selected'
+				)
+		}
+	}
+	else {
+		plugins.dialogs.showErrorDialog(
+					'Error',
+					'No content selected'
+			)
+	}
+}
+
+/**
  * @properties={typeid:24,uuid:"573F36C0-638A-494B-80D5-C24DD8BC1688"}
  */
 function FOUNDSET_restrict(returnContent, noSutra, scrapbookScope) {

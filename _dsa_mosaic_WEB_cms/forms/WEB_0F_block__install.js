@@ -124,3 +124,10 @@ function REC_delete() {
 		FORM_on_show()
 	}
 }
+
+/**
+ * @properties={typeid:24,uuid:"EE1C075C-7E12-4642-9602-3E65A4EEA72A"}
+ */
+function REC_refresh() {
+	forms.WEB_0F_block__scrapbook.REC_refresh()
+}

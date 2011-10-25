@@ -312,6 +312,25 @@ function REC_new(flagRefresh) {
 		else {
 			// use current block type record
 			var formName = form_name
+			
+			var oldBlockInput = new Array()
+			var oldBlockConfig = new Array()
+			var oldBlockResponse = new Array()
+			
+			for (var i = 1; i <= web_block_type_to_block_input.getSize(); i++) {
+				var record = web_block_type_to_block_input.getRecord(i)
+				oldBlockInput.push(record.column_name)
+			}
+			
+			for (var i = 1; i <= web_block_type_to_block_configure.getSize(); i++) {
+				var record = web_block_type_to_block_configure.getRecord(i)
+				oldBlockConfig.push(record.column_name)
+			}
+			
+			for (var i = 1; i <= web_block_type_to_block_response.getSize(); i++) {
+				var record = web_block_type_to_block_response.getRecord(i)
+				oldBlockResponse.push(record.column_name)
+			}
 		}
 
 		
@@ -498,6 +517,38 @@ function REC_new(flagRefresh) {
 							'Done',
 							'Block successfully refreshed'
 					)
+				
+				var changedData = false
+					
+				//check through input, config, response for new columns
+				for (var i = 1; i <= block.web_block_type_to_block_input.getSize() && !changedData; i++) {
+					var record = block.web_block_type_to_block_input.getRecord(i)
+					if (oldBlockInput.indexOf(record.column_name) == -1) {
+						changedData = true
+					}
+				}
+				
+				for (var i = 1; i <= web_block_type_to_block_configure.getSize() && !changedData; i++) {
+					var record = web_block_type_to_block_configure.getRecord(i)
+					if (oldBlockConfig.indexOf(record.column_name) == -1) {
+						changedData = true
+					}
+				}
+				
+				for (var i = 1; i <= web_block_type_to_block_response.getSize() && !changedData; i++) {
+					var record = web_block_type_to_block_response.getRecord(i)
+					if (oldBlockResponse.indexOf(record.column_name) == -1) {
+						changedData = true
+					}
+				}
+				
+				//alert that meta data has been modified
+				if (changedData) {
+					plugins.dialogs.showInfoDialog(
+								'Done',
+								'Block data changed. Currently used blocks on pages haven\'t been updated.\nYou will need to do this manually on each page.'
+						)
+				}
 			}
 		}
 	}
