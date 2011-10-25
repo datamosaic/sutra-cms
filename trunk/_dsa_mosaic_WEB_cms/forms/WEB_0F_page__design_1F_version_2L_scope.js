@@ -31,7 +31,13 @@ function BLOCK_action_list() {
 		}
 		
 		//menu items
-		var valuelist = new Array('Duplicate','-','Copy to...','Promote to...')
+		var valuelist = new Array(
+							'Duplicate',
+							'Refresh',
+							'-',
+							'Copy to...',
+							'Promote to...'
+						)
 		
 		//set up menu with arguments
 		var subMenu1 = new Array()
@@ -48,8 +54,10 @@ function BLOCK_action_list() {
 		mainMenu[0] = plugins.popupmenu.createMenuItem(valuelist[0],BLOCK_action_list_control)
 		mainMenu[0].setMethodArguments(null,null,null,true)
 		mainMenu[1] = plugins.popupmenu.createMenuItem(valuelist[1],BLOCK_action_list_control)
-		mainMenu[2] = plugins.popupmenu.createMenuItem(valuelist[2],subMenu1)
-		mainMenu[3] = plugins.popupmenu.createMenuItem(valuelist[3],subMenu2)
+		mainMenu[1].setMethodArguments(null,null,null,null,true)
+		mainMenu[2] = plugins.popupmenu.createMenuItem(valuelist[2],BLOCK_action_list_control)
+		mainMenu[3] = plugins.popupmenu.createMenuItem(valuelist[3],subMenu1)
+		mainMenu[4] = plugins.popupmenu.createMenuItem(valuelist[4],subMenu2)
 		
 		//popup
 		var elem = elements[application.getMethodTriggerElementName()]
@@ -69,7 +77,7 @@ function BLOCK_action_list() {
  *
  * @properties={typeid:24,uuid:"0DE68168-7178-4FE8-B538-60456C223C6E"}
  */
-function BLOCK_action_list_control(scope,copy,promote,dupe) {
+function BLOCK_action_list_control(scope,copy,promote,dupe,refresh) {
 	var blockRec = web_scope_to_block.getSelectedRecord()
 	
 	//duplicate selected block
@@ -132,6 +140,22 @@ function BLOCK_action_list_control(scope,copy,promote,dupe) {
 				_newBlocks = new Array()
 			}
 			_newBlocks.push(scopeRec)
+		}
+	}
+	//refresh selected block
+	else if (refresh) {
+		
+		if (utils.hasRecords(foundset.getSelectedRecord(),'web_scope_to_block.web_block_to_block_version')) {
+			forms.WEB_0F_block__scrapbook.REC_refresh(web_scope_to_block.web_block_to_block_version__all,web_scope_to_block.web_block_to_block_version.getRecord(1))
+			
+			//refire rec_on_select to get us in the right spot
+			REC_on_select(null,true)
+		}
+		else {
+			plugins.dialogs.showErrorDialog(
+					'Error',
+					'The selected block cannot be updated.\nDelete and re-add.'
+				)
 		}
 	}
 	//copy or promote

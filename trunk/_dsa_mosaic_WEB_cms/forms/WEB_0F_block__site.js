@@ -124,3 +124,10 @@ function REC_on_select(event) {
 		_selected = id_block.toString()
 	}
 }
+
+/**
+ * @properties={typeid:24,uuid:"7A045E30-3221-4ACA-8566-8AA0EDDD7FD5"}
+ */
+function REC_refresh() {
+	forms.WEB_0F_block__scrapbook.REC_refresh()
+}
