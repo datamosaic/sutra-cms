@@ -156,6 +156,31 @@ function WEBc_block_getData(event, formName, obj) {
 }
 
 /**
+ *  Returns object representation of web_block_data foundset.
+ * 
+ * @param	{Object}	obj Object used to drive headless client.
+ * 
+ * @returns	{Object}	web_block_data data points
+ * 
+ * @properties={typeid:24,uuid:"305D7451-F06E-4969-B46A-CA6D9FCF711A"}
+ */
+function WEBc_markup_block_getData(obj) {
+	var data = new Object()
+	
+	//we have enough data to return something meaningful
+	if (obj && obj.block && obj.block.record instanceof JSRecord && utils.hasRecords(obj.block.record,'web_block_to_block_version.web_block_version_to_block_data')) {
+		var fsData = obj.block.record.web_block_to_block_version.web_block_version_to_block_data
+		
+		for (var i = 1; i <= fsData.getSize(); i++) {
+			var record = fsData.getRecord(i)
+			data[record.data_key] = record.data_value
+		}
+	}
+	
+	return data
+}
+
+/**
  * Returns the correct web_block_data_configure foundset to work with.
  * 
  * @param	{JSEvent}	event Event that triggered onSelect of the block_type form.
@@ -207,6 +232,31 @@ function WEBc_block_getConfig(event, formName, obj) {
 }
 
 /**
+ * Returns object representation of web_block_data_configure foundset.
+ * 
+ * @param	{Object}	obj Object used to drive headless client.
+ * 
+ * @returns	{Object}	web_block_data_configure data points.
+ * 
+ * @properties={typeid:24,uuid:"D808E9F2-A314-482F-8593-3638CDF657E1"}
+ */
+function WEBc_markup_block_getConfig(obj) {
+	var data = new Object()
+	
+	//we have enough data to return something meaningful
+	if (obj && obj.block && obj.block.record instanceof JSRecord && utils.hasRecords(obj.block.record,'web_block_to_block_version.web_block_version_to_block_data_configure')) {
+		var fsConfig = obj.block.record.web_block_to_block_version.web_block_version_to_block_data_configure
+		
+		for (var i = 1; i <= fsConfig.getSize(); i++) {
+			var record = fsConfig.getRecord(i)
+			data[record.data_key] = record.data_value
+		}
+	}
+	
+	return data
+}
+
+/**
  * Returns the correct web_block_data_response foundset to work with.
  * 
  * @param	{JSEvent}	event Event that triggered onSelect of the block_type form.
@@ -255,6 +305,31 @@ function WEBc_block_getResponse(event, formName, obj) {
 			return fsBad
 		}
 	}
+}
+
+/**
+ *  Returns object representation of web_block_data_response foundset.
+ * 
+ * @param	{Object}	obj Object used to drive headless client.
+ * 
+ * @returns	{Object}	web_block_data_response data points
+ * 
+ * @properties={typeid:24,uuid:"9E299F32-F5CF-467B-BA63-BDBC9BEB177A"}
+ */
+function WEBc_markup_block_getResponse(obj) {
+	var data = new Object()
+	
+	//we have enough data to return something meaningful
+	if (obj && obj.block && obj.block.record instanceof JSRecord && utils.hasRecords(obj.block.record,'web_block_to_block_version.web_block_version_to_block_data_response')) {
+		var fsResponse = obj.block.record.web_block_to_block_version.web_block_version_to_block_data_response
+		
+		for (var i = 1; i <= fsResponse.getSize(); i++) {
+			var record = fsResponse.getRecord(i)
+			data[record.data_key] = record.data_value
+		}
+	}
+	
+	return data
 }
 
 /**
