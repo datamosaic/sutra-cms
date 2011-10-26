@@ -539,73 +539,8 @@ function REC_refresh(allVersions, selectedVersion) {
 			selectedVersion.flag_active = 0
 			selectedVersion.flag_lock = 1
 			
-			// map existing data so know what to do
-			var blockDataCurrent = new Object()
-			var blockDataDelete = new Array()
-			var blockConfigCurrent = new Object()
-			var blockConfigDelete = new Array()
-			
-		// block data
-			for (var i = 1; i <= newVersion.web_block_version_to_block_data.getSize(); i++) {
-				var record = newVersion.web_block_version_to_block_data.getRecord(i)
-				
-				blockDataCurrent[record.data_key] = record
-				blockDataDelete.push(record)
-			}
-			
-			// compare block data against template
-			if (utils.hasRecords(newVersion.web_block_to_block_type)) {
-				for (var i = 1; i <= newVersion.web_block_to_block_type.web_block_type_to_block_input.getSize(); i++) {
-					var record = newVersion.web_block_to_block_type.web_block_type_to_block_input.getRecord(i)
-					
-					//this input already exists, continue
-					if (blockDataCurrent[record.column_name]) {
-						//remove from delete array
-						blockDataDelete.splice(blockDataDelete.indexOf(blockDataCurrent[record.column_name]),1)
-						continue
-					}
-					
-					//input doesn't exist
-					var input = newVersion.web_block_version_to_block_data.getRecord(newVersion.web_block_version_to_block_data.newRecord())
-					input.data_key = record.column_name
-				}
-			}
-			
-			//if anything left in delete array, whack it 
-			for (var i = 0; i < blockDataDelete.length; i++) {
-				blockDataDelete[i].foundset.deleteRecord(blockDataDelete[i])
-			}
-			
-		// block config data
-			for (var i = 1; i <= newVersion.web_block_version_to_block_data_configure.getSize(); i++) {
-				var record = newVersion.web_block_version_to_block_data_configure.getRecord(i)
-				
-				blockConfigCurrent[record.data_key] = record
-				blockConfigDelete.push(record)
-			}
-			
-			// compare block data against template
-			if (utils.hasRecords(newVersion.web_block_to_block_type)) {
-				for (var i = 1; i <= newVersion.web_block_to_block_type.web_block_type_to_block_configure.getSize(); i++) {
-					var record = newVersion.web_block_to_block_type.web_block_type_to_block_configure.getRecord(i)
-					
-					//this input already exists, continue
-					if (blockConfigCurrent[record.column_name]) {
-						//remove from delete array
-						blockConfigDelete.splice(blockConfigDelete.indexOf(blockConfigCurrent[record.column_name]),1)
-						continue
-					}
-					
-					//input doesn't exist
-					var input = newVersion.web_block_version_to_block_data_configure.getRecord(newVersion.web_block_version_to_block_data_configure.newRecord())
-					input.data_key = record.column_name
-				}
-			}
-			
-			//if anything left in delete array, whack it 
-			for (var i = 0; i < blockConfigDelete.length; i++) {
-				blockConfigDelete[i].foundset.deleteRecord(blockConfigDelete[i])
-			}
+			//make sure that meta data columns are in sync with current block type definition
+			REC_refresh_synchronize(newVersion)
 			
 			databaseManager.saveData()
 			
@@ -638,6 +573,79 @@ function REC_refresh(allVersions, selectedVersion) {
 					'Error',
 					'No content selected'
 			)
+	}
+}
+
+/**
+ * @properties={typeid:24,uuid:"6CA4A6DF-76E8-49C2-BA1D-F986D7ED7632"}
+ */
+function REC_refresh_synchronize(newVersion) {
+// map existing data so know what to do
+	var blockDataCurrent = new Object()
+	var blockDataDelete = new Array()
+	var blockConfigCurrent = new Object()
+	var blockConfigDelete = new Array()
+	
+// block data
+	for (var i = 1; i <= newVersion.web_block_version_to_block_data.getSize(); i++) {
+		var record = newVersion.web_block_version_to_block_data.getRecord(i)
+		
+		blockDataCurrent[record.data_key] = record
+		blockDataDelete.push(record)
+	}
+	
+	// compare block data against template
+	if (utils.hasRecords(newVersion.web_block_to_block_type)) {
+		for (var i = 1; i <= newVersion.web_block_to_block_type.web_block_type_to_block_input.getSize(); i++) {
+			var record = newVersion.web_block_to_block_type.web_block_type_to_block_input.getRecord(i)
+			
+			//this input already exists, continue
+			if (blockDataCurrent[record.column_name]) {
+				//remove from delete array
+				blockDataDelete.splice(blockDataDelete.indexOf(blockDataCurrent[record.column_name]),1)
+				continue
+			}
+			
+			//input doesn't exist
+			var input = newVersion.web_block_version_to_block_data.getRecord(newVersion.web_block_version_to_block_data.newRecord())
+			input.data_key = record.column_name
+		}
+	}
+	
+	//if anything left in delete array, whack it 
+	for (var i = 0; i < blockDataDelete.length; i++) {
+		blockDataDelete[i].foundset.deleteRecord(blockDataDelete[i])
+	}
+	
+// block config data
+	for (var i = 1; i <= newVersion.web_block_version_to_block_data_configure.getSize(); i++) {
+		var record = newVersion.web_block_version_to_block_data_configure.getRecord(i)
+		
+		blockConfigCurrent[record.data_key] = record
+		blockConfigDelete.push(record)
+	}
+	
+	// compare block data against template
+	if (utils.hasRecords(newVersion.web_block_to_block_type)) {
+		for (var i = 1; i <= newVersion.web_block_to_block_type.web_block_type_to_block_configure.getSize(); i++) {
+			var record = newVersion.web_block_to_block_type.web_block_type_to_block_configure.getRecord(i)
+			
+			//this input already exists, continue
+			if (blockConfigCurrent[record.column_name]) {
+				//remove from delete array
+				blockConfigDelete.splice(blockConfigDelete.indexOf(blockConfigCurrent[record.column_name]),1)
+				continue
+			}
+			
+			//input doesn't exist
+			var input = newVersion.web_block_version_to_block_data_configure.getRecord(newVersion.web_block_version_to_block_data_configure.newRecord())
+			input.data_key = record.column_name
+		}
+	}
+	
+	//if anything left in delete array, whack it 
+	for (var i = 0; i < blockConfigDelete.length; i++) {
+		blockConfigDelete[i].foundset.deleteRecord(blockConfigDelete[i])
 	}
 }
 

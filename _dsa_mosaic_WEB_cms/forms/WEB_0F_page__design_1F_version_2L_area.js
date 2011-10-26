@@ -9,8 +9,8 @@ var _license_dsa_mosaic_WEB_cms = 'Module: _dsa_mosaic_WEB_cms \
  *
  * @properties={typeid:24,uuid:"35FDA09F-74E0-45AF-9BC1-C682E4F0F549"}
  */
-function AREA_add_missing(versionStack, recLatest, recSelected) {
-	//MEMO: does not take into account multiple groups, languages, or platforms
+function AREA_add_missing(versionStack, recLatest, recSelected, autoActivate) {
+	//MEMO: only works on selected version stack (does not take into account multiple groups, languages, or platforms)
 	
 	if (versionStack && recLatest && recSelected) {
 		//set flag that this is a batch update
@@ -32,7 +32,9 @@ function AREA_add_missing(versionStack, recLatest, recSelected) {
 					application.getValueListDisplayValue('WEB_themes',selectedVersion.id_theme) + '/' + application.getValueListDisplayValue('WEB_layouts',selectedVersion.id_layout)
 	
 	//halt additional on select firing
-	forms.WEB_0F_page__design_1F_version_2L_scope._skipSelect = true
+	if (!batchUpdate) {
+		forms.WEB_0F_page__design_1F_version_2L_scope._skipSelect = true
+	}
 	
 	//create new version
 	var newVersion = fsVersion.getRecord(fsVersion.newRecord(1,true))
@@ -43,13 +45,34 @@ function AREA_add_missing(versionStack, recLatest, recSelected) {
 	newVersion.version_description = descriptor
 	newVersion.id_theme = selectedVersion.id_theme
 	newVersion.id_layout = selectedVersion.id_layout
-	globals.WEB_page_version = newVersion.id_version
 	
-	//save down this version as last selected one
-	forms.WEB_0F_page.client_version_selected = newVersion.id_version.toString()
+	//lock selected version, activate newly created
+	if (autoActivate) {
+		//lock selected version
+		selectedVersion.flag_lock = 1
+		
+		//de-activte currently activated version (should be selectedVersion, but may not be)
+		fsVersion.find()
+		fsVersion.flag_active = 1
+		var results = fsVersion.search(false,true)
+		
+		if (results) {
+			fsVersion.flag_active = 0
+		}
+		
+		//activate new version
+		newVersion.flag_active = 1
+	}
 	
-	//allow additional on select firing
-	forms.WEB_0F_page__design_1F_version_2L_scope._skipSelect = false
+	if (!batchUpdate) {
+		globals.WEB_page_version = newVersion.id_version
+		
+		//save down this version as last selected one
+		forms.WEB_0F_page.client_version_selected = newVersion.id_version.toString()
+		
+		//allow additional on select firing
+		forms.WEB_0F_page__design_1F_version_2L_scope._skipSelect = false		
+	}
 	
 	if (selectedVersion) {
 		var oldAreas = databaseManager.getFoundSetDataProviderAsArray(selectedVersion.web_version_to_area,'area_name')
@@ -59,12 +82,14 @@ function AREA_add_missing(versionStack, recLatest, recSelected) {
 	}
 	
 	// ERROR CHECK: THEME SELECTED FOR PAGE
-	if ( !forms.WEB_0F_page__design_1F__header_display_2F_platform._platform.id_theme ) {
-		plugins.dialogs.showErrorDialog(
-						"Error",
-						"No theme selected for this page"
-					)
-		return
+	if (!batchUpdate) {
+		if ( !forms.WEB_0F_page__design_1F__header_display_2F_platform._platform.id_theme ) {
+			plugins.dialogs.showErrorDialog(
+							"Error",
+							"No theme selected for this page"
+						)
+			return
+		}
 	}
 	
 	// get editable regions based on layout selected

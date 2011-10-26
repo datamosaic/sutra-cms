@@ -507,6 +507,9 @@ function AREA_copy(srcArea,destVersion,rowOrder) {
 				destBlockVer.id_block = destBlock.id_block
 				destBlockVer.flag_active = 1
 				destBlockVer.version_number = 1
+				
+				//make sure that meta data columns are in sync with current block type definition
+				forms.WEB_0F_block__scrapbook.REC_refresh_synchronize(destBlockVer)
 			}
 		}
 	}

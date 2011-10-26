@@ -539,6 +539,24 @@ typeid:7,
 uuid:"E53B4E4B-EA53-4D31-8251-56EAC9C6AA3C"
 },
 {
+anchors:3,
+formIndex:13000,
+horizontalAlignment:0,
+imageMediaID:"f27c82c9-3a7e-4b29-9d3d-38857a387710",
+location:"744,41",
+mediaOptions:14,
+name:"btn_actions",
+onActionMethodID:"229D5D35-E92C-4629-8759-6AAD67F19B95",
+rolloverCursor:12,
+rolloverImageMediaID:"1dd5b54e-f2f1-408d-9591-2179f743386c",
+showClick:false,
+showFocus:false,
+size:"24,15",
+transparent:true,
+typeid:7,
+uuid:"E5C0D9BE-3460-4F5F-9EF6-FAF131EF3AFC"
+},
+{
 anchors:11,
 beanClassName:"javax.swing.JSplitPane",
 beanXML:"<?xml version=\"1.0\" encoding=\"UTF-8\"?> 
