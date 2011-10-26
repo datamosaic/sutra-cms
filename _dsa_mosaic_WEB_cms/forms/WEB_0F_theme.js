@@ -501,9 +501,17 @@ function ACTIONS_list(input) {
 				var fsPages = forms.WEB_0F_theme_1L_page.foundset
 				var fsVersions = databaseManager.getFoundSet('sutra_cms','web_version')
 				
+				//maximum number of pages
+				var maxPages = databaseManager.getFoundSetCount(fsPages)
+				
+				globals.CODE_cursor_busy(true)
+				globals.TRIGGER_progressbar_start(0,'Adding missing areas to pages...',null,0,maxPages)
+				
 				//loop over pages
 				for (var i = 1; i <= fsPages.getSize(); i++) {
 					var pageRec = fsPages.getRecord(i)
+					
+					globals.TRIGGER_progressbar_set(i)
 					
 					//loop all combinations of platform/language/group version stack
 					for (var j = 1; j <= pageRec.web_page_to_platform.getSize(); j++) {
@@ -544,6 +552,9 @@ function ACTIONS_list(input) {
 							'Success',
 							'The selected layout has been updated on ' + pagesActivated + ' page' + (pagesActivated == 1 ? '' : 's')  + '.'
 					)
+				
+				globals.TRIGGER_progressbar_stop()
+				globals.CODE_cursor_busy(false)
 			}
 		}
 	}	
