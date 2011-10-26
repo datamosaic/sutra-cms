@@ -442,3 +442,109 @@ function REC_refresh() {
 	forms.WEB_0C__file_stream._flagRefresh = true
 	forms.WEB_0C__file_stream.THEME_new(0)
 }
+
+/**
+ * Perform the element default action.
+ *
+ * @param {JSEvent} input the event that triggered the action
+ *
+ * @properties={typeid:24,uuid:"229D5D35-E92C-4629-8759-6AAD67F19B95"}
+ */
+function ACTIONS_list(input) {
+	//menu items
+	var valuelist = new Array(
+					'Add missing areas'
+				)
+	
+	//called to depress menu
+	if (input instanceof JSEvent) {
+		//set up menu with arguments
+		var menu = new Array()
+		
+		for ( var i = 0 ; i < valuelist.length ; i++ ) {
+			menu[i] = plugins.popupmenu.createMenuItem(valuelist[i],ACTIONS_list)
+			
+			menu[i].setMethodArguments(i)
+			
+			if (menu[i].text == '----') {
+				menu[i].setEnabled(false)
+			}
+		}
+		
+		//popup
+		var elem = forms[input.getFormName()].elements[input.getElementName()]
+		if (elem != null) {
+			plugins.popupmenu.showPopupMenu(elem, menu)
+		}
+	}
+	else {
+		if (globals.TRIGGER_registered_action_authenticate('cms theme layout page update')) {
+			var input = plugins.dialogs.showWarningDialog(
+							'Continue?',
+							'Are you sure you want to modify all pages.\nWarning! This is irreversible.',
+							'Yes',
+							'No'
+					)
+			
+			if (input == 'Yes') {
+				input = plugins.dialogs.showQuestionDialog(
+							'Auto-activate?',
+							'Should the updated versions be activated?',
+							'Yes',
+							'No'
+					)
+				
+				var autoActivate = input == 'Yes'
+				var pagesActivated = 0
+				
+				//get foundsets
+				var fsPages = forms.WEB_0F_theme_1L_page.foundset
+				var fsVersions = databaseManager.getFoundSet('sutra_cms','web_version')
+				
+				//loop over pages
+				for (var i = 1; i <= fsPages.getSize(); i++) {
+					var pageRec = fsPages.getRecord(i)
+					
+					//loop all combinations of platform/language/group version stack
+					for (var j = 1; j <= pageRec.web_page_to_platform.getSize(); j++) {
+						var platformRec = pageRec.web_page_to_platform.getRecord(j)
+						
+						for (var k = 1; k <= pageRec.web_page_to_language.getSize(); k++) {
+							var languageRec = pageRec.web_page_to_language.getRecord(k)
+							
+							for (var m = 1; m <= pageRec.web_page_to_group.getSize(); m++) {
+								var groupRec = pageRec.web_page_to_group.getRecord(m)
+								
+								fsVersions.find()
+								fsVersions.id_platform = platformRec.id_platform
+								fsVersions.id_language = languageRec.id_language
+								fsVersions.id_group = groupRec.id_group
+								var results = fsVersions.search()
+								
+								if (results) {
+									fsVersions.sort('version_number desc')
+									
+									var latestVersion = fsVersions.getRecord(1)
+									
+									//check to see that most recent version is actually on the correct layout
+									if (latestVersion.id_layout == forms.WEB_0F_theme_1L_layout.id_layout) {
+										//run area diff method
+										forms.WEB_0F_page__design_1F_version_2L_area.AREA_add_missing(fsVersions,latestVersion,latestVersion,autoActivate)
+										
+										//record progress
+										pagesActivated ++
+									}
+								}
+							}
+						}
+					}		
+				}
+				
+				plugins.dialogs.showInfoDialog(
+							'Success',
+							'The selected layout has been updated on ' + pagesActivated + ' page' + (pagesActivated == 1 ? '' : 's')  + '.'
+					)
+			}
+		}
+	}	
+}

@@ -54,6 +54,9 @@ function REC_on_select() {
 	var fsPage = forms.WEB_0F_theme_1L_page.foundset
 	
 	if (utils.hasRecords(foundset)) {
+		
+		forms.WEB_0F_theme_1L_editable.foundset.loadRecords(web_layout_to_editable)
+		
 		globals.CODE_cursor_busy(true)
 		
 		var query = 
