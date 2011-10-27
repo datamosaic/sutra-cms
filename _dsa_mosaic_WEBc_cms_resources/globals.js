@@ -1682,3 +1682,24 @@ function WEBc_markup_pages_attribute(obj, att) {
 	}
 	else return 0
 }
+
+/**
+ * Runs data through a regexp to stip html tags and entities
+ * 
+ * @param {String} str Data with html tags
+ * 
+ * @returns {String} Data without html tags
+ * 
+ * @properties={typeid:24,uuid:"D8577ED0-FCFC-43DB-A3BA-D32E5928F72A"}
+ */
+function WEBc_data_strip_html(str) {
+
+	// strip tags
+	var results = str.replace(/<.*?>/g, "")
+	
+	// strip entities
+	results = results.replace(/&(nbsp|amp|quot|lt|gt|reg);/g, "")
+	
+	return results
+
+}
