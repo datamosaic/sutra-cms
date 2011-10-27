@@ -1684,11 +1684,11 @@ function WEBc_markup_pages_attribute(obj, att) {
 }
 
 /**
- * Runs data through a regexp to stip html tags and entities
+ * Removes html tags and entities from a string
  * 
  * @param {String} str Data with html tags
  * 
- * @returns {String} Data without html tags
+ * @returns {String} Data with html tags and entities removed
  * 
  * @properties={typeid:24,uuid:"D8577ED0-FCFC-43DB-A3BA-D32E5928F72A"}
  */
@@ -1700,6 +1700,45 @@ function WEBc_data_strip_html(str) {
 	// strip entities
 	results = results.replace(/&(nbsp|amp|quot|lt|gt|reg);/g, "")
 	
+	return results
+
+}
+
+/**
+ * Removes common words from a string
+ * 
+ * @param {String} str Data with common words
+ * 
+ * @returns {String} Data without with common words removed
+ * 
+ * @properties={typeid:24,uuid:"3E4F86B7-B485-4A51-97EA-3A15591C652C"}
+ */
+function WEBc_data_strip_common_words(str) {
+	
+	var results = str
+	var commonWords = ['at','the','and','of','in']
+	for (var i = 0; i < commonWords.length; i++) {
+		var regexp = new RegExp(" " + commonWords[i] + " ", "gi")
+		results = results.replace(regexp, " ")
+	}      
+	return results
+
+}
+
+/**
+ * 
+ * Removes punctuation from a string
+ * 
+ * @param {String} str Data with punctuation
+ * 
+ * @returns {String} Data without with punctuation removed
+ * 
+ * @properties={typeid:24,uuid:"3DE38F3B-9979-4B35-B09D-440AE7EE0F3A"}
+ */
+function WEBc_data_strip_punctuation(str) {
+
+	var results = str.replace(/[\.,-\/#!$%\^&\*;:{}=\-_`~()]/g,"")
+     
 	return results
 
 }
