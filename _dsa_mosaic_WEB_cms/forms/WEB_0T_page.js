@@ -216,7 +216,7 @@ function ACTIONS_list_control(input,scopeType,scopeValue) {
 		case 1: //refresh theme
 			var input = plugins.dialogs.showQuestionDialog(
 						'Update theme',
-						'Do you want to keep current data ore reset to the theme\'s defaults?',
+						'Do you want to keep current data or reset to the theme\'s defaults?',
 						'Keep data',
 						'Reset data'
 				)
