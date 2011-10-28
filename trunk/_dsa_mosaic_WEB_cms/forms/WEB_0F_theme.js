@@ -453,7 +453,7 @@ function REC_refresh() {
 function ACTIONS_list(input) {
 	//menu items
 	var valuelist = new Array(
-					'Add missing areas'
+					'Refresh all pages'
 				)
 	
 	//called to depress menu
@@ -479,14 +479,14 @@ function ACTIONS_list(input) {
 	}
 	else {
 		if (globals.TRIGGER_registered_action_authenticate('cms theme layout page update')) {
-			var input = plugins.dialogs.showWarningDialog(
-							'Continue?',
-							'Are you sure you want to modify all pages.\nWarning! This is irreversible.',
-							'Yes',
-							'No'
-					)
-			
-			if (input == 'Yes') {
+			var input = plugins.dialogs.showQuestionDialog(
+						'Update layout',
+						'Do you want to keep current data or reset to the theme\'s defaults?',
+						'Keep data',
+						'Reset data'
+				)
+				
+			if (input) {
 				input = plugins.dialogs.showQuestionDialog(
 							'Auto-activate?',
 							'Should the updated versions be activated?',
@@ -505,7 +505,7 @@ function ACTIONS_list(input) {
 				var maxPages = databaseManager.getFoundSetCount(fsPages)
 				
 				globals.CODE_cursor_busy(true)
-				globals.TRIGGER_progressbar_start(0,'Adding missing areas to pages...',null,0,maxPages)
+				globals.TRIGGER_progressbar_start(0,'Refreshing pages...',null,0,maxPages)
 				
 				//loop over pages
 				for (var i = 1; i <= fsPages.getSize(); i++) {
@@ -536,8 +536,14 @@ function ACTIONS_list(input) {
 									
 									//check to see that most recent version is actually on the correct layout
 									if (latestVersion.id_layout == forms.WEB_0F_theme_1L_layout.id_layout) {
-										//run area diff method
-										forms.WEB_0F_page__design_1F_version_2L_area.AREA_add_missing(fsVersions,latestVersion,latestVersion,autoActivate)
+										//update theme (no data deleted)
+										if (input == 'Keep data') {
+											forms.WEB_0F_page__design_1F_version_2L_area.AREA_add_missing(fsVersions,latestVersion,latestVersion,autoActivate)
+										}
+										//reset theme (deletes data)
+										else if (input == 'Reset data') {
+											forms.WEB_0F_page__design_1F_version_2L_area.AREA_reset(fsVersions,latestVersion,latestVersion,autoActivate)
+										}
 										
 										//record progress
 										pagesActivated ++
