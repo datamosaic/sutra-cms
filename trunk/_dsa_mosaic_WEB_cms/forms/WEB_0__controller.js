@@ -1257,12 +1257,14 @@ function CONTROLLER_setup(results, app, session, request, response, mode) {
 	// go through all key value pairs for this particular language
 		//TODO: modify the jsp to use only the ones passed in
 	databaseManager.refreshRecordFromDatabase(obj.language.record.web_language_to_meta_data,-1)
-	for (var i = 1; i <= obj.language.record.web_language_to_meta_data.getSize(); i++) {
-		var record = obj.language.record.web_language_to_meta_data.getRecord(i)
-		
-		if (record.data_key) {
-			var keyName = 'seo' + utils.stringInitCap(record.data_key)
-			results.addRow([keyName,record.data_value])
+	if (utils.hasRecords(obj.language.record,'web_language_to_meta_data')) {
+		for (var i = 1; i <= obj.language.record.web_language_to_meta_data.getSize(); i++) {
+			var record = obj.language.record.web_language_to_meta_data.getRecord(i)
+			
+			if (record.data_key) {
+				var keyName = 'seo' + utils.stringInitCap(record.data_key)
+				results.addRow([keyName,record.data_value])
+			}
 		}
 	}
 	
