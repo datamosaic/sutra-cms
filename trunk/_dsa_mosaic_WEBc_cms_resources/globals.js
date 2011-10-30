@@ -825,8 +825,10 @@ function WEBc_markup_link_page(pageID, siteURL, linkType, webMode, obj) {
 	}
 	
 	//find default language
-	pageRec.web_page_to_language.sort('rec_created asc')
-	var pageLanguageDefaultRec =  pageRec.web_page_to_language.getRecord(1)
+	if (utils.hasRecords(pageRec,'web_page_to_language')) {
+		pageRec.web_page_to_language.sort('rec_created asc')
+		var pageLanguageDefaultRec =  pageRec.web_page_to_language.getRecord(1)
+	}
 	
 	//get url up to sutraCMS directory
 	var pageLink = globals.WEBc_markup_link_base(pageID, siteURL, siteLanguageRec)
