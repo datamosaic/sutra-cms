@@ -479,14 +479,14 @@ function ACTIONS_list(input) {
 	}
 	else {
 		if (globals.TRIGGER_registered_action_authenticate('cms theme layout page update')) {
-			var input = plugins.dialogs.showQuestionDialog(
+			var refreshType = plugins.dialogs.showQuestionDialog(
 						'Update layout',
 						'Do you want to keep current data or reset to the theme\'s defaults?',
 						'Keep data',
 						'Reset data'
 				)
 				
-			if (input) {
+			if (refreshType) {
 				input = plugins.dialogs.showQuestionDialog(
 							'Auto-activate?',
 							'Should the updated versions be activated?',
@@ -537,11 +537,11 @@ function ACTIONS_list(input) {
 									//check to see that most recent version is actually on the correct layout
 									if (latestVersion.id_layout == forms.WEB_0F_theme_1L_layout.id_layout) {
 										//update theme (no data deleted)
-										if (input == 'Keep data') {
+										if (refreshType == 'Keep data') {
 											forms.WEB_0F_page__design_1F_version_2L_area.AREA_add_missing(fsVersions,latestVersion,latestVersion,autoActivate)
 										}
 										//reset theme (deletes data)
-										else if (input == 'Reset data') {
+										else if (refreshType == 'Reset data') {
 											forms.WEB_0F_page__design_1F_version_2L_area.AREA_reset(fsVersions,latestVersion,latestVersion,autoActivate)
 										}
 										
