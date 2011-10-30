@@ -690,7 +690,8 @@ function CONTROLLER_setup(results, app, session, request, response, mode) {
 					for (var l = 1; l <= pathLanguageRec.web_language_to_path.getSize(); l++) {
 						var pathPathRec = pathLanguageRec.web_language_to_path.getRecord(l)
 						
-						if (pathPathRec.path == pagePathPages[j]) {
+						//if (pathPathRec.path == pagePathPages[j]) {
+						if (pathPathRec.path == pagePathPages[pagePathPages.length - 1]) {
 							pathFound = true
 							continue loop_page
 						}
