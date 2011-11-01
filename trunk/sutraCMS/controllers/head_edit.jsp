@@ -1,6 +1,6 @@
 <%@ page import = "java.util.*" %>
 <% HashMap pageData = (HashMap)request.getAttribute("pageData");%>
-	<title><%=pageData.get("cmsTitle")%></title>
+	<title><%=pageData.get("title")%></title>
 	<meta name="generator" content="<%=request.getAttribute("version")%>" />
 
 <!-- site resources -->
