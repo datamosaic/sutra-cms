@@ -317,19 +317,19 @@ function WEBc_block_getResponse(event, formName, obj) {
  * @properties={typeid:24,uuid:"9E299F32-F5CF-467B-BA63-BDBC9BEB177A"}
  */
 function WEBc_markup_block_getResponse(obj) {
-	var data = new Object()
+	var keys = []
 	
 	//we have enough data to return something meaningful
-	if (obj && obj.block && obj.block.record instanceof JSRecord && utils.hasRecords(obj.block.record,'web_block_to_block_version.web_block_version_to_block_data_response')) {
-		var fsResponse = obj.block.record.web_block_to_block_version.web_block_version_to_block_data_response
+	if (obj && obj.block && obj.block.record instanceof JSRecord && utils.hasRecords(obj.block.record,'web_block_to_block_type.web_block_type_to_block_response')) {
+		var fsResponse = obj.block.record.web_block_to_block_type.web_block_type_to_block_response
 		
 		for (var i = 1; i <= fsResponse.getSize(); i++) {
 			var record = fsResponse.getRecord(i)
-			data[record.data_key] = record.data_value
+			keys.push(record.column_name)
 		}
 	}
 	
-	return data
+	return keys
 }
 
 /**
