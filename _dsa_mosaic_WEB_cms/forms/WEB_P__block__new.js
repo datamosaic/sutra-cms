@@ -412,6 +412,7 @@ function ACTION_ok(event) {
 						}
 					}
 					
+					
 					// finish up
 					blockVersionRec.web_block_version_to_block_data.setSelectedIndex(1)
 					blockVersionRec.web_block_version_to_block_data_configure.setSelectedIndex(1)
