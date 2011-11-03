@@ -315,7 +315,8 @@ function REC_new(flagRefresh) {
 			
 			var oldBlockInput = new Array()
 			var oldBlockConfig = new Array()
-			
+			var oldBlockResponse = new Array()
+		
 			for (var i = 1; i <= web_block_type_to_block_input.getSize(); i++) {
 				var record = web_block_type_to_block_input.getRecord(i)
 				oldBlockInput.push(record.column_name)
@@ -324,6 +325,11 @@ function REC_new(flagRefresh) {
 			for (var i = 1; i <= web_block_type_to_block_configure.getSize(); i++) {
 				var record = web_block_type_to_block_configure.getRecord(i)
 				oldBlockConfig.push(record.column_name)
+			}
+			
+			for (var i = 1; i <= web_block_type_to_block_response.getSize(); i++) {
+				var record = web_block_type_to_block_response.getRecord(i)
+				oldBlockResponse.push(record.column_name)
 			}
 		}
 
