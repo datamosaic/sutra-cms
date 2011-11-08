@@ -333,6 +333,45 @@ function WEBc_markup_block_getResponse(obj) {
 }
 
 /**
+ * Saves data submitted by web forms into block response data points.
+ * 
+ * @param	{Object}	obj Object used to drive headless client.
+ * 
+ * @returns	{Boolean}	minimal error checking  
+ * 
+ * 
+ * @properties={typeid:24,uuid:"69A38608-4A48-4654-8309-810AEDEFDC5E"}
+ */
+function WEBc_markup_block_saveResponse(obj) {
+	
+	var responseKeys = globals.WEBc_markup_block_getResponse(obj)
+	if ( !responseKeys.length ) {
+		return false
+	}
+	var instanceUUID = application.getUUID()
+	
+	for (var i = 0; i < responseKeys.length; i++) {
+		var blockVersionRec = obj.block.version
+		responseRecord = blockVersionRec.web_block_version_to_block_data_response.getRecord(blockVersionRec.web_block_version_to_block_data_response.newRecord(false, true))
+		
+		// save specific data points
+		responseRecord.data_key 	= responseKeys[i]
+		responseRecord.data_value 	= obj.form.post[responseKeys[i]]
+		responseRecord.id_instance 	= instanceUUID
+		responseRecord.organization_id = blockVersionRec.organization_id
+		
+		// save associations
+		responseRecord.id_page 			= obj.page.record.id_page
+		responseRecord.id_block_type	= obj.block.record.web_block_to_block_type.id_block_type
+		responseRecord.session_id		= obj.session_server.record.session_id
+		responseRecord.id_session_access = obj.session_server.record.web_session_to_session_access.id_session_access
+		
+		databaseManager.saveData(responseRecord)
+	}	
+	return true
+}
+
+/**
  * @properties={typeid:24,uuid:"B82E9E1D-9201-47C8-8FF7-D606643DCD6A"}
  */
 function WEBc_block_save() {
