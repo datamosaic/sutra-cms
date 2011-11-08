@@ -103,8 +103,7 @@ items:[
 {
 containsFormID:"4A092C9D-209F-420A-8648-4315E55FAB41",
 location:"40,90",
-relationName:"web_block_to_block_version.web_block_version_to_block_data_response",
-text:"WEB_0F_page__design_1F_version_2F_block__data_3L_block_data_response",
+text:"WEB_0F_page__design_1F_version_2F_block__data_3F_block_data_response",
 typeid:15,
 uuid:"1835CE9A-79EE-4AD3-AB1F-FFCEF7F5A1AB"
 },
@@ -190,7 +189,7 @@ uuid:"EFC8562F-0160-4DB8-88A8-1FEDC3E9BD60"
 name:"WEB_0F_page__design_1F_version_2F_block__data",
 navigatorID:"-1",
 onLoadMethodID:"-1",
-onRecordSelectionMethodID:"-1",
+onRecordSelectionMethodID:"0CEBEBFC-B4C0-4BC0-904C-924EFFD82A1B",
 onShowMethodID:"-1",
 paperPrintScale:100,
 size:"300,200",

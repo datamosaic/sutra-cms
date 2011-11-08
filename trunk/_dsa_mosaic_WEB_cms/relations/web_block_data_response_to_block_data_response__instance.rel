@@ -1,0 +1,9 @@
+foreignDataSource:"db:/sutra_cms/web_block_data_response",
+initialSort:"data_key asc",
+items:[
+{foreignColumnName:"id_instance",primaryDataProviderID:"id_instance",typeid:23,uuid:"E06EB36C-8893-40B7-BE09-88747BD5FD30"}
+],
+name:"web_block_data_response_to_block_data_response__instance",
+primaryDataSource:"db:/sutra_cms/web_block_data_response",
+typeid:22,
+uuid:"3C2BC3A3-1EED-4F20-A9B6-41603B79F477"
