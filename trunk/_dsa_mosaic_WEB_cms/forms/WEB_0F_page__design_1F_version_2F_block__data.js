@@ -92,4 +92,6 @@ function REC_on_select(event) {
 			)
 		
 	fsResponse.loadRecords(dataset)
+	
+	fsResponse.sort('rec_created desc')
 }
