@@ -26,7 +26,7 @@ borderType:"SpecialMatteBorder,0.0,0.0,1.0,0.0,#000000,#000000,#999999,#000000,0
 dataProviderID:"rec_created",
 editable:false,
 formIndex:10700,
-format:"MM/dd/yyyy",
+format:"MM/dd/yyyy hh:mm:ss aa",
 location:"150,30",
 selectOnEnter:true,
 size:"109,23",
