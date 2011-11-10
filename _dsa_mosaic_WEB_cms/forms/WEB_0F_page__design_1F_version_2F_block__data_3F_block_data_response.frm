@@ -2,7 +2,7 @@ dataSource:"db:/sutra_cms/web_block_data_response",
 items:[
 {
 anchors:14,
-borderType:"MatteBorder,1,0,0,0,#191919",
+borderType:"MatteBorder,1,0,0,0,#808080",
 items:[
 {
 containsFormID:"8E0CFC56-F5E3-49F5-AB41-1537038932C7",
