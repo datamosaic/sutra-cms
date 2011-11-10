@@ -26,6 +26,12 @@ name:"flag_folder_children"
 },
 {
 allowNull:true,
+creationOrderIndex:17,
+dataType:4,
+name:"flag_folder_skip"
+},
+{
+allowNull:true,
 autoEnterType:3,
 creationOrderIndex:7,
 dataType:4,
