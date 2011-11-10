@@ -272,6 +272,7 @@ var _splitDivider = 110;
 function TOGGLE_elements(editAllow) {
 	//this form
 	elements.fld_flag_ssl.enabled = editAllow
+	elements.fld_flag_folder_skip.enabled = editAllow
 	elements.fld_title_override.editable = editAllow
 	elements.fld_description.editable = editAllow
 	elements.btn_add.enabled = editAllow
