@@ -258,10 +258,12 @@ function CONTROLLER_builder(results, obj) {
 				}
 			}
 		}
-
-	
+		
+		// replace out place holders (DS_* links)
+		areaMarkup = globals.WEBc_markup_link_internal(areaMarkup,obj.request.server,obj.type,area.id_area,obj)
+		
 		// add area to the results object
-		results.addRow([area.area_name, globals.WEBc_markup_link_internal(areaMarkup,obj.request.server,obj.type,area.id_area,obj)])
+		results.addRow([area.area_name, areaMarkup])
 		
 		// obj: area...CLEAR
 		obj.area.record = ''
