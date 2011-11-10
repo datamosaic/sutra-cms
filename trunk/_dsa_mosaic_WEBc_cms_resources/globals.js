@@ -754,8 +754,25 @@ function WEBc_markup_link_internal(markup,siteURL,linkType,areaID,obj) {
 		newMarkup	+= globals.WEBc_markup_link_page(id,siteURL,linkType,null,obj)
 		
 		markup		= newMarkup + markup
-		
 	}
+	
+//	while ( utils.stringPosition(markup, "{DS:IMG_", 0, 0) >= 0 ) {
+//		var newMarkup = ''
+//		
+//		var pos = utils.stringPosition(markup, "{DS:IMG_", 0, 0)
+//		newMarkup += utils.stringLeft(markup, pos-1 )
+//		markup = utils.stringMiddle(markup, pos, 100000)
+//		var start 	= utils.stringPosition(markup, "_", 0, 0) + 1
+//		var end		= utils.stringPosition(markup, "}", 0, 0)
+//		var length	= end - start
+//		var id		= utils.stringMiddle(markup, start, length)
+//		markup 		= utils.stringMiddle(markup, end + 1, 100000)
+//		
+//		// add markup link
+//		newMarkup	+= globals.WEBc_markup_link_image(id,obj.page.id,siteURL,linkType,null,obj)
+//		
+//		markup		= newMarkup + markup
+//	}
 	
 	//tack on add new record button if editable
 	if (linkType == 'Edit') {
@@ -934,6 +951,11 @@ function WEBc_markup_link_page(pageID, siteURL, linkType, webMode, obj) {
 				for (var h = 0; h < pageStack.length; h++) {
 					var folderRec = pageStack[h]
 					
+					//skip this folder if path to be skipped...unless final page
+					if (folderRec.flag_folder_skip && h != pageStack.length - 1) {
+						continue
+					}
+					
 					//get the page's language record
 					if (folderRec && utils.hasRecords(folderRec.web_page_to_language) && siteLanguageRec) {
 						//loop to find selected language
@@ -976,8 +998,8 @@ function WEBc_markup_link_page(pageID, siteURL, linkType, webMode, obj) {
 						}
 					}
 					
-					//add slash to all but last occurence
-					if ( h < pageStack.length - 1) {
+					//add slash unless on last occurence or already ends with a slash
+					if ( h < pageStack.length - 1 && folder.substr(folder.length, 1) != '/') {
 						folder += '/'
 					}
 				}
@@ -1725,61 +1747,45 @@ function WEBc_markup_pages_attribute(obj, att) {
 }
 
 /**
- * Removes html tags and entities from a string
- * 
- * @param {String} str Data with html tags
- * 
- * @returns {String} Data with html tags and entities removed
- * 
- * @properties={typeid:24,uuid:"D8577ED0-FCFC-43DB-A3BA-D32E5928F72A"}
+ * @properties={typeid:24,uuid:"22E8DF83-30A3-4D46-A7A6-5464F76E1FAE"}
  */
-function WEBc_data_strip_html(str) {
-
-	// strip tags
-	var results = str.replace(/<.*?>/g, "")
+function WEBc_markup_link_image(assetInstanceID, pageID, siteURL, linkType, webMode, obj) {
+	//get page requested
+	if (assetInstanceID) {
+		var fsAssetInstance = databaseManager.getFoundSet("sutra_cms","web_asset_instance")
+		fsAssetInstance.find()
+		fsAssetInstance.id_asset_instance = assetInstanceID
+		var count = fsAssetInstance.search()
+	}
 	
-	// strip entities
-	results = results.replace(/&(nbsp|amp|quot|lt|gt|reg);/g, "")
+	//this page exists, get its site
+	if (count) {
+		var assetInstanceRec = fsAssetInstance.getRecord(1)
+		var assetRec = fsAssetInstance.web_asset_instance_to_asset.getRecord(1)
+		var fsSite = databaseManager.getFoundSet('sutra_cms','web_site')
+		fsSite.loadRecords(assetRec.id_site)
+		var siteRec = fsSite.getRecord(1)
+	}
+	//no site specified, try to fail gracefully
+	else {
+		var assetInstanceRec = new Object()
+		var siteRec = new Object()
+	}
 	
-	return results
-
-}
-
-/**
- * Removes common words from a string
- * 
- * @param {String} str Data with common words
- * 
- * @returns {String} Data without with common words removed
- * 
- * @properties={typeid:24,uuid:"3E4F86B7-B485-4A51-97EA-3A15591C652C"}
- */
-function WEBc_data_strip_common_words(str) {
+	//get the site's language record
+	if (obj && obj.language && obj.language.record && utils.hasRecords(obj.language.record.web_language_to_site_language)) {
+		var siteLanguageRec = obj.language.record.web_language_to_site_language.getRecord(1)
+	}
 	
-	var results = str
-	var commonWords = ['at','the','and','of','in']
-	for (var i = 0; i < commonWords.length; i++) {
-		var regexp = new RegExp(" " + commonWords[i] + " ", "gi")
-		results = results.replace(regexp, " ")
-	}      
-	return results
+	//get url up to sutraCMS directory
+	var pageLink = globals.WEBc_markup_link_base(pageID, siteURL, siteLanguageRec)
+	
 
-}
-
-/**
- * 
- * Removes punctuation from a string
- * 
- * @param {String} str Data with punctuation
- * 
- * @returns {String} Data without with punctuation removed
- * 
- * @properties={typeid:24,uuid:"3DE38F3B-9979-4B35-B09D-440AE7EE0F3A"}
- */
-function WEBc_data_strip_punctuation(str) {
-
-	var results = str.replace(/[\.,-\/#!$%\^&\*;:{}=\-_`~()]/g,"")
-     
-	return results
-
+	//rewrite mode
+	var rewriteMode = globals.WEBc_install_getRewrite()
+	
+	//do
+	
+	//full url for a page requested
+	return pageLink
 }
