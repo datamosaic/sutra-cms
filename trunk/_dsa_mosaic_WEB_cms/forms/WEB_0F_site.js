@@ -500,3 +500,10 @@ function ACTION_get_defaults(siteRec) {
 		}
 	}
 }
+
+/**
+ * @properties={typeid:24,uuid:"8B462465-68C3-4371-96D0-65EFFB963C05"}
+ */
+function ACTION_upgrade_cms1() {
+	globals.WEB_upgrade()
+}
