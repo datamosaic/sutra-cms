@@ -1,4 +1,9 @@
 /**
+ * @properties={typeid:35,uuid:"9EEFAAF0-1013-44C8-B306-767339C008E6",variableType:-4}
+ */
+var _refreshForm = false;
+
+/**
  * @properties={typeid:35,uuid:"176CC8B4-859B-4633-B39F-0B72FFF9EABE",variableType:-4}
  */
 var _newBlocks = null;
@@ -550,8 +555,8 @@ function ACTION_gui_mode_load(fireSelect) {
 					
 					forms[contextForm].elements.lbl_banner.text = (recBlockType.block_name || 'Unnamed') + ' block'
 					
-					//the form exists and it isn't in the currently selected tab
-					if (formName && forms[formName] && formName != tabPanel.getTabFormNameAt(tabPanel.tabIndex)) {
+					//the form exists and it isn't in the currently selected tab or there was an error with something previously
+					if (formName && solutionModel.getForm(formName) && (formName != tabPanel.getTabFormNameAt(tabPanel.tabIndex) || _refreshForm)) {
 						var relationName = solutionModel.getForm(formName).dataSource == 'db:/sutra_cms/web_block' ? 'web_scope_to_block' : null
 						
 						//load tab panel
@@ -559,16 +564,24 @@ function ACTION_gui_mode_load(fireSelect) {
 						tabPanel.tabIndex = tabPanel.getMaxTabIndex()
 					}
 					else {
+						//the form requested doesn't exist in the solution, flag that will need to update on future block-load calls
+						if (!(formName && solutionModel.getForm(formName))) {
+							_refreshForm = true
+						}
+						
 						tabPanel.tabIndex = tabPanel.getMaxTabIndex()
 					}
 					
 					//refire the onSelect method to force the gui to update
-					if (fireSelect && solutionModel.getForm(formName).onRecordSelection) {
+					if ((fireSelect || _refreshForm) && solutionModel.getForm(formName) && solutionModel.getForm(formName).onRecordSelection) {
 						//pseudo-event comes from the scope of where this is fired
 						var pseudoEvent = new Object()
 						pseudoEvent.getFormName = function() {return formName}
 						
 						forms[formName][solutionModel.getForm(formName).onRecordSelection.getName()](pseudoEvent,true)
+						
+						//reset flag that a bad block was visited
+						_refreshForm = false
 					}
 				}
 				else {
