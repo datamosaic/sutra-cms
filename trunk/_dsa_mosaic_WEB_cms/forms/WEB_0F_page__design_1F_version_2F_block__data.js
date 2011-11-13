@@ -84,14 +84,19 @@ function TOGGLE_elements(editAllow) {
 function REC_on_select(event) {
 	var fsResponse = forms.WEB_0F_page__design_1F_version_2F_block__data_3F_block_data_response.foundset
 	
-	var dataset = databaseManager.getDataSetByQuery(
-				"sutra_cms",
-				"SELECT id_block_data_response FROM web_block_data_response WHERE id_block_version = ? GROUP BY id_instance",
-				[web_block_to_block_version.id_block_version.toString()],
-				-1
-			)
+	if (utils.hasRecords(web_block_to_block_version) && web_block_to_block_version.id_block_version) {
+		var dataset = databaseManager.getDataSetByQuery(
+					"sutra_cms",
+					"SELECT id_block_data_response FROM web_block_data_response WHERE id_block_version = ? GROUP BY id_instance",
+					[web_block_to_block_version.id_block_version.toString()],
+					-1
+				)
+			
+		fsResponse.loadRecords(dataset)
 		
-	fsResponse.loadRecords(dataset)
-	
-	fsResponse.sort('rec_created desc')
+		fsResponse.sort('rec_created desc')
+	}
+	else {
+		fsResponse.clear()
+	}
 }
