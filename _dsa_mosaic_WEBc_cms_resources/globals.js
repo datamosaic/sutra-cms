@@ -1138,38 +1138,38 @@ function WEBc_markup_token(input,tokenType) {
 function WEBc_page_picker(method,elem,showLanguage) {
 	function GET_page(pageRec) {
 		if (utils.hasRecords(pageRec[relnPage])) {
-			//check to see what languages this page has; give option when more than one
-			if (showLanguage && utils.hasRecords(pageRec.web_page_to_language) && pageRec.web_page_to_language.getSize() > 1) {
-				var languageArray = new Array()
-				
-				var oldDate = application.getServerTimeStamp()
-				var defaultLang = 1
-				
-				for (var j = 1; j <= pageRec.web_page_to_language.getSize(); j++) {
-					var languageRec = pageRec.web_page_to_language.getRecord(j)
-					
-					if (languageRec.rec_created < oldDate) {
-						oldData = languageRec.rec_created
-						defaultLang = j
-					}
-					
-					var language = plugins.popupmenu.createCheckboxMenuItem(languageRec.language_name + "", method)
-					language.setMethodArguments(pageRec.id_page.toString() + '_' + languageRec.id_language.toString(),pageRec,event)
-					
-					languageArray.push(language)
-				}
-				
-				//flag which language is the default
-//				languageArray[defaultLang - 1].label = languageArray[defaultLang - 1].label + ' (default)'
-				languageArray[defaultLang - 1].setSelected(true)
-				
-				var item = plugins.popupmenu.createMenuItem('Choose parent (' + pageRec.page_name + ')', languageArray)
-			}
-			//only one language, options not required
-			else {
+//			//check to see what languages this page has; give option when more than one
+//			if (showLanguage && utils.hasRecords(pageRec.web_page_to_language) && pageRec.web_page_to_language.getSize() > 1) {
+//				var languageArray = new Array()
+//				
+//				var oldDate = application.getServerTimeStamp()
+//				var defaultLang = 1
+//				
+//				for (var j = 1; j <= pageRec.web_page_to_language.getSize(); j++) {
+//					var languageRec = pageRec.web_page_to_language.getRecord(j)
+//					
+//					if (languageRec.rec_created < oldDate) {
+//						oldData = languageRec.rec_created
+//						defaultLang = j
+//					}
+//					
+//					var language = plugins.popupmenu.createCheckboxMenuItem(languageRec.language_name + "", method)
+//					language.setMethodArguments(pageRec.id_page.toString() + '_' + languageRec.id_language.toString(),pageRec,event)
+//					
+//					languageArray.push(language)
+//				}
+//				
+//				//flag which language is the default
+////				languageArray[defaultLang - 1].label = languageArray[defaultLang - 1].label + ' (default)'
+//				languageArray[defaultLang - 1].setSelected(true)
+//				
+//				var item = plugins.popupmenu.createMenuItem('Choose parent (' + pageRec.page_name + ')', languageArray)
+//			}
+//			//only one language, options not required
+//			else {
 				var item = plugins.popupmenu.createMenuItem('Choose parent (' + pageRec.page_name + ')', method)
 				item.setMethodArguments(pageRec.id_page.toString(),pageRec,event)	
-			}
+//			}
 			
 			var subArray = new Array()
 			
@@ -1190,50 +1190,50 @@ function WEBc_page_picker(method,elem,showLanguage) {
 			return plugins.popupmenu.createMenuItem(pageRec.page_name + "", subArray)
 		}
 		else {
-			//check to see what languages this page has; give option when more than one
-			if (showLanguage && utils.hasRecords(pageRec.web_page_to_language) && pageRec.web_page_to_language.getSize() > 1) {
-				var languageArray = new Array()
-				
-				pageRec.web_page_to_language.sort('web_language_to_site_language.language_name asc')
-				
-				var oldDate = application.getServerTimeStamp()
-				var defaultLang = 1
-				
-				for (var j = 1; j <= pageRec.web_page_to_language.getSize(); j++) {
-					var languageRec = pageRec.web_page_to_language.getRecord(j)
-					
-					if (languageRec.rec_created < oldDate) {
-						oldDate = languageRec.rec_created
-						defaultLang = j
-					}
-					
-					var language = plugins.popupmenu.createCheckboxMenuItem(languageRec.language_name + "", method)
-					language.setMethodArguments(pageRec.id_page.toString() + '_' + languageRec.id_language.toString(),pageRec,event)
-					
-					languageArray.push(language)
-				}
-				
-				//tack on spacer
-				language = plugins.popupmenu.createCheckboxMenuItem('-', method)
-				language.setEnabled(false)
-				languageArray.push(language)
-				
-				//tack on option to not specify language
-				language = plugins.popupmenu.createCheckboxMenuItem('Don\'t specify a language', method)
-				language.setMethodArguments(pageRec.id_page.toString(),pageRec,event)
-				languageArray.push(language)
-				
-				//flag which language is the default
-//				languageArray[defaultLang - 1].label = languageArray[defaultLang - 1].label + ' (default)'
-				languageArray[defaultLang - 1].setSelected(true)
-				
-				var item = plugins.popupmenu.createMenuItem(pageRec.page_name + "", languageArray)
-			}
-			//only one language, options not required
-			else {
+//			//check to see what languages this page has; give option when more than one
+//			if (showLanguage && utils.hasRecords(pageRec.web_page_to_language) && pageRec.web_page_to_language.getSize() > 1) {
+//				var languageArray = new Array()
+//				
+//				pageRec.web_page_to_language.sort('web_language_to_site_language.language_name asc')
+//				
+//				var oldDate = application.getServerTimeStamp()
+//				var defaultLang = 1
+//				
+//				for (var j = 1; j <= pageRec.web_page_to_language.getSize(); j++) {
+//					var languageRec = pageRec.web_page_to_language.getRecord(j)
+//					
+//					if (languageRec.rec_created < oldDate) {
+//						oldDate = languageRec.rec_created
+//						defaultLang = j
+//					}
+//					
+//					var language = plugins.popupmenu.createCheckboxMenuItem(languageRec.language_name + "", method)
+//					language.setMethodArguments(pageRec.id_page.toString() + '_' + languageRec.id_language.toString(),pageRec,event)
+//					
+//					languageArray.push(language)
+//				}
+//				
+//				//tack on spacer
+//				language = plugins.popupmenu.createCheckboxMenuItem('-', method)
+//				language.setEnabled(false)
+//				languageArray.push(language)
+//				
+//				//tack on option to not specify language
+//				language = plugins.popupmenu.createCheckboxMenuItem('Don\'t specify a language', method)
+//				language.setMethodArguments(pageRec.id_page.toString(),pageRec,event)
+//				languageArray.push(language)
+//				
+//				//flag which language is the default
+////				languageArray[defaultLang - 1].label = languageArray[defaultLang - 1].label + ' (default)'
+//				languageArray[defaultLang - 1].setSelected(true)
+//				
+//				var item = plugins.popupmenu.createMenuItem(pageRec.page_name + "", languageArray)
+//			}
+//			//only one language, options not required
+//			else {
 				var item = plugins.popupmenu.createMenuItem(pageRec.page_name + "", method)
 				item.setMethodArguments(pageRec.id_page.toString(),pageRec,event)	
-			}
+//			}
 			
 			//disable dividers
 			if (item.text == '-') {
