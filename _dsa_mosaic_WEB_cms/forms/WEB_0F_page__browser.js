@@ -67,12 +67,6 @@ function REC_on_select(event,webMode,skipLoad,verIndex,fireSelect) {
 		//halt additional on select firing
 //		forms.WEB_0F_page__design_1F_version_2L_scope._skipSelect = true
 		
-	 	//when called with event (not programatically)
-//		if (event) {
-//		 	//set tooltip of visit with link
-//			forms.WEB_0F_page__design_1F__button_tab_2F__content.elements.btn_visit.toolTipText = globals.WEBc_markup_link_page(id_page)
-//		}
-		
 		//select page version of tri globals
 	 	forms.WEB_0F_page.SET_globals()
 		

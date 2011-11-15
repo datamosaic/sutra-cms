@@ -60,21 +60,24 @@ function VISIT_page(event,returnURL) {
 	if (utils.hasRecords(fsPage)) {
 		
 		var urlString = globals.WEBc_markup_link_page(fsPage.id_page)
-	
-		if (utils.hasRecords(forms.WEB_0F_page__design_1F__header_display_2F_platform._platform)) {
-			urlString += "&platform=" + forms.WEB_0F_page__design_1F__header_display_2F_platform._platform.url_param
-		}
 		
-		if (utils.hasRecords(forms.WEB_0F_page__design_1F__header_display_2F_language._language)) {
-			urlString += "&language=" + forms.WEB_0F_page__design_1F__header_display_2F_language._language.url_param
-		}
-		
-		if (utils.hasRecords(forms.WEB_0F_page__design_1F__header_display_2F_group._group)) {
-			urlString += "&group=" + forms.WEB_0F_page__design_1F__header_display_2F_group._group.url_param
-		}
-		
-		if (utils.hasRecords(forms.WEB_0F_page__design_1F_version.foundset)) {
-			urlString += "&version=" + forms.WEB_0F_page__design_1F_version.url_param
+		//only tack on exact specifier when not an external link
+		if (fsPage.page_type != 2) {
+			if (utils.hasRecords(forms.WEB_0F_page__design_1F__header_display_2F_platform._platform)) {
+				urlString += "&platform=" + forms.WEB_0F_page__design_1F__header_display_2F_platform._platform.url_param
+			}
+			
+			if (utils.hasRecords(forms.WEB_0F_page__design_1F__header_display_2F_language._language)) {
+				urlString += "&language=" + forms.WEB_0F_page__design_1F__header_display_2F_language._language.url_param
+			}
+			
+			if (utils.hasRecords(forms.WEB_0F_page__design_1F__header_display_2F_group._group)) {
+				urlString += "&group=" + forms.WEB_0F_page__design_1F__header_display_2F_group._group.url_param
+			}
+			
+			if (utils.hasRecords(forms.WEB_0F_page__design_1F_version.foundset)) {
+				urlString += "&version=" + forms.WEB_0F_page__design_1F_version.url_param
+			}
 		}
 		
 		//return url

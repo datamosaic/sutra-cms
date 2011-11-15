@@ -90,7 +90,8 @@ showClick:false,
 showFocus:false,
 size:"45,15",
 text:"Visit",
-toolTipText:"Visit page in default browser",
+toolTipText:"<html>Visit page in default browser<br>
+(shift-click to copy URL to clipboard)",
 transparent:true,
 typeid:7,
 uuid:"50C40A43-38A8-48C1-AD35-E7BDBB2CCF83"
