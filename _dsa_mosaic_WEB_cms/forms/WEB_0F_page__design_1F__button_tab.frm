@@ -203,6 +203,7 @@ name:"tab_button",
 printable:false,
 size:"25,18",
 tabOrientation:-1,
+transparent:true,
 typeid:16,
 uuid:"B5553E04-509E-4283-9D6C-F90276A68B98"
 },
