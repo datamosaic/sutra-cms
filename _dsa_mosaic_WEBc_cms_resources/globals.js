@@ -1800,8 +1800,8 @@ function WEBc_log_create(logType,message,siteID,pkTable,pkID) {
 		
 		logRec.log_type = logType
 		logRec.log_message = message
-		logRec.id_site = siteID ? siteID.toString() : null
+		logRec.id_site = siteID
 		logRec.record_table = pkTable
-		logRec.record_id = pkID ? pkID.toString() : null
+		logRec.record_id = pkID
 	}
 }
