@@ -295,6 +295,10 @@ function SET_versions(skipLoad,pageInvalid) {
 		fsVersions.id_group = forms.WEB_0F_page__design_1F__header_display_2F_group._group.id_group.toString()
 		var results = fsVersions.search()
 		
+		if (results) {
+			fsVersions.sort('version_number desc')
+		}
+		
 		forms.WEB_0F_page__design_1F__properties_2L_version.foundset.loadRecords(fsVersions)
 	}
 	
