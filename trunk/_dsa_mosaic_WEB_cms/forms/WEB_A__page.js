@@ -18,10 +18,6 @@ var _license_dsa_mosaic_WEB_cms = 'Module: _dsa_mosaic_WEB_cms \
  * @properties={typeid:24,uuid:"C1C07757-6C1F-4833-BC03-73B4F3E725FC"}
  */
 function ACTION_edit(event) {
-	//toggle elements
-//	elements.btn_cancel.visible = true
-//	elements.btn_done.visible = true
-//	elements.btn_edit.visible = false
 	
 	//locked version
 	if (!utils.hasRecords(forms.WEB_0F_page__design_1F_version.foundset) || forms.WEB_0F_page__design_1F_version.flag_lock) {
@@ -33,7 +29,9 @@ function ACTION_edit(event) {
 	//enter edit mode
 	else {
 		TOGGLE_edit_mode(true)
+		globals.WEBc_log_create('page','page edit begin',forms.WEB_0F_page.id_site,'web_page',forms.WEB_0F_page.id_page)
 	}
+	
 }
 
 /**
@@ -47,10 +45,7 @@ function ACTION_cancel(event) {
 	//leave edit mode without saving
 	TOGGLE_edit_mode()
 	
-	//toggle elements
-//	elements.btn_cancel.visible = false
-//	elements.btn_done.visible = false
-//	elements.btn_edit.visible = true
+	globals.WEBc_log_create('page','page edit canceled',forms.WEB_0F_page.id_site,'web_page',forms.WEB_0F_page.id_page)
 }
 
 /**
@@ -64,10 +59,7 @@ function ACTION_save(event) {
 	//leave edit mode and save
 	TOGGLE_edit_mode(null,true)
 	
-	//toggle elements
-//	elements.btn_cancel.visible = false
-//	elements.btn_done.visible = false
-//	elements.btn_edit.visible = true
+	globals.WEBc_log_create('page','page edit save',forms.WEB_0F_page.id_site,'web_page',forms.WEB_0F_page.id_page)
 }
 
 /**
@@ -149,13 +141,6 @@ function TOGGLE_edit_mode(editMode,saveData) {
 			//update modification date on this record
 			if (utils.hasRecords(forms.WEB_0F_page__design_1F_version.foundset)) {
 				forms.WEB_0F_page__design_1F_version.rec_modified = application.getServerTimeStamp()
-				
-				//log the edit
-				globals.TRIGGER_log_create(
-							//type of log
-							'CMS page version edited',
-							forms.WEB_0F_page__design_1F_version.id_version.toString()
-						)
 			}
 			
 			//redo valuelist for versions

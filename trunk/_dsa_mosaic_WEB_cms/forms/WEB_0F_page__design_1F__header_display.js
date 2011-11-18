@@ -226,18 +226,7 @@ function SET_active(event) {
 			databaseManager.saveData()
 			
 			//create log record when snapshot set as active
-			globals.TRIGGER_log_create(
-								//type of log
-								'Custom',
-//								//dealing with cms snapshot
-//								'CMS Snapshot',
-//								//id_site
-//								id_site,
-//								//id_page
-//								id_page,
-								//id_version
-								globals.WEB_version_selected
-							)
+			globals.WEBc_log_create('page','page version activated',forms.WEB_0F_site.id_site,'web_version',fsVersion.id_version)
 			
 			//update valuelist stating which is active
 			forms.WEB_0F_page__design.REC_on_select()
