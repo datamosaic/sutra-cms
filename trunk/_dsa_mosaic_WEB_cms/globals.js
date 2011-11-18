@@ -507,14 +507,30 @@ function WEB_startup() {
 		globals.WEB_block_on_select = false
 		
 		//show all forms with browser beans so they don't error out on initial view
-		forms.WEB_0F__image.controller.show()
-		forms.WEB_0F__html.controller.show()
-		forms.WEB_0F__code.controller.show()
-		forms.WEB_0F__content.controller.show()
-		application.sleep(1500)
-		forms.WEB_0F__content_view.controller.show()
-		//also hits up headless client so get zooming effect on first load
-		forms.WEB_0F_page__browser.controller.show()
+//		forms.WEB_0F__image.controller.show()
+//		forms.WEB_0F__html.controller.show()
+//		forms.WEB_0F__code.controller.show()
+//		forms.WEB_0F__content.controller.show()
+//		application.sleep(1500)
+//		forms.WEB_0F__content_view.controller.show()
+//		//also hits up headless client so get zooming effect on first load
+//		forms.WEB_0F_page__browser.controller.show()
+		
+		var browserForms = globals.WEB_browser_forms()
+		var tinyMCEForms = globals.WEB_browser_forms('net.stuff.servoy.browser.beans.ServoyHtmlEditor')
+		for (var i = 0; i < browserForms.length; i++) {
+			var showForm = browserForms[i]
+			
+			//this form is in a solution that is included in the currently activated solution
+			if (solutionModel.getForm(showForm)) {
+				forms[showForm].controller.show()
+				
+				//wait a little bit extra for tinymce
+				if (tinyMCEForms.indexOf(showForm) != -1) {
+					application.sleep(1500)
+				}
+			}
+		}
 		
 		//return to main data sutra form when using the data sutra framework
 		if (solutionModel.getForm('DATASUTRA_0F_solution')) {
@@ -1359,4 +1375,42 @@ function WEB_upgrade() {
 					'You do not have a database connection "sutra_cms_v1" defined.'
 			)
 	}
+}
+
+/**
+ * @properties={typeid:24,uuid:"E73C84DA-538D-4E7C-9229-7E550AE96B5A"}
+ */
+function WEB_browser_forms(beanType) {
+	//default to all browser beans if type not specified
+	if (!beanType) {
+		beanType = 'net.stuff.servoy.browser.beans'
+	}
+	
+	var browserForms = new Array()
+	
+	var workspace = plugins.sutra.getWorkspace().substr(5)
+	var modules = plugins.file.getFolderContents(workspace, null, 2)
+	
+	for (var i = 0; i < modules.length; i++) {
+		var module = modules[i]
+		
+		var theForms = plugins.file.getFolderContents(module.getAbsolutePath() + '/forms', '.frm', 1)
+		
+		//if this 'module' has forms, proceed
+		if (theForms.length) {
+			//fill it
+			for (var j = 0; j < theForms.length; j++) {
+				var thisForm = theForms[j]
+				var nameForm = thisForm.getName().substr(0,thisForm.getName().length - 4)
+				
+				var aboutForm = plugins.file.readTXTFile(thisForm)
+				
+				if (utils.stringPatternCount(aboutForm,beanType)) {
+					browserForms.push(nameForm)
+				}
+			}
+		}
+	}
+	
+	return browserForms
 }
