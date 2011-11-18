@@ -243,7 +243,7 @@ function FLD_data_change__idTheme(oldValue, newValue, event) {
  */
 function ACTION_cancel() {
 	//this will rollback and turn autoSave back on
-	globals.WEB_simple_cancel()
+	REC_new()
 	
 	//MEMO: check WEB_P_page method too
 	if (forms.WEB_0T_page._addRecord) {
@@ -278,6 +278,7 @@ function ACTION_cancel() {
  */
 function ACTION_save() {
 	//see forms.WEB_P_page.ACTION_ok
+	var newRec = forms.WEB_0T_page._addRecord
 	
 	//check for enough data
 	if (!_pageName) {
@@ -313,8 +314,10 @@ function ACTION_save() {
 		globals.CODE_cursor_busy(true)
 		
 		//show label that this may take a while
-		elements.lbl_save_wait.visible = true
-		application.updateUI()
+		if (newRec || _themeSet) {
+			elements.lbl_save_wait.visible = true
+			application.updateUI()
+		}
 		
 		//page was just created
 		if (forms.WEB_0T_page._addRecord) {
@@ -560,6 +563,8 @@ function ACTION_save() {
 					var newArea = forms.WEB_0F_page__design_1F__header_display__version.AREA_copy(selectedVersion.web_version_to_area.getRecord(oldAreaSameName + 1),newVersion,i)
 				}
 				
+				//todo track areas as created so can delete as needed
+				
 				//make sure that selected index doesn't move around so much
 				newArea.web_area_to_scope.setSelectedIndex(1)
 			}
@@ -587,8 +592,51 @@ function ACTION_save() {
 		//hide label that this may take a while
 		elements.lbl_save_wait.visible = false
 		globals.CODE_cursor_busy(false)
+	}
+	
+	//we got this far...everything ok
+	var parentForm = 'WEB_0F_page__design'
+	
+	//get offset from forms
+	var tabA = (forms[parentForm].TAB_header_size) ? forms[parentForm].TAB_header_size('A') : 40
+	var tabB = (forms[parentForm].TAB_header_size) ? forms[parentForm].TAB_header_size('B') :  250
+	var offset = tabB - tabA - ((forms[parentForm].TAB_header_size) ? forms[parentForm].TAB_header_size('space') : 10)
+	
+	//set new size of this tab panel
+	forms[parentForm].elements.tab_header_detail.setSize(forms[parentForm].elements.tab_header_button.getWidth(),tabA)
+	
+	//go to display-only fields
+	forms[parentForm].elements.tab_header_detail.tabIndex = 1
+	
+	//move/resize other tab panels
+	forms[parentForm].elements.tab_main.setLocation(0,forms[parentForm].elements.tab_main.getLocationY() - offset)
+	forms[parentForm].elements.tab_main.setSize(forms[parentForm].elements.tab_header_button.getWidth(),forms[parentForm].elements.tab_main.getHeight() + offset)
+	
+	//flip graphic
+	forms[parentForm + '_1F__button_tab'].elements.btn_cancel.visible = false
+	forms[parentForm + '_1F__button_tab'].elements.btn_edit.visible = true
+	
+	//for new record, save and exit edit mode
+	if (newRec) {
+		//save outstanding data
+		databaseManager.saveData()
 		
-		return true
+		//turn autosave back on
+		databaseManager.setAutoSave(true)
+		
+		//unfreeze screen if locked
+		if (solutionPrefs.config.lockStatus) {
+			globals.TRIGGER_interface_lock(false)
+		}
+		
+		//hack to re-lock up the page screen
+		if (solutionPrefs.config.currentFormName == 'WEB_0F_page') {
+			forms.WEB_A__page.TOGGLE_edit_mode(false)
+		}
+	}
+	
+	if (forms[parentForm] && forms[parentForm].elements.gfx_curtain) {
+		forms[parentForm].elements.gfx_curtain.visible = false
 	}
 }
 
@@ -718,6 +766,10 @@ function TOGGLE_fields(pageType) {
 		elements.lbl_group.visible = newPage
 		elements.var_idSiteGroup.visible = newPage
 		
+		//only allow to cancel for new page
+		elements.lbl_cancel.visible = newPage
+		elements.btn_cancel.visible = newPage	
+		
 		elements.lbl_idTheme.visible = page
 		elements.var_idTheme.visible = page
 		elements.lbl_idLayout.visible = page
@@ -739,6 +791,101 @@ function TOGGLE_fields(pageType) {
 		//normal type of page
 		else {
 			forms.WEB_0F_page__design_1F__button_tab.TAB_change('WEB_0F_page__design_1F__button_tab','tab_b1')
+		}
+	}
+}
+
+/**
+ * @properties={typeid:24,uuid:"1BA7A61D-B6D4-4BDB-B756-3FD989B0EDB5"}
+ */
+function REC_new() {
+	var formName = 'WEB_0F_page__design'
+	
+	//get offset from forms
+	var tabA = (forms[formName].TAB_header_size) ? forms[formName].TAB_header_size('A') : 40
+	var tabB = (forms[formName].TAB_header_size) ? forms[formName].TAB_header_size('B') :  250
+	var offset = tabB - tabA - ((forms[formName].TAB_header_size) ? forms[formName].TAB_header_size('space') : 10)
+	
+	//only go to edit if currently on display
+	if (forms[formName].elements.tab_header_detail.tabIndex != 2) {
+		//allowed to roll-down header area?
+			//MEMO: this global method only used on pages screen; so modifcations ok
+		if (!forms.WEB_0T_page._addRecord && forms.WEB_0F_page.page_type == 0 && !utils.hasRecords(forms.WEB_0F_page__design_1F_version.foundset)) {
+			plugins.dialogs.showQuestionDialog(
+						'Error',
+						'No version selected'
+				)
+			return
+		}
+		
+		//turn autosave off
+		databaseManager.setAutoSave(false)
+		
+		//set new size of this tab panel
+		forms[formName].elements.tab_header_detail.setSize(forms[formName].elements.tab_header_button.getWidth(),tabB)
+		
+		//go to editable fields
+		forms[formName].elements.tab_header_detail.tabIndex = 2
+		
+		//move/resize other tab panels
+		forms[formName].elements.tab_main.setLocation(0,forms[formName].elements.tab_main.getLocationY() + offset)
+		forms[formName].elements.tab_main.setSize(forms[formName].elements.tab_header_button.getWidth(),forms[formName].elements.tab_main.getHeight() - offset)
+		
+		//flip graphic
+		forms.WEB_0F_page__design_1F__button_tab.elements.btn_cancel.visible = true
+		forms.WEB_0F_page__design_1F__button_tab.elements.btn_edit.visible = false
+		
+		//freeze screen
+		globals.TRIGGER_interface_lock(true)
+		
+		if (forms[formName] && forms[formName].elements.gfx_curtain) {
+			forms[formName].elements.gfx_curtain.visible = true
+		}
+	}
+	//prompt to cancel current edits
+	else {
+	
+	//	var answer = plugins.dialogs.showWarningDialog(
+	//							'Cancel?',
+	//							'Cancel all header edits?',
+	//							'Yes',
+	//							'No'
+	//						)
+		
+		if (true) {//answer == 'Yes') {
+			//rollback edited records
+			databaseManager.rollbackEditedRecords()
+			
+			//turn autosave back on
+			databaseManager.setAutoSave(true)
+			
+			//set new size of this tab panel
+			forms[formName].elements.tab_header_detail.setSize(forms[formName].elements.tab_header_button.getWidth(),tabA)
+			
+			//go to display-only fields
+			forms[formName].elements.tab_header_detail.tabIndex = 1
+			
+			//move/resize other tab panels
+			forms[formName].elements.tab_main.setLocation(0,forms[formName].elements.tab_main.getLocationY() - offset)
+			forms[formName].elements.tab_main.setSize(forms[formName].elements.tab_header_button.getWidth(),forms[formName].elements.tab_main.getHeight() + offset)
+			
+			//flip graphic
+			forms.WEB_0F_page__design_1F__button_tab.elements.btn_cancel.visible = false
+			forms.WEB_0F_page__design_1F__button_tab.elements.btn_edit.visible = true
+			
+			//unfreeze screen
+			if (solutionPrefs.config.lockStatus) {
+				globals.TRIGGER_interface_lock(false)
+			}
+			
+			//hack to re-lock up the page screen
+			if (solutionPrefs.config.currentFormName == 'WEB_0F_page') {
+				forms.WEB_A__page.TOGGLE_edit_mode(false)
+			}
+			
+			if (forms[formName] && forms[formName].elements.gfx_curtain) {
+				forms[formName].elements.gfx_curtain.visible = false
+			}
 		}
 	}
 }
