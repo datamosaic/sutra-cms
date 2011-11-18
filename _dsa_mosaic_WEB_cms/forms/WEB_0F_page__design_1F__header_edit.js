@@ -400,6 +400,8 @@ function ACTION_save() {
 			newVersion.version_name = 'Initial version'
 			globals.WEB_page_version = newVersion.id_version
 			
+			globals.WEBc_log_create('page','page add',forms.WEB_0F_page.id_site,'web_page',forms.WEB_0F_page.id_page)
+			
 			var fsPath = databaseManager.getFoundSet('sutra_cms','web_path')
 			var siteID = id_site
 			
@@ -517,6 +519,8 @@ function ACTION_save() {
 				//punch down theme change data
 				newVersion.id_theme = _idTheme
 				newVersion.id_layout = _idLayout
+				
+				globals.WEBc_log_create('page','page version add',forms.WEB_0F_page.id_site,'web_page',forms.WEB_0F_page.id_page)
 				
 				//load version foundset onto properties tab
 				forms.WEB_0F_page__design_1F__properties_2L_version.foundset.loadRecords(fsVersion)

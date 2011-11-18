@@ -161,6 +161,8 @@ function ADD_version(event) {
 					newVersion.version_name = 'Initial version'
 					newVersion.flag_active = forms.WEB_0F_site.flag_auto_publish
 					
+					globals.WEBc_log_create('page','page version add',forms.WEB_0F_page.id_site,'web_page',forms.WEB_0F_page.id_page)
+					
 					//create all areas for this layout, copying over existing content based on area name
 					for (var i = 1; i <= layout.web_layout_to_editable.getSize(); i++) {
 						//new area to create
@@ -324,6 +326,8 @@ function ADD_version(event) {
 						destVersion.id_platform = forms.WEB_0F_page__design_1F__header_display_2F_platform._platform.id_platform
 						destVersion.id_language = forms.WEB_0F_page__design_1F__header_display_2F_language._language.id_language
 						destVersion.id_group = forms.WEB_0F_page__design_1F__header_display_2F_group._group.id_group
+						
+						globals.WEBc_log_create('page','page version add',forms.WEB_0F_page.id_site,'web_page',forms.WEB_0F_page.id_page)
 						
 						//version stack exists
 						if (hasVersions) {
@@ -636,16 +640,7 @@ function ACTIVATE_version(event) {
 					}
 					
 					//create log record when version set as active
-					globals.TRIGGER_log_create(
-										//type of log
-										'CMS page version activated',
-		//								//id_site
-		//								id_site,
-		//								//id_page
-		//								id_page,
-										//id_version
-										selectedVersion.id_version.toString()
-									)
+					globals.WEBc_log_create('page','page version activated',forms.WEB_0F_site.id_site,'web_version',selectedVersion.id_version)
 					
 					//redo version valuelist without touching the foundset
 					forms.WEB_0F_page__design.SET_versions(true)

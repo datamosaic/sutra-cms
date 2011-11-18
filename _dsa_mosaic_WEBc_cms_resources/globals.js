@@ -1789,3 +1789,19 @@ function WEBc_markup_link_image(assetInstanceID, pageID, siteURL, linkType, webM
 	//full url for a page requested
 	return pageLink
 }
+
+/**
+ * @properties={typeid:24,uuid:"928202F6-F074-4A6D-BD74-4C1A8324801B"}
+ */
+function WEBc_log_create(logType,message,siteID,pkTable,pkID) {
+	if (logType) {
+		var fsLog = databaseManager.getFoundSet('sutra_cms','web_log')
+		var logRec = fsLog.getRecord(fsLog.newRecord(false,true))
+		
+		logRec.log_type = logType
+		logRec.log_message = message
+		logRec.id_site = siteID ? siteID.toString() : null
+		logRec.record_table = pkTable
+		logRec.record_id = pkID ? pkID.toString() : null
+	}
+}

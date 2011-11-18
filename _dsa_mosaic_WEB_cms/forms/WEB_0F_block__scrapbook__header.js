@@ -312,11 +312,7 @@ function ACTION_activate(event) {
 					databaseManager.saveData()
 					
 					//create log record when version set as active
-					globals.TRIGGER_log_create(
-										//type of log
-										'CMS scrapbook version activated',
-										selectedVersion.id_block_version.toString()
-									)
+					globals.WEBc_log_create('scrapbook','scrapbook version activated',forms.WEB_0F_site.id_site,'web_block_version',selectedVersion.id_block_version)
 					
 					//redo version valuelist and update all elements
 					forms.WEB_0F_block__scrapbook.REC_on_select()
