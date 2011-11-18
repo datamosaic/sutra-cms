@@ -1080,7 +1080,8 @@ function REC_new() {
 			forms.WEB_0F_page__design_1F__header_edit.TOGGLE_fields(0)
 			
 			//show pop-down
-			globals.WEB_simple_edit('WEB_0F_page__design_1F__button_tab')
+			forms.WEB_0F_page__design_1F__header_edit.REC_new()
+//			globals.WEB_simple_edit('WEB_0F_page__design_1F__button_tab')
 			
 			globals.CODE_cursor_busy(false)
 		}

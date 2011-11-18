@@ -106,9 +106,6 @@ function TOGGLE_elements() {
  * @properties={typeid:24,uuid:"3EDEB7C9-1778-4C96-ABF2-A5F21035BF98"}
  */
 function ADD_version(event) {
-	//disable pop-ups
-	var input = 'Yes'
-	
 	//there is a page
 	if (utils.hasRecords(forms.WEB_0F_page__design.foundset)) {
 		//do we have any versions?
@@ -193,195 +190,153 @@ function ADD_version(event) {
 				//stop rest of method from running
 				return
 			}
-			
-			//prompt to create platform, language, group as needed
-//			var dialogText = ''
-//			
-//			if (!validPlatform) {
-//				dialogText += 'platform'
-//			}
-//			if (!validLanguage) {
-//				if (dialogText.length) {
-//					dialogText += ', '
-//					var multi = true
-//				}
-//				dialogText += 'language'
-//			}
-//			if (!validGroup) {
-//				if (dialogText.length) {
-//					dialogText += ', '
-//					var multi = true
-//				}
-//				dialogText += 'group'
-//			}
-//			
-//			if (dialogText.length) {
-//				dialogText = 'Add selected ' + dialogText + ' record' + (multi ? 's' : '') + ' and create new version?'
-//			}
-//			else {
-//				dialogText = 'Create new version?'
-//			}
-//			
-//			var input = 'Yes'
-			
-//			var input = plugins.dialogs.showQuestionDialog(
-//							'Empty version stack',
-//							dialogText,
-//							'Yes',
-//							'No'
-//					)
 		}
 		//version stack exists
 		else {
 			//get most recent and selected versions
 			var latestVersion = fsVersion.getRecord(1)
 			var selectedVersion = fsVersion.getSelectedRecord()
-			
-			//ok to proceed
-			var input = 'Yes'
 		}
 		
-		if (input == 'Yes') {
-			//prompt for version name
+		//prompt for version name
+		application.showFormInDialog(
+						forms.WEB_P__version,
+						-1,-1,-1,-1,
+						' ',
+						true,
+						false,
+						'cmsVersionDupe'
+					)
+		
+		if (forms.WEB_P__version._fidAccept) {
+			//prompt for which version to copy from
 			application.showFormInDialog(
-							forms.WEB_P__version,
+							forms.WEB_P_page__version,
 							-1,-1,-1,-1,
 							' ',
 							true,
 							false,
-							'cmsVersionDupe'
-						)
+							'cmsVersionNew'
+						)		
 			
-			if (forms.WEB_P__version._fidAccept) {
-				//prompt for which version to copy from
-				application.showFormInDialog(
-								forms.WEB_P_page__version,
-								-1,-1,-1,-1,
-								' ',
-								true,
-								false,
-								'cmsVersionNew'
-							)		
+			if (forms.WEB_P_page__version._fidAccept) {
+				//turn on feedback indicators
+				var progressText = 'Creating new version...'
+				globals.TRIGGER_progressbar_start(null,progressText)
+				globals.CODE_cursor_busy(true)
 				
-				if (forms.WEB_P_page__version._fidAccept) {
-					//turn on feedback indicators
-					var progressText = 'Creating new version...'
-					globals.TRIGGER_progressbar_start(null,progressText)
-					globals.CODE_cursor_busy(true)
-					
-					//version that was selected
-					var selectedVersion = forms.WEB_P_page__version._fsVersion.getRecord(forms.WEB_P_page__version._posnVersion)
-					
-					//first version in the stack
-					if (!hasVersions) {
-						var info = ''
-						//create prerequisite page-level records
-						if (!validPlatform) {
-							info += forms.WEB_0F_page__design_1F__header_display_2F_platform.CREATE_platform(selectedVersion)
-						}
-						if (!validLanguage) {
-							info += forms.WEB_0F_page__design_1F__header_display_2F_language.CREATE_language(selectedVersion)
-						}
-						if (!validGroup) {
-							info += forms.WEB_0F_page__design_1F__header_display_2F_group.CREATE_group(selectedVersion)
-						}
-						
-						info += '\nBased on: version ' + selectedVersion.version_number + ' (' + selectedVersion.version_name + ') of \n' +
-							'Platform: ' + selectedVersion.web_version_to_platform.platform_name + ', ' + 
-							'Language: ' + selectedVersion.web_version_to_language.language_name + ', ' + 
-							'Group: ' + selectedVersion.web_version_to_group.group_name
+				//version that was selected
+				var selectedVersion = forms.WEB_P_page__version._fsVersion.getRecord(forms.WEB_P_page__version._posnVersion)
+				
+				//first version in the stack
+				if (!hasVersions) {
+					var info = ''
+					//create prerequisite page-level records
+					if (!validPlatform) {
+						info += forms.WEB_0F_page__design_1F__header_display_2F_platform.CREATE_platform(selectedVersion)
+					}
+					if (!validLanguage) {
+						info += forms.WEB_0F_page__design_1F__header_display_2F_language.CREATE_language(selectedVersion)
+					}
+					if (!validGroup) {
+						info += forms.WEB_0F_page__design_1F__header_display_2F_group.CREATE_group(selectedVersion)
 					}
 					
-					//the new platform has a theme/layout specified
-					if (utils.hasRecords(selectedVersion,'web_version_to_layout')) {
-						var layout = selectedVersion.web_version_to_layout.getSelectedRecord()
+					info += '\nBased on: version ' + selectedVersion.version_number + ' (' + selectedVersion.version_name + ') of \n' +
+						'Platform: ' + selectedVersion.web_version_to_platform.platform_name + ', ' + 
+						'Language: ' + selectedVersion.web_version_to_language.language_name + ', ' + 
+						'Group: ' + selectedVersion.web_version_to_group.group_name
+				}
+				
+				//the new platform has a theme/layout specified
+				if (utils.hasRecords(selectedVersion,'web_version_to_layout')) {
+					var layout = selectedVersion.web_version_to_layout.getSelectedRecord()
+					
+					var oldAreas = databaseManager.getFoundSetDataProviderAsArray(selectedVersion.web_version_to_area,'area_name')
+					
+					//create new record
+					var destVersion = fsVersion.getRecord(fsVersion.newRecord(false,true))
+					
+					//create all areas for this layout, copying over existing content based on area name
+					for (var i = 1; i <= layout.web_layout_to_editable.getSize(); i++) {
+						//new area to create
+						var editable =  layout.web_layout_to_editable.getRecord(i)
+						//this area existed in the theme we were copying from
+						var oldAreaSameName = oldAreas.indexOf(editable.editable_name)
 						
-						var oldAreas = databaseManager.getFoundSetDataProviderAsArray(selectedVersion.web_version_to_area,'area_name')
-						
-						//create new record
-						var destVersion = fsVersion.getRecord(fsVersion.newRecord(false,true))
-						
-						//create all areas for this layout, copying over existing content based on area name
-						for (var i = 1; i <= layout.web_layout_to_editable.getSize(); i++) {
-							//new area to create
-							var editable =  layout.web_layout_to_editable.getRecord(i)
-							//this area existed in the theme we were copying from
-							var oldAreaSameName = oldAreas.indexOf(editable.editable_name)
-							
-							//create from defaults for area
-							if (oldAreaSameName == -1) {
-								var newArea = AREA_new(editable,destVersion,i)
-							}
-							//copy from chosen version
-							else {
-								var newArea = AREA_copy(selectedVersion.web_version_to_area.getRecord(oldAreaSameName + 1),destVersion,i)
-							}
-							
-							//reset scope index to be at top
-							destVersion.web_version_to_area.web_area_to_scope.setSelectedIndex(1)
+						//create from defaults for area
+						if (oldAreaSameName == -1) {
+							var newArea = AREA_new(editable,destVersion,i)
 						}
-						
-						//common data points for new and subsequent versions
-						destVersion.flag_lock = 0
-						destVersion.id_platform = forms.WEB_0F_page__design_1F__header_display_2F_platform._platform.id_platform
-						destVersion.id_language = forms.WEB_0F_page__design_1F__header_display_2F_language._language.id_language
-						destVersion.id_group = forms.WEB_0F_page__design_1F__header_display_2F_group._group.id_group
-						
-						globals.WEBc_log_create('page','page version add',forms.WEB_0F_page.id_site,'web_page',forms.WEB_0F_page.id_page)
-						
-						//version stack exists
-						if (hasVersions) {
-							//disable edits on old version when 
-							if (!selectedVersion.flag_lock) {
-								selectedVersion.flag_lock = 1
-							}
-							
-							//save down information for new version
-							destVersion.version_number = latestVersion.version_number + 1
-							destVersion.version_name = forms.WEB_P__version._versionName
-							destVersion.version_description = forms.WEB_P__version._versionDescription
-							destVersion.flag_active = null
-							destVersion.id_theme = selectedVersion.id_theme
-							destVersion.id_layout = selectedVersion.id_layout
-							
-							databaseManager.saveData()
-							
-							//update versions valuelist
-							forms.WEB_0F_page__design.REC_on_select(null,null,1)
-						}
-						//no version stack
+						//copy from chosen version
 						else {
-							//save down information for new version
-							destVersion.version_number = 1
-							destVersion.version_name = 'Initial version'
-							destVersion.version_description = info
-							destVersion.flag_active = forms.WEB_0F_site.flag_auto_publish
-							
-							databaseManager.saveData()
-							
-							//update versions valuelist
-							forms.WEB_0F_page__design.REC_on_select()
+							var newArea = AREA_copy(selectedVersion.web_version_to_area.getRecord(oldAreaSameName + 1),destVersion,i)
 						}
 						
-						//update selected version in combobox
-						globals.WEB_page_version = destVersion.id_version
-						
-						//reset area index to be at top
-						destVersion.web_version_to_area.setSelectedIndex(1)
-					}
-					else {
-						plugins.dialogs.showErrorDialog(
-									'Error',
-									'There is not a layout for the chosen platform'
-							)
+						//reset scope index to be at top
+						destVersion.web_version_to_area.web_area_to_scope.setSelectedIndex(1)
 					}
 					
-					//turn off feedback indicators if on
-					globals.CODE_cursor_busy(false)
-					if (globals.TRIGGER_progressbar_get() instanceof Array) {
-						if (globals.TRIGGER_progressbar_get()[1] == progressText) {
-							globals.TRIGGER_progressbar_stop()
+					//common data points for new and subsequent versions
+					destVersion.flag_lock = 0
+					destVersion.id_platform = forms.WEB_0F_page__design_1F__header_display_2F_platform._platform.id_platform
+					destVersion.id_language = forms.WEB_0F_page__design_1F__header_display_2F_language._language.id_language
+					destVersion.id_group = forms.WEB_0F_page__design_1F__header_display_2F_group._group.id_group
+					
+					globals.WEBc_log_create('page','page version add',forms.WEB_0F_page.id_site,'web_page',forms.WEB_0F_page.id_page)
+						
+					//version stack exists
+					if (hasVersions) {
+						//disable edits on old version when 
+						if (!selectedVersion.flag_lock) {
+							selectedVersion.flag_lock = 1
 						}
+						
+						//save down information for new version
+						destVersion.version_number = latestVersion.version_number + 1
+						destVersion.version_name = forms.WEB_P__version._versionName
+						destVersion.version_description = forms.WEB_P__version._versionDescription
+						destVersion.flag_active = null
+						destVersion.id_theme = selectedVersion.id_theme
+						destVersion.id_layout = selectedVersion.id_layout
+						
+						databaseManager.saveData()
+						
+						//update versions valuelist
+						forms.WEB_0F_page__design.REC_on_select(null,null,1)
+					}
+					//no version stack
+					else {
+						//save down information for new version
+						destVersion.version_number = 1
+						destVersion.version_name = 'Initial version'
+						destVersion.version_description = info
+						destVersion.flag_active = forms.WEB_0F_site.flag_auto_publish
+						
+						databaseManager.saveData()
+						
+						//update versions valuelist
+						forms.WEB_0F_page__design.REC_on_select()
+					}
+					
+					//update selected version in combobox
+					globals.WEB_page_version = destVersion.id_version
+					
+					//reset area index to be at top
+					destVersion.web_version_to_area.setSelectedIndex(1)
+				}
+				else {
+					plugins.dialogs.showErrorDialog(
+								'Error',
+								'There is not a layout for the chosen platform'
+						)
+				}
+				
+				//turn off feedback indicators if on
+				globals.CODE_cursor_busy(false)
+				if (globals.TRIGGER_progressbar_get() instanceof Array) {
+					if (globals.TRIGGER_progressbar_get()[1] == progressText) {
+						globals.TRIGGER_progressbar_stop()
 					}
 				}
 			}

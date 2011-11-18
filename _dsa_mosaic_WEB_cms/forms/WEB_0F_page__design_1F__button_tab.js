@@ -9,10 +9,10 @@ var _license_dsa_mosaic_WEB_cms = 'Module: _dsa_mosaic_WEB_cms \
  *
  * @properties={typeid:24,uuid:"5CD2FA00-B410-47B4-BDA0-8D5A6ECF6B41"}
  */
-function FORM_on_load()
-{
-//hide cancel button
-elements.btn_cancel.visible = false
+function FORM_on_load() {
+	//hide buttons
+	elements.btn_cancel.visible = false
+	elements.btn_edit.visible = false
 }
 
 /**
@@ -98,5 +98,83 @@ function VISIT_page(event,returnURL) {
 					'Error',
 					'You must have a page selected in order to preview it'
 			)
+	}
+}
+
+/**
+ * Perform the element default action.
+ *
+ * @param {JSEvent} event the event that triggered the action
+ *
+ * @properties={typeid:24,uuid:"C50AF3D7-805A-4838-BB5A-A11A4616F7A8"}
+ */
+function ACTION_edit(event) {
+	var formName = 'WEB_0F_page__design'
+		
+	//get offset from forms
+	var tabA = (forms[formName].TAB_header_size) ? forms[formName].TAB_header_size('A') : 40
+	var tabB = (forms[formName].TAB_header_size) ? forms[formName].TAB_header_size('B') :  250
+	var offset = tabB - tabA - ((forms[formName].TAB_header_size) ? forms[formName].TAB_header_size('space') : 10)
+	
+	//allowed to roll-down header area?
+		//MEMO: this global method only used on pages screen; so modifcations ok
+	if (!forms.WEB_0T_page._addRecord && forms.WEB_0F_page.page_type == 0 && !utils.hasRecords(forms.WEB_0F_page__design_1F_version.foundset)) {
+		plugins.dialogs.showQuestionDialog(
+					'Error',
+					'No version selected'
+			)
+		return
+	}
+	
+	//set new size of this tab panel
+	forms[formName].elements.tab_header_detail.setSize(forms[formName].elements.tab_header_button.getWidth(),tabB)
+	
+	//go to editable fields
+	forms[formName].elements.tab_header_detail.tabIndex = 2
+	
+	//move/resize other tab panels
+	forms[formName].elements.tab_main.setLocation(0,forms[formName].elements.tab_main.getLocationY() + offset)
+	forms[formName].elements.tab_main.setSize(forms[formName].elements.tab_header_button.getWidth(),forms[formName].elements.tab_main.getHeight() - offset)
+	
+	//flip graphic
+	elements.btn_cancel.visible = true
+	elements.btn_edit.visible = false
+	
+	if (forms[formName] && forms[formName].elements.gfx_curtain) {
+		forms[formName].elements.gfx_curtain.visible = true
+	}
+}
+
+/**
+ * Perform the element default action.
+ *
+ * @param {JSEvent} event the event that triggered the action
+ *
+ * @properties={typeid:24,uuid:"E75C2530-CA51-41DD-8CC3-A008F7226D11"}
+ */
+function ACTION_cancel(event) {
+	var formName = 'WEB_0F_page__design'
+	
+	//get offset from forms
+	var tabA = (forms[formName].TAB_header_size) ? forms[formName].TAB_header_size('A') : 40
+	var tabB = (forms[formName].TAB_header_size) ? forms[formName].TAB_header_size('B') :  250
+	var offset = tabB - tabA - ((forms[formName].TAB_header_size) ? forms[formName].TAB_header_size('space') : 10)
+	
+	//set new size of this tab panel
+	forms[formName].elements.tab_header_detail.setSize(forms[formName].elements.tab_header_button.getWidth(),tabA)
+	
+	//go to display-only fields
+	forms[formName].elements.tab_header_detail.tabIndex = 1
+	
+	//move/resize other tab panels
+	forms[formName].elements.tab_main.setLocation(0,forms[formName].elements.tab_main.getLocationY() - offset)
+	forms[formName].elements.tab_main.setSize(forms[formName].elements.tab_header_button.getWidth(),forms[formName].elements.tab_main.getHeight() + offset)
+	
+	//flip graphic
+	elements.btn_cancel.visible = false
+	elements.btn_edit.visible = true
+	
+	if (forms[formName] && forms[formName].elements.gfx_curtain) {
+		forms[formName].elements.gfx_curtain.visible = false
 	}
 }
