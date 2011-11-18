@@ -757,8 +757,8 @@ function IMAGE_import_callback(result, e) {
 	}
 	
 	// create asset record
-	var fsAsset = databaseManager.getFoundSet('sutra_cms','web_asset')
-	var assetRec = fsAsset.getRecord(fsAsset.newRecord(false,true))
+	var fsAsset = forms.WEB_0F_asset.foundset
+	var assetRec = fsAsset.getRecord(fsAsset.newRecord(true,true))
 	assetRec.id_site = forms.WEB_0F_site.id_site
 	assetRec.asset_type = 1
 
@@ -801,10 +801,6 @@ function IMAGE_import_callback(result, e) {
 	}
 	
 	plugins.dialogs.showInfoDialog("Image",  "Image uploaded")
-	
-	//TODO: select the correct record (won't work when more than 200 assets)
-	forms.WEB_0F_asset.controller.loadAllRecords()
-	forms.WEB_0F_asset.controller.setSelectedIndex(forms.WEB_0F_asset.controller.getMaxRecordIndex())
 	
 	//no records created yet and interface locked
 	if (application.__parent__.solutionPrefs && solutionPrefs.design.statusLockWorkflow) {
