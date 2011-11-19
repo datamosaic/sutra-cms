@@ -12,6 +12,10 @@
  * 
  * Logging and session tables are additional candidates.
  * 
+ * Future: checkout mongodb-rhino. allows conversion to/from native JavaScript objects and MongoDB's BSON
+ * 	(do away with get and put to build and retrieve BSON objects)
+ * http://code.google.com/p/mongodb-rhino/
+ * 
  * @author David Workman, Data Mosaic, November 2011
  * 
  * @properties={typeid:24,uuid:"BA231E32-D846-433D-BBF5-260D5590DD17"}
