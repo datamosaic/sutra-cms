@@ -5,7 +5,7 @@ items:[
 height:280,
 partType:5,
 typeid:19,
-uuid:"238A28F8-D1C7-48A9-8977-E2A5199A3464"
+uuid:"D53C6A29-A194-4A8A-B38E-FFF1DAB9DC6C"
 }
 ],
 name:"WEB_0C__file_stream",
@@ -19,4 +19,4 @@ paperPrintScale:100,
 size:"400,280",
 styleName:"_DATASUTRA_",
 typeid:3,
-uuid:"FDD156B1-BA05-46E0-95B1-367A0BBA6E30"
+uuid:"0A50C3EC-F9B2-4F17-9D05-577986D70B2B"

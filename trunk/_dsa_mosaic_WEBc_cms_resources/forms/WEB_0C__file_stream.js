@@ -1,87 +1,87 @@
 /**
- * @properties={typeid:35,uuid:"D5AB1086-3B0E-468D-96B2-E47D8B21FDED",variableType:-4}
- */
-var _file = {};
-
-/**
- * @properties={typeid:35,uuid:"C0455562-E667-45D4-936D-7E5884B674FC",variableType:-4}
+ * @properties={typeid:35,uuid:"20E8E784-6FDA-4F70-8AF4-6C15634BBDD8",variableType:-4}
  */
 var _elements = {};
 
 /**
- * @properties={typeid:35,uuid:"6E2128F9-6215-42BD-8A89-124205655A10",variableType:4}
+ * @properties={typeid:35,uuid:"B07736AF-EADE-4194-8F91-EBFB80BD34A0",variableType:4}
  */
 var _elementsDone = 0;
 
 /**
- * @properties={typeid:35,uuid:"4976B3A3-A3CE-4C4A-8921-2AFEB51C0A05",variableType:-4}
+ * @properties={typeid:35,uuid:"DD57E988-7B31-4C21-8207-706F28A7F82B",variableType:-4}
  */
 var _elementsLayoutSelected = [];
 
 /**
- * @properties={typeid:35,uuid:"0B5D9B8E-C86F-4203-910C-648ECA362CB2",variableType:4}
+ * @properties={typeid:35,uuid:"9AC35751-762E-41B0-AB63-18286CF90F09",variableType:4}
  */
 var _elementsPathsIncrementer = 0;
 
 /**
- * @properties={typeid:35,uuid:"25D00E0F-7808-4283-8405-8F6668CB4006",variableType:4}
+ * @properties={typeid:35,uuid:"77C979BD-3461-4E59-B2B6-2CECB34F7DB5",variableType:4}
  */
 var _elementsProgressTotal = 0;
 
 /**
- * @properties={typeid:35,uuid:"135A561B-F56B-4425-B08E-611AC591E7EC",variableType:-4}
+ * @properties={typeid:35,uuid:"3F03274E-0C82-42F0-AD28-D2EF48944EFA",variableType:-4}
  */
 var _elementsSelected = [];
 
 /**
- * @properties={typeid:35,uuid:"159BE25F-A531-4EA5-B7A9-6B38DEFD1713",variableType:-4}
+ * @properties={typeid:35,uuid:"9B2C8DC8-7ACA-4CFF-A8D4-10653376516B",variableType:-4}
+ */
+var _file = {};
+
+/**
+ * @properties={typeid:35,uuid:"3F0941BE-2D6B-42BA-A931-4910330A1CD8",variableType:-4}
  */
 var _flagRefresh = false;
 
 /**
- * @properties={typeid:35,uuid:"BD990BD6-3C82-4670-A5BD-593C88A13AB9"}
+ * @properties={typeid:35,uuid:"2DC677B3-626D-47FA-A92B-D13D32236BF6"}
  */
 var _license_dsa_mosaic_WEB_cms = 'Module: _dsa_mosaic_WEB_cms \
 									Copyright (C) 2011 Data Mosaic \
 									MIT Licensed';
 
 /**
- * @properties={typeid:35,uuid:"ABF70BA3-27E4-4349-8D8D-F920230F78CF",variableType:-4}
+ * @properties={typeid:35,uuid:"C8A1F8EC-713F-48B5-83B4-F7B5123DEE1C",variableType:-4}
  */
 var _themes = {};
 
 /**
- * @properties={typeid:35,uuid:"BE8C2962-2621-4972-A538-E429F228853B",variableType:4}
+ * @properties={typeid:35,uuid:"452A199F-D69C-414B-A5DF-A3A59E3CB4FD",variableType:4}
  */
 var _themesDone = 0;
 
 /**
- * @properties={typeid:35,uuid:"28183069-F592-450E-89BF-A291C2279ABC",variableType:-4}
+ * @properties={typeid:35,uuid:"42B1F8AA-7119-4D5A-8BC2-80030261C615",variableType:-4}
  */
 var _themesLayoutSelected = [];
 
 /**
- * @properties={typeid:35,uuid:"F5637AEC-3D96-4837-98F5-41762D8B5E16",variableType:-4}
+ * @properties={typeid:35,uuid:"8014240B-58DB-4A6D-A01E-F576C0EB72DE",variableType:-4}
  */
 var _themesPaths = [];
 
 /**
- * @properties={typeid:35,uuid:"245F0E8F-0717-4905-9D9C-16E8F1ECDE96",variableType:4}
+ * @properties={typeid:35,uuid:"BA6C15BF-9944-4627-83E7-14D3918E5A46",variableType:4}
  */
 var _themesPathsIncrementer = 0;
 
 /**
- * @properties={typeid:35,uuid:"2AACACE5-B607-4404-8CE5-EBBE091AF0EF",variableType:4}
+ * @properties={typeid:35,uuid:"91F892B5-039E-4A21-9DAC-A3610FFCA08A",variableType:4}
  */
 var _themesProgressCount = 0;
 
 /**
- * @properties={typeid:35,uuid:"FA4A5665-233E-424B-9BE2-279E6D364B06",variableType:4}
+ * @properties={typeid:35,uuid:"5CCAB31D-9A98-4074-B8A3-40F9D9A5000B",variableType:4}
  */
 var _themesProgressTotal = 0;
 
 /**
- * @properties={typeid:35,uuid:"7515CCB8-7FBE-450F-B6B4-98253A1FB2CB",variableType:-4}
+ * @properties={typeid:35,uuid:"EB3C0879-5DEC-4BF1-8C46-2A4637DF3B97",variableType:-4}
  */
 var _themesSelected = [];
 
@@ -96,7 +96,7 @@ var _themesSelected = [];
  * things a bit. At that point we won't have to go track down all the file streaming pieces
  * scattered everywhere.
  * 
- * @properties={typeid:24,uuid:"B29F02FA-D1FF-4C34-B9A0-7A45ABB87481"}
+ * @properties={typeid:24,uuid:"82C07EDB-1566-40FE-A0D3-ACA385AECBD6"}
  */
 function _INFO() {}
 
@@ -107,7 +107,7 @@ function _INFO() {}
  * @param {Integer} progress : used by streaming file callbacks to pass control back to this method
  * @param {boolean} _flagRefresh : sudo-parameter/form variable tracks if creating new theme or refreshing current theme
  * 
- * @properties={typeid:24,uuid:"EFF6D177-1783-4E8D-8D31-92B7838AEB68"}
+ * @properties={typeid:24,uuid:"63BDBFCB-609A-4735-A981-CF0DEE9C5BFC"}
  */
 function THEME_new(progress) {
 	
@@ -521,7 +521,7 @@ function THEME_new(progress) {
 /**
  * Checks that site theme directory is configured correctly on the site form.
  * 
- * @properties={typeid:24,uuid:"6FEBD6FA-495C-4293-822D-74C86ABAAE59"}
+ * @properties={typeid:24,uuid:"BB2409B5-CAF7-4773-9A20-972511821E49"}
  */
 function FUNCTION_theme_directory() {
 	var error = null
@@ -542,7 +542,7 @@ function FUNCTION_theme_directory() {
 /**
  * Reads the description.txt file in the theme directory for meta information.
  * 
- * @properties={typeid:24,uuid:"FCDE08CA-4845-4E93-BF4F-1295D7C3F53E"}
+ * @properties={typeid:24,uuid:"C66AFE31-3D3F-4E7A-A39D-874A1C9A634F"}
  */
 function THEME_callback_theme(result, e) {
 	if (e) {
@@ -571,7 +571,7 @@ function THEME_callback_theme(result, e) {
 /**
  * Reads jsp files from theme directory and pulls out editable regions.
  * 
- * @properties={typeid:24,uuid:"A13091A4-F352-4C85-ABE7-EBA77267DBDB"}
+ * @properties={typeid:24,uuid:"A2FDED2C-31EB-49D6-8360-FCBB015B76D3"}
  */
 function THEME_callback_jsp(result, e) {
 	if (e) {
@@ -618,7 +618,7 @@ function THEME_callback_jsp(result, e) {
 }
 
 /**
- * @properties={typeid:24,uuid:"5B8D4CEC-E6F2-4379-9AF4-D1B10625CA37"}
+ * @properties={typeid:24,uuid:"12D7AE07-6340-499C-B177-35AF92D4A2B5"}
  */
 function THEME_progress(monitor) {
 	globals.TRIGGER_progressbar_set(monitor.getTotalTransferredBytes(), " Streaming " + monitor.getTotalTransferredBytes() + " of " + _themesProgressTotal)
@@ -627,7 +627,7 @@ function THEME_progress(monitor) {
 /**
  * Reads jspf files from theme > elements directory and pulls out editable regions.
  * 
- * @properties={typeid:24,uuid:"8D39371D-3291-4A63-87A0-083520BBF659"}
+ * @properties={typeid:24,uuid:"C8E09221-BF8E-405F-8F7E-69A08854162C"}
  */
 function THEME_callback_element(result, e) {
 	if (e) {
@@ -665,7 +665,7 @@ function THEME_callback_element(result, e) {
 /**
  * Updates theme to current state of the jsp files.
  * 
- * @properties={typeid:24,uuid:"CB4B934D-310E-4EDF-8BB5-BC84C6026857"}
+ * @properties={typeid:24,uuid:"3A84F0ED-C00C-4359-87A6-24910130E8E3"}
  */
 function THEME_refresh() {
 	_flagRefresh = true
@@ -675,7 +675,7 @@ function THEME_refresh() {
 /**
  * Checks to make sure the file streaming plugin is setup properly in the server plugins page.
  * 
- * @properties={typeid:24,uuid:"0895C240-7F52-4FB7-889F-C6D81DD558AD"}
+ * @properties={typeid:24,uuid:"4BC9593E-CD40-41C0-A28F-0B2F865F76C5"}
  */
 function FUNCTION_streaming_check() {
 	// TODO: not sure C:\\ is the correct string for a windows server. may just be "/" due to auto java translation
@@ -688,7 +688,7 @@ function FUNCTION_streaming_check() {
 }
 
 /**
- * @properties={typeid:24,uuid:"D7EA9BAE-E97A-4828-821E-08FA8E96E5B2"}
+ * @properties={typeid:24,uuid:"21DA8183-8F34-4363-AC99-5AD696827909"}
  */
 function IMAGE_import(directory) {
 	
@@ -746,7 +746,7 @@ function IMAGE_import(directory) {
 }
 
 /**
- * @properties={typeid:24,uuid:"91369FAF-0A56-47C2-A198-DB6A17187DC8"}
+ * @properties={typeid:24,uuid:"1EAFF07F-DE7A-4271-B1CB-138ED45A1BFE"}
  */
 function IMAGE_import_callback(result, e) {
 	
@@ -811,14 +811,14 @@ function IMAGE_import_callback(result, e) {
 }
 
 /**
- * @properties={typeid:24,uuid:"4B77F240-2EA9-4162-ADE0-5750CD297757"}
+ * @properties={typeid:24,uuid:"4A3BA365-3E63-4789-8256-54365B865356"}
  */
 function IMAGE_import_monitor() {
 	// TODO Auto-generated method stub
 }
 
 /**
- * @properties={typeid:24,uuid:"9CA1DB85-58BC-4FF9-8F16-1EE81CFB4706"}
+ * @properties={typeid:24,uuid:"29BE1270-988B-4D4D-BF2C-A13382E05870"}
  */
 function IMAGE_delete(filePathObj) {
 	
