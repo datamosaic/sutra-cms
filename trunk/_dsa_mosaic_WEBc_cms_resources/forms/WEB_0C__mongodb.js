@@ -67,7 +67,6 @@ function test() {
 	
 	// set of documents
 	var query = new BasicDBObject()
-
     query.put("i", new BasicDBObject("$gt", 95));  // e.g. find all where i > 95
 	cur = coll.find(query)
 	while(cur.hasNext()) {
