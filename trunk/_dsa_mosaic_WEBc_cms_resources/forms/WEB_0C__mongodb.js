@@ -57,6 +57,9 @@ function test() {
 	// count
 	application.output(coll.getCount())  // = 101
 	
+	// first record
+	application.output(coll.findOne())
+	
 	// simple query
 	var query = new BasicDBObject()
 	query.put("i", 71)
