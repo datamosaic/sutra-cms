@@ -1,4 +1,5 @@
 dataSource:"db:/sutra_cms/web_asset",
+initialSort:"rec_created desc",
 items:[
 {
 anchors:6,
