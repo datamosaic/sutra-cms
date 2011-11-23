@@ -63,9 +63,11 @@ function TOGGLE_edit_mode(editMode,saveData) {
 	
 	//entering edit mode
 	if (_editMode) {
-		//enter pseudo-transaction
-		databaseManager.saveData()
-		databaseManager.setAutoSave(false)
+		//enter pseudo-transaction if not already in one
+		if (databaseManager.getAutoSave()) {
+			databaseManager.saveData()
+			databaseManager.setAutoSave(false)
+		}
 		
 		//lock the screen
 		globals.TRIGGER_interface_lock(true)
@@ -75,9 +77,7 @@ function TOGGLE_edit_mode(editMode,saveData) {
 		forms.WEB_0F_block__scrapbook_1F__data.elements.btn_data_actions.enabled = true
 		
 		//enable raw data mode fields for editing
-		forms.WEB_0F_page__design_1F_version_2F_block__data_3L_block_data.elements.edit_data_value.editable = true
-		forms.WEB_0F_page__design_1F_version_2F_block__data_3L_block_data_configure.elements.edit_data_value.editable = true
-		forms.WEB_0F_page__design_1F_version_2F_block__data_3L_block_data_response.elements.edit_data_value.editable = true
+		forms.WEB_0F_page__design_1F_version_2F_block__data.TOGGLE_elements(true)
 		
 		//allow to rename scrapbook
 		forms.WEB_0F_block__scrapbook__header.LBL_block_name__action()
@@ -138,9 +138,7 @@ function TOGGLE_edit_mode(editMode,saveData) {
 		forms.WEB_0F_block__scrapbook_1F__data.elements.btn_data_actions.enabled = false
 		
 		//disable raw data mode fields for editing
-		forms.WEB_0F_page__design_1F_version_2F_block__data_3L_block_data.elements.edit_data_value.editable = false
-		forms.WEB_0F_page__design_1F_version_2F_block__data_3L_block_data_configure.elements.edit_data_value.editable = false
-		forms.WEB_0F_page__design_1F_version_2F_block__data_3L_block_data_response.elements.edit_data_value.editable = false
+		forms.WEB_0F_page__design_1F_version_2F_block__data.TOGGLE_elements(false)
 		
 		//save scrapbook name
 		forms.WEB_0F_block__scrapbook__header.FLD_block_name__save()
@@ -158,13 +156,6 @@ function TOGGLE_edit_mode(editMode,saveData) {
 		
 		//disable changing the view for this block
 		forms.WEB_0F_block__scrapbook__header.elements.fld_view.enabled = false
-		
-		//set elements appropriately (can remove when update sutra core)
-//		forms.WEB_0F_page__design_1F__header_display__version.TOGGLE_elements()
-//		forms.WEB_0F_page__design_1F_version_2L_scope.TOGGLE_elements(_editMode)
-//		forms.WEB_0F_page__design_1F_version_2F_block__data.TOGGLE_elements(_editMode)
-//		forms.WEB_0F_page__design_1F__properties.TOGGLE_elements(_editMode)
-//		forms.WEB_0F_page__design_1F_version_2L_scope.REC_on_select(null,true)
 	}
 	
 	//redo the screen
