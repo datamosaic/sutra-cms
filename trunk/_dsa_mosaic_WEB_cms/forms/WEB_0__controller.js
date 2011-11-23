@@ -216,7 +216,9 @@ function CONTROLLER_builder(results, obj) {
 					if ( utils.hasRecords(responseData) ) {
 						for (var k = 1; k <= responseData.getSize(); k++) {
 							var point = responseData.getRecord(k)
-							obj.block_response[point.data_key] = point.data_value
+							if (point.data_key) {
+								obj.block_response[point.data_key] = point.data_value
+							}
 						}
 					}
 											

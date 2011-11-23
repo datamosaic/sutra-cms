@@ -344,19 +344,17 @@ function WEBc_markup_block_getResponse(obj) {
  */
 function WEBc_markup_block_saveResponse(obj) {
 	
-	var responseKeys = globals.WEBc_markup_block_getResponse(obj)
-	if ( !responseKeys.length ) {
-		return false
-	}
+	// tag block response rows with a UUID for this submission
 	var instanceUUID = application.getUUID()
-	
-	for (var i = 0; i < responseKeys.length; i++) {
+		
+	// save submitted data
+	for ( var i in obj.block_response ) {
 		var blockVersionRec = obj.block.version
 		responseRecord = blockVersionRec.web_block_version_to_block_data_response.getRecord(blockVersionRec.web_block_version_to_block_data_response.newRecord(false, true))
-		
+
 		// save specific data points
-		responseRecord.data_key 	= responseKeys[i]
-		responseRecord.data_value 	= obj.form.post[responseKeys[i]]
+		responseRecord.data_key 	= i
+		responseRecord.data_value 	= obj.form.post[i]
 		responseRecord.id_instance 	= instanceUUID
 		responseRecord.organization_id = blockVersionRec.organization_id
 		
@@ -365,10 +363,16 @@ function WEBc_markup_block_saveResponse(obj) {
 		responseRecord.id_block_type	= obj.block.record.web_block_to_block_type.id_block_type
 		responseRecord.session_id		= obj.session_server.record.session_id
 		responseRecord.id_session_access = obj.session_server.record.web_session_to_session_access.id_session_access
-		
+	
 		databaseManager.saveData(responseRecord)
-	}	
-	return true
+	}
+	
+	if (i) {
+		return true
+	}
+	else {
+		return false
+	}
 }
 
 /**
