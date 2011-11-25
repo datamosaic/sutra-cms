@@ -1,4 +1,11 @@
 /**
+ * @properties={typeid:35,uuid:"F5A86BA7-FC8F-448E-B31F-2A787207A97B"}
+ */
+var _license_dsa_mosaic_WEB_cms = 'Module: _dsa_mosaic_WEB_cms \
+									Copyright (C) 2011 Data Mosaic \
+									MIT Licensed';
+
+/**
  * @properties={typeid:35,uuid:"A5CA0FEC-57FD-4947-8B03-48C50608177B",variableType:4}
  */
 var _width = null;
@@ -19,31 +26,9 @@ var _transparent = null;
 var _height = null;
 
 /**
- * @properties={typeid:35,uuid:"F5A86BA7-FC8F-448E-B31F-2A787207A97B"}
- */
-var _license_dsa_mosaic_WEB_cms = 'Module: _dsa_mosaic_WEB_cms \
-									Copyright (C) 2011 Data Mosaic \
-									MIT Licensed';
-
-/**
  * @properties={typeid:35,uuid:"FFA48B49-8645-4C42-8B43-96E81DF8D4E0"}
  */
 var _id = null;
-
-/**
- * @properties={typeid:35,uuid:"C5F2DA88-F182-4F52-B94B-EACCC3DC786C",variableType:-4}
- */
-var _recForm = null;
-
-/**
- * @properties={typeid:35,uuid:"831E9A70-898C-435D-BED4-AAD63EB8A0B4",variableType:-4}
- */
-var _recWidth = null;
-
-/**
- * @properties={typeid:35,uuid:"27607730-0E58-41A6-8BAE-130D55E40C98",variableType:-4}
- */
-var _recTransparent = null;
 
 /**
  * @properties={typeid:35,uuid:"D0E1184A-C03A-4F5D-A2C5-D023B469A350"}
@@ -51,29 +36,9 @@ var _recTransparent = null;
 var _module = null;
 
 /**
- * @properties={typeid:35,uuid:"2A86EBC6-5B5E-4DAA-885F-92AB6161917B",variableType:-4}
- */
-var _recCssClass = null;
-
-/**
- * @properties={typeid:35,uuid:"8C204B49-1E4D-499C-8526-7D21DB6FD86E",variableType:-4}
- */
-var _recModule = null;
-
-/**
- * @properties={typeid:35,uuid:"2251E6E9-4029-4088-BDBC-FAB1D5277758",variableType:-4}
- */
-var _recHeight = null;
-
-/**
  * @properties={typeid:35,uuid:"4077BE6B-B900-4C25-AB33-B0C2764299DD"}
  */
 var _cssClass = null;
-
-/**
- * @properties={typeid:35,uuid:"309F4057-686B-4F04-A98E-5B6D231374EF",variableType:-4}
- */
-var _recId = null;
 
 /**
  * @param	{Object}	obj Data object passed to all markup methods
@@ -81,15 +46,8 @@ var _recId = null;
  */
 function VIEW_default(obj, results) {
 	
-	var fsBlockConfig = globals.WEBc_block_getConfig(null,null,obj)
-	
 	//create mapping to be used
-	var mapp = new Object()
-	for (var i = 1; i <= fsBlockConfig.getSize(); i++) {
-		var record = fsBlockConfig.getRecord(i)
-		
-		mapp[record.data_key] = record.data_value
-	}
+	var mapp = obj.block_configure
 	
 	var login = globals.WEBc_session_getData(obj.session_server.record.session_id, "login")
 	
@@ -139,44 +97,32 @@ function REC_on_select(event,alwaysRun) {
 	//run on select only when it is 'enabled'
 	if (alwaysRun || globals.WEBc_block_enable(event)) {
 		//get config data
-		var fsBlockConfig = globals.WEBc_block_getConfig(event)
+		var dataConfig = globals.WEBc_block_getConfig(event)
 		
 		//save down form variables so records can be changed
-		for (var i = 1; i <= fsBlockConfig.getSize(); i++) {
-			var record = fsBlockConfig.getRecord(i)
-			
-			switch (record.data_key) {
+		for (var i in dataConfig) {
+			switch (i) {
 				case 'module':
-					_module = record.data_value
-					_recModule = record
+					_module = dataConfig[i]
 					break
 				case 'form':
-					_form = record.data_value
-					_recForm = record
+					_form = dataConfig[i]
 					break
 				case 'width':
-					_width = record.data_value
-					_recWidth = record
+					_width = dataConfig[i]
 					break
 				case 'height':
-					_height = record.data_value
-					_recHeight = record
+					_height = dataConfig[i]
 					break
 				case 'transparent':
-					_transparent = record.data_value
-					_recTransparent = record
+					_transparent = dataConfig[i]
 					break
 				case 'id':
-					_id = record.data_value
-					_recId = record
+					_id = dataConfig[i]
 					break
 				case 'cssClass':
-					_cssClass = record.data_value
-					_recCssClass = record
+					_cssClass = dataConfig[i]
 					break
-//				case '':
-//					_rec = record
-//					break
 			}
 		}
 		
@@ -214,11 +160,11 @@ function REC_on_select(event,alwaysRun) {
  * @properties={typeid:24,uuid:"C7AFC905-C1D4-40A1-BE2C-139B76AFC2A9"}
  */
 function FLD_data_change(oldValue, newValue, event) {
-	var formVar = '_rec' + event.getElementName().split('_')[1].substr(0,1).toUpperCase() + event.getElementName().split('_')[1].substr(1)
+	var key = event.getElementName().split('_')[1]
 	
-	forms[controller.getName()][formVar].data_value = newValue
+	globals.WEBc_block_setConfig(event,key,newValue)
 	
-	if (formVar == '_recModule') {
+	if (key == 'module') {
 		SET_forms()
 	}
 }

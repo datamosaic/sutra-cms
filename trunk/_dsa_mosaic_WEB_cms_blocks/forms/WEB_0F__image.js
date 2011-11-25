@@ -31,7 +31,7 @@ function BLOCK_choose(event) {
  */
 function BLOCK_scale(event) {
 	var fsAssetInstance = databaseManager.getFoundSet('sutra_cms','web_asset_instance')
-	fsAssetInstance.loadRecords([application.getUUID(_imageData.id_asset_instance)])
+	fsAssetInstance.loadRecords([application.getUUID(globals.WEBc_block_getData(event).id_asset_instance)])
 	var recAsset = fsAssetInstance.web_asset_instance_to_asset.getRecord(1)
 	
 	var newAsset = forms.WEB_0F_asset__image.ASSET_scale(recAsset,true)
@@ -45,25 +45,23 @@ function BLOCK_scale(event) {
 			metaRows[record.data_key] = record
 		}
 		
-		//the data we're working with here
 		var data = globals.WEBc_block_getData(event)
 		
 		//see INIT_block for all keys
-		for (var i = 1; i <= data.getSize(); i++) {
-			var record = data.getRecord(i)
-			switch (record.data_key) {
+		for (var i in data) {
+			switch (i) {
 				case 'height':
 				case 'width':
-					record.data_value = metaRows[record.data_key].data_value
+					globals.WEBc_block_setData(event,i,metaRows[i].data_value)
 					break
 				case 'image_name':
-					record.data_value = newAsset.asset_title
+					globals.WEBc_block_setData(event,i,newAsset.asset_title)
 					break
 				case 'directory':
-					record.data_value = newAsset.asset_directory
+					globals.WEBc_block_setData(event,i,newAsset.asset_directory)
 					break
 				default:
-					record.data_value = newAsset[record.data_key]
+					globals.WEBc_block_setData(event,i,newAsset[i])
 			}
 		}
 		
@@ -80,8 +78,6 @@ function BLOCK_scale(event) {
 function BLOCK_import(event) {
 	
 	forms.WEB_0C__file_stream.IMAGE_import("images")
-	
-	application.output('2')
 	
 }
 
@@ -128,7 +124,7 @@ function VIEW_lightbox() {
 function TOGGLE_buttons(event) {
 	var editStatus = globals.WEBc_block_getEdit()
 	
-	var hasData = _imageData.id_asset_instance ? true : false
+	var hasData = globals.WEBc_block_getData(event).id_asset_instance ? true : false
 	
 	elements.btn_choose.enabled = editStatus
 	elements.btn_import.enabled = editStatus
@@ -172,7 +168,7 @@ function INIT_block() {
 		image_name : 'TEXT',
 		height : 'INTEGER',
 		width : 'INTEGER',
-		id_asset_instance : 'INTEGER'
+		id_asset_instance : 'TEXT'
 	}
 	
 	// block configure data points
@@ -202,11 +198,6 @@ function FORM_on_show(firstShow, event) {
 }
 
 /**
- * @properties={typeid:35,uuid:"17B73F45-DF8E-47BD-9B5B-914A05F52899",variableType:-4}
- */
-var _imageData = null;
-
-/**
  * Update display as needed when block selected.
  *
  * @param 	{JSEvent}	event The event that triggered the action.
@@ -217,18 +208,10 @@ var _imageData = null;
 function REC_on_select(event,alwaysRun) {
 	//run on select only when it is 'enabled'
 	if (alwaysRun || globals.WEBc_block_enable(event)) {
-		//create object with all properties
-		_imageData = new Object()
-
-		var fsBlockData = globals.WEBc_block_getData(event)
-		
-		for (var i = 1; i <= fsBlockData.getSize(); i++) {
-			var record = fsBlockData.getRecord(i)
-			_imageData[record.data_key] = record.data_value
-		}
+		var data = globals.WEBc_block_getData(event)
 		
 		//no image set yet
-		if (!_imageData.image_name){
+		if (!data.image_name){
 			var html = 	'<html><head></head><body>' +
 						'No image chosen yet' +
 						'</body></html>'
@@ -240,8 +223,8 @@ function REC_on_select(event,alwaysRun) {
 			
 			var html = 	'<html><head></head><body>' +
 						'<img src="' + siteURL + 
-						_imageData.directory + '/' + _imageData.image_name + 
-						'" height="' + _imageData.height + '" width="' + _imageData.width +'"' + '>' +
+						data.directory + '/' + data.image_name + 
+						'" height="' + data.height + '" width="' + data.width +'"' + '>' +
 						'</body></html>'
 		}
 		
