@@ -6,6 +6,11 @@ var _license_dsa_mosaic_WEB_cms = 'Module: _dsa_mosaic_WEB_cms \
 									MIT Licensed';
 
 /**
+ * @properties={typeid:35,uuid:"A5E7C6DE-46F3-4090-AECA-E3CA22A9EB84",variableType:4}
+ */
+var _toolbarMode = 0;
+
+/**
  * param {} obj Data object passed to all markup methods
  * @properties={typeid:24,uuid:"9F686D38-C923-456D-AA26-356F9D67BA5F"}
  */
@@ -16,11 +21,6 @@ function VIEW_default(obj) {
 	// return
 	return markup
 }
-
-/**
- * @properties={typeid:35,uuid:"A5E7C6DE-46F3-4090-AECA-E3CA22A9EB84",variableType:4}
- */
-var _toolbarMode = 0;
 
 /**
  * @properties={typeid:24,uuid:"2C01CB8B-1D9F-46AE-A205-E94F2E746805"}
@@ -147,7 +147,6 @@ function TINYMCE_init(mode) {
 	    	js.plugins = 'safari,spellchecker,pagebreak,style,layer,table,save,advhr,advimage,advlink,emotions,iespell,inlinepopups,insertdatetime,preview,media,searchreplace,print,contextmenu,paste,directionality,noneditable,visualchars,nonbreaking,xhtmlxtras,template'//,imagemanager,filemanager'
 		}
 		
-		
 		return js
 	}
 	else {
@@ -175,8 +174,8 @@ function TINYMCE_init(mode) {
  * @properties={typeid:24,uuid:"553CBBDB-2269-49ED-BEC5-A585CBC2011A"}
  */
 function BLOCK_save(event) {
-	globals.WEBc_block_getData(event).data_value = elements.bn_tinymce.html
-//	databaseManager.saveData()
+	globals.WEBc_block_setData(event,'Content',elements.bn_tinymce.html)
+	
 	elements.bn_tinymce.clearDirtyState()
 	
 	TOGGLE_buttons(false)
@@ -219,7 +218,7 @@ function FORM_on_show(firstShow, event) {
 function REC_on_select(event,alwaysRun) {
 	//run on select only when it is 'enabled'
 	if (alwaysRun || globals.WEBc_block_enable(event)) {
-		var fsBlockData = globals.WEBc_block_getData(event)
+		var data = globals.WEBc_block_getData(event)
 		
 		TOGGLE_buttons(false)
 		
@@ -230,8 +229,8 @@ function REC_on_select(event,alwaysRun) {
 			globals.WEB_browser_error()
 		}
 		
-		if (utils.hasRecords(fsBlockData)) {
-			elements.bn_tinymce.html = fsBlockData.data_value
+		if (data.Content) {
+			elements.bn_tinymce.html = data.Content
 		}
 	}
 }
@@ -244,7 +243,7 @@ function REC_on_select(event,alwaysRun) {
  * @properties={typeid:24,uuid:"8DA68D80-88B6-47F7-857C-6CE05373251D"}
  */
 function BLOCK_cancel(event,stayEdit) {
-	elements.bn_tinymce.html = globals.WEBc_block_getData(event).data_value
+	elements.bn_tinymce.html = globals.WEBc_block_getData(event).Content
 	TOGGLE_buttons(false)
 }
 

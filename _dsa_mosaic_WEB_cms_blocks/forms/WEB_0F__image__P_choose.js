@@ -59,23 +59,22 @@ function ACTION_ok() {
 		else {
 			//the data we're working with here
 			var data = globals.WEBc_block_getData(null,'WEB_0F__image')
-			
+		
 			//see WEB_0F__image.INIT_block for all keys
-			for (var i = 1; i <= data.getSize(); i++) {
-				var record = data.getRecord(i)
-				switch (record.data_key) {
+			for (var i in data) {
+				switch (i) {
 					case 'height':
 					case 'width':
-						record.data_value = metaRows[record.data_key].data_value
+						globals.WEBc_block_setData(null,i,metaRows[i].data_value,'WEB_0F__image')
 						break
 					case 'image_name':
-						record.data_value = assetRec.asset_title
+						globals.WEBc_block_setData(null,i,assetRec.asset_title,'WEB_0F__image')
 						break
 					case 'directory':
-						record.data_value = assetRec.asset_directory
+						globals.WEBc_block_setData(null,i,assetRec.asset_directory,'WEB_0F__image')
 						break
 					default:
-						record.data_value = assetRec[record.data_key]
+						globals.WEBc_block_setData(null,i,assetRec[i],'WEB_0F__image')
 				}
 			}
 			

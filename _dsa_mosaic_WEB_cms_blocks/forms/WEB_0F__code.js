@@ -1,14 +1,19 @@
 /**
- * @properties={typeid:35,uuid:"A7E4C666-0E2A-4606-A473-E3F5B1530ED4"}
- */
-var _codeType = null;
-
-/**
  * @properties={typeid:35,uuid:"F9C97E5D-97C9-449E-A979-716462FAFB00"}
  */
 var _license_dsa_mosaic_WEB_cms = 'Module: _dsa_mosaic_WEB_cms \
 									Copyright (C) 2011 Data Mosaic \
 									MIT Licensed';
+
+/**
+ * @properties={typeid:35,uuid:"A7E4C666-0E2A-4606-A473-E3F5B1530ED4"}
+ */
+var _codeType = null;
+
+/**
+ * @properties={typeid:35,uuid:"B3A5E4A5-A194-4AC6-9349-01DB3DAA2591"}
+ */
+var _dataValue = null;
 
 /**
  * param {} obj Data object passed to all markup methods
@@ -39,7 +44,7 @@ function FORM_on_load() {
  * @properties={typeid:24,uuid:"596AC1D2-C10E-435B-A670-B17748C36852"}
  */
 function BLOCK_save(event) {
-	globals.WEBc_block_getData(event).data_value = _dataValue
+	globals.WEBc_block_setData(event,'code',_dataValue)
 	
 	ACTION_colorize(event)
 }
@@ -81,8 +86,8 @@ function REC_on_select(event,alwaysRun) {
 	//run on select only when it is 'enabled'
 	if (alwaysRun || globals.WEBc_block_enable(event)) {
 		//save down form variables so records can be changed
-		_dataValue = globals.WEBc_block_getData(event).data_value
-		_codeType = globals.WEBc_block_getConfig(event).data_value
+		_dataValue = globals.WEBc_block_getData(event).code
+		_codeType = globals.WEBc_block_getConfig(event).code_type
 		
 		//when no data or in edit mode, enter in edit mode
 		if (!_dataValue || globals.WEBc_block_getEdit()) {
@@ -105,18 +110,13 @@ function REC_on_select(event,alwaysRun) {
  */
 function BLOCK_cancel(event) {
 	//reset codeType var
-	_codeType = globals.WEBc_block_getConfig(event).data_value
+	_codeType = globals.WEBc_block_getConfig(event).code_type
 	
 	//refresh the colored version
 	if (globals.WEB_page_mode == 2) {
 		ACTION_colorize(event)
 	}
 }
-
-/**
- * @properties={typeid:35,uuid:"B3A5E4A5-A194-4AC6-9349-01DB3DAA2591"}
- */
-var _dataValue = null;
 
 /**
  * @properties={typeid:24,uuid:"1DD58AA1-41B8-44A1-BDAE-FE0ADBF7F314"}
@@ -199,11 +199,7 @@ function ACTION_add_token(inputID,pageRec) {
 	
 	elem.replaceSelectedText(linkStart + linkPage + linkEnd)
 	
-	var recBlockData = globals.WEBc_block_getData(event).getRecord(1)
-	
-	recBlockData.data_value = _dataValue
-		
-	databaseManager.saveData(recBlockData)
+	var dataSave = globals.WEBc_block_setData(event,'code',_dataValue)
 	
 	elem.caretPosition = cursor + offset
 	elem.requestFocus()
@@ -251,11 +247,7 @@ function ACTION_insert_image(event) {
 		
 		elem.replaceSelectedText(html)
 		
-		var recBlockData = globals.WEBc_block_getData(event).getRecord(1)
-		
-		recBlockData.data_value = _dataValue
-			
-		databaseManager.saveData(recBlockData)
+		var dataSave = globals.WEBc_block_setData(event,'code',_dataValue)
 		
 		elem.caretPosition = cursor + offset
 		elem.requestFocus()
@@ -335,14 +327,14 @@ function ACTION_colorize(event) {
 	var html = ''
 	var prefix = ''
 	
-	var recBlockData = globals.WEBc_block_getData(event).getSelectedRecord()
+	var codeData = globals.WEBc_block_getData(event).code
 	
 	//if there's data, color it
-	if (recBlockData && recBlockData.data_value) {
+	if (codeData) {
 		//get type of code
 		var codeType = _codeType || 'html'
 		
-		var colorize = recBlockData.data_value
+		var colorize = codeData
 		colorize = colorize.replace(/</g,'&lt;')
 		
 		//when running in tinymce
@@ -396,5 +388,5 @@ function ACTION_colorize(event) {
  * @properties={typeid:24,uuid:"1975546E-4E95-4C97-8332-E8135178C526"}
  */
 function FLD_data_change__code_type(oldValue, newValue, event) {
-	globals.WEBc_block_getConfig(event).data_value = newValue
+	globals.WEBc_block_setConfig(event,'code_type',newValue)
 }

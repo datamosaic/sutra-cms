@@ -6,6 +6,11 @@ var _license_dsa_mosaic_WEB_cms = 'Module: _dsa_mosaic_WEB_cms \
 									MIT Licensed';
 
 /**
+ * @properties={typeid:35,uuid:"56A4BECA-A9AC-4780-A2C2-3317C0A49108"}
+ */
+var _dataValue = null;
+
+/**
  * param {} obj Data object passed to all markup methods
  * @properties={typeid:24,uuid:"508D7857-762F-4C6F-9CAA-95EAB9C404F0"}
  */
@@ -34,8 +39,7 @@ function FORM_on_load() {
  * @properties={typeid:24,uuid:"B886B030-6E8A-4206-B8FC-7DF67F7362F0"}
  */
 function BLOCK_save(event) {
-	var recBlockData = globals.WEBc_block_getData(event).getSelectedRecord()
-	recBlockData.data_value = _dataValue
+	globals.WEBc_block_setData(event,'HTML',_dataValue)
 	
 	ACTION_colorize(event)
 }
@@ -77,7 +81,7 @@ function REC_on_select(event,alwaysRun) {
 	//run on select only when it is 'enabled'
 	if (alwaysRun || globals.WEBc_block_enable(event)) {
 		//save down form variables so records can be changed
-		_dataValue = globals.WEBc_block_getData(event).data_value
+		_dataValue = globals.WEBc_block_getData(event).HTML
 		
 		//when no data or in edit mode, enter in edit mode
 		if (!_dataValue || globals.WEBc_block_getEdit()) {
@@ -186,11 +190,7 @@ function ACTION_add_token(inputID,pageRec) {
 	
 	elem.replaceSelectedText(linkStart + linkPage + linkEnd)
 	
-	var recBlockData = globals.WEBc_block_getData(event).getSelectedRecord()
-	
-	recBlockData.data_value = _dataValue
-		
-	databaseManager.saveData(recBlockData)
+	var dataSave = globals.WEBc_block_setData(event,'HTML',_dataValue)
 	
 	elem.caretPosition = cursor + offset
 	elem.requestFocus()
@@ -238,11 +238,7 @@ function ACTION_insert_image(event) {
 		
 		elem.replaceSelectedText(html)
 		
-		var recBlockData = globals.WEBc_block_getData(event).getSelectedRecord()
-		
-		recBlockData.data_value = _dataValue
-			
-		databaseManager.saveData(recBlockData)
+		var dataSave = globals.WEBc_block_setData(event,'HTML',_dataValue)
 		
 		elem.caretPosition = cursor + offset
 		elem.requestFocus()
@@ -312,11 +308,11 @@ function ACTION_colorize(event) {
 	var html = ''
 	var prefix = ''
 	
-	var recBlockData = globals.WEBc_block_getData(event).getSelectedRecord()
+	var htmlData = globals.WEBc_block_getData(event).HTML
 	
 	//if there's data, color it
-	if (recBlockData && recBlockData.data_value) {
-		var colorize = recBlockData.data_value
+	if (htmlData) {
+		var colorize = htmlData
 		colorize = colorize.replace(/</g,'&lt;')
 		
 		//when running in tinymce
@@ -357,8 +353,3 @@ function ACTION_colorize(event) {
 	
 	TOGGLE_buttons(false)
 }
-
-/**
- * @properties={typeid:35,uuid:"56A4BECA-A9AC-4780-A2C2-3317C0A49108"}
- */
-var _dataValue = null;
