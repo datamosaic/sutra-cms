@@ -101,15 +101,15 @@ function SNIPPET_credit_card_month(selected) {
 		}
 	}
 	
-	var html = '<option' + isSelected("01") + ' value="01">1</option>\n\
-  				<option' + isSelected("02") + ' value="02">2</option>\n\
-  				<option' + isSelected("03") + ' value="03">3</option>\n\
-				<option' + isSelected("04") + ' value="04">4</option>\n\
-				<option' + isSelected("05") + ' value="05">5</option>\n\
-				<option' + isSelected("06") + ' value="06">6</option>\n\
-				<option' + isSelected("07") + ' value="07">7</option>\n\
-				<option' + isSelected("08") + ' value="08">8</option>\n\
-				<option' + isSelected("09") + ' value="09">9</option>\n\
+	var html = '<option' + isSelected("01") + ' value="01">01</option>\n\
+  				<option' + isSelected("02") + ' value="02">02</option>\n\
+  				<option' + isSelected("03") + ' value="03">03</option>\n\
+				<option' + isSelected("04") + ' value="04">04</option>\n\
+				<option' + isSelected("05") + ' value="05">05</option>\n\
+				<option' + isSelected("06") + ' value="06">06</option>\n\
+				<option' + isSelected("07") + ' value="07">07</option>\n\
+				<option' + isSelected("08") + ' value="08">08</option>\n\
+				<option' + isSelected("09") + ' value="09">09</option>\n\
 				<option' + isSelected("10") + ' value="10">10</option>\n\
 				<option' + isSelected("11") + ' value="11">11</option>\n\
 				<option' + isSelected("12") + ' value="12">12</option>\n'
