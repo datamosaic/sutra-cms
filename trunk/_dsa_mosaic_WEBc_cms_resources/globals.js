@@ -762,6 +762,12 @@ function WEBc_cookie_getValue(request, name) {
  * @properties={typeid:24,uuid:"AFA318BF-7E29-4E7D-BE9D-CE4085851DF3"}
  */
 function WEBc_markup_link_base(pageID, siteURL, siteLanguageRec) {
+	
+	// if obj passed instead of UUID for pageID
+	if ( pageID.toString() == "[object Object]" ) {
+		pageID = pageID.page.id
+	}
+	
 	//rewrite mode
 	var rewriteMode = globals.WEBc_install_getRewrite()
 	
@@ -840,6 +846,12 @@ function WEBc_markup_link_base(pageID, siteURL, siteLanguageRec) {
  * @properties={typeid:24,uuid:"CF88AF63-45F2-4BC4-95BC-8E6D653A58BC"}
  */
 function WEBc_markup_link_resources(pageID, siteURL, linkType) {
+	
+	// if obj passed instead of UUID for pageID
+	if ( pageID.toString() == "[object Object]" ) {
+		pageID = pageID.page.id
+	}
+	
 	var siteDirectory = ''
 	
 	//rewrite mode
@@ -945,6 +957,12 @@ function WEBc_markup_link_internal(markup,siteURL,linkType,areaID,obj) {
  * @properties={typeid:24,uuid:"8D473D49-2039-49AC-B633-72E88E736CA9"}
  */
 function WEBc_markup_link_page(pageID, siteURL, linkType, webMode, obj) {
+	
+	// if obj passed instead of UUID for pageID
+	if ( pageID.toString() == "[object Object]" ) {
+		pageID = pageID.page.id
+	}
+	
 	//get page requested
 	if (pageID) {
 		//particular language specified
@@ -1892,6 +1910,12 @@ function WEBc_markup_pages_attribute(obj, att) {
  * @properties={typeid:24,uuid:"22E8DF83-30A3-4D46-A7A6-5464F76E1FAE"}
  */
 function WEBc_markup_link_image(assetInstanceID, pageID, siteURL, linkType, webMode, obj) {
+	
+	// if obj passed instead of UUID for pageID
+	if ( pageID.toString() == "[object Object]" ) {
+		pageID = pageID.page.id
+	}
+
 	//get page requested
 	if (assetInstanceID) {
 		var fsAssetInstance = databaseManager.getFoundSet("sutra_cms","web_asset_instance")
