@@ -84,8 +84,8 @@ function INIT_data() {
 	_dataValue = globals.WEBc_block_getData(controller.getName()).code
 	_codeType = globals.WEBc_block_getConfig(controller.getName()).code_type
 	
-	//when no data or in edit mode, enter in edit mode
-	if (!_dataValue || globals.WEBc_block_getEdit()) {
+	//when in edit mode, enter in edit mode
+	if (globals.WEBc_block_getEdit()) {
 		TOGGLE_buttons(true)
 	}
 	//update display
