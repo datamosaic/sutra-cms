@@ -68,19 +68,18 @@ function TINYMCE_init(mode) {
 		var rewriteMode = globals.WEBc_install_getRewrite()
 		
 		//no pages, no css
-		if (utils.hasRecords(forms.WEB_0F_page)) {
+		if (utils.hasRecords(forms.WEB_0F_page.foundset)) {
 			//rewrites are disabled, spell out all the way to the site directory
 			if (!rewriteMode) {
-				cssFile += 'sites/' + forms.WEB_0F_page.web_page_to_site.directory
+				cssFile += 'sites/' + forms.WEB_0F_page.web_page_to_site.directory + '/'
 			}
 			
-			if (utils.hasRecords(forms.WEB_0F_page__design_1F__header_display_2F_platform._platform,'web_platform_to_theme' && forms.WEB_0F_page__design_1F__header_display_2F_platform._platform.web_platform_to_theme.theme_directory)) {
-				cssFile += '/themes/' + forms.WEB_0F_page__design_1F__header_display_2F_platform._platform.web_platform_to_theme.theme_directory + '/css/tinymce.css'
+			if (utils.hasRecords(forms.WEB_0F_page__design_1F__header_display_2F_platform._platform,'web_platform_to_theme') && forms.WEB_0F_page__design_1F__header_display_2F_platform._platform.web_platform_to_theme.theme_directory) {
+				cssFile += 'themes/' + forms.WEB_0F_page__design_1F__header_display_2F_platform._platform.web_platform_to_theme.theme_directory + '/css/tinymce.css'
+				
+				//read in cssFile to see if exists
+				var fileExists = plugins.http.getPageData(cssFile)
 			}
-			
-			
-			//read in cssFile to see if exists
-			var fileExists = plugins.http.getPageData(cssFile)
 		}
 		
 		//tinymce file 
@@ -210,28 +209,22 @@ function FORM_on_show(firstShow, event) {
 /**
  * Update display as needed when block selected.
  *
- * @param 	{JSEvent}	event The event that triggered the action.
- * @param	{Boolean}	[alwaysRun] Force the on select method to refire.
- *
  * @properties={typeid:24,uuid:"BD06F60E-C5F0-4770-B6F0-7C6287A1C7DB"}
  */
-function REC_on_select(event,alwaysRun) {
-	//run on select only when it is 'enabled'
-	if (alwaysRun || globals.WEBc_block_enable(event)) {
-		var data = globals.WEBc_block_getData(event)
-		
-		TOGGLE_buttons(false)
-		
-		if (elements.bn_tinymce) {
-			elements.bn_tinymce.clearHtml()
-		}
-		else {
-			globals.WEB_browser_error()
-		}
-		
-		if (data.Content) {
-			elements.bn_tinymce.html = data.Content
-		}
+function INIT_data() {
+	var data = globals.WEBc_block_getData(controller.getName())
+	
+	TOGGLE_buttons(false)
+	
+	if (elements.bn_tinymce) {
+		elements.bn_tinymce.clearHtml()
+	}
+	else {
+		globals.WEB_browser_error()
+	}
+	
+	if (data.Content) {
+		elements.bn_tinymce.html = data.Content
 	}
 }
 
@@ -242,8 +235,8 @@ function REC_on_select(event,alwaysRun) {
  *
  * @properties={typeid:24,uuid:"8DA68D80-88B6-47F7-857C-6CE05373251D"}
  */
-function BLOCK_cancel(event,stayEdit) {
-	elements.bn_tinymce.html = globals.WEBc_block_getData(event).Content
+function BLOCK_cancel(event) {
+	elements.bn_tinymce.html = globals.WEBc_block_getData(controller.getName()).Content
 	TOGGLE_buttons(false)
 }
 
@@ -305,7 +298,7 @@ function BLOCK_reset(event) {
 	pseudoEvent.getFormName = function() {return controller.getName()}
 	
 	//cancel current edits, but don't leave edit mode
-	BLOCK_cancel(pseudoEvent,true)
+	BLOCK_cancel()
 	
 }
 
@@ -318,7 +311,7 @@ function BLOCK_reset(event) {
  */
 function ACTION_internal_link(event) {
 
-	globals.WEBc_page_picker(forms.WEB_0F__content.ACTION_add_token,null,true)
+	globals.WEBc_page_picker(ACTION_add_token,null,true)
 
 }
 

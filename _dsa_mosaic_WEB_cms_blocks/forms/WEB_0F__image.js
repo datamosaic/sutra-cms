@@ -199,41 +199,35 @@ function FORM_on_show(firstShow, event) {
 
 /**
  * Update display as needed when block selected.
- *
- * @param 	{JSEvent}	event The event that triggered the action.
- * @param	{Boolean}	[alwaysRun] Force the on select method to refire.
  * 
  * @properties={typeid:24,uuid:"9E7A1253-45B6-4996-AEDE-56585F0B8394"}
  */
-function REC_on_select(event,alwaysRun) {
-	//run on select only when it is 'enabled'
-	if (alwaysRun || globals.WEBc_block_enable(event)) {
-		var data = globals.WEBc_block_getData(event)
+function INIT_data() {
+	var data = globals.WEBc_block_getData(controller.getName())
+	
+	//no image set yet
+	if (!data.image_name){
+		var html = 	'<html><head></head><body>' +
+					'No image chosen yet' +
+					'</body></html>'
+	}
+	// image is set
+	else {
+		//both the base and resource url methods will return with "sutraCMS/"; need to remove from one so no doubling
+		var siteURL = utils.stringReplace(globals.WEBc_markup_link_base(forms.WEB_0F_page.id_page),'sutraCMS/','') + globals.WEBc_markup_link_resources(forms.WEB_0F_page.id_page)
 		
-		//no image set yet
-		if (!data.image_name){
-			var html = 	'<html><head></head><body>' +
-						'No image chosen yet' +
-						'</body></html>'
-		}
-		// image is set
-		else {
-			//both the base and resource url methods will return with "sutraCMS/"; need to remove from one so no doubling
-			var siteURL = utils.stringReplace(globals.WEBc_markup_link_base(forms.WEB_0F_page__design.id_page),'sutraCMS/','') + globals.WEBc_markup_link_resources(forms.WEB_0F_page__design.id_page)
-			
-			var html = 	'<html><head></head><body>' +
-						'<img src="' + siteURL + 
-						data.directory + '/' + data.image_name + 
-						'" height="' + data.height + '" width="' + data.width +'"' + '>' +
-						'</body></html>'
-		}
-		
-		TOGGLE_buttons()
-		if (elements.bn_browser) {
-			elements.bn_browser.html = html
-		}
-		else {
-			globals.WEB_browser_error()
-		}
+		var html = 	'<html><head></head><body>' +
+					'<img src="' + siteURL + 
+					data.directory + '/' + data.image_name + 
+					'" height="' + data.height + '" width="' + data.width +'"' + '>' +
+					'</body></html>'
+	}
+	
+	TOGGLE_buttons()
+	if (elements.bn_browser) {
+		elements.bn_browser.html = html
+	}
+	else {
+		globals.WEB_browser_error()
 	}
 }

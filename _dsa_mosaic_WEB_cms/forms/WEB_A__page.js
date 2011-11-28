@@ -180,7 +180,7 @@ function TOGGLE_edit_mode(editMode,saveData) {
 	forms.WEB_0F_page__design_1F_version_2L_scope.TOGGLE_elements(_editMode)
 	forms.WEB_0F_page__design_1F_version_2F_block__data.TOGGLE_elements(_editMode)
 	forms.WEB_0F_page__design_1F__properties.TOGGLE_elements(_editMode)
-	forms.WEB_0F_page__design_1F_version_2L_scope.REC_on_select(null,true)
+	forms.WEB_0F_page__design_1F_version_2L_scope.REC_on_select(null,true)	//on load of form this will cause to load block in twice
 	forms.WEB_0F_page__design_1F__button_tab.elements.btn_edit.visible = _editMode
 	
 	//hide actions (can remove when upgrade sutra core)

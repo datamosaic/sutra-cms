@@ -480,7 +480,7 @@ function FORM_on_show(firstShow, event) {
 	//first time we come in on the page after launching the client we need to fire the selected block an extra time
 	//in the event that a scrapbook change was made, we need to refresh again
 	//switch tabpanel based on type of form and hide/show action wheel
-		REC_on_select(null,true)
+//		REC_on_select(null,true)
 }
 
 /**
@@ -539,20 +539,6 @@ function ACTION_gui_mode_load(fireSelect) {
 						var formName = recBlockType.form_name_display || recBlockType.form_name
 					}
 					
-//					//set heading for this tab panel
-//					var scrap = ''
-//					switch (recBlock.scope_type) {
-//						case 1:	//page
-//							scrap = 'CONTENT (page): '
-//							break
-//						case 2:	//site
-//							scrap = 'SCRAPBOOK (site): '
-//							break
-//						case 3:	//install
-//							scrap = 'STACK (install): '
-//							break
-//					}
-					
 					forms[contextForm].elements.lbl_banner.text = (recBlockType.block_name || 'Unnamed') + ' block'
 					
 					//the form exists and it isn't in the currently selected tab or there was an error with something previously
@@ -573,12 +559,9 @@ function ACTION_gui_mode_load(fireSelect) {
 					}
 					
 					//refire the onSelect method to force the gui to update
-					if ((fireSelect || _refreshForm) && solutionModel.getForm(formName) && solutionModel.getForm(formName).onRecordSelection) {
-						//pseudo-event comes from the scope of where this is fired
-						var pseudoEvent = new Object()
-						pseudoEvent.getFormName = function() {return formName}
-						
-						forms[formName][solutionModel.getForm(formName).onRecordSelection.getName()](pseudoEvent,true)
+//					if ((fireSelect || _refreshForm) && solutionModel.getForm(formName) && solutionModel.getForm(formName).onRecordSelection) {
+					if (solutionModel.getForm(formName) && forms[formName].INIT_data) {
+						forms[formName].INIT_data()
 						
 						//reset flag that a bad block was visited
 						_refreshForm = false

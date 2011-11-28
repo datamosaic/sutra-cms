@@ -166,7 +166,6 @@ uuid:"FFA98E12-41E5-404B-8E3F-9CD148175BF1"
 name:"WEB_0B_blog",
 navigatorID:"-1",
 onLoadMethodID:"-1",
-onRecordEditStopMethodID:"50d8a27a-2321-4118-b4f7-db097f8c0f0a",
 onRecordSelectionMethodID:"-1",
 onShowMethodID:"-1",
 paperPrintScale:100,

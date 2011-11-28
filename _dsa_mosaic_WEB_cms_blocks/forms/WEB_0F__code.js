@@ -46,7 +46,7 @@ function FORM_on_load() {
 function BLOCK_save(event) {
 	globals.WEBc_block_setData(event,'code',_dataValue)
 	
-	ACTION_colorize(event)
+	ACTION_colorize()
 }
 
 /**
@@ -76,28 +76,22 @@ function FORM_on_show(firstShow, event) {
 
 /**
  * Update display as needed when block selected.
- *
- * @param 	{JSEvent}	event The event that triggered the action.
- * @param	{Boolean}	[alwaysRun] Force the on select method to refire.
  * 
  * @properties={typeid:24,uuid:"CC43FDE6-F4F9-4BEB-AF5D-D8FDB80E9AA7"}
  */
-function REC_on_select(event,alwaysRun) {
-	//run on select only when it is 'enabled'
-	if (alwaysRun || globals.WEBc_block_enable(event)) {
-		//save down form variables so records can be changed
-		_dataValue = globals.WEBc_block_getData(event).code
-		_codeType = globals.WEBc_block_getConfig(event).code_type
-		
-		//when no data or in edit mode, enter in edit mode
-		if (!_dataValue || globals.WEBc_block_getEdit()) {
-			TOGGLE_buttons(true)
-		}
-		//update display
-		else {
-			TOGGLE_buttons(false)
-			ACTION_colorize(event)
-		}
+function INIT_data() {
+	//save down form variables so records can be changed
+	_dataValue = globals.WEBc_block_getData(controller.getName()).code
+	_codeType = globals.WEBc_block_getConfig(controller.getName()).code_type
+	
+	//when no data or in edit mode, enter in edit mode
+	if (!_dataValue || globals.WEBc_block_getEdit()) {
+		TOGGLE_buttons(true)
+	}
+	//update display
+	else {
+		TOGGLE_buttons(false)
+		ACTION_colorize()
 	}
 }
 
@@ -110,11 +104,11 @@ function REC_on_select(event,alwaysRun) {
  */
 function BLOCK_cancel(event) {
 	//reset codeType var
-	_codeType = globals.WEBc_block_getConfig(event).code_type
+	_codeType = globals.WEBc_block_getConfig(controller.getName()).code_type
 	
 	//refresh the colored version
 	if (globals.WEB_page_mode == 2) {
-		ACTION_colorize(event)
+		ACTION_colorize()
 	}
 }
 
@@ -327,7 +321,7 @@ function ACTION_colorize(event) {
 	var html = ''
 	var prefix = ''
 	
-	var codeData = globals.WEBc_block_getData(event).code
+	var codeData = globals.WEBc_block_getData(controller.getName()).code
 	
 	//if there's data, color it
 	if (codeData) {
