@@ -13,7 +13,7 @@ var _license_dsa_mosaic_WEB_cms = 'Module: _dsa_mosaic_WEB_cms \
 function INIT_data() {
 	var data = globals.WEBc_block_getData(controller.getName())
 	
-	var html = '<html><body>'
+	var html = '<html><body><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8" /></head>'
 	if (data.Content) {
 		html += data.Content
 	}
