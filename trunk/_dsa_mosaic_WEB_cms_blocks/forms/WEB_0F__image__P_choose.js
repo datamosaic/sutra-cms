@@ -58,7 +58,7 @@ function ACTION_ok() {
 		// copy image details to block data points
 		else {
 			//the data we're working with here
-			var data = globals.WEBc_block_getData(null,'WEB_0F__image')
+			var data = globals.WEBc_block_getData('WEB_0F__image')
 		
 			//see WEB_0F__image.INIT_block for all keys
 			for (var i in data) {
@@ -88,12 +88,8 @@ function ACTION_ok() {
 		//close the form
 		application.closeFormDialog('CMS_imageChoose')
 		
-		//pseudo-event comes from the scope of where this is fired
-		var pseudoEvent = new Object()
-		pseudoEvent.getFormName = function() {return 'WEB_0F__image'}
-		
 		//refresh the block
-		forms.WEB_0F__image.REC_on_select(pseudoEvent,true)
+		forms.WEB_0F__image.INIT_data()
 	}
 	//nothing selected
 	else {

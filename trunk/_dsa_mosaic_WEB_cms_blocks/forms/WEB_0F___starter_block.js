@@ -30,21 +30,6 @@ function BLOCK_sample_method() {
 }
 
 /**
- * Update display as needed when block selected.
- *
- * @param 	{JSEvent}	event The event that triggered the action.
- * @param	{Boolean}	[alwaysRun] Force the on select method to refire.
- *
- * @properties={typeid:24,uuid:"D0B09ECA-F3FA-4035-A0DD-62166343DF4E"}
- */
-function REC_on_select(event,alwaysRun) {
-	//run on select only when it is 'enabled'
-	if (alwaysRun || globals.WEBc_block_enable(event)) {
-		
-	}
-}
-
-/**
  * Build a data object that defines this block. Called when creating a new block.
  * Used to create all meta data associated with this block (register a block in the CMS)
  * 
@@ -115,5 +100,14 @@ function BLOCK_save() {
  * @properties={typeid:24,uuid:"7122605B-CB57-4365-852C-5DC97AADE5F1"}
  */
 function BLOCK_cancel() {
+	// your code goes here
+}
+
+/**
+ * Update display as needed when block selected.
+ *
+ * @properties={typeid:24,uuid:"D0B09ECA-F3FA-4035-A0DD-62166343DF4E"}
+ */
+function INIT_data() {
 	// your code goes here
 }

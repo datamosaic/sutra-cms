@@ -20,7 +20,6 @@ uuid:"D6BCE419-EF25-487F-AEB0-E0020C3BDE40"
 ],
 name:"WEB_0F___starter_block",
 navigatorID:"-1",
-onRecordSelectionMethodID:"D0B09ECA-F3FA-4035-A0DD-62166343DF4E",
 onShowMethodID:"-1",
 paperPrintScale:100,
 scrollbars:36,

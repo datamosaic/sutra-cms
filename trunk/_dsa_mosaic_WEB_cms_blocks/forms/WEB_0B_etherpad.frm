@@ -170,7 +170,6 @@ uuid:"EE7CCE8D-AD82-42EF-9BE5-EA0622AACD92"
 name:"WEB_0B_etherpad",
 navigatorID:"-1",
 onLoadMethodID:"-1",
-onRecordEditStopMethodID:"50d8a27a-2321-4118-b4f7-db097f8c0f0a",
 onRecordSelectionMethodID:"-1",
 onShowMethodID:"-1",
 paperPrintScale:100,

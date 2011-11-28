@@ -377,12 +377,9 @@ function ACTION_gui_mode_load() {
 		}
 		
 		//refire the onSelect method to force the gui to update
-		if (solutionModel.getForm(formName).onRecordSelection) {
-			//pseudo-event comes from the scope of where this is fired
-			var pseudoEvent = new Object()
-			pseudoEvent.getFormName = function() {return controller.getName()}
-	
-			forms[formName][solutionModel.getForm(formName).onRecordSelection.getName()](pseudoEvent,true)
+//		if (solutionModel.getForm(formName).onRecordSelection) {
+		if (solutionModel.getForm(formName) && forms[formName].INIT_data) {
+			forms[formName].INIT_data()
 		}
 		
 		forms.WEB_0F_block__scrapbook__header.TOGGLE_mode(null,'gui')

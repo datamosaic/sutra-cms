@@ -41,7 +41,7 @@ function FORM_on_load() {
 function BLOCK_save(event) {
 	globals.WEBc_block_setData(event,'HTML',_dataValue)
 	
-	ACTION_colorize(event)
+	ACTION_colorize()
 }
 
 /**
@@ -72,26 +72,20 @@ function FORM_on_show(firstShow, event) {
 /**
  * Update display as needed when block selected.
  *
- * @param 	{JSEvent}	event The event that triggered the action.
- * @param	{Boolean}	[alwaysRun] Force the on select method to refire.
- *
  * @properties={typeid:24,uuid:"136705A2-5A67-4E9C-8AC9-DABCA1BABD5D"}
  */
-function REC_on_select(event,alwaysRun) {
-	//run on select only when it is 'enabled'
-	if (alwaysRun || globals.WEBc_block_enable(event)) {
-		//save down form variables so records can be changed
-		_dataValue = globals.WEBc_block_getData(event).HTML
-		
-		//when no data or in edit mode, enter in edit mode
-		if (!_dataValue || globals.WEBc_block_getEdit()) {
-			TOGGLE_buttons(true)
-		}
-		//update display
-		else {
-			TOGGLE_buttons(false)
-			ACTION_colorize(event)
-		}
+function INIT_data() {
+	//save down form variables so records can be changed
+	_dataValue = globals.WEBc_block_getData(controller.getName()).HTML
+	
+	//when no data or in edit mode, enter in edit mode
+	if (!_dataValue || globals.WEBc_block_getEdit()) {
+		TOGGLE_buttons(true)
+	}
+	//update display
+	else {
+		TOGGLE_buttons(false)
+		ACTION_colorize()
 	}
 }
 
@@ -105,7 +99,7 @@ function REC_on_select(event,alwaysRun) {
 function BLOCK_cancel(event) {
 	//refresh the colored version
 	if (globals.WEB_page_mode == 2) {
-		ACTION_colorize(event)
+		ACTION_colorize()
 	}
 }
 
@@ -304,11 +298,11 @@ function INIT_block() {
  * 
  * @properties={typeid:24,uuid:"FB804749-0B28-485A-A528-4F10DE113301"}
  */
-function ACTION_colorize(event) {
+function ACTION_colorize() {
 	var html = ''
 	var prefix = ''
 	
-	var htmlData = globals.WEBc_block_getData(event).HTML
+	var htmlData = globals.WEBc_block_getData(controller.getName()).HTML
 	
 	//if there's data, color it
 	if (htmlData) {

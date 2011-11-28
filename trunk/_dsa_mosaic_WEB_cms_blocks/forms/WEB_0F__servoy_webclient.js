@@ -6,9 +6,9 @@ var _license_dsa_mosaic_WEB_cms = 'Module: _dsa_mosaic_WEB_cms \
 									MIT Licensed';
 
 /**
- * @properties={typeid:35,uuid:"A5CA0FEC-57FD-4947-8B03-48C50608177B",variableType:4}
+ * @properties={typeid:35,uuid:"D0E1184A-C03A-4F5D-A2C5-D023B469A350"}
  */
-var _width = null;
+var _module = null;
 
 /**
  * @properties={typeid:35,uuid:"339695F3-4B5B-4B4B-979D-AFB3C827D5C0"}
@@ -16,29 +16,29 @@ var _width = null;
 var _form = null;
 
 /**
- * @properties={typeid:35,uuid:"B2570C0E-8077-4812-95C0-903D4A57EFE1",variableType:4}
- */
-var _transparent = null;
-
-/**
  * @properties={typeid:35,uuid:"9495B9C2-7483-4D34-95EC-4D1421BC7681",variableType:4}
  */
 var _height = null;
 
 /**
- * @properties={typeid:35,uuid:"FFA48B49-8645-4C42-8B43-96E81DF8D4E0"}
+ * @properties={typeid:35,uuid:"A5CA0FEC-57FD-4947-8B03-48C50608177B",variableType:4}
  */
-var _id = null;
+var _width = null;
 
 /**
- * @properties={typeid:35,uuid:"D0E1184A-C03A-4F5D-A2C5-D023B469A350"}
+ * @properties={typeid:35,uuid:"B2570C0E-8077-4812-95C0-903D4A57EFE1",variableType:4}
  */
-var _module = null;
+var _transparent = null;
 
 /**
  * @properties={typeid:35,uuid:"4077BE6B-B900-4C25-AB33-B0C2764299DD"}
  */
 var _cssClass = null;
+
+/**
+ * @properties={typeid:35,uuid:"FFA48B49-8645-4C42-8B43-96E81DF8D4E0"}
+ */
+var _id = null;
 
 /**
  * @param	{Object}	obj Data object passed to all markup methods
@@ -88,64 +88,58 @@ template +=	'	>\n\
 /**
  * Update display as needed when block selected.
  *
- * @param 	{JSEvent}	event The event that triggered the action.
- * @param	{Boolean}	[alwaysRun] Force the on select method to refire.
- *
  * @properties={typeid:24,uuid:"7ABCE520-07F0-4ED3-B01B-EB3348DAEE3B"}
  */
-function REC_on_select(event,alwaysRun) {
-	//run on select only when it is 'enabled'
-	if (alwaysRun || globals.WEBc_block_enable(event)) {
-		//get config data
-		var dataConfig = globals.WEBc_block_getConfig(event)
-		
-		//save down form variables so records can be changed
-		for (var i in dataConfig) {
-			switch (i) {
-				case 'module':
-					_module = dataConfig[i]
-					break
-				case 'form':
-					_form = dataConfig[i]
-					break
-				case 'width':
-					_width = dataConfig[i]
-					break
-				case 'height':
-					_height = dataConfig[i]
-					break
-				case 'transparent':
-					_transparent = dataConfig[i]
-					break
-				case 'id':
-					_id = dataConfig[i]
-					break
-				case 'cssClass':
-					_cssClass = dataConfig[i]
-					break
-			}
+function INIT_data() {
+	//get config data
+	var dataConfig = globals.WEBc_block_getConfig(controller.getName())
+	
+	//save down form variables so records can be changed
+	for (var i in dataConfig) {
+		switch (i) {
+			case 'module':
+				_module = dataConfig[i]
+				break
+			case 'form':
+				_form = dataConfig[i]
+				break
+			case 'width':
+				_width = dataConfig[i]
+				break
+			case 'height':
+				_height = dataConfig[i]
+				break
+			case 'transparent':
+				_transparent = dataConfig[i]
+				break
+			case 'id':
+				_id = dataConfig[i]
+				break
+			case 'cssClass':
+				_cssClass = dataConfig[i]
+				break
 		}
-		
-		//set status of variables
-		var editMode = globals.WEBc_block_getEdit()
-		
-		elements.var_module.visible = editMode
-		elements.var_module__display.visible = !editMode
-		elements.var_form.visible = editMode
-		elements.var_form__display.visible = !editMode
-		elements.var_width.transparent = editMode
-		elements.var_width.editable = editMode
-		elements.var_height.transparent = editMode
-		elements.var_height.editable = editMode
-		elements.var_transparent.readOnly = !editMode
-		elements.var_id.transparent = editMode
-		elements.var_id.editable = editMode
-		elements.var_cssClass.transparent = editMode
-		elements.var_cssClass.editable = editMode
-		
-		//fill valuelist appropriately
-		SET_forms()
 	}
+	
+	//set status of variables
+	var editMode = globals.WEBc_block_getEdit()
+	
+	elements.var_module.visible = editMode
+	elements.var_module__display.visible = !editMode
+	elements.var_form.visible = editMode
+	elements.var_form__display.visible = !editMode
+	elements.var_width.transparent = editMode
+	elements.var_width.editable = editMode
+	elements.var_height.transparent = editMode
+	elements.var_height.editable = editMode
+	elements.var_transparent.readOnly = !editMode
+	elements.var_id.transparent = editMode
+	elements.var_id.editable = editMode
+	elements.var_cssClass.transparent = editMode
+	elements.var_cssClass.editable = editMode
+	
+	//fill valuelist appropriately
+	SET_forms()
 }
 
 /**

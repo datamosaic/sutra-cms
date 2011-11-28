@@ -115,7 +115,7 @@ function WEBc_block_enable(event) {
  * 
  * @properties={typeid:24,uuid:"C8DFEF81-D9D8-4742-96C3-3BA32FFCF62C"}
  */
-function WEBc_block_getData(event, formName, obj) {
+function WEBc_block_getData(formName, obj) {
 	//object with key/value pairs
 	var keyValue = new Object()
 	
@@ -133,11 +133,6 @@ function WEBc_block_getData(event, formName, obj) {
 	}
 	//get from context (smart client)
 	else {
-		//get form from event
-		if (!formName && event && event.getFormName) {
-			formName = event.getFormName()
-		}
-		
 		//we know where this is being called from
 		if (formName) {
 			//get the block record they were on
@@ -254,7 +249,7 @@ function WEBc_block_setData(event, key, value, formName) {
  * 
  * @properties={typeid:24,uuid:"C8DFEF81-D9D7-4742-96C3-3BA32FFCF62C"}
  */
-function WEBc_block_getConfig(event, formName, obj) {
+function WEBc_block_getConfig(formName, obj) {
 	//object with key/value pairs
 	var keyValue = new Object()
 	
@@ -272,11 +267,6 @@ function WEBc_block_getConfig(event, formName, obj) {
 	}
 	//get from context (smart client)
 	else {
-		//get form from event
-		if (!formName && event && event.getFormName) {
-			formName = event.getFormName()
-		}
-		
 		//we know where this is being called from
 		if (formName) {
 			//get the block record they were on
@@ -393,7 +383,7 @@ function WEBc_block_setConfig(event, key, value, formName) {
  * 
  * @properties={typeid:24,uuid:"B0D3D289-08E8-4820-9998-70F18D96C9B0"}
  */
-function WEBc_block_getResponse(event, formName, obj) {
+function WEBc_block_getResponse(formName, obj) {
 	//object with key/value pairs
 	var keyValue = new Object()
 	
@@ -411,11 +401,6 @@ function WEBc_block_getResponse(event, formName, obj) {
 	}
 	//get from context (smart client)
 	else {
-		//get form from event
-		if (!formName && event && event.getFormName) {
-			formName = event.getFormName()
-		}
-		
 		//we know where this is being called from
 		if (formName) {
 			//get the block record they were on

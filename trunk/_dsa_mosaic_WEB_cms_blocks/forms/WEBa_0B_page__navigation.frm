@@ -369,7 +369,6 @@ uuid:"FC73AEAC-6B63-4DB2-B246-1F11B8877BC8"
 ],
 name:"WEBa_0B_page__navigation",
 navigatorID:"-1",
-onRecordEditStopMethodID:"50d8a27a-2321-4118-b4f7-db097f8c0f0a",
 onRecordSelectionMethodID:"-1",
 onShowMethodID:"-1",
 paperPrintScale:100,

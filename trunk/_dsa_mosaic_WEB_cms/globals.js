@@ -347,7 +347,13 @@ function WEB_startup() {
 				
 				//wait a little bit extra for tinymce
 				if (tinyMCEForms.indexOf(showForm) != -1) {
-					application.sleep(1500)
+//					application.sleep(1500)
+//					application.updateUI(1500)
+					
+					//hard code to pre-load our tinymce form
+					if (showForm == 'WEB_0F__content') {
+						forms.WEB_0F__content.elements.bn_tinymce.setCustomConfiguration(forms.WEB_0F__content.TINYMCE_init('simple'))
+					}
 				}
 			}
 		}

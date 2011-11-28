@@ -161,7 +161,6 @@ uuid:"E6C092D7-A0DB-4A86-8347-87BF30372343"
 name:"WEB_0F__image",
 navigatorID:"-1",
 onLoadMethodID:"-1",
-onRecordSelectionMethodID:"9E7A1253-45B6-4996-AEDE-56585F0B8394",
 onShowMethodID:"6DABA0D5-F686-47B6-8F76-860D5D0B0209",
 paperPrintScale:100,
 scrollbars:36,
