@@ -603,6 +603,38 @@ function WEBc_session_setData(sessionID, dataKey, dataValue) {
 }
 
 /**
+ * Delete session data object given session ID and object key
+ * 
+ * @param {String} sessionID Pass in either session.getId() from web session object
+ * or obj.session_server.record.session_id from controller object.
+ * @param {String} dataKey Key name of data object to return
+ * 
+ * @returns {Object} Javascript object with your data or null.
+ * 
+ * @properties={typeid:24,uuid:"35B7A603-F30F-4772-9AF6-AA7BB70AAE83"}
+ */
+function WEBc_session_deleteData(sessionID, dataKey) {
+	// get session	
+	var snRec = globals.WEBc_session_getSession(sessionID)
+
+	// find matching session data record 
+	var sd = databaseManager.getFoundSet("sutra_cms","web_session_data")
+	sd.find()
+	sd.id_session = snRec.id_session
+	sd.data_key = dataKey
+	var count = sd.search()
+	// delete specified session record
+	if (count == 1) {
+		// delete and return true or false depending on delete success
+		return sd.deleteRecord(1)
+	}
+	else {
+		// no record found
+		return null
+	}
+}
+
+/**
  * Use this method from AJAX method calls where you know pass in session.getId().
  * Otherwise, pass in obj.session_server.record.session_id.
  * 
