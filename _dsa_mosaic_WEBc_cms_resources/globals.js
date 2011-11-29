@@ -764,7 +764,7 @@ function WEBc_cookie_getValue(request, name) {
 function WEBc_markup_link_base(pageID, siteURL, siteLanguageRec) {
 	
 	// if obj passed instead of UUID for pageID
-	if ( pageID.toString() == "[object Object]" ) {
+	if ( !(pageID instanceof UUID) && pageID && pageID.page && pageID.page.id ) {
 		pageID = pageID.page.id
 	}
 	
@@ -848,7 +848,7 @@ function WEBc_markup_link_base(pageID, siteURL, siteLanguageRec) {
 function WEBc_markup_link_resources(pageID, siteURL, linkType) {
 	
 	// if obj passed instead of UUID for pageID
-	if ( pageID.toString() == "[object Object]" ) {
+	if ( !(pageID instanceof UUID) && pageID && pageID.page && pageID.page.id ) {
 		pageID = pageID.page.id
 	}
 	
@@ -959,7 +959,7 @@ function WEBc_markup_link_internal(markup,siteURL,linkType,areaID,obj) {
 function WEBc_markup_link_page(pageID, siteURL, linkType, webMode, obj) {
 	
 	// if obj passed instead of UUID for pageID
-	if ( pageID.toString() == "[object Object]" ) {
+	if ( !(pageID instanceof UUID) && pageID && pageID.page && pageID.page.id ) {
 		pageID = pageID.page.id
 	}
 	
@@ -1912,7 +1912,7 @@ function WEBc_markup_pages_attribute(obj, att) {
 function WEBc_markup_link_image(assetInstanceID, pageID, siteURL, linkType, webMode, obj) {
 	
 	// if obj passed instead of UUID for pageID
-	if ( pageID.toString() == "[object Object]" ) {
+	if ( !(pageID instanceof UUID) && pageID && pageID.page && pageID.page.id ) {
 		pageID = pageID.page.id
 	}
 
