@@ -1,9 +1,4 @@
 /**
- * @properties={typeid:35,uuid:"9EEFAAF0-1013-44C8-B306-767339C008E6",variableType:-4}
- */
-var _refreshForm = false;
-
-/**
  * @properties={typeid:35,uuid:"176CC8B4-859B-4633-B39F-0B72FFF9EABE",variableType:-4}
  */
 var _newBlocks = null;
@@ -514,19 +509,12 @@ function ACTION_gui_mode_load(fireSelect) {
 			var recBlock = web_scope_to_block.getSelectedRecord()
 			
 			if (recBlock) {
-				//is this a scrapbook of any kind?
-				var flagScrapbook = recBlock.scope_type ? true : false
-				
 				if (recBlock && utils.hasRecords(recBlock.web_block_to_block_type)) {
 					var recBlockType = recBlock.web_block_to_block_type.getRecord(1)
 				}
 				
-				var flagEdit = forms.WEB_0F_page.ACTION_edit_get()
-				
-				//check to make sure the active scrapbook version is editable
-				if (flagScrapbook) {
-					flagEdit = flagEdit && !recBlock.web_block_to_block_version.flag_lock
-				}
+				//check to make sure the active block version is editable
+				var flagEdit = forms.WEB_0F_page.ACTION_edit_get() && utils.hasRecords(recBlock,'web_block_to_block_version') && !recBlock.web_block_to_block_version.flag_lock
 				
 				//this block definition exists
 				if (recBlockType) {
@@ -542,29 +530,21 @@ function ACTION_gui_mode_load(fireSelect) {
 					forms[contextForm].elements.lbl_banner.text = (recBlockType.block_name || 'Unnamed') + ' block'
 					
 					//the form exists and it isn't in the currently selected tab or there was an error with something previously
-					if (formName && solutionModel.getForm(formName) && (formName != tabPanel.getTabFormNameAt(tabPanel.tabIndex) || _refreshForm)) {
-						var relationName = solutionModel.getForm(formName).dataSource == 'db:/sutra_cms/web_block' ? 'web_scope_to_block' : null
-						
-						//load tab panel
-						tabPanel.addTab(forms[formName],null,null,null,null,null,null,relationName)
+					if (formName && solutionModel.getForm(formName)) {
+						//load tab panel (relation not needed because we're manually filling the foundset)
+						tabPanel.addTab(forms[formName])
 						tabPanel.tabIndex = tabPanel.getMaxTabIndex()
+						
+						//force the gui to update
+						if (solutionModel.getForm(formName) && solutionModel.getForm(formName).getFormMethod('INIT_data')) {
+							forms[formName].foundset.loadRecords(web_scope_to_block)
+							
+							forms[formName].INIT_data()
+						}
 					}
 					else {
-						//the form requested doesn't exist in the solution, flag that will need to update on future block-load calls
-						if (!(formName && solutionModel.getForm(formName))) {
-							_refreshForm = true
-						}
-						
-						tabPanel.tabIndex = tabPanel.getMaxTabIndex()
-					}
-					
-					//refire the onSelect method to force the gui to update
-//					if ((fireSelect || _refreshForm) && solutionModel.getForm(formName) && solutionModel.getForm(formName).onRecordSelection) {
-					if (solutionModel.getForm(formName) && forms[formName].INIT_data) {
-						forms[formName].INIT_data()
-						
-						//reset flag that a bad block was visited
-						_refreshForm = false
+						//clear out to blank form	//TODO: should probably be error message that form isn't included properly
+						tabPanel.tabIndex = 1
 					}
 				}
 				else {
@@ -592,16 +572,9 @@ function ACTION_gui_mode_load(fireSelect) {
 	}
 	
 	function defaultForms() {
-		//this should only be the case on the first load of the form or when we're on a blank form already
-//		if (fireSelect) {// || tabPanel.getTabFormNameAt(tabPanel.tabIndex) == 'WEB_0F_page__design_1F_version_2F_block__gui_3F__blank') {
-			forms[contextForm].foundset.loadRecords(web_scope_to_block)
-			tabPanel.tabIndex = 1
-//		}
-//		//tack on to the end like every other block
-//		else {
-//			tabPanel.addTab(forms.WEB_0F_page__design_1F_version_2F_block__gui_3F__blank)
-//			tabPanel.tabIndex = tabPanel.getMaxTabIndex()
-//		}
+		forms[contextForm].foundset.loadRecords(web_scope_to_block)
+		tabPanel.tabIndex = 1
+		
 		forms[contextForm].elements.lbl_banner.text = "Content"
 	}
 }

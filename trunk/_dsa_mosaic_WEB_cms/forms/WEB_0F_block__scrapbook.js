@@ -366,20 +366,19 @@ function ACTION_gui_mode_load() {
 		
 		//the form exists and it isn't in the currently selected tab
 		if (formName && forms[formName] && formName != tabPanel.getTabFormNameAt(tabPanel.tabIndex)) {
-			var relationName = solutionModel.getForm(formName).dataSource == 'db:/sutra_cms/web_block' ? 'web_block_to_block' : null
-			
 			//load tab panel
-			tabPanel.addTab(forms[formName],null,null,null,null,null,null,relationName)
+			tabPanel.addTab(forms[formName])
 			tabPanel.tabIndex = tabPanel.getMaxTabIndex()
+			
+			//force the gui to update
+			if (solutionModel.getForm(formName) && solutionModel.getForm(formName).getFormMethod('INIT_data')) {
+				forms[formName].foundset.loadRecords(foundset)
+				
+				forms[formName].INIT_data()
+			}			
 		}
 		else {
-			tabPanel.tabIndex = tabPanel.getMaxTabIndex()
-		}
-		
-		//refire the onSelect method to force the gui to update
-//		if (solutionModel.getForm(formName).onRecordSelection) {
-		if (solutionModel.getForm(formName) && forms[formName].INIT_data) {
-			forms[formName].INIT_data()
+			tabPanel.tabIndex = 1
 		}
 		
 		forms.WEB_0F_block__scrapbook__header.TOGGLE_mode(null,'gui')

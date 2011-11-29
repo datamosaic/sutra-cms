@@ -253,7 +253,7 @@ function REC_on_select(event,skipLoad,verIndex,fireSelect,areaName,blockIndex) {
 			forms.WEB_0F_page__design_1F_version_2L_scope._skipSelect = false
 			
 			//may fire too frequently
-//			forms.WEB_0F_page__design_1F_version_2L_scope.ACTION_gui_mode_load(fireSelect)
+			forms.WEB_0F_page__design_1F_version_2L_scope.ACTION_gui_mode_load(fireSelect)
 		}
 		
 		//record was not in memory, turn off busy bar and busy cursor
