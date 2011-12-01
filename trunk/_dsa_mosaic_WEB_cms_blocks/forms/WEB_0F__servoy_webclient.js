@@ -80,8 +80,6 @@ template +=	'	>\n\
 	html = utils.stringReplace(html, "{{class}}", mapp.cssClass)
 	html = utils.stringReplace(html, "{{transparent}}", (mapp.transparent ? 'true' : 'false'))
 	
-	//servlets:8080/servoy-webclient/ss/s/_dsa_mosaic_WEB_cms/m/WEB_servoy_wc_controller/a/sutraCMS/form/WLOGIN_0W_keys/id/4
-	
 	return html
 }
 
