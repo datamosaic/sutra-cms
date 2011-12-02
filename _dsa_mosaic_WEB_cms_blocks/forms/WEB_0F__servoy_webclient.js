@@ -49,13 +49,28 @@ function VIEW_default(obj, results) {
 	//create mapping to be used
 	var mapp = obj.block_configure
 	
+	//get login
 	var login = globals.WEBc_session_getData(obj.session_server.record.session_id, "login")
+	
+	//get solution model form
+	var smForm = solutionModel.getForm(mapp.form)
+	//for width
+	var defaultWidth = (smForm) ? smForm.width : 0
+	//for height
+	var totalHeight = 0
+	if (smForm) {
+		for (var i in smForm.getParts()) {
+			totalHeight += smForm.getParts()[i].height
+		}
+	}
+	var defaultHeight = totalHeight
+	
+	//TODO: abstract the passing in of record
+	var record		= (login && login.customer && login.customer.loginID) ? login.customer.loginID : ''
 	
 	var url 		= globals.WEBc_markup_link_servlet(obj)
 	var module		= '_dsa_mosaic_WEB_cms'
 	var method		= 'WEB_servoy_wc_controller'
-	//abstract the passing in of record
-	var record		= (login && login.customer && login.customer.loginID) ? login.customer.loginID : ''
 	var template	= '<iframe src="http://{{url}}/\
 						servoy-webclient/ss?s={{module}}&m={{method}}&a=\
 						sutraCMS&form={{form}}&\
@@ -74,8 +89,8 @@ template +=	'	>\n\
 	html = utils.stringReplace(html, "{{method}}", method)
 	html = utils.stringReplace(html, "{{form}}", mapp.form)
 	html = utils.stringReplace(html, "{{record}}", record)
-	html = utils.stringReplace(html, "{{width}}", mapp.width || 0)
-	html = utils.stringReplace(html, "{{height}}", mapp.height || 0)
+	html = utils.stringReplace(html, "{{width}}", mapp.width || defaultWidth)
+	html = utils.stringReplace(html, "{{height}}", mapp.height || defaultHeight)
 	html = utils.stringReplace(html, "{{id}}", mapp.id || 'swc')
 	html = utils.stringReplace(html, "{{class}}", mapp.cssClass)
 	html = utils.stringReplace(html, "{{transparent}}", (mapp.transparent ? 'true' : 'false'))
