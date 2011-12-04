@@ -14,8 +14,7 @@ var _skipSelect = false;
  *
  * @properties={typeid:24,uuid:"022C11EE-D472-44B4-88EA-873A195E7136"}
  */
-function REC_delete()
-{
+function REC_delete() {
 	var input = plugins.dialogs.showWarningDialog(
 						'Delete',
 						'Do you really want to delete this record?',
@@ -24,6 +23,8 @@ function REC_delete()
 					)
 
 	if (input == 'Yes') {
+		//TODO: delete all files
+		
 		controller.deleteRecord()
 		
 		//dim out the lights
