@@ -744,7 +744,7 @@ showFocus:false,
 size:"110,23",
 styleClass:"standard_table",
 tabSeq:-1,
-text:"Directory",
+text:"Site directory",
 transparent:true,
 typeid:7,
 uuid:"F7A6C90F-FC7D-4965-87A9-CF2C38429BD8"
