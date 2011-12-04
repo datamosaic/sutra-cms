@@ -23,18 +23,18 @@ function ASSET_scale(assetRecord,editMode) {
 		assetRecord = foundset.getSelectedRecord()
 	}
 	
-//	if (editMode) {
-//		_editMode = true
-//	}
-//	else {
-//		_editMode = false
-//	}
+	if (editMode) {
+		_editMode = true
+	}
+	else {
+		_editMode = false
+	}
 	
 	//save outstanding data and turn autosave off
-//	if (!_editMode) {
+	if (!_editMode) {
 		databaseManager.saveData()
 		databaseManager.setAutoSave(false)
-//	}
+	}
 	
 	//get default asset instance
 	var srcAsset = assetRecord.web_asset_to_asset_instance__initial.getRecord(1)
@@ -111,45 +111,6 @@ function ASSET_scale(assetRecord,editMode) {
 		}
 		
 		return asset
-	}
-}
-
-/**
- * @properties={typeid:24,uuid:"17E3F2F2-151E-48BA-9E52-8C3909064EA0"}
- */
-function ASSET_import(asset,fileLocation) {
-	var fileOBJ = FILE_import(fileLocation)
-	
-	//an error in importing of file
-	if (typeof fileOBJ == 'string') {
-		plugins.dialogs.showErrorDialog(
-					'Error',
-					fileOBJ
-			)
-		return false
-	}
-	// create image asset record
-	else {
-		var assetRecord = asset.parentRec
-		var assetGroupRecord = assetRecord.web_asset_instance_to_asset
-		
-		assetGroupRecord.asset_file_type = fileOBJ.image_type
-		assetGroupRecord.asset_extension = fileOBJ.image_extension
-		assetGroupRecord.asset_name = fileOBJ.image_name
-		assetGroupRecord.thumbnail = fileOBJ.thumbnail
-		assetRecord.asset_title = fileOBJ.image_name
-		assetRecord.asset_size = fileOBJ.size
-		assetRecord.asset_directory = fileOBJ.directory
-		assetRecord.flag_initial = 1
-		
-		//create image asset meta data records
-		asset.width.data_value = fileOBJ.width
-		asset.height.data_value = fileOBJ.height
-//		asset.thumbnail.data_value_blob	= fileOBJ.thumbnail
-		
-		databaseManager.saveData()
-		
-		return true
 	}
 }
 

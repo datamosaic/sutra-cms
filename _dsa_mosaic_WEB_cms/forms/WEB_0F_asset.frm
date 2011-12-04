@@ -11,7 +11,7 @@ showFocus:false,
 size:"195,18",
 styleClass:"standard_table_category",
 tabSeq:-1,
-text:"Thumbnail",
+text:"Preview",
 transparent:true,
 typeid:7,
 uuid:"01F82814-3870-41B0-816A-1B270E42289C"

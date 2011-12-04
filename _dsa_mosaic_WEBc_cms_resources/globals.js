@@ -891,7 +891,7 @@ function WEBc_markup_link_resources(pageID, siteURL, linkType) {
  * @properties={typeid:24,uuid:"19AD8258-86F2-48AB-AA1B-713A2D08D77D"}
  */
 function WEBc_markup_link_internal(markup,siteURL,linkType,areaID,obj) {
-	
+	// pages
 	while ( utils.stringPosition(markup, "{DS:ID_", 0, 0) >= 0 ) {
 		var newMarkup = ''
 		
@@ -910,23 +910,43 @@ function WEBc_markup_link_internal(markup,siteURL,linkType,areaID,obj) {
 		markup		= newMarkup + markup
 	}
 	
-//	while ( utils.stringPosition(markup, "{DS:IMG_", 0, 0) >= 0 ) {
-//		var newMarkup = ''
-//		
-//		var pos = utils.stringPosition(markup, "{DS:IMG_", 0, 0)
-//		newMarkup += utils.stringLeft(markup, pos-1 )
-//		markup = utils.stringMiddle(markup, pos, 100000)
-//		var start 	= utils.stringPosition(markup, "_", 0, 0) + 1
-//		var end		= utils.stringPosition(markup, "}", 0, 0)
-//		var length	= end - start
-//		var id		= utils.stringMiddle(markup, start, length)
-//		markup 		= utils.stringMiddle(markup, end + 1, 100000)
-//		
-//		// add markup link
-//		newMarkup	+= globals.WEBc_markup_link_image(id,obj.page.id,siteURL,linkType,null,obj)
-//		
-//		markup		= newMarkup + markup
-//	}
+	// images
+	while ( utils.stringPosition(markup, "{DS:IMG_", 0, 0) >= 0 ) {
+		var newMarkup = ''
+		
+		var pos = utils.stringPosition(markup, "{DS:IMG_", 0, 0)
+		newMarkup += utils.stringLeft(markup, pos-1 )
+		markup = utils.stringMiddle(markup, pos, 100000)
+		var start 	= utils.stringPosition(markup, "_", 0, 0) + 1
+		var end		= utils.stringPosition(markup, "}", 0, 0)
+		var length	= end - start
+		var id		= utils.stringMiddle(markup, start, length)
+		markup 		= utils.stringMiddle(markup, end + 1, 100000)
+		
+		// add markup link
+		newMarkup	+= globals.WEBc_markup_link_asset(id,obj.page.id,siteURL,linkType,null,obj)
+		
+		markup		= newMarkup + markup
+	}
+	
+	// files
+	while ( utils.stringPosition(markup, "{DS:FILE_", 0, 0) >= 0 ) {
+		var newMarkup = ''
+		
+		var pos = utils.stringPosition(markup, "{DS:FILE_", 0, 0)
+		newMarkup += utils.stringLeft(markup, pos-1 )
+		markup = utils.stringMiddle(markup, pos, 100000)
+		var start 	= utils.stringPosition(markup, "_", 0, 0) + 1
+		var end		= utils.stringPosition(markup, "}", 0, 0)
+		var length	= end - start
+		var id		= utils.stringMiddle(markup, start, length)
+		markup 		= utils.stringMiddle(markup, end + 1, 100000)
+		
+		// add markup link
+		newMarkup	+= globals.WEBc_markup_link_asset(id,obj.page.id,siteURL,linkType,null,obj)
+		
+		markup		= newMarkup + markup
+	}
 	
 	//tack on add new record button if editable
 	if (linkType == 'Edit') {
@@ -1235,6 +1255,7 @@ function WEBc_markup_token(input,tokenType) {
 	
 	var tokenPage = '{DS:ID_'
 	var tokenAsset = '{DS:IMG_'
+	var tokenFile = '{DS:FILE_'
 	
 	//no type specified, try to determine
 	if (!tokenType) {
@@ -1909,7 +1930,7 @@ function WEBc_markup_pages_attribute(obj, att) {
 /**
  * @properties={typeid:24,uuid:"22E8DF83-30A3-4D46-A7A6-5464F76E1FAE"}
  */
-function WEBc_markup_link_image(assetInstanceID, pageID, siteURL, linkType, webMode, obj) {
+function WEBc_markup_link_asset(assetInstanceID, pageID, siteURL, linkType, webMode, obj) {
 	
 	// if obj passed instead of UUID for pageID
 	if ( !(pageID instanceof UUID) && pageID && pageID.page && pageID.page.id ) {
@@ -1924,7 +1945,7 @@ function WEBc_markup_link_image(assetInstanceID, pageID, siteURL, linkType, webM
 		var count = fsAssetInstance.search()
 	}
 	
-	//this page exists, get its site
+	//this asset exists, derive site
 	if (count) {
 		var assetInstanceRec = fsAssetInstance.getRecord(1)
 		var assetRec = fsAssetInstance.web_asset_instance_to_asset.getRecord(1)
@@ -1943,14 +1964,11 @@ function WEBc_markup_link_image(assetInstanceID, pageID, siteURL, linkType, webM
 		var siteLanguageRec = obj.language.record.web_language_to_site_language.getRecord(1)
 	}
 	
-	//get url up to sutraCMS directory
-	var pageLink = globals.WEBc_markup_link_base(pageID, siteURL, siteLanguageRec)
+	//get url up to files directory
+	var pageLink = utils.stringReplace(globals.WEBc_markup_link_base(pageID, siteURL, siteLanguageRec),'sutraCMS/','') + globals.WEBc_markup_link_resources(pageID,siteURL,linkType)
 	
-
-	//rewrite mode
-	var rewriteMode = globals.WEBc_install_getRewrite()
-	
-	//do
+	//tack on directory and file name
+	pageLink += assetInstanceRec.asset_directory + '/' + assetInstanceRec.asset_title
 	
 	//full url for a page requested
 	return pageLink

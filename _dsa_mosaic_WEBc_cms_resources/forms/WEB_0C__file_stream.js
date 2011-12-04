@@ -1,4 +1,11 @@
 /**
+ * @properties={typeid:35,uuid:"2DC677B3-626D-47FA-A92B-D13D32236BF6"}
+ */
+var _license_dsa_mosaic_WEB_cms = 'Module: _dsa_mosaic_WEB_cms \
+									Copyright (C) 2011 Data Mosaic \
+									MIT Licensed';
+
+/**
  * @properties={typeid:35,uuid:"20E8E784-6FDA-4F70-8AF4-6C15634BBDD8",variableType:-4}
  */
 var _elements = {};
@@ -37,13 +44,6 @@ var _file = {};
  * @properties={typeid:35,uuid:"3F0941BE-2D6B-42BA-A931-4910330A1CD8",variableType:-4}
  */
 var _flagRefresh = false;
-
-/**
- * @properties={typeid:35,uuid:"2DC677B3-626D-47FA-A92B-D13D32236BF6"}
- */
-var _license_dsa_mosaic_WEB_cms = 'Module: _dsa_mosaic_WEB_cms \
-									Copyright (C) 2011 Data Mosaic \
-									MIT Licensed';
 
 /**
  * @properties={typeid:35,uuid:"C8A1F8EC-713F-48B5-83B4-F7B5123DEE1C",variableType:-4}
@@ -758,13 +758,19 @@ function IMAGE_import_callback(result, e) {
 	
 	// create asset record
 	var fsAsset = forms.WEB_0F_asset.foundset
+	//disable on select method
+	forms.WEB_0F_asset._skipSelect = true
+	
 	var assetRec = fsAsset.getRecord(fsAsset.newRecord(true,true))
 	assetRec.id_site = forms.WEB_0F_site.id_site
 	assetRec.asset_type = 1
-
+	
+	//enable on select method
+	forms.WEB_0F_asset._skipSelect = false
+	
 	//create asset instance record
 	var assetInstanceRec = assetRec.web_asset_to_asset_instance.getRecord(assetRec.web_asset_to_asset_instance.newRecord(false,true))
-
+	
 	//get template for this type of asset
 	var template = forms.WEB_0F_asset.MAP_asset(assetRec.asset_type)
 
@@ -785,7 +791,7 @@ function IMAGE_import_callback(result, e) {
 	}
 	
 	assetRec.asset_file_type = result.getContentType()
-	assetRec.asset_extension = (result.getName().search(/./) != -1) ? result.getName().split('.')[1].toLowerCase() : null
+	assetRec.asset_extension = (result.getName().search(/./) != -1) ? result.getName().split('.')[result.getName().split('.').length - 1].toLowerCase() : null
 	assetRec.asset_name = result.getName().replace(/ /g, "_")	
 	assetRec.thumbnail		= _file.thumbnail
 	assetInstanceRec.asset_title = result.getName().replace(/ /g, "_")
@@ -806,8 +812,6 @@ function IMAGE_import_callback(result, e) {
 	if (application.__parent__.solutionPrefs && solutionPrefs.design.statusLockWorkflow) {
 		globals.WEB_lock_workflow(false)
 	}
-	
-	application.output('1')
 }
 
 /**
@@ -820,12 +824,121 @@ function IMAGE_import_monitor() {
 /**
  * @properties={typeid:24,uuid:"29BE1270-988B-4D4D-BF2C-A13382E05870"}
  */
-function IMAGE_delete(filePathObj) {
-	
-	if (plugins.file.deleteFile(filePathObj.file)) {
-		return true
+function ASSET_delete(filePathObj) {
+	if (filePathObj && filePathObj.file) {
+		if (plugins.file.deleteFile(filePathObj.file)) {
+			return true
+		}
+		else {
+			return false
+		}
 	}
 	else {
 		return false
 	}
+}
+
+/**
+ * @properties={typeid:24,uuid:"11DA8183-8F34-4363-AC99-5AD696827909"}
+ */
+function FILE_import(directory) {
+	
+	// root directory for this site
+	var baseDirectory = forms.WEB_0F_install.ACTION_get_install() +
+						'/application_server/server/webapps/ROOT/sutraCMS/sites/' +
+						forms.WEB_0F_site.directory + '/'
+	
+	// directory for this file
+	if (!directory) {
+		directory = 'files'
+	}
+	
+	// prompt for input file
+	var file = plugins.file.showFileOpenDialog()
+	if (!file) {
+		return "No file selected"	
+	}
+	
+	// setup upload file
+	var uploadFile = baseDirectory + directory + "/" + file.getName().replace(/ /g, "_")
+	
+	// grab file stats
+	_file.size = file.size()
+	
+	// stream to server
+	if ( application.__parent__.solutionPrefs ) {
+		globals.TRIGGER_progressbar_start(null, "Streaming file to server...")
+		var monitor = plugins.file.streamFilesToServer(file, uploadFile, FILE_import_callback)
+	}
+	else {
+		var monitor = plugins.file.streamFilesToServer(file, uploadFile, FILE_import_callback)
+	}
+	
+}
+
+/**
+ * @properties={typeid:24,uuid:"2EAFF07F-DE7A-4271-B1CB-138ED45A1BFE"}
+ */
+function FILE_import_callback(result, e) {
+	
+	if (e) {
+		plugins.dialogs.showErrorDialog("Error", "Error with file upload to server")
+		globals.TRIGGER_progressbar_stop()
+		return "Error with file upload to server"
+	}
+	
+	// create asset record
+	var fsAsset = forms.WEB_0F_asset.foundset
+	//disable on select method
+	forms.WEB_0F_asset._skipSelect = true
+	
+	var assetRec = fsAsset.getRecord(fsAsset.newRecord(true,true))
+	assetRec.id_site = forms.WEB_0F_site.id_site
+	assetRec.asset_type = 2
+	
+	//enable on select method
+	forms.WEB_0F_asset._skipSelect = false
+
+	//create asset instance record
+	var assetInstanceRec = assetRec.web_asset_to_asset_instance.getRecord(assetRec.web_asset_to_asset_instance.newRecord(false,true))
+
+	//get template for this type of asset
+	var template = forms.WEB_0F_asset.MAP_asset(assetRec.asset_type)
+
+	//add all meta data rows
+	for (var i in template.meta) {
+		var metaRec = assetInstanceRec.web_asset_instance_to_asset_instance_meta.getRecord(assetInstanceRec.web_asset_instance_to_asset_instance_meta.newRecord(false,true))
+		metaRec.data_key = i
+		metaRec.data_type = template.meta[i]
+		databaseManager.saveData(metaRec)
+	}
+	
+	assetRec.asset_file_type = result.getContentType()
+	assetRec.asset_extension = (result.getName().search(/./) != -1) ? result.getName().split('.')[1].toLowerCase() : null
+	assetRec.asset_name = result.getName().replace(/ /g, "_")	
+	assetInstanceRec.asset_title = result.getName().replace(/ /g, "_")
+	assetInstanceRec.asset_size = _file.size
+	assetInstanceRec.asset_directory = "files"
+	assetInstanceRec.flag_initial = 1	
+	
+	databaseManager.saveData()
+	
+	// stream to server
+	if ( application.__parent__.solutionPrefs ) {
+		globals.TRIGGER_progressbar_stop()
+	}
+	
+	plugins.dialogs.showInfoDialog("File",  "File uploaded")
+	
+	//no records created yet and interface locked
+	if (application.__parent__.solutionPrefs && solutionPrefs.design.statusLockWorkflow) {
+		globals.WEB_lock_workflow(false)
+	}
+}
+
+/**
+ * @properties={typeid:24,uuid:"1A3BA365-3E63-4789-8256-54365B865356"}
+ */
+function FILE_import_monitor() {
+	// TODO Auto-generated method stub
 }

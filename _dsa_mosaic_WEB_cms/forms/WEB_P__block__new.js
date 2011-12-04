@@ -533,6 +533,9 @@ function FORM_on_show() {
 		var vlReal = [0,1,2,3]
 	}
 	application.setValueListItems('WEB_scope_type',vlDisplay,vlReal)
+	
+	//somehow bind enter to accept whatever selection is chosen
+//	plugins.window.createShortcut('ENTER',forms.WEB_P__block__new.ACTION_ok,'WEB_P__block__new')
 }
 
 /**

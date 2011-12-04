@@ -6,6 +6,11 @@ var _license_dsa_mosaic_WEB_cms = 'Module: _dsa_mosaic_WEB_cms \
 									MIT Licensed';
 
 /**
+ * @properties={typeid:35,uuid:"1637C97D-08E7-4019-813B-FF8A07B35AB6",variableType:-4}
+ */
+var _skipSelect = false;
+
+/**
  *
  * @properties={typeid:24,uuid:"022C11EE-D472-44B4-88EA-873A195E7136"}
  */
@@ -99,12 +104,18 @@ function REC_new(assetType) {
 	var input = plugins.dialogs.showSelectDialog( 
 					"Asset", 
 					"Select asset type", 
-					"Image"
+					"Image",
+					"File"
 				)
 	
 	//something selected, do the right kind of import
-	if ( input  ) {
-		forms.WEB_0C__file_stream.IMAGE_import("images")
+	switch ( input  ) {
+		case 'Image':
+			forms.WEB_0C__file_stream.IMAGE_import("images")
+			break
+		case 'File':
+			forms.WEB_0C__file_stream.FILE_import("files")
+			break
 	}
 }
 
@@ -181,6 +192,9 @@ function MAP_asset(assetType) {
 		case 1:	//images
 			return forms.WEB_0F_asset__image.INIT_asset()
 			break
+		case 2:	//files
+			return forms.WEB_0F_asset__file.INIT_asset()
+			break
 	}
 }
 
@@ -206,52 +220,55 @@ function TAB_change(event) {
  * @properties={typeid:24,uuid:"49E7AA78-EDBA-4820-BD16-BDB92BD63793"}
  */
 function REC_on_select(event) {
-	var fsPages = forms.WEB_0F_asset_1L_page.foundset
-	
-	//there is something to do on this page
-	if (utils.hasRecords(foundset)) {
-		globals.CODE_cursor_busy(true)
-		var args = [1,'id_asset_instance']
+	//disable select method when new asset created
+	if (!_skipSelect) {
+		var fsPages = forms.WEB_0F_asset_1L_page.foundset
 		
-		var query = 
-"SELECT DISTINCT c.id_page FROM web_platform a, web_version b, web_page c WHERE b.id_version IN ( \
-	SELECT DISTINCT c.id_version from web_block a, web_scope b, web_area c, web_block_version d, web_block_data e WHERE \
-	c.id_area = b.id_area AND \
-	b.id_block = a.id_block AND \
-	d.id_block = a.id_block AND \
-	e.id_block_version = d.id_block_version AND \
-	d.flag_active = ? AND \
-	e.data_key = ? AND \
-	e.data_value IN ("
-		for (var i = 1; i <= web_asset_to_asset_instance.getSize(); i++) {
-			var record = web_asset_to_asset_instance.getRecord(i)
-			//build up query
-			query += '?'
-			if (i < web_asset_to_asset_instance.getSize()) {
-				query += ','
+		//there is something to do on this page
+		if (utils.hasRecords(foundset)) {
+			globals.CODE_cursor_busy(true)
+			var args = [1,'id_asset_instance']
+			
+			var query = 
+	"SELECT DISTINCT c.id_page FROM web_platform a, web_version b, web_page c WHERE b.id_version IN ( \
+		SELECT DISTINCT c.id_version from web_block a, web_scope b, web_area c, web_block_version d, web_block_data e WHERE \
+		c.id_area = b.id_area AND \
+		b.id_block = a.id_block AND \
+		d.id_block = a.id_block AND \
+		e.id_block_version = d.id_block_version AND \
+		d.flag_active = ? AND \
+		e.data_key = ? AND \
+		e.data_value IN ("
+			for (var i = 1; i <= web_asset_to_asset_instance.getSize(); i++) {
+				var record = web_asset_to_asset_instance.getRecord(i)
+				//build up query
+				query += '?'
+				if (i < web_asset_to_asset_instance.getSize()) {
+					query += ','
+				}
+				//tack on to arguments
+				args.push(record.id_asset_instance.toString())
 			}
-			//tack on to arguments
-			args.push(record.id_asset_instance.toString())
+	query += ") \
+	) AND \
+		a.id_platform = b.id_platform AND \
+		a.id_page = c.id_page"
+			
+			var dataset = databaseManager.getDataSetByQuery(
+						'sutra_cms', 
+						query, 
+						args, 
+						-1
+					)
+			
+			//load correct pages that this is used on
+			fsPages.loadRecords(dataset)
+			
+			globals.CODE_cursor_busy(false)
 		}
-query += ") \
-) AND \
-	a.id_platform = b.id_platform AND \
-	a.id_page = c.id_page"
-		
-		var dataset = databaseManager.getDataSetByQuery(
-					'sutra_cms', 
-					query, 
-					args, 
-					-1
-				)
-		
-		//load correct pages that this is used on
-		fsPages.loadRecords(dataset)
-		
-		globals.CODE_cursor_busy(false)
-	}
-	//clear out the related pages link
-	else {
-		fsPages.clear()
+		//clear out the related pages link
+		else {
+			fsPages.clear()
+		}
 	}
 }

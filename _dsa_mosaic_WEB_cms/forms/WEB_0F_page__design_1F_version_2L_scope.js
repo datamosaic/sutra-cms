@@ -284,7 +284,7 @@ function DIR_down() {
 		 return
 	 }
 	 
-	 foundset.sort('row_order asc')
+	 foundset.sort('row_order asc',true)
 
 	 //if index = 1, set flag to avoid glitch recSelected
 	 //TODO: find issue
@@ -305,7 +305,7 @@ function DIR_down() {
 	 recordCurr.row_order = recordNext.row_order
 	 recordNext.row_order --
 
-	 foundset.sort('row_order asc')
+	 foundset.sort('row_order asc',true)
 
 	 //TODO: find issue
 	 if (recOne) {
@@ -335,7 +335,7 @@ function DIR_up() {
 	 recordCurr.row_order = recordPrev.row_order
 	 recordPrev.row_order ++
 
-	 foundset.sort('row_order asc')
+	 foundset.sort('row_order asc',true)
 }
 
 /**

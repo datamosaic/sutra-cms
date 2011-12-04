@@ -11,17 +11,50 @@ var _license_dsa_mosaic_WEB_cms = 'Module: _dsa_mosaic_WEB_cms \
  * @properties={typeid:24,uuid:"FFE14AC8-BECE-4D27-9AC1-0EE22A0032FF"}
  */
 function BLOCK_choose(event) {
+	forms.WEB_P__asset.LOAD_data(1)
+	
 	//show image chooser
 	application.showFormInDialog(
-					forms.WEB_0F__image__P_choose,
+					forms.WEB_P__asset,
 					-1,-1,-1,-1,
 					" ",
 					true,
 					false,
-					"CMS_imageChoose"
+					"CMS_assetChoose"
 				)
 	
-	//save down of what chosen happen in forms.WEB_0F__image__P_choose.ACTION_ok
+	//something chosen, choose the image
+	if (forms.WEB_P__asset._assetChosen) {
+		var metaRows = forms.WEB_P__asset._assetChosen.meta
+		var assetRec = forms.WEB_P__asset._assetChosen.asset
+		
+		if (metaRows && assetRec) {
+			var data = globals.WEBc_block_getData('WEB_0F__image')
+				
+			//see INIT_block for all keys
+			for (var i in data) {
+				switch (i) {
+					case 'height':
+					case 'width':
+						globals.WEBc_block_setData(null,i,metaRows[i],'WEB_0F__image')
+						break
+					case 'image_name':
+						globals.WEBc_block_setData(null,i,assetRec.asset_title,'WEB_0F__image')
+						break
+					case 'directory':
+						globals.WEBc_block_setData(null,i,assetRec.asset_directory,'WEB_0F__image')
+						break
+					default:
+						globals.WEBc_block_setData(null,i,assetRec[i],'WEB_0F__image')
+				}
+			}
+			
+			//this should be removed; but without it, the image won't show up until exiting edit mode
+			databaseManager.saveData()
+			
+			INIT_data()
+		}
+	}
 }
 
 /**
@@ -42,31 +75,32 @@ function BLOCK_scale(event) {
 		var metaRows = new Object()
 		for (var j = 1; j <= newAsset.web_asset_instance_to_asset_instance_meta.getSize(); j++) {
 			var record = newAsset.web_asset_instance_to_asset_instance_meta.getRecord(j)
-			metaRows[record.data_key] = record
+			metaRows[record.data_key] = record.data_value
 		}
 		
-		var data = globals.WEBc_block_getData(event)
+		//the data we're working with here
+		var data = globals.WEBc_block_getData('WEB_0F__image')
 		
 		//see INIT_block for all keys
 		for (var i in data) {
 			switch (i) {
 				case 'height':
 				case 'width':
-					globals.WEBc_block_setData(event,i,metaRows[i].data_value)
+					globals.WEBc_block_setData(null,i,metaRows[i],'WEB_0F__image')
 					break
 				case 'image_name':
-					globals.WEBc_block_setData(event,i,newAsset.asset_title)
+					globals.WEBc_block_setData(null,i,newAsset.asset_title,'WEB_0F__image')
 					break
 				case 'directory':
-					globals.WEBc_block_setData(event,i,newAsset.asset_directory)
+					globals.WEBc_block_setData(null,i,newAsset.asset_directory,'WEB_0F__image')
 					break
 				default:
-					globals.WEBc_block_setData(event,i,newAsset[i])
+					globals.WEBc_block_setData(null,i,newAsset[i],'WEB_0F__image')
 			}
 		}
 		
 		//refresh the block
-		REC_on_select(event,true)
+		INIT_data()
 	}
 }
 
