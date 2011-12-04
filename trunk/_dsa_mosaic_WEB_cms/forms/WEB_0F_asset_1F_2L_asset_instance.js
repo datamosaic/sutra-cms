@@ -70,8 +70,7 @@ function REC_delete() {
 			}
 			else {
 				controller.deleteRecord()
-				plugins.dialogs.showInfoDialog("Success","Record deleted")
-				application.output("No file deleted")
+				plugins.dialogs.showWarningDialog("Warning","File not found; record deleted")
 			}
 		}
 		// file streaming version when on a service
@@ -132,7 +131,6 @@ function REC_delete_callback(callback) {
 	}
 	else {
 		controller.deleteRecord()
-		plugins.dialogs.showInfoDialog("Success","Record deleted")
-		application.output("No file deleted")
+		plugins.dialogs.showWarningDialog("Warning","File not found; record deleted")
 	}
 }

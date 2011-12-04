@@ -691,6 +691,9 @@ function FUNCTION_streaming_check() {
  * @properties={typeid:24,uuid:"21DA8183-8F34-4363-AC99-5AD696827909"}
  */
 function IMAGE_import(directory) {
+	// scope to unique directory for this asset instance
+	directory += "/" + application.getUUID().toString()
+	_file.directory = directory
 	
 	// root directory for this site
 	var baseDirectory = forms.WEB_0F_install.ACTION_get_install() +
@@ -737,10 +740,24 @@ function IMAGE_import(directory) {
 	// stream to server
 	if ( application.__parent__.solutionPrefs ) {
 		globals.TRIGGER_progressbar_start(null, "Streaming file to server...")
-		var monitor = plugins.file.streamFilesToServer(file, uploadFile, IMAGE_import_callback)
+		
+		//only upload picture if directory tree exists
+		if (ASSET_directory_tree(directory)) {
+			var monitor = plugins.file.streamFilesToServer(file, uploadFile, IMAGE_import_callback)
+		}
+		else {
+			plugins.dialogs.showErrorDialog(
+					'Error',
+					'Directory specified does not exist'
+			)
+			globals.TRIGGER_progressbar_stop()
+		}
 	}
 	else {
-		var monitor = plugins.file.streamFilesToServer(file, uploadFile, IMAGE_import_callback)
+		//only upload picture if directory tree exists
+		if (ASSET_directory_tree(directory)) {
+			var monitor = plugins.file.streamFilesToServer(file, uploadFile, IMAGE_import_callback)
+		}
 	}
 	
 }
@@ -796,7 +813,7 @@ function IMAGE_import_callback(result, e) {
 	assetRec.thumbnail		= _file.thumbnail
 	assetInstanceRec.asset_title = result.getName().replace(/ /g, "_")
 	assetInstanceRec.asset_size = _file.size
-	assetInstanceRec.asset_directory = "images"
+	assetInstanceRec.asset_directory = _file.directory
 	assetInstanceRec.flag_initial = 1	
 	
 	databaseManager.saveData()
@@ -839,19 +856,120 @@ function ASSET_delete(filePathObj) {
 }
 
 /**
+ * Make sure directory tree requested is valid.
+ * 
+ * @param {String}	directory The path to verify
+ * @param {Boolean}	[autoCreate=true] Create path if non-existent
+ * 
+ * @returns {Boolean} valid path
+ * 
+ * @properties={typeid:24,uuid:"60603A08-569D-4217-99CD-F2ED6BE69FCE"}
+ */
+function ASSET_directory_tree(directory,autoCreate) {
+	//unless specified false, auto create
+	if (!(typeof autoCreate == 'boolean')) {
+		autoCreate = true
+	}
+	
+	//developer
+	if (application.isInDeveloper()) {
+		// root directory for this site
+		var baseDirectory = forms.WEB_0F_install.ACTION_get_install() +
+							'/application_server/server/webapps/ROOT/sutraCMS/sites/' +
+							forms.WEB_0F_site.directory + '/' + directory
+		
+		var jsFile = plugins.file.convertToJSFile(baseDirectory)
+		
+		if (jsFile.exists()) {
+			return true
+		}
+		//create directory structure up to this point
+		else if (autoCreate) {
+			var tree = baseDirectory.split('/')
+			//remove first empty element
+			tree.splice(0,1)
+			
+			for (var i = 0; i < tree.length; i++) {
+				var path = '/' + tree.slice(0,i+1).join('/')
+				
+				var jsFile = plugins.file.convertToJSFile(path)
+				
+				if (!jsFile.exists()) {
+					var success = plugins.file.createFolder(path)
+					
+					//could not create this directory, something didn't work right
+					if (!success) {
+						return false
+					}
+				}
+			}
+			
+			//completed loop, directory is now available
+			return true
+		}
+		
+		//directory not found
+		return false
+	}
+	//live server
+	else {
+		// root directory for this site
+		var baseDirectory = '/application_server/server/webapps/ROOT/sutraCMS/sites/' +
+							forms.WEB_0F_site.directory + '/' + directory
+		
+		var jsFile = plugins.file.convertToRemoteJSFile(baseDirectory)
+		
+		if (jsFile.exists()) {
+			return true
+		}
+		//create directory structure up to this point
+		else if (autoCreate) {
+			var tree = baseDirectory.split('/')
+			//remove first empty element
+			tree.splice(0,1)
+			
+			for (var i = 0; i < tree.length; i++) {
+				//probably don't want to prefix with /
+				var path = '/' + tree.slice(0,i+1).join('/')
+				
+				var jsFile = plugins.file.convertToRemoteJSFile(path)
+				
+				if (!jsFile.exists()) {
+					var success = plugins.file.createFolder(path)
+					
+					//could not create this directory, something didn't work right
+					if (!success) {
+						return false
+					}
+				}
+			}
+			
+			//completed loop, directory is now available
+			return true
+		}
+		
+		//directory not found
+		return false
+	}
+}
+
+/**
  * @properties={typeid:24,uuid:"11DA8183-8F34-4363-AC99-5AD696827909"}
  */
 function FILE_import(directory) {
+	// directory for this file
+	if (!directory) {
+		directory = 'files'
+	}
+	
+	// scope to unique directory for this asset instance
+	directory += "/" + application.getUUID().toString()
+	_file.directory = directory
 	
 	// root directory for this site
 	var baseDirectory = forms.WEB_0F_install.ACTION_get_install() +
 						'/application_server/server/webapps/ROOT/sutraCMS/sites/' +
 						forms.WEB_0F_site.directory + '/'
-	
-	// directory for this file
-	if (!directory) {
-		directory = 'files'
-	}
 	
 	// prompt for input file
 	var file = plugins.file.showFileOpenDialog()
@@ -868,10 +986,24 @@ function FILE_import(directory) {
 	// stream to server
 	if ( application.__parent__.solutionPrefs ) {
 		globals.TRIGGER_progressbar_start(null, "Streaming file to server...")
-		var monitor = plugins.file.streamFilesToServer(file, uploadFile, FILE_import_callback)
+		
+		//only upload file if directory tree exists
+		if (ASSET_directory_tree(directory)) {
+			var monitor = plugins.file.streamFilesToServer(file, uploadFile, FILE_import_callback)
+		}
+		else {
+			plugins.dialogs.showErrorDialog(
+					'Error',
+					'Directory specified does not exist'
+			)
+			globals.TRIGGER_progressbar_stop()
+		}
 	}
 	else {
-		var monitor = plugins.file.streamFilesToServer(file, uploadFile, FILE_import_callback)
+		//only upload picture if directory tree exists
+		if (ASSET_directory_tree(directory)) {
+			var monitor = plugins.file.streamFilesToServer(file, uploadFile, FILE_import_callback)
+		}
 	}
 	
 }
@@ -918,7 +1050,7 @@ function FILE_import_callback(result, e) {
 	assetRec.asset_name = result.getName().replace(/ /g, "_")	
 	assetInstanceRec.asset_title = result.getName().replace(/ /g, "_")
 	assetInstanceRec.asset_size = _file.size
-	assetInstanceRec.asset_directory = "files"
+	assetInstanceRec.asset_directory = _file.directory
 	assetInstanceRec.flag_initial = 1	
 	
 	databaseManager.saveData()
