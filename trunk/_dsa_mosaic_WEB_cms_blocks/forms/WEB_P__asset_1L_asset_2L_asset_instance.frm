@@ -66,7 +66,7 @@ typeid:19,
 uuid:"F4F66BA7-1727-4987-B703-689A17AAAD54"
 }
 ],
-name:"WEB_0F__image__P_choose_1L_asset_2L_asset_instance",
+name:"WEB_P__asset_1L_asset_2L_asset_instance",
 onRecordSelectionMethodID:"-1",
 onShowMethodID:"-1",
 paperPrintScale:100,

@@ -64,7 +64,7 @@ function REC_delete() {
 	if (input == 'Yes') {
 		// developer version (use local file system method since headless client plugin bugged)
 		if ( application.isInDeveloper() ) {
-			if ( forms.WEB_0C__file_stream.IMAGE_delete(deleteThis) ) {
+			if ( forms.WEB_0C__file_stream.ASSET_delete(deleteThis) ) {
 				controller.deleteRecord()
 				plugins.dialogs.showInfoDialog("Success","Record deleted")
 			}
@@ -77,7 +77,7 @@ function REC_delete() {
 		// file streaming version when on a service
 		else {
 			var jsclient = plugins.headlessclient.createClient("_dsa_mosaic_WEB_cms", null, null, null)
-			jsclient.queueMethod("WEB_0C__file_stream", "IMAGE_delete", [deleteThis], REC_delete_callback)
+			jsclient.queueMethod("WEB_0C__file_stream", "ASSET_delete", [deleteThis], REC_delete_callback)
 		}
 	}
 }

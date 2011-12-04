@@ -32,6 +32,7 @@ anchors:11,
 formIndex:10200,
 location:"10,5",
 mediaOptions:14,
+name:"lbl_heading",
 showClick:false,
 showFocus:false,
 size:"233,25",
@@ -49,7 +50,7 @@ items:[
 {
 containsFormID:"6FEAA075-DE17-4AE4-8C96-BF64DC816C56",
 location:"0,64",
-text:"WEB_0F__image__P_choose_1L_asset",
+text:"WEB_P__asset_1L_asset",
 typeid:15,
 uuid:"BFC2654A-864B-4C4A-82F2-A3F8943B0E36"
 }
@@ -118,7 +119,7 @@ typeid:19,
 uuid:"EED7BC64-38E4-498C-B9F8-E6F7AF082B27"
 }
 ],
-name:"WEB_0F__image__P_choose",
+name:"WEB_P__asset",
 navigatorID:"-1",
 onDeleteAllRecordsCmdMethodID:"-1",
 onDeleteRecordCmdMethodID:"-1",
@@ -126,7 +127,6 @@ onDuplicateRecordCmdMethodID:"-1",
 onFindCmdMethodID:"-1",
 onHideMethodID:"28E098A0-3AFB-45D5-974D-5097C511ED6E",
 onInvertRecordsCmdMethodID:"-1",
-onLoadMethodID:"BE1F62DB-1D14-464C-96F5-1A8D252C761B",
 onNewRecordCmdMethodID:"-1",
 onOmitRecordCmdMethodID:"-1",
 onPrintPreviewCmdMethodID:"-1",

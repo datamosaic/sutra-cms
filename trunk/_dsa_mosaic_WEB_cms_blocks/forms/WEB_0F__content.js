@@ -353,23 +353,23 @@ function ACTION_pop_toolbar(event) {
  * @properties={typeid:24,uuid:"E285B1BC-2924-477D-8F4C-D8B94FCF01A6"}
  */
 function ACTION_insert_image(event) {
-	forms.WEB_0F__image__P_choose._imageLink = 1
+	forms.WEB_P__asset.LOAD_data(1)
 	
 	application.showFormInDialog(
-				forms.WEB_0F__image__P_choose,
+				forms.WEB_P__asset,
 				-1,-1,-1,-1,
 				" ",
 				false,
 				false,
-				"CMS_imageChoose"
+				"CMS_assetChoose"
 			)
 	
 	//something chosen, insert image link at cursor location
-	if (forms.WEB_0F__image__P_choose._imageChosen) {
-		var image = forms.WEB_0F__image__P_choose._imageChosen
+	if (forms.WEB_P__asset._assetChosen) {
+		var image = forms.WEB_P__asset._assetChosen
 		var token = globals.WEBc_markup_token(image.asset)
 		
-		var html = '<img src="' + token + '" width="' + image.meta.width.data_value + '" height="' + image.meta.height.data_value + '" alt="' + image.asset.asset_title +'">'
+		var html = '<img src="' + token + '" width="' + image.meta.width + '" height="' + image.meta.height + '" alt="' + image.asset.asset_title +'">'
 		
 		var js = "tinyMCE.execCommand('mceInsertContent', false, '" + html + "');"
 		elements.bn_tinymce.executeJavaScript(js)
