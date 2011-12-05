@@ -1,14 +1,19 @@
 /**
- * @properties={typeid:35,uuid:"B959CE00-5A5D-47FD-BC5B-4050B21049CE",variableType:-4}
- */
-var _editMode = false;
-
-/**
  * @properties={typeid:35,uuid:"EB4C7E20-176B-4986-AFB4-E135BBFC5172"}
  */
 var _license_dsa_mosaic_WEB_cms = 'Module: _dsa_mosaic_WEB_cms \
 									Copyright (C) 2011 Data Mosaic \
 									MIT Licensed';
+
+/**
+ * @properties={typeid:35,uuid:"B959CE00-5A5D-47FD-BC5B-4050B21049CE",variableType:-4}
+ */
+var _editMode = false;
+
+/**
+ * @properties={typeid:35,uuid:"C1AFA183-40E4-408B-8163-A394988EC398",variableType:-4}
+ */
+var _reorderMode = false;
 
 /**
  * Perform the element default action.
@@ -70,9 +75,7 @@ function ACTION_save(event) {
  * @properties={typeid:24,uuid:"E73B27E7-8247-410F-B28F-73DB3B9A581A"}
  */
 function FORM_on_load(event) {
-	//hide elements not shown for default state
-	elements.btn_cancel.visible = false
-	elements.btn_done.visible = false
+	TOGGLE_buttons()
 }
 
 /**
@@ -109,9 +112,7 @@ function TOGGLE_edit_mode(editMode,saveData) {
 		globals.TRIGGER_interface_lock(true)
 		
 		//toggle elements
-		elements.btn_cancel.visible = true
-		elements.btn_done.visible = true
-		elements.btn_edit.visible = false
+		TOGGLE_buttons()
 		
 		//set up storage place for all newly created blocks
 		forms.WEB_0F_page__design_1F_version_2L_scope._newBlocks = new Array()
@@ -170,9 +171,7 @@ function TOGGLE_edit_mode(editMode,saveData) {
 		globals.TRIGGER_interface_lock(false)
 		
 		//toggle elements
-		elements.btn_cancel.visible = false
-		elements.btn_done.visible = false
-		elements.btn_edit.visible = true
+		TOGGLE_buttons()
 	}
 	
 	//set elements appropriately
@@ -181,9 +180,106 @@ function TOGGLE_edit_mode(editMode,saveData) {
 	forms.WEB_0F_page__design_1F_version_2F_block__data.TOGGLE_elements(_editMode)
 	forms.WEB_0F_page__design_1F__properties.TOGGLE_elements(_editMode)
 	forms.WEB_0F_page__design_1F_version_2L_scope.REC_on_select(null,true)	//on load of form this will cause to load block in twice
-	forms.WEB_0F_page__design_1F__button_tab.elements.btn_edit.visible = _editMode
 	
 	//hide actions (can remove when upgrade sutra core)
 	forms.WEB_0F_block__scrapbook_1F__gui.elements.btn_data_actions.enabled = false
 	forms.WEB_0F_block__scrapbook_1F__data.elements.btn_data_actions.enabled = false
+}
+
+/**
+ * @properties={typeid:24,uuid:"51FF71D7-7529-4E39-B9D4-747AB1B9A7D0"}
+ */
+function TOGGLE_buttons() {
+	//actions
+	elements.btn_cancel.visible = _editMode
+	elements.btn_save.visible = _editMode
+	elements.btn_done.visible = _reorderMode
+	elements.btn_edit.visible = !(_editMode || _reorderMode)
+	elements.btn_reorder.visible = !(_editMode || _reorderMode)
+	
+	//gui stuff
+	elements.lbl_curve_two.visible = !(_editMode || _reorderMode)
+	elements.lbl_curve_one.visible = _editMode || _reorderMode
+	elements.lbl_reorder.visible = !(_editMode || _reorderMode)
+}
+
+/**
+ * Perform the element default action.
+ *
+ * @param {JSEvent} event the event that triggered the action
+ *
+ * @properties={typeid:24,uuid:"6E28B34B-004E-4482-8590-4F7B6DA58089"}
+ */
+function ACTION_done(event) {
+	ACTION_reorder()
+}
+
+/**
+ * Perform the element default action.
+ *
+ * @param {JSEvent} event the event that triggered the action
+ *
+ * @properties={typeid:24,uuid:"83323A47-B373-4788-A8D9-5010012E2715"}
+ */
+function ACTION_reorder(event) {
+	//locked version
+	if (!_reorderMode && !utils.hasRecords(forms.WEB_0F_page__design_1F_version.foundset) || forms.WEB_0F_page__design_1F_version.flag_lock) {
+		plugins.dialogs.showErrorDialog(
+					'Error',
+					'The selected version is locked.  To reorder blocks it must be unlocked.'
+			)
+	}
+	//enter reorder mode
+	else {
+		//toggle
+		_reorderMode = !_reorderMode
+		
+		//entering reorder
+		if (_reorderMode) {
+			globals.WEBc_log_create('page','page reorder begin',forms.WEB_0F_page.id_site,'web_page',forms.WEB_0F_page.id_page)
+			
+			//lock the screen
+			globals.TRIGGER_interface_lock(true)
+			
+			//toggle elements
+			TOGGLE_buttons()
+		}
+		//exiting reorder
+		else {
+			globals.WEBc_log_create('page','page reorder end',forms.WEB_0F_page.id_site,'web_page',forms.WEB_0F_page.id_page)
+			
+			//update modification date on this record
+			if (utils.hasRecords(forms.WEB_0F_page__design_1F_version.foundset)) {
+				forms.WEB_0F_page__design_1F_version.rec_modified = application.getServerTimeStamp()
+			}
+			
+			databaseManager.saveData()
+			
+			//unlock the screen
+			globals.TRIGGER_interface_lock(false)
+			
+			//set elements appropriately
+			forms.WEB_0F_page__design_1F__header_display__version.TOGGLE_elements()
+			forms.WEB_0F_page__design_1F_version_2L_scope.TOGGLE_elements(_editMode)
+			forms.WEB_0F_page__design_1F_version_2F_block__data.TOGGLE_elements(_editMode)
+			forms.WEB_0F_page__design_1F__properties.TOGGLE_elements(_editMode)
+			forms.WEB_0F_page__design_1F_version_2L_scope.REC_on_select(null,true)	//on load of form this will cause to load block in twice
+			
+			//hide actions (can remove when upgrade sutra core)
+			forms.WEB_0F_block__scrapbook_1F__gui.elements.btn_data_actions.enabled = false
+			forms.WEB_0F_block__scrapbook_1F__data.elements.btn_data_actions.enabled = false
+			
+			//toggle elements
+			TOGGLE_buttons()
+		}
+		
+		//dis/enable ordering
+		forms.WEB_0F_page__design_1F_version_2L_scope.elements.btn_down.enabled = _reorderMode
+		forms.WEB_0F_page__design_1F_version_2L_scope.elements.btn_up.enabled = _reorderMode
+		
+		//can remove with sutra upgrade
+		forms.WEB_0F_page__design_1F_version_2L_scope.elements.btn_add.enabled = false
+		forms.WEB_0F_page__design_1F_version_2L_scope.elements.btn_actions.enabled = false
+		forms.WEB_0F_page__design_1F_version_2L_scope.ACTION_gui_mode_load()
+	}
 }

@@ -284,7 +284,7 @@ function DIR_down() {
 		 return
 	 }
 	 
-	 foundset.sort('row_order asc',true)
+	 foundset.sort('row_order asc')
 
 	 //if index = 1, set flag to avoid glitch recSelected
 	 //TODO: find issue
@@ -305,7 +305,7 @@ function DIR_down() {
 	 recordCurr.row_order = recordNext.row_order
 	 recordNext.row_order --
 
-	 foundset.sort('row_order asc',true)
+	 foundset.sort('row_order asc')
 
 	 //TODO: find issue
 	 if (recOne) {
@@ -335,15 +335,14 @@ function DIR_up() {
 	 recordCurr.row_order = recordPrev.row_order
 	 recordPrev.row_order ++
 
-	 foundset.sort('row_order asc',true)
+	 foundset.sort('row_order asc')
 }
 
 /**
  *
  * @properties={typeid:24,uuid:"64E10B1C-C632-4B7D-92C5-F94DBA4C18BD"}
  */
-function FORM_on_load()
-{
+function FORM_on_load() {
 	elements.fld_id_block_display__field.visible = false
 	elements.fld_id_block_display__combo.visible = true
 }
@@ -589,15 +588,14 @@ function TOGGLE_elements(editAllow) {
 	elements.btn_actions.enabled = status
 	elements.btn_add.enabled = status
 	elements.btn_delete.visible = status
-	elements.btn_down.enabled = status
-	elements.btn_up.enabled = status
 	
-//	elements.fld_id_block_type.editable = editAllow
 	elements.fld_flag_active.enabled = status
 	elements.fld_id_block_display__combo.visible = status
 	elements.fld_id_block_display__field.visible = !status
-//	elements.fld_params.editable = editAllow	
-//	elements.fld_row_order.editable = editAllow
+	
+	//can remove with sutra update
+	elements.btn_down.enabled = false
+	elements.btn_up.enabled = false
 }
 
 /**
