@@ -277,9 +277,10 @@ function BLOCK_choose(event) {
  * @properties={typeid:24,uuid:"D1507344-C123-4997-A29D-32181865B93F"}
  */
 function BLOCK_import(event) {
-	
-	forms.WEB_0C__file_stream.FILE_import("files")
-	
+	//only run in edit mode
+	if (globals.WEBc_block_getEdit()) {
+		forms.WEB_0C__file_stream.FILE_import("files")
+	}
 }
 
 /**

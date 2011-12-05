@@ -11,48 +11,51 @@ var _license_dsa_mosaic_WEB_cms = 'Module: _dsa_mosaic_WEB_cms \
  * @properties={typeid:24,uuid:"FFE14AC8-BECE-4D27-9AC1-0EE22A0032FF"}
  */
 function BLOCK_choose(event) {
-	forms.WEB_P__asset.LOAD_data(1)
-	
-	//show image chooser
-	application.showFormInDialog(
-					forms.WEB_P__asset,
-					-1,-1,-1,-1,
-					" ",
-					true,
-					false,
-					"CMS_assetChoose"
-				)
-	
-	//something chosen, choose the image
-	if (forms.WEB_P__asset._assetChosen) {
-		var metaRows = forms.WEB_P__asset._assetChosen.meta
-		var assetRec = forms.WEB_P__asset._assetChosen.asset
+	//only run in edit mode
+	if (globals.WEBc_block_getEdit()) {
+		forms.WEB_P__asset.LOAD_data(1)
 		
-		if (metaRows && assetRec) {
-			var data = globals.WEBc_block_getData('WEB_0F__image')
-				
-			//see INIT_block for all keys
-			for (var i in data) {
-				switch (i) {
-					case 'height':
-					case 'width':
-						globals.WEBc_block_setData(null,i,metaRows[i],'WEB_0F__image')
-						break
-					case 'image_name':
-						globals.WEBc_block_setData(null,i,assetRec.asset_title,'WEB_0F__image')
-						break
-					case 'directory':
-						globals.WEBc_block_setData(null,i,assetRec.asset_directory,'WEB_0F__image')
-						break
-					default:
-						globals.WEBc_block_setData(null,i,assetRec[i],'WEB_0F__image')
+		//show image chooser
+		application.showFormInDialog(
+						forms.WEB_P__asset,
+						-1,-1,-1,-1,
+						" ",
+						true,
+						false,
+						"CMS_assetChoose"
+					)
+		
+		//something chosen, choose the image
+		if (forms.WEB_P__asset._assetChosen) {
+			var metaRows = forms.WEB_P__asset._assetChosen.meta
+			var assetRec = forms.WEB_P__asset._assetChosen.asset
+			
+			if (metaRows && assetRec) {
+				var data = globals.WEBc_block_getData('WEB_0F__image')
+					
+				//see INIT_block for all keys
+				for (var i in data) {
+					switch (i) {
+						case 'height':
+						case 'width':
+							globals.WEBc_block_setData(null,i,metaRows[i],'WEB_0F__image')
+							break
+						case 'image_name':
+							globals.WEBc_block_setData(null,i,assetRec.asset_title,'WEB_0F__image')
+							break
+						case 'directory':
+							globals.WEBc_block_setData(null,i,assetRec.asset_directory,'WEB_0F__image')
+							break
+						default:
+							globals.WEBc_block_setData(null,i,assetRec[i],'WEB_0F__image')
+					}
 				}
+				
+				//this should be removed; but without it, the image won't show up until exiting edit mode
+				databaseManager.saveData()
+				
+				INIT_data()
 			}
-			
-			//this should be removed; but without it, the image won't show up until exiting edit mode
-			databaseManager.saveData()
-			
-			INIT_data()
 		}
 	}
 }
@@ -63,44 +66,47 @@ function BLOCK_choose(event) {
  * @properties={typeid:24,uuid:"43C94817-C701-46EF-809A-33BE2CFC738C"}
  */
 function BLOCK_scale(event) {
-	var fsAssetInstance = databaseManager.getFoundSet('sutra_cms','web_asset_instance')
-	fsAssetInstance.loadRecords([application.getUUID(globals.WEBc_block_getData(event).id_asset_instance)])
-	var recAsset = fsAssetInstance.web_asset_instance_to_asset.getRecord(1)
-	
-	var newAsset = forms.WEB_0F_asset__image.ASSET_scale(recAsset,true)
-	
-	//there is something and it's different than what was there before
-	if (newAsset) {
-		//get meta data points we need
-		var metaRows = new Object()
-		for (var j = 1; j <= newAsset.web_asset_instance_to_asset_instance_meta.getSize(); j++) {
-			var record = newAsset.web_asset_instance_to_asset_instance_meta.getRecord(j)
-			metaRows[record.data_key] = record.data_value
-		}
+	//only run in edit mode
+	if (globals.WEBc_block_getEdit()) {
+		var fsAssetInstance = databaseManager.getFoundSet('sutra_cms','web_asset_instance')
+		fsAssetInstance.loadRecords([application.getUUID(globals.WEBc_block_getData(event).id_asset_instance)])
+		var recAsset = fsAssetInstance.web_asset_instance_to_asset.getRecord(1)
 		
-		//the data we're working with here
-		var data = globals.WEBc_block_getData('WEB_0F__image')
+		var newAsset = forms.WEB_0F_asset__image.ASSET_scale(recAsset,true)
 		
-		//see INIT_block for all keys
-		for (var i in data) {
-			switch (i) {
-				case 'height':
-				case 'width':
-					globals.WEBc_block_setData(null,i,metaRows[i],'WEB_0F__image')
-					break
-				case 'image_name':
-					globals.WEBc_block_setData(null,i,newAsset.asset_title,'WEB_0F__image')
-					break
-				case 'directory':
-					globals.WEBc_block_setData(null,i,newAsset.asset_directory,'WEB_0F__image')
-					break
-				default:
-					globals.WEBc_block_setData(null,i,newAsset[i],'WEB_0F__image')
+		//there is something and it's different than what was there before
+		if (newAsset) {
+			//get meta data points we need
+			var metaRows = new Object()
+			for (var j = 1; j <= newAsset.web_asset_instance_to_asset_instance_meta.getSize(); j++) {
+				var record = newAsset.web_asset_instance_to_asset_instance_meta.getRecord(j)
+				metaRows[record.data_key] = record.data_value
 			}
+			
+			//the data we're working with here
+			var data = globals.WEBc_block_getData('WEB_0F__image')
+			
+			//see INIT_block for all keys
+			for (var i in data) {
+				switch (i) {
+					case 'height':
+					case 'width':
+						globals.WEBc_block_setData(null,i,metaRows[i],'WEB_0F__image')
+						break
+					case 'image_name':
+						globals.WEBc_block_setData(null,i,newAsset.asset_title,'WEB_0F__image')
+						break
+					case 'directory':
+						globals.WEBc_block_setData(null,i,newAsset.asset_directory,'WEB_0F__image')
+						break
+					default:
+						globals.WEBc_block_setData(null,i,newAsset[i],'WEB_0F__image')
+				}
+			}
+			
+			//refresh the block
+			INIT_data()
 		}
-		
-		//refresh the block
-		INIT_data()
 	}
 }
 
@@ -110,9 +116,10 @@ function BLOCK_scale(event) {
  * @properties={typeid:24,uuid:"D5507344-C123-4997-A29D-32181865B93F"}
  */
 function BLOCK_import(event) {
-	
-	forms.WEB_0C__file_stream.IMAGE_import("images")
-	
+	//only run in edit mode
+	if (globals.WEBc_block_getEdit()) {
+		forms.WEB_0C__file_stream.IMAGE_import("images")
+	}
 }
 
 /**
