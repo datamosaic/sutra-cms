@@ -48,21 +48,36 @@ function TAB_change(formName,elemName) {
  *
  * @properties={typeid:24,uuid:"05C77F09-34C3-42BD-8C77-F6B090C5FCD0"}
  */
-function VISIT_page(event,returnURL) {
+function VISIT_page(event,returnURL,toClippy) {
 	//see forms.WEB_0F_page__browser.URL_update
 	
+	//shift-click copies to clipboard
 	if (globals.CODE_key_pressed('shift')) {
-		var toClippy = true
+		toClippy = true
+	}
+	//right-click shows menu
+	else if (event && event.getType() == JSEvent.RIGHTCLICK) {
+		//set up menu with arguments
+		var menu = new Array()
+		
+		menu[0] = plugins.popupmenu.createMenuItem('Copy to clipboard',VISIT_page)
+		menu[0].setMethodArguments(null,null,true)
+		menu[1] = plugins.popupmenu.createMenuItem('Open default browser',VISIT_page)
+		
+		plugins.popupmenu.showPopupMenu(elements.btn_visit, menu)
+		
+		return
 	}
 	
 	var fsPage = forms.WEB_0F_page.foundset
 	
 	if (utils.hasRecords(fsPage)) {
-		
-		var urlString = globals.WEBc_markup_link_page(fsPage.id_page)
-		
 		//only tack on exact specifier when not an external link
 		if (fsPage.page_type != 2) {
+			//specify index-style so parameters of platform, language, group, version guaranteed to work
+				//will be re-directed to correctlyu url by controller
+			var urlString = globals.WEBc_markup_link_page(fsPage.id_page,null,'Index')
+			
 			if (utils.hasRecords(forms.WEB_0F_page__design_1F__header_display_2F_platform._platform)) {
 				urlString += "&platform=" + forms.WEB_0F_page__design_1F__header_display_2F_platform._platform.url_param
 			}
