@@ -44,9 +44,12 @@ function FORM_on_load() {
  * @properties={typeid:24,uuid:"596AC1D2-C10E-435B-A670-B17748C36852"}
  */
 function BLOCK_save(event) {
-	globals.WEBc_block_setData(event,'code',_dataValue)
-	
-	ACTION_colorize()
+	//only run in edit mode
+	if (globals.WEBc_block_getEdit()) {
+		globals.WEBc_block_setData(event,'code',_dataValue)
+		
+		ACTION_colorize()
+	}
 }
 
 /**
@@ -103,12 +106,15 @@ function INIT_data() {
  * @properties={typeid:24,uuid:"8F3FE07B-111D-4858-ABD2-3373302B5FBE"}
  */
 function BLOCK_cancel(event) {
-	//reset codeType var
-	_codeType = globals.WEBc_block_getConfig(controller.getName()).code_type
-	
-	//refresh the colored version
-	if (globals.WEB_page_mode == 2) {
-		ACTION_colorize()
+	//only run in edit mode
+	if (globals.WEBc_block_getEdit()) {
+		//reset codeType var
+		_codeType = globals.WEBc_block_getConfig(controller.getName()).code_type
+		
+		//refresh the colored version
+		if (globals.WEB_page_mode == 2) {
+			ACTION_colorize()
+		}
 	}
 }
 
@@ -163,9 +169,10 @@ function TOGGLE_buttons(state) {
  * @properties={typeid:24,uuid:"BDBE7B79-FF2E-4BA5-911F-E02330584EF7"}
  */
 function ACTION_internal_link(event) {
-
-	globals.WEBc_page_picker(ACTION_add_token,null,true)
-
+	//only run in edit mode
+	if (globals.WEBc_block_getEdit()) {
+		globals.WEBc_page_picker(ACTION_add_token,null,true)
+	}
 }
 
 /**
@@ -208,43 +215,46 @@ function ACTION_add_token(inputID,pageRec) {
  * @properties={typeid:24,uuid:"2CED7B67-8517-4BF5-A290-B30AA2BA874C"}
  */
 function ACTION_insert_image(event) {
-	forms.WEB_P__asset.LOAD_data(1)
-	
-	application.showFormInDialog(
-				forms.WEB_P__asset,
-				-1,-1,-1,-1,
-				" ",
-				false,
-				false,
-				"CMS_assetChoose"
-			)
-	
-	//something chosen, insert image link at cursor location
-	if (forms.WEB_P__asset._assetChosen) {
-		//wrap currently selected text with link
-		var elem = elements.fld_data_value
-	
-		var image = forms.WEB_P__asset._assetChosen
-		var token = globals.WEBc_markup_token(image.asset)
+	//only run in edit mode
+	if (globals.WEBc_block_getEdit()) {
+		forms.WEB_P__asset.LOAD_data(1)
 		
-		//insert image at current location
-		var html = '<img src="' + token + '" width="' + image.meta.width + '" height="' + image.meta.height + '" alt="' + image.asset.asset_title +'">'
+		application.showFormInDialog(
+					forms.WEB_P__asset,
+					-1,-1,-1,-1,
+					" ",
+					false,
+					false,
+					"CMS_assetChoose"
+				)
 		
-		//length of tag
-		var offset = html.length
+		//something chosen, insert image link at cursor location
+		if (forms.WEB_P__asset._assetChosen) {
+			//wrap currently selected text with link
+			var elem = elements.fld_data_value
 		
-		//cut selected text so we can get the correct cursor position
-		elem.replaceSelectedText('')
-		
-		//get cursor location
-		var cursor = elem.caretPosition
-		
-		elem.replaceSelectedText(html)
-		
-		var dataSave = globals.WEBc_block_setData(event,'code',_dataValue)
-		
-		elem.caretPosition = cursor + offset
-		elem.requestFocus()
+			var image = forms.WEB_P__asset._assetChosen
+			var token = globals.WEBc_markup_token(image.asset)
+			
+			//insert image at current location
+			var html = '<img src="' + token + '" width="' + image.meta.width + '" height="' + image.meta.height + '" alt="' + image.asset.asset_title +'">'
+			
+			//length of tag
+			var offset = html.length
+			
+			//cut selected text so we can get the correct cursor position
+			elem.replaceSelectedText('')
+			
+			//get cursor location
+			var cursor = elem.caretPosition
+			
+			elem.replaceSelectedText(html)
+			
+			var dataSave = globals.WEBc_block_setData(event,'code',_dataValue)
+			
+			elem.caretPosition = cursor + offset
+			elem.requestFocus()
+		}
 	}
 }
 
