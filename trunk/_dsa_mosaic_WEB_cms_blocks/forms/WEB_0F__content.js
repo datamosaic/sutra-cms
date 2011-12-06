@@ -16,7 +16,7 @@ var _toolbarMode = 0;
  */
 function VIEW_default(obj) {
 	// template
-	var markup = obj.data.Content	
+	var markup = obj.block_data.Content	
 	
 	// return
 	return markup
@@ -220,7 +220,7 @@ function INIT_data() {
 		elements.bn_tinymce.clearHtml()
 	}
 	else {
-		globals.WEB_browser_error()
+		globals.WEBc_browser_error()
 	}
 	
 	if (data.Content) {

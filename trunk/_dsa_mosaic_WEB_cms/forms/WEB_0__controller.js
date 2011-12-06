@@ -192,7 +192,7 @@ function CONTROLLER_builder(results, obj) {
 					if ( utils.hasRecords(data) ) {
 						for (var k = 1; k <= data.getSize(); k++) {
 							var point = data.getRecord(k)
-							obj.data[point.data_key] = point.data_value
+							obj.block_data[point.data_key] = point.data_value
 						}
 					}
 					
@@ -256,7 +256,7 @@ function CONTROLLER_builder(results, obj) {
 					obj.block.id 		= ''
 					
 					// obj: data...CLEAR
-					obj.data = {}
+					obj.block_data = {}
 				}
 			}
 		}
@@ -309,7 +309,7 @@ function CONTROLLER_setup(results, app, session, request, response, mode) {
 	       		    theme	: { directory : '', markup : { link : '' } },
 	       		    area	: { record : '', id	: '', name	: ''},
 	       		    block	: { record : '', version	: '', id	: ''},
-	       		    data	: {},
+	       		    block_data		: {},
 	       		    block_configure : {},
 	       		    block_response : {},
 	       		    form	: { get : {}, post : {}, validate : { error : 0 },

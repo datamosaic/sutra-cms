@@ -36,45 +36,33 @@ var _tooltip = null;
  */
 function VIEW_default(obj, results) {
 	
-	//create mapping to be used
-	var data = obj.data
+	var data = obj.block_data
+	var dataConfig = obj.block_configure
 	
 	// template					
 	var template = '<a '
-		if (data.cssId) {
+		if (dataConfig.cssId) {
 			template += 'id="{{id}}" '
 		}
-		if (data.cssClass) {
+		if (dataConfig.cssClass) {
 			template += 'class="{{class}}" '
 		}
 		if (data.tooltip) {
 			template += 'title="{{tooltip}}" '
 		}
-	template += 'href="{DS:FILE_{{id_asset_instance}}}">'
+	template += 'href="{{directory}}/{{file_name}}">'
 	template += '{{title}}'
 	template += '</a>'
-	
-	//no title specified, use file name
-	if (!data.title) {
-		var fsAssetInstance = databaseManager.getFoundSet('sutra_cms','web_asset_instance')
-		fsAssetInstance.find()
-		fsAssetInstance.id_asset_instance = data.id_asset_instance
-		var results = fsAssetInstance.search()
-		
-		var fileName = ''
-		
-		if (results) {
-			var fileName = fsAssetInstance.asset_title
-		}
-	}
 	
 	// replace
 	var html = template.replace(/\t/g, '')
 	html = utils.stringReplace(html, "{{id}}", data.cssId)
 	html = utils.stringReplace(html, "{{class}}", data.cssClass)
 	html = utils.stringReplace(html, "{{tooltip}}", data.tooltip)
-	html = utils.stringReplace(html, "{{id_asset_instance}}", data.id_asset_instance)
-	html = utils.stringReplace(html, "{{title}}", data.title || fileName)
+	html = utils.stringReplace(html, "{{directory}}", '/' + globals.WEBc_markup_link_resources(obj.page.id) + data.directory)
+	html = utils.stringReplace(html, "{{file_name}}", data.file_name)
+	//no title specified, use file name
+	html = utils.stringReplace(html, "{{title}}", data.title || data.file_name)
 	
 	// return
 	return html
@@ -88,35 +76,19 @@ function VIEW_default(obj, results) {
 function INIT_data() {
 	//get data
 	var data = globals.WEBc_block_getData(controller.getName())
+	var dataConfig = globals.WEBc_block_getConfig(controller.getName())
 	
 	//save down form variables
-	for (var i in data) {
-		switch (i) {
-			case 'cssClass':
-				_cssClass = data[i]
-				break
-			case 'cssId':
-				_cssId = data[i]
-				break
-			case 'title':
-				_title = data[i]
-				break
-			case 'tooltip':
-				_tooltip = data[i]
-				break
-			case 'id_asset_instance':
-				var fileFound = false
-				
-				if (data[i]) {
-					var fsAssetInstance = databaseManager.getFoundSet('sutra_cms','web_asset_instance')
-					fsAssetInstance.find()
-					fsAssetInstance.id_asset_instance = data[i]
-					var fileFound = fsAssetInstance.search()
-				}
-				
-				_file = (fileFound) ? fsAssetInstance.asset_title : ''
-				break
-		}
+	_cssClass = dataConfig.cssClass
+	_cssId = dataConfig.cssId
+	_title = data.title
+	_tooltip = data.tooltip
+	_file = ''
+	if (data.directory) {
+		_file += data.directory + '/'
+	}
+	if (data.file_name) {
+		_file += data.file_name
 	}
 	
 	//set status of variables
@@ -137,6 +109,13 @@ function INIT_data() {
 	elements.lbl_import.enabled = editMode
 	
 	//only allow to jump to related asset if one selected and not in edit mode
+	var fileFound = false
+	if (data.id_asset_instance) {
+		var fsAssetInstance = databaseManager.getFoundSet('sutra_cms','web_asset_instance')
+		fsAssetInstance.find()
+		fsAssetInstance.id_asset_instance = data.id_asset_instance
+		var fileFound = fsAssetInstance.search()
+	}
 	elements.btn_visit.visible = !editMode && fileFound
 }
 
@@ -162,23 +141,6 @@ function GOTO_asset(event) {
 			forms.WEB_0F_asset_1F_2L_asset_instance.foundset.selectRecord(application.getUUID(pk))
 		}
 	}
-}
-
-/**
- * Handle changed data.
- *
- * @param {Object} oldValue old value
- * @param {Object} newValue new value
- * @param {JSEvent} event the event that triggered the action
- *
- * @returns {Boolean}
- *
- * @properties={typeid:24,uuid:"1F9B9D43-3D26-4D27-A28A-BD00655990A6"}
- */
-function FLD_data_change(oldValue, newValue, event) {
-	var key = event.getElementName().split('_')[1]
-	
-	globals.WEBc_block_setData(event,key,newValue)
 }
 
 /**
@@ -216,16 +178,17 @@ function INIT_block() {
 	
 	// block data points
 	block.data = {
+		directory : 'TEXT',
+		file_name : 'TEXT',
 		title : 'TEXT',
 		tooltip : 'TEXT',
-		cssId : 'TEXT',
-		cssClass : 'TEXT',
 		id_asset_instance : 'TEXT'
 	}
 	
 	// block configure data points
 	block.blockConfigure = {
-		
+		cssId : 'TEXT',
+		cssClass : 'TEXT'
 	}
 	
 	// block response data points
@@ -262,7 +225,9 @@ function BLOCK_choose(event) {
 			
 			if (assetRec) {
 				globals.WEBc_block_setData(null,'id_asset_instance',assetRec.id_asset_instance.toString(),'WEB_0F__file')
-			
+				globals.WEBc_block_setData(null,'file_name',assetRec.asset_title,'WEB_0F__file')
+				globals.WEBc_block_setData(null,'directory',assetRec.asset_directory,'WEB_0F__file')
+				
 	//			databaseManager.saveData()
 				
 				INIT_data()
@@ -290,8 +255,6 @@ function BLOCK_import(event) {
  */
 function TOGGLE_buttons(event) {
 	var editStatus = globals.WEBc_block_getEdit()
-	
-	var hasData = globals.WEBc_block_getData(event).id_asset_instance ? true : false
 	
 	elements.btn_choose.enabled = editStatus
 	elements.btn_import.enabled = editStatus

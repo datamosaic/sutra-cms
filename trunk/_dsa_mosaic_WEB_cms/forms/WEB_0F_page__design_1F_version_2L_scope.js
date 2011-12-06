@@ -536,7 +536,26 @@ function ACTION_gui_mode_load(fireSelect) {
 						
 						//force the gui to update
 						if (solutionModel.getForm(formName) && solutionModel.getForm(formName).getFormMethod('INIT_data')) {
-							forms[formName].foundset.loadRecords(web_scope_to_block)
+							if (forms[formName].foundset) {
+								forms[formName].foundset.loadRecords(web_scope_to_block)
+							}
+							else {
+								var restart = plugins.dialogs.showWarningDialog(
+										'Warning',
+										'Changes made in developer have caused foundsets to become unhooked.\nRestart?',
+										'Yes',
+										'No'
+									)
+								
+								//restart
+								if (restart == 'Yes') {
+									application.exit()
+								}
+//								//allow this method to fire again
+//								else {
+//									_guiLoading = false
+//								}
+							}
 							
 							forms[formName].INIT_data()
 						}

@@ -38,22 +38,18 @@ var _cssClass = null;
 /**
  * @properties={typeid:35,uuid:"FFA48B49-8645-4C42-8B43-96E81DF8D4E0"}
  */
-var _id = null;
+var _cssId = null;
 
 /**
  * @param	{Object}	obj Data object passed to all markup methods
  * @properties={typeid:24,uuid:"399C16F5-0026-4B84-A2B5-01231434CB1A"}
  */
 function VIEW_default(obj, results) {
-	
-	//create mapping to be used
-	var mapp = obj.block_configure
-	
 	//get login
 	var login = globals.WEBc_session_getData(obj.session_server.record.session_id, "login")
 	
 	//get solution model form
-	var smForm = solutionModel.getForm(mapp.form)
+	var smForm = solutionModel.getForm(obj.block_data.form)
 	//for width
 	var defaultWidth = (smForm) ? smForm.width : 0
 	//for height
@@ -77,7 +73,7 @@ function VIEW_default(obj, results) {
 						id={{record}}" width="{{width}}" height="{{height}}" frameborder="0" \
 						scrolling="no" id="{{id}}" '
 						//only assign a class if one was specified
-						if (mapp.cssClass) {
+						if (obj.block_configure.cssClass) {
 							template += 'class="{{class}}" '
 						}
 template +=	'	>\n\
@@ -87,13 +83,13 @@ template +=	'	>\n\
 	html = utils.stringReplace(html, "{{url}}", url)
 	html = utils.stringReplace(html, "{{module}}", module)
 	html = utils.stringReplace(html, "{{method}}", method)
-	html = utils.stringReplace(html, "{{form}}", mapp.form)
+	html = utils.stringReplace(html, "{{form}}", obj.block_data.form)
 	html = utils.stringReplace(html, "{{record}}", record)
-	html = utils.stringReplace(html, "{{width}}", mapp.width || defaultWidth)
-	html = utils.stringReplace(html, "{{height}}", mapp.height || defaultHeight)
-	html = utils.stringReplace(html, "{{id}}", mapp.id || 'swc')
-	html = utils.stringReplace(html, "{{class}}", mapp.cssClass)
-	html = utils.stringReplace(html, "{{transparent}}", (mapp.transparent ? 'true' : 'false'))
+	html = utils.stringReplace(html, "{{width}}", obj.block_configure.width || defaultWidth)
+	html = utils.stringReplace(html, "{{height}}", obj.block_configure.height || defaultHeight)
+	html = utils.stringReplace(html, "{{id}}", obj.block_configure.cssId || 'swc')
+	html = utils.stringReplace(html, "{{class}}", obj.block_configure.cssClass)
+	html = utils.stringReplace(html, "{{transparent}}", (obj.block_configure.transparent ? 'true' : 'false'))
 	
 	return html
 }
@@ -104,35 +100,18 @@ template +=	'	>\n\
  * @properties={typeid:24,uuid:"7ABCE520-07F0-4ED3-B01B-EB3348DAEE3B"}
  */
 function INIT_data() {
-	//get config data
+	//get data
+	var data = globals.WEBc_block_getData(controller.getName())
 	var dataConfig = globals.WEBc_block_getConfig(controller.getName())
 	
 	//save down form variables so records can be changed
-	for (var i in dataConfig) {
-		switch (i) {
-			case 'module':
-				_module = dataConfig[i]
-				break
-			case 'form':
-				_form = dataConfig[i]
-				break
-			case 'width':
-				_width = dataConfig[i]
-				break
-			case 'height':
-				_height = dataConfig[i]
-				break
-			case 'transparent':
-				_transparent = dataConfig[i]
-				break
-			case 'id':
-				_id = dataConfig[i]
-				break
-			case 'cssClass':
-				_cssClass = dataConfig[i]
-				break
-		}
-	}
+	_module = data.module
+	_form = data.form
+	_width = dataConfig.width
+	_height = dataConfig.height
+	_transparent = dataConfig.transparent
+	_cssId = dataConfig.cssId
+	_cssClass = dataConfig.cssClass
 	
 	//set status of variables
 	var editMode = globals.WEBc_block_getEdit()
@@ -146,8 +125,8 @@ function INIT_data() {
 	elements.var_height.transparent = editMode
 	elements.var_height.editable = editMode
 	elements.var_transparent.readOnly = !editMode
-	elements.var_id.transparent = editMode
-	elements.var_id.editable = editMode
+	elements.var_cssId.transparent = editMode
+	elements.var_cssId.editable = editMode
 	elements.var_cssClass.transparent = editMode
 	elements.var_cssClass.editable = editMode
 	
@@ -169,7 +148,12 @@ function INIT_data() {
 function FLD_data_change(oldValue, newValue, event) {
 	var key = event.getElementName().split('_')[1]
 	
-	globals.WEBc_block_setConfig(event,key,newValue)
+	if (key == 'form' || key == 'module') {
+		globals.WEBc_block_setData(event,key,newValue)
+	}
+	else {
+		globals.WEBc_block_setConfig(event,key,newValue)
+	}
 	
 	if (key == 'module') {
 		SET_forms()
@@ -256,17 +240,16 @@ function INIT_block() {
 	
 	// block data points
 	block.data = {
-
+		module : 'TEXT',
+		form : 'TEXT'
 	}
 	
 	// block configure data points
 	block.blockConfigure = {
-		module : 'TEXT',
-		form : 'TEXT',
 		width : 'INTEGER',
 		height : 'INTEGER',
 		transparent : 'INTEGER',
-		id : 'TEXT',
+		cssId : 'TEXT',
 		cssClass : 'TEXT'
 	}
 	

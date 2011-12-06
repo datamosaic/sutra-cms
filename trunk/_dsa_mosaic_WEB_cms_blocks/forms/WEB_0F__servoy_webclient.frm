@@ -114,11 +114,11 @@ typeid:7,
 uuid:"60FAFC29-652A-4615-837C-82544EE9145D"
 },
 {
-dataProviderID:"_id",
+dataProviderID:"_cssId",
 editable:false,
 formIndex:9995,
 location:"140,120",
-name:"var_id",
+name:"var_cssId",
 onDataChangeMethodID:"C7AFC905-C1D4-40A1-BE2C-139B76AFC2A9",
 onFocusLostMethodID:"-1",
 scrollbars:36,

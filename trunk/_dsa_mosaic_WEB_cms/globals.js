@@ -404,22 +404,6 @@ function WEB_servoy_wc_controller(startup, args) {
 }
 
 /**
- * @properties={typeid:24,uuid:"88B20E7F-82B4-4235-87EE-C291469E681A"}
- */
-function WEB_browser_error() {
-	var input = plugins.dialogs.showErrorDialog(
-				'Error',
-				'The Browser Suite did not initialize properly.\nRestart client now.',
-				'Yes',
-				'No'
-		)
-	
-	if (input == 'Yes') {
-		application.exit()
-	}
-}
-
-/**
  * @properties={typeid:24,uuid:"CEE8177B-36B3-47A5-9CD7-574FDEBA51ED"}
  */
 function WEB_site_find_restrict() {
