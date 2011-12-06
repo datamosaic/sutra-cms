@@ -257,6 +257,12 @@ function ADD_version(event) {
 					//create new record
 					var destVersion = fsVersion.getRecord(fsVersion.newRecord(false,true))
 					
+					//common data points for new and subsequent versions
+					destVersion.flag_lock = 0
+					destVersion.id_platform = forms.WEB_0F_page__design_1F__header_display_2F_platform._platform.id_platform
+					destVersion.id_language = forms.WEB_0F_page__design_1F__header_display_2F_language._language.id_language
+					destVersion.id_group = forms.WEB_0F_page__design_1F__header_display_2F_group._group.id_group
+					
 					//create all areas for this layout, copying over existing content based on area name
 					for (var i = 1; i <= layout.web_layout_to_editable.getSize(); i++) {
 						//new area to create
@@ -276,12 +282,6 @@ function ADD_version(event) {
 						//reset scope index to be at top
 						destVersion.web_version_to_area.web_area_to_scope.setSelectedIndex(1)
 					}
-					
-					//common data points for new and subsequent versions
-					destVersion.flag_lock = 0
-					destVersion.id_platform = forms.WEB_0F_page__design_1F__header_display_2F_platform._platform.id_platform
-					destVersion.id_language = forms.WEB_0F_page__design_1F__header_display_2F_language._language.id_language
-					destVersion.id_group = forms.WEB_0F_page__design_1F__header_display_2F_group._group.id_group
 					
 					globals.WEBc_log_create('page','page version add',forms.WEB_0F_page.id_site,'web_page',forms.WEB_0F_page.id_page)
 						
