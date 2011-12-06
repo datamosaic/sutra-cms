@@ -27,6 +27,11 @@ function AREA_add_missing(versionStack, recLatest, recSelected, autoActivate) {
 		var fsVersion = forms.WEB_0F_page__design_1F_version.foundset
 		var latestVersion = fsVersion.getRecord(1)
 		var selectedVersion = fsVersion.getSelectedRecord()
+		
+		//if selected page is the active one
+		if (selectedVersion.flag_active) {
+			autoActivate = true
+		}
 	}
 	
 	var descriptor ='Add missing page areas.\n' +
@@ -53,12 +58,13 @@ function AREA_add_missing(versionStack, recLatest, recSelected, autoActivate) {
 		selectedVersion.flag_lock = 1
 		
 		//de-activte currently activated version (should be selectedVersion, but may not be)
-		fsVersion.find()
-		fsVersion.flag_active = 1
-		var results = fsVersion.search(false,true)
+		var fsVersionDupe = fsVersion.duplicateFoundSet()
+		fsVersionDupe.find()
+		fsVersionDupe.flag_active = 1
+		var results = fsVersionDupe.search(false,true)
 		
 		if (results) {
-			fsVersion.flag_active = 0
+			fsVersionDupe.flag_active = 0
 		}
 		
 		//activate new version
@@ -136,10 +142,14 @@ function AREA_add_missing(versionStack, recLatest, recSelected, autoActivate) {
 	//reload this page when not called from a batch
 	if (!batchUpdate) {
 		forms.WEB_0F_page__design.REC_on_select(true,true,1)
-		plugins.dialogs.showInfoDialog(
-					'Success',
-					'The theme has been updated.\nYou must activate this version to publish your changes.'
-			)
+		
+		//warn when newly created version not activated
+		if (!autoActivate) {
+			plugins.dialogs.showInfoDialog(
+						'Success',
+						'The theme has been updated.\nYou must activate this version to publish your changes.'
+				)
+		}
 	}
 }
 
@@ -162,6 +172,11 @@ function AREA_reset(versionStack, recLatest, recSelected, autoActivate) {
 		var fsVersion = forms.WEB_0F_page__design_1F_version.foundset
 		var latestVersion = fsVersion.getRecord(1)
 		var selectedVersion = fsVersion.getSelectedRecord()
+		
+		//if selected page is the active one
+		if (selectedVersion.flag_active) {
+			autoActivate = true
+		}
 	}
 	
 	//turn on busy buzzy bee
@@ -191,12 +206,13 @@ function AREA_reset(versionStack, recLatest, recSelected, autoActivate) {
 		selectedVersion.flag_lock = 1
 		
 		//de-activte currently activated version (should be selectedVersion, but may not be)
-		fsVersion.find()
-		fsVersion.flag_active = 1
-		var results = fsVersion.search(false,true)
+		var fsVersionDupe = fsVersion.duplicateFoundSet()
+		fsVersionDupe.find()
+		fsVersionDupe.flag_active = 1
+		var results = fsVersionDupe.search(false,true)
 		
 		if (results) {
-			fsVersion.flag_active = 0
+			fsVersionDupe.flag_active = 0
 		}
 		
 		//activate new version
