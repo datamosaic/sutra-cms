@@ -443,7 +443,6 @@ function REC_on_select(event,fireSelect) {
 		
 		//set position of scope label because actions are showing differently
 		if (forms.WEB_0F_page__design_1F_version_2F_block__gui.elements.btn_data_actions.visible != editMode) {
-			
 			//move left
 			if (editMode) {
 				forms.WEB_0F_page__design_1F_version_2F_block__data.elements.lbl_scope.setLocation(forms.WEB_0F_page__design_1F_version_2F_block__data.elements.lbl_scope.getLocationX() - 30,forms.WEB_0F_page__design_1F_version_2F_block__data.elements.lbl_scope.getLocationY())
@@ -459,6 +458,10 @@ function REC_on_select(event,fireSelect) {
 		//actions available
 		forms.WEB_0F_page__design_1F_version_2F_block__data.elements.btn_data_actions.visible = editMode
 		forms.WEB_0F_page__design_1F_version_2F_block__gui.elements.btn_data_actions.visible = editMode
+		
+		//scrapbook warning labels
+		forms.WEB_0F_page__design_1F_version_2F_block__data.elements.lbl_scrapbook.visible = editMode && web_scope_to_block.scope_type
+		forms.WEB_0F_page__design_1F_version_2F_block__gui.elements.lbl_scrapbook.visible = editMode && web_scope_to_block.scope_type
 	}
 }
 
