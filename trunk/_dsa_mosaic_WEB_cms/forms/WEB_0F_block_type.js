@@ -356,7 +356,7 @@ function REC_new(flagRefresh) {
 			if ( forms[formName] ) {
 				//form not loaded yet, get solution model to check for method existence
 				if (solutionModel.getForm(formName).getFormMethod('INIT_block')) {
-					var obj = forms[formName].INIT_block()
+					var objBlock = forms[formName].INIT_block()
 				}
 				else {
 					plugins.dialogs.showErrorDialog( "Error", "Selected block does not have an INIT_block method")
@@ -367,22 +367,22 @@ function REC_new(flagRefresh) {
 			// 3) create block and related data from data object
 			var block = (!flagRefresh) ? foundset.getRecord(foundset.newRecord()) : foundset.getSelectedRecord()
 			block.id_site = forms.WEB_0F_site.id_site
-			var name = obj.record.block_name
+			var name = objBlock.record.block_name
 			
 			// ensure block name is unique
 			if (!flagRefresh) {
 				var incrementer = 1
 				while ( uniqueNameCheck(name) ) {
 					// increment name by 1 until unique name is found
-					name = obj.record.block_name + " " + incrementer
+					name = objBlock.record.block_name + " " + incrementer
 					incrementer ++
 				}
 			}
 			
 			block.block_name = name
-			block.block_description = obj.record.block_description
-			block.form_name = obj.record.form_name
-			block.form_name_display = obj.record.form_name_display	
+			block.block_description = objBlock.record.block_description
+			block.form_name = objBlock.record.form_name
+			block.form_name_display = objBlock.record.form_name_display	
 			
 			// remove related block records
 			if (flagRefresh) {
@@ -413,7 +413,7 @@ function REC_new(flagRefresh) {
 			}
 			
 			// block displays
-			for (var i in obj.views) {
+			for (var i in objBlock.views) {
 				//this display already exists, continue
 				if (displayCurrent[i]) {
 					//remove from delete array
@@ -432,9 +432,9 @@ function REC_new(flagRefresh) {
 						view.display_name += " " + utils.stringInitCap(name[j])
 					}	
 				}
-				view.method_name = obj.views[i]
+				view.method_name = objBlock.views[i]
 				//flag default method as default
-				view.flag_default = ( obj.views[i] == "VIEW_default" || obj.views[i] == "CONTROLLER_default") ? 1 : null
+				view.flag_default = ( objBlock.views[i] == "VIEW_default" || objBlock.views[i] == "CONTROLLER_default") ? 1 : null
 			}
 			
 			//if anything left in delete array, whack it 
@@ -443,7 +443,7 @@ function REC_new(flagRefresh) {
 			}
 			
 			// block client actions - "Block"
-			for (var i in obj.clientActionsBlock) {
+			for (var i in objBlock.clientActionsBlock) {
 				var actions = block.web_block_type_to_block_action_client.getRecord(block.web_block_type_to_block_action_client.newRecord())
 				actions.action_type = "Block"
 				var name = i.split("_")
@@ -455,11 +455,11 @@ function REC_new(flagRefresh) {
 						actions.input_name += " " + utils.stringInitCap(name[j])
 					}
 				}
-				actions.method_name = obj.clientActionsBlock[i]
+				actions.method_name = objBlock.clientActionsBlock[i]
 			}
 			
 			// block client actions - "Page"
-			for (var i in obj.clientActionsPage) {
+			for (var i in objBlock.clientActionsPage) {
 				var actions = block.web_block_type_to_block_action_client.getRecord(block.web_block_type_to_block_action_client.newRecord())
 				actions.action_type = "Page"
 				var name = i.split("_")
@@ -471,11 +471,11 @@ function REC_new(flagRefresh) {
 						actions.input_name += " " + utils.stringInitCap(name[j])
 					}
 				}
-				actions.method_name = obj.clientActionsPage[i]
+				actions.method_name = objBlock.clientActionsPage[i]
 			}
 			
 			// block web actions
-			for (var i in obj.webActions) {
+			for (var i in objBlock.webActions) {
 				var actions = block.web_block_type_to_block_action_web.getRecord(block.web_block_type_to_block_action_web.newRecord())
 				var name = i.split("_")
 				for (var j = 0; j < name.length; j++) {
@@ -486,28 +486,28 @@ function REC_new(flagRefresh) {
 						actions.display_name += " " + utils.stringInitCap(name[j])
 					}
 				}
-				actions.method_name = obj.webActions[i]
+				actions.method_name = objBlock.webActions[i]
 			}
 			
 			// block data
-			for (var i in obj.data) {
+			for (var i in objBlock.data) {
 				var data = block.web_block_type_to_block_input.getRecord(block.web_block_type_to_block_input.newRecord())
 				data.column_name = i
-				data.column_type = obj.data[i]
+				data.column_type = objBlock.data[i]
 			}
 			
 			// block configuration
-			for (var i in obj.blockConfigure) {
+			for (var i in objBlock.blockConfigure) {
 				var configure = block.web_block_type_to_block_configure.getRecord(block.web_block_type_to_block_configure.newRecord())
 				configure.column_name = i
-				configure.column_type = obj.blockConfigure[i]
+				configure.column_type = objBlock.blockConfigure[i]
 			}
 			
 			// block response
-			for (var i in obj.blockResponse) {
+			for (var i in objBlock.blockResponse) {
 				var response = block.web_block_type_to_block_response.getRecord(block.web_block_type_to_block_response.newRecord())
 				response.column_name = i
-				response.column_type = obj.blockConfigure[i]
+				response.column_type = objBlock.blockConfigure[i]
 			}
 			
 			databaseManager.saveData()
