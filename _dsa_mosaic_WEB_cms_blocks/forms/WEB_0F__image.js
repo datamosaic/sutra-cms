@@ -1,4 +1,24 @@
 /**
+ * @properties={typeid:35,uuid:"7EC90C89-6147-49DD-82A6-A41A364B4D2D"}
+ */
+var _cssClass = null;
+
+/**
+ * @properties={typeid:35,uuid:"98B1121B-AEE0-4845-91FE-31514646D9DC"}
+ */
+var _title = null;
+
+/**
+ * @properties={typeid:35,uuid:"86A68FF7-1ACC-42C6-A601-64396E8EE603"}
+ */
+var _cssId = null;
+
+/**
+ * @properties={typeid:35,uuid:"1C693A02-303B-4BB0-96CB-9F8C7865CC0A"}
+ */
+var _alt = null;
+
+/**
  * @properties={typeid:35,uuid:"4FDBCEFD-6F16-46F7-827B-375E25824AD6"}
  */
 var _license_dsa_mosaic_WEB_cms = 'Module: _dsa_mosaic_WEB_cms \
@@ -128,19 +148,62 @@ function BLOCK_import(event) {
  */
 function VIEW_default(obj) {
 	
+	var data = obj.block_data
+	var dataConfig = obj.block_configure	
+	
 	// template					
-	var markup = 	'<img width="<<width>>" height="<<height>>" border="0" ' +
-					'src="<<directory>>/<<image_name>>" ' +
-					'alt="" />'
+	var markup = 	'<img '
+		if (dataConfig.cssId) {
+			markup += 'id="{{id}}" '
+		}
+		if (dataConfig.cssClass) {
+			markup += 'class="{{class}}" '
+		}
+		if (data.title) {
+			markup += 'title="{{title}}" '
+		}
+		if (data.alt) {
+			markup += 'alt="{{alt}}" '
+		}
+	markup += 		'width="{{width}}" height="{{height}}" border="0" ' +
+					'src="{{directory}}/{{image_name}}" />'
 	
 	// replace
-	markup = markup.replace(/<<width>>/ig, obj.data.width)
-	markup = markup.replace(/<<height>>/ig, obj.data.height)
-	markup = markup.replace(/<<image_name>>/ig, obj.data.image_name)
-	markup = markup.replace(/<<directory>>/ig, '/' + globals.WEBc_markup_link_resources(obj.page.id) + obj.data.directory)
+	markup = markup.replace(/{{width}}/ig, data.width)
+	markup = markup.replace(/{{height}}/ig, data.height)
+	markup = markup.replace(/{{image_name}}/ig, data.image_name)
+	markup = markup.replace(/{{directory}}/ig, '/' + globals.WEBc_markup_link_resources(obj.page.id) + data.directory)
+	markup = markup.replace(/{{title}}/ig, data.title)
+	markup = markup.replace(/{{alt}}/ig, data.alt)
+	markup = markup.replace(/{{id}}/ig, dataConfig.cssId)
+	markup = markup.replace(/{{class}}/ig, dataConfig.cssClass)
 	
 	// return
 	return markup
+}
+
+/**
+ * Perform the element default action.
+ *
+ * @param {JSEvent} event the event that triggered the action
+ *
+ * @properties={typeid:24,uuid:"E78D3F8A-024C-4F3C-8E4A-CFB6EE31E3DD"}
+ */
+function GOTO_asset(event) {
+	var pk = globals.WEBc_block_getData(controller.getName()).id_asset_instance
+	
+	if (pk) {
+		var fsAssetInstance = databaseManager.getFoundSet('sutra_cms','web_asset_instance')
+		fsAssetInstance.find()
+		fsAssetInstance.id_asset_instance = pk
+		var results = fsAssetInstance.search()
+		
+		if (results) {
+			globals.TRIGGER_navigation_set('CMS_asset',true,[fsAssetInstance.id_asset])
+			
+			forms.WEB_0F_asset_1F_2L_asset_instance.foundset.selectRecord(application.getUUID(pk))
+		}
+	}
 }
 
 /**
@@ -164,8 +227,17 @@ function VIEW_lightbox() {
  */
 function TOGGLE_buttons(event) {
 	var editStatus = globals.WEBc_block_getEdit()
+	var data = globals.WEBc_block_getData(controller.getName())
+	var hasData = data.id_asset_instance ? true : false
 	
-	var hasData = globals.WEBc_block_getData(event).id_asset_instance ? true : false
+	elements.var_cssId.transparent = editStatus
+	elements.var_cssId.editable = editStatus
+	elements.var_cssClass.transparent = editStatus
+	elements.var_cssClass.editable = editStatus
+	elements.var_title.transparent = editStatus
+	elements.var_title.editable = editStatus
+	elements.var_alt.transparent = editStatus
+	elements.var_alt.editable = editStatus
 	
 	elements.btn_choose.enabled = editStatus
 	elements.btn_import.enabled = editStatus
@@ -173,7 +245,22 @@ function TOGGLE_buttons(event) {
 	elements.lbl_choose.enabled = editStatus
 	elements.lbl_import.enabled = editStatus
 	elements.lbl_scale.enabled = editStatus && hasData
+	
+	//only allow to jump to related asset if one selected and not in edit mode
+	var fileFound = false
+	if (hasData) {
+		var fsAssetInstance = databaseManager.getFoundSet('sutra_cms','web_asset_instance')
+		fsAssetInstance.find()
+		fsAssetInstance.id_asset_instance = data.id_asset_instance
+		var fileFound = fsAssetInstance.search()
+	}
+	elements.btn_visit.visible = !editStatus && fileFound
 }
+
+/**
+ * @properties={typeid:35,uuid:"C12AC761-67DE-4861-BBB0-F32EDC4C852E"}
+ */
+var _file = null;
 
 /**
  * @properties={typeid:24,uuid:"5896D844-D8AA-4C31-84B2-D77EAE012F1D"}
@@ -203,18 +290,23 @@ function INIT_block() {
 	// block web actions
 	block.webActions = globals.WEBc_block_type_getMethods(controller.getName(),"WEB")
 	
+	//MEMO: everything in block.data so don't need to refactor old stuff
+	
 	// block data points
 	block.data = {
 		directory : 'TEXT',
 		image_name : 'TEXT',
 		height : 'INTEGER',
 		width : 'INTEGER',
+		title : 'TEXT',
+		alt : 'TEXT',
 		id_asset_instance : 'TEXT'
 	}
 	
 	// block configure data points
 	block.blockConfigure = {
-		
+		cssId : 'TEXT',
+		cssClass : 'TEXT'
 	}
 	
 	// block response data points
@@ -245,6 +337,7 @@ function FORM_on_show(firstShow, event) {
  */
 function INIT_data() {
 	var data = globals.WEBc_block_getData(controller.getName())
+	var dataConfig = globals.WEBc_block_getConfig(controller.getName())
 	
 	//no image set yet
 	if (!data.image_name){
@@ -265,10 +358,24 @@ function INIT_data() {
 	}
 	
 	TOGGLE_buttons()
+	
+	//save down form variables
+	_cssClass = dataConfig.cssClass
+	_cssId = dataConfig.cssId
+	_title = data.title
+	_alt = data.alt
+	_file = ''
+	if (data.directory) {
+		_file += data.directory + '/'
+	}
+	if (data.image_name) {
+		_file += data.image_name
+	}
+	
 	if (elements.bn_browser) {
 		elements.bn_browser.html = html
 	}
 	else {
-		globals.WEB_browser_error()
+		globals.WEBc_browser_error()
 	}
 }

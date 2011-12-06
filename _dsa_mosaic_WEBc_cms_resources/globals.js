@@ -9,6 +9,22 @@ var WEB_block_page_mode = false;
 var WEB_block_on_select = true;
 
 /**
+ * @properties={typeid:24,uuid:"88B20E7F-82B4-4235-87EE-C291469E681A"}
+ */
+function WEBc_browser_error() {
+	var input = plugins.dialogs.showErrorDialog(
+				'Error',
+				'The Browser Suite did not initialize properly.\nRestart client now.',
+				'Yes',
+				'No'
+		)
+	
+	if (input == 'Yes') {
+		application.exit()
+	}
+}
+
+/**
  * Populate meta data for selected block.
  * 
  * @param	{String}	formName The block_type form.
@@ -496,6 +512,40 @@ function WEBc_block_save() {
 //		//toggle upstream _editMode, but don't retrigger a save
 //		forms[formName].ACTION_save(null,true)
 //	}
+}
+
+/**
+ * Handle changed data.
+ *
+ * @param {Object} oldValue old value
+ * @param {Object} newValue new value
+ * @param {JSEvent} event the event that triggered the action
+ *
+ * @returns {Boolean}
+ *
+ * @properties={typeid:24,uuid:"1F9B9D43-3D26-4D27-A28A-BD00655990A6"}
+ */
+function WEBc_block_fld_data_change__data(oldValue, newValue, event) {
+	var key = event.getElementName().split('_')[1]
+	
+	globals.WEBc_block_setData(event,key,newValue)
+}
+
+/**
+ * Handle changed data.
+ *
+ * @param {Object} oldValue old value
+ * @param {Object} newValue new value
+ * @param {JSEvent} event the event that triggered the action
+ *
+ * @returns {Boolean}
+ * 
+ * @properties={typeid:24,uuid:"E220DA63-D0DA-48FD-8531-BB7489C01F49"}
+ */
+function WEBc_block_fld_data_change__config(oldValue, newValue, event) {
+	var key = event.getElementName().split('_')[1]
+	
+	globals.WEBc_block_setConfig(event,key,newValue)
 }
 
 /**

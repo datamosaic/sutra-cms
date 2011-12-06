@@ -16,7 +16,7 @@ var _dataValue = null;
  */
 function VIEW_default(obj) {
 	// template
-	var markup = obj.data.HTML	
+	var markup = obj.block_data.HTML	
 	
 	// return
 	return markup
@@ -131,7 +131,7 @@ function TOGGLE_buttons(state) {
 		elements.bn_browser.visible = !state
 	}
 	else {
-		globals.WEB_browser_error()
+		globals.WEBc_browser_error()
 	}
 	
 	//cancel is always an option if in browser mode
@@ -342,7 +342,7 @@ function ACTION_colorize() {
 		elements.bn_browser.html = html
 	}
 	else {
-		globals.WEB_browser_error()
+		globals.WEBc_browser_error()
 	}
 	
 	TOGGLE_buttons(false)

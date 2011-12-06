@@ -7,6 +7,7 @@ var _license_dsa_mosaic_WEB_cms = 'Module: _dsa_mosaic_WEB_cms \
 
 /**
  * @param	{Object}	obj Data object passed to all markup methods
+ * 
  * @properties={typeid:24,uuid:"F20BDBF7-8CB2-4035-A50B-0785CE98FC00"}
  */
 function VIEW_default(obj) {

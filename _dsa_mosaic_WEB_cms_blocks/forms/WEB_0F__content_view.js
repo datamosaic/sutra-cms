@@ -23,6 +23,6 @@ function INIT_data() {
 		elements.bn_browser.html = html
 	}
 	else {
-		globals.WEB_browser_error()
+		globals.WEBc_browser_error()
 	}
 }
