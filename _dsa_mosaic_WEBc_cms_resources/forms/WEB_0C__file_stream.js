@@ -279,12 +279,14 @@ function THEME_new(progress) {
 	
 	else if ( progress == 3 ) {
 		
+		var jspArray = []
+		
 		//TODO: check if elements directory
 		if ( plugins.file.convertToRemoteJSFile(_themes[_themesSelected].path + "/elements").exists() ) {
 			var jspArray = plugins.file.getRemoteFolderContents(_themes[_themesSelected].path + "/elements", null, 1)	
 		}
 		else {
-			return "no elements directory"   // keep processing main method though
+			application.output("no elements directory")   // keep processing main method though
 		}
 		
 		_elements = {}						// reset elements object
