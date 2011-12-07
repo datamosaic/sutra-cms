@@ -19,13 +19,14 @@ var _lastToolbar = null;
  * @properties={typeid:24,uuid:"10F5E463-15E2-4C0B-858D-F62E76FEDFBF"}
  */
 function FORM_on_show(firstShow, event) {
-	//first time go to sitemap view
-	if (firstShow) {
-		globals.TRIGGER_ul_tab_list('WEB_0T_page','Sitemap',0)
-	}
-	
 	//don't run in headless or web client (they use whatever solution is activated as context)
 	if (application.getApplicationType() == APPLICATION_TYPES.SMART_CLIENT || application.getApplicationType() == APPLICATION_TYPES.RUNTIME_CLIENT) {
+		
+		//first time go to sitemap view (do at end so everything loaded already)
+		if (firstShow) {
+			globals.TRIGGER_ul_tab_list('WEB_0T_page','Sitemap',0)
+		}
+		
 		//save down currently selected toolbar
 		if (application.__parent__.solutionPrefs && !solutionPrefs.config.lockStatus) {
 			//when progressbar is active, take from previous toolbar
@@ -79,7 +80,7 @@ function FORM_on_show(firstShow, event) {
 			globals.WEB_block_on_select = true
 			
 			//need to reload the tree, update globals showing
-			if (forms.WEB_0T_page._refresh) {
+			if (forms.WEB_0T_page._refresh || firstShow) {
 				_loadFilters = true
 				SET_globals()
 			}

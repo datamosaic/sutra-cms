@@ -16,7 +16,6 @@ function REC_on_select(event) {
 	//find site-specific stuff
 	//only do this when not running in data sutra
 	if (!application.__parent__.solutionPrefs) {
-//		forms.WEB_0T_page.FORM_on_load() //covered with refresh flag on tree view bean
 		forms.WEB_0F_block__scrapbook.FORM_on_load()
 		forms.WEB_0F_asset.FORM_on_load()
 		forms.WEB_0F_theme.FORM_on_load()
