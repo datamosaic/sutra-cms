@@ -234,3 +234,22 @@ function INIT_block() {
 	
 	return block
 }
+
+/**
+ * Handle changed data.
+ *
+ * @param {Object} oldValue old value
+ * @param {Object} newValue new value
+ * @param {JSEvent} event the event that triggered the action
+ *
+ * @returns {Boolean}
+ *
+ * @properties={typeid:24,uuid:"EAF1F56A-8C93-4502-BDA4-BB78E2FFB658"}
+ */
+function FLD_module__data_change(oldValue, newValue, event) {
+	//save data
+	globals.WEBc_block_fld_data_change__data(oldValue, newValue, event)
+	
+	//refresh form valuelist
+	SET_forms()
+}
