@@ -126,6 +126,10 @@ function ACTION_hide(event) {
 	//refresh the browser bean
 	forms.WEB_0F_page__browser.URL_update(true)
 	
+	//wiggle window by 1px to force refresh
+	application.setWindowSize(application.getWindowWidth(),application.getWindowHeight() - 1)
+	application.setWindowSize(application.getWindowWidth(),application.getWindowHeight() + 1)
+	
 	globals.CODE_cursor_busy(false)
 	
 	return true
