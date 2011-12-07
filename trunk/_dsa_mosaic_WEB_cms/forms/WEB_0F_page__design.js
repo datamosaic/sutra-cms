@@ -41,6 +41,11 @@ function FORM_on_show(firstShow, event) {
 			REC_on_select()
 		}
 	}
+	//re-fire the selected block gui method
+		//MEMO: when coming to page after viewing a scrapbook, this doesn't get updated
+	else {
+		forms.WEB_0F_page__design_1F_version_2L_scope.ACTION_gui_mode_load()
+	}
 }
 
 /**
