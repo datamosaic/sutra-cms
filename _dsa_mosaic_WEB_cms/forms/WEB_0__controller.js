@@ -236,9 +236,16 @@ function CONTROLLER_builder(results, obj) {
 							var markupedData = 'Error with block configuration'
 						}
 						
-						areaMarkup += '<div id="sutra-block-data-' + utils.stringReplace(block.id_block.toString(),'-','') + '">\n'
-						areaMarkup += markupedData + '\n'
-						areaMarkup += "</div>\n"
+						//this block is not editable (it's a scrapbook)
+						if (block.scope_type) {
+							areaMarkup += markupedData + '\n'
+						}
+						//this block is editable (not a scrapbook)
+						else {
+							areaMarkup += '<div id="sutra-block-data-' + utils.stringReplace(block.id_block.toString(),'-','') + '">\n'
+							areaMarkup += markupedData + '\n'
+							areaMarkup += "</div>\n"
+						}
 		
 					}
 					// deployed (no divs)

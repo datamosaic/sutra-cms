@@ -18,6 +18,15 @@ uuid:"07705AAF-4A36-47FA-B884-EE46F48A9451"
 },
 {
 anchors:15,
+items:[
+{
+containsFormID:"48550E53-F097-4840-B28B-335BAB804557",
+location:"0,20",
+text:"WEB_0F_page__design_1F_version_2F_block__gui_3F__blank",
+typeid:15,
+uuid:"AAB1CF84-EF59-45B6-8423-C76CBBBEBF88"
+}
+],
 location:"0,17",
 name:"tab_edit",
 printable:false,

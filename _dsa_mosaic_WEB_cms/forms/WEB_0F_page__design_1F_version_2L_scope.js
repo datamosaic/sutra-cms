@@ -529,6 +529,7 @@ function ACTION_gui_mode_load(fireSelect) {
 						var formName = recBlockType.form_name_display || recBlockType.form_name
 					}
 					
+					//set heading for this tab panel
 					forms[contextForm].elements.lbl_banner.text = (recBlockType.block_name || 'Unnamed') + ' block'
 					
 					//the form exists and it isn't in the currently selected tab or there was an error with something previously
