@@ -1202,25 +1202,28 @@ function WEB_browser_forms(beanType) {
 	
 	var browserForms = new Array()
 	
-	var workspace = plugins.sutra.getWorkspace().substr(5)
-	var modules = plugins.file.getFolderContents(workspace, null, 2)
-	
-	for (var i = 0; i < modules.length; i++) {
-		var module = modules[i]
+	//only preload forms when the sutra plugin is available
+	if (plugins.sutra && plugins.sutra.getWorkspace && plugins.sutra.getWorkspace()) {
+		var workspace = plugins.sutra.getWorkspace().substr(5)
+		var modules = plugins.file.getFolderContents(workspace, null, 2)
 		
-		var theForms = plugins.file.getFolderContents(module.getAbsolutePath() + '/forms', '.frm', 1)
-		
-		//if this 'module' has forms, proceed
-		if (theForms.length) {
-			//fill it
-			for (var j = 0; j < theForms.length; j++) {
-				var thisForm = theForms[j]
-				var nameForm = thisForm.getName().substr(0,thisForm.getName().length - 4)
-				
-				var aboutForm = plugins.file.readTXTFile(thisForm)
-				
-				if (utils.stringPatternCount(aboutForm,beanType)) {
-					browserForms.push(nameForm)
+		for (var i = 0; i < modules.length; i++) {
+			var module = modules[i]
+			
+			var theForms = plugins.file.getFolderContents(module.getAbsolutePath() + '/forms', '.frm', 1)
+			
+			//if this 'module' has forms, proceed
+			if (theForms.length) {
+				//fill it
+				for (var j = 0; j < theForms.length; j++) {
+					var thisForm = theForms[j]
+					var nameForm = thisForm.getName().substr(0,thisForm.getName().length - 4)
+					
+					var aboutForm = plugins.file.readTXTFile(thisForm)
+					
+					if (utils.stringPatternCount(aboutForm,beanType)) {
+						browserForms.push(nameForm)
+					}
 				}
 			}
 		}
