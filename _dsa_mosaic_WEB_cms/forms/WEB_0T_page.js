@@ -384,7 +384,7 @@ function FORM_on_load(event) {
 	beanTree.setCallBackInfo(REC_on_select,'id_page') 
 	
 	//load some data into the tree
-	TREE_refresh()
+	TREE_refresh(true)
 	
 	//force highlightion of first record unless called from duplicate rec
 	if (utils.hasRecords(forms.WEB_0F_page.foundset) && event) {
@@ -1360,9 +1360,11 @@ function TABS_list(input) {
 /**
  * @properties={typeid:24,uuid:"FF2A28E9-E80B-4ECE-B76D-34E9765F7640"}
  */
-function TREE_refresh() {
+function TREE_refresh(firstLoad) {
 	//disable record selection of page
-	forms.WEB_0F_page__design._skipSelect = true
+	if (firstLoad) {
+		forms.WEB_0F_page__design._skipSelect = true
+	}
 	
 	//remove all roots from tree
 	elements.bean_tree.removeAllRoots()
@@ -1393,5 +1395,7 @@ function TREE_refresh() {
 	}
 	
 	//enable record selection of page
-	forms.WEB_0F_page__design._skipSelect = false
+	if (firstLoad) {
+		forms.WEB_0F_page__design._skipSelect = false
+	}
 }
