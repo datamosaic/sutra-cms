@@ -364,18 +364,33 @@ function ACTION_gui_mode_load() {
 		
 		forms[contextForm].elements.lbl_banner.text = (recBlockType.block_name || 'Unnamed') + ' block'
 		
-		//the form exists and it isn't in the currently selected tab
-		if (formName && forms[formName] && formName != tabPanel.getTabFormNameAt(tabPanel.tabIndex)) {
-			//load tab panel
+		//the form exists
+		if (formName && solutionModel.getForm(formName)) {
+			//load tab panel (relation not needed because we're manually filling the foundset)
 			tabPanel.addTab(forms[formName])
 			tabPanel.tabIndex = tabPanel.getMaxTabIndex()
 			
 			//force the gui to update
 			if (solutionModel.getForm(formName) && solutionModel.getForm(formName).getFormMethod('INIT_data')) {
-				forms[formName].foundset.loadRecords(foundset)
+				if (forms[formName].foundset) {
+					forms[formName].foundset.loadRecords(foundset)
+				}
+				else {
+					var restart = plugins.dialogs.showWarningDialog(
+							'Warning',
+							'Changes made in developer have caused foundsets to become unhooked.\nRestart?',
+							'Yes',
+							'No'
+						)
+					
+					//restart
+					if (restart == 'Yes') {
+						application.exit()
+					}
+				}
 				
 				forms[formName].INIT_data()
-			}			
+			}
 		}
 		else {
 			tabPanel.tabIndex = 1
