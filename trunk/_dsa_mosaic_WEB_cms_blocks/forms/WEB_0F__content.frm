@@ -253,6 +253,7 @@ uuid:"F43ECECC-00FC-485E-A432-3222F5C11B41"
 }
 ],
 name:"WEB_0F__content",
+namedFoundSet:"separate",
 navigatorID:"-1",
 onLoadMethodID:"2C01CB8B-1D9F-46AE-A205-E94F2E746805",
 onShowMethodID:"3FB8B2D5-D274-440F-A336-4912CB1DE292",

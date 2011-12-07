@@ -19,6 +19,7 @@ uuid:"D6BCE419-EF25-487F-AEB0-E0020C3BDE40"
 }
 ],
 name:"WEB_0F___starter_block",
+namedFoundSet:"separate",
 navigatorID:"-1",
 onShowMethodID:"-1",
 paperPrintScale:100,

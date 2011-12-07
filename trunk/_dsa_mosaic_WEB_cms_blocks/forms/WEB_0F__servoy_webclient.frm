@@ -257,6 +257,7 @@ valuelistID:"77D0774F-AF89-4A8F-9C8F-A9675DA85A75"
 }
 ],
 name:"WEB_0F__servoy_webclient",
+namedFoundSet:"separate",
 navigatorID:"-1",
 onShowMethodID:"-1",
 paperPrintScale:100,
