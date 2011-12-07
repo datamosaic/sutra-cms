@@ -35,19 +35,23 @@ function FORM_on_show(firstShow, event) {
 	var recBlock = foundset.getSelectedRecord()
 			
 	if (recBlock) {
-//		//is this a scrapbook
-//		if (recBlock.scope_type) {
-//			plugins.dialogs.showWarningDialog(
-//						'Warning',
-//						'Scrapbooks cannot be edited when in real mode.'
-//					)
-//			
-//			return false
-//		}
+		//TODO: remove!
+		//is this a scrapbook
+		if (recBlock.scope_type) {
+			plugins.dialogs.showWarningDialog(
+						'Warning',
+						'Scrapbooks cannot be edited when in real mode.'
+					)
+			
+			return false
+		}
 		
 		if (recBlock && utils.hasRecords(recBlock.web_block_to_block_type)) {
 			var recBlockType = recBlock.web_block_to_block_type.getRecord(1)
 		}
+		
+		//check to make sure the active block version is editable
+		var flagEdit = forms.WEB_0F_page.ACTION_edit_get() && utils.hasRecords(recBlock,'web_block_to_block_version') && !recBlock.web_block_to_block_version.flag_lock
 		
 		//this block definition exists
 		if (recBlockType) {
@@ -58,14 +62,35 @@ function FORM_on_show(firstShow, event) {
 			
 			//the form exists and it isn't in the currently selected tab
 			if (formName && forms[formName] && formName != tabPanel.getTabFormNameAt(tabPanel.tabIndex)) {
-				var relationName = solutionModel.getForm(formName).dataSource == 'db:/sutra_cms/web_block' ? 'web_block_to_block' : null
-				
 				//load tab panel
-				tabPanel.addTab(forms[formName],null,null,null,null,null,null,relationName)
+				tabPanel.addTab(forms[formName])
 				tabPanel.tabIndex = tabPanel.getMaxTabIndex()
+				
+				//force the gui to update
+				if (solutionModel.getForm(formName) && solutionModel.getForm(formName).getFormMethod('INIT_data')) {
+					if (forms[formName].foundset) {
+						forms[formName].foundset.loadRecords(foundset)
+					}
+					else {
+						var restart = plugins.dialogs.showWarningDialog(
+								'Warning',
+								'Changes made in developer have caused foundsets to become unhooked.\nRestart?',
+								'Yes',
+								'No'
+							)
+						
+						//restart
+						if (restart == 'Yes') {
+							application.exit()
+						}
+					}
+					
+					forms[formName].INIT_data()
+				}
 			}
 			else {
-				tabPanel.tabIndex = tabPanel.getMaxTabIndex()
+				//clear out to blank form	//TODO: should probably be error message that form isn't included properly
+				tabPanel.tabIndex = 1
 			}
 			
 			return true
