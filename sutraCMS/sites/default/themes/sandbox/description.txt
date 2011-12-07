@@ -1,2 +1,0 @@
-Sandbox
-Template for demoing various features and blocks as they are implemented. Duplicating this theme and modifying it for your own use is also another possibility although we recommend the OOCSS theme as a more robust starting point.
