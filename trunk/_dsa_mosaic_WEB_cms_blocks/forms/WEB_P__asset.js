@@ -74,9 +74,10 @@ function LOAD_data(assetType) {
 	
 	//asset type specified, only show those records
 	if (assetType) {
-		//only load up images
+		//only load up requested assets, scope by site
 		fsAsset.find()
 		fsAsset.asset_type = assetType
+		fsAsset.id_site = forms.WEB_0F_site.id_site
 		var results = fsAsset.search()
 		
 		//set title text
