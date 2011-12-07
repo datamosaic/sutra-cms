@@ -8,7 +8,6 @@ uuid:"484FD51A-928F-4A78-A757-66FC98AABE3C"
 ],
 name:"WEB_0C__mongodb",
 paperPrintScale:100,
-showInMenu:true,
 size:"640,480",
 styleName:"_DATASUTRA_",
 typeid:3,
