@@ -535,7 +535,7 @@ function ACTION_save() {
 			// get editable regions based on layout selected
 			if (!utils.hasRecords(newVersion,'web_version_to_layout.web_layout_to_editable')) {
 				globals.CODE_cursor_busy(false)
-				return 'No editables for selected layout'
+				application.output('No editables for selected layout')
 			}
 			
 			var layout = newVersion.web_version_to_layout.getSelectedRecord()
