@@ -135,32 +135,6 @@ function INIT_data() {
 }
 
 /**
- * Handle changed data.
- *
- * @param {Object} oldValue old value
- * @param {Object} newValue new value
- * @param {JSEvent} event the event that triggered the action
- *
- * @returns {Boolean}
- *
- * @properties={typeid:24,uuid:"C7AFC905-C1D4-40A1-BE2C-139B76AFC2A9"}
- */
-function FLD_data_change(oldValue, newValue, event) {
-	var key = event.getElementName().split('_')[1]
-	
-	if (key == 'form' || key == 'module') {
-		globals.WEBc_block_setData(event,key,newValue)
-	}
-	else {
-		globals.WEBc_block_setConfig(event,key,newValue)
-	}
-	
-	if (key == 'module') {
-		SET_forms()
-	}
-}
-
-/**
  * @properties={typeid:24,uuid:"0829A6D7-6C0C-4C82-92B7-6BB50829DD5F"}
  */
 function SET_forms() {
