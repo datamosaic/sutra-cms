@@ -401,6 +401,10 @@ function WEB_servoy_wc_controller(startup, args) {
 			forms[args.form].controller.show()
 		}
 	}
+	//show blank page because something not configured correctly
+	else {
+		forms.WEB_0__startup.controller.show()
+	}
 }
 
 /**
