@@ -267,6 +267,7 @@ uuid:"FCB8E1E7-614D-469D-B1B3-8EDBB06A73C5"
 }
 ],
 name:"WEB_0F__file",
+namedFoundSet:"separate",
 navigatorID:"-1",
 onShowMethodID:"-1",
 paperPrintScale:100,

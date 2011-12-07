@@ -51,6 +51,7 @@ uuid:"9BA611AB-E54E-4A6D-B0EB-436BBF824ED4"
 }
 ],
 name:"WEB_0F__content_view",
+namedFoundSet:"separate",
 navigatorID:"-1",
 onLoadMethodID:"-1",
 onShowMethodID:"-1",

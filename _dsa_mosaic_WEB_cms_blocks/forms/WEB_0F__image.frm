@@ -350,6 +350,7 @@ uuid:"F2FB382C-AEAB-4009-810A-BC812735DF80"
 }
 ],
 name:"WEB_0F__image",
+namedFoundSet:"separate",
 navigatorID:"-1",
 onLoadMethodID:"-1",
 onShowMethodID:"6DABA0D5-F686-47B6-8F76-860D5D0B0209",
