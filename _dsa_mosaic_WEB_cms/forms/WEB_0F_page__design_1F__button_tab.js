@@ -76,7 +76,7 @@ function VISIT_page(event,returnURL,toClippy) {
 		if (fsPage.page_type != 2) {
 			//specify index-style so parameters of platform, language, group, version guaranteed to work
 				//will be re-directed to correctlyu url by controller
-			var urlString = globals.WEBc_markup_link_page(fsPage.id_page,null,'Index')
+			var urlString = globals.WEBc_markup_link_page(fsPage.id_page.toString() + '_' + forms.WEB_0F_page__design_1F__header_display_2F_language._language.id_language.toString(),null,'Index')
 			
 			if (utils.hasRecords(forms.WEB_0F_page__design_1F__header_display_2F_platform._platform)) {
 				urlString += "&platform=" + forms.WEB_0F_page__design_1F__header_display_2F_platform._platform.url_param
