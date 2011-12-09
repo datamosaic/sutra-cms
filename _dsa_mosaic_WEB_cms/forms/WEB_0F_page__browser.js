@@ -202,7 +202,7 @@ function URL_update(webMode) {
 		}
 		//show version for selected platform-language-group combo
 		else {
-			var urlString = globals.WEBc_markup_link_page(id_page,null,'Edit',webMode)
+			var urlString = globals.WEBc_markup_link_page(id_page.toString() + '_' + forms.WEB_0F_page__design_1F__header_display_2F_language._language.id_language.toString(),null,'Edit',webMode)
 			
 			if (utils.hasRecords(forms.WEB_0F_page__design_1F__header_display_2F_platform._platform)) {
 				urlString += "&platform=" + forms.WEB_0F_page__design_1F__header_display_2F_platform._platform.url_param
