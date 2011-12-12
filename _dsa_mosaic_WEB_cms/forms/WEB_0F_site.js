@@ -410,14 +410,6 @@ function FORM_on_show(firstShow, event) {
 	else {
 		elements.fld_multisite_key.enabled = false
 	}
-	
-	//restore last selected toolbar
-	if (application.__parent__.solutionPrefs && !solutionPrefs.config.lockStatus && forms.WEB_0F_page._lastToolbar) {
-		//make sure on whatever last toolbar was
-		globals.TRIGGER_toolbar_set(forms.WEB_0F_page._lastToolbar)
-		
-		forms.WEB_0F_page._lastToolbar = null
-	}
 }
 
 /**
