@@ -29,6 +29,11 @@ function FORM_on_show(firstShow, event) {
 	if (firstShow) {
 		if (!utils.hasRecords(foundset)) {
 			controller.newRecord()
+			
+			type_server = 'Mac'
+			directory_linux = '/opt/servoy'
+			directory_mac = '/Applications/Servoy'
+			directory_windows = '/Servoy'
 		}
 	
 		//on first show of form, show correct field
