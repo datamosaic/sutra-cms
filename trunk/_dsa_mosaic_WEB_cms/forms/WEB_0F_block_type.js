@@ -63,194 +63,8 @@ function FLD_data_change__block_name(oldValue, newValue, event) {
  * @properties={typeid:24,uuid:"4BC73EC6-1B92-4A66-92D8-8CB57957F0D4"}
  */
 function BATCH_create() {
-	//mapping for things to create
-//	var mapping = new Array()
-//	
-//	var blockContent = {
-//				block_name	: 'Content',
-//				block_description	: 'Generic freeform content. HTML/CSS for structure and formatting.\n\nUses TinyMCE to edit content.',
-//				form_name	: 'WEB_0B_content',
-//				interaction	: '',
-//				web_block_type_to_block_display	: [
-//                               	   {
-//							description	: '',
-//							display_name	: 'Default',
-//							flag_default	: 1,
-//							method_name	: 'VIEW_default'
-//						}
-//						],
-//				
-//				web_block_type_to_block_input	: [
-//                               	   {
-//							column_name	: 'Content',
-//							column_type	: 'Text',
-//							description	: ''
-//						}
-//						]
-//			}
-//	mapping.push(blockContent)
-//	
-//	
-//	var blockImage = {
-//				block_name	: 'Image',
-//				block_description	: '',
-//				form_name	: 'WEB_0B_image',
-//				interaction	: '',
-//				web_block_type_to_block_display	: [
-//                               	   {
-//							description	: '',
-//							display_name	: 'Default',
-//							flag_default	: 1,
-//							method_name	: 'VIEW_default'
-//						},
-//						      	   {
-//							description	: '',
-//							display_name	: 'FID',
-//							flag_default	: 0,
-//							method_name	: 'VIEW_fid'
-//						}
-//						],
-//				
-//				web_block_type_to_block_input	: [
-//                               	   {
-//							description	: '',
-//							input_name	: 'Image import...',
-//							method_name	: 'ACTION_import'
-//						},
-//						      	   {
-//							description	: '',
-//							input_name	: 'Scale image...',
-//							method_name	: 'ACTION_image_scale'
-//						},
-//						      	   {
-//							description	: '',
-//							input_name	: 'Choose image...',
-//							method_name	: 'ACTION_choose_image'
-//						}
-//						],	
-//				
-//				web_block_type_to_block_input	: [
-//                               	   {
-//							column_name	: 'image_name',
-//							column_type	: 'text',
-//							description	: ''
-//						},
-//						      	   {
-//							column_name	: 'image_type',
-//							column_type	: 'text',
-//							description	: ''
-//						},
-//									{
-//							column_name	: 'image_extension',
-//							column_type	: 'text',
-//							description	: ''
-//						},
-//						      	   {
-//							column_name	: 'height',
-//							column_type	: 'integer',
-//							description	: ''
-//						},
-//									{
-//							column_name	: 'width',
-//							column_type	: 'integer',
-//							description	: ''
-//						},
-//						      	   {
-//							column_name	: 'rec_created',
-//							column_type	: 'datetime',
-//							description	: ''
-//						},
-//									{
-//							column_name	: 'directory',
-//							column_type	: 'text',
-//							description	: ''
-//						},
-//						      	   {
-//							column_name	: 'height_original',
-//							column_type	: 'integer',
-//							description	: ''
-//						},
-//									{
-//							column_name	: 'width_original',
-//							column_type	: 'integer',
-//							description	: ''
-//						}
-//						]
-//			}
-//	mapping.push(blockImage)	
-//	 
-//	var blockNavigation = {
-//				block_name	: 'Navigation',
-//				block_description	: 'Different navigation setups',
-//				form_name	: 'WEB_0B_page__navigation',
-//				interaction	: '',
-//				web_block_type_to_block_display	: [
-//                               	   {
-//							description	: 'Main navigation as a column list',
-//							display_name	: 'Default',
-//							flag_default	: 1,
-//							method_name	: 'VIEW_default'
-//						},
-//						      	   {
-//							description	: 'Navigation as a breadcrumb to current page',
-//							display_name	: 'Breadcrumb',
-//							flag_default	: 0,
-//							method_name	: 'VIEW_breadcrumb'
-//						}
-//						]
-//			}
-//	mapping.push(blockNavigation)	
-//	
-//	
-//	var blockPage = {
-//				block_name	: 'Page List',
-//				block_description	: 'Linked page list',
-//				form_name	: 'WEB_0B_page__page_list',
-//				interaction	: '',
-//				web_block_type_to_block_display	: [
-//                               	   {
-//							description	: '',
-//							display_name	: 'Default',
-//							flag_default	: 1,
-//							method_name	: 'VIEW_default'
-//						}
-//						]
-//			}
-//	mapping.push(blockPage)	
-//	
-//	//create blocks from mapping
-//	for (var i = 0; i < mapping.length; i++) {
-//		var thisItem = mapping[i]
-//		
-//		//create new block
-//		var recBlock = foundset.getRecord(foundset.newRecord(false,true))
-//		
-//		//tie to site
-//		recBlock.id_site = forms.WEB_0F_site.id_site
-//		
-//		//loop over all properties and create
-//		for (var j in thisItem) {
-//			//repeat
-//			if (thisItem[j] instanceof Array) {
-//				for (var k = 0; k < thisItem[j].length; k++) {
-//					var subItem = thisItem[j][k]
-//					
-//					//add a record
-//					var subRec = recBlock[j].getRecord(recBlock[j].newRecord(false,true))
-//					
-//					//fill values
-//					for (var l in subItem) {
-//						subRec[l] = subItem[l]
-//					}
-//				}
-//			}
-//			//fill value
-//			else {
-//				recBlock[j] = thisItem[j]
-//			}
-//		}
-//	}
-
+	REC_new(null,'WEB_0F__content')
+	REC_new(null,'WEB_0F__image')
 }
 
 /**
@@ -263,76 +77,78 @@ function BATCH_create() {
  * @param {boolean} flagRefresh refresh current block if true
  * @properties={typeid:24,uuid:"98C31479-A1EE-4A13-9F2F-0752680E3428"}
  */
-function REC_new(flagRefresh) {
+function REC_new(flagRefresh,formName) {
 	if (utils.hasRecords(forms.WEB_0F_site.foundset)) {
 		//no records created yet and interface locked
 		if (application.__parent__.solutionPrefs && solutionPrefs.design.statusLockWorkflow) {
 			globals.WEB_lock_workflow(false)
 		}
 		
-		if (!flagRefresh) {
-			//get current list of forms that are valid
-			var validForms = FIND_forms()
-			
-			if (validForms && validForms.length) {
-//				var formName = plugins.dialogs.showSelectDialog(
-//							'New block',
-//							'Choose the form that describes the block you want to create',
-//							validForms
-//					)
+		//form not specified, prompt to add new block or refresh current
+		if (!formName) {
+			if (!flagRefresh) {
+				//get current list of forms that are valid
+				var validForms = FIND_forms()
 				
-				// 1) choose form to register as a block
-				application.showFormInDialog(
-									forms.WEB_P__block_type__new,
-									-1,-1,-1,-1,
-									' ',
-									true,
-									false,
-									'cmsBlockTypeNew'
-								)	
-				
-				//this should be forms.WEB_P__block_type__new._formName...some scoping issue (fid cancel hack...)
-				if ( forms.WEB_0F_block_type._formName == undefined ) {
-					return "Action cancelled"
-				}	
-				
-				var formName = _formName
-				
-				//now delete _formName (.../fid cancel hack)
-				delete forms.WEB_0F_block_type._formName
-			}
+				if (validForms && validForms.length) {
+	//				var formName = plugins.dialogs.showSelectDialog(
+	//							'New block',
+	//							'Choose the form that describes the block you want to create',
+	//							validForms
+	//					)
+					
+					// 1) choose form to register as a block
+					application.showFormInDialog(
+										forms.WEB_P__block_type__new,
+										-1,-1,-1,-1,
+										' ',
+										true,
+										false,
+										'cmsBlockTypeNew'
+									)	
+					
+					//this should be forms.WEB_P__block_type__new._formName...some scoping issue (fid cancel hack...)
+					if ( forms.WEB_0F_block_type._formName == undefined ) {
+						return "Action cancelled"
+					}	
+					
+					var formName = _formName
+					
+					//now delete _formName (.../fid cancel hack)
+					delete forms.WEB_0F_block_type._formName
+				}
+				else {
+					plugins.dialogs.showErrorDialog(
+								'Error',
+								'There are no unadded blocks in this solution'
+						)
+					return
+				}
+			}	
 			else {
-				plugins.dialogs.showErrorDialog(
-							'Error',
-							'There are no unadded blocks in this solution'
-					)
-				return
-			}
-		}	
-		else {
-			// use current block type record
-			var formName = form_name
+				// use current block type record
+				var formName = form_name
+				
+				var oldBlockInput = new Array()
+				var oldBlockConfig = new Array()
+				var oldBlockResponse = new Array()
 			
-			var oldBlockInput = new Array()
-			var oldBlockConfig = new Array()
-			var oldBlockResponse = new Array()
-		
-			for (var i = 1; i <= web_block_type_to_block_input.getSize(); i++) {
-				var record = web_block_type_to_block_input.getRecord(i)
-				oldBlockInput.push(record.column_name)
-			}
-			
-			for (var i = 1; i <= web_block_type_to_block_configure.getSize(); i++) {
-				var record = web_block_type_to_block_configure.getRecord(i)
-				oldBlockConfig.push(record.column_name)
-			}
-			
-			for (var i = 1; i <= web_block_type_to_block_response.getSize(); i++) {
-				var record = web_block_type_to_block_response.getRecord(i)
-				oldBlockResponse.push(record.column_name)
+				for (var i = 1; i <= web_block_type_to_block_input.getSize(); i++) {
+					var record = web_block_type_to_block_input.getRecord(i)
+					oldBlockInput.push(record.column_name)
+				}
+				
+				for (var i = 1; i <= web_block_type_to_block_configure.getSize(); i++) {
+					var record = web_block_type_to_block_configure.getRecord(i)
+					oldBlockConfig.push(record.column_name)
+				}
+				
+				for (var i = 1; i <= web_block_type_to_block_response.getSize(); i++) {
+					var record = web_block_type_to_block_response.getRecord(i)
+					oldBlockResponse.push(record.column_name)
+				}
 			}
 		}
-
 		
 		//a form picked and it exists in the solution
 		if (formName && forms[formName]) {
