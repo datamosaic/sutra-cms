@@ -68,9 +68,6 @@ function FORM_on_show(firstShow, event) {
 			
 			//set elements appropriately
 			forms.WEB_TB__web_mode.controller.enabled = false
-//			forms.WEB_TB__web_mode.elements.gfx_tool_left.enabled = true
-//			forms.WEB_TB__web_mode.elements.gfx_tool_center.enabled = true
-//			forms.WEB_TB__web_mode.elements.gfx_tool_right.enabled = true
 			
 			forms.WEB_A__page.TOGGLE_edit_mode(false)
 		}

@@ -669,10 +669,6 @@ function TOGGLE_elements(editAllow) {
 	elements.fld_flag_active.enabled = status
 	elements.fld_id_block_display__combo.visible = status
 	elements.fld_id_block_display__field.visible = !status
-	
-	//can remove with sutra update
-	elements.btn_down.enabled = false
-	elements.btn_up.enabled = false
 }
 
 /**
