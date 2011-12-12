@@ -155,6 +155,11 @@ function FORM_on_show(firstShow, event) {
 	
 	if (!utils.hasRecords(foundset)) {
 		globals.WEB_lock_workflow(true)
+		
+		//there are records in the pages used on list, clear
+		if (utils.hasRecords(forms.WEB_0F_asset_1L_page.foundset)) {
+			forms.WEB_0F_asset_1L_page.foundset.clear()
+		}
 	}
 }
 
