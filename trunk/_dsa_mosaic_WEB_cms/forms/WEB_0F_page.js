@@ -11,7 +11,7 @@ var _license_dsa_mosaic_WEB_cms = 'Module: _dsa_mosaic_WEB_cms \
 									MIT Licensed';
 
 /**
- * @properties={typeid:35,uuid:"41D49272-FB3B-4284-B2AB-C3233F1D9C3D"}
+ * @properties={typeid:35,uuid:"41D49272-FB3B-4284-B2AB-C3233F1D9C3D",variableType:4}
  */
 var _lastToolbar = null;
 
@@ -31,16 +31,15 @@ function FORM_on_show(firstShow, event) {
 		if (application.__parent__.solutionPrefs && !solutionPrefs.config.lockStatus) {
 			//when progressbar is active, take from previous toolbar
 			if (solutionPrefs.config.lastSelectedToolbar) {
-				var posn = solutionPrefs.config.lastSelectedToolbar
+				_lastToolbar = solutionPrefs.config.lastSelectedToolbar
 			}
 			//progressbar not active, take currently selected toolbar
 			else {
-				var posn = forms[solutionPrefs.config.formNameBase + '__header__toolbar'].elements.tab_toolbar.tabIndex - 1
+				_lastToolbar = forms[solutionPrefs.config.formNameBase + '__header__toolbar'].elements.tab_toolbar.tabIndex
 			}
 			
-			_lastToolbar = solutionPrefs.panel.toolbar[posn].tabName
-			
 			//make sure on page toolbar
+			globals.TRIGGER_toolbar_toggle('Web Edit',true)
 			globals.TRIGGER_toolbar_set('Web Edit')
 		}
 		
@@ -105,14 +104,16 @@ function FORM_on_hide(event) {
 		
 		forms.WEB_TB__web_mode.controller.enabled = true
 		
-		//moved to onShow of all other Sutra CMS forms
-//		//restore last selected toolbar
-//		if (application.__parent__.solutionPrefs && !solutionPrefs.config.lockStatus) {
-//			//make sure on whatever last toolbar was
-//			globals.TRIGGER_toolbar_set(_lastToolbar)
-//			
-//			_lastToolbar = null
-//		}
+		//restore last selected toolbar
+		if (application.__parent__.solutionPrefs && !solutionPrefs.config.lockStatus) {
+			//disable web edit toolbar
+			globals.TRIGGER_toolbar_toggle('Web Edit',false)
+			
+			//make sure on whatever last toolbar was
+			solutionPrefs.config.lastSelectedToolbar = _lastToolbar
+			
+			_lastToolbar = null
+		}
 	}
 	
 	return true

@@ -42,14 +42,6 @@ function FORM_on_show(firstShow, event) {
 	
 	forms.WEB_0F_install__rewrite.TOGGLE_sample_rewrite()
 	
-	//restore last selected toolbar
-	if (application.__parent__.solutionPrefs && !solutionPrefs.config.lockStatus && forms.WEB_0F_page._lastToolbar) {
-		//make sure on whatever last toolbar was
-		globals.TRIGGER_toolbar_set(forms.WEB_0F_page._lastToolbar)
-		
-		forms.WEB_0F_page._lastToolbar = null
-	}
-	
 	globals.TRIGGER_toolbar_record_navigator_set(false)
 }
 
