@@ -227,6 +227,11 @@ function URL_update(webMode) {
 		
 		forms.WEB_TB__web_mode.BREAD_update()
 		
+		//wiggle window by 1px to force refresh (good to remove)
+		application.setWindowSize(application.getWindowWidth(),application.getWindowHeight() - 1)
+		application.updateUI()
+		application.setWindowSize(application.getWindowWidth(),application.getWindowHeight() + 1)
+		
 		/*	for debugging porpoises
 		application.setClipboardContent(globals.WEB_preview_url)
 		*/
