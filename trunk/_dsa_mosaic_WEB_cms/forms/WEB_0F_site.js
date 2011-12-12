@@ -386,11 +386,6 @@ function FIELD_directory_onLost(event) {
  * @properties={typeid:24,uuid:"8FE70347-AA8A-458C-B751-C0AE5E0B0254"}
  */
 function FORM_on_show(firstShow, event) {
-	//disable form if no records
-	if (!utils.hasRecords(foundset)) {
-		globals.WEB_lock_workflow(true)
-	}
-	
 	//disable rewrites if turned off
 	if (globals.WEBc_install_getRewrite()) {
 		elements.fld_pref_links.enabled = true
@@ -409,6 +404,16 @@ function FORM_on_show(firstShow, event) {
 	}
 	else {
 		elements.fld_multisite_key.enabled = false
+	}
+	
+	//disable form if no records
+	if (!utils.hasRecords(foundset)) {
+		//make sure that doesn't lock us out of left-side lists
+		if (solutionPrefs.config.activeSpace == 'workflow') {
+			solutionPrefs.config.activeSpace = 'standard'
+		}
+		
+		globals.WEB_lock_workflow(true)
 	}
 }
 
