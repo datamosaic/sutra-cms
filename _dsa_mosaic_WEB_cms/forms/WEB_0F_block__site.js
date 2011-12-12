@@ -54,6 +54,11 @@ function FORM_on_show(firstShow, event) {
 
 	//disable workflow form if no records
 	if (!utils.hasRecords(foundset)) {
+		//make sure that doesn't lock us out of left-side lists
+		if (solutionPrefs.config.activeSpace == 'workflow') {
+			solutionPrefs.config.activeSpace = 'standard'
+		}
+		
 		globals.WEB_lock_workflow(true)
 	}
 	
