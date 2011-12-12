@@ -399,6 +399,9 @@ function DIR_up() {
 function FORM_on_load() {
 	elements.fld_id_block_display__field.visible = false
 	elements.fld_id_block_display__combo.visible = true
+	
+	elements.btn_up.enabled = false
+	elements.btn_down.enabled = false
 }
 
 /**
