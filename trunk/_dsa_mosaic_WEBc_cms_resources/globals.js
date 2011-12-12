@@ -1048,6 +1048,11 @@ function WEBc_markup_link_page(pageID, siteURL, linkType, webMode, obj) {
 		var count = fsPage.search()
 	}
 	
+	//something amiss, try to fail gracefully
+	var pageRec = new Object()
+	var siteRec = new Object()
+	var siteLanguageRec = new Object()
+	
 	//this page exists, get its site
 	if (count && utils.hasRecords(fsPage.web_page_to_site)) {
 		var pageRec = fsPage.getRecord(1)
@@ -1071,11 +1076,6 @@ function WEBc_markup_link_page(pageID, siteURL, linkType, webMode, obj) {
 				siteRec = pageRec.web_page_to_site.getRecord(1)
 			}
 		}
-	}
-	//no site specified, try to fail gracefully
-	else {
-		var pageRec = new Object()
-		var siteRec = new Object()
 	}
 	
 	//specific language specified for this link
