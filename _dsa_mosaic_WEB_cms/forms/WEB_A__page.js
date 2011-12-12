@@ -180,10 +180,6 @@ function TOGGLE_edit_mode(editMode,saveData) {
 	forms.WEB_0F_page__design_1F_version_2F_block__data.TOGGLE_elements(_editMode)
 	forms.WEB_0F_page__design_1F__properties.TOGGLE_elements(_editMode)
 	forms.WEB_0F_page__design_1F_version_2L_scope.REC_on_select(null,true)	//on load of form this will cause to load block in twice
-	
-	//hide actions (can remove when upgrade sutra core)
-	forms.WEB_0F_block__scrapbook_1F__gui.elements.btn_data_actions.enabled = false
-	forms.WEB_0F_block__scrapbook_1F__data.elements.btn_data_actions.enabled = false
 }
 
 /**
@@ -265,10 +261,6 @@ function ACTION_reorder(event) {
 			forms.WEB_0F_page__design_1F__properties.TOGGLE_elements(_editMode)
 			forms.WEB_0F_page__design_1F_version_2L_scope.REC_on_select(null,true)	//on load of form this will cause to load block in twice
 			
-			//hide actions (can remove when upgrade sutra core)
-			forms.WEB_0F_block__scrapbook_1F__gui.elements.btn_data_actions.enabled = false
-			forms.WEB_0F_block__scrapbook_1F__data.elements.btn_data_actions.enabled = false
-			
 			//toggle elements
 			TOGGLE_buttons()
 		}
@@ -277,9 +269,7 @@ function ACTION_reorder(event) {
 		forms.WEB_0F_page__design_1F_version_2L_scope.elements.btn_down.enabled = _reorderMode
 		forms.WEB_0F_page__design_1F_version_2L_scope.elements.btn_up.enabled = _reorderMode
 		
-		//can remove with sutra upgrade
-		forms.WEB_0F_page__design_1F_version_2L_scope.elements.btn_add.enabled = false
-		forms.WEB_0F_page__design_1F_version_2L_scope.elements.btn_actions.enabled = false
+		//refresh block
 		forms.WEB_0F_page__design_1F_version_2L_scope.ACTION_gui_mode_load()
 	}
 }
