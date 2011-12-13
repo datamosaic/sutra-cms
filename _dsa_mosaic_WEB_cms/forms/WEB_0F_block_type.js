@@ -81,6 +81,7 @@ function REC_new(flagRefresh,formName,fs) {
 	//specific foundset not passed in, use current oneasdf
 	if (!fs) {
 		fs = foundset
+		var nonBatch = true
 	}
 	
 	if (utils.hasRecords(forms.WEB_0F_site.foundset)) {
@@ -172,7 +173,7 @@ function REC_new(flagRefresh,formName,fs) {
 				}
 				return result
 			}
-		
+			
 			// 2) get block init() and associated meta data to build data object
 			if ( forms[formName] ) {
 				//form not loaded yet, get solution model to check for method existence
@@ -183,6 +184,11 @@ function REC_new(flagRefresh,formName,fs) {
 					plugins.dialogs.showErrorDialog( "Error", "Selected block does not have an INIT_block method")
 					return
 				}
+			}
+			
+			//turn on notification when called directly from block type workflow form
+			if (nonBatch) {
+				globals.TRIGGER_progressbar_start(null,(flagRefresh ? 'Refreshing' : 'Registering') + ' block: ' + objBlock.record.block_name + '.  Please wait...')
 			}
 			
 			// 3) create block and related data from data object
@@ -370,6 +376,11 @@ function REC_new(flagRefresh,formName,fs) {
 								'Block data changed. Currently used blocks on pages haven\'t been updated.\nYou will need to do this manually on each page.'
 						)
 				}
+			}
+			
+			//turn off notification when called directly from block type workflow form
+			if (nonBatch) {
+				globals.TRIGGER_progressbar_stop()
 			}
 		}
 	}
