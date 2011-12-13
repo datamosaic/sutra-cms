@@ -831,11 +831,20 @@ function WEBc_markup_link_base(pageID, siteURL, siteLanguageRec) {
 	if (count && utils.hasRecords(fsPage.web_page_to_site)) {
 		var pageRec = fsPage.getRecord(1)
 		var siteRec = pageRec.web_page_to_site.getRecord(1)
+		//grab default language for this site
+		for (var i = 1; i <= siteRec.web_site_to_site_language.getSize(); i++) {
+			var siteLangRec = siteRec.web_site_to_site_language.getRecord(i)
+			if (siteLangRec.flag_default) {
+				siteLanguageRec = siteLangRec
+				break
+			}
+		}
 	}
 	//no site specified, try to fail gracefully
 	else {
 		var pageRec = new Object()
 		var siteRec = new Object()
+		var siteLanguageRec = new Object()
 	}
 	
 	//how requested
@@ -2002,14 +2011,23 @@ function WEBc_markup_link_asset(assetInstanceID, pageID, siteURL, linkType, webM
 		var fsSite = databaseManager.getFoundSet('sutra_cms','web_site')
 		fsSite.loadRecords(assetRec.id_site)
 		var siteRec = fsSite.getRecord(1)
+		//grab default language for this site
+		for (var i = 1; i <= siteRec.web_site_to_site_language.getSize(); i++) {
+			var siteLangRec = siteRec.web_site_to_site_language.getRecord(i)
+			if (siteLangRec.flag_default) {
+				var siteLanguageRec = siteLangRec
+				break
+			}
+		}
 	}
 	//no site specified, try to fail gracefully
 	else {
 		var assetInstanceRec = new Object()
 		var siteRec = new Object()
+		var siteLanguageRec = new Object()
 	}
 	
-	//get the site's language record
+	//get the site's language record from markup call
 	if (obj && obj.language && obj.language.record && utils.hasRecords(obj.language.record.web_language_to_site_language)) {
 		var siteLanguageRec = obj.language.record.web_language_to_site_language.getRecord(1)
 	}
