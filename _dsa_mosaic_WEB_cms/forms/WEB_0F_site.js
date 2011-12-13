@@ -110,7 +110,7 @@ function REC_new() {
 	databaseManager.saveData()
 	
 	//blow in default block types
-	forms.WEB_0F_block_type.BATCH_create()	
+	forms.WEB_0F_block_type.BATCH_create(web_site_to_block_type)	
 	
 	//refire on select
 	REC_on_select()

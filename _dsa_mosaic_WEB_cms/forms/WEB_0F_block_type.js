@@ -62,9 +62,9 @@ function FLD_data_change__block_name(oldValue, newValue, event) {
  *
  * @properties={typeid:24,uuid:"4BC73EC6-1B92-4A66-92D8-8CB57957F0D4"}
  */
-function BATCH_create() {
-	REC_new(null,'WEB_0F__content')
-	REC_new(null,'WEB_0F__image')
+function BATCH_create(fs) {
+	REC_new(null,'WEB_0F__content',fs)
+	REC_new(null,'WEB_0F__image',fs)
 }
 
 /**
@@ -77,7 +77,12 @@ function BATCH_create() {
  * @param {boolean} flagRefresh refresh current block if true
  * @properties={typeid:24,uuid:"98C31479-A1EE-4A13-9F2F-0752680E3428"}
  */
-function REC_new(flagRefresh,formName) {
+function REC_new(flagRefresh,formName,fs) {
+	//specific foundset not passed in, use current oneasdf
+	if (!fs) {
+		fs = foundset
+	}
+	
 	if (utils.hasRecords(forms.WEB_0F_site.foundset)) {
 		//no records created yet and interface locked
 		if (application.__parent__.solutionPrefs && solutionPrefs.design.statusLockWorkflow) {
@@ -156,8 +161,8 @@ function REC_new(flagRefresh,formName) {
 			function uniqueNameCheck(name) {  // returns true if duplicate name detected
 				var nameArray = []
 				var result = false
-				for (var i = 0; i < foundset.getSize(); i++) {
-					nameArray.push(foundset.getRecord(i + 1).block_name)
+				for (var i = 0; i < fs.getSize(); i++) {
+					nameArray.push(fs.getRecord(i + 1).block_name)
 				}
 				for (var j in nameArray) {
 					if ( nameArray[j] == name ) {
@@ -181,7 +186,7 @@ function REC_new(flagRefresh,formName) {
 			}
 			
 			// 3) create block and related data from data object
-			var block = (!flagRefresh) ? foundset.getRecord(foundset.newRecord()) : foundset.getSelectedRecord()
+			var block = (!flagRefresh) ? fs.getRecord(fs.newRecord()) : fs.getSelectedRecord()
 			block.id_site = forms.WEB_0F_site.id_site
 			var name = objBlock.record.block_name
 			
@@ -255,7 +260,7 @@ function REC_new(flagRefresh,formName) {
 			
 			//if anything left in delete array, whack it 
 			for (var i = 0; i < displayDelete.length; i++) {
-				displayDelete[i].foundset.deleteRecord(displayDelete[i])
+				displayDelete[i].fs.deleteRecord(displayDelete[i])
 			}
 			
 			// block client actions - "Block"
