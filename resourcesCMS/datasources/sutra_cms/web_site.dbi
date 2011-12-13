@@ -127,7 +127,7 @@ name:"site_name_publish_flag"
 allowNull:true,
 creationOrderIndex:7,
 dataType:12,
-length:10,
+length:255,
 name:"site_name_publish_separator"
 },
 {
