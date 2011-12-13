@@ -49,6 +49,8 @@ function REC_delete() {
 			)
 
 	if (delRec == 'Yes') {
+		globals.TRIGGER_progressbar_start(null,'Deleting site: ' + site_name + '.  Please wait...')
+		
 		globals.WEB_site_display = null
 		
 		//TODO: not deleteing versions and below....need to fix this
@@ -58,6 +60,8 @@ function REC_delete() {
 		if (!utils.hasRecords(foundset)) {
 			FORM_on_show()
 		}
+		
+		globals.TRIGGER_progressbar_stop()
 	}
 }
 
