@@ -315,6 +315,8 @@ function WEB_startup() {
 			
 			//this form is in a solution that is included in the currently activated solution
 			if (solutionModel.getForm(showForm)) {
+				application.setStatusText('Pre-loading form: ' + showForm)
+				
 				forms[showForm].controller.show()
 				
 				//wait a little bit extra for tinymce
@@ -329,6 +331,8 @@ function WEB_startup() {
 				}
 			}
 		}
+		
+		application.setStatusText(null)
 		
 		//return to main data sutra form when using the data sutra framework
 		if (solutionModel.getForm('DATASUTRA_0F_solution')) {
