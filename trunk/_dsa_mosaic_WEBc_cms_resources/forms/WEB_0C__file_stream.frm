@@ -1,5 +1,3 @@
-dataSource:"db:/sutra_cms/web_theme",
-initialSort:"theme_name asc",
 items:[
 {
 height:280,
