@@ -123,8 +123,7 @@ function WEBc_block_enable(event) {
 /**
  * Returns the correct web_block_data key value pair object.
  * 
- * @param	{JSEvent}	event Event that triggered onSelect of the block_type form.
- * @param	{JSForm}	[formName] Scope where called from.
+ * @param	{JSForm}	formName Scope where called from.
  * @param	{Object}	[obj] Object used to drive headless client.
  * 
  * @returns	{Object}	key value pair object.
@@ -257,8 +256,7 @@ function WEBc_block_setData(event, key, value, formName) {
 /**
  * Returns the correct web_block_data_configure key value pair object.
  * 
- * @param	{JSEvent}	event Event that triggered onSelect of the block_type form.
- * @param	{JSForm}	[formName] Scope where called from.
+ * @param	{JSForm}	formName Scope where called from.
  * @param	{Object}	[obj] Object used to drive headless client.
  * 
  * @returns	{Object}	key value pair object.
@@ -391,8 +389,7 @@ function WEBc_block_setConfig(event, key, value, formName) {
 /**
  * Returns the correct web_block_data_response key value pair object.
  * 
- * @param	{JSEvent}	event Event that triggered onSelect of the block_type form.
- * @param	{JSForm}	[formName] Scope where called from.
+ * @param	{JSForm}	formName Scope where called from.
  * @param	{Object}	[obj] Object used to drive headless client.
  * 
  * @returns	{Object}	key value pair object.
@@ -452,6 +449,56 @@ function WEBc_block_getResponse(formName, obj) {
 	
 	//return key/value mapping
 	return keyValue
+}
+
+/**
+ * Returns the correct web_block_display record.
+ * 
+ * @param	{JSForm}	formName Scope where called from.
+ * @param	{Object}	[obj] Object used to drive headless client.
+ * 
+ * @returns	{JSRecord}	<db:/sutra_cms/web_block_display>}.
+ * 
+ * @properties={typeid:24,uuid:"CEEF8DFC-D7D1-494A-B813-15DC41640DAC"}
+ */
+function WEBc_block_getDisplay(formName, obj) {
+	//display record
+	var recDisplay
+	
+	//get from object (headless client)
+	if (obj && obj.block && obj.block.record instanceof JSRecord) {
+		if (utils.hasRecords(obj.block.record,'web_block_to_block_display')) {
+			/** @type {JSRecord<db:/sutra_cms/web_block_display>}*/
+			recDisplay = obj.block.record.web_block_to_block_display.getSelectedRecord()
+		}
+	}
+	//get from context (smart client)
+	else {
+		//we know where this is being called from
+		if (formName) {
+			//get the block record they were on
+			/** @type {JSFoundSet<db:/sutra_cms/web_block>}*/
+			var blockRec = forms[formName].foundset
+			
+			//on the page and not viewing page scrapbooks, just use active version
+			if (globals.WEB_block_page_mode) {
+				if (utils.hasRecords(blockRec,'web_block_to_block_version.web_block_version_to_block_data_response')) {
+					/** @type {JSRecord<db:/sutra_cms/web_block_display>}*/
+					recDisplay = blockRec.web_block_to_block_display.getSelectedRecord()
+				}
+			}
+			//on a scrapbook, go through all relation (selected index determines which version)
+			else {
+				if (utils.hasRecords(blockRec,'web_block_to_block_version__all.web_block_version_to_block_display')) {
+					/** @type {JSRecord<db:/sutra_cms/web_block_display>}*/
+					recDisplay = blockRec.web_block_to_block_version__all.web_block_version_to_block_display.getSelectedRecord()
+				}
+			}
+		}
+	}
+	
+	//return record mapping
+	return recDisplay
 }
 
 /**
@@ -526,7 +573,7 @@ function WEBc_block_save() {
  * @properties={typeid:24,uuid:"1F9B9D43-3D26-4D27-A28A-BD00655990A6"}
  */
 function WEBc_block_fld_data_change__data(oldValue, newValue, event) {
-	var key = event.getElementName().split('_')[1]
+	var key = event.getElementName().substr(4)
 	
 	globals.WEBc_block_setData(event,key,newValue)
 }
@@ -543,7 +590,7 @@ function WEBc_block_fld_data_change__data(oldValue, newValue, event) {
  * @properties={typeid:24,uuid:"E220DA63-D0DA-48FD-8531-BB7489C01F49"}
  */
 function WEBc_block_fld_data_change__config(oldValue, newValue, event) {
-	var key = event.getElementName().split('_')[1]
+	var key = event.getElementName().substr(4)
 	
 	globals.WEBc_block_setConfig(event,key,newValue)
 }
