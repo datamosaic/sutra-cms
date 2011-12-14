@@ -84,7 +84,6 @@ uuid:"3FCCC0FA-3099-4CBE-A32B-75D34E4D56A9"
 },
 {
 anchors:11,
-dataProviderID:"search_path_flag",
 displayType:2,
 editable:false,
 formIndex:10600,
@@ -94,8 +93,7 @@ size:"245,23",
 styleClass:"standard_table",
 transparent:true,
 typeid:4,
-uuid:"4E1D2C64-FFD8-40CC-902E-89F278A8B38D",
-valuelistID:"5D6F5AFE-CC80-4894-B960-F14B241F5DA4"
+uuid:"4E1D2C64-FFD8-40CC-902E-89F278A8B38D"
 },
 {
 formIndex:10700,
