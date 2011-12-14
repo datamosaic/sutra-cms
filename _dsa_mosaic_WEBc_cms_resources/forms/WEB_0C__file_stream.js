@@ -110,6 +110,7 @@ function _INFO() {}
  * @properties={typeid:24,uuid:"63BDBFCB-609A-4735-A981-CF0DEE9C5BFC"}
  */
 function THEME_new(progress) {
+	var fsTheme = forms.WEB_0F_theme.foundset
 	
 	// *** STAGE #1: get available themes *** //
 	if ( !progress ) { 
@@ -206,7 +207,7 @@ function THEME_new(progress) {
 			}
 			// can't import theme with same name
 			var names = databaseManager.getFoundSetDataProviderAsArray(
-							foundset, "theme_name")
+							fsTheme, "theme_name")
 			if ( names.lastIndexOf(input, 0) > -1 ) {
 				plugins.dialogs.showErrorDialog(
 					"Error",  "Theme with same name not allowed")
@@ -215,8 +216,8 @@ function THEME_new(progress) {
 			}
 		}
 		else { // refresh current theme record
-			if( themes.indexOf(theme_name) > -1 ) {
-				var input = theme_name				
+			if( themes.indexOf(fsTheme.theme_name) > -1 ) {
+				var input = fsTheme.theme_name				
 			}
 			else {
 				plugins.dialogs.showErrorDialog( "Error", "No matching theme found")
@@ -343,10 +344,10 @@ function THEME_new(progress) {
 		
 		// 1 get theme record 
 		if ( !_flagRefresh ) {
-			var theme = forms.WEB_0F_theme.foundset.getRecord(forms.WEB_0F_theme.foundset.newRecord())
+			var theme = fsTheme.getRecord(fsTheme.newRecord())
 		}
 		else {
-			var theme = foundset.getRecord(foundset.getSelectedIndex())
+			var theme = fsTheme.getSelectedRecord()
 		}
 		theme.theme_name = _themes[_themesSelected].name
 		theme.description = _themes[_themesSelected].description
