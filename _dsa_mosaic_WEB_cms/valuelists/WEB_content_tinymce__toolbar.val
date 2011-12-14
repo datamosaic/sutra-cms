@@ -1,9 +1,0 @@
-addEmptyValue:1,
-customValues:"Simple|0
-Advanced|1",
-name:"WEB_content_tinymce__toolbar",
-returnDataProviders:1,
-separator:" ",
-showDataProviders:1,
-typeid:34,
-uuid:"FBED6BD1-3A35-4C58-AB51-BBF29AB2A269"

@@ -1,4 +1,11 @@
 /**
+ * @properties={typeid:35,uuid:"24fde543-69cc-4de9-af47-7f7c22221f17"}
+ */
+var _license_dsa_mosaic_WEB_cms = 'Module: _dsa_mosaic_WEB_cms \
+									Copyright (C) 2011 Data Mosaic \
+									MIT Licensed';
+
+/**
  * @properties={typeid:35,uuid:"59111D71-665C-4CE1-BBEF-EA4B1ADB6F0D",variableType:4}
  */
 var WEB_block_scope__new = null;
@@ -14,21 +21,9 @@ var WEB_block_version = null;
 var WEB_block_scope = null;
 
 /**
- * @properties={typeid:35,uuid:"24fde543-69cc-4de9-af47-7f7c22221f17"}
- */
-var _license_dsa_mosaic_WEB_cms = 'Module: _dsa_mosaic_WEB_cms \
-									Copyright (C) 2011 Data Mosaic \
-									MIT Licensed';
-
-/**
  * @properties={typeid:35,uuid:"B1FA121E-7FCE-4CD5-97D2-AE0E75D79440"}
  */
 var WEB_page_group = null;
-
-/**
- * @properties={typeid:35,uuid:"17B52E70-9BEE-4FB1-9130-4230482F07B4"}
- */
-var WEB_site_attribute_selected = null;
 
 /**
  * @properties={typeid:35,uuid:"86AA4208-BDF9-4D86-8267-C3EB48EC6C32"}
@@ -46,31 +41,8 @@ var WEB_page_version = null;
 var WEB_page_language = null;
 
 /**
- * @properties={typeid:35,uuid:"9B43706E-FC30-4C33-92A2-DF039DBB4661"}
- */
-var WEB_CONSTANT_DIRECTORY_CSS = '/site/css/';
-
-/**
- * @properties={typeid:35,uuid:"70FADC68-5914-4719-99FF-09C1AC510F00"}
- */
-var WEB_CONSTANT_DIRECTORY_FILES = '/site/files/';
-
-/**
- * @properties={typeid:35,uuid:"7F3C6EDF-06EB-4E6F-8DAC-281576B7F5BA"}
- */
-var WEB_CONSTANT_DIRECTORY_IMAGES = '/site/images/';
-
-/**
- * @properties={typeid:35,uuid:"E84BDBC5-7F23-4857-AA61-5ADFD2CD5A04"}
- */
-var WEB_CONSTANT_DIRECTORY_JS = '/site/js/';
-
-/**
- * @properties={typeid:35,uuid:"C926688D-5B93-42A2-B288-0E2ADF9116BC"}
- */
-var WEB_CONSTANT_DIRECTORY_THEMES = '/site/themes/';
-
-/**
+ * Default to GUI mode on page (Data|1, GUI|2, Real|3)
+ * 
  * @properties={typeid:35,uuid:"DD53BF5B-DD20-4B47-911A-41051101A010",variableType:4}
  */
 var WEB_page_mode = 2;
@@ -94,6 +66,11 @@ var WEB_site_display = null;
  * @properties={typeid:35,uuid:"15313654-99B2-4BCA-9D6F-0D37F917C5DD"}
  */
 var WEB_tag_choose = null;
+
+/**
+ * @properties={typeid:35,uuid:"791D7FA7-752E-42BD-9BD8-90FDC1548242",variableType:4}
+ */
+var WEB_tag_kind = null;
 
 /**
  * @properties={typeid:24,uuid:"47BC6C70-6E6A-4095-9614-B925C3716083"}
@@ -307,11 +284,6 @@ if (application.__parent__.solutionPrefs) {
 	}
 }
 }
-
-/**
- * @properties={typeid:35,uuid:"791D7FA7-752E-42BD-9BD8-90FDC1548242",variableType:4}
- */
-var WEB_tag_kind = null;
 
 /**
  * @properties={typeid:24,uuid:"48FC5C3F-2354-442E-BE6A-4963B953E080"}
