@@ -390,7 +390,7 @@ function ACTION_gui_mode_load() {
 				}
 				
 				forms[formName].INIT_data()
-			}
+			}			
 		}
 		else {
 			tabPanel.tabIndex = 1
@@ -433,9 +433,11 @@ function SET_versions() {
 	
 	//we've got a version stack
 	if (utils.hasRecords(fsVersions)) {
+		//duplicate foundset so we don't go switching records
+		fsVersions = fsVersions.duplicateFoundSet()
+		
 		//resort by version number desc if not already there
 		if (fsVersions.getCurrentSort() != 'version_number desc') {
-			fsVersions = fsVersions.duplicateFoundSet()
 			fsVersions.sort('version_number desc',true)
 		}
 		
