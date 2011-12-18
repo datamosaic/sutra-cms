@@ -573,7 +573,7 @@ function WEBc_block_save() {
  * @properties={typeid:24,uuid:"1F9B9D43-3D26-4D27-A28A-BD00655990A6"}
  */
 function WEBc_block_fld_data_change__data(oldValue, newValue, event) {
-	var key = event.getElementName().substr(4)
+	var key = event.getSource().getDataProviderID().substr(1)
 	
 	globals.WEBc_block_setData(event,key,newValue)
 }
@@ -590,7 +590,7 @@ function WEBc_block_fld_data_change__data(oldValue, newValue, event) {
  * @properties={typeid:24,uuid:"E220DA63-D0DA-48FD-8531-BB7489C01F49"}
  */
 function WEBc_block_fld_data_change__config(oldValue, newValue, event) {
-	var key = event.getElementName().substr(4)
+	var key = event.getSource().getDataProviderID().substr(1)
 	
 	globals.WEBc_block_setConfig(event,key,newValue)
 }
