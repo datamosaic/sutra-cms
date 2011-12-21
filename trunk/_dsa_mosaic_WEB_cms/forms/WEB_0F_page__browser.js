@@ -94,7 +94,7 @@ function REC_on_select(event,webMode,skipLoad,verIndex,fireSelect) {
 					//set version to be the active one
 					globals.WEB_page_version = activeInfo.record.id_version
 				}
-				//set to first thing in the list (most recent)
+				//set to first thing in  the list (most recent)
 				else {
 					globals.WEB_page_version = application.getValueListItems('WEB_page_version').getValue(1,2)
 				}
@@ -107,6 +107,7 @@ function REC_on_select(event,webMode,skipLoad,verIndex,fireSelect) {
 				//MEMO: probably don't want to force a save here...just need edit/save button reset to normal
 			forms.WEB_TB__web_mode.ACTION_save()
 			forms.WEB_TB__web_mode.TOGGLE_edit()
+			forms.WEB_TB__web_mode.TOGGLE_visit(true)
 			
 			//only show versions and groups if there is more than one defined
 			forms.WEB_TB__web_mode.TOGGLE_group()
