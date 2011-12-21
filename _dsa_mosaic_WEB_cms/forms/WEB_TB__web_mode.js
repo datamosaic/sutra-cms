@@ -120,6 +120,19 @@ function TOGGLE_group(showGroups) {
 }
 
 /**
+ * @properties={typeid:24,uuid:"30E954F0-D7BF-414B-943A-CEBBB16148BB"}
+ */
+function TOGGLE_visit(shown) {
+	
+	if (typeof shown != 'boolean') {
+		shown = false
+	}
+	
+	elements.btn_visit.visible = shown
+	elements.lbl_visit.visible = shown
+}
+
+/**
  *
  * @properties={typeid:24,uuid:"530CE94C-E1F2-47D0-9BF9-C4FF4FD027DF"}
  */
@@ -626,5 +639,80 @@ function FORM_on_show(firstShow, event) {
 	//don't know why my edit button is showing...turn it off
 	if (firstShow) {
 		TOGGLE_edit(false)
+	}
+}
+
+/**
+ * Perform the element default action.
+ *
+ * @param {JSEvent} event the event that triggered the action
+ *
+ * @properties={typeid:24,uuid:"E30919EF-E82C-47A2-AAF8-CA1C8C015D64"}
+ */
+function ACTION_visit(event,returnURL,toClippy) {
+	//see forms.WEB_0F_page__browser.URL_update
+	
+	//shift-click copies to clipboard
+	if (globals.CODE_key_pressed('shift')) {
+		toClippy = true
+	}
+	//right-click shows menu
+	else if (event && event.getType() == JSEvent.RIGHTCLICK) {
+		//set up menu with arguments
+		var menu = new Array()
+		
+		menu[0] = plugins.popupmenu.createMenuItem('Copy to clipboard',ACTION_visit)
+		menu[0].setMethodArguments(null,null,true)
+		menu[1] = plugins.popupmenu.createMenuItem('Open default browser',ACTION_visit)
+		
+		plugins.popupmenu.showPopupMenu(elements.btn_visit, menu)
+		
+		return
+	}
+	
+	var fsPage = forms.WEB_0F_page.foundset
+	
+	if (utils.hasRecords(fsPage)) {
+		//only tack on exact specifier when not an external link
+		if (fsPage.page_type != 2) {
+			//specify index-style so parameters of platform, language, group, version guaranteed to work
+				//will be re-directed to correctlyu url by controller
+			var urlString = globals.WEBc_markup_link_page(fsPage.id_page.toString() + '_' + forms.WEB_0F_page__design_1F__header_display_2F_language._language.id_language.toString(),null,'Index')
+			
+			if (utils.hasRecords(forms.WEB_0F_page__design_1F__header_display_2F_platform._platform)) {
+				urlString += "&platform=" + forms.WEB_0F_page__design_1F__header_display_2F_platform._platform.url_param
+			}
+			
+			if (utils.hasRecords(forms.WEB_0F_page__design_1F__header_display_2F_language._language)) {
+				urlString += "&language=" + forms.WEB_0F_page__design_1F__header_display_2F_language._language.url_param
+			}
+			
+			if (utils.hasRecords(forms.WEB_0F_page__design_1F__header_display_2F_group._group)) {
+				urlString += "&group=" + forms.WEB_0F_page__design_1F__header_display_2F_group._group.url_param
+			}
+			
+			if (utils.hasRecords(forms.WEB_0F_page__design_1F_version.foundset)) {
+				urlString += "&version=" + forms.WEB_0F_page__design_1F_version.url_param
+			}
+		}
+		
+		//return url
+		if (returnURL) {
+			return urlString
+		}
+		//put on clipboard
+		else if (toClippy) {
+			application.setClipboardContent(urlString)
+		}
+		//go to page
+		else {
+			globals.CODE_url_handler(urlString)
+		}
+	}
+	else if (!returnURL) {
+		plugins.dialogs.showErrorDialog(
+					'Error',
+					'You must have a page selected in order to preview it'
+			)
 	}
 }
