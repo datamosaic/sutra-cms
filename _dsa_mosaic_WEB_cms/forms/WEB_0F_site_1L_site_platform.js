@@ -1,9 +1,4 @@
 /**
- * @properties={typeid:35,uuid:"BE7E98A7-E077-4B71-97F6-40F9CCF93568",variableType:-4}
- */
-var _editMode = false;
-
-/**
  * @properties={typeid:35,uuid:"966D33E3-3B74-49CF-8F23-9DDE0FA9F621"}
  */
 var _license_dsa_mosaic_WEB_cms = 'Module: _dsa_mosaic_WEB_cms \
@@ -61,9 +56,6 @@ function FLD_platform_name__data_change(oldValue, newValue, event) {
  * @properties={typeid:24,uuid:"D8AB6954-FA06-4643-8FBF-49FC945CC74D"}
  */
 function REC_new() {
-	//enter edit mode
-	TOGGLE_edit(true)
-	
 	controller.newRecord(false)
 //	elements.fld_platform_name.requestFocus(false)
 }
@@ -117,66 +109,5 @@ function FLD_data_change__flag_default(oldValue, newValue, event) {
 						'There must always be a default'
 				)
 			record.flag_default = 1
-	}
-}
-
-/**
- * @param {JSEvent|Boolean} input the event that triggered the action
- * 
- * @properties={typeid:24,uuid:"B05CB887-F6CB-4ACA-9482-676E9C8C1D8C"}
- */
-function TOGGLE_edit(input) {
-	//called to depress menu
-	if (input instanceof JSEvent) {
-		//set up menu with arguments
-		var menu = new Array()
-		
-		//in edit mode, prompt to leave
-		if (_editMode) {
-			menu[0] = plugins.popupmenu.createMenuItem('Leave edit mode',TOGGLE_edit)
-			menu[0].setMethodArguments(false)
-		}
-		//not in edit mode, prompt to enter
-		else {
-			menu[0] = plugins.popupmenu.createMenuItem('Edit...',TOGGLE_edit)
-			menu[0].setMethodArguments(true)
-		}
-		
-		//popup
-		var elem = forms[input.getFormName()].elements[input.getElementName()]
-		if (elem != null) {
-			plugins.popupmenu.showPopupMenu(elem, menu)
-		}
-	}
-	else if (typeof input == 'boolean') {
-		//allow edits
-		if (input) {
-			_editMode = true
-		}
-		//disallow edits
-		else {
-			_editMode = false
-		}
-		
-		elements.fld_platform_name.visible = _editMode
-		elements.fld_id_theme.visible = _editMode
-		elements.fld_id_layout.visible = _editMode
-		elements.fld_platform_name__view.visible = !_editMode
-		elements.fld_id_theme__view.visible = !_editMode
-		elements.fld_id_layout__view.visible = !_editMode
-	}
-}
-
-/**
- * Callback method for when form is shown.
- *
- * @param {Boolean} firstShow form is shown first time after load
- * @param {JSEvent} event the event that triggered the action
- *
- * @properties={typeid:24,uuid:"85E7F4AB-CDAF-4FF0-8A6E-B4E9D23F4F44"}
- */
-function FORM_on_show(firstShow, event) {
-	if (firstShow) {
-		TOGGLE_edit(false)
 	}
 }
