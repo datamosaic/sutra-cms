@@ -1,4 +1,9 @@
 /**
+ * @properties={typeid:35,uuid:"8AFFF4F0-4E67-4D20-9052-BC413C3A7667"}
+ */
+var _search = null;
+
+/**
  * @properties={typeid:35,uuid:"658ECA76-12FB-4935-96EC-E3210C1DB583",variableType:-4}
  */
 var _success = false;
@@ -61,6 +66,8 @@ function FLD_scope__data_change(oldValue, newValue, event) {
 		
 		TOGGLE_buttons()
 	}
+	
+	ACTION_search()
 	
 	return true
 }
@@ -472,31 +479,28 @@ function FORM_on_show() {
 	
 	var fsBlockType = forms.WEB_P__block__new_1L_block_type.foundset
 	
-	//prefill default view for each block type
-	for (var i = 1; i <= fsBlockType.getSize(); i++) {
-		var record = fsBlockType.getRecord(i)
-		record.client_id_block_display = record.web_block_type_to_block_display__default.id_block_display
-	}
-	
 	//reset to block types and select content
 	globals.WEB_block_scope__new = 0
-	fsBlockType.find()
-	fsBlockType.id_site = forms.WEB_0F_site.id_site
-	var results = fsBlockType.search()
+	_search = null
+	var results = ACTION_search()
 	
-	//sort by block type
 	if (results) {
+		//sort by block type
 		fsBlockType.sort('block_name asc')
-	}
-	
-	for (var i = 1; i <= fsBlockType.getSize(); i++) {
-		var record = fsBlockType.getRecord(i)
 		
-		if (record.block_name == 'Content') {
-			fsBlockType.setSelectedIndex(i)
-			break
+		for (var i = 1; i <= fsBlockType.getSize(); i++) {
+			var record = fsBlockType.getRecord(i)
+			
+			//prefill default view for each block type
+			record.client_id_block_display = record.web_block_type_to_block_display__default.id_block_display
+			
+			//highlight content block
+			if (record.block_name == 'Content') {
+				fsBlockType.setSelectedIndex(i)
+			}
 		}
 	}
+	
 	elements.tab_detail.tabIndex = 1
 	
 	//show correct buttons
@@ -506,9 +510,16 @@ function FORM_on_show() {
 	if (_calledFrom == 'Real' || _calledFrom == 'GUI' || _calledFrom == 'Theme') {
 		elements.lbl_scope.visible = true
 		elements.fld_scope.visible = true
+		
+		//only move search box if not in correct place
+		if (elements.lbl_search.getLocationY() != 63) {
+			elements.lbl_search.setLocation(elements.lbl_search.getLocationX(), 63)
+			elements.var_search.setLocation(elements.var_search.getLocationX(), 63)
+		}
+		
 		//only move tabpanel if it's been moved before
-		if (elements.tab_detail.getLocationY() != 60) {
-			elements.tab_detail.setLocation(0, 60)
+		if (elements.tab_detail.getLocationY() != 90) {
+			elements.tab_detail.setLocation(0, 90)
 			elements.tab_detail.setSize(elements.tab_detail.getWidth(),elements.tab_detail.getHeight() - 25)
 		}
 	}
@@ -516,9 +527,16 @@ function FORM_on_show() {
 	else {
 		elements.lbl_scope.visible = false
 		elements.fld_scope.visible = false
+		
+		//only move search box if not in correct place
+		if (elements.lbl_search.getLocationY() != 38) {
+			elements.lbl_search.setLocation(elements.lbl_search.getLocationX(), 38)
+			elements.var_search.setLocation(elements.var_search.getLocationX(), 38)
+		}
+		
 		//only move tabpanel if it's not here yet
-		if (elements.tab_detail.getLocationY() != 35) {
-			elements.tab_detail.setLocation(0, 35)
+		if (elements.tab_detail.getLocationY() != 65) {
+			elements.tab_detail.setLocation(0, 65)
 			elements.tab_detail.setSize(elements.tab_detail.getWidth(),elements.tab_detail.getHeight() + 25)
 		}
 	}
@@ -533,6 +551,8 @@ function FORM_on_show() {
 		var vlReal = [0,1,2,3]
 	}
 	application.setValueListItems('WEB_scope_type',vlDisplay,vlReal)
+	
+	elements.var_search.requestFocus(false)
 	
 	//somehow bind enter to accept whatever selection is chosen
 //	plugins.window.createShortcut('ENTER',forms.WEB_P__block__new.ACTION_ok,'WEB_P__block__new')
@@ -563,5 +583,89 @@ function TOGGLE_buttons() {
 	//called from theme form, copy not an option
 	if (_calledFrom == 'Theme') {
 		elements.btn_copy.visible = false
+	}
+}
+
+/**
+ * Perform the element default action.
+ *
+ * @param {JSEvent} event the event that triggered the action
+ *
+ * @properties={typeid:24,uuid:"4ED1E729-218B-428E-8F5D-1F1DE6EF2893"}
+ */
+function ACTION_search(event) {
+	//finding on block types
+	if (globals.WEB_block_scope__new == 0) {
+		var fs = forms.WEB_P__block__new_1L_block_type.foundset
+		
+		//load up everything
+		fs.loadAllRecords()
+		
+		//restrict based on search criteria and site
+		fs.find()
+		fs.id_site = forms.WEB_0F_site.id_site
+		if (_search) {
+			fs.block_name = '%' + _search + '%'
+		}
+		var results = fs.search(false,true)
+	}
+	//finding within scrapbooks
+	else if (globals.WEB_block_scope__new) {
+		var fs = forms.WEB_P__block__new_1L_block.foundset
+		
+		//load up everything
+		fs.loadAllRecords()
+		
+		//restrict based on search criteria
+		fs.find()
+		fs.scope_type = globals.WEB_block_scope__new
+		if (_search) {
+			fs.block_name = '%' + _search + '%'
+		}
+		//find correct records
+		switch (globals.WEB_block_scope__new) {
+			case 1: //scope to current page unless empty foundset, then clear
+				fs.id_page = utils.hasRecords(forms.WEB_0F_page.foundset) ? forms.WEB_0F_page.id_page : application.getUUID()
+				break
+			case 2: //scope to current site unless empty foundset, then clear
+				fs.id_site = utils.hasRecords(forms.WEB_0F_site.foundset) ? forms.WEB_0F_site.id_site : application.getUUID()
+				break
+		}
+		var results = fs.search(false,true)
+	}
+	
+	//re-enter the search field
+	if (event instanceof java.awt.event.KeyEvent) {
+		elements.var_search.requestFocus(false)
+	}
+	//return results
+	else {
+		return results
+	}
+}
+
+/**
+ * Callback method when form is (re)loaded.
+ *
+ * @param {JSEvent} event the event that triggered the action
+ *
+ * @properties={typeid:24,uuid:"A94FD046-59AF-4B54-AC04-2E6261F9C982"}
+ */
+function FORM_on_load(event) {
+	if (plugins.keyListeners) {
+		plugins.keyListeners.addKeyListener(elements.var_search, ACTION_search, 'keyPressed')
+	}
+}
+
+/**
+ * Callback method when form is destroyed.
+ *
+ * @param {JSEvent} event the event that triggered the action
+ *
+ * @properties={typeid:24,uuid:"D81E5E28-BD64-4781-8555-7FB7D565B535"}
+ */
+function FORM_on_unload(event) {
+	if (plugins.keyListeners) {
+		plugins.keyListeners.removeKeyListener(elements.var_search)
 	}
 }
