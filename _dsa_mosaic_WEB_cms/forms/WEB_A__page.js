@@ -139,9 +139,15 @@ function TOGGLE_edit_mode(editMode,saveData) {
 				}
 			}
 			
-			//update modification date on this record
+			//update modification
 			if (utils.hasRecords(forms.WEB_0F_page__design_1F_version.foundset)) {
+				//update version
 				forms.WEB_0F_page__design_1F_version.rec_modified = application.getServerTimeStamp()
+				
+				//if active version selected, update page too
+				if (forms.WEB_0F_page__design_1F_version.flag_active) {
+					forms.WEB_0F_page.rec_modified = forms.WEB_0F_page__design_1F_version.rec_modified
+				}
 			}
 			
 			//redo valuelist for versions
@@ -244,9 +250,15 @@ function ACTION_reorder(event) {
 		else {
 			globals.WEBc_log_create('page','page reorder end',forms.WEB_0F_page.id_site,'web_page',forms.WEB_0F_page.id_page)
 			
-			//update modification date on this record
+			//update modification
 			if (utils.hasRecords(forms.WEB_0F_page__design_1F_version.foundset)) {
+				//update version
 				forms.WEB_0F_page__design_1F_version.rec_modified = application.getServerTimeStamp()
+				
+				//if active version selected, update page too
+				if (forms.WEB_0F_page__design_1F_version.flag_active) {
+					forms.WEB_0F_page.rec_modified = forms.WEB_0F_page__design_1F_version.rec_modified
+				}
 			}
 			
 			databaseManager.saveData()
