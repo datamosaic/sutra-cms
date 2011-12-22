@@ -589,6 +589,10 @@ function ACTIVATE_version(event) {
 					selectedVersion.flag_active = 1
 //					selectedVersion.flag_lock = 1
 					
+					//update modified timestamp on page
+					fsVersion.rec_modified = application.getServerTimeStamp()
+					forms.WEB_0F_page.rec_modified = fsVersion.rec_modified
+					
 					//save data when not in edit mode
 					if (!forms.WEB_A__page._editMode) {
 						databaseManager.saveData(selectedVersion)
