@@ -9,6 +9,40 @@ var WEB_block_page_mode = false;
 var WEB_block_on_select = true;
 
 /**
+ * The Sutra CMS api variable contains calls to commonly used functions.
+ * Everything you need to call should be available below.
+ * 
+ * @properties={typeid:35,uuid:"669F47AD-6BF9-4038-A808-1A8530337316",variableType:-4}
+ */
+var CMS = {
+		block : new Object(),
+		cookie : new Object(),
+		//methods used to build markup
+		markup : {
+				getToken : function(/**JSRecord|String|UUID*/ input, /**String*/ tokenType) {
+						return globals.WEBc_markup_token(input, tokenType)
+					},
+				getPagesUp : function(/**Object*/ obj, /**String*/ order, /**JSRecord<db:/sutra_cms/web_page>*/pageRec, /**JSRecord<db:/sutra_cms/web_path>*/ pathRec) {
+						return globals.WEBc_markup_pages_up(obj, order, pageRec, pathRec)
+					},
+				getPagesDown : function(/**Object*/ obj, /**JSRecord<db:/sutra_cms/web_page>*/pageRec, /**JSRecord<db:/sutra_cms/web_path>*/ pathRec) {
+						return globals.WEBc_markup_pages_down(obj, pageRec, pathRec)
+					},
+				getPageAttributes : function(/**Object*/ obj, /**String*/ att) {
+						return globals.WEBc_markup_pages_attribute(obj, att)
+					}
+			},
+		session : {
+				getSession : globals.WEBc_session_getSession,
+				getData : globals.WEBc_session_getData,
+				setData : globals.WEBc_session_setData,
+				clearData : globals.WEBc_session_deleteData
+			},
+		//see forms.WEB_0__controller.CONTROLLER_setup() for how this data point is constructed
+		data : {}
+	};
+
+/**
  * @properties={typeid:24,uuid:"88B20E7F-82B4-4235-87EE-C291469E681A"}
  */
 function WEBc_browser_error() {
@@ -878,12 +912,15 @@ function WEBc_markup_link_base(pageID, siteURL, siteLanguageRec) {
 	if (count && utils.hasRecords(fsPage.web_page_to_site)) {
 		var pageRec = fsPage.getRecord(1)
 		var siteRec = pageRec.web_page_to_site.getRecord(1)
+		
 		//grab default language for this site
-		for (var i = 1; i <= siteRec.web_site_to_site_language.getSize(); i++) {
-			var siteLangRec = siteRec.web_site_to_site_language.getRecord(i)
-			if (siteLangRec.flag_default) {
-				siteLanguageRec = siteLangRec
-				break
+		if (!siteLanguageRec) {
+			for (var i = 1; i <= siteRec.web_site_to_site_language.getSize(); i++) {
+				var siteLangRec = siteRec.web_site_to_site_language.getRecord(i)
+				if (siteLangRec.flag_default) {
+					siteLanguageRec = siteLangRec
+					break
+				}
 			}
 		}
 	}
@@ -997,7 +1034,7 @@ function WEBc_markup_link_resources(pageID, siteURL, linkType) {
  * @properties={typeid:24,uuid:"19AD8258-86F2-48AB-AA1B-713A2D08D77D"}
  */
 function WEBc_markup_link_internal(markup,siteURL,linkType,areaID,obj) {
-	// pages
+	// page link
 	while ( utils.stringPosition(markup, "{DS:ID_", 0, 0) >= 0 ) {
 		var newMarkup = ''
 		
@@ -1012,6 +1049,25 @@ function WEBc_markup_link_internal(markup,siteURL,linkType,areaID,obj) {
 		
 		// add markup link
 		newMarkup	+= globals.WEBc_markup_link_page(id,siteURL,linkType,null,obj)
+		
+		markup		= newMarkup + markup
+	}
+	
+	// page name
+	while ( utils.stringPosition(markup, "{DS:NAME_", 0, 0) >= 0 ) {
+		var newMarkup = ''
+		
+		var pos = utils.stringPosition(markup, "{DS:NAME_", 0, 0)
+		newMarkup += utils.stringLeft(markup, pos-1 )
+		markup = utils.stringMiddle(markup, pos, 100000)
+		var start 	= utils.stringPosition(markup, "_", 0, 0) + 1
+		var end		= utils.stringPosition(markup, "}", 0, 0)
+		var length	= end - start
+		var id		= utils.stringMiddle(markup, start, length)
+		markup 		= utils.stringMiddle(markup, end + 1, 100000)
+		
+		// add markup link
+		newMarkup	+= globals.WEBc_markup_page_name(id,siteURL,linkType,null,obj)
 		
 		markup		= newMarkup + markup
 	}
@@ -1348,8 +1404,9 @@ function WEBc_markup_link_page(pageID, siteURL, linkType, webMode, obj) {
 
 /**
  * Gives a token that will represent a Sutra CMS object appropriately, given the context from which called.
+ * Note: This is the only method that should be used from a normal markup VIEW or CONTROLLER method. (AJAX calls behave differently)
  * 
- * @param {JSRecord|String|UUID}	input The thing to be tokenized.
+ * @param {JSRecord|String|UUID}	input The thing to be tokenized.  Can be a record or pk for the record.
  * @param {String}					[tokenType] Type of CMS object. When passed a JSRecord, tokenType will be automatically determined.
  * 
  * @returns	{String}	Token to reference a Sutra CMS object.
@@ -1359,8 +1416,9 @@ function WEBc_markup_link_page(pageID, siteURL, linkType, webMode, obj) {
 function WEBc_markup_token(input,tokenType) {
 	var token = null
 	
-	var tokenPage = '{DS:ID_'
-	var tokenAsset = '{DS:IMG_'
+	var tokenPageLink = '{DS:ID_'
+	var tokenPageName = '{DS:NAME_'
+	var tokenImage = '{DS:IMG_'
 	var tokenFile = '{DS:FILE_'
 	
 	//no type specified, try to determine
@@ -1368,28 +1426,50 @@ function WEBc_markup_token(input,tokenType) {
 		if (input instanceof JSRecord) {
 			switch (input.foundset.getDataSource()) {
 				case 'db:/sutra_cms/web_page':	//page record
-					tokenType = 'page'
+					//treat as a link if we can't tell what it is
+					tokenType = 'link'
 					break
 				case 'db:/sutra_cms/web_asset_instance':	//asset record
-					tokenType = 'asset'
+					//look at asset table and figure out what type this asset is
+					if (utils.hasRecords(input.web_asset_instance_to_asset)) {
+						//check to see if this is an image, file, etc
+						switch (input.web_asset_instance_to_asset.asset_type) {
+							case 1:	//image
+								tokenType = 'image'
+								break
+							case 2:	//file
+								tokenType = 'file'
+								break
+						}
+					}
+					//treat as a file if we can't tell what it is
+					else {
+						tokenType = 'file'
+					}
 					break
 				default:	//passed in a record from strange foundset
 					
 			}
 		}
-		//default to page
+		//default to page link
 		else {
-			tokenType = 'page'
+			tokenType = 'link'
 		}
 	}
 	
 	//prefix for token
 	switch (tokenType) {
-		case 'page':
-			token = tokenPage
+		case 'link':
+			token = tokenPageLink
 			break
-		case 'asset':
-			token = tokenAsset
+		case 'name':
+			token = tokenPageName
+			break
+		case 'image':
+			token = tokenImage
+			break
+		case 'file':
+			token = tokenFile
 			break
 		default:
 			return token
@@ -1767,41 +1847,52 @@ function WEBc_page_new(pageName,pageType,parentID,themeID,layoutID) {
 }
 
 /**
- * 
  * Return array of parent page records in order from current page to top level page
  * 
- * @param {Object} obj Sutra CMS controller obj
- * @param {String} order "asc" or "desc". "asc" is default
- * @param {JSRecord} record Page record to lookup (overrides whatever page is in obj)
+ * @param {Object}		obj Sutra CMS controller obj.
+ * @param {String} 		[order="asc"] Order in which pages are sorted. "asc" puts current page first, "desc" puts current page last.
+ * @param {JSRecord<db:/sutra_cms/web_page>}	[pageRec=obj.page.record] Page record to lookup (overrides whatever page is in obj).
+ * @param {JSRecord<db:/sutra_cms/web_path>}	[pathRec] Specify path (language) to use.
+ * 
+ * @returns {JSRecord<db:/sutra_cms/web_page>[]}	Array of parent records from given record
  * 
  * @properties={typeid:24,uuid:"541905F0-9B0C-474D-968C-F85408B3B05A"}
  */
 function WEBc_markup_pages_up(obj, order, pageRec, pathRec) {
 	
 	//given a path (language); get primed
-	if (pathRec) {
+	if (pathRec && utils.hasRecords(pathRec,'web_path_to_language.web_language_to_page') && utils.hasRecords(pathRec,'web_path_to_language.web_language_to_site_language')) {
 		pageRec = pathRec.web_path_to_language.web_language_to_page.getSelectedRecord()
 		var siteLanguageRec = pathRec.web_path_to_language.web_language_to_site_language.getSelectedRecord()
 	}
 	//no record specified, lookup from obj
-	else if (!pageRec) {
+	else if (!pageRec && obj && obj.page) {
 		pageRec = obj.page.record
 	}
 	
-	var pages = [pageRec]
-	var order = (order == "desc") ? order : "asc"
+	//default to "asc" order if none passed in
+	order = order || "asc"
+	
+	//array of pages to return
+	var pages = new Array()
+	
+	//we have enough information to do stuff
+	if (pageRec) {
+		//add in initial record
+		pages.push(pageRec)
 		
-	while ( pageRec.parent_id_page ) {
-		
-		// reasign record var
-		pageRec = pageRec.web_page_to_page__parent.getRecord(1)
-		
-		// store in return array
-		if ( order == "asc" ) {
-			pages.unshift(pageRec)
-		}
-		else {
-			pages.push(pageRec)
+		//loop up the sitemap
+		while ( pageRec.parent_id_page ) {
+			//reasign record var
+			pageRec = pageRec.web_page_to_page__parent.getRecord(1)
+			
+			//store in return array
+			if ( order == "asc" ) {
+				pages.unshift(pageRec)
+			}
+			else {
+				pages.push(pageRec)
+			}
 		}
 	}
 	
@@ -1809,17 +1900,30 @@ function WEBc_markup_pages_up(obj, order, pageRec, pathRec) {
 }
 
 /**
+ * Return array of published child pages beginning with current page
+ * 
+ * @param {Object}		obj Sutra CMS controller obj.
+ * @param {JSRecord<db:/sutra_cms/web_page>}	[pageRec=obj.page.record] Page record to lookup (overrides whatever page is in obj).
+ * @param {JSRecord<db:/sutra_cms/web_path>}	[pathRec] Specify path (language) to use.
+ * 
+ * @returns {JSRecord<db:/sutra_cms/web_page>[]}	Array of parent records from given record
+ * 
  * @properties={typeid:24,uuid:"3DB0FF72-EDE1-4F86-8F2A-BCB288586DB8"}
  */
-function WEBc_markup_pages_down(obj, record) {
+function WEBc_markup_pages_down(obj, pageRec, pathRec) {
 	
-	// no record specified, lookup from obj
-	if (!record) {
-		record = obj.page.record
+	//given a path (language); get primed
+	if (pathRec && utils.hasRecords(pathRec,'web_path_to_language.web_language_to_page') && utils.hasRecords(pathRec,'web_path_to_language.web_language_to_site_language')) {
+		pageRec = pathRec.web_path_to_language.web_language_to_page.getSelectedRecord()
+		var siteLanguageRec = pathRec.web_path_to_language.web_language_to_site_language.getSelectedRecord()
+	}
+	//no record specified, lookup from obj
+	else if (!pageRec && obj && obj.page) {
+		pageRec = obj.page.record
 	}
 	
-	// initialize result
-	var pages = []
+	//array of pages to return
+	var pages = new Array()
 	
 	function iterate(foundset, pages) {
 		for (var i = 0; i < foundset.getSize(); i++) {
@@ -1833,9 +1937,10 @@ function WEBc_markup_pages_down(obj, record) {
 		}	
 		return pages
 	}
-			
-	if ( utils.hasRecords( record.web_page_to_page__child__publish ) ) {
-		pages = iterate(record.web_page_to_page__child__publish, pages)
+	
+	//there are published children
+	if ( utils.hasRecords( pageRec.web_page_to_page__child__publish ) ) {
+		pages = iterate(pageRec.web_page_to_page__child__publish, pages)
 	}
 	
 	return pages
@@ -2102,5 +2207,113 @@ function WEBc_log_create(logType,message,siteID,pkTable,pkID) {
 		logRec.id_site = siteID
 		logRec.record_table = pkTable
 		logRec.record_id = pkID
+	}
+}
+
+/**
+ * @properties={typeid:24,uuid:"F1467DE2-99B2-49CE-8D67-278946FAEC9F"}
+ */
+function WEBc_markup_page_name(pageID, siteURL, linkType, webMode, obj) {
+	
+	// if obj passed instead of UUID for pageID
+	if ( !(pageID instanceof UUID) && pageID && pageID.page && pageID.page.id ) {
+		pageID = pageID.page.id
+	}
+	
+	//get page requested
+	if (pageID) {
+		//particular language specified
+		if (typeof pageID == 'string') {
+			var reference = pageID.split('_')
+			pageID = reference[0]
+			var languageID = reference[1]
+		}
+		
+		var fsPage = databaseManager.getFoundSet("sutra_cms","web_page")
+		fsPage.find()
+		fsPage.id_page = pageID.toString()
+		var count = fsPage.search()
+	}
+	
+	//something amiss, try to fail gracefully
+	var pageRec = new Object()
+	var siteRec = new Object()
+	var siteLanguageRec = new Object()
+	
+	//this page exists, get its site
+	if (count && utils.hasRecords(fsPage.web_page_to_site)) {
+		var pageRec = fsPage.getRecord(1)
+		var siteRec = pageRec.web_page_to_site.getRecord(1)
+		
+		//this is an internal link type of page
+		while (pageRec.page_type == 3 && pageRec.page_link_internal) {
+			fsPage.find()
+			fsPage.id_page = pageRec.page_link_internal
+			fsPage.flag_publish = 1
+			var count = fsPage.search()
+			
+			//the internal link exists
+			if (count) {
+				pageRec = fsPage.getRecord(1)
+				siteRec = pageRec.web_page_to_site.getRecord(1)
+			}
+			//internal link deleted or not published, error out
+			else {
+				pageRec = siteRec.web_site_to_page__error.getRecord(1)
+				siteRec = pageRec.web_page_to_site.getRecord(1)
+			}
+		}
+	}
+	
+	//specific language specified for this link
+	if (languageID) {
+		var fsLanguage = databaseManager.getFoundSet("sutra_cms","web_language")
+		fsLanguage.find()
+		fsLanguage.id_language = languageID
+		var count = fsLanguage.search()
+		
+		if (count) {
+			var pageLanguageRec = fsLanguage.getRecord(1)
+			var siteLanguageRec = pageLanguageRec.web_language_to_site_language.getRecord(1)
+		}
+	}
+	else {
+		//get the site's language record
+		if (obj && obj.language && obj.language.record && utils.hasRecords(obj.language.record.web_language_to_site_language)) {
+			var siteLanguageRec = obj.language.record.web_language_to_site_language.getRecord(1)
+		}
+		
+		//get the page's language record
+		if (pageRec && utils.hasRecords(pageRec.web_page_to_language) && siteLanguageRec) {
+			//loop to find selected language
+			for (var i = 1; i <= pageRec.web_page_to_language.getSize(); i++) {
+				var languageRec = pageRec.web_page_to_language.getRecord(i)
+				
+				if (languageRec.id_site_language == siteLanguageRec.id_site_language) {
+					var pageLanguageRec = languageRec
+					break
+				}
+			}
+		}
+	}
+	
+	//find default language
+	if (utils.hasRecords(pageRec,'web_page_to_language')) {
+		pageRec.web_page_to_language.sort('rec_created asc')
+		var pageLanguageDefaultRec =  pageRec.web_page_to_language.getRecord(1)
+	}
+	
+	
+	//grab this page's name based on language
+	if (pageLanguageRec) {
+		return pageLanguageRec.page_name
+	}
+	//pull path from default page's language
+	else if (pageLanguageDefaultRec) {
+		return pageLanguageDefaultRec.page_name
+	}
+	//filler text
+	else {
+		return 'Unnamed page'
 	}
 }
