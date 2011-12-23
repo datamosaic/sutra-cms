@@ -11,7 +11,7 @@ var _license_dsa_mosaic_WEB_cms = 'Module: _dsa_mosaic_WEB_cms \
  * @properties={typeid:24,uuid:"C4FCD4BB-E90B-46E1-BDDA-890B883963D4"}
  */
 function INIT_data() {
-	var data = globals.WEBc_block_getData(controller.getName())
+	var data = globals.CMS.ui.getData(controller.getName())
 	
 	var html = '<html><body><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8" /></head>'
 	if (data.Content) {

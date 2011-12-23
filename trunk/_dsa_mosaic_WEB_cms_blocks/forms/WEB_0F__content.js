@@ -173,7 +173,7 @@ function TINYMCE_init(mode) {
  * @properties={typeid:24,uuid:"553CBBDB-2269-49ED-BEC5-A585CBC2011A"}
  */
 function BLOCK_save(event) {
-	globals.WEBc_block_setData(event,'Content',elements.bn_tinymce.html)
+	globals.CMS.ui.setData(event,'Content',elements.bn_tinymce.html)
 	
 	elements.bn_tinymce.clearDirtyState()
 	
@@ -212,7 +212,7 @@ function FORM_on_show(firstShow, event) {
  * @properties={typeid:24,uuid:"BD06F60E-C5F0-4770-B6F0-7C6287A1C7DB"}
  */
 function INIT_data() {
-	var data = globals.WEBc_block_getData(controller.getName())
+	var data = globals.CMS.ui.getData(controller.getName())
 	
 	TOGGLE_buttons(false)
 	
@@ -236,7 +236,7 @@ function INIT_data() {
  * @properties={typeid:24,uuid:"8DA68D80-88B6-47F7-857C-6CE05373251D"}
  */
 function BLOCK_cancel(event) {
-	elements.bn_tinymce.html = globals.WEBc_block_getData(controller.getName()).Content
+	elements.bn_tinymce.html = globals.CMS.ui.getData(controller.getName()).Content
 	TOGGLE_buttons(false)
 }
 

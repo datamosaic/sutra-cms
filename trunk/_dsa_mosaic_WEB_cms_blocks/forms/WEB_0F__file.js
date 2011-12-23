@@ -75,8 +75,8 @@ function VIEW_default(obj, results) {
  */
 function INIT_data() {
 	//get data
-	var data = globals.WEBc_block_getData(controller.getName())
-	var dataConfig = globals.WEBc_block_getConfig(controller.getName())
+	var data = globals.CMS.ui.getData(controller.getName())
+	var dataConfig = globals.CMS.ui.getConfig(controller.getName())
 	
 	//save down form variables
 	_cssClass = dataConfig.cssClass
@@ -92,7 +92,7 @@ function INIT_data() {
 	}
 	
 	//set status of variables
-	var editMode = globals.WEBc_block_getEdit()
+	var editMode = globals.CMS.ui.getEdit()
 	
 	elements.var_cssId.transparent = editMode
 	elements.var_cssId.editable = editMode
@@ -127,7 +127,7 @@ function INIT_data() {
  * @properties={typeid:24,uuid:"E78D3F8C-024C-4F3C-8E4A-CFB6EE31E3DD"}
  */
 function GOTO_asset(event) {
-	var pk = globals.WEBc_block_getData(controller.getName()).id_asset_instance
+	var pk = globals.CMS.ui.getData(controller.getName()).id_asset_instance
 	
 	if (pk) {
 		var fsAssetInstance = databaseManager.getFoundSet('sutra_cms','web_asset_instance')
@@ -206,7 +206,7 @@ function INIT_block() {
  */
 function BLOCK_choose(event) {
 	//only run in edit mode
-	if (globals.WEBc_block_getEdit()) {
+	if (globals.CMS.ui.getEdit()) {
 		forms.WEB_P__asset.LOAD_data(2)
 		
 		//show file chooser
@@ -224,9 +224,9 @@ function BLOCK_choose(event) {
 			var assetRec = forms.WEB_P__asset._assetChosen.asset
 			
 			if (assetRec) {
-				globals.WEBc_block_setData(null,'id_asset_instance',assetRec.id_asset_instance.toString(),'WEB_0F__file')
-				globals.WEBc_block_setData(null,'file_name',assetRec.asset_title,'WEB_0F__file')
-				globals.WEBc_block_setData(null,'directory',assetRec.asset_directory,'WEB_0F__file')
+				globals.CMS.ui.setData(null,'id_asset_instance',assetRec.id_asset_instance.toString(),'WEB_0F__file')
+				globals.CMS.ui.setData(null,'file_name',assetRec.asset_title,'WEB_0F__file')
+				globals.CMS.ui.setData(null,'directory',assetRec.asset_directory,'WEB_0F__file')
 				
 	//			databaseManager.saveData()
 				
@@ -243,7 +243,7 @@ function BLOCK_choose(event) {
  */
 function BLOCK_import(event) {
 	//only run in edit mode
-	if (globals.WEBc_block_getEdit()) {
+	if (globals.CMS.ui.getEdit()) {
 		forms.WEB_0C__file_stream.FILE_import("files")
 	}
 }
@@ -254,7 +254,7 @@ function BLOCK_import(event) {
  * @properties={typeid:24,uuid:"582D1472-7339-4669-A110-353A1904B241"}
  */
 function TOGGLE_buttons(event) {
-	var editStatus = globals.WEBc_block_getEdit()
+	var editStatus = globals.CMS.ui.getEdit()
 	
 	elements.btn_choose.enabled = editStatus
 	elements.btn_import.enabled = editStatus
