@@ -1309,13 +1309,16 @@ function CONTROLLER_error() {
 	var pageServer	= obj.request.server
 	var message		= obj.error.message
 	var mode		= obj.type
-
+	
 	// initialize bad dataset to return to the jsp
 	var error =  databaseManager.createEmptyDataSet(0, ["error"])
 	
 	//display error message in edit mode or when running in developer
 		//MEMO application.isInDeveloper doesn't work with headless client
 	if (mode || (plugins.sutra && plugins.sutra.getWorkspace && plugins.sutra.getWorkspace())) {
+		// clear out obj
+		delete globals.CMS.data		
+		
 		error.addRow([message])
 		return error
 	}
@@ -1334,6 +1337,9 @@ function CONTROLLER_error() {
 			var count = siteLanguage.search()
 			
 			if (count != 1) {
+				// clear out obj
+				delete globals.CMS.data		
+				
 				error.addRow(["No site found"])
 				return error
 			}
@@ -1343,11 +1349,17 @@ function CONTROLLER_error() {
 		}
 		//no site found
 		else if (count != 1) {
+			// clear out obj
+			delete globals.CMS.data
+			
 			error.addRow(["No site found"])
 			return error
 		}
 		
 		if (!site.id_page__error) {
+			// clear out obj
+			delete globals.CMS.data
+		
 			error.addRow(["No error page specified for this site"])
 			return error
 		}
@@ -1355,6 +1367,9 @@ function CONTROLLER_error() {
 		// redirect to the error page
 		obj.response.record.sendRedirect(globals.WEBc_markup_link_page(site.id_page__error, pageServer))
 	}
+	
+	// clear out obj
+	delete globals.CMS.data		
 }
 
 /**
