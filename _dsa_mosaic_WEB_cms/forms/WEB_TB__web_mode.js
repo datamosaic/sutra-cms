@@ -388,6 +388,7 @@ function ACTION_mode(event) {
 //		elements.lbl_detail.visible = false
 //		TOGGLE_group(false)
 //		TOGGLE_version(false)
+		TOGGLE_visit(false)
 		
 		//turn off all switches
 		elements.gfx_switch_1.visible = false
@@ -467,6 +468,7 @@ function ACTION_mode(event) {
 					TOGGLE_edit()
 //					TOGGLE_group()
 //					TOGGLE_version()	
+					TOGGLE_visit(true)
 				}
 				
 				break
