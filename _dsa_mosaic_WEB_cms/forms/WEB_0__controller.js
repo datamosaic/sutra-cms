@@ -6,51 +6,55 @@ var _license_dsa_mosaic_WEB_cms = 'Module: _dsa_mosaic_WEB_cms \
 									MIT Licensed';
 
 /**
+ * Entry point for all Sutra CMS page requests.
+ * Returns all data and markup related to the requested page.
  * 
- * Entry point for all page requests. Returns all data and markup related to the 
- * requested page.
+ * @param {Javax.servlet.http.ServletContext} app Data for all pages.
+ * @param {Javax.servlet.http.httpsession} session Data for user session.
+ * @param {Javax.servlet.http.httpservletrequest} request Data for page request.
+ * @param {Javax.servlet.http.httpservletresponse} response Data for page response.
+ * @param {String} [mode] URL parameter denoting whether in edit mode or not.
  * 
- * @param {Javax.servlet.http.ServletContext} app Data for all pages
- * @param {Javax.servlet.http.httpsession} session Data for user session
- * @param {Javax.servlet.http.httpservletrequest} request Data for page request
- * @param {Javax.servlet.http.httpservletresponse} response Data for page response
- * @param {String} mode URL parameter denoting whether in edit mode or not
- * 
- * @return {JSDataSet} results JSDataSet is cast to an IDataSet at the jsp level
+ * @return {JSDataSet} The JSDataSet is cast to an IDataSet at the jsp level.
  * 
  * @properties={typeid:24,uuid:"4C8B4BD7-E187-4A00-9A77-C58FD3971691"}
  */
 function CONTROLLER(app, session, request, response, mode) {
+	// initialize CMS variable (would be nice if this worked correctly)
+//	globals.CMS = eval(solutionModel.getGlobalVariable('CMS').defaultValue)
 	
 	// initialize good dataset to return to jsp
 	var results = databaseManager.createEmptyDataSet(0,["key","value"])
 	results.addRow(["cmsVersion","Sutra CMS - 3.0b1"])
 	
 	// STEP 1: Setup
-	var obj = CONTROLLER_setup(results, app, session, request, response, mode)
+	CONTROLLER_setup(results, app, session, request, response, mode)
 	
 	// STEP 2: Session control
-	if ( !obj.error.code ) {
-		CONTROLLER_session(obj)
+	if ( !globals.CMS.data.error.code ) {
+		CONTROLLER_session()
 	}
 	else {
-		return CONTROLLER_error(obj)
+		return CONTROLLER_error()
 	}
 		
 	// STEP 3: Page builder
-	if ( !obj.error.code ) {
-		CONTROLLER_builder(results, obj)
+	if ( !globals.CMS.data.error.code ) {
+		CONTROLLER_builder(results)
 	}
 	else {
-		return CONTROLLER_error(obj)
+		return CONTROLLER_error()
 	}
 	
 	// send results back to headless client
-	if ( !obj.error.code ) {
+	if ( !globals.CMS.data.error.code ) {
+		// clear out obj
+		delete globals.CMS.data
+		
 		return results
 	}
 	else {
-		return CONTROLLER_error(obj)
+		return CONTROLLER_error()
 	}
 }
 
@@ -58,12 +62,12 @@ function CONTROLLER(app, session, request, response, mode) {
  *
  * Handles session management
  * 
- * @param {Object} obj Used to collect all data associated with the page record
- * 
  * @properties={typeid:24,uuid:"BD755ACA-11CF-4E17-9041-42853B2E14E4"}
  */
-function CONTROLLER_session(obj) {
-
+function CONTROLLER_session() {
+	// assign main CMS object for easier reference
+	var obj = globals.CMS.data
+	
 	// PROCESS: session management
 
 	// if logging turned on, record session and page access
@@ -109,15 +113,16 @@ function CONTROLLER_session(obj) {
 }
 
 /**
- * 
  * Collect all page data into "results" variable
  * 
- * @param {JSDataSet} results Object that will be returned to the jsp
- * @param {Object} obj Used to collect all data associated with the page record
+ * @param {JSDataSet}	results Dataset that will be returned to the jsp.
  *   
  * @properties={typeid:24,uuid:"AFD23FBD-CE21-4C2C-BDA2-75C68969ACDB"}
  */
-function CONTROLLER_builder(results, obj) {
+function CONTROLLER_builder(results) {
+	// assign main CMS object for easier reference
+	var obj = globals.CMS.data
+	
 	var markup = ''
 	
 	// AREA(S)	
@@ -125,9 +130,9 @@ function CONTROLLER_builder(results, obj) {
 	if ( utils.hasRecords(obj.version.record,'web_version_to_area') ) {
 		databaseManager.refreshRecordFromDatabase(obj.version.record.web_version_to_area, -1)
 	}
-	// send results back to headless client
+	// don't proceed with markup; send results back to headless client
 	else {
-		return results
+		return
 	}
 	
 	// PROCESS: AREA
@@ -284,10 +289,14 @@ function CONTROLLER_builder(results, obj) {
 }
 
 /**
- *
- * Sets up the obj variable and gets all meta data for page.
+ * Sets up the globals.CMS.data variable and gets all meta data for page.
  * 
- * @param {Object} obj Used to collect all data associated with the page record
+ * @param {JSDataSet}	results Dataset that will be returned to the jsp.
+ * @param {Javax.servlet.http.ServletContext} app Data for all pages.
+ * @param {Javax.servlet.http.httpsession} session Data for user session.
+ * @param {Javax.servlet.http.httpservletrequest} request Data for page request.
+ * @param {Javax.servlet.http.httpservletresponse} response Data for page response.
+ * @param {String} [mode] URL parameter denoting whether in edit mode or not.
  * 
  * @properties={typeid:24,uuid:"251216CD-208E-4A2A-8237-1196E2032EC1"}
  */
@@ -306,7 +315,9 @@ function CONTROLLER_setup(results, app, session, request, response, mode) {
 	 */	
 	
 	// initialize data object passed to block markup methods
-	var obj		= { site	: { record : '', path : '', id	: '', name	: '', tracking : ''},
+	var obj = 
+		globals.CMS.data = {
+					site	: { record : '', path : '', id	: '', name	: '', tracking : ''},
 	       		    page	: { record : '', id	: '', name	: '', parent : '', attribute	: {}},
 	       		    platform: { record : '', id	: ''},
 	       		    language: { record : '', id	: ''},
@@ -329,7 +340,7 @@ function CONTROLLER_setup(results, app, session, request, response, mode) {
 	       		    response : { record : response },
 	       		    app		: { record : app },
 	       		    error	: { code : '', message : ''}
-	}
+			}
 	
 	// directly expose some data points used in this method
 	var pageServer	= request.getServerName()
@@ -626,7 +637,7 @@ function CONTROLLER_setup(results, app, session, request, response, mode) {
 		if (count != 1) {
 			obj.error.code = 404
 			obj.error.message = "No page with supplied ID found"
-			return obj
+			return
 		}
 		else {
 			pageID = page.id_page
@@ -649,7 +660,7 @@ function CONTROLLER_setup(results, app, session, request, response, mode) {
 			if (count != 1) {
 				obj.error.code = 500
 				obj.error.message = "No site found"
-				return obj
+				return
 			}
 			else {
 				site.loadRecords([siteLanguage.id_site])
@@ -659,7 +670,7 @@ function CONTROLLER_setup(results, app, session, request, response, mode) {
 		else if (count != 1) {
 			obj.error.code = 500
 			obj.error.message = "No site found"
-			return obj
+			return
 		}
 		
 		//if first character is a slash (it will be), trim
@@ -718,7 +729,7 @@ function CONTROLLER_setup(results, app, session, request, response, mode) {
 		if (!pageID) {
 			obj.error.code = 404
 			obj.error.message = "No web_path record found"
-			return obj
+			return
 		}
 		
 		var page = databaseManager.getFoundSet("sutra_cms","web_page")
@@ -729,7 +740,7 @@ function CONTROLLER_setup(results, app, session, request, response, mode) {
 		if (count != 1) {
 			obj.error.code = 404
 			obj.error.message = "No page with supplied path found"
-			return obj
+			return
 		}
 		else {
 			databaseManager.refreshRecordFromDatabase(page, 0)
@@ -766,7 +777,7 @@ function CONTROLLER_setup(results, app, session, request, response, mode) {
 			if (count != 1) {
 				obj.error.code = 500
 				obj.error.message = "No site found"
-				return obj
+				return
 			}
 			else {
 				site.loadRecords([siteLanguage.id_site])
@@ -785,7 +796,7 @@ function CONTROLLER_setup(results, app, session, request, response, mode) {
 			else {
 				obj.error.code = 500
 				obj.error.message = "No site found"
-				return obj
+				return
 			}
 		}
 		
@@ -796,7 +807,7 @@ function CONTROLLER_setup(results, app, session, request, response, mode) {
 		if (count != 1) {
 			obj.error.code = 404
 			obj.error.message = "No default page specified for this site"
-			return obj
+			return
 		}
 		else {
 			pageID = page.id_page
@@ -808,7 +819,7 @@ function CONTROLLER_setup(results, app, session, request, response, mode) {
 	if ( !editMode && !page.flag_publish ) {
 		obj.error.code = 403
 		obj.error.message = "Page not published"
-		return obj
+		return
 	}
 		
 	//if a folder, grab child page
@@ -836,13 +847,13 @@ function CONTROLLER_setup(results, app, session, request, response, mode) {
 			else {
 				obj.error.code = 404
 				obj.error.message = "Folder has no children"
-				return obj
+				return
 			}
 		}
 		else {
 			obj.error.code = 404
 			obj.error.message = "Folder has no content"
-			return obj
+			return
 		}
 	}
 	
@@ -857,12 +868,12 @@ function CONTROLLER_setup(results, app, session, request, response, mode) {
 			obj.error.code = 301
 			obj.type = true
 //			obj.error.message = "Redirecting to external link"			
-			return obj
+			return
 		}
 		else {
 			obj.error.code = 404
 			obj.error.message = "External link is blank"
-			return obj
+			return
 		}
 	}
 	//an internal link, go to that page
@@ -882,7 +893,7 @@ function CONTROLLER_setup(results, app, session, request, response, mode) {
 				
 			//this will show the error, comment out to go to default error/home page for this site
 			obj.type = true
-			return obj
+			return
 		}
 	}
 	
@@ -932,7 +943,7 @@ function CONTROLLER_setup(results, app, session, request, response, mode) {
 		if (!count) {
 			obj.error.code = 500
 			obj.error.message = "No default site platform"
-			return obj
+			return
 		}
 		else {
 			platform.find()
@@ -963,7 +974,7 @@ function CONTROLLER_setup(results, app, session, request, response, mode) {
 			// return error that no such version
 			obj.error.code = 500
 			obj.error.message = "Platform requested does not exist"
-			return obj
+			return
 		}		
 	}
 	
@@ -989,7 +1000,7 @@ function CONTROLLER_setup(results, app, session, request, response, mode) {
 			// return error that no such version
 			obj.error.code = 500
 			obj.error.message = "Language requested does not exist"
-			return obj
+			return
 		}
 	}
 	// language specified by folder/domain
@@ -1001,7 +1012,7 @@ function CONTROLLER_setup(results, app, session, request, response, mode) {
 		if (!count) {
 			obj.error.code = 500
 			obj.error.message = "Site language \"" + languageName + "\" does not exist"
-			return obj
+			return
 		}
 		else {
 			language.find()
@@ -1030,7 +1041,7 @@ function CONTROLLER_setup(results, app, session, request, response, mode) {
 		if (!count) {
 			obj.error.code = 500
 			obj.error.message = "No default site language"
-			return obj
+			return
 		}
 		else {
 			language.find()
@@ -1072,7 +1083,7 @@ function CONTROLLER_setup(results, app, session, request, response, mode) {
 		if (!count) {
 			obj.error.code = 500
 			obj.error.message = "No default site group"
-			return obj
+			return
 		}
 		else {
 			group.find()
@@ -1103,7 +1114,7 @@ function CONTROLLER_setup(results, app, session, request, response, mode) {
 			// return error that no such version
 			obj.error.code = 500
 			obj.error.message = "Group requested does not exist"
-			return obj
+			return
 		}
 	}
 	
@@ -1152,7 +1163,7 @@ function CONTROLLER_setup(results, app, session, request, response, mode) {
 				// TODO: insufficent access to view this page's content
 				obj.error.code = 500
 				obj.error.message = "No active version"
-				return obj
+				return
 			}
 		}
 	}
@@ -1172,7 +1183,7 @@ function CONTROLLER_setup(results, app, session, request, response, mode) {
 			// return error that no such version
 			obj.error.code = 500
 			obj.error.message = "Version requested does not exist"
-			return obj
+			return
 		}
 	}
 	
@@ -1187,14 +1198,14 @@ function CONTROLLER_setup(results, app, session, request, response, mode) {
 	if (!utils.hasRecords(obj.version.record,'web_version_to_theme')) {
 		obj.error.code = 500
 		obj.error.message = "No theme specified"
-		return obj
+		return
 	}
 	
 	// LAYOUT
 	if (!utils.hasRecords(obj.version.record,'web_version_to_layout')) {
 		obj.error.code = 500
 		obj.error.message = "No layout specified"
-		return obj
+		return
 	}
 	
 	// theme directory with rewrites
@@ -1283,20 +1294,18 @@ function CONTROLLER_setup(results, app, session, request, response, mode) {
 	//TODO: only set this if character encoding not specified in the header
 	// set connection to use utf
 	response.characterEncoding = "UTF-8"
-	
-	return obj
 }
 
 /**
  *
  * Gracefully handle page requests that don't resolve properly
  * 
- * @param {Object} obj Used to collect all data associated with the page record
- * 
  * @properties={typeid:24,uuid:"2421EBCC-CD1C-4ACF-BE86-02167F1EA742"}
  */
-function CONTROLLER_error(obj) {
-
+function CONTROLLER_error() {
+	// assign main CMS object for easier reference
+	var obj = globals.CMS.data
+	
 	var pageServer	= obj.request.server
 	var message		= obj.error.message
 	var mode		= obj.type
