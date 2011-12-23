@@ -32,7 +32,7 @@ var _license_dsa_mosaic_WEB_cms = 'Module: _dsa_mosaic_WEB_cms \
  */
 function BLOCK_choose(event) {
 	//only run in edit mode
-	if (globals.WEBc_block_getEdit()) {
+	if (globals.CMS.ui.getEdit()) {
 		forms.WEB_P__asset.LOAD_data(1)
 		
 		//show image chooser
@@ -51,23 +51,23 @@ function BLOCK_choose(event) {
 			var assetRec = forms.WEB_P__asset._assetChosen.asset
 			
 			if (metaRows && assetRec) {
-				var data = globals.WEBc_block_getData('WEB_0F__image')
+				var data = globals.CMS.ui.getData('WEB_0F__image')
 					
 				//see INIT_block for all keys
 				for (var i in data) {
 					switch (i) {
 						case 'height':
 						case 'width':
-							globals.WEBc_block_setData(null,i,metaRows[i],'WEB_0F__image')
+							globals.CMS.ui.setData(null,i,metaRows[i],'WEB_0F__image')
 							break
 						case 'image_name':
-							globals.WEBc_block_setData(null,i,assetRec.asset_title,'WEB_0F__image')
+							globals.CMS.ui.setData(null,i,assetRec.asset_title,'WEB_0F__image')
 							break
 						case 'directory':
-							globals.WEBc_block_setData(null,i,assetRec.asset_directory,'WEB_0F__image')
+							globals.CMS.ui.setData(null,i,assetRec.asset_directory,'WEB_0F__image')
 							break
 						default:
-							globals.WEBc_block_setData(null,i,assetRec[i],'WEB_0F__image')
+							globals.CMS.ui.setData(null,i,assetRec[i],'WEB_0F__image')
 					}
 				}
 				
@@ -87,9 +87,9 @@ function BLOCK_choose(event) {
  */
 function BLOCK_scale(event) {
 	//only run in edit mode
-	if (globals.WEBc_block_getEdit()) {
+	if (globals.CMS.ui.getEdit()) {
 		var fsAssetInstance = databaseManager.getFoundSet('sutra_cms','web_asset_instance')
-		fsAssetInstance.loadRecords([application.getUUID(globals.WEBc_block_getData(event).id_asset_instance)])
+		fsAssetInstance.loadRecords([application.getUUID(globals.CMS.ui.getData(event).id_asset_instance)])
 		var recAsset = fsAssetInstance.web_asset_instance_to_asset.getRecord(1)
 		
 		var newAsset = forms.WEB_0F_asset__image.ASSET_scale(recAsset,true)
@@ -104,23 +104,23 @@ function BLOCK_scale(event) {
 			}
 			
 			//the data we're working with here
-			var data = globals.WEBc_block_getData('WEB_0F__image')
+			var data = globals.CMS.ui.getData('WEB_0F__image')
 			
 			//see INIT_block for all keys
 			for (var i in data) {
 				switch (i) {
 					case 'height':
 					case 'width':
-						globals.WEBc_block_setData(null,i,metaRows[i],'WEB_0F__image')
+						globals.CMS.ui.setData(null,i,metaRows[i],'WEB_0F__image')
 						break
 					case 'image_name':
-						globals.WEBc_block_setData(null,i,newAsset.asset_title,'WEB_0F__image')
+						globals.CMS.ui.setData(null,i,newAsset.asset_title,'WEB_0F__image')
 						break
 					case 'directory':
-						globals.WEBc_block_setData(null,i,newAsset.asset_directory,'WEB_0F__image')
+						globals.CMS.ui.setData(null,i,newAsset.asset_directory,'WEB_0F__image')
 						break
 					default:
-						globals.WEBc_block_setData(null,i,newAsset[i],'WEB_0F__image')
+						globals.CMS.ui.setData(null,i,newAsset[i],'WEB_0F__image')
 				}
 			}
 			
@@ -137,7 +137,7 @@ function BLOCK_scale(event) {
  */
 function BLOCK_import(event) {
 	//only run in edit mode
-	if (globals.WEBc_block_getEdit()) {
+	if (globals.CMS.ui.getEdit()) {
 		forms.WEB_0C__file_stream.IMAGE_import("images")
 	}
 }
@@ -190,7 +190,7 @@ function VIEW_default(obj) {
  * @properties={typeid:24,uuid:"E78D3F8A-024C-4F3C-8E4A-CFB6EE31E3DD"}
  */
 function GOTO_asset(event) {
-	var pk = globals.WEBc_block_getData(controller.getName()).id_asset_instance
+	var pk = globals.CMS.ui.getData(controller.getName()).id_asset_instance
 	
 	if (pk) {
 		var fsAssetInstance = databaseManager.getFoundSet('sutra_cms','web_asset_instance')
@@ -226,8 +226,8 @@ function VIEW_lightbox() {
  * @properties={typeid:24,uuid:"581D1472-7339-4669-A110-353A1904B241"}
  */
 function TOGGLE_buttons(event) {
-	var editStatus = globals.WEBc_block_getEdit()
-	var data = globals.WEBc_block_getData(controller.getName())
+	var editStatus = globals.CMS.ui.getEdit()
+	var data = globals.CMS.ui.getData(controller.getName())
 	var hasData = data.id_asset_instance ? true : false
 	
 	elements.var_cssId.transparent = editStatus
@@ -336,8 +336,8 @@ function FORM_on_show(firstShow, event) {
  * @properties={typeid:24,uuid:"9E7A1253-45B6-4996-AEDE-56585F0B8394"}
  */
 function INIT_data() {
-	var data = globals.WEBc_block_getData(controller.getName())
-	var dataConfig = globals.WEBc_block_getConfig(controller.getName())
+	var data = globals.CMS.ui.getData(controller.getName())
+	var dataConfig = globals.CMS.ui.getConfig(controller.getName())
 	
 	//no image set yet
 	if (!data.image_name){

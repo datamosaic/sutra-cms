@@ -102,8 +102,8 @@ template +=	'	>\n\
  */
 function INIT_data() {
 	//get data
-	var data = globals.WEBc_block_getData(controller.getName())
-	var dataConfig = globals.WEBc_block_getConfig(controller.getName())
+	var data = globals.CMS.ui.getData(controller.getName())
+	var dataConfig = globals.CMS.ui.getConfig(controller.getName())
 	
 	//save down form variables so records can be changed
 	_module = data.module
@@ -115,7 +115,7 @@ function INIT_data() {
 	_cssClass = dataConfig.cssClass
 	
 	//set status of variables
-	var editMode = globals.WEBc_block_getEdit()
+	var editMode = globals.CMS.ui.getEdit()
 	
 	elements.var_module.visible = editMode
 	elements.var_module__display.visible = !editMode

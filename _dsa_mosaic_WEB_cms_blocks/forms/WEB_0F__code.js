@@ -45,8 +45,8 @@ function FORM_on_load() {
  */
 function BLOCK_save(event) {
 	//only run in edit mode
-	if (globals.WEBc_block_getEdit()) {
-		globals.WEBc_block_setData(event,'code',_dataValue)
+	if (globals.CMS.ui.getEdit()) {
+		globals.CMS.ui.setData(event,'code',_dataValue)
 		
 		ACTION_colorize()
 	}
@@ -84,11 +84,11 @@ function FORM_on_show(firstShow, event) {
  */
 function INIT_data() {
 	//save down form variables so records can be changed
-	_dataValue = globals.WEBc_block_getData(controller.getName()).code
-	_codeType = globals.WEBc_block_getConfig(controller.getName()).code_type
+	_dataValue = globals.CMS.ui.getData(controller.getName()).code
+	_codeType = globals.CMS.ui.getConfig(controller.getName()).code_type
 	
 	//when in edit mode, enter in edit mode
-	if (globals.WEBc_block_getEdit()) {
+	if (globals.CMS.ui.getEdit()) {
 		TOGGLE_buttons(true)
 	}
 	//update display
@@ -107,9 +107,9 @@ function INIT_data() {
  */
 function BLOCK_cancel(event) {
 	//only run in edit mode
-	if (globals.WEBc_block_getEdit()) {
+	if (globals.CMS.ui.getEdit()) {
 		//reset codeType var
-		_codeType = globals.WEBc_block_getConfig(controller.getName()).code_type
+		_codeType = globals.CMS.ui.getConfig(controller.getName()).code_type
 		
 		//refresh the colored version
 		if (globals.WEB_page_mode == 2) {
@@ -122,7 +122,7 @@ function BLOCK_cancel(event) {
  * @properties={typeid:24,uuid:"1DD58AA1-41B8-44A1-BDAE-FE0ADBF7F314"}
  */
 function TOGGLE_buttons(state) {
-	if (!globals.WEBc_block_getEdit()) {
+	if (!globals.CMS.ui.getEdit()) {
 		elements.btn_edit.visible = false
 		elements.lbl_edit.visible = false
 	}
@@ -170,7 +170,7 @@ function TOGGLE_buttons(state) {
  */
 function ACTION_internal_link(event) {
 	//only run in edit mode
-	if (globals.WEBc_block_getEdit()) {
+	if (globals.CMS.ui.getEdit()) {
 		globals.WEBc_page_picker(ACTION_add_token,null,true)
 	}
 }
@@ -200,7 +200,7 @@ function ACTION_add_token(inputID,pageRec) {
 	
 	elem.replaceSelectedText(linkStart + linkPage + linkEnd)
 	
-	var dataSave = globals.WEBc_block_setData(event,'code',_dataValue)
+	var dataSave = globals.CMS.ui.setData(event,'code',_dataValue)
 	
 	elem.caretPosition = cursor + offset
 	elem.requestFocus()
@@ -216,7 +216,7 @@ function ACTION_add_token(inputID,pageRec) {
  */
 function ACTION_insert_image(event) {
 	//only run in edit mode
-	if (globals.WEBc_block_getEdit()) {
+	if (globals.CMS.ui.getEdit()) {
 		forms.WEB_P__asset.LOAD_data(1)
 		
 		application.showFormInDialog(
@@ -250,7 +250,7 @@ function ACTION_insert_image(event) {
 			
 			elem.replaceSelectedText(html)
 			
-			var dataSave = globals.WEBc_block_setData(event,'code',_dataValue)
+			var dataSave = globals.CMS.ui.setData(event,'code',_dataValue)
 			
 			elem.caretPosition = cursor + offset
 			elem.requestFocus()
@@ -331,7 +331,7 @@ function ACTION_colorize(event) {
 	var html = ''
 	var prefix = ''
 	
-	var codeData = globals.WEBc_block_getData(controller.getName()).code
+	var codeData = globals.CMS.ui.getData(controller.getName()).code
 	
 	//if there's data, color it
 	if (codeData) {
@@ -392,5 +392,5 @@ function ACTION_colorize(event) {
  * @properties={typeid:24,uuid:"1975546E-4E95-4C97-8332-E8135178C526"}
  */
 function FLD_data_change__code_type(oldValue, newValue, event) {
-	globals.WEBc_block_setConfig(event,'code_type',newValue)
+	globals.CMS.ui.setConfig(event,'code_type',newValue)
 }

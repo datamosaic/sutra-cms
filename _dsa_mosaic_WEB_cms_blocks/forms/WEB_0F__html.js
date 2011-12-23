@@ -39,7 +39,7 @@ function FORM_on_load() {
  * @properties={typeid:24,uuid:"B886B030-6E8A-4206-B8FC-7DF67F7362F0"}
  */
 function BLOCK_save(event) {
-	globals.WEBc_block_setData(event,'HTML',_dataValue)
+	globals.CMS.ui.setData(event,'HTML',_dataValue)
 	
 	ACTION_colorize()
 }
@@ -76,10 +76,10 @@ function FORM_on_show(firstShow, event) {
  */
 function INIT_data() {
 	//save down form variables so records can be changed
-	_dataValue = globals.WEBc_block_getData(controller.getName()).HTML
+	_dataValue = globals.CMS.ui.getData(controller.getName()).HTML
 	
 	//when in edit mode, enter in edit mode
-	if (globals.WEBc_block_getEdit()) {
+	if (globals.CMS.ui.getEdit()) {
 		TOGGLE_buttons(true)
 	}
 	//update display
@@ -108,7 +108,7 @@ function BLOCK_cancel(event) {
  * @properties={typeid:24,uuid:"AFC38F1A-D4AE-49AE-8C7C-C6901CC9B030"}
  */
 function TOGGLE_buttons(state) {
-	if (!globals.WEBc_block_getEdit()) {
+	if (!globals.CMS.ui.getEdit()) {
 		elements.btn_edit.visible = false
 		elements.lbl_edit.visible = false
 	}
@@ -184,7 +184,7 @@ function ACTION_add_token(inputID,pageRec) {
 	
 	elem.replaceSelectedText(linkStart + linkPage + linkEnd)
 	
-	var dataSave = globals.WEBc_block_setData(event,'HTML',_dataValue)
+	var dataSave = globals.CMS.ui.setData(event,'HTML',_dataValue)
 	
 	elem.caretPosition = cursor + offset
 	elem.requestFocus()
@@ -232,7 +232,7 @@ function ACTION_insert_image(event) {
 		
 		elem.replaceSelectedText(html)
 		
-		var dataSave = globals.WEBc_block_setData(event,'HTML',_dataValue)
+		var dataSave = globals.CMS.ui.setData(event,'HTML',_dataValue)
 		
 		elem.caretPosition = cursor + offset
 		elem.requestFocus()
@@ -302,7 +302,7 @@ function ACTION_colorize() {
 	var html = ''
 	var prefix = ''
 	
-	var htmlData = globals.WEBc_block_getData(controller.getName()).HTML
+	var htmlData = globals.CMS.ui.getData(controller.getName()).HTML
 	
 	//if there's data, color it
 	if (htmlData) {
