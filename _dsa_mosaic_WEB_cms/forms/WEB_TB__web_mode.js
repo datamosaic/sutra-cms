@@ -548,6 +548,7 @@ function FORM_on_load() {
 //	elements.lbl_versions_tick.visible = false	
 	elements.btn_edit.visible = false
 	elements.lbl_edit.visible = false
+	TOGGLE_visit(false)
 	
 //	var modeToggle = globals.TRIGGER_registered_action_authenticate('cms page mode toggle')
 //	elements.btn_dashboard.visible = modeToggle
