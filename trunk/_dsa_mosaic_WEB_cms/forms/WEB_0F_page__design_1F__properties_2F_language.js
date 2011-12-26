@@ -38,5 +38,12 @@ function dragDivider(mouseEvent) {
 function TAB_change(event) {
 	globals.TAB_change_grid()
 	
-	elements.btn_add.enabled = forms.WEB_A__page._editMode
+	TOGGLE_elements()
+}
+
+/**
+ * @properties={typeid:24,uuid:"AD2432E0-96A2-494D-89AD-BEE5A4920CD2"}
+ */
+function TOGGLE_elements() {
+	elements.btn_add.visible = forms.WEB_A__page._editMode
 }
