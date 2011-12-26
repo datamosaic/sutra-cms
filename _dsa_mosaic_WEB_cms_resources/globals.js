@@ -29,6 +29,12 @@ var CMS = {
 					},
 				getPageAttributes : function(/**Object*/ obj, /**String*/ att) {
 						return globals.WEBc_markup_pages_attribute(obj, att)
+					},
+				getHomePage : function(/**JSRecord<db:/sutra_cms/web_site>*/ siteRec) {
+						return globals.WEBc_markup_link_home(siteRec)
+					},
+				getErrorPage : function(/**JSRecord<db:/sutra_cms/web_site>*/ siteRec) {
+						return globals.WEBc_markup_link_error(siteRec)
 					}
 			},
 		session : {
@@ -2278,4 +2284,52 @@ function WEBc_markup_page_name(pageID, siteURL, linkType, webMode, obj) {
 	else {
 		return 'Unnamed page'
 	}
+}
+
+/**
+ * Return link to the home page for a site
+ * 
+ * @param {JSRecord<db:/sutra_cms/web_site>}	[siteRec] Specify site to get home page for.
+ * 
+ * @returns {String} Page token.
+ * 
+ * @properties={typeid:24,uuid:"47E905E8-CAF4-495C-B08B-F8A4D3320386"}
+ */
+function WEBc_markup_link_home(siteRec) {
+	var token = ''
+		
+	if (!siteRec && globals.CMS && globals.CMS.data && globals.CMS.data.site && globals.CMS.data.site.record) {
+		siteRec = globals.CMS.data.site.record
+	}
+	
+	//check to see if there is a home page specified for the requested site
+	if (utils.hasRecords(siteRec,'web_site_to_page__home')) {
+		token = globals.WEBc_markup_token(siteRec.web_site_to_page__home.getSelectedRecord())
+	}
+	
+	return token
+}
+
+/**
+ * Return link to the home page for a site
+ * 
+ * @param {JSRecord<db:/sutra_cms/web_site>}	[siteRec] Specify site to get home page for.
+ * 
+ * @returns {String} Page token.
+ * 
+ * @properties={typeid:24,uuid:"47E905E8-C7F4-495C-B08B-F8A4D3320386"}
+ */
+function WEBc_markup_link_error(siteRec) {
+	var token = ''
+		
+	if (!siteRec && globals.CMS && globals.CMS.data && globals.CMS.data.site && globals.CMS.data.site.record) {
+		siteRec = globals.CMS.data.site.record
+	}
+	
+	//check to see if there is a home page specified for the requested site
+	if (utils.hasRecords(siteRec,'web_site_to_page__error')) {
+		token = globals.WEBc_markup_token(siteRec.web_site_to_page__error.getSelectedRecord())
+	}
+	
+	return token
 }
