@@ -331,11 +331,6 @@ function TAB_change(event) {
 		elements.btn_add_page_attrib.visible = false
 	}
 	
-	//disable edit mode on platform
-	if (elements.tab_used_on.tabIndex == 1) {
-		forms.WEB_0F_site_1L_site_platform.TOGGLE_edit(false)
-	}
-	
 	forms[elements.tab_detail.getTabFormNameAt(elements.tab_detail.tabIndex)].REC_on_select()
 }
 
