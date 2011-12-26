@@ -519,6 +519,19 @@ function REC_on_select(event,fireSelect) {
 		//scrapbook warning labels
 		forms.WEB_0F_page__design_1F_version_2F_block__data.elements.lbl_scrapbook.visible = editMode && web_scope_to_block.scope_type
 		forms.WEB_0F_page__design_1F_version_2F_block__gui.elements.lbl_scrapbook.visible = editMode && web_scope_to_block.scope_type
+		
+		var editScrap = '<html><strong>Warning!</strong> This is a scrapbook. Edits may affect other pages.</html>'
+		var lockScrap = '<html>This scrapbook is locked. Editing not possible here.</html>'
+		
+		if (editMode && web_scope_to_block.web_block_to_block_version.flag_lock) {
+			var scrapText = lockScrap
+		}
+		else if (editMode) {
+			var scrapText = editScrap
+		}
+		
+		forms.WEB_0F_page__design_1F_version_2F_block__data.elements.lbl_scrapbook.text = scrapText
+		forms.WEB_0F_page__design_1F_version_2F_block__gui.elements.lbl_scrapbook.text = scrapText
 	}
 }
 

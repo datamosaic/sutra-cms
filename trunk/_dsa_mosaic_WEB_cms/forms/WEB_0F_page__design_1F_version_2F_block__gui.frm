@@ -59,7 +59,6 @@ uuid:"A2C7825B-7F5C-4F1A-8B44-F03B8F60C1A9"
 },
 {
 anchors:11,
-displaysTags:true,
 foreground:"#b00d00",
 formIndex:9997,
 horizontalAlignment:0,

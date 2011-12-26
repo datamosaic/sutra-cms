@@ -82,6 +82,15 @@ function TOGGLE_elements(editAllow) {
  * @properties={typeid:24,uuid:"0CEBEBFC-B4C0-4BC0-904C-924EFFD82A1B"}
  */
 function REC_on_select(event) {
+	//check to make sure the active block version is editable
+	if (forms.WEB_0F_page.ACTION_edit_get() && utils.hasRecords(foundset.getSelectedRecord(),'web_block_to_block_version') && !foundset.getSelectedRecord().web_block_to_block_version.flag_lock) {
+		TOGGLE_elements(true)
+	}
+	//no edits
+	else {
+		TOGGLE_elements(false)
+	}
+	
 	var fsResponse = forms.WEB_0F_page__design_1F_version_2F_block__data_3F_block_data_response.foundset
 	
 	if (utils.hasRecords(web_block_to_block_version) && web_block_to_block_version.id_block_version) {
