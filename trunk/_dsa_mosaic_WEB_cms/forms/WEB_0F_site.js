@@ -128,7 +128,7 @@ function REC_new() {
  *
  * @properties={typeid:24,uuid:"DE93701D-6639-40BE-B977-D24295C1932F"}
  */
-function ACTION_blow_in_missing_areas_to_all_pages() {
+function ACTION_blow_in_missing_areas_to_all_pagesz() {
 	return
 	if (globals.TRIGGER_registered_action_authenticate('cms site page update')) {
 		var input = plugins.dialogs.showWarningDialog(
