@@ -94,13 +94,13 @@ function ACTIONS_list() {
 			//selected platform
 			if (record.id_site_platform.toString() == _scopePlatform) {
 				platforms.push(plugins.popupmenu.createCheckboxMenuItem(record.platform_name + "", ACTIONS_list_control))
-				platforms[platforms.length - 1].setMethodArguments(7,'Platform',null)
+				platforms[platforms.length - 1].setMethodArguments(6,'Platform',null)
 				platforms[platforms.length - 1].setSelected(true)
 			}
 			//non-selected platform
 			else {
 				platforms.push(plugins.popupmenu.createMenuItem(record.platform_name + "", ACTIONS_list_control))
-				platforms[platforms.length - 1].setMethodArguments(7,'Platform',record.id_site_platform.toString())
+				platforms[platforms.length - 1].setMethodArguments(6,'Platform',record.id_site_platform.toString())
 			}
 		}
 		
@@ -109,16 +109,16 @@ function ACTIONS_list() {
 		for (var i = 1; i <= siteRec.web_site_to_site_language.getSize(); i++) {
 			var record = siteRec.web_site_to_site_language.getRecord(i)
 			
-			//selected platform
+			//selected language
 			if (record.id_site_language.toString() == _scopeLanguage) {
 				languages.push(plugins.popupmenu.createCheckboxMenuItem(record.language_name + "", ACTIONS_list_control))
-				languages[languages.length - 1].setMethodArguments(7,'Language',null)
+				languages[languages.length - 1].setMethodArguments(6,'Language',null)
 				languages[languages.length - 1].setSelected(true)
 			}
-			//non-selected platform
+			//non-selected language
 			else {
 				languages.push(plugins.popupmenu.createMenuItem(record.language_name + "", ACTIONS_list_control))
-				languages[languages.length - 1].setMethodArguments(7,'Language',record.id_site_language.toString())
+				languages[languages.length - 1].setMethodArguments(6,'Language',record.id_site_language.toString())
 			}
 		}
 		
@@ -127,16 +127,16 @@ function ACTIONS_list() {
 		for (var i = 1; i <= siteRec.web_site_to_site_group.getSize(); i++) {
 			var record = siteRec.web_site_to_site_group.getRecord(i)
 			
-			//selected platform
+			//selected group
 			if (record.id_site_group.toString() == _scopeGroup) {
 				groups.push(plugins.popupmenu.createCheckboxMenuItem(record.group_name + "", ACTIONS_list_control))
-				groups[groups.length - 1].setMethodArguments(7,'Group',null)
+				groups[groups.length - 1].setMethodArguments(6,'Group',null)
 				groups[groups.length - 1].setSelected(true)
 			}
-			//non-selected platform
+			//non-selected group
 			else {
 				groups.push(plugins.popupmenu.createMenuItem(record.group_name + "", ACTIONS_list_control))
-				groups[groups.length - 1].setMethodArguments(7,'Group',record.id_site_group.toString())
+				groups[groups.length - 1].setMethodArguments(6,'Group',record.id_site_group.toString())
 			}
 		}
 		
@@ -158,7 +158,7 @@ function ACTIONS_list() {
 	}
 	
 	if (!noScope) {
-		menu[7] = plugins.popupmenu.createMenuItem(valueList[7] + "", scopes)
+		menu[6] = plugins.popupmenu.createMenuItem(valueList[6] + "", scopes)
 	}
 	
 	//set menu method arguments
@@ -176,7 +176,7 @@ function ACTIONS_list() {
 			//unauthorized to delete
 			((x == 9) && !globals.WEBc_sutra_trigger('TRIGGER_registered_action_authenticate',['cms page delete'])) ||
 			//no page records, scoping isn't an option
-			noScope && x == 7) {
+			noScope && x == 6) {
 			
 			menu[x].setEnabled(false)
 		}
