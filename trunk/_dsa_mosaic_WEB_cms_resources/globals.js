@@ -1648,7 +1648,8 @@ function WEBc_page_new(pageName,pageType,parentID,themeID,layoutID) {
 	}
 	
 	//check if can add record
-	if (!globals.TRIGGER_registered_action_authenticate('cms page add')) {
+	
+	if (!globals.WEBc_sutra_trigger('TRIGGER_registered_action_authenticate',['cms page add'])) {
 		plugins.dialogs.showErrorDialog(
 						'Error',
 						'You are not authorized to add new pages'
@@ -1668,8 +1669,8 @@ function WEBc_page_new(pageName,pageType,parentID,themeID,layoutID) {
 		globals.CODE_cursor_busy(true)
 		
 		//turn on progressbar if not already on
-		if (!globals.TRIGGER_progressbar_get()) {
-			globals.TRIGGER_progressbar_start(null,'Creating new page...')
+		if (!globals.WEBc_sutra_trigger('TRIGGER_progressbar_get')) {
+			globals.WEBc_sutra_trigger('TRIGGER_progressbar_start',[null,'Creating new page...'])
 		}
 		
 		var fsPage = databaseManager.getFoundSet('sutra_cms','web_page')
@@ -1786,9 +1787,9 @@ function WEBc_page_new(pageName,pageType,parentID,themeID,layoutID) {
 		forms.WEB_0T_page._refresh = true
 		
 		//turn off feedback indicator if on
-		if (globals.TRIGGER_progressbar_get() instanceof Array) {
-			if (globals.TRIGGER_progressbar_get()[1] == 'Creating new page...') {
-				globals.TRIGGER_progressbar_stop()
+		if (globals.WEBc_sutra_trigger('TRIGGER_progressbar_get') instanceof Array) {
+			if (globals.WEBc_sutra_trigger('TRIGGER_progressbar_get')[1] == 'Creating new page...') {
+				globals.WEBc_sutra_trigger('TRIGGER_progressbar_stop')
 			}
 		}
 		globals.CODE_cursor_busy(false)
@@ -2007,13 +2008,13 @@ function WEBc_markup_link_servlet(obj,siteID) {
  * 
  * @param	{String}	method Name of method to check against
  * 
- * @returns	something
+ * @returns	{String|Boolean|Object|etc}	Something or nothing
  * 
  * @properties={typeid:24,uuid:"E97E5A2E-734D-4D7C-B3FF-9FDA95493B8F"}
  */
 function WEBc_sutra_trigger(method,arguments) {
-	//do we have the code module and the method requested
-	if (solutionModel.getGlobalMethod(method)) {
+	//do we have the method requested and are we in the data sutra application framework
+	if (solutionModel.getGlobalMethod(method) && application.__parent__.solutionPrefs) {
 		return globals[method](arguments ? arguments.join(',') : null)
 	}
 	//look up how to fail
@@ -2042,18 +2043,14 @@ function WEBc_sutra_trigger(method,arguments) {
 			case 'TRIGGER_toolbar_set':						//set toolbar in top center of frame
 				return false
 				break
+			case 'TRIGGER_toolbar_toggle':					//set the state of a toolbar in top center of frame
+				//sets some stuff; no return
+				break
 			case 'TRIGGER_navigation_filter_update':		//filter navigation item per meta data
 				return false
 				break
-			case 'TRIGGER_log_create':		//TODO: put cms logging into separate table
-				
-				break
 			case 'TRIGGER_navigation_set':					//move to specified navigation item
-				plugins.dialogs.showWarningDialog(
-							'Warning',
-							'Unable to view the request form outside of the Data Sutra framework.'
-					)
-				return null
+				return 'noSutra'
 				break
 			case 'TRIGGER_toolbar_record_navigator_set':	//turn off record navigator toolbar
 				//no return
@@ -2062,25 +2059,24 @@ function WEBc_sutra_trigger(method,arguments) {
 				//no return
 				break
 			case 'TRIGGER_tooltip_set':						//set tooltips per meta data on calling form
-				
+				//no return
 				break
-			case 'TRIGGER_spaces_set':
-				
+			case 'TRIGGER_spaces_set':						//go to specific space
+				return false
 				break
-			case '':
-				
-				break
-			case '':
-				
-				break
-			case '':
-				
-				break
+//			case '':
+//				
+//				break
+//			case '':
+//				
+//				break
+//			case '':
+//				
+//				break
 			default:
 				return false
 		}
 	}
-	
 }
 
 /**

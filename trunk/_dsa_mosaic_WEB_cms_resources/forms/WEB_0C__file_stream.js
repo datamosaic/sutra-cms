@@ -172,7 +172,7 @@ function THEME_new(progress) {
 		if ( incrementer > 0 ) { // only stream if themes are present
 			// if in Data Sutra: stream files with progress bar for monitor
 			if ( application.__parent__.solutionPrefs ) {
-				globals.TRIGGER_progressbar_start(0, "Streaming files...", null, 0, _themesProgressTotal)
+				globals.WEBc_sutra_trigger('TRIGGER_progressbar_start',[0, "Streaming files...", null, 0, _themesProgressTotal])
 				// callback method fires when streaming is done in separate thread
 				var monitor = plugins.file.streamFilesFromServer( tempArray, sourceArray, THEME_callback_theme )
 				if (monitor) {
@@ -202,7 +202,7 @@ function THEME_new(progress) {
 		if ( !_flagRefresh ) {  // user choose theme
 			var input =	plugins.dialogs.showSelectDialog("Themes", "Choose a theme to register", themes)
 			if ( !input ) {
-				globals.TRIGGER_progressbar_stop()
+				globals.WEBc_sutra_trigger('TRIGGER_progressbar_stop')
 				return "No theme selected"
 			}
 			// can't import theme with same name
@@ -211,7 +211,7 @@ function THEME_new(progress) {
 			if ( names.lastIndexOf(input, 0) > -1 ) {
 				plugins.dialogs.showErrorDialog(
 					"Error",  "Theme with same name not allowed")
-				globals.TRIGGER_progressbar_stop()
+				globals.WEBc_sutra_trigger('TRIGGER_progressbar_stop')
 				return "Duplicate theme"
 			}
 		}
@@ -221,7 +221,7 @@ function THEME_new(progress) {
 			}
 			else {
 				plugins.dialogs.showErrorDialog( "Error", "No matching theme found")
-				globals.TRIGGER_progressbar_stop()
+				globals.WEBc_sutra_trigger('TRIGGER_progressbar_stop')
 				return "No matching theme"
 			}
 		}
@@ -253,7 +253,7 @@ function THEME_new(progress) {
 		if ( incrementer > 0 ) {
 			// if in Data Sutra: stream files with progress bar for monitor
 			if ( application.__parent__.solutionPrefs ) {
-				globals.TRIGGER_progressbar_start(0, "Streaming files...", null, 0, _themesProgressTotal)
+				globals.WEBc_sutra_trigger('TRIGGER_progressbar_start',[0, "Streaming files...", null, 0, _themesProgressTotal])
 				// callback method fires when streaming is done in separate thread
 				var monitor = plugins.file.streamFilesFromServer( tempArray, sourceArray, THEME_callback_jsp )
 				if (monitor) {
@@ -270,7 +270,7 @@ function THEME_new(progress) {
 			THEME_new(3)
 			
 //			plugins.dialogs.showErrorDialog( "Error", "No theme files defined in selected theme")
-//			globals.TRIGGER_progressbar_stop()
+//			globals.WEBc_sutra_trigger('TRIGGER_progressbar_stop')
 //			return "No theme files defined in selected theme"
 		}
 	}
@@ -316,7 +316,7 @@ function THEME_new(progress) {
 		if ( incrementer > 0 ) {
 			// if in Data Sutra: stream files with progress bar for monitor
 			if ( application.__parent__.solutionPrefs ) {
-				globals.TRIGGER_progressbar_start(0, "Streaming files...", null, 0, _themesProgressTotal)
+				globals.WEBc_sutra_trigger('TRIGGER_progressbar_start',[0, "Streaming files...", null, 0, _themesProgressTotal])
 				// callback method fires when streaming is done in separate thread
 				var monitor = plugins.file.streamFilesFromServer( tempArray, sourceArray, THEME_callback_element )
 				if (monitor) {
@@ -364,7 +364,7 @@ function THEME_new(progress) {
 				if (_themes[_themesSelected].editables.hasOwnProperty(key)) size++;
 			}	
 			application.sleep(200) // needed to clear other file streaming method threads that have progress bars
-			globals.TRIGGER_progressbar_start(0, "Creating records...", null, 0, size)
+			globals.WEBc_sutra_trigger('TRIGGER_progressbar_start',[0, "Creating records...", null, 0, size])
 		}		
 		
 		var layoutList = []
@@ -372,7 +372,7 @@ function THEME_new(progress) {
 		for (var i in  _themes[_themesSelected].editables ) {			
 			// update progress monitor
 			if ( application.__parent__.solutionPrefs ) {
-				globals.TRIGGER_progressbar_set(counter ++)
+				globals.WEBc_sutra_trigger('TRIGGER_progressbar_set',[counter ++])
 			}
 			// 2 create layout record
 			if ( !_flagRefresh ) {
@@ -514,7 +514,7 @@ function THEME_new(progress) {
 		
 		// stop progress bar
 		if ( application.__parent__.solutionPrefs ) {	
-			globals.TRIGGER_progressbar_stop()	
+			globals.WEBc_sutra_trigger('TRIGGER_progressbar_stop')	
 		}
 		// reset flag
 		_flagRefresh = false
@@ -624,7 +624,7 @@ function THEME_callback_jsp(result, e) {
  * @properties={typeid:24,uuid:"12D7AE07-6340-499C-B177-35AF92D4A2B5"}
  */
 function THEME_progress(monitor) {
-	globals.TRIGGER_progressbar_set(monitor.getTotalTransferredBytes(), " Streaming " + monitor.getTotalTransferredBytes() + " of " + _themesProgressTotal)
+	globals.WEBc_sutra_trigger('TRIGGER_progressbar_set',[monitor.getTotalTransferredBytes(), " Streaming " + monitor.getTotalTransferredBytes() + " of " + _themesProgressTotal])
 }
 
 /**
@@ -742,7 +742,7 @@ function IMAGE_import(directory) {
 	
 	// stream to server
 	if ( application.__parent__.solutionPrefs ) {
-		globals.TRIGGER_progressbar_start(null, "Streaming file to server...")
+		globals.WEBc_sutra_trigger('TRIGGER_progressbar_start',[null, "Streaming file to server..."])
 		
 		//only upload picture if directory tree exists
 		if (ASSET_directory_tree(directory)) {
@@ -753,7 +753,7 @@ function IMAGE_import(directory) {
 					'Error',
 					'Directory specified does not exist'
 			)
-			globals.TRIGGER_progressbar_stop()
+			globals.WEBc_sutra_trigger('TRIGGER_progressbar_stop')
 		}
 	}
 	else {
@@ -772,7 +772,7 @@ function IMAGE_import_callback(result, e) {
 	
 	if (e) {
 		plugins.dialogs.showErrorDialog("Error", "Error with image upload to server")
-		globals.TRIGGER_progressbar_stop()
+		globals.WEBc_sutra_trigger('TRIGGER_progressbar_stop')
 		return "Error with image upload to server"
 	}
 	
@@ -823,7 +823,7 @@ function IMAGE_import_callback(result, e) {
 	
 	// stream to server
 	if ( application.__parent__.solutionPrefs ) {
-		globals.TRIGGER_progressbar_stop()
+		globals.WEBc_sutra_trigger('TRIGGER_progressbar_stop')
 	}
 	
 	plugins.dialogs.showInfoDialog("Image",  "Image uploaded")
@@ -988,7 +988,7 @@ function FILE_import(directory) {
 	
 	// stream to server
 	if ( application.__parent__.solutionPrefs ) {
-		globals.TRIGGER_progressbar_start(null, "Streaming file to server...")
+		globals.WEBc_sutra_trigger('TRIGGER_progressbar_start',[null, "Streaming file to server..."])
 		
 		//only upload file if directory tree exists
 		if (ASSET_directory_tree(directory)) {
@@ -999,7 +999,7 @@ function FILE_import(directory) {
 					'Error',
 					'Directory specified does not exist'
 			)
-			globals.TRIGGER_progressbar_stop()
+			globals.WEBc_sutra_trigger('TRIGGER_progressbar_stop')
 		}
 	}
 	else {
@@ -1018,7 +1018,7 @@ function FILE_import_callback(result, e) {
 	
 	if (e) {
 		plugins.dialogs.showErrorDialog("Error", "Error with file upload to server")
-		globals.TRIGGER_progressbar_stop()
+		globals.WEBc_sutra_trigger('TRIGGER_progressbar_stop')
 		return "Error with file upload to server"
 	}
 	
@@ -1060,7 +1060,7 @@ function FILE_import_callback(result, e) {
 	
 	// stream to server
 	if ( application.__parent__.solutionPrefs ) {
-		globals.TRIGGER_progressbar_stop()
+		globals.WEBc_sutra_trigger('TRIGGER_progressbar_stop')
 	}
 	
 	plugins.dialogs.showInfoDialog("File",  "File uploaded")
