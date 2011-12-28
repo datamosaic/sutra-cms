@@ -1,7 +1,7 @@
 allowCreationRelatedRecords:true,
 deleteRelatedRecords:true,
 foreignDataSource:"db:/sutra_cms/web_site_language",
-initialSort:"language_name asc",
+initialSort:"flag_default desc, language_name asc",
 items:[
 {foreignColumnName:"id_site",primaryDataProviderID:"id_site",typeid:23,uuid:"B1B0B4EF-E000-4EB8-95AB-2E4DA8CD468F"}
 ],
