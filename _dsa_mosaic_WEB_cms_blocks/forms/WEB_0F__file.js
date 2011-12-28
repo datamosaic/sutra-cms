@@ -136,7 +136,11 @@ function GOTO_asset(event) {
 		var results = fsAssetInstance.search()
 		
 		if (results) {
-			globals.TRIGGER_navigation_set('CMS_asset',true,[fsAssetInstance.id_asset])
+			//not running in data sutra application framework, just show form
+			if (globals.WEBc_sutra_trigger('TRIGGER_navigation_set',['CMS_asset',true,[fsAssetInstance.id_asset]]) == 'noSutra') {
+				forms.WEB_0F_asset.controller.show()
+				forms.WEB_0F_asset.controller.loadRecords(fsAssetInstance.id_asset)
+			}
 			
 			forms.WEB_0F_asset_1F_2L_asset_instance.foundset.selectRecord(application.getUUID(pk))
 		}
