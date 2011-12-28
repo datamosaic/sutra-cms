@@ -35,13 +35,28 @@ var CMS = {
 					},
 				getErrorPage : function(/**JSRecord<db:/sutra_cms/web_site>*/ siteRec) {
 						return globals.WEBc_markup_link_error(siteRec)
+					},
+				getAsset : function(/**String*/ assetInstanceID) {
+						return globals.WEBc_markup_link_asset(assetInstanceID, globals.CMS.data, null, null, globals.CMS.data)
+					},
+				getSiteDirectory : function() {
+						//both the base and resource url methods will return with "sutraCMS/"; need to remove from one so no doubling
+						return utils.stringReplace(globals.WEBc_markup_link_base(globals.CMS.data,null,globals.CMS.data.language.record.web_language_to_site_language.getSelectedRecord()),'sutraCMS/','') + globals.WEBc_markup_link_resources(globals.CMS.data)
 					}
 			},
 		session : {
-				getSession : globals.WEBc_session_getSession,
-				getData : globals.WEBc_session_getData,
-				setData : globals.WEBc_session_setData,
-				clearData : globals.WEBc_session_deleteData
+				getSession : function(/**String*/ sessionID) {
+						return globals.WEBc_session_getSession(sessionID)
+					},
+				getData : function() {
+						return globals.WEBc_session_getData(/**String*/ sessionID, /**String*/ dataKey)
+					},
+				setData : function() {
+						return globals.WEBc_session_setData(/**String*/ sessionID, /**String*/ dataKey, /**Object*/ dataValue)
+					},
+				clearData : function() {
+						return globals.WEBc_session_deleteData(/**String*/ sessionID, /**String*/ dataKey)
+					}
 			},
 		ui : {
 				getData : function(/**JSForm*/ formName) {
@@ -1054,7 +1069,7 @@ function WEBc_markup_link_internal(markup,siteURL,linkType,areaID,obj) {
 		markup 		= utils.stringMiddle(markup, end + 1, 100000)
 		
 		// add markup link
-		newMarkup	+= globals.WEBc_markup_link_asset(id,obj.page.id,siteURL,linkType,null,obj)
+		newMarkup	+= globals.WEBc_markup_link_asset(id,obj.page.id,siteURL,linkType,obj).link
 		
 		markup		= newMarkup + markup
 	}
@@ -1073,7 +1088,7 @@ function WEBc_markup_link_internal(markup,siteURL,linkType,areaID,obj) {
 		markup 		= utils.stringMiddle(markup, end + 1, 100000)
 		
 		// add markup link
-		newMarkup	+= globals.WEBc_markup_link_asset(id,obj.page.id,siteURL,linkType,null,obj)
+		newMarkup	+= globals.WEBc_markup_link_asset(id,obj.page.id,siteURL,linkType,obj).link
 		
 		markup		= newMarkup + markup
 	}
@@ -2105,7 +2120,8 @@ function WEBc_markup_pages_attribute(obj, att) {
 /**
  * @properties={typeid:24,uuid:"22E8DF83-30A3-4D46-A7A6-5464F76E1FAE"}
  */
-function WEBc_markup_link_asset(assetInstanceID, pageID, siteURL, linkType, webMode, obj) {
+function WEBc_markup_link_asset(assetInstanceID, pageID, siteURL, linkType, obj) {
+	var returnObj = new Object()
 	
 	// if obj passed instead of UUID for pageID
 	if ( !(pageID instanceof UUID) && pageID && pageID.page && pageID.page.id ) {
@@ -2139,6 +2155,7 @@ function WEBc_markup_link_asset(assetInstanceID, pageID, siteURL, linkType, webM
 	//no site specified, try to fail gracefully
 	else {
 		var assetInstanceRec = new Object()
+		var assetRec = new Object()
 		var siteRec = new Object()
 		var siteLanguageRec = new Object()
 	}
@@ -2154,8 +2171,14 @@ function WEBc_markup_link_asset(assetInstanceID, pageID, siteURL, linkType, webM
 	//tack on directory and file name
 	pageLink += assetInstanceRec.asset_directory + '/' + assetInstanceRec.asset_title
 	
+	//build object with pertinent asset information
+	returnObj.link = pageLink
+	returnObj.name = assetInstanceRec.asset_title
+	returnObj.title = assetRec.asset_name
+	returnObj.description = assetRec.description
+	
 	//full url for a page requested
-	return pageLink
+	return returnObj
 }
 
 /**
