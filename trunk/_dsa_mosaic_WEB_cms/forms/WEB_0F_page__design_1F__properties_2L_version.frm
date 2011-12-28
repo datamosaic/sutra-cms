@@ -2,7 +2,7 @@ dataSource:"db:/sutra_cms/web_version",
 items:[
 {
 borderType:"SpecialMatteBorder,0.0,0.0,1.0,0.0,#000000,#000000,#999999,#000000,0.0,1.0",
-dataProviderID:"display_id_layout",
+dataProviderID:"id_layout",
 editable:false,
 formIndex:10700,
 location:"260,10",
@@ -99,7 +99,7 @@ uuid:"8CFCFF64-1B60-46EE-BB07-4C9A8FC0E3A0"
 },
 {
 borderType:"SpecialMatteBorder,0.0,0.0,1.0,0.0,#000000,#000000,#999999,#000000,0.0,1.0",
-dataProviderID:"display_id_theme",
+dataProviderID:"id_theme",
 editable:false,
 formIndex:10700,
 location:"210,10",
