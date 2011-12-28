@@ -194,7 +194,8 @@ function BLOCK_action_list_control(scope,copy,promote,dupe,refresh,scrapjump) {
 				}
 				
 				//select this scrapbook (happens because of shared foundset)
-//				forms[solutionPrefs.config.currentFormName].foundset.selectRecord(blockRec.id_block)
+//				application.updateUI(1000)
+				forms[solutionPrefs.config.currentFormName].foundset.selectRecord(blockRec.id_block)
 				
 				//enter edit mode?
 			}
