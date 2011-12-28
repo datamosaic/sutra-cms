@@ -123,7 +123,7 @@ function WEBc_browser_error() {
  * @param	{String}	formName The block_type form.
  * @param	{String}	type The type of meta information we're interested in.
  * 
- * @returns	{JSObject}	Pretty names and methods for requested meta information.
+ * @returns	{Object}	Pretty names and methods for requested meta information.
  * 
  * @properties={typeid:24,uuid:"81DC790B-61A4-4895-BD4A-65F2BB1ABC21"}
  */
@@ -216,7 +216,7 @@ function WEBc_block_enable(event) {
 /**
  * Returns the correct web_block_data key value pair object.
  * 
- * @param	{JSForm}	formName Scope where called from.
+ * @param	{String}	formName Scope where called from.
  * 
  * @returns	{Object}	key value pair object.
  * 
@@ -268,7 +268,7 @@ function WEBc_block_getData(formName) {
  * @param	{JSEvent}	event Event that triggered onSelect of the block_type form.
  * @param	{String}	key Key to update.
  * @param	{String}	value New value for key.
- * @param	{JSForm}	[formName] Scope where called from.
+ * @param	{String}	[formName] Scope where called from.
  * 
  * @returns	{Boolean}	new value successfully set.
  * 
@@ -333,7 +333,7 @@ function WEBc_block_setData(event, key, value, formName) {
 /**
  * Returns the correct web_block_data_configure key value pair object.
  * 
- * @param	{JSForm}	formName Scope where called from.
+ * @param	{String}	formName Scope where called from.
  * 
  * @returns	{Object}	key value pair object.
  * 
@@ -385,7 +385,7 @@ function WEBc_block_getConfig(formName) {
  * @param	{JSEvent}	event Event that triggered onSelect of the block_type form.
  * @param	{String}	key Key to update.
  * @param	{String}	value New value for key.
- * @param	{JSForm}	[formName] Scope where called from.
+ * @param	{String}	[formName] Scope where called from.
  * 
  * @returns	{Boolean}	new value successfully set.
  * 
@@ -450,7 +450,7 @@ function WEBc_block_setConfig(event, key, value, formName) {
 /**
  * Returns the correct web_block_data_response key value pair object.
  * 
- * @param	{JSForm}	formName Scope where called from.
+ * @param	{String}	formName Scope where called from.
  * 
  * @returns	{Object}	key value pair object.
  * 
@@ -499,7 +499,7 @@ function WEBc_block_getResponse(formName) {
 /**
  * Returns the correct web_block_display record.
  * 
- * @param	{JSForm}	formName Scope where called from.
+ * @param	{String}	formName Scope where called from.
  * 
  * @returns	{JSRecord<db:/sutra_cms/web_block_display>}}
  * 
@@ -796,6 +796,8 @@ function WEBc_session_getSession(sessionID) {
  * @param {Javax.servlet.http.httpservletresponse} response implicit jsp response obj 
  * @param {String} name Name of cookie to delete
  * 
+ * @return {Javax.servlet.http.Cookie} Cookie deleted
+ * 
  * @properties={typeid:24,uuid:"69DE3CBB-B513-4C89-BEEA-C9CBFC2C41A8"}
  */
 function WEBc_cookie_delete(response, name) {
@@ -830,9 +832,10 @@ function WEBc_cookie_setValue(response, name, value) {
 /**
  * Tests if cookie exists in request.
  * 
- * @param {Javax.servlet.http.httpservletrequest} request implicit jsp request object
- * @param {String} name Name of cookie to see if exists
- * @return {boolean} 
+ * @param {Javax.servlet.http.httpservletrequest} request Implicit jsp request object.
+ * @param {String} name Name of cookie to see if exists.
+ * 
+ * @return {Boolean} Cookie existance.
  * 
  * @properties={typeid:24,uuid:"AE3EDE76-B244-4E00-A845-18DC3A640D36"}
  */
@@ -849,10 +852,11 @@ function WEBc_cookie_exists(request, name) {
 /**
  * Creates a new cookie and adds to the implicit jsp response object.
  * 
- * @param {Javax.servlet.http.httpservletresponse} response implicit jsp response object
- * @param {String} name name of cookie
+ * @param {Javax.servlet.http.httpservletresponse} response Implicit jsp response object.
+ * @param {String} name Name of the cookie.
+ * @param {String} value Value to assign cookie.
  * 
- * @return {javax.servlet.http.Cookie} pointer to specific cookie
+ * @return {javax.servlet.http.Cookie} Pointer to specific cookie
  * 
  * @properties={typeid:24,uuid:"3CAB37EB-875D-41EB-B802-A2AFB50D3436"}
  */
@@ -869,10 +873,10 @@ function WEBc_cookie_new(response, name, value) {
 /**
  * Get cookie value from request by name.
  * 
- * @param {Javax.servlet.http.httpservletrequest} request implicit jsp request object
- * @param {String} name Name of cookie to see if exists
+ * @param {Javax.servlet.http.httpservletrequest} request Implicit jsp request object.
+ * @param {String} name Name of cookie to see if exists.
  * 
- * @return {String} value of cookie
+ * @return {String} Value of cookie
  * 
  * @properties={typeid:24,uuid:"D7F75042-ACFA-4BFC-984D-F3F26FB3DDC2"}
  */
@@ -889,6 +893,14 @@ function WEBc_cookie_getValue(request, name) {
 }
 
 /**
+ * Return the domain for a page
+ * 
+ * @param {UUID|String|Object} pageID The page requested.
+ * @param {String}	[siteURL] Domain name request came in on.
+ * @param {JSRecord<db:/sutra_cms/web_site_language>}	[siteLanguageRec] Specify a particular language (will default to the default site language).
+ * 
+ * @return {String} Domain (and folder, if specified) for a site.
+ * 
  * @properties={typeid:24,uuid:"AFA318BF-7E29-4E7D-BE9D-CE4085851DF3"}
  */
 function WEBc_markup_link_base(pageID, siteURL, siteLanguageRec) {
@@ -985,6 +997,14 @@ function WEBc_markup_link_base(pageID, siteURL, siteLanguageRec) {
 }
 
 /**
+ * Return the path to the site resources directory (not including domain)
+ * 
+ * @param {UUID|String|Object} pageID The page requested.
+ * @param {String}	[siteURL] Domain name request came in on.
+ * @param {String}	[linkType] Style of URLs (index, folder, pretty).
+ * 
+ * @return {String} Path to land in the site directory (no domain).
+ * 
  * @properties={typeid:24,uuid:"CF88AF63-45F2-4BC4-95BC-8E6D653A58BC"}
  */
 function WEBc_markup_link_resources(pageID, siteURL, linkType) {
@@ -1030,9 +1050,24 @@ function WEBc_markup_link_resources(pageID, siteURL, linkType) {
 
 /**
  * @param markup text that contain internal page link keys
+ * Replace tokens with correct references to items referenced by the tokens.
+ * 
+ * @param {String}	markup Text for a particular area (and all activated blocks) that may contain tokens.
+ * @param {String}	[siteURL] Domain name request came in on.
+ * @param {String}	[linkType] Style of URLs (index, folder, pretty).
+ * @param {String}	[areaID] The ID of the areas markup we're working with.
+ * @param {Object}	[obj] Object used to drive headless client.
+ * 
+ * @return {String} URL for a page.
+ * 
  * @properties={typeid:24,uuid:"19AD8258-86F2-48AB-AA1B-713A2D08D77D"}
  */
 function WEBc_markup_link_internal(markup,siteURL,linkType,areaID,obj) {
+	// object not passed in, grab it
+	if (!obj) {
+		obj = globals.CMS.data
+	}
+	
 	// page link
 	while ( utils.stringPosition(markup, "{DS:ID_", 0, 0) >= 0 ) {
 		var newMarkup = ''
@@ -1134,7 +1169,16 @@ function WEBc_markup_link_internal(markup,siteURL,linkType,areaID,obj) {
 }
 
 /**
- * @param pageID ID of the page to link to
+ * Return the address for a page (including domain)
+ * 
+ * @param {UUID|String|Object} pageID The page (language can be specified) requested.
+ * @param {String}	[siteURL] Domain name request came in on.
+ * @param {String}	[linkType] Style of URLs (index, folder, pretty).
+ * @param {String}	[webMode] Editing the page in Real Mode (only an option from the admin interface).
+ * @param {Object}	[obj] Object used to drive headless client.
+ * 
+ * @return {String} URL for a page.
+ * 
  * @properties={typeid:24,uuid:"8D473D49-2039-49AC-B633-72E88E736CA9"}
  */
 function WEBc_markup_link_page(pageID, siteURL, linkType, webMode, obj) {
@@ -1142,6 +1186,11 @@ function WEBc_markup_link_page(pageID, siteURL, linkType, webMode, obj) {
 	// if obj passed instead of UUID for pageID
 	if ( !(pageID instanceof UUID) && pageID && pageID.page && pageID.page.id ) {
 		pageID = pageID.page.id
+	}
+	
+	// object not passed in, grab it
+	if (!obj) {
+		obj = globals.CMS.data
 	}
 	
 	//get page requested
@@ -1408,7 +1457,7 @@ function WEBc_markup_link_page(pageID, siteURL, linkType, webMode, obj) {
  * @param {JSRecord|String|UUID}	input The thing to be tokenized.  Can be a record or pk for the record.
  * @param {String}					[tokenType] Type of CMS object. When passed a JSRecord, tokenType will be automatically determined.
  * 
- * @returns	{String}	Token to reference a Sutra CMS object.
+ * @returns	{String}	Token to reference a Sutra CMS object, the file name for the requested asset.
  * 
  * @properties={typeid:24,uuid:"9726B488-8A41-44E9-B0D0-02EABA98587C"}
  */
@@ -1503,6 +1552,11 @@ function WEBc_markup_token(input,tokenType) {
 }
 
 /**
+ * Show a popupmenu with all of the curretly selected site's pages
+ * 
+ * @param {JSMethod} method Name of method to run when menu item selected.
+ * @param {JSEvent|Element} elem The element from which to pop open the menu.
+ * @param {Boolean} [showLanguage=false] Allow to target a specific page's language.
  *
  * @properties={typeid:24,uuid:"D05AA53E-5D46-4534-A2AC-A55D700F29C0"}
  */
@@ -1864,6 +1918,10 @@ function WEBc_page_new(pageName,pageType,parentID,themeID,layoutID) {
  * @properties={typeid:24,uuid:"541905F0-9B0C-474D-968C-F85408B3B05A"}
  */
 function WEBc_markup_pages_up(obj, order, pageRec, pathRec) {
+	// object not passed in, grab it
+	if (!obj) {
+		obj = globals.CMS.data
+	}
 	
 	//given a path (language); get primed
 	if (pathRec && utils.hasRecords(pathRec,'web_path_to_language.web_language_to_page') && utils.hasRecords(pathRec,'web_path_to_language.web_language_to_site_language')) {
@@ -1916,6 +1974,10 @@ function WEBc_markup_pages_up(obj, order, pageRec, pathRec) {
  * @properties={typeid:24,uuid:"3DB0FF72-EDE1-4F86-8F2A-BCB288586DB8"}
  */
 function WEBc_markup_pages_down(obj, pageRec, pathRec) {
+	// object not passed in, grab it
+	if (!obj) {
+		obj = globals.CMS.data
+	}
 	
 	//given a path (language); get primed
 	if (pathRec && utils.hasRecords(pathRec,'web_path_to_language.web_language_to_page') && utils.hasRecords(pathRec,'web_path_to_language.web_language_to_site_language')) {
@@ -1952,7 +2014,7 @@ function WEBc_markup_pages_down(obj, pageRec, pathRec) {
 }
 
 /**
- * @returns	{Boolean}	Status of rewrite mode.  Note: must be in sync with urlrewrite.
+ * @returns	{Boolean}	Status of rewrite mode.  Note: must be in sync with urlrewrite processing.
  * 
  * @properties={typeid:24,uuid:"7593B3FF-C349-48C0-893B-35A63738535D"}
  */
@@ -1970,9 +2032,21 @@ function WEBc_install_getRewrite() {
 }
 
 /**
+ * Return array of published child pages beginning with current page
+ * 
+ * @param {Object}	obj Sutra CMS controller obj.
+ * @param {String}	[siteID=obj.site.record] Specify the site.
+ * 
+ * @returns {JSRecord<db:/sutra_cms/web_page>[]}	Array of parent records from given record
+ * 
  * @properties={typeid:24,uuid:"CFD41FEB-A2F8-4CC3-87B9-3458CA5E74F3"}
  */
 function WEBc_markup_link_servlet(obj,siteID) {
+	// object not passed in, grab it
+	if (!obj) {
+		obj = globals.CMS.data
+	}
+	
 	//how requested
 	var appServer = application.getServerURL()
 	appServer = appServer.split(':')
@@ -2040,9 +2114,10 @@ function WEBc_markup_link_servlet(obj,siteID) {
 
 /**
  * Any function that calls something in the data sutra CODE module comes through 
- * here first in the event that not running in data sutra framework or no code module
+ * here first in the event that not running in Data Sutra framework or no code module
  * 
- * @param	{String}	method Name of method to check against
+ * @param {String}	method Name of method to check against.
+ * @param {Something[]} [arguments] Array of arguments to pass in to method (max of 10 arguments).
  * 
  * @returns	{String|Boolean|Object|etc}	Something or nothing
  * 
@@ -2144,6 +2219,16 @@ function WEBc_markup_pages_attribute(obj, att) {
 }
 
 /**
+ * Return some attribute about an asset
+ * 
+ * @param {String} assetInstanceID The asset we need to get information about.
+ * @param {UUID|String|Object} [pageID] The page requested.
+ * @param {String}	[siteURL] Domain name request came in on.
+ * @param {String}	[linkType] Style of URLs (index, folder, pretty).
+ * @param {Object}	[obj] Object used to drive headless client.
+ * 
+ * @return {String} URL for a page.
+ * 
  * @properties={typeid:24,uuid:"22E8DF83-30A3-4D46-A7A6-5464F76E1FAE"}
  */
 function WEBc_markup_link_asset(assetInstanceID, pageID, siteURL, linkType, obj) {
@@ -2152,6 +2237,11 @@ function WEBc_markup_link_asset(assetInstanceID, pageID, siteURL, linkType, obj)
 	// if obj passed instead of UUID for pageID
 	if ( !(pageID instanceof UUID) && pageID && pageID.page && pageID.page.id ) {
 		pageID = pageID.page.id
+	}
+	
+	// object not passed in, grab it
+	if (!obj) {
+		obj = globals.CMS.data
 	}
 
 	//get page requested
@@ -2208,6 +2298,14 @@ function WEBc_markup_link_asset(assetInstanceID, pageID, siteURL, linkType, obj)
 }
 
 /**
+ * Log an event in the Sutra CMS log table.
+ * 
+ * @param {String}	logType Type of event being logged.
+ * @param {String}	message Description of event. 
+ * @param {String}	[siteID] What site is this affecting.
+ * @param {String}	[pkTable] What table is this affecting.
+ * @param {String}	[pkID] The primary key of the affected table.
+ * 
  * @properties={typeid:24,uuid:"928202F6-F074-4A6D-BD74-4C1A8324801B"}
  */
 function WEBc_log_create(logType,message,siteID,pkTable,pkID) {
@@ -2224,6 +2322,16 @@ function WEBc_log_create(logType,message,siteID,pkTable,pkID) {
 }
 
 /**
+ * Return the name of a page
+ * 
+ * @param {UUID|String|Object} pageID The page (language can be specified) requested.
+ * @param {String}	[siteURL] Domain name request came in on.
+ * @param {String}	[linkType] Style of URLs (index, folder, pretty).
+ * @param {String}	[webMode] Editing the page in Real Mode (only an option from the admin interface).
+ * @param {Object}	[obj] Object used to drive headless client.
+ * 
+ * @return {String} URL for a page.
+ * 
  * @properties={typeid:24,uuid:"F1467DE2-99B2-49CE-8D67-278946FAEC9F"}
  */
 function WEBc_markup_page_name(pageID, siteURL, linkType, webMode, obj) {
@@ -2231,6 +2339,11 @@ function WEBc_markup_page_name(pageID, siteURL, linkType, webMode, obj) {
 	// if obj passed instead of UUID for pageID
 	if ( !(pageID instanceof UUID) && pageID && pageID.page && pageID.page.id ) {
 		pageID = pageID.page.id
+	}
+	
+	// object not passed in, grab it
+	if (!obj) {
+		obj = globals.CMS.data
 	}
 	
 	//get page requested
