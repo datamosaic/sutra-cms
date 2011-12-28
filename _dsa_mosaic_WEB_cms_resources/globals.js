@@ -40,26 +40,6 @@ var CMS = {
 				getSiteDirectory : function() {
 						//both the base and resource url methods will return with "sutraCMS/"; need to remove from one so no doubling
 						return utils.stringReplace(globals.WEBc_markup_link_base(globals.CMS.data,null,globals.CMS.data.language.record.web_language_to_site_language.getSelectedRecord()),'sutraCMS/','') + globals.WEBc_markup_link_resources(globals.CMS.data)
-					},
-				token : {
-						getFile : function(/**JSRecord|String|UUID*/ input) {
-								return {
-									link : globals.WEBc_markup_token(input, 'file'),
-									name : globals.WEBc_markup_token(input, 'fileName')
-								}
-							},
-						getImage : function(/**JSRecord|String|UUID*/ input) {
-								return {
-									link : globals.WEBc_markup_token(input, 'image'),
-									name : globals.WEBc_markup_token(input, 'imageName')
-								}
-							},
-						getPage : function(/**JSRecord|String|UUID*/ input) {
-								return {
-									link : globals.WEBc_markup_token(input, 'page'),
-									name : globals.WEBc_markup_token(input, 'pageName')
-								}
-							}
 					}
 			},
 		session : {
@@ -74,6 +54,26 @@ var CMS = {
 					},
 				setData : function() {
 						return globals.WEBc_session_setData(/**String*/ sessionID, /**String*/ dataKey, /**Object*/ dataValue)
+					}
+			},
+		token : {
+				getFile : function(/**JSRecord|String|UUID*/ input) {
+						return {
+							link : globals.WEBc_markup_token(input, 'file'),
+							name : globals.WEBc_markup_token(input, 'fileName')
+						}
+					},
+				getImage : function(/**JSRecord|String|UUID*/ input) {
+						return {
+							link : globals.WEBc_markup_token(input, 'image'),
+							name : globals.WEBc_markup_token(input, 'imageName')
+						}
+					},
+				getPage : function(/**JSRecord|String|UUID*/ input) {
+						return {
+							link : globals.WEBc_markup_token(input, 'page'),
+							name : globals.WEBc_markup_token(input, 'pageName')
+						}
 					}
 			},
 		ui : {
