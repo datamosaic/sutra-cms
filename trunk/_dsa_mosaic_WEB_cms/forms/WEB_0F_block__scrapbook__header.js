@@ -205,15 +205,15 @@ function ACTION_duplicate(event) {
 			
 			//show form in dialog
 			application.showFormInDialog(
-							forms.WEB_P__version,
+							forms.WEB_P__version__block,
 							-1,-1,-1,-1,
 							' ',
 							true,
 							false,
-							'cmsVersionDupe'
+							'cmsBlockVersion'
 						)		
 			
-			if (forms.WEB_P__version._fidAccept) {
+			if (forms.WEB_P__version__block._fidAccept) {
 				//turn on feedback indicators
 				var progressText = 'Creating new version...'
 				globals.WEBc_sutra_trigger('TRIGGER_progressbar_start',[null,progressText])
@@ -228,8 +228,8 @@ function ACTION_duplicate(event) {
 				//set datapoints on new block version
 				newVersion.id_block = selectedVersion.id_block
 				newVersion.version_number = latestVersion.version_number + 1
-				newVersion.version_name = forms.WEB_P__version._versionName
-				newVersion.version_description = forms.WEB_P__version._versionDescription
+				newVersion.version_name = forms.WEB_P__version__block._versionName
+				newVersion.version_description = forms.WEB_P__version__block._versionDescription
 				newVersion.flag_active = null
 				newVersion.flag_lock = 0
 				

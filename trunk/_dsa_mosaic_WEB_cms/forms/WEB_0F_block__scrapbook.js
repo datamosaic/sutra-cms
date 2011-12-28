@@ -543,8 +543,8 @@ function REC_refresh(allVersions, selectedVersion) {
 			//set datapoints on new block version
 			newVersion.id_block = selectedVersion.id_block
 			newVersion.version_number = latestVersion.version_number + 1
-			newVersion.version_name = forms.WEB_P__version._versionName
-			newVersion.version_description = forms.WEB_P__version._versionDescription
+			newVersion.version_name = null//forms.WEB_P__version._versionName
+			newVersion.version_description = null//forms.WEB_P__version._versionDescription
 			newVersion.flag_active = 1
 			newVersion.flag_lock = 0
 			
