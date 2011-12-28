@@ -475,7 +475,7 @@ function ACTIONS_list(input) {
 		}
 	}
 	else {
-		if (globals.TRIGGER_registered_action_authenticate('cms theme layout page update')) {
+		if (globals.WEBc_sutra_trigger('TRIGGER_registered_action_authenticate',['cms theme layout page update'])) {
 			var refreshType = plugins.dialogs.showQuestionDialog(
 						'Update layout',
 						'Do you want to keep current data or reset to the theme\'s defaults?',
@@ -502,13 +502,13 @@ function ACTIONS_list(input) {
 				var maxPages = databaseManager.getFoundSetCount(fsPages)
 				
 				globals.CODE_cursor_busy(true)
-				globals.TRIGGER_progressbar_start(0,'Refreshing pages...',null,0,maxPages)
+				globals.WEBc_sutra_trigger('TRIGGER_progressbar_start',[0,'Refreshing pages...',null,0,maxPages])
 				
 				//loop over pages
 				for (var i = 1; i <= fsPages.getSize(); i++) {
 					var pageRec = fsPages.getRecord(i)
 					
-					globals.TRIGGER_progressbar_set(i)
+					globals.WEBc_sutra_trigger('TRIGGER_progressbar_set',[i])
 					
 					//loop all combinations of platform/language/group version stack
 					for (var j = 1; j <= pageRec.web_page_to_platform.getSize(); j++) {
@@ -556,7 +556,7 @@ function ACTIONS_list(input) {
 							'The selected layout has been updated on ' + pagesActivated + ' page' + (pagesActivated == 1 ? '' : 's')  + '.'
 					)
 				
-				globals.TRIGGER_progressbar_stop()
+				globals.WEBc_sutra_trigger('TRIGGER_progressbar_stop')
 				globals.CODE_cursor_busy(false)
 			}
 		}

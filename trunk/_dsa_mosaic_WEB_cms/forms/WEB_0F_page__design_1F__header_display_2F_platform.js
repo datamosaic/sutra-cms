@@ -119,7 +119,7 @@ function ADD_platform(event) {
 		var y = elements.fld_platform.getLocationY() + 44 + 40 + refTab.getLocationY() + forms.WEB_0F_page__design.elements.tab_header_detail.getLocationY()
 		
 		//show the form
-		globals.TRIGGER_dialog_small(
+		globals.WEBc_sutra_trigger('TRIGGER_dialog_small',[
 					true,
 					'touch',
 					'WEB_P__page__new',
@@ -131,7 +131,7 @@ function ADD_platform(event) {
 					null,
 					true,
 					0
-				)
+				])
 	}
 }
 
@@ -201,7 +201,7 @@ function DEL_platform(event) {
 			
 			//turn on feedback indicators
 			var progressText = 'Deleting platform "' + application.getValueListDisplayValue('WEB_page_platform__all',globals.WEB_page_platform) + '" from page...'
-			globals.TRIGGER_progressbar_start(null,progressText)
+			globals.WEBc_sutra_trigger('TRIGGER_progressbar_start',[null,progressText])
 			globals.CODE_cursor_busy(true)
 			
 			//select this platform
@@ -222,7 +222,7 @@ function DEL_platform(event) {
 			
 			//turn off feedback indicators if on
 			globals.CODE_cursor_busy(false)
-			globals.TRIGGER_progressbar_stop()
+			globals.WEBc_sutra_trigger('TRIGGER_progressbar_stop')
 		}
 	}
 	else {

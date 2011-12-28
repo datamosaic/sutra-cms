@@ -24,7 +24,7 @@ function FORM_on_show(firstShow, event) {
 		
 		//first time go to sitemap view (do at end so everything loaded already)
 		if (firstShow) {
-			globals.TRIGGER_ul_tab_list('WEB_0T_page','Sitemap',0)
+			globals.WEBc_sutra_trigger('TRIGGER_ul_tab_list',['WEB_0T_page','Sitemap',0])
 		}
 		
 		//save down currently selected toolbar
@@ -39,8 +39,8 @@ function FORM_on_show(firstShow, event) {
 			}
 			
 			//make sure on page toolbar
-			globals.TRIGGER_toolbar_toggle('Web Edit',true)
-			globals.TRIGGER_toolbar_set('Web Edit')
+			globals.WEBc_sutra_trigger('TRIGGER_toolbar_toggle',['Web Edit',true])
+			globals.WEBc_sutra_trigger('TRIGGER_toolbar_set',['Web Edit'])
 		}
 		
 		
@@ -104,7 +104,7 @@ function FORM_on_hide(event) {
 		//restore last selected toolbar
 		if (application.__parent__.solutionPrefs && !solutionPrefs.config.lockStatus) {
 			//disable web edit toolbar
-			globals.TRIGGER_toolbar_toggle('Web Edit',false)
+			globals.WEBc_sutra_trigger('TRIGGER_toolbar_toggle',['Web Edit',false])
 			
 			//make sure on whatever last toolbar was
 			solutionPrefs.config.lastSelectedToolbar = _lastToolbar

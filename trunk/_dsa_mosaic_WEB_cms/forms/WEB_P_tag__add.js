@@ -223,7 +223,7 @@ function FORM_on_load()
 
 
 // load tooltips from tooltip module
-globals.TRIGGER_tooltip_set()
+globals.WEBc_sutra_trigger('TRIGGER_tooltip_set')
 }
 
 /**

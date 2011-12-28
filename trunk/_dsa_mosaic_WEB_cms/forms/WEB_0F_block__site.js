@@ -39,7 +39,7 @@ function FORM_on_show(firstShow, event) {
 //		//don't run rec_on_select until we're done
 //		_skipSelect = true
 		
-		globals.TRIGGER_navigation_filter_update(true)
+		globals.WEBc_sutra_trigger('TRIGGER_navigation_filter_update',[true])
 		
 //		if (_selected) {
 //			foundset.selectRecord(application.getUUID(_selected))

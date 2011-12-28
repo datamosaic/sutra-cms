@@ -172,9 +172,9 @@ function ACTIONS_list() {
 			//duplicate not an option until coding finished
 			x == 0 ||
 			//unauthorized to duplicate
-			(x == 0 && !globals.TRIGGER_registered_action_authenticate('cms page duplicate')) ||
+			(x == 0 && !globals.WEBc_sutra_trigger('TRIGGER_registered_action_authenticate',['cms page duplicate'])) ||
 			//unauthorized to delete
-			((x == 9) && !globals.TRIGGER_registered_action_authenticate('cms page delete')) ||
+			((x == 9) && !globals.WEBc_sutra_trigger('TRIGGER_registered_action_authenticate',['cms page delete'])) ||
 			//no page records, scoping isn't an option
 			noScope && x == 7) {
 			
@@ -411,13 +411,13 @@ function FORM_on_show(firstShow,event) {
 	//not really form on show, just keeping form on load a bit cleaner
 	if (firstShow) {
 		// load tooltips from tooltip module
-		// globals.TRIGGER_set_tooltips()
+		// globals.WEBc_sutra_trigger('TRIGGER_tooltip_set')
 	
 		//check if can add record
-		elements.btn_new.enabled = globals.WEBc_sutra_trigger('TRIGGER_registered_action_authenticate',['cms page add'])//globals.TRIGGER_registered_action_authenticate('cms page add')	
+		elements.btn_new.enabled = globals.WEBc_sutra_trigger('TRIGGER_registered_action_authenticate',['cms page add'])	
 		
 		//check on reordering
-		var reorderOK = globals.TRIGGER_registered_action_authenticate('cms page reorder')	
+		var reorderOK = globals.WEBc_sutra_trigger('TRIGGER_registered_action_authenticate',['cms page reorder'])	
 		elements.btn_in.enabled = reorderOK
 		elements.btn_out.enabled = reorderOK
 		elements.btn_up.enabled = reorderOK
@@ -430,7 +430,7 @@ function FORM_on_show(firstShow,event) {
 	}
 	
 	//set record navigator to blank
-	globals.TRIGGER_toolbar_record_navigator_set(false)
+	globals.WEBc_sutra_trigger('TRIGGER_toolbar_record_navigator_set',[false])
 }
 
 /**
@@ -444,7 +444,7 @@ function FORM_on_show(firstShow,event) {
  */
 function FORM_on_hide(event) {
 	//set record navigator to be enabled again
-	globals.TRIGGER_toolbar_record_navigator_set(true)
+	globals.WEBc_sutra_trigger('TRIGGER_toolbar_record_navigator_set',[true])
 }
 
 /**
@@ -998,7 +998,7 @@ function REC_new() {
 	//MEMO: note that any changes to this method must also happen upstream in the global version
 	
 	//check if can add record
-	if (!globals.TRIGGER_registered_action_authenticate('cms page add')) {
+	if (!globals.WEBc_sutra_trigger('TRIGGER_registered_action_authenticate',['cms page add'])) {
 		plugins.dialogs.showErrorDialog(
 						'Error',
 						'You are not authorized to add new pages'
@@ -1193,7 +1193,7 @@ function SET_page(pageID) {
  */
 function TABS_list(input) {
 	//should just call this method, but need to do something different when chosen
-//	globals.TRIGGER_ul_tab_list(event)
+//	globals.WEBc_sutra_trigger('TRIGGER_ul_tab_list',[event])
 	
 	function somethingDifferent() {
 		//if ul tab chosen, load all records and select the chosen one
@@ -1345,16 +1345,16 @@ function TABS_list(input) {
 				}
 				
 				//LOG ul tab change
-				globals.TRIGGER_log_create('UL Tabs',
-									itemName,
-									formName
-								)
+				globals.WEBc_sutra_trigger('TRIGGER_log_create',[
+											'UL Tabs',
+											itemName,
+											formName
+										])
 				
 				somethingDifferent()
 			}
 		}
 	}
-	
 }
 
 /**

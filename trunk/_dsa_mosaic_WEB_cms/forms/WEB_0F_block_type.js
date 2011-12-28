@@ -188,7 +188,7 @@ function REC_new(flagRefresh,formName,fs) {
 			
 			//turn on notification when called directly from block type workflow form
 			if (nonBatch) {
-				globals.TRIGGER_progressbar_start(null,(flagRefresh ? 'Refreshing' : 'Registering') + ' block: ' + objBlock.record.block_name + '.  Please wait...')
+				globals.WEBc_sutra_trigger('TRIGGER_progressbar_start',[null,(flagRefresh ? 'Refreshing' : 'Registering') + ' block: ' + objBlock.record.block_name + '.  Please wait...'])
 			}
 			
 			// 3) create block and related data from data object
@@ -380,7 +380,7 @@ function REC_new(flagRefresh,formName,fs) {
 			
 			//turn off notification when called directly from block type workflow form
 			if (nonBatch) {
-				globals.TRIGGER_progressbar_stop()
+				globals.WEBc_sutra_trigger('TRIGGER_progressbar_stop')
 			}
 		}
 	}

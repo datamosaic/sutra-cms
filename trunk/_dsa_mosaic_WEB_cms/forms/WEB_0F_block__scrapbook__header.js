@@ -216,7 +216,7 @@ function ACTION_duplicate(event) {
 			if (forms.WEB_P__version._fidAccept) {
 				//turn on feedback indicators
 				var progressText = 'Creating new version...'
-				globals.TRIGGER_progressbar_start(null,progressText)
+				globals.WEBc_sutra_trigger('TRIGGER_progressbar_start',[null,progressText])
 				globals.CODE_cursor_busy(true)
 				
 				//create destination block version record
@@ -244,9 +244,9 @@ function ACTION_duplicate(event) {
 				
 				//turn off feedback indicators if on
 				globals.CODE_cursor_busy(false)
-				if (globals.TRIGGER_progressbar_get() instanceof Array) {
-					if (globals.TRIGGER_progressbar_get()[1] == progressText) {
-						globals.TRIGGER_progressbar_stop()
+				if (globals.WEBc_sutra_trigger('TRIGGER_progressbar_get') instanceof Array) {
+					if (globals.WEBc_sutra_trigger('TRIGGER_progressbar_get')[1] == progressText) {
+						globals.WEBc_sutra_trigger('TRIGGER_progressbar_stop')
 					}
 				}
 				
@@ -357,7 +357,7 @@ function ACTION_lock(event) {
 		}
 		//non-editable, prompt to make editable
 		else {
-			if (globals.TRIGGER_registered_action_authenticate('cms edit block version')) {
+			if (globals.WEBc_sutra_trigger('TRIGGER_registered_action_authenticate',['cms edit block version'])) {
 				if (version.flag_active) {
 					var input = plugins.dialogs.showQuestionDialog(
 								'Edit?',

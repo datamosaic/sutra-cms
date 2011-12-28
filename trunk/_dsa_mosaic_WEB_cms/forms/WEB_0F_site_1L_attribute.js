@@ -63,7 +63,10 @@ function REC_delete(event) {
  * @properties={typeid:24,uuid:"1E5F2F8A-95CE-45FA-B03D-18866F1BDAFC"}
  */
 function GOTO_page(event) {
-	globals.TRIGGER_navigation_set('CMS_page')
+	//not running in data sutra application framework, just show form
+	if (globals.WEBc_sutra_trigger('TRIGGER_navigation_set',['CMS_page']) == 'noSutra') {
+		forms.WEB_0F_page.controller.show()
+	}
 	
 	forms.WEB_0F_page.foundset.find()
 	forms.WEB_0F_page.foundset.id_page = id_page

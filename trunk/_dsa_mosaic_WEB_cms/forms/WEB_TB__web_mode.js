@@ -298,7 +298,7 @@ function BREAD_url_clipboard(event) {
  */
 function ACTION_dashboard(event) {
 //	//don't enter if workflow form locked for some reason or not enough access
-//	if (application.__parent__.solutionPrefs && !solutionPrefs.design.statusLockWorkflow && globals.TRIGGER_registered_action_authenticate('cms page mode toggle')) {
+//	if (application.__parent__.solutionPrefs && !solutionPrefs.design.statusLockWorkflow && globals.WEBc_sutra_trigger('TRIGGER_registered_action_authenticate',['cms page mode toggle'])) {
 //		
 //		//in edit mode with unsaved changes
 //		if (elements.btn_save.visible && forms.WEB_0F_page__browser_1F_block__editor.GET_modify()) {
@@ -356,7 +356,7 @@ function ACTION_dashboard(event) {
 function ACTION_mode(event) {
 	
 	//don't enter if workflow form locked for some reason or not enough access
-	if (application.__parent__.solutionPrefs && !solutionPrefs.design.statusLockWorkflow && globals.TRIGGER_registered_action_authenticate('cms page mode toggle')) {
+	if (application.__parent__.solutionPrefs && !solutionPrefs.design.statusLockWorkflow && globals.WEBc_sutra_trigger('TRIGGER_registered_action_authenticate',['cms page mode toggle'])) {
 		
 		//what is the current mode
 		var currentMode = globals.WEB_page_mode
@@ -550,7 +550,7 @@ function FORM_on_load() {
 	elements.lbl_edit.visible = false
 	TOGGLE_visit(false)
 	
-//	var modeToggle = globals.TRIGGER_registered_action_authenticate('cms page mode toggle')
+//	var modeToggle = globals.WEBc_sutra_trigger('TRIGGER_registered_action_authenticate',['cms page mode toggle'])
 //	elements.btn_dashboard.visible = modeToggle
 //	elements.lbl_dashboard.visible = modeToggle
 //	elements.btn_sitemap.visible = !modeToggle
@@ -575,7 +575,7 @@ function FORM_on_load() {
  */
 function ACTION_sitemap(event) {
 //	//don't enter if workflow form locked for some reason or not enough access
-//	if (application.__parent__.solutionPrefs && !solutionPrefs.design.statusLockWorkflow) {// && globals.TRIGGER_registered_action_authenticate('cms page sitemap')) {
+//	if (application.__parent__.solutionPrefs && !solutionPrefs.design.statusLockWorkflow) {// && globals.WEBc_sutra_trigger('TRIGGER_registered_action_authenticate',['cms page sitemap'])) {
 //		
 //		//in edit mode with unsaved changes
 //		if (elements.btn_save.visible && forms.WEB_0F_page__browser_1F_block__editor.GET_modify()) {
@@ -593,12 +593,12 @@ function ACTION_sitemap(event) {
 //		
 //		//switch space to sitemap
 //		if (!elements.highlighter_dash.visible) {
-//			globals.TRIGGER_spaces_set('list')
+//			globals.WEBc_sutra_trigger('TRIGGER_spaces_set',['list'])
 //			elements.highlighter_dash.visible = true
 //		}
 //		//switch space to browser only
 //		else {
-//			globals.TRIGGER_spaces_set('workflow')
+//			globals.WEBc_sutra_trigger('TRIGGER_spaces_set',['workflow'])
 //			elements.highlighter_dash.visible = false
 //		}
 //	}

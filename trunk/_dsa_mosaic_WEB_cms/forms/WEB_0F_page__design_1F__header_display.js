@@ -274,7 +274,7 @@ function EDIT_version(event) {
 		}
 		//non-editable, prompt to make editable
 		else {
-			if (true) {		//globals.TRIGGER_registered_action_authenticate('cms edit snapshot')) {
+			if (true) {		//globals.WEBc_sutra_trigger('TRIGGER_registered_action_authenticate',['cms edit snapshot'])) {
 				if (fsVersion.flag_active) {
 					var input = plugins.dialogs.showQuestionDialog(
 								'Edit?',

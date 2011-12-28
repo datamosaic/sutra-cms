@@ -66,7 +66,7 @@ function FORM_on_load(event) {
 /**
  * @properties={typeid:24,uuid:"95D93344-A2EB-41E0-B6C9-E52A54EED328"}
  */
-function FILTER_records() {
+function FILTER_records(event) {
 	//only do this when not running in data sutra
 	if (!application.__parent__.solutionPrefs) {
 		FILTER_records(event)
@@ -530,7 +530,7 @@ function REC_refresh(allVersions, selectedVersion) {
 			}
 			
 			//turn on feedback indicators
-			globals.TRIGGER_progressbar_start(null,progressText)
+			globals.WEBc_sutra_trigger('TRIGGER_progressbar_start',[null,progressText])
 			globals.CODE_cursor_busy(true)
 			
 			//create destination block version record
@@ -563,9 +563,9 @@ function REC_refresh(allVersions, selectedVersion) {
 			
 			//turn off feedback indicators if on
 			globals.CODE_cursor_busy(false)
-			if (globals.TRIGGER_progressbar_get() instanceof Array) {
-				if (globals.TRIGGER_progressbar_get()[1] == progressText) {
-					globals.TRIGGER_progressbar_stop()
+			if (globals.WEBc_sutra_trigger('TRIGGER_progressbar_get') instanceof Array) {
+				if (globals.WEBc_sutra_trigger('TRIGGER_progressbar_get')[1] == progressText) {
+					globals.WEBc_sutra_trigger('TRIGGER_progressbar_stop')
 				}
 			}
 			

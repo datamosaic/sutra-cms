@@ -70,7 +70,7 @@ function TOGGLE_edit_mode(editMode,saveData) {
 		}
 		
 		//lock the screen
-		globals.TRIGGER_interface_lock(true)
+		globals.WEBc_sutra_trigger('TRIGGER_interface_lock',[true])
 		
 		//show actions
 		forms.WEB_0F_block__scrapbook_1F__gui.elements.btn_data_actions.enabled = true
@@ -131,7 +131,7 @@ function TOGGLE_edit_mode(editMode,saveData) {
 		databaseManager.setAutoSave(true)
 		
 		//unlock the screen
-		globals.TRIGGER_interface_lock(false)
+		globals.WEBc_sutra_trigger('TRIGGER_interface_lock',[false])
 		
 		//hide actions
 		forms.WEB_0F_block__scrapbook_1F__gui.elements.btn_data_actions.enabled = false
