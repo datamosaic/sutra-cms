@@ -16,46 +16,64 @@ var WEB_block_on_select = true;
  */
 var CMS = {
 		cookie : new Object(),
-		//methods used to build markup
+		//see forms.WEB_0__controller.CONTROLLER_setup() for how this data point is constructed
+		data : new Object(),
 		markup : {
-				getToken : function(/**JSRecord|String|UUID*/ input, /**String*/ tokenType) {
-						return globals.WEBc_markup_token(input, tokenType)
-					},
-				getPagesUp : function(/**Object*/ obj, /**String*/ order, /**JSRecord<db:/sutra_cms/web_page>*/pageRec, /**JSRecord<db:/sutra_cms/web_path>*/ pathRec) {
-						return globals.WEBc_markup_pages_up(obj, order, pageRec, pathRec)
-					},
-				getPagesDown : function(/**Object*/ obj, /**JSRecord<db:/sutra_cms/web_page>*/pageRec, /**JSRecord<db:/sutra_cms/web_path>*/ pathRec) {
-						return globals.WEBc_markup_pages_down(obj, pageRec, pathRec)
-					},
-				getPageAttributes : function(/**Object*/ obj, /**String*/ att) {
-						return globals.WEBc_markup_pages_attribute(obj, att)
-					},
-				getHomePage : function(/**JSRecord<db:/sutra_cms/web_site>*/ siteRec) {
-						return globals.WEBc_markup_link_home(siteRec)
+				getAsset : function(/**String*/ assetInstanceID) {
+						return globals.WEBc_markup_link_asset(assetInstanceID, globals.CMS.data, null, null, globals.CMS.data)
 					},
 				getErrorPage : function(/**JSRecord<db:/sutra_cms/web_site>*/ siteRec) {
 						return globals.WEBc_markup_link_error(siteRec)
 					},
-				getAsset : function(/**String*/ assetInstanceID) {
-						return globals.WEBc_markup_link_asset(assetInstanceID, globals.CMS.data, null, null, globals.CMS.data)
+				getHomePage : function(/**JSRecord<db:/sutra_cms/web_site>*/ siteRec) {
+						return globals.WEBc_markup_link_home(siteRec)
+					},
+				getPagesAttribute : function(/**Object*/ obj, /**String*/ att) {
+						return globals.WEBc_markup_pages_attribute(obj, att)
+					},
+				getPagesDown : function(/**Object*/ obj, /**JSRecord<db:/sutra_cms/web_page>*/pageRec, /**JSRecord<db:/sutra_cms/web_path>*/ pathRec) {
+						return globals.WEBc_markup_pages_down(obj, pageRec, pathRec)
+					},
+				getPagesUp : function(/**Object*/ obj, /**String*/ order, /**JSRecord<db:/sutra_cms/web_page>*/pageRec, /**JSRecord<db:/sutra_cms/web_path>*/ pathRec) {
+						return globals.WEBc_markup_pages_up(obj, order, pageRec, pathRec)
 					},
 				getSiteDirectory : function() {
 						//both the base and resource url methods will return with "sutraCMS/"; need to remove from one so no doubling
 						return utils.stringReplace(globals.WEBc_markup_link_base(globals.CMS.data,null,globals.CMS.data.language.record.web_language_to_site_language.getSelectedRecord()),'sutraCMS/','') + globals.WEBc_markup_link_resources(globals.CMS.data)
+					},
+				token : {
+						getFile : function(/**JSRecord|String|UUID*/ input) {
+								return {
+									link : globals.WEBc_markup_token(input, 'file'),
+									name : globals.WEBc_markup_token(input, 'fileName')
+								}
+							},
+						getImage : function(/**JSRecord|String|UUID*/ input) {
+								return {
+									link : globals.WEBc_markup_token(input, 'image'),
+									name : globals.WEBc_markup_token(input, 'imageName')
+								}
+							},
+						getPage : function(/**JSRecord|String|UUID*/ input) {
+								return {
+									link : globals.WEBc_markup_token(input, 'page'),
+									name : globals.WEBc_markup_token(input, 'pageName')
+								}
+							}
 					}
 			},
 		session : {
-				getSession : function(/**String*/ sessionID) {
-						return globals.WEBc_session_getSession(sessionID)
+				clearData : function() {
+						return globals.WEBc_session_deleteData(/**String*/ sessionID, /**String*/ dataKey)
 					},
 				getData : function() {
 						return globals.WEBc_session_getData(/**String*/ sessionID, /**String*/ dataKey)
 					},
+				getSession : function(/**String*/ sessionID) {
+						return globals.WEBc_session_getSession(sessionID)
+					},
 				setData : function() {
 						return globals.WEBc_session_setData(/**String*/ sessionID, /**String*/ dataKey, /**Object*/ dataValue)
-					},
-				clearData : function() {
-						return globals.WEBc_session_deleteData(/**String*/ sessionID, /**String*/ dataKey)
 					}
 			},
 		ui : {
@@ -80,9 +98,7 @@ var CMS = {
 				getEdit : function() {
 						return globals.WEBc_block_getEdit()
 					}
-			},
-		//see forms.WEB_0__controller.CONTROLLER_setup() for how this data point is constructed
-		data : {}
+			}
 	};
 
 /**
@@ -1410,7 +1426,7 @@ function WEBc_markup_token(input,tokenType) {
 			switch (input.foundset.getDataSource()) {
 				case 'db:/sutra_cms/web_page':	//page record
 					//treat as a link if we can't tell what it is
-					tokenType = 'link'
+					tokenType = 'page'
 					break
 				case 'db:/sutra_cms/web_asset_instance':	//asset record
 					//look at asset table and figure out what type this asset is
@@ -1436,16 +1452,16 @@ function WEBc_markup_token(input,tokenType) {
 		}
 		//default to page link
 		else {
-			tokenType = 'link'
+			tokenType = 'page'
 		}
 	}
 	
 	//prefix for token
 	switch (tokenType) {
-		case 'link':
+		case 'page':
 			token = tokenPageLink
 			break
-		case 'name':
+		case 'pageName':
 			token = tokenPageName
 			break
 		case 'image':
@@ -1465,6 +1481,11 @@ function WEBc_markup_token(input,tokenType) {
 	//passed in an asset instance record
 	else if (input instanceof JSRecord && input.foundset.getDataSource() == 'db:/sutra_cms/web_asset_instance' && input.id_asset_instance) {
 		token += input.id_asset_instance.toString()
+		
+		//we don't want the token, just give the filename
+		if (tokenType == 'imageName' || tokenType == 'fileName') {
+			return input.asset_title
+		}
 	}
 	//passed in a (uuid) string
 	else if (typeof input == 'string') {
@@ -2030,7 +2051,12 @@ function WEBc_markup_link_servlet(obj,siteID) {
 function WEBc_sutra_trigger(method,arguments) {
 	//do we have the method requested and are we in the data sutra application framework
 	if (solutionModel.getGlobalMethod(method) && application.__parent__.solutionPrefs) {
-		return globals[method](arguments ? arguments.join(',') : null)
+		if (arguments && arguments.length) {
+			return globals[method](arguments[0],arguments[1],arguments[2],arguments[3],arguments[4],arguments[5],arguments[6],arguments[7],arguments[8],arguments[9])
+		}
+		else {
+			return globals[method]()
+		}
 	}
 	//look up how to fail
 	else {
