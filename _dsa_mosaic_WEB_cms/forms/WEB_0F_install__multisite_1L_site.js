@@ -13,7 +13,11 @@ var _license_dsa_mosaic_WEB_cms = 'Module: _dsa_mosaic_WEB_cms \
  * @properties={typeid:24,uuid:"D2FA773B-16B8-4FF9-9D0B-CBFF5B309A44"}
  */
 function GOTO_site(event) {
-	globals.TRIGGER_navigation_set('CMS_site',true,foundset)
+	//not running in data sutra application framework, just show form
+	if (globals.WEBc_sutra_trigger('TRIGGER_navigation_set',['CMS_site',true,foundset]) == 'noSutra') {
+		forms.WEB_0F_site.controller.show()
+		forms.WEB_0F_site.controller.loadRecords(foundset.unrelate())
+	}
 }
 
 /**

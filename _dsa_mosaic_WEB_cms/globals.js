@@ -431,7 +431,7 @@ function WEB_upgrade() {
 				//a site has been selected
 				if (oldSite) {
 					
-					globals.TRIGGER_progressbar_start(0,'Importing "' + oldSite.site_name + '". Please wait....')
+					globals.WEBc_sutra_trigger('TRIGGER_progressbar_start',[0,'Importing "' + oldSite.site_name + '". Please wait....'])
 					
 					//mapping object for pages
 					var mapping = {
@@ -499,7 +499,7 @@ function WEB_upgrade() {
 					
 					databaseManager.copyMatchingColumns(oldSite,newSite,['organization_id'])
 					
-					globals.TRIGGER_progressbar_set(5)
+					globals.WEBc_sutra_trigger('TRIGGER_progressbar_set',[5])
 					
 					//site attribute columns
 					var fsOldSiteAttribute = databaseManager.getFoundSet('sutra_cms_v1','web_site_attribute')
@@ -550,7 +550,7 @@ function WEB_upgrade() {
 					newSitePlatform.flag_default = 1
 					newSitePlatform.platform_name = 'Web'
 					
-					globals.TRIGGER_progressbar_set(10,'Importing block types for "' + oldSite.site_name + '". Please wait....')
+					globals.WEBc_sutra_trigger('TRIGGER_progressbar_set',[10,'Importing block types for "' + oldSite.site_name + '". Please wait....'])
 					
 					//blocks
 					var fsOldBlockType = databaseManager.getFoundSet('sutra_cms_v1','web_block_type')
@@ -567,7 +567,7 @@ function WEB_upgrade() {
 						var mod = 5 / fsOldBlockType.getSize()
 						
 						for (var i = 1; i <= fsOldBlockType.getSize(); i++) {
-							globals.TRIGGER_progressbar_set(10 + i * mod,'Importing block types for "' + oldSite.site_name + '". Please wait....')
+							globals.WEBc_sutra_trigger('TRIGGER_progressbar_set',[10 + i * mod,'Importing block types for "' + oldSite.site_name + '". Please wait....'])
 							
 							var oldBlockType = fsOldBlockType.getRecord(i)
 							var newBlockType = newSite.web_site_to_block_type.getRecord(newSite.web_site_to_block_type.newRecord(false,true))
@@ -666,7 +666,7 @@ function WEB_upgrade() {
 						var mod = 5 / fsOldScrapbook.getSize()
 						
 						for (var i = 1; i <= fsOldScrapbook.getSize(); i++) {
-							globals.TRIGGER_progressbar_set(15 + i * mod,'Importing scrapbooks for "' + oldSite.site_name + '". Please wait....')
+							globals.WEBc_sutra_trigger('TRIGGER_progressbar_set',[15 + i * mod,'Importing scrapbooks for "' + oldSite.site_name + '". Please wait....'])
 							
 							var oldRecord = fsOldScrapbook.getRecord(i)
 							var newRecord = fsNewBlock.getRecord(fsNewBlock.newRecord(false,true))
@@ -720,7 +720,7 @@ function WEB_upgrade() {
 						var mod = 10 / fsOldTheme.getSize()
 						
 						for (var i = 1; i <= fsOldTheme.getSize(); i++) {
-							globals.TRIGGER_progressbar_set(20 + i * mod,'Importing themes for "' + oldSite.site_name + '". Please wait....')
+							globals.WEBc_sutra_trigger('TRIGGER_progressbar_set',[20 + i * mod,'Importing themes for "' + oldSite.site_name + '". Please wait....'])
 							
 							var oldTheme = fsOldTheme.getRecord(i)
 							var newTheme = newSite.web_site_to_theme.getRecord(newSite.web_site_to_theme.newRecord(false,true))
@@ -810,7 +810,7 @@ function WEB_upgrade() {
 						var mod = 5 / fsOldImage.getSize()
 						
 						for (var i = 1; i <= fsOldImage.getSize(); i++) {
-							globals.TRIGGER_progressbar_set(30 + i * mod,'Importing images for "' + oldSite.site_name + '". Please wait....')
+							globals.WEBc_sutra_trigger('TRIGGER_progressbar_set',[30 + i * mod,'Importing images for "' + oldSite.site_name + '". Please wait....'])
 							
 							var oldAsset = fsOldImage.getRecord(i)
 							var newAsset = newSite.web_site_to_asset.getRecord(newSite.web_site_to_asset.newRecord(false,true))
@@ -886,7 +886,7 @@ function WEB_upgrade() {
 						var mod = 40 / fsOldPage.getSize()
 						
 						for (var i = 1; i <= fsOldPage.getSize(); i++) {
-							globals.TRIGGER_progressbar_set(35 + i * mod,'Importing pages for "' + oldSite.site_name + '". Please wait....')
+							globals.WEBc_sutra_trigger('TRIGGER_progressbar_set',[35 + i * mod,'Importing pages for "' + oldSite.site_name + '". Please wait....'])
 							
 							var oldPage = fsOldPage.getRecord(i)
 							var newPage = newSite.web_site_to_page.getRecord(newSite.web_site_to_page.newRecord(false,true))
@@ -1041,7 +1041,7 @@ function WEB_upgrade() {
 					}
 					
 					//re-loop through pages and update parent_id_page appropriately
-					globals.TRIGGER_progressbar_set(80,'Processing pages. Please wait....')
+					globals.WEBc_sutra_trigger('TRIGGER_progressbar_set',[80,'Processing pages. Please wait....'])
 					for (var i = 1; i <= newSite.web_site_to_page.getSize(); i++) {
 						var record = newSite.web_site_to_page.getRecord(i)
 						
@@ -1054,7 +1054,7 @@ function WEB_upgrade() {
 					//loop all blocks and replace out image and page references
 					for (var i = 0; i < allBlocks.length; i++) {
 						if (!(i % 5)) {
-							globals.TRIGGER_progressbar_set(85 + mod,'Processing blocks. Please wait....')
+							globals.WEBc_sutra_trigger('TRIGGER_progressbar_set',[85 + mod,'Processing blocks. Please wait....'])
 						}
 						var item = allBlocks[i]
 						var markup = item.data_value
@@ -1115,7 +1115,7 @@ function WEB_upgrade() {
 						databaseManager.saveData(item)
 					}
 					
-					globals.TRIGGER_progressbar_set(100,'Finishing import of "' + oldSite.site_name + '". Please wait....')
+					globals.WEBc_sutra_trigger('TRIGGER_progressbar_set',[100,'Finishing import of "' + oldSite.site_name + '". Please wait....'])
 					
 					//revisit site (home/error pages)
 					newSite.id_page__home = getMap(oldSite.id_page,mapping.page)
@@ -1141,7 +1141,7 @@ function WEB_upgrade() {
 					databaseManager.saveData()
 					forms.WEB_0F_site.controller.loadAllRecords()
 					forms.WEB_0F_site.foundset.selectRecord(newSite.id_site)
-					globals.TRIGGER_progressbar_stop()
+					globals.WEBc_sutra_trigger('TRIGGER_progressbar_stop')
 					
 					//enable form if was disabled
 					if (nowLocked) {

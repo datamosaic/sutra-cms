@@ -149,7 +149,7 @@ function REC_on_select(event,skipLoad,verIndex,fireSelect,areaName,blockIndex) {
 					if (!busyIndicator) {
 						globals.CODE_cursor_busy(true)
 					}
-					globals.TRIGGER_progressbar_start(-273, navigationPrefs.byNavItemID[currentNavItem].navigationItem.initialRecordLabel)
+					globals.WEBc_sutra_trigger('TRIGGER_progressbar_start',[-273, navigationPrefs.byNavItemID[currentNavItem].navigationItem.initialRecordLabel])
 				}
 				
 				//save currently selected index
@@ -263,7 +263,7 @@ function REC_on_select(event,skipLoad,verIndex,fireSelect,areaName,blockIndex) {
 		
 		//record was not in memory, turn off busy bar and busy cursor
 		if (recNotLoaded) {
-			globals.TRIGGER_progressbar_stop()
+			globals.WEBc_sutra_trigger('TRIGGER_progressbar_stop')
 			globals.CODE_cursor_busy(false)	
 		}
 		//changing record, finished turn off busy indicatar

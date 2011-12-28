@@ -49,7 +49,7 @@ function REC_delete() {
 			)
 
 	if (delRec == 'Yes') {
-		globals.TRIGGER_progressbar_start(null,'Deleting site: ' + site_name + '.  Please wait...')
+		globals.WEBc_sutra_trigger('TRIGGER_progressbar_start',[null,'Deleting site: ' + site_name + '.  Please wait...'])
 		
 		globals.WEB_site_display = null
 		
@@ -61,7 +61,7 @@ function REC_delete() {
 			FORM_on_show()
 		}
 		
-		globals.TRIGGER_progressbar_stop()
+		globals.WEBc_sutra_trigger('TRIGGER_progressbar_stop')
 	}
 }
 
@@ -130,7 +130,7 @@ function REC_new() {
  */
 function ACTION_blow_in_missing_areas_to_all_pagesz() {
 	return
-	if (globals.TRIGGER_registered_action_authenticate('cms site page update')) {
+	if (globals.WEBc_sutra_trigger('TRIGGER_registered_action_authenticate',['cms site page update'])) {
 		var input = plugins.dialogs.showWarningDialog(
 						'Continue?',
 						'Are you sure you want to modify all pages.\nWarning! This is irreversible.',

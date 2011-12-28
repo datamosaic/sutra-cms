@@ -13,7 +13,10 @@ var _license_dsa_mosaic_WEB_cms = 'Module: _dsa_mosaic_WEB_cms \
  * @properties={typeid:24,uuid:"8D155492-FBF6-48A3-B75C-F0125289B3A1"}
  */
 function GOTO_page(event) {
-	globals.TRIGGER_navigation_set('CMS_page')
+	//not running in data sutra application framework, just show form
+	if (globals.WEBc_sutra_trigger('TRIGGER_navigation_set',['CMS_page']) == 'noSutra') {
+		forms.WEB_0F_page.controller.show()
+	}
 	
 	forms.WEB_0F_page.foundset.find()
 	forms.WEB_0F_page.foundset.id_page = id_page

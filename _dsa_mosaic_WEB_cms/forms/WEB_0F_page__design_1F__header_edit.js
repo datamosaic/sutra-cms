@@ -325,11 +325,11 @@ function ACTION_save() {
 			
 			//unfreeze screen when in frameworks
 			if (application.__parent__.solutionPrefs && solutionPrefs.config.lockStatus) {
-				globals.TRIGGER_interface_lock(false)
+				globals.WEBc_sutra_trigger('TRIGGER_interface_lock',[false])
 			}
 			
 			//turn on feedback indicator
-			globals.TRIGGER_progressbar_start(null,'Creating new page...')
+			globals.WEBc_sutra_trigger('TRIGGER_progressbar_start',[null,'Creating new page...'])
 			
 			//put this page in the correct place; there were other records
 			if (forms.WEB_0T_page._oldRecord) {
@@ -583,9 +583,9 @@ function ACTION_save() {
 		forms.WEB_0F_page__design.REC_on_select(true,true,1)
 		
 		//turn off feedback indicator if on
-		if (globals.TRIGGER_progressbar_get() instanceof Array) {
-			if (globals.TRIGGER_progressbar_get()[1] == 'Creating new page...') {
-				globals.TRIGGER_progressbar_stop()
+		if (globals.WEBc_sutra_trigger('TRIGGER_progressbar_get') instanceof Array) {
+			if (globals.WEBc_sutra_trigger('TRIGGER_progressbar_get')[1] == 'Creating new page...') {
+				globals.WEBc_sutra_trigger('TRIGGER_progressbar_stop')
 			}
 		}
 		
@@ -626,7 +626,7 @@ function ACTION_save() {
 		
 		//unfreeze screen if locked
 		if (solutionPrefs.config.lockStatus) {
-			globals.TRIGGER_interface_lock(false)
+			globals.WEBc_sutra_trigger('TRIGGER_interface_lock',[false])
 		}
 		
 		//hack to re-lock up the page screen
@@ -836,7 +836,7 @@ function REC_new() {
 		forms.WEB_0F_page__design_1F__button_tab.elements.btn_edit.visible = false
 		
 		//freeze screen
-		globals.TRIGGER_interface_lock(true)
+		globals.WEBc_sutra_trigger('TRIGGER_interface_lock',[true])
 		
 		if (forms[formName] && forms[formName].elements.gfx_curtain) {
 			forms[formName].elements.gfx_curtain.visible = true
@@ -875,7 +875,7 @@ function REC_new() {
 			
 			//unfreeze screen
 			if (solutionPrefs.config.lockStatus) {
-				globals.TRIGGER_interface_lock(false)
+				globals.WEBc_sutra_trigger('TRIGGER_interface_lock',[false])
 			}
 			
 			//hack to re-lock up the page screen

@@ -42,7 +42,7 @@ function FORM_on_show(firstShow, event) {
 	
 	forms.WEB_0F_install__rewrite.TOGGLE_sample_rewrite()
 	
-	globals.TRIGGER_toolbar_record_navigator_set(false)
+	globals.WEBc_sutra_trigger('TRIGGER_toolbar_record_navigator_set',[false])
 }
 
 /**
@@ -55,7 +55,7 @@ function FORM_on_show(firstShow, event) {
  * @properties={typeid:24,uuid:"FF2B5DFA-942F-4BB5-A8C6-EAFF6672B439"}
  */
 function FORM_on_hide(event) {
-	globals.TRIGGER_toolbar_record_navigator_set(true)
+	globals.WEBc_sutra_trigger('TRIGGER_toolbar_record_navigator_set',[true])
 }
 
 /**

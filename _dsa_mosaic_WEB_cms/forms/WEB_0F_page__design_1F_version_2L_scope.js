@@ -180,14 +180,18 @@ function BLOCK_action_list_control(scope,copy,promote,dupe,refresh,scrapjump) {
 			
 			if (scope == '2') {
 				var navItem = 'CMS_scrapbook_site'
+				var navForm = 'WEB_0F_block__site'
 			}
 			else if (scope == '3') {
 				var navItem = 'CMS_scrapbook_install'
+				var navForm = 'WEB_0F_block__install'
 			}
 			
 			if (navItem) {
-				//go to appropriate scrapbook form
-				globals.TRIGGER_navigation_set(navItem)
+				//not running in data sutra application framework, just show appropriate scrapbook form
+				if (globals.WEBc_sutra_trigger('TRIGGER_navigation_set',[navItem]) == 'noSutra') {
+					forms[navForm].controller.show()
+				}
 				
 				//select this scrapbook (happens because of shared foundset)
 //				forms[solutionPrefs.config.currentFormName].foundset.selectRecord(blockRec.id_block)

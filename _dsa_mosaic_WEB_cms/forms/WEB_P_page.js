@@ -137,11 +137,11 @@ function ACTION_ok() {
 			
 			//unfreeze screen when in frameworks
 			if (application.__parent__.solutionPrefs && solutionPrefs.config.lockStatus) {
-				globals.TRIGGER_interface_lock(false)
+				globals.WEBc_sutra_trigger('TRIGGER_interface_lock',[false])
 			}
 			
 			//turn on feedback indicator
-			globals.TRIGGER_progressbar_start(null,'Creating new page...')
+			globals.WEBc_sutra_trigger('TRIGGER_progressbar_start',[null,'Creating new page...'])
 			
 			//put this page in the correct place; there were other records
 			if (forms.WEB_0T_page._oldRecord) {
@@ -385,9 +385,9 @@ function ACTION_ok() {
 		databaseManager.setAutoSave(true)
 		
 		//turn off feedback indicator if on
-		if (globals.TRIGGER_progressbar_get() instanceof Array) {
-			if (globals.TRIGGER_progressbar_get()[1] == 'Creating new page...') {
-				globals.TRIGGER_progressbar_stop()
+		if (globals.WEBc_sutra_trigger('TRIGGER_progressbar_get') instanceof Array) {
+			if (globals.WEBc_sutra_trigger('TRIGGER_progressbar_get')[1] == 'Creating new page...') {
+				globals.WEBc_sutra_trigger('TRIGGER_progressbar_stop')
 			}
 		}
 		

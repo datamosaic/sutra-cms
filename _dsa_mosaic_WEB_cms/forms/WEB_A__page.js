@@ -109,7 +109,7 @@ function TOGGLE_edit_mode(editMode,saveData) {
 		}
 		
 		//lock the screen
-		globals.TRIGGER_interface_lock(true)
+		globals.WEBc_sutra_trigger('TRIGGER_interface_lock',[true])
 		
 		//toggle elements
 		TOGGLE_buttons()
@@ -174,7 +174,7 @@ function TOGGLE_edit_mode(editMode,saveData) {
 		databaseManager.setAutoSave(true)
 		
 		//unlock the screen
-		globals.TRIGGER_interface_lock(false)
+		globals.WEBc_sutra_trigger('TRIGGER_interface_lock',[false])
 		
 		//toggle elements
 		TOGGLE_buttons()
@@ -245,7 +245,7 @@ function ACTION_reorder(event) {
 			globals.WEBc_log_create('page','page reorder begin',forms.WEB_0F_page.id_site,'web_page',forms.WEB_0F_page.id_page)
 			
 			//lock the screen
-			globals.TRIGGER_interface_lock(true)
+			globals.WEBc_sutra_trigger('TRIGGER_interface_lock',[true])
 			
 			//toggle elements
 			TOGGLE_buttons()
@@ -268,7 +268,7 @@ function ACTION_reorder(event) {
 			databaseManager.saveData()
 			
 			//unlock the screen
-			globals.TRIGGER_interface_lock(false)
+			globals.WEBc_sutra_trigger('TRIGGER_interface_lock',[false])
 			
 			//set elements appropriately
 			forms.WEB_0F_page__design_1F__header_display__version.TOGGLE_elements()
