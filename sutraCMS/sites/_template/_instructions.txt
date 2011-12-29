@@ -29,14 +29,26 @@ Static html files can easily be "cut" into a files that Sutra CMS can recognize:
 <%@ page import = "java.util.*" %>
 <% HashMap pageData = (HashMap)request.getAttribute("pageData");%> 
 
-3- insert resource prefix <%=(String)request.getAttribute("themeDirectory")%> for all resource calls (src=..., href=..., hrf=..., @import url)
+3- insert following resource prefix for all local resource calls (src, href, hrf, @import url, etc):
+
+<%=(String)request.getAttribute("themeDirectory")%>
 
 4- header modifications:
 
-- remove static html title tag
-- remove all meta attributes
-- add <jsp:include page='<%= (String)request.getAttribute("head") %>' /> before closing </head> tag
+- remove title tag
+- remove all other meta attributes that you want to be dynamically generated
+- add before closing </head> tag:
 
-5- footer modification:
+<jsp:include page='<%= (String)request.getAttribute("head") %>' /> 
 
-- add <jsp:include page='<%= (String)request.getAttribute("footer") %>' /> before the closing </body> tag
+5- bottom of the page modification:
+
+- add before the closing </body> tag:
+
+<jsp:include page='<%= (String)request.getAttribute("foot") %>' /> 
+
+6- cut in content areas wherever you want editable content (names should be unique per page when multiple editable areas):
+
+<%=pageData.get("Name of editable area")%>
+
+7- register the theme and you're ready to create pages!
