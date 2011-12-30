@@ -40,7 +40,7 @@ function BLOCK_action_list() {
 		//copy to... menu
 		var subMenu1 = new Array()
 		for ( var i = 0 ; i < vlDisplay.length ; i++ ) {
-			subMenu1[i] = plugins.popupmenu.createMenuItem(vlDisplay[i],BLOCK_action_list_control)
+			subMenu1[i] = plugins.popupmenu.createMenuItem(vlDisplay[i],BLOCK_scope)
 			
 			subMenu1[i].setMethodArguments(vlReal[i],true)
 		}
@@ -54,17 +54,17 @@ function BLOCK_action_list() {
 		//promote to... menu
 		var subMenu2 = new Array()
 		for ( var i = 0 ; i < vlDisplay.length ; i++ ) {
-			subMenu2[i] = plugins.popupmenu.createMenuItem(vlDisplay[i],BLOCK_action_list_control)
+			subMenu2[i] = plugins.popupmenu.createMenuItem(vlDisplay[i],BLOCK_scope)
 			
 			subMenu2[i].setMethodArguments(vlReal[i],null,true)
 		}
 		
 		var mainMenu = new Array()
-		mainMenu[0] = plugins.popupmenu.createMenuItem(valuelist[0],BLOCK_action_list_control)
-		mainMenu[0].setMethodArguments(null,null,null,true)
-		mainMenu[1] = plugins.popupmenu.createMenuItem(valuelist[1],BLOCK_action_list_control)
-		mainMenu[1].setMethodArguments(null,null,null,null,true)
-		mainMenu[2] = plugins.popupmenu.createMenuItem(valuelist[2],BLOCK_action_list_control)
+		mainMenu[0] = plugins.popupmenu.createMenuItem(valuelist[0],BLOCK_duplicate)
+//		mainMenu[0].setMethodArguments(null,null,null,true)
+		mainMenu[1] = plugins.popupmenu.createMenuItem(valuelist[1],BLOCK_refresh)
+//		mainMenu[1].setMethodArguments(null,null,null,null,true)
+		mainMenu[2] = plugins.popupmenu.createMenuItem(valuelist[2],BLOCK_action_list)
 		mainMenu[3] = plugins.popupmenu.createMenuItem(valuelist[3],subMenu1)
 		//don't show promote menu for install scrapbooks
 		if (vlDisplay.length) {
@@ -73,9 +73,9 @@ function BLOCK_action_list() {
 		//when on scrapbook, offer to jump to scrapbook form for editing
 			//TODO: make work for page-level scrapbook
 		if (scrapScope > 1) {
-			var spacer = plugins.popupmenu.createMenuItem('-',BLOCK_action_list_control)
-			var scrapJump = plugins.popupmenu.createMenuItem('Go to this scrapbook',BLOCK_action_list_control)
-			scrapJump.setMethodArguments(scrapScope,null,null,null,null,true)
+			var spacer = plugins.popupmenu.createMenuItem('-',BLOCK_action_list)
+			var scrapJump = plugins.popupmenu.createMenuItem('Go to this scrapbook',BLOCK_goto)
+			scrapJump.setMethodArguments(scrapScope)
 			
 			mainMenu.push(spacer,scrapJump)
 		}
@@ -91,195 +91,6 @@ function BLOCK_action_list() {
 					'Error',
 					'No block selected.  You must create/select a block first'
 			)
-	}
-}
-
-/**
- *
- * @properties={typeid:24,uuid:"0DE68168-7178-4FE8-B538-60456C223C6E"}
- */
-function BLOCK_action_list_control(scope,copy,promote,dupe,refresh,scrapjump) {
-	var blockRec = web_scope_to_block.getSelectedRecord()
-	
-	//duplicate selected block
-	if (dupe) {
-		//create new block record
-		var fsBlock = databaseManager.getFoundSet('sutra_cms','web_block')
-		var destBlock = fsBlock.getRecord(fsBlock.newRecord(false,true))
-		
-		//get source block version
-		var srcBlockVer = blockRec.web_block_to_block_version.getRecord(1)
-		
-		//create destination block version record
-		var destBlockVer = globals.CODE_record_duplicate(srcBlockVer,[
-											"web_block_version_to_block_data",
-											"web_block_version_to_block_data_configure"
-										])
-		
-		//set datapoints on new block version
-		destBlockVer.id_block = destBlock.id_block
-		destBlockVer.flag_active = 1
-		destBlockVer.version_number = 1
-		destBlockVer.version_name = 'Initial version'
-		destBlockVer.version_description = 'Duplicated from: ' + 
-			'"' + blockRec.block_name + '", version ' + blockRec.web_block_to_block_version.version_number + '\n' +
-			'ID: ' + blockRec.id_block.toString()
-		
-		//assign scope to the newly copied record
-		destBlock.scope_type = blockRec.scope_type
-		destBlock.block_name = blockRec.block_name
-		
-		//punch in the current block type and display (so will show up on site scrapbook)
-		destBlock.id_block_type = blockRec.id_block_type
-		destBlock.id_block_display = blockRec.id_block_display
-		
-	//create new scope record and hook together
-		//turn off rec on select
-		_skipSelect = true
-		
-		//disale/enable rec on select on the block type forms when creating scope
-		globals.WEB_block_on_select = false
-		
-		var scopeRec = foundset.getRecord(foundset.newRecord(false,true))
-		
-		scopeRec.row_order = foundset.getSize()
-		scopeRec.id_block = destBlock.id_block
-		databaseManager.saveData()
-		
-		//disale/enable rec on select on the block type forms when creating scope
-		globals.WEB_block_on_select = true
-		
-		//turn on rec on select
-		_skipSelect = false
-		
-		//refire rec_on_select to get us in the right spot
-		forms.WEB_0F_page__design_1F_version_2L_scope.REC_on_select(null,true)
-		
-	//store this scope record into temp variable to delete if canceled
-		if (scopeRec) {
-			if (!_newBlocks instanceof Array) {
-				_newBlocks = new Array()
-			}
-			_newBlocks.push(scopeRec)
-		}
-	}
-	//jump to scrapbook form to edit
-	else if (scrapjump) {
-		var question = plugins.dialogs.showQuestionDialog(
-					'Leave edit mode?',
-					'You must exit edit mode before viewing the scrapbook manager.\nAll changes will be saved.\nContinue?',
-					'Yes',
-					'No'
-			)
-		
-		if (question == 'Yes') {
-			var blockRec = web_scope_to_block.getSelectedRecord()
-			
-			//leave edit mode
-			forms.WEB_A__page.ACTION_save()
-			
-			if (scope == '2') {
-				var navItem = 'CMS_scrapbook_site'
-				var navForm = 'WEB_0F_block__site'
-			}
-			else if (scope == '3') {
-				var navItem = 'CMS_scrapbook_install'
-				var navForm = 'WEB_0F_block__install'
-			}
-			
-			if (navItem) {
-				//not running in data sutra application framework, just show appropriate scrapbook form
-				if (globals.WEBc_sutra_trigger('TRIGGER_navigation_set',[navItem]) == 'noSutra') {
-					forms[navForm].controller.show()
-				}
-				
-				//select this scrapbook (happens because of shared foundset)
-//				application.updateUI(1000)
-				forms[solutionPrefs.config.currentFormName].foundset.selectRecord(blockRec.id_block)
-				
-				//enter edit mode?
-			}
-		}
-	}
-	//refresh selected block
-	else if (refresh) {
-		
-		if (utils.hasRecords(foundset.getSelectedRecord(),'web_scope_to_block.web_block_to_block_version')) {
-			forms.WEB_0F_block__scrapbook.REC_refresh(web_scope_to_block.web_block_to_block_version__all,web_scope_to_block.web_block_to_block_version.getRecord(1))
-			
-			//refire rec_on_select to get us in the right spot
-			REC_on_select(null,true)
-		}
-		else {
-			plugins.dialogs.showErrorDialog(
-					'Error',
-					'The selected block cannot be updated.\nDelete and re-add.'
-				)
-		}
-	}
-	//copy or promote
-	else if (scope) {
-		var input = plugins.dialogs.showInputDialog(
-						'Name',
-						'Please (re)name the block you are working with',
-						blockRec.block_name
-				)
-		
-		//make a copy of this block
-		if (copy) {
-			//create new block record
-			var fsBlock = databaseManager.getFoundSet('sutra_cms','web_block')
-			var destBlock = fsBlock.getRecord(fsBlock.newRecord(false,true))
-			
-			//get source block version
-			var srcBlockVer = blockRec.web_block_to_block_version.getRecord(1)
-			
-			//create destination block version record
-			var destBlockVer = globals.CODE_record_duplicate(srcBlockVer,[
-												"web_block_version_to_block_data",
-												"web_block_version_to_block_data_configure"
-											])
-			
-			//set datapoints on new block version
-			destBlockVer.id_block = destBlock.id_block
-			destBlockVer.flag_active = 1
-			destBlockVer.version_number = 1
-			destBlockVer.version_name = 'Initial version'
-			destBlockVer.version_description = 'Copied: ' + application.getValueListDisplayValue('WEB_scope_type',blockRec.scope_type) + ' content\n' +
-				'"' + blockRec.block_name + '", version ' + blockRec.web_block_to_block_version.version_number + '\n' +
-				'ID: ' + blockRec.id_block.toString()
-			
-			//assign scope to the newly copied record
-			destBlock.scope_type = scope
-			destBlock.block_name = input
-			
-			//punch in the current block type and display so will show up on site scrapbook
-			destBlock.id_block_type = blockRec.id_block_type
-			destBlock.id_block_display = blockRec.id_block_display
-			
-			if (scope == 1) {
-				destBlock.id_page = forms.WEB_0F_page.id_page
-			}
-			else if (scope == 2) {
-				destBlock.id_site = forms.WEB_0F_page.id_site
-			}
-		}
-		//assign this a little bit higher
-		else if (promote) {
-			blockRec.scope_type = scope
-			blockRec.block_name = input
-			
-			if (scope == 1) {
-				blockRec.id_page = forms.WEB_0F_page.id_page
-			}
-			else if (scope == 2) {
-				blockRec.id_site = forms.WEB_0F_page.id_site
-			}
-			else if (scope == 3) {
-				blockRec.id_page = null
-				blockRec.id_site = null
-			}
-		}
 	}
 }
 
@@ -721,4 +532,203 @@ function FLD_flag_active__data_change(oldValue, newValue, event) {
 	}
 	
 	return true
+}
+
+/**
+ * @properties={typeid:24,uuid:"17894357-47F0-4E05-A87C-4B3D15F3DA51"}
+ */
+function BLOCK_duplicate() {
+	var blockRec = web_scope_to_block.getSelectedRecord()
+	
+	//create new block record
+	var fsBlock = databaseManager.getFoundSet('sutra_cms','web_block')
+	var destBlock = fsBlock.getRecord(fsBlock.newRecord(false,true))
+	
+	//get source block version
+	var srcBlockVer = blockRec.web_block_to_block_version.getRecord(1)
+	
+	//create destination block version record
+	var destBlockVer = globals.CODE_record_duplicate(srcBlockVer,[
+										"web_block_version_to_block_data",
+										"web_block_version_to_block_data_configure"
+									])
+	
+	//set datapoints on new block version
+	destBlockVer.id_block = destBlock.id_block
+	destBlockVer.flag_active = 1
+	destBlockVer.version_number = 1
+	destBlockVer.version_name = 'Initial version'
+	destBlockVer.version_description = 'Duplicated from: ' + 
+		'"' + blockRec.block_name + '", version ' + blockRec.web_block_to_block_version.version_number + '\n' +
+		'ID: ' + blockRec.id_block.toString()
+	
+	//assign scope to the newly copied record
+	destBlock.scope_type = blockRec.scope_type
+	destBlock.block_name = blockRec.block_name
+	
+	//punch in the current block type and display (so will show up on site scrapbook)
+	destBlock.id_block_type = blockRec.id_block_type
+	destBlock.id_block_display = blockRec.id_block_display
+	
+//create new scope record and hook together
+	//turn off rec on select
+	_skipSelect = true
+	
+	//disale/enable rec on select on the block type forms when creating scope
+	globals.WEB_block_on_select = false
+	
+	var scopeRec = foundset.getRecord(foundset.newRecord(false,true))
+	
+	scopeRec.row_order = foundset.getSize()
+	scopeRec.id_block = destBlock.id_block
+	databaseManager.saveData()
+	
+	//disale/enable rec on select on the block type forms when creating scope
+	globals.WEB_block_on_select = true
+	
+	//turn on rec on select
+	_skipSelect = false
+	
+	//refire rec_on_select to get us in the right spot
+	forms.WEB_0F_page__design_1F_version_2L_scope.REC_on_select(null,true)
+	
+//store this scope record into temp variable to delete if canceled
+	if (scopeRec) {
+		if (!_newBlocks instanceof Array) {
+			_newBlocks = new Array()
+		}
+		_newBlocks.push(scopeRec)
+	}
+}
+
+/**
+ * @properties={typeid:24,uuid:"74308546-EBFE-425A-A9A6-3A3E4B450D22"}
+ */
+function BLOCK_goto(scope) {
+	var blockRec = web_scope_to_block.getSelectedRecord()
+	
+	var question = plugins.dialogs.showQuestionDialog(
+				'Leave edit mode?',
+				'You must exit edit mode before viewing the scrapbook manager.\nAll changes will be saved.\nContinue?',
+				'Yes',
+				'No'
+		)
+	
+	if (question == 'Yes') {
+		var blockRec = web_scope_to_block.getSelectedRecord()
+		
+		//leave edit mode
+		forms.WEB_A__page.ACTION_save()
+		
+		if (scope == '2') {
+			var navItem = 'CMS_scrapbook_site'
+			var navForm = 'WEB_0F_block__site'
+		}
+		else if (scope == '3') {
+			var navItem = 'CMS_scrapbook_install'
+			var navForm = 'WEB_0F_block__install'
+		}
+		
+		if (navItem) {
+			//not running in data sutra application framework, just show appropriate scrapbook form
+			if (globals.WEBc_sutra_trigger('TRIGGER_navigation_set',[navItem]) == 'noSutra') {
+				forms[navForm].controller.show()
+			}
+			
+			//select this scrapbook (happens because of shared foundset)
+//				application.updateUI(1000)
+			forms[solutionPrefs.config.currentFormName].foundset.selectRecord(blockRec.id_block)
+			
+			//enter edit mode?
+		}
+	}
+}
+
+/**
+ * @properties={typeid:24,uuid:"4F0C287E-8F02-4FE6-8EE7-6AC8F4163951"}
+ */
+function BLOCK_refresh() {
+	var blockRec = web_scope_to_block.getSelectedRecord()
+	
+	if (utils.hasRecords(foundset.getSelectedRecord(),'web_scope_to_block.web_block_to_block_version')) {
+		forms.WEB_0F_block__scrapbook.REC_refresh(web_scope_to_block.web_block_to_block_version__all,web_scope_to_block.web_block_to_block_version.getRecord(1))
+		
+		//refire rec_on_select to get us in the right spot
+		REC_on_select(null,true)
+	}
+	else {
+		plugins.dialogs.showErrorDialog(
+				'Error',
+				'The selected block cannot be updated.\nDelete and re-add.'
+			)
+	}
+}
+
+/**
+ * @properties={typeid:24,uuid:"EB820E47-6901-417E-BE4D-90316690A027"}
+ */
+function BLOCK_scope(scope,copy,promote) {
+	var blockRec = web_scope_to_block.getSelectedRecord()
+	
+	var input = plugins.dialogs.showInputDialog(
+					'Name',
+					'Please (re)name the block you are working with',
+					blockRec.block_name
+			)
+	
+	//make a copy of this block
+	if (copy) {
+		//create new block record
+		var fsBlock = databaseManager.getFoundSet('sutra_cms','web_block')
+		var destBlock = fsBlock.getRecord(fsBlock.newRecord(false,true))
+		
+		//get source block version
+		var srcBlockVer = blockRec.web_block_to_block_version.getRecord(1)
+		
+		//create destination block version record
+		var destBlockVer = globals.CODE_record_duplicate(srcBlockVer,[
+											"web_block_version_to_block_data",
+											"web_block_version_to_block_data_configure"
+										])
+		
+		//set datapoints on new block version
+		destBlockVer.id_block = destBlock.id_block
+		destBlockVer.flag_active = 1
+		destBlockVer.version_number = 1
+		destBlockVer.version_name = 'Initial version'
+		destBlockVer.version_description = 'Copied: ' + application.getValueListDisplayValue('WEB_scope_type',blockRec.scope_type) + ' content\n' +
+			'"' + blockRec.block_name + '", version ' + blockRec.web_block_to_block_version.version_number + '\n' +
+			'ID: ' + blockRec.id_block.toString()
+		
+		//assign scope to the newly copied record
+		destBlock.scope_type = scope
+		destBlock.block_name = input
+		
+		//punch in the current block type and display so will show up on site scrapbook
+		destBlock.id_block_type = blockRec.id_block_type
+		destBlock.id_block_display = blockRec.id_block_display
+		
+		if (scope == 1) {
+			destBlock.id_page = forms.WEB_0F_page.id_page
+		}
+		else if (scope == 2) {
+			destBlock.id_site = forms.WEB_0F_page.id_site
+		}
+	}
+	//assign this a little bit higher
+	else if (promote) {
+		blockRec.scope_type = scope
+		blockRec.block_name = input
+		
+		if (scope == 1) {
+			blockRec.id_page = forms.WEB_0F_page.id_page
+		}
+		else if (scope == 2) {
+			blockRec.id_site = forms.WEB_0F_page.id_site
+		}
+		else if (scope == 3) {
+			blockRec.id_page = null
+			blockRec.id_site = null
+		}
+	}
 }
