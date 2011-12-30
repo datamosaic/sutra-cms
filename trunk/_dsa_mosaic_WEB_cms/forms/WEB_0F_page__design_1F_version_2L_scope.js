@@ -66,13 +66,15 @@ function BLOCK_action_list() {
 //		mainMenu[1].setMethodArguments(null,null,null,null,true)
 		mainMenu[2] = plugins.popupmenu.createMenuItem(valuelist[2],BLOCK_action_list)
 		mainMenu[3] = plugins.popupmenu.createMenuItem(valuelist[3],subMenu1)
+		
 		//don't show promote menu for install scrapbooks
 		if (vlDisplay.length) {
 			mainMenu[4] = plugins.popupmenu.createMenuItem(valuelist[4],subMenu2)
 		}
+		
 		//when on scrapbook, offer to jump to scrapbook form for editing
 			//TODO: make work for page-level scrapbook
-		if (scrapScope > 1) {
+		if (scrapScope) {
 			var spacer = plugins.popupmenu.createMenuItem('-',BLOCK_action_list)
 			var scrapJump = plugins.popupmenu.createMenuItem('Go to this scrapbook',BLOCK_goto)
 			scrapJump.setMethodArguments(scrapScope)
@@ -620,7 +622,11 @@ function BLOCK_goto(scope) {
 		//leave edit mode
 		forms.WEB_A__page.ACTION_save()
 		
-		if (scope == '2') {
+		if (scope == '1') {
+			var pageScrap = true
+			var navForm = 'WEB_0F_block__scrapbook_1F_page__blocks_2L_block'
+		}
+		else if (scope == '2') {
 			var navItem = 'CMS_scrapbook_site'
 			var navForm = 'WEB_0F_block__site'
 		}
@@ -629,6 +635,7 @@ function BLOCK_goto(scope) {
 			var navForm = 'WEB_0F_block__install'
 		}
 		
+		//site or install scrapbook
 		if (navItem) {
 			//not running in data sutra application framework, just show appropriate scrapbook form
 			if (globals.WEBc_sutra_trigger('TRIGGER_navigation_set',[navItem]) == 'noSutra') {
@@ -637,9 +644,16 @@ function BLOCK_goto(scope) {
 			
 			//select this scrapbook (happens because of shared foundset)
 //				application.updateUI(1000)
-			forms[solutionPrefs.config.currentFormName].foundset.selectRecord(blockRec.id_block)
+			forms[navForm].foundset.selectRecord(blockRec.id_block)
 			
 			//enter edit mode?
+		}
+		else if (pageScrap) {
+			//go to scrapbook tab
+			forms.WEB_0F_page__design_1F__button_tab.TAB_change(null,'tab_b3')
+			
+			//select this scrapbook
+			forms[navForm].foundset.selectRecord(blockRec.id_block)
 		}
 	}
 }
