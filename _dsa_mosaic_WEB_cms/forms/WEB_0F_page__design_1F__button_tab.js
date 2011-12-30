@@ -20,6 +20,26 @@ function FORM_on_load() {
  * @properties={typeid:24,uuid:"C946B15B-1BD2-4FC4-9D1A-130E19536C2D"}
  */
 function TAB_change(formName,elemName) {
+	var elem = formName instanceof JSEvent ? formName.getElementName() : elemName
+	
+	//disallow going to scrapbook when in edit mode
+	if (forms.WEB_0F_page.ACTION_edit_get() && utils.stringToNumber(elem) == 3) {
+		plugins.dialogs.showErrorDialog(
+					'Error',
+					'You must exit Edit mode before visiting page scrapbooks'
+				)
+		return
+	}
+	
+	//disallow leaving scrapbook when in scrapbook edit mode
+	if (forms.WEB_0F_block__scrapbook.ACTION_edit_get() && elements.tab_button.tabIndex == 3) {
+		plugins.dialogs.showErrorDialog(
+					'Error',
+					'You must exit Scrapbook Edit mode before leaving page scrapbooks'
+				)
+		return
+	}
+	
 	globals.TAB_change_inline('WEB_0F_page__design_1F__button_tab',elemName,'tab_button','tab_b')
 	
 	//set main tab appropriately
