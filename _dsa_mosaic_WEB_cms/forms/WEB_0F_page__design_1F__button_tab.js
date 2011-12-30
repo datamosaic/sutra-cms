@@ -27,7 +27,7 @@ function TAB_change(formName,elemName) {
 	
 	//toggle display to show nothing for page when no valid version stack
 	if (forms.WEB_0F_page__design.elements.tab_main.tabIndex == 1 && !utils.hasRecords(forms.WEB_0F_page__design_1F_version.foundset)) {
-		forms.WEB_0F_page__design.elements.tab_main.tabIndex = 4
+		forms.WEB_0F_page__design.elements.tab_main.tabIndex = 6
 	}
 	
 	//put on custom header for scrapbook
