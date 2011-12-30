@@ -1,4 +1,11 @@
 /**
+ * @properties={typeid:35,uuid:"2DC677B3-626D-47FA-A92B-A13D32236BF6"}
+ */
+var _license_dsa_mosaic_WEB_cms_resources = 'Module: _dsa_mosaic_WEB_cms_resources \
+									Copyright (C) 2011 Data Mosaic \
+									MIT Licensed';
+
+/**
  * @properties={typeid:35,uuid:"D055F5E5-A18B-459B-9D17-86A082C98715",variableType:-4}
  */
 var WEB_block_page_mode = false;
