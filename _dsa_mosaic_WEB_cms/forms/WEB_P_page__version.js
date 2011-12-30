@@ -1,4 +1,11 @@
 /**
+ * @properties={typeid:35,uuid:"01E8184B-FD76-4964-AB42-A83CBDF51EAB"}
+ */
+var _license_dsa_mosaic_WEB_cms = 'Module: _dsa_mosaic_WEB_cms \
+									Copyright (C) 2011 Data Mosaic \
+									MIT Licensed';
+
+/**
  * @properties={typeid:35,uuid:"528DDFCB-B83D-48FC-8700-26FA882B910B",variableType:-4}
  */
 var _fsVersion = databaseManager.getFoundSet('sutra_cms','web_version');
@@ -27,13 +34,6 @@ var _posnVersion = null;
  * @properties={typeid:35,uuid:"8502BC09-C939-41B9-AEB0-C143C0448F6F",variableType:4}
  */
 var _fidAccept = null;
-
-/**
- * @properties={typeid:35,uuid:"01E8184B-FD76-4964-AB42-A83CBDF51EAB"}
- */
-var _license_dsa_mosaic_WEB_cms = 'Module: _dsa_mosaic_WEB_cms \
-									Copyright (C) 2011 Data Mosaic \
-									MIT Licensed';
 
 /**
  * @properties={typeid:35,uuid:"ECFE243F-45B0-49CA-90B6-F6755D622195"}

@@ -1,4 +1,11 @@
 /**
+ * @properties={typeid:35,uuid:"04fde543-69cc-4de9-af47-7f7c22221f61"}
+ */
+var _license_dsa_mosaic_WEB_cms = 'Module: _dsa_mosaic_WEB_cms \
+									Copyright (C) 2011 Data Mosaic \
+									MIT Licensed';
+
+/**
  * @properties={typeid:35,uuid:"9E607ECD-C191-4A4E-ABA3-4CBC5040FC5B",variableType:4}
  */
 var _versionType = 1;
@@ -12,13 +19,6 @@ var _versionDescription = null;
  * @properties={typeid:35,uuid:"71FFE866-5196-4C61-867A-382AE863F955",variableType:-4}
  */
 var _versionName = null;
-
-/**
- * @properties={typeid:35,uuid:"04fde543-69cc-4de9-af47-7f7c22221f61"}
- */
-var _license_dsa_mosaic_WEB_cms = 'Module: _dsa_mosaic_WEB_cms \
-									Copyright (C) 2011 Data Mosaic \
-									MIT Licensed';
 
 /**
  * @properties={typeid:35,uuid:"0DB8F194-B241-4646-8A35-6F27D096B1B5",variableType:4}
