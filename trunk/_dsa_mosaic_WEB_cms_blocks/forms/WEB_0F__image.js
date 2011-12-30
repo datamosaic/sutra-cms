@@ -1,4 +1,11 @@
 /**
+ * @properties={typeid:35,uuid:"4FDBCEFD-6F16-46F7-827B-375E25824AD6"}
+ */
+var _license_dsa_mosaic_WEB_cms_blocks = 'Module: _dsa_mosaic_WEB_cms_blocks \
+									Copyright (C) 2011 Data Mosaic \
+									MIT Licensed';
+
+/**
  * @properties={typeid:35,uuid:"7EC90C89-6147-49DD-82A6-A41A364B4D2D"}
  */
 var _cssClass = null;
@@ -17,13 +24,6 @@ var _cssId = null;
  * @properties={typeid:35,uuid:"1C693A02-303B-4BB0-96CB-9F8C7865CC0A"}
  */
 var _alt = null;
-
-/**
- * @properties={typeid:35,uuid:"4FDBCEFD-6F16-46F7-827B-375E25824AD6"}
- */
-var _license_dsa_mosaic_WEB_cms = 'Module: _dsa_mosaic_WEB_cms \
-									Copyright (C) 2011 Data Mosaic \
-									MIT Licensed';
 
 /**
  * @param {JSEvent} event the event that triggered the action
