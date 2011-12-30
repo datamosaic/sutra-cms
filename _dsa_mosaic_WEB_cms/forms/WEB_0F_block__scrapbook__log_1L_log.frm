@@ -35,7 +35,7 @@ styleClass:"tableview",
 text:"User",
 typeid:4,
 uuid:"D45BEB01-F0D5-4FD1-9288-95502F8718A5",
-valuelistID:"2A4E6806-4BA2-461E-9A14-747862E5148F"
+valuelistID:"C69136AB-B1BE-40C1-9F25-684C2AEA60ED"
 },
 {
 anchors:11,
