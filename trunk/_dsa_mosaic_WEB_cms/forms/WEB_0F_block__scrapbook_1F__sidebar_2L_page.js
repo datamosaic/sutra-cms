@@ -1,4 +1,11 @@
 /**
+ * @properties={typeid:35,uuid:"76462F92-66C1-4BD5-8BF2-514D99234191"}
+ */
+var _license_dsa_mosaic_WEB_cms = 'Module: _dsa_mosaic_WEB_cms \
+									Copyright (C) 2011 Data Mosaic \
+									MIT Licensed';
+
+/**
  * @properties={typeid:35,uuid:"EBBB9B5D-13A2-47D7-8684-A61E6DD0FADB"}
  */
 var _moshPit = null;
@@ -22,13 +29,6 @@ var _language = null;
  * @properties={typeid:35,uuid:"5E9BBFFD-BB26-4E2B-A1A0-1E32E6AF5528"}
  */
 var _platform = null;
-
-/**
- * @properties={typeid:35,uuid:"76462F92-66C1-4BD5-8BF2-514D99234191"}
- */
-var _license_dsa_mosaic_WEB_cms = 'Module: _dsa_mosaic_WEB_cms \
-									Copyright (C) 2011 Data Mosaic \
-									MIT Licensed';
 
 /**
  * Perform the element default action.
