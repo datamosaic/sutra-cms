@@ -1,0 +1,2 @@
+Simple Boilerplate
+Minimal html5 boilerplace code. Example taken from http://csswizardry.com/2011/01/the-real-html5-boilerplate/
