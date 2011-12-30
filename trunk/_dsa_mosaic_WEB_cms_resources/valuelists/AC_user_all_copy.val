@@ -1,0 +1,12 @@
+addEmptyValue:1,
+dataProviderID1:"id_user",
+dataProviderID2:"user_name",
+dataSource:"db:/sutra/sutra_access_user",
+name:"AC_user_all_copy",
+returnDataProviders:1,
+separator:" ",
+showDataProviders:2,
+sortOptions:"user_name asc",
+typeid:34,
+uuid:"C69136AB-B1BE-40C1-9F25-684C2AEA60ED",
+valueListType:1
