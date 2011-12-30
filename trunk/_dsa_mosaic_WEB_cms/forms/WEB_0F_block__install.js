@@ -77,6 +77,10 @@ function REC_on_select(event) {
 	//don't run too much at the beginning
 	if (!_skipSelect) {
 		_selected = id_block.toString()
+		
+		if (elements.tab_detail.tabIndex == 2) {
+			forms.WEB_0F_block__scrapbook__log.LOAD_records()
+		}
 	}
 }
 

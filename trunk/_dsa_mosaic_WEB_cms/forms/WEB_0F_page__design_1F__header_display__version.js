@@ -426,13 +426,13 @@ function ADD_version(event) {
 				//reset area index to be at top
 				newVersion.web_version_to_area.setSelectedIndex(1)
 			}
-		}
-		
-		//turn off feedback indicators if on
-		globals.CODE_cursor_busy(false)
-		if (globals.WEBc_sutra_trigger('TRIGGER_progressbar_get') instanceof Array) {
-			if (globals.WEBc_sutra_trigger('TRIGGER_progressbar_get')[1] == progressText) {
-				globals.WEBc_sutra_trigger('TRIGGER_progressbar_stop')
+			
+			//turn off feedback indicators if on
+			globals.CODE_cursor_busy(false)
+			if (globals.WEBc_sutra_trigger('TRIGGER_progressbar_get') instanceof Array) {
+				if (globals.WEBc_sutra_trigger('TRIGGER_progressbar_get')[1] == progressText) {
+					globals.WEBc_sutra_trigger('TRIGGER_progressbar_stop')
+				}
 			}
 		}
 	}
