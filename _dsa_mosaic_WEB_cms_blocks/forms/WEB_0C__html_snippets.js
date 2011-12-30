@@ -1,4 +1,11 @@
 /**
+ * @properties={typeid:35,uuid:"4FDBCEFD-6F17-46F7-827B-375E25824AD6"}
+ */
+var _license_dsa_mosaic_WEB_cms_blocks = 'Module: _dsa_mosaic_WEB_cms_blocks \
+									Copyright (C) 2011 Data Mosaic \
+									MIT Licensed';
+
+/**
  * @properties={typeid:24,uuid:"679E98F4-990B-4543-9FDC-8A65A0047E7B"}
  */
 function SNIPPET_states_us(selected) {
