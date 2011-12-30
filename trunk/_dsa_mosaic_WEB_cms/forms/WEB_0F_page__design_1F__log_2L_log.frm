@@ -49,7 +49,7 @@ styleClass:"tableview",
 text:"User",
 typeid:4,
 uuid:"CAE6A6D4-34C6-42C7-B434-0B7553398411",
-valuelistID:"2A4E6806-4BA2-461E-9A14-747862E5148F"
+valuelistID:"C69136AB-B1BE-40C1-9F25-684C2AEA60ED"
 },
 {
 borderType:"SpecialMatteBorder,0.0,0.0,1.0,0.0,#000000,#000000,#999999,#000000,0.0,1.0",
