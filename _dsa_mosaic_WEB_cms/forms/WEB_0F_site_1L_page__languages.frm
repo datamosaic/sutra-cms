@@ -12,14 +12,15 @@ borderType:"SpecialMatteBorder,0.0,0.0,1.0,0.0,#000000,#000000,#999999,#000000,0
 dataProviderID:"rec_modified",
 editable:false,
 formIndex:10700,
-format:"M-d-yy",
-location:"140,30",
+format:"M-d-yy h:mm a",
+location:"150,30",
 selectOnEnter:true,
-size:"55,23",
+size:"45,23",
 styleClass:"tableview",
 text:"Updated",
+toolTipText:"%%rec_modified%%",
 typeid:4,
-uuid:"43399EDD-9B43-46D1-BD99-E56BD0EF7AE3"
+uuid:"6EBED1F2-3271-4060-AB53-50AF90726598"
 },
 {
 borderType:"SpecialMatteBorder,0.0,0.0,1.0,0.0,#000000,#000000,#999999,#000000,0.0,1.0",
@@ -40,21 +41,6 @@ uuid:"83F604C5-7AAE-47D4-A182-A58B592CA579"
 {
 anchors:11,
 borderType:"SpecialMatteBorder,0.0,0.0,1.0,0.0,#000000,#000000,#999999,#000000,0.0,1.0",
-dataProviderID:"page_name",
-editable:false,
-formIndex:10700,
-location:"40,30",
-selectOnEnter:true,
-size:"100,23",
-styleClass:"tableview",
-text:"Page",
-toolTipText:"ID: %%id_page%%",
-typeid:4,
-uuid:"A14501F9-6472-4FB7-AB07-B26B602273E5"
-},
-{
-anchors:11,
-borderType:"SpecialMatteBorder,0.0,0.0,1.0,0.0,#000000,#000000,#999999,#000000,0.0,1.0",
 dataProviderID:"url_param",
 editable:false,
 formIndex:10700,
@@ -65,6 +51,21 @@ styleClass:"tableview",
 text:"ID",
 typeid:4,
 uuid:"BEA98FA1-53BB-47CD-8499-3214929EB406"
+},
+{
+anchors:11,
+borderType:"SpecialMatteBorder,0.0,0.0,1.0,0.0,#000000,#000000,#999999,#000000,0.0,1.0",
+dataProviderID:"page_name",
+editable:false,
+formIndex:10700,
+location:"40,30",
+selectOnEnter:true,
+size:"110,23",
+styleClass:"tableview",
+text:"Page",
+toolTipText:"ID: %%id_page%%",
+typeid:4,
+uuid:"C71F1712-6694-4588-BC82-681EAA3EEA35"
 }
 ],
 name:"WEB_0F_site_1L_page__languages",
