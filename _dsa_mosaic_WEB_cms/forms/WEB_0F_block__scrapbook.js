@@ -99,8 +99,10 @@ function REC_new() {
 		
 		//created a new record
 		if (forms.WEB_P__block__new._success) {
+			
 			//refire version onSelect method (disabled during record creation)
-			globals.WEB_block_version = utils.hasRecords(web_block_to_block_version__all) ? web_block_to_block_version__all.id_block_version.toString() : null
+			globals.WEB_block_version = forms.WEB_P__block__new._blockID//utils.hasRecords(web_block_to_block_version__all) ? web_block_to_block_version__all.id_block_version.toString() : null
+			forms.WEB_0F_block__scrapbook_1F_page__blocks_2L_block.foundset.selectRecord(application.getUUID(globals.WEB_block_version))
 			REC_on_select()
 			
 			//enter edit mode

@@ -26,6 +26,11 @@ var _scope = null;
 var _areaID = null;
 
 /**
+ * @properties={typeid:35,uuid:"D1A3FA4E-6361-4889-9A11-742B137EBBCB"}
+ */
+var _blockID = null;
+
+/**
  * Handle changed data.
  *
  * @param {Object} oldValue old value
@@ -148,6 +153,8 @@ function ACTION_ok(event) {
 							
 							var blockRec = fsBlock.getRecord(fsBlock.newRecord(true,true))
 							blockRec.block_name = scrapbookRec.block_name + ' (copy)'
+							
+							_blockID = blockRec.id_block.toString()
 							
 							//fill in the scope
 							blockRec.scope_type = globals.WEB_block_scope
@@ -336,6 +343,8 @@ function ACTION_ok(event) {
 						
 						var blockRec = fsBlock.getRecord(fsBlock.newRecord(true,true))
 						
+						_blockID = blockRec.id_block.toString()
+						
 						//fill in the scope
 						blockRec.scope_type = globals.WEB_block_scope
 						if (globals.WEB_block_scope == 1) {
@@ -476,6 +485,7 @@ function FORM_on_show() {
 	globals.CODE_hide_form = 0
 	
 	_success = false
+	_blockID = null
 	
 	var fsBlockType = forms.WEB_P__block__new_1L_block_type.foundset
 	
