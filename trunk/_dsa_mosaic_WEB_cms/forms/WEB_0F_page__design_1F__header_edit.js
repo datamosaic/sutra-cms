@@ -247,6 +247,7 @@ function ACTION_cancel() {
 	
 	//MEMO: check WEB_P_page method too
 	if (forms.WEB_0T_page._addRecord) {
+		var oldRec = forms.WEB_0T_page._oldRecord
 		
 		delete _siteDefaults
 		_idSitePlatform = null
@@ -267,6 +268,14 @@ function ACTION_cancel() {
 	}
 	
 	_themeSet = null
+	
+	//reselect last selected record
+	if (oldRec) {
+		if (forms.WEB_0F_page.foundset.find()) {
+			forms.WEB_0F_page.foundset.id_page = oldRec
+			var results = forms.WEB_0F_page.foundset.search()
+		}
+	}
 	
 	//make sure correct stuff is showing
 	TOGGLE_fields(page_type)
@@ -758,6 +767,7 @@ function TOGGLE_fields(pageType) {
 	if ( utils.hasRecords(foundset) ) {
 		//show new page fields when adding a new record
 		var newPage = (forms.WEB_0T_page._addRecord && page) ? true : false
+		var newCancel = (forms.WEB_0T_page._addRecord) ? true : false
 		
 		elements.lbl_platform.visible = newPage
 		elements.var_idSitePlatform.visible = newPage
@@ -767,8 +777,8 @@ function TOGGLE_fields(pageType) {
 		elements.var_idSiteGroup.visible = newPage
 		
 		//only allow to cancel for new page
-		elements.lbl_cancel.visible = newPage
-		elements.btn_cancel.visible = newPage	
+		elements.lbl_cancel.visible = newCancel
+		elements.btn_cancel.visible = newCancel	
 		
 		elements.lbl_idTheme.visible = page
 		elements.var_idTheme.visible = page
