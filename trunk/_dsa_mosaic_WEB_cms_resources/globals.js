@@ -2312,10 +2312,12 @@ function WEBc_markup_link_asset(assetInstanceID, pageID, siteURL, linkType, obj)
  * @param {String}	[siteID] What site is this affecting.
  * @param {String}	[pkTable] What table is this affecting.
  * @param {String}	[pkID] The primary key of the affected table.
+ * @param {String}	[pk2Table] What table is this affecting.
+ * @param {String}	[pk2ID] The primary key of the affected table.
  * 
  * @properties={typeid:24,uuid:"928202F6-F074-4A6D-BD74-4C1A8324801B"}
  */
-function WEBc_log_create(logType,message,siteID,pkTable,pkID) {
+function WEBc_log_create(logType,message,siteID,pkTable,pkID,pk2Table,pk2ID) {
 	if (logType) {
 		var fsLog = databaseManager.getFoundSet('sutra_cms','web_log')
 		var logRec = fsLog.getRecord(fsLog.newRecord(false,true))
@@ -2325,6 +2327,8 @@ function WEBc_log_create(logType,message,siteID,pkTable,pkID) {
 		logRec.id_site = siteID
 		logRec.record_table = pkTable
 		logRec.record_id = pkID
+		logRec.record_2_table = pk2Table
+		logRec.record_2_id = pk2ID
 	}
 }
 
