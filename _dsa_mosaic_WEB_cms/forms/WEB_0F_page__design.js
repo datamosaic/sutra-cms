@@ -261,6 +261,11 @@ function REC_on_select(event,skipLoad,verIndex,fireSelect,areaName,blockIndex) {
 			forms.WEB_0F_page__design_1F_version_2L_scope.ACTION_gui_mode_load(fireSelect)
 		}
 		
+		//update log view
+		if (elements.tab_main.tabIndex == 5) {
+			forms.WEB_0F_page__design_1F__log.LOAD_records()
+		}
+		
 		//record was not in memory, turn off busy bar and busy cursor
 		if (recNotLoaded) {
 			globals.WEBc_sutra_trigger('TRIGGER_progressbar_stop')
