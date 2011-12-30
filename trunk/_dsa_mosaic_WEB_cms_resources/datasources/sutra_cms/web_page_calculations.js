@@ -11,7 +11,21 @@ function client_version_selected() {
 function display_page_name() {
 	//creating a page
 	if (forms.WEB_0T_page._addRecord) {
-		var pageName = 'Newly created page'
+		var pageName = 'Newly created '
+		
+		switch (page_type) {
+			case 1:
+				pageName += 'folder'
+				break
+			case 2:
+				pageName += 'external link'
+				break
+			case 3:
+				pageName += 'internal link'
+				break
+			default:
+				pageName += 'page'
+		}
 	}
 	//page already created
 	else {
@@ -34,19 +48,22 @@ function display_page_name() {
 		var pageName = web_page_to_language__default.page_name
 	}
 	
-	//this is a folder
-	if (page_type == 1) {
-		return 'Folder: ' + pageName
+	
+	if (page_type && !forms.WEB_0T_page._addRecord) {
+		//this is a folder
+		if (page_type == 1) {
+			return 'Folder: ' + pageName
+		}
+		//this is an external link
+		else if (page_type == 2) {
+			return 'External link: ' + pageName
+		}
+		//this is an internal link
+		else if (page_type == 3) {
+			return 'Internal link: ' + pageName
+		}
 	}
-	//this is an external link
-	else if (page_type == 2) {
-		return 'External link: ' + pageName
-	}
-	//this is an internal link
-	else if (page_type == 3) {
-		return 'Internal link: ' + pageName
-	}	
-	//this is a page
+	//this is a page or we're creating one
 	else {
 		return pageName
 	}
