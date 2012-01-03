@@ -354,9 +354,8 @@ function ACTION_dashboard(event) {
  * @properties={typeid:24,uuid:"A164DFE9-D04B-454E-B5B7-194AC642627F"}
  */
 function ACTION_mode(event) {
-	
-	//don't enter if workflow form locked for some reason or not enough access
-	if (application.__parent__.solutionPrefs && !solutionPrefs.design.statusLockWorkflow && globals.WEBc_sutra_trigger('TRIGGER_registered_action_authenticate',['cms page mode toggle'])) {
+	//don't enter if workflow form locked for some reason, in toolbar configurator, or not enough access
+	if (application.__parent__.solutionPrefs && solutionPrefs.config.currentFormName != 'MGR_0F_toolbar' && !solutionPrefs.design.statusLockWorkflow && globals.WEBc_sutra_trigger('TRIGGER_registered_action_authenticate',['cms page mode toggle'])) {
 		
 		//what is the current mode
 		var currentMode = globals.WEB_page_mode
