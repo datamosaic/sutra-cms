@@ -214,16 +214,26 @@ function CONTROLLER_builder(results) {
 					}
 					
 					// BLOCK RESPONSE
-					var responseData = obj.block.version.web_block_version_to_block_data_response
+					var responseData = obj.block.record.web_block_to_block_type.web_block_type_to_block_response
 					databaseManager.refreshRecordFromDatabase(responseData,-1)
 					
 					// obj: response
 					if ( utils.hasRecords(responseData) ) {
 						for (var k = 1; k <= responseData.getSize(); k++) {
 							var point = responseData.getRecord(k)
-							if (point.data_key) {
-								obj.block_response[point.data_key] = point.data_value
+							// get data based on request type
+							var data = ''
+							if ( obj.form.get[point.column_name] ) {
+								data = obj.form.get[point.column_name]
 							}
+							else if ( obj.form.post[point.column_name] ) {
+								data = obj.form.post[point.column_name]
+							}
+							else if ( obj.form.multipart.field[point.column_name] ) {
+								data = obj.form.multipart.field[point.column_name]
+							}							
+							// assign data to response slot
+							obj.block_response[point.column_name] = data
 						}
 					}
 											
