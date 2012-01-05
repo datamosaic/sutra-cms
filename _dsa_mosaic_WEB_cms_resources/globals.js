@@ -50,17 +50,17 @@ var CMS = {
 					}
 			},
 		session : {
-				clearData : function() {
-						return globals.WEBc_session_deleteData(/**String*/ sessionID, /**String*/ dataKey)
+				clearData : function(/**String*/ sessionID, /**String*/ dataKey) {
+						return globals.WEBc_session_deleteData(sessionID,dataKey)
 					},
-				getData : function() {
-						return globals.WEBc_session_getData(/**String*/ sessionID, /**String*/ dataKey)
+				getData : function(/**String*/ sessionID, /**String*/ dataKey) {
+						return globals.WEBc_session_getData(sessionID,dataKey)
 					},
 				getSession : function(/**String*/ sessionID) {
 						return globals.WEBc_session_getSession(sessionID)
 					},
-				setData : function() {
-						return globals.WEBc_session_setData(/**String*/ sessionID, /**String*/ dataKey, /**Object*/ dataValue)
+				setData : function(/**String*/ sessionID, /**String*/ dataKey, /**Object*/ dataValue) {
+						return globals.WEBc_session_setData(sessionID, dataKey, dataValue)
 					}
 			},
 		token : {
