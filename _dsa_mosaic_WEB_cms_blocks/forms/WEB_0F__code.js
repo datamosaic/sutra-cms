@@ -180,7 +180,7 @@ function ACTION_internal_link(event) {
  * @properties={typeid:24,uuid:"60C5247A-7183-48A9-8E0D-463E7401E8BB"}
  */
 function ACTION_add_token(inputID,pageRec) {
-	var token = globals.CMS.markup.getToken(pageRec)
+	var token = globals.CMS.token.getPage(pageRec).link
 	
 	//wrap currently selected text with link
 	var elem = elements.fld_data_value
@@ -234,7 +234,7 @@ function ACTION_insert_image(event) {
 			var elem = elements.fld_data_value
 		
 			var image = forms.WEB_P__asset._assetChosen
-			var token = globals.CMS.markup.getToken(image.asset)
+			var token = globals.CMS.token.getImage(image.asset).link
 			
 			//insert image at current location
 			var html = '<img src="' + token + '" width="' + image.meta.width + '" height="' + image.meta.height + '" alt="' + image.asset.asset_title +'">'

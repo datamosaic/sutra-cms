@@ -320,7 +320,7 @@ function ACTION_internal_link(event) {
  * @properties={typeid:24,uuid:"AC4E3BFF-07E7-4A72-A3C1-24F4D8E8C2C0"}
  */
 function ACTION_add_token(inputID,pageRec) {
-	var token = globals.CMS.markup.getToken(pageRec)
+	var token = globals.CMS.token.getPage(pageRec).link
 	
 	//set clipboard content if shift-key held
 	if (globals.CODE_key_pressed('shift')) {
@@ -367,7 +367,7 @@ function ACTION_insert_image(event) {
 	//something chosen, insert image link at cursor location
 	if (forms.WEB_P__asset._assetChosen) {
 		var image = forms.WEB_P__asset._assetChosen
-		var token = globals.CMS.markup.getToken(image.asset)
+		var token = globals.CMS.token.getImage(image.asset).link
 		
 		var html = '<img src="' + token + '" width="' + image.meta.width + '" height="' + image.meta.height + '" alt="' + image.asset.asset_title +'">'
 		
