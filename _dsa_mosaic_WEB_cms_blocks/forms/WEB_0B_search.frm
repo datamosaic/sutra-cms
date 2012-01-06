@@ -17,7 +17,6 @@ uuid:"19A765E9-1B37-4A66-88E9-911EEDCEAC29"
 },
 {
 anchors:11,
-dataProviderID:"result_flag",
 displayType:4,
 formIndex:10600,
 location:"225,130",
@@ -72,7 +71,6 @@ uuid:"3AC91073-7D68-4AEF-8C26-065CF530B1BE"
 },
 {
 anchors:11,
-dataProviderID:"result_id",
 formIndex:10600,
 location:"225,153",
 scrollbars:36,
@@ -111,7 +109,6 @@ uuid:"5ED125ED-1538-4A0C-91BB-046455D6C3D9"
 },
 {
 anchors:11,
-dataProviderID:"label_button",
 formIndex:10600,
 location:"225,61",
 scrollbars:36,
@@ -137,7 +134,6 @@ uuid:"813E6499-69EC-4D9A-8E56-4FAC3910CA95"
 },
 {
 anchors:11,
-dataProviderID:"label_title",
 formIndex:10600,
 location:"225,38",
 scrollbars:36,
@@ -184,7 +180,6 @@ uuid:"A6CB30CB-9EB7-4D3D-A675-4686FB0994B6"
 },
 {
 anchors:11,
-dataProviderID:"search_path_id",
 formIndex:10600,
 location:"225,107",
 scrollbars:36,
