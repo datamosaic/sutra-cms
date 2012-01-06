@@ -80,7 +80,6 @@ uuid:"5BB01685-56B8-4937-AC29-C55023F6FDBA"
 },
 {
 anchors:11,
-dataProviderID:"synopsis",
 formIndex:10600,
 location:"135,104",
 scrollbars:36,
@@ -107,7 +106,6 @@ uuid:"A5100027-EDB9-4822-A132-695F4C0E4EF6"
 },
 {
 anchors:11,
-dataProviderID:"date_posted",
 formIndex:10600,
 location:"135,81",
 scrollbars:36,
@@ -119,7 +117,6 @@ uuid:"CABF0907-239C-4315-9BF4-C0FB2F6F1E9F"
 },
 {
 anchors:11,
-dataProviderID:"body",
 displayType:1,
 formIndex:10600,
 location:"135,127",
@@ -145,7 +142,6 @@ uuid:"D8488855-49CA-4F27-8C13-E0AF0DEDA807"
 },
 {
 anchors:11,
-dataProviderID:"title",
 formIndex:10600,
 location:"135,58",
 scrollbars:36,

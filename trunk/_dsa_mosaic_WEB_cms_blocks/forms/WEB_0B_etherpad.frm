@@ -1,4 +1,3 @@
-initialSort:"name_last asc, name_first asc",
 items:[
 {
 dataProviderID:"_etherpadUUID",
@@ -88,7 +87,6 @@ uuid:"95B5935F-32EB-4487-B6C8-25AFA8214E8D"
 },
 {
 anchors:11,
-dataProviderID:"rec_created",
 formIndex:10600,
 location:"135,104",
 scrollbars:36,
@@ -129,7 +127,6 @@ uuid:"B80B9385-2D24-46BF-B378-37CADAE96A25"
 },
 {
 anchors:11,
-dataProviderID:"file_name",
 formIndex:10600,
 location:"135,58",
 scrollbars:36,
@@ -156,7 +153,6 @@ uuid:"C4B75227-D18E-48F3-92EB-8B0C4797ED12"
 },
 {
 anchors:11,
-dataProviderID:"file_type",
 formIndex:10600,
 location:"135,81",
 scrollbars:36,
