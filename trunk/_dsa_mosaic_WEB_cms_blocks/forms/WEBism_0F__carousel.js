@@ -1,5 +1,5 @@
 /**
- * @properties={typeid:35,uuid:"4FDACEFD-6F26-46F7-827B-375E25824AD6"}
+ * @properties={typeid:35,uuid:"6679446D-C986-485B-8CB6-AB45C25CE03C"}
  */
 var _license_dsa_mosaic_WEB_cms_blocks = 'Module: _dsa_mosaic_WEB_cms_blocks \
 									Copyright (C) 2011 Data Mosaic \
@@ -8,19 +8,34 @@ var _license_dsa_mosaic_WEB_cms_blocks = 'Module: _dsa_mosaic_WEB_cms_blocks \
 /**
  * @param	{Object}	obj Data object passed to all markup methods
  * 
- * @properties={typeid:24,uuid:"F20BDBF7-8CB2-4035-A50B-0785CE98FC00"}
+ * @properties={typeid:24,uuid:"9AF43A7E-59C6-4F55-9643-F94FFFA6480C"}
  */
 function VIEW_default(obj) {
 	
-	// The main CMS page object gets passed to block VIEW methods.
-	// So include "obj" in the parameter slot for these methods
-	// The objective of VIEW methods is to return markup back to the page request.
-
-	return 'Hello world!'
+	return '<div class="crausel02"> <img src="sites/ism/themes/ism/images/effect_crausal02.png" class="effect" alt="" />\n\
+<ul id="slider">\n\
+<li>\n\
+<div class="img_sec"><img src="sites/ism/themes/ism/images/img03.jpg" alt="" width="450" height="281" /></div>\n\
+</li>\n\
+<li>\n\
+<div class="img_sec"><img src="sites/ism/themes/ism/images/img03.jpg" alt="" width="450" height="281" /></div>\n\
+</li>\n\
+<li>\n\
+<div class="img_sec"><img src="sites/ism/themes/ism/images/img03.jpg" alt="" width="450" height="281" /></div>\n\
+</li>\n\
+<li>\n\
+<div class="img_sec"><img src="sites/ism/themes/ism/images/img03.jpg" alt="" width="450" height="281" /></div>\n\
+</li>\n\
+<li>\n\
+<div class="img_sec"><img src="sites/ism/themes/ism/images/img03.jpg" alt="" width="450" height="281" /></div>\n\
+</li>\n\
+</ul>\n\
+</div>'
+	
 }
 
 /**
- * @properties={typeid:24,uuid:"4E0834F2-0DDC-4364-8CEB-EFC70BEB339E"}
+ * @properties={typeid:24,uuid:"2CA5AEF4-0F4D-4227-8E40-2A16E35FF1BB"}
  */
 function BLOCK_sample_method() {
 	// method of type BLOCK
@@ -37,7 +52,7 @@ function BLOCK_sample_method() {
  * @returns Data object that is used to register a block
  * @type object
  * 
- * @properties={typeid:24,uuid:"B1A1F180-3F8A-47FE-8D44-F3FFC0CBEE9A"}
+ * @properties={typeid:24,uuid:"A34F67A3-C8A5-40D9-9789-AF4A88747E55"}
  */
 function INIT_block() {
 	
@@ -48,7 +63,7 @@ function INIT_block() {
 	block.record = {
 	        block_name			: 'Starter block',
 			block_description	: 'Boiler template for creating a custom block',		
-			form_name			: controller.getName()//,
+			form_name			: controller.getName() //,
 //			form_name_display	: 'WEB_0F___starter_block'	//this line only required when form_name_display different than form_name
 		}
 	
@@ -84,21 +99,21 @@ function INIT_block() {
 }
 
 /**
- * @properties={typeid:24,uuid:"7E3894A3-27A8-4435-AEAA-36891B21E483"}
+ * @properties={typeid:24,uuid:"577789F6-F0C4-49CC-B7F9-B8B270F8F58D"}
  */
 function PAGE_sample_method() {
 	plugins.dialogs.showInfoDialog( "Page action demo", "Block page actions added to this menu")
 }
 
 /**
- * @properties={typeid:24,uuid:"CA0EC453-6093-41F1-BB67-534534B10636"}
+ * @properties={typeid:24,uuid:"DB4F38FE-F60D-4D5B-AAF4-018813C3EEDC"}
  */
 function BLOCK_save() {
 	// your code goes here
 }
 
 /**
- * @properties={typeid:24,uuid:"7122605B-CB57-4365-852C-5DC97AADE5F1"}
+ * @properties={typeid:24,uuid:"78FC6182-4B2A-4E3E-A67F-2C5BD2424548"}
  */
 function BLOCK_cancel() {
 	// your code goes here
@@ -107,7 +122,7 @@ function BLOCK_cancel() {
 /**
  * Update display as needed when block selected.
  *
- * @properties={typeid:24,uuid:"D0B09ECA-F3FA-4035-A0DD-62166343DF4E"}
+ * @properties={typeid:24,uuid:"EA138DC4-C5CA-46A3-B5F6-95EEB990E224"}
  */
 function INIT_data() {
 	// your code goes here
