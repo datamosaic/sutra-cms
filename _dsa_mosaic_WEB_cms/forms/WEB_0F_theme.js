@@ -154,15 +154,14 @@ function FORM_on_load(event) {
  *
  * @properties={typeid:24,uuid:"A0A26AD2-C1ED-4D39-B923-4901B33B9CF6"}
  */
-function REC_delete()
-{
+function REC_delete() {
 	var delRec = plugins.dialogs.showWarningDialog(
 				'Delete record',
-				'Do you really want to delete this record?',
+				'Deleting this theme will cause all pages using it to be orphaned.\nAre you sure you want to delete this theme?',
 				'Yes',
 				'No'
 			)
-
+	
 	if (delRec == 'Yes') {
 		controller.deleteRecord()
 		
