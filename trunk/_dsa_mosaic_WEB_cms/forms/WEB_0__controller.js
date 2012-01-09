@@ -1401,7 +1401,7 @@ function FX_method_exists(methodName, formName) {
 	//a method passed in to check
 	if (methodName) {
 		//a form specified
-		if (formName) {
+		if (formName && solutionModel.getForm(formName)) {
 			//check for method existence on given form
 			if (solutionModel.getForm(formName).getFormMethod(methodName)) {
 				return true
