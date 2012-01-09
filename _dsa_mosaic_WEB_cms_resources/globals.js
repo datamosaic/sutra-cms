@@ -90,17 +90,20 @@ var CMS = {
 				setData : function(/**JSEvent*/ event, /**String*/ key, /**String*/ value, /**JSForm*/ formName) {
 						return globals.WEBc_block_setData(event,key,value,formName)
 					},
-				getConfig : function(formName) {
-						return globals.WEBc_block_getConfig(/**JSForm*/ formName)
+				getConfig : function(/**JSForm*/ formName) {
+						return globals.WEBc_block_getConfig(formName)
 					},
 				setConfig : function(/**JSEvent*/ event, /**String*/ key, /**String*/ value, /**JSForm*/ formName) {
 						return globals.WEBc_block_setConfig(event,key,value,formName)
 					},
-				getResponse : function(formName) {
-						return globals.WEBc_block_getResponse(/**JSForm*/ formName)
+				getResponse : function(/**JSForm*/ formName) {
+						return globals.WEBc_block_getResponse(formName)
 					},
-				getDisplay : function(formName) {
-						return globals.WEBc_block_getDisplay(/**JSForm*/ formName)
+				setResponse : function() {
+						return globals.WEBc_markup_block_saveResponse(globals.CMS.data)
+					},
+				getDisplay : function(/**JSForm*/ formName) {
+						return globals.WEBc_block_getDisplay(formName)
 					},
 				getEdit : function() {
 						return globals.WEBc_block_getEdit()
