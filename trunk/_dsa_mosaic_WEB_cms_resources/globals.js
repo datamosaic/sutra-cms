@@ -44,9 +44,19 @@ var CMS = {
 				getPagesUp : function(/**Object*/ obj, /**String*/ order, /**JSRecord<db:/sutra_cms/web_page>*/pageRec, /**JSRecord<db:/sutra_cms/web_path>*/ pathRec) {
 						return globals.WEBc_markup_pages_up(obj, order, pageRec, pathRec)
 					},
-				getSiteDirectory : function() {
+				getSiteDirectory : function(/**String*/ pageID) {
+						//check if globals.CMD.data is defined to get language
+						if (globals.CMS.data && globals.CMS.data.language && globals.CMS.data.language.record && utils.hasRecords(globals.CMS.data.language.record,'web_language_to_site_language')) {
+							var siteLanguageRec = globals.CMS.data.language.record.web_language_to_site_language.getSelectedRecord()
+						}
+						
+						//check if page specified; pass in object if not
+						if (!pageID) {
+							pageID = globals.CMS.data
+						}
+						
 						//both the base and resource url methods will return with "sutraCMS/"; need to remove from one so no doubling
-						return utils.stringReplace(globals.WEBc_markup_link_base(globals.CMS.data,null,globals.CMS.data.language.record.web_language_to_site_language.getSelectedRecord()),'sutraCMS/','') + globals.WEBc_markup_link_resources(globals.CMS.data)
+						return utils.stringReplace(globals.WEBc_markup_link_base(pageID,null,siteLanguageRec),'sutraCMS/','') + globals.WEBc_markup_link_resources(pageID)
 					}
 			},
 		session : {
