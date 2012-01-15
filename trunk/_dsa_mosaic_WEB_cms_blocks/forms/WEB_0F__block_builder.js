@@ -28,24 +28,21 @@ var BUILDER = {
  */
 function VIEW_default(obj) {
 	
-	var x = "{ data : null }"
-		
-//	plugins.serialize.fromJSON(x)
-	
-	// build BUILDER object
-		// iterate through block type inputs
-			// get data node from block instance
-
-	// for each BUILDER node, return markup
-	var markup = ""
+	// order the inputs
+	var instance 	= []
 	for (var i in obj.block_data) {
-		// TODO put in order
-		var data = plugins.serialize.fromJSON(obj.block_data[i])
-		var type = obj.block_data[i].type
-		markup += forms.WEB_0F__block_builder["MRKP_" + data.type](data)
+		var data = plugins.serialize.fromJSON(obj.block_data[i])		
+		instance[data.order] = data 
 	}
-
-	return 'Hello world!'
+			
+	// return markup by order and type
+	var markup = ""
+	for (var i = 0; i < instance.length; i++) {
+		var data = instance[i]
+		markup += forms.WEB_0F__block_builder["MRKP_" + instance[i].type](instance[i])
+	}	
+	
+	return markup
 }
 
 /**
