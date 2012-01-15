@@ -30,16 +30,15 @@ function VIEW_default(obj) {
 	
 	// order the inputs
 	var instance 	= []
-	for (var i in obj.block_data) {
-		var data = plugins.serialize.fromJSON(obj.block_data[i])		
+	for (var i in globals.CMS.data.block_data) {
+		var data = plugins.serialize.fromJSON(globals.CMS.data.block_data[i])		
 		instance[data.order] = data 
 	}
 			
 	// return markup by order and type
 	var markup = ""
 	for (var i = 0; i < instance.length; i++) {
-		var data = instance[i]
-		markup += forms.WEB_0F__block_builder["MRKP_" + instance[i].type](instance[i])
+		markup += forms.WEB_0F__block_builder["MRKP_" + instance[i].type](instance[i]) + '\n'
 	}	
 	
 	return markup
