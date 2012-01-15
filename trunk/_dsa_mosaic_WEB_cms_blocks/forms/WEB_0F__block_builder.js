@@ -6,15 +6,39 @@ var _license_dsa_mosaic_WEB_cms_blocks = 'Module: _dsa_mosaic_WEB_cms_blocks \
 									MIT Licensed';
 
 /**
+ * @properties={typeid:35,uuid:"4E76921E-71E9-4D07-AE77-5A85D8978F9D",variableType:-4}
+ */
+var BUILDER = {
+	staticHTML	: { data : null },
+	textBox		: { label : null, wrapper : { pre : null, post : null }, required : null, maxChars : null, data : null },
+	textArea	: { label : null, wrapper : { pre : null, post : null }, required : null, data : null },
+	image		: { label : null, wrapper : { pre : null, post : null }, required : null, linkField: null, resizing: null, data : null },
+	fileDownload: { label : null, wrapper : { pre : null, post : null }, required : null, data : null },
+	pageLink	: { label : null, wrapper : { pre : null, post : null }, required : null, data : null },
+	externalURL : { label : null, wrapper : { pre : null, post : null }, required : null, newWindow : null, data : null },
+	datePicker	: { label : null, wrapper : { pre : null, post : null }, required : null, format : null, data : null },
+	tinyMCE		: { label : null, wrapper : { pre : null, post : null }, required : null, defaultData : null, data : null },
+	table		: { label : null, wrapper : { pre : null, post : null }, required : null, columns : null, data : null }
+};
+
+/**
  * @param	{Object}	obj Data object passed to all markup methods
  * 
  * @properties={typeid:24,uuid:"99A2CDA1-2F7F-490F-B51C-D753D76E724D"}
  */
 function VIEW_default(obj) {
 	
-	// The main CMS page object gets passed to block VIEW methods.
-	// So include "obj" in the parameter slot for these methods
-	// The objective of VIEW methods is to return markup back to the page request.
+	// build BUILDER object
+		// iterate through block type inputs
+			// get data node from block instance
+
+	// for each BUILDER node, return markup
+	var markup = ""
+	for (var i in BUILDER) {
+		// TODO: may need to scope method call to form
+		markup += forms.WEB_0F__block_builder["MRKP_" + i](BUILDER[i])
+		return markup
+	}
 
 	return 'Hello world!'
 }
@@ -47,7 +71,7 @@ function INIT_block() {
 	// block record data
 	block.record = {
 	        block_name			: 'Block builder',
-			block_description	: 'Easily create block types without coding.',		
+			block_description	: 'Your custom block.',		
 			form_name			: controller.getName()//,
 //			form_name_display	: 'WEB_0F___starter_block'	//this line only required when form_name_display different than form_name
 		}
@@ -111,4 +135,102 @@ function BLOCK_cancel() {
  */
 function INIT_data() {
 	// your code goes here
+}
+
+/**
+ * @properties={typeid:24,uuid:"E2366DDE-F0BF-4239-9438-D122077C34DB"}
+ */
+function FX_markup(type) {
+	var markup = ""
+	switch (type) {
+		case "staticHTML":
+			markup = BUILDER["staticHTML"].data		
+		break;
+
+	}	
+	return markup
+}
+
+/**
+ * @properties={typeid:24,uuid:"81C01542-15EA-47E6-AAB5-059536851A4B"}
+ */
+function MRKP_staticHTML(staticHTML) {
+	var markup = staticHTML.data
+	return markup
+}
+
+/**
+ * @properties={typeid:24,uuid:"5CB846DE-A35E-4EFD-9C94-F050C54E1149"}
+ */
+function MRKP_textBox(textBox) {
+	// strip html characters
+	var data = globals.CMS.utils.stripHTML(textBox.data.substr(textBox.maxChars))
+	var markup = textBox.wrapper.pre + data + textBox.wrapper.post
+	return markup
+}
+
+/**
+ * @properties={typeid:24,uuid:"7EA25A69-72AC-4A62-BAFE-F6D8AFA63FD2"}
+ */
+function MRKP_textArea(textArea) {
+	// strip html characters
+	var data = globals.CMS.utils.stripHTML(textArea.data)
+	var markup = textArea.wrapper.pre + data + textArea.wrapper.post
+	return markup
+}
+
+/**
+ * @properties={typeid:24,uuid:"88DD9433-9E2D-48CD-876F-71CD714A03D8"}
+ */
+function MRKP_image(image) {
+	var markup = ""
+	return markup
+}
+
+/**
+ * @properties={typeid:24,uuid:"20422267-B22F-45F2-8A07-A7F25860F2C8"}
+ */
+function MRKP_fileDownload(fileDownload) {
+	var markup = ""
+	return markup
+}
+
+/**
+ * @properties={typeid:24,uuid:"9E90340B-A333-42A2-BD34-3EBAA075037A"}
+ */
+function MRKP_pageLink(pageLink) {
+	var markup = ""
+	return markup
+}
+
+/**
+ * @properties={typeid:24,uuid:"1EF912C4-165D-4EDC-8AE3-5D7D8957F7DC"}
+ */
+function MRKP_externalURL(externalURL) {
+	var markup = ""
+	return markup
+}
+
+/**
+ * @properties={typeid:24,uuid:"DD0236AE-E982-4EE2-9FA9-2EC88DAE71AD"}
+ */
+function MRKP_datePicker(datePicker) {
+	var markup = ""
+	return markup
+}
+
+/**
+ * @properties={typeid:24,uuid:"3F3C2EA8-7F35-4262-926D-67488BB9DA07"}
+ */
+function MRKP_tinyMCE(tinyMCE) {
+	var markup = ""
+	return markup
+}
+
+/**
+ * @properties={typeid:24,uuid:"F0384DF3-4128-4E5E-B9B7-2E4E7C68DF65"}
+ */
+function MRKP_table(table) {
+	var markup = ""
+	return markup
 }
