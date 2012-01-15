@@ -9,16 +9,16 @@ var _license_dsa_mosaic_WEB_cms_blocks = 'Module: _dsa_mosaic_WEB_cms_blocks \
  * @properties={typeid:35,uuid:"4E76921E-71E9-4D07-AE77-5A85D8978F9D",variableType:-4}
  */
 var BUILDER = {
-	staticHTML	: { data : null },
-	textBox		: { label : null, wrapper : { pre : null, post : null }, required : null, maxChars : null, data : null },
-	textArea	: { label : null, wrapper : { pre : null, post : null }, required : null, data : null },
-	image		: { label : null, wrapper : { pre : null, post : null }, required : null, linkField: null, resizing: null, data : null },
-	fileDownload: { label : null, wrapper : { pre : null, post : null }, required : null, data : null },
-	pageLink	: { label : null, wrapper : { pre : null, post : null }, required : null, data : null },
-	externalURL : { label : null, wrapper : { pre : null, post : null }, required : null, newWindow : null, data : null },
-	datePicker	: { label : null, wrapper : { pre : null, post : null }, required : null, format : null, data : null },
-	tinyMCE		: { label : null, wrapper : { pre : null, post : null }, required : null, defaultData : null, data : null },
-	table		: { label : null, wrapper : { pre : null, post : null }, required : null, columns : null, data : null }
+	staticHTML	: { type: "staticHTML", order : null, data : null },
+	textBox		: { type: "textBox", order : null, label : null, wrapper : { pre : null, post : null }, required : null, maxChars : null, data : null },
+	textArea	: { type: "textArea", order : null, label : null, wrapper : { pre : null, post : null }, required : null, data : null },
+	image		: { type: "image", order : null, label : null, wrapper : { pre : null, post : null }, required : null, linkField: null, resizing: null, data : null },
+	fileDownload: { type: "fileDownload", order : null, label : null, wrapper : { pre : null, post : null }, required : null, data : null },
+	pageLink	: { type: "pageLink", order : null, label : null, wrapper : { pre : null, post : null }, required : null, data : null },
+	externalURL : { type: "externalURL", order : null, label : null, wrapper : { pre : null, post : null }, required : null, newWindow : null, data : null },
+	datePicker	: { type: "datePicker", order : null, label : null, wrapper : { pre : null, post : null }, required : null, format : null, data : null },
+	tinyMCE		: { type: "tinyMCE", order : null, label : null, wrapper : { pre : null, post : null }, required : null, defaultData : null, data : null },
+	table		: { type: "table", order : null, label : null, wrapper : { pre : null, post : null }, required : null, columns : null, data : null }
 };
 
 /**
@@ -28,16 +28,21 @@ var BUILDER = {
  */
 function VIEW_default(obj) {
 	
+	var x = "{ data : null }"
+		
+//	plugins.serialize.fromJSON(x)
+	
 	// build BUILDER object
 		// iterate through block type inputs
 			// get data node from block instance
 
 	// for each BUILDER node, return markup
 	var markup = ""
-	for (var i in BUILDER) {
-		// TODO: may need to scope method call to form
-		markup += forms.WEB_0F__block_builder["MRKP_" + i](BUILDER[i])
-		return markup
+	for (var i in obj.block_data) {
+		// TODO put in order
+		var data = plugins.serialize.fromJSON(obj.block_data[i])
+		var type = obj.block_data[i].type
+		markup += forms.WEB_0F__block_builder["MRKP_" + data.type](data)
 	}
 
 	return 'Hello world!'
