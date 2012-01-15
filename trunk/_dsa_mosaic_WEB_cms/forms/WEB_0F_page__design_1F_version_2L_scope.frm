@@ -53,7 +53,7 @@ onActionMethodID:"7E59BE92-3022-4690-94E5-0AC5FD663ABA",
 rolloverCursor:12,
 showClick:false,
 showFocus:false,
-size:"20,22",
+size:"20,23",
 toolTipText:"Delete record",
 typeid:7,
 uuid:"16CE7AB4-423F-41CB-9CF0-BD7AF6431DCB"

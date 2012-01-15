@@ -931,6 +931,8 @@ function WEB_upgrade() {
 								}
 							}
 							
+							databaseManager.saveData()
+							
 							//versions
 							fsOldVersion.find()
 							fsOldVersion.id_page = oldPage.id_page
@@ -1031,6 +1033,7 @@ function WEB_upgrade() {
 													}
 												}
 											}
+											databaseManager.saveData()
 										}
 									}
 								}
