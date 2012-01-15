@@ -20,8 +20,16 @@ name:"column_name"
 allowNull:true,
 creationOrderIndex:7,
 dataType:12,
-length:10,
+length:50,
 name:"column_type"
+},
+{
+allowNull:true,
+converterName:"StringSerializer",
+creationOrderIndex:8,
+dataType:-1,
+length:16777215,
+name:"column_value"
 },
 {
 allowNull:true,
