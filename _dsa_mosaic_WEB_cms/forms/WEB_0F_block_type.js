@@ -78,7 +78,7 @@ function BATCH_create(fs) {
  * @properties={typeid:24,uuid:"98C31479-A1EE-4A13-9F2F-0752680E3428"}
  */
 function REC_new(flagRefresh,formName,fs) {
-	//specific foundset not passed in, use current oneasdf
+	//specific foundset not passed in, use current one
 	if (!fs) {
 		fs = foundset
 		var nonBatch = true
@@ -119,9 +119,13 @@ function REC_new(flagRefresh,formName,fs) {
 					}	
 					
 					var formName = _formName
+					var blockName = _blockName
+					var blockDescription = _blockDescription
 					
 					//now delete _formName (.../fid cancel hack)
 					delete forms.WEB_0F_block_type._formName
+					delete forms.WEB_0F_block_type._blockName
+					delete forms.WEB_0F_block_type._blockDescription
 				}
 				else {
 					plugins.dialogs.showErrorDialog(
@@ -194,20 +198,21 @@ function REC_new(flagRefresh,formName,fs) {
 			// 3) create block and related data from data object
 			var block = (!flagRefresh) ? fs.getRecord(fs.newRecord()) : fs.getSelectedRecord()
 			block.id_site = forms.WEB_0F_site.id_site
-			var name = objBlock.record.block_name
+			var nameBase = blockName || objBlock.record.block_name
+			var name = blockName || objBlock.record.block_name
 			
 			// ensure block name is unique
 			if (!flagRefresh) {
 				var incrementer = 1
 				while ( uniqueNameCheck(name) ) {
 					// increment name by 1 until unique name is found
-					name = objBlock.record.block_name + " " + incrementer
+					name = nameBase + " " + incrementer
 					incrementer ++
 				}
 			}
 			
 			block.block_name = name
-			block.block_description = objBlock.record.block_description
+			block.block_description = blockDescription || objBlock.record.block_description
 			block.form_name = objBlock.record.form_name
 			block.form_name_display = objBlock.record.form_name_display	
 			
@@ -404,7 +409,7 @@ function FIND_forms() {
 	for (var i = 0; i < formNames.length; i++) {
 		var formName = formNames[i]
 		
-		if (!solutionModel.getForm(formName).getFormMethod('INIT_block') || formName == 'WEB_0F___starter_block') {
+		if (!solutionModel.getForm(formName).getFormMethod('INIT_block') || formName == 'WEB_0F___starter_block' || formName == 'WEB_0F__block_builder') {
 			formNames.splice(i,1)
 			i--
 		}
@@ -478,6 +483,20 @@ function FIND_forms() {
 		}
 		
 		//at this point we have formname and blockname arrays sorted by formname
+	}
+	
+	//add on block builder as first option (always available)
+	var blockBuilder = forms.WEB_0F__block_builder.INIT_block().record
+	blockInfo[blockBuilder.form_name] = blockInfo.length
+	blockInfo.push(blockBuilder)
+	
+	if (formNames.length) {
+		blockNames.unshift(blockBuilder.block_name,'-')
+		formNames.unshift(blockBuilder.form_name,'null')
+	}
+	else {
+		blockNames.push(blockBuilder.block_name)
+		formNames.push(blockBuilder.form_name)
 	}
 	
 	//set valuelist

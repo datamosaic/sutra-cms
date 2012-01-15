@@ -54,3 +54,35 @@ function REC_new() {
 	controller.newRecord(false)
 	databaseManager.saveData()
 }
+
+/**
+ * Perform the element double-click action.
+ *
+ * @param {JSEvent} event the event that triggered the action
+ *
+ * @properties={typeid:24,uuid:"2763EEA9-AEC6-460F-B0A6-8200C40FE9F8"}
+ */
+function TOGGLE_builder_object(event) {
+	if (elements.lbl_heading.text == 'Description') {
+		
+		
+		solutionModel.getForm(controller.getName()).getPart(JSPart.FOOTER).height = solutionModel.getForm(controller.getName()).getPart(JSPart.FOOTER).height + 100
+		controller.recreateUI()
+		
+		elements.fld_description.visible = false
+		elements.lbl_heading.text = 'Block builder config'
+	}
+	else {
+		elements.fld_description.visible = true
+		
+		solutionModel.getForm(controller.getName()).getPart(JSPart.FOOTER).height = solutionModel.getForm(controller.getName()).getPart(JSPart.FOOTER).height - 100
+		controller.recreateUI()
+			
+		//wiggle screen to make description show up
+		application.setWindowSize(application.getWindowWidth(),application.getWindowHeight() - 1)
+		application.setWindowSize(application.getWindowWidth(),application.getWindowHeight() + 1)
+	}
+	
+	//reload foundset
+	foundset.loadAllRecords()
+}

@@ -61,7 +61,8 @@ styleClass:"tableview",
 tabSeq:-2,
 text:"Type",
 typeid:4,
-uuid:"A1A5611F-3A1A-4AF4-8784-220F0FC7CF46"
+uuid:"A1A5611F-3A1A-4AF4-8784-220F0FC7CF46",
+valuelistID:"DAD1A6CF-A1BE-4652-8E66-B6E6D815E8EC"
 },
 {
 anchors:11,
