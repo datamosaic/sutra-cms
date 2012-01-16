@@ -1,15 +1,16 @@
 addEmptyValue:1,
-customValues:"TEXT
-INTEGER
-TEXTBOX
-TEXTAREA
-IMAGE
-FILE DOWNLOAD
-PAGE LINK
-URL
-DATE
-WYSIWYG
-STATIC HTML",
+customValues:"TEXT|TEXT
+INTEGER|INTEGER
+TEXTBOX|textBox
+TEXTAREA|textArea
+IMAGE|image
+FILE DOWNLOAD|fileDownload
+PAGE LINK|pageLink
+URL|externalURL
+DATE|datePicker
+WYSIWYG|tinyMCE
+STATIC HTML|staticHTML
+TABLE|table",
 name:"WEB_block_type_type",
 returnDataProviders:1,
 separator:" ",

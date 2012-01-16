@@ -495,6 +495,7 @@ function AREA_new(editable,destVersion,rowOrder) {
 
 					var blockDataRec = blockVersionRec.web_block_version_to_block_data.getRecord(blockVersionRec.web_block_version_to_block_data.newRecord(false,true))
 					blockDataRec.data_key = tempEditableDefaultDetailRec.column_name
+					blockDataRec.data_value = tempEditableDefaultDetailRec.column_value
 				}
 			}
 			
@@ -505,7 +506,8 @@ function AREA_new(editable,destVersion,rowOrder) {
 					var configTemplate = tempEditableDefaultRec.web_editable_default_to_block_configure.getRecord(k)
 					
 					var configRec = blockVersionRec.web_block_version_to_block_data_configure.getRecord(blockVersionRec.web_block_version_to_block_data_configure.newRecord(false, true))
-					configRec.data_key = configTemplate.columnName
+					configRec.data_key = configTemplate.column_name
+					configRec.data_value = configTemplate.column_valueame
 				}
 			}
 		}
