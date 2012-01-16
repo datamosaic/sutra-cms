@@ -22,6 +22,11 @@ var BUILDER = {
 };
 
 /**
+ * @properties={typeid:35,uuid:"3F8AFCDF-077F-4C93-8F3D-1DE8391925A9",variableType:-4}
+ */
+var _blockList = null;
+
+/**
  * @param	{Object}	obj Data object passed to all markup methods
  * 
  * @properties={typeid:24,uuid:"99A2CDA1-2F7F-490F-B51C-D753D76E724D"}
@@ -34,25 +39,14 @@ function VIEW_default(obj) {
 		var data = plugins.serialize.fromJSON(globals.CMS.data.block_data[i])		
 		instance[data.order] = data 
 	}
-			
+
 	// return markup by order and type
 	var markup = ""
 	for (var i = 0; i < instance.length; i++) {
 		markup += forms.WEB_0F__block_builder["MRKP_" + instance[i].type](instance[i]) + '\n'
-	}	
-	
+	}
+
 	return markup
-}
-
-/**
- * @properties={typeid:24,uuid:"EB0A7B7D-1BC2-4395-AC9E-C62700CF5E39"}
- */
-function BLOCK_sample_method() {
-	// method of type BLOCK
-	// BLOCK type methods are used in the CMS GUI
-	// not required
-	plugins.dialogs.showInfoDialog( "Block action demo", "Block action just occurred" )
-
 }
 
 /**
@@ -73,8 +67,8 @@ function INIT_block() {
 	block.record = {
 	        block_name			: 'Block builder',
 			block_description	: 'Your custom block.',		
-			form_name			: controller.getName()//,
-//			form_name_display	: 'WEB_0F___starter_block'	//this line only required when form_name_display different than form_name
+			form_name			: controller.getName(),
+			form_name_display	: 'WEB_0F__block_builder_view'
 		}
 	
 	// block views
@@ -91,7 +85,7 @@ function INIT_block() {
 	
 	// block data points
 	block.data = {
-		sample : 'TEXT'            
+		           
 	}
 	
 	// block configure data points
@@ -109,24 +103,20 @@ function INIT_block() {
 }
 
 /**
- * @properties={typeid:24,uuid:"6A112C07-2D77-458B-9332-A43E1A9DD51B"}
- */
-function PAGE_sample_method() {
-	plugins.dialogs.showInfoDialog( "Page action demo", "Block page actions added to this menu")
-}
-
-/**
  * @properties={typeid:24,uuid:"1745BEE8-D91F-45CF-86BB-BEB3FEB208E9"}
  */
-function BLOCK_save() {
-	// your code goes here
+function BLOCK_save(event) {
+	for (var i = 0; i < _blockList.length; i++) {
+		globals.CMS.ui.setData(event,_blockList[i].key,plugins.serialize.toJSON(_blockList[i].data))
+	}
 }
 
 /**
  * @properties={typeid:24,uuid:"94FE1530-BF1F-4846-980A-ECB166477D91"}
  */
 function BLOCK_cancel() {
-	// your code goes here
+	//refresh the data
+	INIT_data()
 }
 
 /**
@@ -135,7 +125,40 @@ function BLOCK_cancel() {
  * @properties={typeid:24,uuid:"2EA92488-FC7A-460C-8FFF-9B35DF3616F5"}
  */
 function INIT_data() {
-	// your code goes here
+	var fieldForm = 'WEB_0F__block_builder_1L__fields'
+	
+	//grab all data for this block
+	var allData = globals.CMS.ui.getData(controller.getName())
+	
+	_blockList = new Array()
+	
+	//build object for list to operate from
+	for (var i in allData) {
+		var fieldData = plugins.serialize.fromJSON(allData[i])
+		_blockList[fieldData.order] = {
+							key : i,
+							data : fieldData
+						}
+	}
+	
+	//build list
+	var dataset = databaseManager.createEmptyDataSet(null,['data_key','row_order'])
+	for (var i = 0; i < _blockList.length; i++) {
+		var row = _blockList[i]
+		dataset.addRow([row.key,row.data.order])
+	}
+	
+	var dataSource = dataset.createDataSource('web_block_builder_data',[JSColumn.TEXT,JSColumn.INTEGER])
+	
+	//throw dataSource over onto my form and call it a day
+	elements.tab_list.removeAllTabs()
+	var success = history.removeForm(forms[fieldForm])
+	success = solutionModel.removeForm(fieldForm)
+	
+	solutionModel.getForm(fieldForm).dataSource = dataSource
+	
+	//assign this form back onto the tabpanel
+	elements.tab_list.addTab(forms[fieldForm])
 }
 
 /**
