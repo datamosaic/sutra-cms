@@ -22,7 +22,7 @@ var _text = null;
  * @properties={typeid:24,uuid:"A620C9C7-36EF-43FD-83AC-A5EBBD2BD0C4"}
  */
 function onDataChange(oldValue, newValue, event) {
-	forms.WEB_0F__block_builder._blockList[forms.WEB_0F__block_builder_1L__fields.row_order].data.data = newValue
+	forms.WEB_0F__block_builder._blockList[forms.WEB_0F__block_builder._blockSelected].data.data = newValue
 }
 
 /**
@@ -31,6 +31,6 @@ function onDataChange(oldValue, newValue, event) {
 function INIT_data(data) {
 	if (data) {
 		_text = data.data
-		elements.lbl_title.text = data.label
+		elements.lbl_label.text = data.label || solutionModel.getForm(controller.getName()).getLabel('lbl_label').text
 	}
 }

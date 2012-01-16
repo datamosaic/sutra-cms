@@ -1,14 +1,14 @@
 /**
- * @properties={typeid:35,uuid:"4632A298-A4A0-41FC-9679-A819B9C47A2A"}
+ * @properties={typeid:35,uuid:"54BBB373-B684-4D3F-831C-BFD77693C0A3"}
  */
 var _license_dsa_mosaic_WEB_cms_blocks = 'Module: _dsa_mosaic_WEB_cms_blocks \
 									Copyright (C) 2011 Data Mosaic \
 									MIT Licensed';
 
 /**
- * @properties={typeid:35,uuid:"09605113-059F-46C8-BC7E-43A17A7509F9"}
+ * @properties={typeid:35,uuid:"C587651D-0798-41C6-9FE7-B2CCB314CB53"}
  */
-var _html = null;
+var _text = null;
 
 /**
  * Handle changed data.
@@ -19,17 +19,18 @@ var _html = null;
  *
  * @returns {Boolean}
  *
- * @properties={typeid:24,uuid:"A630C9C7-36EF-43FD-83AC-A5EBBD2BD0C4"}
+ * @properties={typeid:24,uuid:"664BFF42-14AF-4AD0-81D1-00466EC79732"}
  */
 function onDataChange(oldValue, newValue, event) {
 	forms.WEB_0F__block_builder._blockList[forms.WEB_0F__block_builder._blockSelected].data.data = newValue
 }
 
 /**
- * @properties={typeid:24,uuid:"6FB5BBDF-6425-4BF1-8542-6B5EF59023A2"}
+ * @properties={typeid:24,uuid:"0CE014BE-3DDD-4AFC-BB81-0B8EC87B6518"}
  */
 function INIT_data(data) {
 	if (data) {
-		_html = data.data
+		_text = data.data
+		elements.lbl_label.text = data.label || solutionModel.getForm(controller.getName()).getLabel('lbl_label').text
 	}
 }
