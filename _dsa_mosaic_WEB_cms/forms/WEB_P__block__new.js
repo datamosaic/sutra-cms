@@ -411,6 +411,7 @@ function ACTION_ok(event) {
 							
 							var blockDataRec = blockVersionRec.web_block_version_to_block_data.getRecord(blockVersionRec.web_block_version_to_block_data.newRecord(false, true))
 							blockDataRec.data_key = blockInputRec.column_name
+							blockDataRec.data_value = blockInputRec.column_value
 							
 							databaseManager.saveData(blockInputRec)
 						}
@@ -423,6 +424,7 @@ function ACTION_ok(event) {
 							
 							var blockConfigRec = blockVersionRec.web_block_version_to_block_data_configure.getRecord(blockVersionRec.web_block_version_to_block_data_configure.newRecord(false, true))
 							blockConfigRec.data_key = configTemplate.column_name
+							blockConfigRec.data_value = configTemplate.column_value
 							
 							databaseManager.saveData(blockConfigRec)
 						}

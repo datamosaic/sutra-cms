@@ -624,6 +624,7 @@ function REC_refresh_synchronize(newVersion) {
 			//input doesn't exist
 			var input = newVersion.web_block_version_to_block_data.getRecord(newVersion.web_block_version_to_block_data.newRecord())
 			input.data_key = record.column_name
+			input.data_value = record.column_value
 		}
 	}
 	
@@ -655,6 +656,7 @@ function REC_refresh_synchronize(newVersion) {
 			//input doesn't exist
 			var input = newVersion.web_block_version_to_block_data_configure.getRecord(newVersion.web_block_version_to_block_data_configure.newRecord())
 			input.data_key = record.column_name
+			input.data_value = record.column_value
 		}
 	}
 	
