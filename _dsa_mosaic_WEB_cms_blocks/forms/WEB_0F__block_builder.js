@@ -214,7 +214,7 @@ function MRKP_textArea(textArea) {
  * @properties={typeid:24,uuid:"88DD9433-9E2D-48CD-876F-71CD714A03D8"}
  */
 function MRKP_image(image) {
-	var markup = "[image placeholder]"
+	var markup = '<img src="' + "{DS:IMG_" + image.data + "}" + '" />'
 	return markup
 }
 
