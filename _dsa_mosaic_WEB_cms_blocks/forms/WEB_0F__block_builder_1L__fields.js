@@ -13,6 +13,9 @@ var _license_dsa_mosaic_WEB_cms_blocks = 'Module: _dsa_mosaic_WEB_cms \
  * @properties={typeid:24,uuid:"1A67C02F-D927-47CD-ABC1-41196D1871A9"}
  */
 function REC_on_select(event) {
+	//save index down to some place where it is accessible
+	forms.WEB_0F__block_builder._blockSelected = row_order
+	
 	//grab data for selected record
 	var fieldData = forms.WEB_0F__block_builder._blockList[row_order]
 	

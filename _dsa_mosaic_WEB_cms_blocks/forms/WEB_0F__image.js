@@ -26,6 +26,11 @@ var _cssId = null;
 var _alt = null;
 
 /**
+ * @properties={typeid:35,uuid:"C12AC761-67DE-4861-BBB0-F32EDC4C852E"}
+ */
+var _file = null;
+
+/**
  * @param {JSEvent} event the event that triggered the action
  *
  * @properties={typeid:24,uuid:"FFE14AC8-BECE-4D27-9AC1-0EE22A0032FF"}
@@ -260,11 +265,6 @@ function TOGGLE_buttons(event) {
 	}
 	elements.btn_visit.visible = !editStatus && fileFound
 }
-
-/**
- * @properties={typeid:35,uuid:"C12AC761-67DE-4861-BBB0-F32EDC4C852E"}
- */
-var _file = null;
 
 /**
  * @properties={typeid:24,uuid:"5896D844-D8AA-4C31-84B2-D77EAE012F1D"}

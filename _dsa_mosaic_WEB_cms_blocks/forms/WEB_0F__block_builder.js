@@ -27,6 +27,11 @@ var BUILDER = {
 var _blockList = null;
 
 /**
+ * @properties={typeid:35,uuid:"84026904-8F0E-409A-A20D-0ADF1747E6F1",variableType:4}
+ */
+var _blockSelected = null;
+
+/**
  * @param	{Object}	obj Data object passed to all markup methods
  * 
  * @properties={typeid:24,uuid:"99A2CDA1-2F7F-490F-B51C-D753D76E724D"}
@@ -150,15 +155,17 @@ function INIT_data() {
 	
 	var dataSource = dataset.createDataSource('web_block_builder_data',[JSColumn.TEXT,JSColumn.INTEGER])
 	
-	//throw dataSource over onto my form and call it a day
-	elements.tab_list.removeAllTabs()
-	var success = history.removeForm(forms[fieldForm])
-	success = solutionModel.removeForm(fieldForm)
-	
-	solutionModel.getForm(fieldForm).dataSource = dataSource
-	
-	//assign this form back onto the tabpanel
-	elements.tab_list.addTab(forms[fieldForm])
+	//throw dataSource over onto my form (if it doesn't have one) and call it a day
+	if (!elements.tab_list.getMaxTabIndex()) {
+		elements.tab_list.removeAllTabs()
+		var success = history.removeForm(forms[fieldForm])
+		success = solutionModel.removeForm(fieldForm)
+		
+		solutionModel.getForm(fieldForm).dataSource = dataSource
+		
+		//assign this form back onto the tabpanel
+		elements.tab_list.addTab(forms[fieldForm])
+	}
 }
 
 /**
@@ -188,7 +195,7 @@ function MRKP_staticHTML(staticHTML) {
  */
 function MRKP_textBox(textBox) {
 	// strip html characters
-	var data = globals.CMS.utils.stripHTML(textBox.data.substr(textBox.maxChars))
+	var data = globals.CMS.utils.stripHTML(textBox.data.substr(0,textBox.maxChars))
 	var markup = textBox.wrapper.pre + data + textBox.wrapper.post
 	return markup
 }
@@ -207,7 +214,7 @@ function MRKP_textArea(textArea) {
  * @properties={typeid:24,uuid:"88DD9433-9E2D-48CD-876F-71CD714A03D8"}
  */
 function MRKP_image(image) {
-	var markup = ""
+	var markup = "[image placeholder]"
 	return markup
 }
 

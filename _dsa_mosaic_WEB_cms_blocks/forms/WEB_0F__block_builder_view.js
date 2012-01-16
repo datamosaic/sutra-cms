@@ -11,6 +11,8 @@ var _license_dsa_mosaic_WEB_cms_blocks = 'Module: _dsa_mosaic_WEB_cms_blocks \
  * @properties={typeid:24,uuid:"F617323D-990C-4AD0-B9A2-F4F29D82D220"}
  */
 function INIT_data() {
+	var formName = 'WEB_0F__block_builder'
+	
 	//grab all data for this block
 	var allData = globals.CMS.ui.getData(controller.getName())
 	
@@ -21,14 +23,15 @@ function INIT_data() {
 		var fieldData = plugins.serialize.fromJSON(allData[i])
 		blockList[fieldData.order] = {
 							key : i,
+							type : fieldData.type,
 							data : fieldData
 						}
 	}
 	
 	var html = '<html><body><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8" /></head>'
-//	for (var i = 0; i <= blockList.length; i++) {
-//		html += blockList[i]
-//	}
+	for (var i = 0; i < blockList.length; i++) {
+		html += forms.WEB_0F__block_builder["MRKP_" + blockList[i].type](blockList[i].data) + '\n'
+	}
 	html += '</body></html>'
 	
 	if (elements.bn_browser) {
