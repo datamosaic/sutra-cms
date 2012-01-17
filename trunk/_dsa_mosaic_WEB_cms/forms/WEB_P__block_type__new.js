@@ -70,8 +70,7 @@ function ACTION_ok(event) {
  *
  * @properties={typeid:24,uuid:"63FC4059-3825-4293-80EF-64B099DE9F60"}
  */
-function ACTION_cancel()
-{
+function ACTION_cancel() {
 	globals.CODE_hide_form = 1
 	application.closeFormDialog('cmsBlockTypeNew')
 }
@@ -84,7 +83,11 @@ function FORM_on_show(firstShow){
 	//make sure not showing block builder stuff initially
 	TOGGLE_elements()
 	
+	//instantiate variables on block_type form
 	forms.WEB_0F_block_type._formName = null
+	forms.WEB_0F_block_type._blockName = null
+	forms.WEB_0F_block_type._blockDescription = null
+	
 	_formName = null
 	_blockDescription = null
 	_blockName = null
