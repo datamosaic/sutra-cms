@@ -17,7 +17,7 @@ var BUILDER = {
 	pageLink	: { type: "pageLink", order : null, label : null, wrapper : { pre : null, post : null }, required : null, data : null },
 	externalURL : { type: "externalURL", order : null, label : null, wrapper : { pre : null, post : null }, required : null, newWindow : null, data : null },
 	datePicker	: { type: "datePicker", order : null, label : null, wrapper : { pre : null, post : null }, required : null, format : null, data : null },
-	tinyMCE		: { type: "tinyMCE", order : null, label : null, wrapper : { pre : null, post : null }, required : null, defaultData : null, data : null },
+	tinyMCE		: { type: "tinyMCE", order : null, label : null, wrapper : { pre : null, post : null }, required : null, data : null },
 	table		: { type: "table", order : null, label : null, wrapper : { pre : null, post : null }, required : null, columns : null, data : null }
 };
 
@@ -230,7 +230,7 @@ function MRKP_fileDownload(fileDownload) {
  * @properties={typeid:24,uuid:"9E90340B-A333-42A2-BD34-3EBAA075037A"}
  */
 function MRKP_pageLink(pageLink) {
-	var markup = ""
+	var markup = pageLink.wrapper.pre + '<a href="' + '{DS:ID_' + pageLink.data + '}">{DS:NAME_' + pageLink.data + '}</a>' + pageLink.wrapper.post
 	return markup
 }
 
@@ -254,7 +254,7 @@ function MRKP_datePicker(datePicker) {
  * @properties={typeid:24,uuid:"3F3C2EA8-7F35-4262-926D-67488BB9DA07"}
  */
 function MRKP_tinyMCE(tinyMCE) {
-	var markup = ""
+	var markup = tinyMCE.wrapper.pre + tinyMCE.data + tinyMCE.wrapper.post
 	return markup
 }
 
