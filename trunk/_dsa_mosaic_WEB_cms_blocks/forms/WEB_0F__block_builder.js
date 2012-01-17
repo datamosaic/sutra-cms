@@ -246,7 +246,7 @@ function MRKP_fileDownload(fileDownload) {
  */
 function MRKP_pageLink(pageLink) {
 	if ( pageLink.data ) {
-		var markup = pageLink.wrapper.pre + '<a href="' + '{DS:ID_' + pageLink.data + '}">{DS:NAME_' + pageLink.data + '}</a>' + pageLink.wrapper.post
+		var markup = pageLink.wrapper.pre + '<a href="' + '{DS:ID_' + pageLink.data + '}"><span>{DS:NAME_' + pageLink.data + '}</span></a>' + pageLink.wrapper.post
 		return markup
 	}
 	else {
