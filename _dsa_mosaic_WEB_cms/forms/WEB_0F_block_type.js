@@ -118,9 +118,9 @@ function REC_new(flagRefresh,formName,fs) {
 						return "Action cancelled"
 					}	
 					
-					var formName = _formName
-					var blockName = _blockName
-					var blockDescription = _blockDescription
+					var formName = forms.WEB_0F_block_type._formName
+					var blockName = forms.WEB_0F_block_type._blockName
+					var blockDescription = forms.WEB_0F_block_type._blockDescription
 					
 					//now delete _formName (.../fid cancel hack)
 					delete forms.WEB_0F_block_type._formName
