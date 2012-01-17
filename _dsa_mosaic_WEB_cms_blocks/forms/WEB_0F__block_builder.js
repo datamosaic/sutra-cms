@@ -195,9 +195,14 @@ function MRKP_staticHTML(staticHTML) {
  */
 function MRKP_textBox(textBox) {
 	// strip html characters
-	var data = globals.CMS.utils.stripHTML(textBox.data.substr(0,textBox.maxChars))
-	var markup = textBox.wrapper.pre + data + textBox.wrapper.post
-	return markup
+	if ( textBox.data ) {
+		var data = globals.CMS.utils.stripHTML(textBox.data.substr(0,textBox.maxChars))
+		var markup = textBox.wrapper.pre + data + textBox.wrapper.post
+		return markup
+	}
+	else {
+		return null
+	}
 }
 
 /**
@@ -205,17 +210,27 @@ function MRKP_textBox(textBox) {
  */
 function MRKP_textArea(textArea) {
 	// strip html characters
-	var data = globals.CMS.utils.stripHTML(textArea.data)
-	var markup = textArea.wrapper.pre + data + textArea.wrapper.post
-	return markup
+	if ( textArea.data ) {
+		var data = globals.CMS.utils.stripHTML(textArea.data)
+		var markup = textArea.wrapper.pre + data + textArea.wrapper.post
+		return markup
+	}
+	else {
+		return null
+	}
 }
 
 /**
  * @properties={typeid:24,uuid:"88DD9433-9E2D-48CD-876F-71CD714A03D8"}
  */
 function MRKP_image(image) {
-	var markup = '<img src="' + "{DS:IMG_" + image.data + "}" + '" />'
-	return markup
+	if ( image.data ) {
+		var markup = '<img src="' + "{DS:IMG_" + image.data + "}" + '" />'
+		return markup
+	}
+	else {
+		return null
+	}
 }
 
 /**
@@ -230,8 +245,13 @@ function MRKP_fileDownload(fileDownload) {
  * @properties={typeid:24,uuid:"9E90340B-A333-42A2-BD34-3EBAA075037A"}
  */
 function MRKP_pageLink(pageLink) {
-	var markup = pageLink.wrapper.pre + '<a href="' + '{DS:ID_' + pageLink.data + '}">{DS:NAME_' + pageLink.data + '}</a>' + pageLink.wrapper.post
-	return markup
+	if ( pageLink.data ) {
+		var markup = pageLink.wrapper.pre + '<a href="' + '{DS:ID_' + pageLink.data + '}">{DS:NAME_' + pageLink.data + '}</a>' + pageLink.wrapper.post
+		return markup
+	}
+	else {
+		return null
+	}
 }
 
 /**
