@@ -19,7 +19,7 @@ function REC_on_select(event) {
 	//grab data for selected record
 	var fieldData = forms.WEB_0F__block_builder._blockList[row_order]
 	
-	var formName = 'WEB_0F__block_builder' + '_1F__' + fieldData.data.type
+	var formName = 'WEB_0F__block_builder' + '_1F__' + fieldData.type
 	
 	//load selected block type
 	forms.WEB_0F__block_builder.elements.tab_detail.removeAllTabs()

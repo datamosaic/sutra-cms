@@ -19,20 +19,28 @@ var _directory = null;
  * @properties={typeid:24,uuid:"4120637D-415B-49C7-B796-2EA7C8DC4524"}
  */
 function INIT_data(data,html) {
-	if (data) {
-		var fileFound = false
-	    
-	    if (data.data) {
-	      var fsAssetInstance = databaseManager.getFoundSet('sutra_cms','web_asset_instance')
-	      fsAssetInstance.find()
-	      fsAssetInstance.id_asset_instance = data.data
-	      var fileFound = fsAssetInstance.search()
-	    }
-	    
-	    _file = (fileFound) ? fsAssetInstance.asset_title : ''
-	    _directory = (fileFound) ? fsAssetInstance.asset_directory : ''
-	    
-		elements.lbl_label.text = data.label || solutionModel.getForm(controller.getName()).getLabel('lbl_label').text
+	if (!(data instanceof Array)) {
+		data = new Array(data)
+	}
+	
+	for (var i = 0; i < data.length; i++) {
+		var row = data[i]
+		
+		if (row) {
+			var fileFound = false
+		    
+		    if (row.data) {
+				var fsAssetInstance = databaseManager.getFoundSet('sutra_cms','web_asset_instance')
+				fsAssetInstance.find()
+				fsAssetInstance.id_asset_instance = row.data
+				var fileFound = fsAssetInstance.search()
+			}
+		    
+		    _file = (fileFound) ? fsAssetInstance.asset_title : ''
+		    _directory = (fileFound) ? fsAssetInstance.asset_directory : ''
+		    
+			elements.lbl_label.text = row.label || solutionModel.getForm(controller.getName()).getLabel('lbl_label').text
+		}
 	}
 	
 	if (!html) {

@@ -9,20 +9,28 @@ var _license_dsa_mosaic_WEB_cms_blocks = 'Module: _dsa_mosaic_WEB_cms_blocks \
  * @properties={typeid:35,uuid:"4E76921E-71E9-4D07-AE77-5A85D8978F9D",variableType:-4}
  */
 var BUILDER = {
-	staticHTML	: { type: "staticHTML", order : null, data : null },
-	textBox		: { type: "textBox", order : null, label : null, wrapper : { pre : null, post : null }, required : null, maxChars : null, data : null },
-	textArea	: { type: "textArea", order : null, label : null, wrapper : { pre : null, post : null }, required : null, data : null },
-	image		: { type: "image", order : null, label : null, wrapper : { pre : null, post : null }, required : null, linkField: null, resizing: null, data : null },
-	fileDownload: { type: "fileDownload", order : null, label : null, wrapper : { pre : null, post : null }, required : null, data : null },
-	pageLink	: { type: "pageLink", order : null,
-					link : { label : null, wrapper : { pre : null, post : null }, required : null, data : null },  // link: page picker
-					name : { label : null, wrapper : { pre : null, post : null }, required : null, data : null }},  // page name: page picker on link pre-fills this	
-	externalURL : { type: "externalURL", order : null, 
-					link : { label : null, wrapper : { pre : null, post : null }, required : null, data : null },  // link: external url
-					name : { label : null, wrapper : { pre : null, post : null }, required : null, data : null }},  // link: name of url
-	datePicker	: { type: "datePicker", order : null, label : null, wrapper : { pre : null, post : null }, required : null, format : null, data : null },
-	tinyMCE		: { type: "tinyMCE", order : null, label : null, wrapper : { pre : null, post : null }, required : null, data : null },
-	table		: { type: "table", order : null, label : null, wrapper : { pre : null, post : null }, required : null, columns : null, data : null }
+	staticHTML	: { type: "staticHTML", order : null, 
+						data : null },
+	textBox		: { type: "textBox", order : null, required : null, repeatable: null, 
+						label : null, wrapper : { pre : null, post : null }, maxChars : null, data : null },
+	textArea	: { type: "textArea", order : null, required : null, repeatable: null, 
+						label : null, wrapper : { pre : null, post : null }, data : null },
+	image		: { type: "image", order : null, required : null, repeatable: null, 
+						label : null, wrapper : { pre : null, post : null }, linkField: null, resizing: null, data : null },
+	fileDownload: { type: "fileDownload", order : null, required : null, repeatable: null,
+						label : null, wrapper : { pre : null, post : null }, data : null },
+	pageLink	: { type: "pageLink", order : null, required : null, repeatable: null, 
+						link : { label : null, wrapper : { pre : null, post : null }, data : null },
+						name : { label : null, wrapper : { pre : null, post : null }, data : null }},	
+	externalURL : { type: "externalURL", order : null, required : null, repeatable: null, 
+						link : { label : null, wrapper : { pre : null, post : null }, data : null },
+						name : { label : null, wrapper : { pre : null, post : null }, data : null }},
+	datePicker	: { type: "datePicker", order : null, required : null, repeatable: null, 
+						label : null, wrapper : { pre : null, post : null }, format : null, data : null },
+	tinyMCE		: { type: "tinyMCE", order : null, required : null, 
+						label : null, wrapper : { pre : null, post : null }, data : null },
+	table		: { type: "table", order : null, required : null, repeatable: null, 
+						label : null, wrapper : { pre : null, post : null }, columns : null, data : null }
 };
 
 /**
@@ -44,11 +52,24 @@ function VIEW_default() {
 	var instance = new Array()
 	for (var i in globals.CMS.data.block_data) {
 		// get object of data from database
-		var field = plugins.serialize.fromJSON(globals.CMS.data.block_data[i])		
+		var fieldData = plugins.serialize.fromJSON(globals.CMS.data.block_data[i])
+		
+		//we need order, type, and whatnot that may be buried in an array
+		if (fieldData instanceof Array && fieldData[0]) {
+			var order = fieldData[0].order
+			var type = fieldData[0].type
+		}
+		else {
+			var order = fieldData.order
+			var type = fieldData.type
+		}
 		
 		// there is a valid order, push into array
-		if (field && typeof field.order == 'number') {
-			instance[field.order] = field 
+		if (typeof order == 'number') {
+			instance[order] = {
+						type : type,
+						value: fieldData
+					}
 		}
 	}
 
@@ -59,7 +80,7 @@ function VIEW_default() {
 		
 		// this method exists
 		if (solutionModel.getForm(controller.getName()).getFormMethod(method)) {
-			markup += forms.WEB_0F__block_builder[method](instance[i]) + '\n'
+			markup += forms.WEB_0F__block_builder[method](instance[i].value) + '\n'
 		}
 	}
 
@@ -152,10 +173,32 @@ function INIT_data() {
 	//build object for list to operate from
 	for (var i in allFields) {
 		var fieldData = plugins.serialize.fromJSON(allFields[i])
-		_blockList[fieldData.order] = {
-							key : i,
-							data : fieldData
-						}
+		
+		//we need order, type, and whatnot that may be buried in an array
+		if (fieldData instanceof Array && fieldData[0]) {
+			var order = fieldData[0].order
+			var type = fieldData[0].type
+		}
+		else {
+			var order = fieldData.order
+			var type = fieldData.type
+		}
+		
+		//create object to use for reference while on this block
+		_blockList[order] = {
+						key : i,
+						type : type
+					}
+		
+		//this is a repeatable field that hasn't been used before
+		if (!(fieldData instanceof Array) && fieldData.repeatable) {
+			_blockList[order].data = new Array(fieldData)
+		}
+		//this isn't a repeatable field or it has already been array-ized
+		else {
+			_blockList[order].data = fieldData
+		}
+		
 	}
 	
 	//build list
@@ -164,8 +207,8 @@ function INIT_data() {
 		var row = _blockList[i]
 		
 		//don't show staticHTML as editable areas
-		if (row.data.type != 'staticHTML') {
-			dataset.addRow([row.key,row.data.order])
+		if (row.type != 'staticHTML') {
+			dataset.addRow([row.key,i])
 		}
 	}
 	
@@ -206,28 +249,36 @@ function MRKP_staticHTML(field) {
 /**
  * Markup for the text box field
  * 
- * @param {Object}	field The object with all meta data for this fieldset
+ * @param {Object[]}	fieldSet The object with all meta data for this fieldset
  * 
  * @returns {String} The markup generated for this field
  * 
  * @properties={typeid:24,uuid:"5CB846DE-A35E-4EFD-9C94-F050C54E1149"}
  */
-function MRKP_textBox(field) {
+function MRKP_textBox(fieldSet) {
 	var markup = ''
 	
-	if (field) {
-		// only use x amount of characters
-		if (typeof field.maxChars == 'number' && field.data) {
-			var text = field.data.substr(0,field.maxChars)
-		}
-		else {
-			var text = MRKP__null_check(field.data)
+	if (fieldSet) {
+		if (!(fieldSet instanceof Array)) {
+			fieldSet = new Array(fieldSet)
 		}
 		
-		// strip html characters
-		text = globals.CMS.utils.stripHTML(text)
-		
-		markup += MRKP__null_check(field.wrapper.pre) + text + MRKP__null_check(field.wrapper.post)
+		for (var i = 0; i < fieldSet.length; i++) {
+			var field = fieldSet[i]
+			
+			// only use x amount of characters
+			if (typeof field.maxChars == 'number' && field.data) {
+				var text = field.data.substr(0,field.maxChars)
+			}
+			else {
+				var text = MRKP__null_check(field.data)
+			}
+			
+			// strip html characters
+			text = globals.CMS.utils.stripHTML(text)
+			
+			markup += MRKP__null_check(field.wrapper.pre) + text + MRKP__null_check(field.wrapper.post)
+		}
 	}
 	
 	return markup
@@ -236,22 +287,29 @@ function MRKP_textBox(field) {
 /**
  * Markup for the text area field
  * 
- * @param {Object}	field The object with all meta data for this fieldset
+ * @param {Object[]}	fieldSet The object with all meta data for this fieldset
  * 
  * @returns {String} The markup generated for this field
  * 
  * @properties={typeid:24,uuid:"7EA25A69-72AC-4A62-BAFE-F6D8AFA63FD2"}
  */
-function MRKP_textArea(field) {
+function MRKP_textArea(fieldSet) {
 	var markup = ''
 	
-	if (field) {
-		var text = MRKP__null_check(field.data)
+	if (fieldSet) {
+		if (!(fieldSet instanceof Array)) {
+			fieldSet = new Array(fieldSet)
+		}
 		
-		// strip html characters
-		text = globals.CMS.utils.stripHTML(text)
-		
-		markup += MRKP__null_check(field.wrapper.pre) + text + MRKP__null_check(field.wrapper.post)
+		for (var i = 0; i < fieldSet.length; i++) {
+			var field = fieldSet[i]
+			var text = MRKP__null_check(field.data)
+			
+			// strip html characters
+			text = globals.CMS.utils.stripHTML(text)
+			
+			markup += MRKP__null_check(field.wrapper.pre) + text + MRKP__null_check(field.wrapper.post)
+		}
 	}
 	
 	return markup
@@ -260,17 +318,25 @@ function MRKP_textArea(field) {
 /**
  * Markup for the image field
  * 
- * @param {Object}	field The object with all meta data for this fieldset
+ * @param {Object[]}	fieldSet The object with all meta data for this fieldset
  * 
  * @returns {String} The markup generated for this field
  * 
  * @properties={typeid:24,uuid:"88DD9433-9E2D-48CD-876F-71CD714A03D8"}
  */
-function MRKP_image(field) {
+function MRKP_image(fieldSet) {
 	var markup = ''
 	
-	if (field) {
-		markup += '<img src="' + "{DS:IMG_" + MRKP__null_check(field.data) + "}" + '" />'
+	if (fieldSet) {
+		if (!(fieldSet instanceof Array)) {
+			fieldSet = new Array(fieldSet)
+		}
+		
+		for (var i = 0; i < fieldSet.length; i++) {
+			var field = fieldSet[i]
+			
+			markup += '<img src="' + "{DS:IMG_" + MRKP__null_check(field.data) + "}" + '" />'
+		}
 	}
 	
 	return markup
@@ -279,17 +345,24 @@ function MRKP_image(field) {
 /**
  * Markup for the file download field
  * 
- * @param {Object}	field The object with all meta data for this fieldset
+ * @param {Object[]}	fieldSet The object with all meta data for this fieldset
  * 
  * @returns {String} The markup generated for this field
  * 
  * @properties={typeid:24,uuid:"20422267-B22F-45F2-8A07-A7F25860F2C8"}
  */
-function MRKP_fileDownload(field) {
+function MRKP_fileDownload(fieldSet) {
 	var markup = ''
 	
-	if (field) {
+	if (fieldSet) {
+		if (!(fieldSet instanceof Array)) {
+			fieldSet = new Array(fieldSet)
+		}
 		
+		for (var i = 0; i < fieldSet.length; i++) {
+			var field = fieldSet[i]
+			
+		}
 	}
 	
 	return markup
@@ -298,19 +371,27 @@ function MRKP_fileDownload(field) {
 /**
  * Markup for the page link field
  * 
- * @param {Object}	field The object with all meta data for this fieldset
+ * @param {Object[]}	fieldSet The object with all meta data for this fieldset
  * 
  * @returns {String} The markup generated for this field
  * 
  * @properties={typeid:24,uuid:"9E90340B-A333-42A2-BD34-3EBAA075037A"}
  */
-function MRKP_pageLink(field) {
+function MRKP_pageLink(fieldSet) {
 	var markup = ''
 	
-	if (field) {
-		markup += MRKP__null_check(field.link.wrapper.pre) + '<a href="' + '{DS:ID_' + MRKP__null_check(field.link.data) + '}">'
-		markup += MRKP__null_check(field.name.wrapper.pre) + MRKP__null_check(field.name.data,'{DS:NAME_' + MRKP__null_check(field.link.data) + '}') + MRKP__null_check(field.name.wrapper.post)
-		markup += '</a>' + MRKP__null_check(field.link.wrapper.post)
+	if (fieldSet) {
+		if (!(fieldSet instanceof Array)) {
+			fieldSet = new Array(fieldSet)
+		}
+		
+		for (var i = 0; i < fieldSet.length; i++) {
+			var field = fieldSet[i]
+			
+			markup += MRKP__null_check(field.link.wrapper.pre) + '<a href="' + '{DS:ID_' + MRKP__null_check(field.link.data) + '}">'
+			markup += MRKP__null_check(field.name.wrapper.pre) + MRKP__null_check(field.name.data,'{DS:NAME_' + MRKP__null_check(field.link.data) + '}') + MRKP__null_check(field.name.wrapper.post)
+			markup += '</a>' + MRKP__null_check(field.link.wrapper.post)
+		}
 	}
 	
 	return markup
@@ -319,19 +400,27 @@ function MRKP_pageLink(field) {
 /**
  * Markup for the external url field
  * 
- * @param {Object}	field The object with all meta data for this fieldset
+ * @param {Object[]}	fieldSet The object with all meta data for this fieldset
  * 
  * @returns {String} The markup generated for this field
  * 
  * @properties={typeid:24,uuid:"1EF912C4-165D-4EDC-8AE3-5D7D8957F7DC"}
  */
-function MRKP_externalURL(field) {
+function MRKP_externalURL(fieldSet) {
 	var markup = ''
 	
-	if (field) {
-		markup += MRKP__null_check(field.link.wrapper.pre) + '<a href="' + MRKP__null_check(field.link.data) + '">'
-		markup += MRKP__null_check(field.name.wrapper.pre) + MRKP__null_check(field.name.data,field.link.data) + MRKP__null_check(field.name.wrapper.post)
-		markup += '</a>' + MRKP__null_check(field.link.wrapper.post)
+	if (fieldSet) {
+		if (!(fieldSet instanceof Array)) {
+			fieldSet = new Array(fieldSet)
+		}
+		
+		for (var i = 0; i < fieldSet.length; i++) {
+			var field = fieldSet[i]
+			
+			markup += MRKP__null_check(field.link.wrapper.pre) + '<a href="' + MRKP__null_check(field.link.data) + '">'
+			markup += MRKP__null_check(field.name.wrapper.pre) + MRKP__null_check(field.name.data,field.link.data) + MRKP__null_check(field.name.wrapper.post)
+			markup += '</a>' + MRKP__null_check(field.link.wrapper.post)
+		}
 	}
 	
 	return markup
@@ -340,17 +429,23 @@ function MRKP_externalURL(field) {
 /**
  * Markup for the date picker field
  * 
- * @param {Object}	field The object with all meta data for this fieldset
+ * @param {Object[]}	fieldSet The object with all meta data for this fieldset
  * 
  * @returns {String} The markup generated for this field
  * 
  * @properties={typeid:24,uuid:"DD0236AE-E982-4EE2-9FA9-2EC88DAE71AD"}
  */
-function MRKP_datePicker(field) {
+function MRKP_datePicker(fieldSet) {
 	var markup = ''
 	
-	if (field) {
+	if (fieldSet) {
+		if (!(fieldSet instanceof Array)) {
+			fieldSet = new Array(fieldSet)
+		}
 		
+		for (var i = 0; i < fieldSet.length; i++) {
+			var field = fieldSet[i]
+		}
 	}
 	
 	return markup
@@ -378,17 +473,24 @@ function MRKP_tinyMCE(field) {
 /**
  * Markup for the table field
  * 
- * @param {Object}	field The object with all meta data for this fieldset
+ * @param {Object[]}	fieldSet The object with all meta data for this fieldset
  * 
  * @returns {String} The markup generated for this field
  * 
  * @properties={typeid:24,uuid:"F0384DF3-4128-4E5E-B9B7-2E4E7C68DF65"}
  */
-function MRKP_table(field) {
+function MRKP_table(fieldSet) {
 	var markup = ''
 	
-	if (field) {
+	if (fieldSet) {
+		if (!(fieldSet instanceof Array)) {
+			fieldSet = new Array(fieldSet)
+		}
 		
+		for (var i = 0; i < fieldSet.length; i++) {
+			var field = fieldSet[i]
+			
+		}
 	}
 	
 	return markup
