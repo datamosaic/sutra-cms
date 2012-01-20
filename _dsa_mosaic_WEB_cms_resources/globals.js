@@ -41,7 +41,7 @@ var CMS = {
 				getPagesDown : function(/**JSRecord<db:/sutra_cms/web_page>*/pageRec, /**JSRecord<db:/sutra_cms/web_path>*/ pathRec) {
 						return globals.WEBc_markup_pages_down(null, pageRec, pathRec)
 					},
-				getPagesUp : function(/**String*/ order, /**JSRecord<db:/sutra_cms/web_page>*/pageRec, /**JSRecord<db:/sutra_cms/web_path>*/ pathRec) {
+				getPagesUp : function(/**JSRecord<db:/sutra_cms/web_page>*/pageRec, /**JSRecord<db:/sutra_cms/web_path>*/ pathRec, /**String*/ order) {
 						return globals.WEBc_markup_pages_up(null, order, pageRec, pathRec)
 					},
 				getSiteDirectory : function(/**String*/ pageID) {
