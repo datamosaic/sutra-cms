@@ -14,8 +14,12 @@ var BUILDER = {
 	textArea	: { type: "textArea", order : null, label : null, wrapper : { pre : null, post : null }, required : null, data : null },
 	image		: { type: "image", order : null, label : null, wrapper : { pre : null, post : null }, required : null, linkField: null, resizing: null, data : null },
 	fileDownload: { type: "fileDownload", order : null, label : null, wrapper : { pre : null, post : null }, required : null, data : null },
-	pageLink	: { type: "pageLink", order : null, label : null, wrapper : { pre : null, post : null }, required : null, data : null },
-	externalURL : { type: "externalURL", order : null, label : null, wrapper : { pre : null, post : null }, required : null, newWindow : null, data : null },
+	pageLink	: { type: "pageLink", order : null,
+					link : { label : null, wrapper : { pre : null, post : null }, required : null, data : null },  // link: page picker
+					name : { label : null, wrapper : { pre : null, post : null }, required : null, data : null }},  // page name: page picker on link pre-fills this	
+	externalURL : { type: "externalURL", order : null, 
+					link : { label : null, wrapper : { pre : null, post : null }, required : null, data : null },  // link: external url
+					name : { label : null, wrapper : { pre : null, post : null }, required : null, data : null }},  // link: name of url
 	datePicker	: { type: "datePicker", order : null, label : null, wrapper : { pre : null, post : null }, required : null, format : null, data : null },
 	tinyMCE		: { type: "tinyMCE", order : null, label : null, wrapper : { pre : null, post : null }, required : null, data : null },
 	table		: { type: "table", order : null, label : null, wrapper : { pre : null, post : null }, required : null, columns : null, data : null }
@@ -32,23 +36,31 @@ var _blockList = null;
 var _blockSelected = null;
 
 /**
- * @param	{Object}	obj Data object passed to all markup methods
- * 
  * @properties={typeid:24,uuid:"99A2CDA1-2F7F-490F-B51C-D753D76E724D"}
  */
-function VIEW_default(obj) {
+function VIEW_default() {
 	
 	// order the inputs
-	var instance 	= []
+	var instance = new Array()
 	for (var i in globals.CMS.data.block_data) {
-		var data = plugins.serialize.fromJSON(globals.CMS.data.block_data[i])		
-		instance[data.order] = data 
+		// get object of data from database
+		var field = plugins.serialize.fromJSON(globals.CMS.data.block_data[i])		
+		
+		// there is a valid order, push into array
+		if (field && typeof field.order == 'number') {
+			instance[field.order] = field 
+		}
 	}
 
 	// return markup by order and type
 	var markup = ""
 	for (var i = 0; i < instance.length; i++) {
-		markup += forms.WEB_0F__block_builder["MRKP_" + instance[i].type](instance[i]) + '\n'
+		var method = 'MRKP_' + instance[i].type
+		
+		// this method exists
+		if (solutionModel.getForm(controller.getName()).getFormMethod(method)) {
+			markup += forms.WEB_0F__block_builder[method](instance[i]) + '\n'
+		}
 	}
 
 	return markup
@@ -71,7 +83,7 @@ function INIT_block() {
 	// block record data
 	block.record = {
 	        block_name			: 'Block builder',
-			block_description	: 'Your custom block.',		
+			block_description	: 'Your custom block',		
 			form_name			: controller.getName(),
 			form_name_display	: 'WEB_0F__block_builder_view'
 		}
@@ -133,13 +145,13 @@ function INIT_data() {
 	var fieldForm = 'WEB_0F__block_builder_1L__fields'
 	
 	//grab all data for this block
-	var allData = globals.CMS.ui.getData(controller.getName())
+	var allFields = globals.CMS.ui.getData(controller.getName())
 	
 	_blockList = new Array()
 	
 	//build object for list to operate from
-	for (var i in allData) {
-		var fieldData = plugins.serialize.fromJSON(allData[i])
+	for (var i in allFields) {
+		var fieldData = plugins.serialize.fromJSON(allFields[i])
 		_blockList[fieldData.order] = {
 							key : i,
 							data : fieldData
@@ -150,7 +162,11 @@ function INIT_data() {
 	var dataset = databaseManager.createEmptyDataSet(null,['data_key','row_order'])
 	for (var i = 0; i < _blockList.length; i++) {
 		var row = _blockList[i]
-		dataset.addRow([row.key,row.data.order])
+		
+		//don't show staticHTML as editable areas
+		if (row.data.type != 'staticHTML') {
+			dataset.addRow([row.key,row.data.order])
+		}
 	}
 	
 	var dataSource = dataset.createDataSource('web_block_builder_data',[JSColumn.TEXT,JSColumn.INTEGER])
@@ -169,119 +185,227 @@ function INIT_data() {
 }
 
 /**
- * @properties={typeid:24,uuid:"E2366DDE-F0BF-4239-9438-D122077C34DB"}
- */
-function FX_markup(type) {
-	var markup = ""
-	switch (type) {
-		case "staticHTML":
-			markup = BUILDER["staticHTML"].data		
-		break;
-
-	}	
-	return markup
-}
-
-/**
+ * Markup for the static html field
+ * 
+ * @param {Object}	field The object with all meta data for this fieldset
+ * 
+ * @returns {String} The markup generated for this field
+ * 
  * @properties={typeid:24,uuid:"81C01542-15EA-47E6-AAB5-059536851A4B"}
  */
-function MRKP_staticHTML(staticHTML) {
-	var markup = staticHTML.data
+function MRKP_staticHTML(field) {
+	var markup = ''
+	
+	if (field) {
+		markup += MRKP__null_check(field.data)
+	}
+	
 	return markup
 }
 
 /**
+ * Markup for the text box field
+ * 
+ * @param {Object}	field The object with all meta data for this fieldset
+ * 
+ * @returns {String} The markup generated for this field
+ * 
  * @properties={typeid:24,uuid:"5CB846DE-A35E-4EFD-9C94-F050C54E1149"}
  */
-function MRKP_textBox(textBox) {
-	// strip html characters
-	if ( textBox.data ) {
-		var data = globals.CMS.utils.stripHTML(textBox.data.substr(0,textBox.maxChars))
-		var markup = textBox.wrapper.pre + data + textBox.wrapper.post
-		return markup
+function MRKP_textBox(field) {
+	var markup = ''
+	
+	if (field) {
+		// only use x amount of characters
+		if (typeof field.maxChars == 'number' && field.data) {
+			var text = field.data.substr(0,field.maxChars)
+		}
+		else {
+			var text = MRKP__null_check(field.data)
+		}
+		
+		// strip html characters
+		text = globals.CMS.utils.stripHTML(text)
+		
+		markup += MRKP__null_check(field.wrapper.pre) + text + MRKP__null_check(field.wrapper.post)
 	}
-	else {
-		return null
-	}
+	
+	return markup
 }
 
 /**
+ * Markup for the text area field
+ * 
+ * @param {Object}	field The object with all meta data for this fieldset
+ * 
+ * @returns {String} The markup generated for this field
+ * 
  * @properties={typeid:24,uuid:"7EA25A69-72AC-4A62-BAFE-F6D8AFA63FD2"}
  */
-function MRKP_textArea(textArea) {
-	// strip html characters
-	if ( textArea.data ) {
-		var data = globals.CMS.utils.stripHTML(textArea.data)
-		var markup = textArea.wrapper.pre + data + textArea.wrapper.post
-		return markup
+function MRKP_textArea(field) {
+	var markup = ''
+	
+	if (field) {
+		var text = MRKP__null_check(field.data)
+		
+		// strip html characters
+		text = globals.CMS.utils.stripHTML(text)
+		
+		markup += MRKP__null_check(field.wrapper.pre) + text + MRKP__null_check(field.wrapper.post)
 	}
-	else {
-		return null
-	}
+	
+	return markup
 }
 
 /**
+ * Markup for the image field
+ * 
+ * @param {Object}	field The object with all meta data for this fieldset
+ * 
+ * @returns {String} The markup generated for this field
+ * 
  * @properties={typeid:24,uuid:"88DD9433-9E2D-48CD-876F-71CD714A03D8"}
  */
-function MRKP_image(image) {
-	if ( image.data ) {
-		var markup = '<img src="' + "{DS:IMG_" + image.data + "}" + '" />'
-		return markup
+function MRKP_image(field) {
+	var markup = ''
+	
+	if (field) {
+		markup += '<img src="' + "{DS:IMG_" + MRKP__null_check(field.data) + "}" + '" />'
 	}
-	else {
-		return null
-	}
+	
+	return markup
 }
 
 /**
+ * Markup for the file download field
+ * 
+ * @param {Object}	field The object with all meta data for this fieldset
+ * 
+ * @returns {String} The markup generated for this field
+ * 
  * @properties={typeid:24,uuid:"20422267-B22F-45F2-8A07-A7F25860F2C8"}
  */
-function MRKP_fileDownload(fileDownload) {
-	var markup = ""
+function MRKP_fileDownload(field) {
+	var markup = ''
+	
+	if (field) {
+		
+	}
+	
 	return markup
 }
 
 /**
+ * Markup for the page link field
+ * 
+ * @param {Object}	field The object with all meta data for this fieldset
+ * 
+ * @returns {String} The markup generated for this field
+ * 
  * @properties={typeid:24,uuid:"9E90340B-A333-42A2-BD34-3EBAA075037A"}
  */
-function MRKP_pageLink(pageLink) {
-	if ( pageLink.data ) {
-		var markup = pageLink.wrapper.pre + '<a href="' + '{DS:ID_' + pageLink.data + '}"><span>{DS:NAME_' + pageLink.data + '}</span></a>' + pageLink.wrapper.post
-		return markup
+function MRKP_pageLink(field) {
+	var markup = ''
+	
+	if (field) {
+		markup += MRKP__null_check(field.link.wrapper.pre) + '<a href="' + '{DS:ID_' + MRKP__null_check(field.link.data) + '}">'
+		markup += MRKP__null_check(field.name.wrapper.pre) + MRKP__null_check(field.name.data,'{DS:NAME_' + MRKP__null_check(field.link.data) + '}') + MRKP__null_check(field.name.wrapper.post)
+		markup += '</a>' + MRKP__null_check(field.link.wrapper.post)
 	}
-	else {
-		return null
-	}
+	
+	return markup
 }
 
 /**
+ * Markup for the external url field
+ * 
+ * @param {Object}	field The object with all meta data for this fieldset
+ * 
+ * @returns {String} The markup generated for this field
+ * 
  * @properties={typeid:24,uuid:"1EF912C4-165D-4EDC-8AE3-5D7D8957F7DC"}
  */
-function MRKP_externalURL(externalURL) {
-	var markup = ""
+function MRKP_externalURL(field) {
+	var markup = ''
+	
+	if (field) {
+		markup += MRKP__null_check(field.link.wrapper.pre) + '<a href="' + MRKP__null_check(field.link.data) + '}">'
+		markup += MRKP__null_check(field.name.wrapper.pre) + MRKP__null_check(field.name.data,field.link.data) + MRKP__null_check(field.name.wrapper.post)
+		markup += '</a>' + MRKP__null_check(field.link.wrapper.post)
+	}
+	
 	return markup
 }
 
 /**
+ * Markup for the date picker field
+ * 
+ * @param {Object}	field The object with all meta data for this fieldset
+ * 
+ * @returns {String} The markup generated for this field
+ * 
  * @properties={typeid:24,uuid:"DD0236AE-E982-4EE2-9FA9-2EC88DAE71AD"}
  */
-function MRKP_datePicker(datePicker) {
-	var markup = ""
+function MRKP_datePicker(field) {
+	var markup = ''
+	
+	if (field) {
+		
+	}
+	
 	return markup
 }
 
 /**
+ * Markup for the wysiwyg field
+ * 
+ * @param {Object}	field The object with all meta data for this fieldset
+ * 
+ * @returns {String} The markup generated for this field
+ * 
  * @properties={typeid:24,uuid:"3F3C2EA8-7F35-4262-926D-67488BB9DA07"}
  */
-function MRKP_tinyMCE(tinyMCE) {
-	var markup = tinyMCE.wrapper.pre + tinyMCE.data + tinyMCE.wrapper.post
+function MRKP_tinyMCE(field) {
+	var markup = ''
+	
+	if (field) {
+		MRKP__null_check(field.wrapper.pre) + MRKP__null_check(field.data) + MRKP__null_check(field.wrapper.post)
+	}
+	
 	return markup
 }
 
 /**
+ * Markup for the table field
+ * 
+ * @param {Object}	field The object with all meta data for this fieldset
+ * 
+ * @returns {String} The markup generated for this field
+ * 
  * @properties={typeid:24,uuid:"F0384DF3-4128-4E5E-B9B7-2E4E7C68DF65"}
  */
-function MRKP_table(table) {
-	var markup = ""
+function MRKP_table(field) {
+	var markup = ''
+	
+	if (field) {
+		
+	}
+	
 	return markup
+}
+
+/**
+ * Replace null values with empty space
+ * 
+ * @param {String}	value The value to check for validity
+ * @param {String|Number}	[defaultValue=""] Default value to use if value passed is null
+ * 
+ * @properties={typeid:24,uuid:"C44E51C7-FF2C-4144-A6CA-FA80F5249010"}
+ */
+function MRKP__null_check(value,defaultValue) {
+	if (!defaultValue) {
+		defaultValue = ''
+	}
+	
+	return value || defaultValue
 }
