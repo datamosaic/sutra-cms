@@ -19,25 +19,33 @@ var _name = null;
  * @properties={typeid:24,uuid:"6E5DBDB8-F58E-40AB-9E1F-CF96F2CAD453"}
  */
 function INIT_data(data) {
-	if (data && data.link && data.name) {
-		var pageName = ''
+	if (!(data instanceof Array)) {
+		data = new Array(data)
+	}
+	
+	for (var i = 0; i < data.length; i++) {
+		var row = data[i]
 		
-		if (data.link.data) {
-			var fsPage = databaseManager.getFoundSet('sutra_cms','web_page')
-			fsPage.find()
-			fsPage.id_page = data.link.data
-			var results = fsPage.search()
+		if (row && row.link && row.name) {
+			var pageName = ''
 			
-			if (results) {
-				pageName = fsPage.page_name
+			if (row.link.data) {
+				var fsPage = databaseManager.getFoundSet('sutra_cms','web_page')
+				fsPage.find()
+				fsPage.id_page = row.link.data
+				var results = fsPage.search()
+				
+				if (results) {
+					pageName = fsPage.page_name
+				}
 			}
+			
+			_link = pageName
+			_name = (row.name.data) ? row.name.data : pageName
+			
+			elements.lbl_link.text = row.link.label || solutionModel.getForm(controller.getName()).getLabel('lbl_link').text
+			elements.lbl_name.text = row.name.label || solutionModel.getForm(controller.getName()).getLabel('lbl_name').text
 		}
-		
-		_link = pageName
-		_name = (data.name.data) ? data.name.data : pageName
-		
-		elements.lbl_link.text = data.link.label || solutionModel.getForm(controller.getName()).getLabel('lbl_link').text
-		elements.lbl_name.text = data.name.label || solutionModel.getForm(controller.getName()).getLabel('lbl_name').text
 	}
 }
 

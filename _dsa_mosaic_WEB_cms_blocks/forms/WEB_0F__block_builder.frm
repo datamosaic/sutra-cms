@@ -77,6 +77,7 @@ name:"tab_detail",
 printable:false,
 size:"450,300",
 tabOrientation:-1,
+transparent:true,
 typeid:16,
 uuid:"D43DE229-5947-41AC-8D6B-3CFB189FEB4B"
 }

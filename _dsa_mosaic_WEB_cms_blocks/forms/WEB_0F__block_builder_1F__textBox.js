@@ -29,8 +29,16 @@ function onDataChange(oldValue, newValue, event) {
  * @properties={typeid:24,uuid:"6FB5BFDF-6425-4BF1-8542-6B5EF59023A2"}
  */
 function INIT_data(data) {
-	if (data) {
-		_text = data.data
-		elements.lbl_label.text = data.label || solutionModel.getForm(controller.getName()).getLabel('lbl_label').text
+	if (!(data instanceof Array)) {
+		data = new Array(data)
+	}
+	
+	for (var i = 0; i < data.length; i++) {
+		var row = data[i]
+		
+		if (row) {
+			_text = row.data
+			elements.lbl_label.text = row.label || solutionModel.getForm(controller.getName()).getLabel('lbl_label').text
+		}
 	}
 }
