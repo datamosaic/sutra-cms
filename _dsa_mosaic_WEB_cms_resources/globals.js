@@ -35,17 +35,17 @@ var CMS = {
 				getHomePage : function(/**JSRecord<db:/sutra_cms/web_site>*/ siteRec) {
 						return globals.WEBc_markup_link_home(siteRec)
 					},
-				getPagesAttribute : function(/**Object*/ obj, /**String*/ att) {
-						return globals.WEBc_markup_pages_attribute(obj, att)
+				getPagesAttribute : function(/**String*/ att) {
+						return globals.WEBc_markup_pages_attribute(globals.CMS.data, att)
 					},
-				getPagesDown : function(/**Object*/ obj, /**JSRecord<db:/sutra_cms/web_page>*/pageRec, /**JSRecord<db:/sutra_cms/web_path>*/ pathRec) {
-						return globals.WEBc_markup_pages_down(obj, pageRec, pathRec)
+				getPagesDown : function(/**JSRecord<db:/sutra_cms/web_page>*/pageRec, /**JSRecord<db:/sutra_cms/web_path>*/ pathRec) {
+						return globals.WEBc_markup_pages_down(null, pageRec, pathRec)
 					},
-				getPagesUp : function(/**Object*/ obj, /**String*/ order, /**JSRecord<db:/sutra_cms/web_page>*/pageRec, /**JSRecord<db:/sutra_cms/web_path>*/ pathRec) {
-						return globals.WEBc_markup_pages_up(obj, order, pageRec, pathRec)
+				getPagesUp : function(/**String*/ order, /**JSRecord<db:/sutra_cms/web_page>*/pageRec, /**JSRecord<db:/sutra_cms/web_path>*/ pathRec) {
+						return globals.WEBc_markup_pages_up(null, order, pageRec, pathRec)
 					},
 				getSiteDirectory : function(/**String*/ pageID) {
-						//check if globals.CMD.data is defined to get language
+						//check if globals.CMS.data is defined to get language
 						if (globals.CMS.data && globals.CMS.data.language && globals.CMS.data.language.record && utils.hasRecords(globals.CMS.data.language.record,'web_language_to_site_language')) {
 							var siteLanguageRec = globals.CMS.data.language.record.web_language_to_site_language.getSelectedRecord()
 						}
