@@ -329,7 +329,7 @@ function MRKP_externalURL(field) {
 	var markup = ''
 	
 	if (field) {
-		markup += MRKP__null_check(field.link.wrapper.pre) + '<a href="' + MRKP__null_check(field.link.data) + '}">'
+		markup += MRKP__null_check(field.link.wrapper.pre) + '<a href="' + MRKP__null_check(field.link.data) + '">'
 		markup += MRKP__null_check(field.name.wrapper.pre) + MRKP__null_check(field.name.data,field.link.data) + MRKP__null_check(field.name.wrapper.post)
 		markup += '</a>' + MRKP__null_check(field.link.wrapper.post)
 	}
