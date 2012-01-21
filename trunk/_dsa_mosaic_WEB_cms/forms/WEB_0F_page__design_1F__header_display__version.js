@@ -301,8 +301,8 @@ function ADD_version(event) {
 							destVersion.version_name = forms.WEB_P__version__page._versionName
 							destVersion.version_description = forms.WEB_P__version__page._versionDescription
 							destVersion.flag_active = null
-							destVersion.id_theme = selectedVersion.id_theme
-							destVersion.id_layout = selectedVersion.id_layout
+							destVersion.id_theme = latestVersion.id_theme
+							destVersion.id_layout = latestVersion.id_layout
 							
 							databaseManager.saveData()
 							
@@ -345,7 +345,7 @@ function ADD_version(event) {
 				var selectedVersion = fsVersion.getSelectedRecord()
 				
 				var descriptor ='Theme/layout reset.\n' +
-								application.getValueListDisplayValue('WEB_themes',selectedVersion.id_theme) + '/' + application.getValueListDisplayValue('WEB_layouts',selectedVersion.id_layout) + '\n'
+								application.getValueListDisplayValue('WEB_themes',latestVersion.id_theme) + '/' + application.getValueListDisplayValue('WEB_layouts',latestVersion.id_layout) + '\n'
 				
 	//			var layout = selectedVersion.web_version_to_layout.getSelectedRecord()
 	//			
@@ -374,8 +374,8 @@ function ADD_version(event) {
 				globals.WEB_page_version = newVersion.id_version
 				
 				//punch down theme change data
-				newVersion.id_theme = selectedVersion.web_version_to_platform.id_theme
-				newVersion.id_layout = selectedVersion.web_version_to_platform.id_layout
+				newVersion.id_theme = latestVersion.id_theme
+				newVersion.id_layout = latestVersion.id_layout
 				
 				globals.WEBc_log_create('page','page version add',forms.WEB_0F_page.id_site,'web_page',forms.WEB_0F_page.id_page)
 				
