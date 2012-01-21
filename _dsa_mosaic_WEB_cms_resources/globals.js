@@ -2243,6 +2243,7 @@ function WEBc_markup_pages_attribute(obj, att) {
 	    pages.find()
 	    pages.id_site = obj.site.id
 	    pages.web_page_to_attribute.attribute_key = att
+	    pages.flag_publish = 1
 	    var count = pages.search()
 		return (count) ? pages : 0
 	}
