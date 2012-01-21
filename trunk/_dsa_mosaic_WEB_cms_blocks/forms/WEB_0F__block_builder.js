@@ -464,7 +464,7 @@ function MRKP_tinyMCE(field) {
 	var markup = ''
 	
 	if (field) {
-		MRKP__null_check(field.wrapper.pre) + MRKP__null_check(field.data) + MRKP__null_check(field.wrapper.post)
+		markup += MRKP__null_check(field.wrapper.pre) + MRKP__null_check(field.data) + MRKP__null_check(field.wrapper.post)
 	}
 	
 	return markup
