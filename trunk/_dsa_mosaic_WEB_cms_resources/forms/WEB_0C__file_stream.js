@@ -744,23 +744,29 @@ function IMAGE_import(directory) {
 	if ( application.__parent__.solutionPrefs ) {
 		globals.WEBc_sutra_trigger('TRIGGER_progressbar_start',[null, "Streaming file to server..."])
 		
-		//only upload picture if directory tree exists
-		if (ASSET_directory_tree(directory)) {
-			var monitor = plugins.file.streamFilesToServer(file, uploadFile, IMAGE_import_callback)
-		}
-		else {
-			plugins.dialogs.showErrorDialog(
-					'Error',
-					'Directory specified does not exist'
-			)
-			globals.WEBc_sutra_trigger('TRIGGER_progressbar_stop')
-		}
+//		//only upload picture if directory tree exists
+//		if (ASSET_directory_tree(directory)) {
+//			var monitor = plugins.file.streamFilesToServer(file, uploadFile, IMAGE_import_callback)
+//		}
+//		else {
+//			plugins.dialogs.showErrorDialog(
+//					'Error',
+//					'Directory specified does not exist'
+//			)
+//			globals.WEBc_sutra_trigger('TRIGGER_progressbar_stop')
+//		}
+		
+		//file streaming plugin creates directories as needed
+		var monitor = plugins.file.streamFilesToServer(file, uploadFile, IMAGE_import_callback)
 	}
 	else {
-		//only upload picture if directory tree exists
-		if (ASSET_directory_tree(directory)) {
-			var monitor = plugins.file.streamFilesToServer(file, uploadFile, IMAGE_import_callback)
-		}
+//		//only upload picture if directory tree exists
+//		if (ASSET_directory_tree(directory)) {
+//			var monitor = plugins.file.streamFilesToServer(file, uploadFile, IMAGE_import_callback)
+//		}
+		
+		//file streaming plugin creates directories as needed
+		var monitor = plugins.file.streamFilesToServer(file, uploadFile, IMAGE_import_callback)
 	}
 	
 }
@@ -990,23 +996,29 @@ function FILE_import(directory) {
 	if ( application.__parent__.solutionPrefs ) {
 		globals.WEBc_sutra_trigger('TRIGGER_progressbar_start',[null, "Streaming file to server..."])
 		
-		//only upload file if directory tree exists
-		if (ASSET_directory_tree(directory)) {
-			var monitor = plugins.file.streamFilesToServer(file, uploadFile, FILE_import_callback)
-		}
-		else {
-			plugins.dialogs.showErrorDialog(
-					'Error',
-					'Directory specified does not exist'
-			)
-			globals.WEBc_sutra_trigger('TRIGGER_progressbar_stop')
-		}
+//		//only upload file if directory tree exists
+//		if (ASSET_directory_tree(directory)) {
+//			var monitor = plugins.file.streamFilesToServer(file, uploadFile, FILE_import_callback)
+//		}
+//		else {
+//			plugins.dialogs.showErrorDialog(
+//					'Error',
+//					'Directory specified does not exist'
+//			)
+//			globals.WEBc_sutra_trigger('TRIGGER_progressbar_stop')
+//		}
+		
+		//file streaming plugin creates directories as needed
+		var monitor = plugins.file.streamFilesToServer(file, uploadFile, IMAGE_import_callback)
 	}
 	else {
-		//only upload picture if directory tree exists
-		if (ASSET_directory_tree(directory)) {
-			var monitor = plugins.file.streamFilesToServer(file, uploadFile, FILE_import_callback)
-		}
+//		//only upload picture if directory tree exists
+//		if (ASSET_directory_tree(directory)) {
+//			var monitor = plugins.file.streamFilesToServer(file, uploadFile, FILE_import_callback)
+//		}
+		
+		//file streaming plugin creates directories as needed
+		var monitor = plugins.file.streamFilesToServer(file, uploadFile, IMAGE_import_callback)
 	}
 	
 }
