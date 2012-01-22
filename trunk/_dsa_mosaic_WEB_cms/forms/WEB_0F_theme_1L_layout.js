@@ -46,7 +46,6 @@ function REC_on_select() {
 		
 		globals.CODE_cursor_busy(true)
 		
-		//TODO: the final part of the query should be b.id_layout (layout lives in version table, but that only returns a few pages)
 		var query = 
 "SELECT DISTINCT c.id_page FROM web_platform a, web_version b, web_page c WHERE \
 	a.id_platform = b.id_platform AND \
