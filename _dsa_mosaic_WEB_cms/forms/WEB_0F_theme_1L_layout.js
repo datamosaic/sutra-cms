@@ -51,7 +51,7 @@ function REC_on_select() {
 "SELECT DISTINCT c.id_page FROM web_platform a, web_version b, web_page c WHERE \
 	a.id_platform = b.id_platform AND \
 	a.id_page = c.id_page AND \
-	a.id_layout = ?"
+	b.id_layout = ?"
 		
 		var dataset = databaseManager.getDataSetByQuery(
 					'sutra_cms', 
