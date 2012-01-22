@@ -20,6 +20,7 @@ borderType:"SpecialMatteBorder,0.0,0.0,1.0,0.0,#000000,#000000,#999999,#000000,0
 dataProviderID:"url_param",
 editable:false,
 formIndex:10700,
+format:"#",
 location:"20,31",
 selectOnEnter:true,
 size:"30,23",

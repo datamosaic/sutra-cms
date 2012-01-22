@@ -7,6 +7,7 @@ borderType:"SpecialMatteBorder,0.0,0.0,1.0,0.0,#000000,#000000,#999999,#000000,0
 dataProviderID:"web_attribute_to_page.url_param",
 editable:false,
 formIndex:10700,
+format:"#",
 location:"15,30",
 selectOnEnter:true,
 size:"25,23",
