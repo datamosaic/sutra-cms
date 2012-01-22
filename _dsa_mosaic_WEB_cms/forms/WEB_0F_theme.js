@@ -363,7 +363,9 @@ function FIELD_directory_onLost(event) {
 function FORM_on_show(firstShow, event) {
 	if (firstShow) {
 		//set divider locations
-		var aThird = (controller.getFormWidth() - 22) / 3
+		var spacing = (application.__parent__.solutionPrefs) ? solutionPrefs.screenAttrib.spaces[solutionPrefs.config.activeSpace].currentHorizontal : 0
+		var aThird = (application.getWindowWidth() - spacing - 22) / 3
+//		application.updateUI()
 		elements.bean_split_1.dividerLocation = aThird
 		elements.bean_split_2.dividerLocation = aThird
 		elements.bean_split_3.dividerLocation = aThird
@@ -560,4 +562,27 @@ function ACTIONS_list(input) {
 			}
 		}
 	}	
+}
+
+/**
+ * Perform the element double-click action.
+ *
+ * @param {JSEvent} event the event that triggered the action
+ *
+ * @properties={typeid:24,uuid:"18AE6366-B709-4281-A66D-257152B3377C"}
+ */
+function TOGGLE_splits(event) {
+	var divSize = (elements.bean_split_1.dividerSize) ? 0 : 10
+	
+	if (elements.bean_split_1.dividerSize) {
+		elements.bean_split_1.dividerSize = 0
+		elements.bean_split_2.dividerSize = 0
+		elements.bean_split_3.dividerLocation = elements.bean_split_1.dividerLocation
+		application.updateUI()
+		elements.bean_split_4.dividerLocation = elements.bean_split_2.dividerLocation
+	}
+	else {
+		elements.bean_split_1.dividerSize = 10
+		elements.bean_split_2.dividerSize = 10
+	}
 }
