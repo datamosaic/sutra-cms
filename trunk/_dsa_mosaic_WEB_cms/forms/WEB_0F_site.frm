@@ -392,11 +392,11 @@ uuid:"809F58DD-8D34-4F24-A035-E5AD9B959158"
 {
 anchors:11,
 formIndex:9997,
-location:"15,40",
+location:"10,40",
 mediaOptions:14,
 showClick:false,
 showFocus:false,
-size:"270,18",
+size:"275,18",
 styleClass:"standard_table_category",
 tabSeq:-1,
 text:"Details",

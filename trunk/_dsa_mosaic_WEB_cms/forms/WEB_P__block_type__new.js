@@ -59,9 +59,9 @@ function ACTION_ok(event) {
 	globals.CODE_hide_form = 1
 	
 	// punch form variable value into destination form as a "property" since can't access this form's vars from other form methods
-	forms.WEB_0F_block_type._formName = _formName
-	forms.WEB_0F_block_type._blockName = _blockName
-	forms.WEB_0F_block_type._blockDescription = _blockDescription
+	forms.WEB_0F_block_type__block._formName = _formName
+	forms.WEB_0F_block_type__block._blockName = _blockName
+	forms.WEB_0F_block_type__block._blockDescription = _blockDescription
 	
 	application.closeFormDialog('cmsBlockTypeNew')
 }
@@ -84,9 +84,9 @@ function FORM_on_show(firstShow){
 	TOGGLE_elements()
 	
 	//instantiate variables on block_type form
-	forms.WEB_0F_block_type._formName = null
-	forms.WEB_0F_block_type._blockName = null
-	forms.WEB_0F_block_type._blockDescription = null
+	forms.WEB_0F_block_type__block._formName = null
+	forms.WEB_0F_block_type__block._blockName = null
+	forms.WEB_0F_block_type__block._blockDescription = null
 	
 	_formName = null
 	_blockDescription = null

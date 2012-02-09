@@ -100,7 +100,7 @@ typeid:7,
 uuid:"F8C579A6-2471-4EC7-996F-5B2CF8DC0314"
 }
 ],
-name:"WEB_0F_block_type_1L_block_configure",
+name:"WEB_0F_block_type__block_1L_block_configure",
 onRecordSelectionMethodID:"-1",
 onShowMethodID:"-1",
 paperPrintScale:100,
