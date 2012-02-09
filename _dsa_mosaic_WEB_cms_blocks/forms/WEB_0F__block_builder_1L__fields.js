@@ -26,5 +26,5 @@ function REC_on_select(event) {
 	forms.WEB_0F__block_builder.elements.tab_detail.addTab(forms[formName])
 	
 	//punch data in
-	forms[formName].INIT_data(fieldData.data)
+	forms[formName].INIT_data(fieldData.record)
 }

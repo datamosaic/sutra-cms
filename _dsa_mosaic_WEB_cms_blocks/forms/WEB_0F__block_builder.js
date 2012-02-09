@@ -10,31 +10,31 @@ var _license_dsa_mosaic_WEB_cms_blocks = 'Module: _dsa_mosaic_WEB_cms_blocks \
  */
 var BUILDER = {
 	staticHTML	: { type: "staticHTML", order : null, 
-						data : [] },
+						data : null },
 	textBox		: { type: "textBox", order : null, required : null, repeatable: null, 
-						label : null, wrapper : { pre : null, post : null }, maxChars : null, data : [] },
+						label : null, wrapper : { pre : null, post : null }, chars : null, data : null },
 	textArea	: { type: "textArea", order : null, required : null, repeatable: null, 
 						label : null, wrapper : { pre : null, post : null }, data : null },
 	image		: { type: "image", order : null, required : null, repeatable: null, 
-						image : { label: null, wrapper : { pre : null, post : null }, data : [] },
-						linkField:  { label: null, wrapper : { pre : null, post : null }, data : [] },
-						resizing: { label: null, data : [] } }, 
+						image : { label: null, wrapper : { pre : null, post : null }, data : null },
+						link:  { label: null, wrapper : { pre : null, post : null }, data : null },
+						resizing: { label: null, data : null } }, 
 	fileDownload: { type: "fileDownload", order : null, required : null, repeatable: null,
-						label : null, wrapper : { pre : null, post : null }, data : [] },				
+						label : null, wrapper : { pre : null, post : null }, data : null },				
 	pageLink	: { type: "pageLink", order : null, required : null, repeatable: null,
-						link : { label : null, wrapper : { pre : null, post : null }, data : [] },
-						name : { label : null, wrapper : { pre : null, post : null }, data : [] }},							
+						link : { label : null, wrapper : { pre : null, post : null }, data : null },
+						name : { label : null, wrapper : { pre : null, post : null }, data : null }},							
 	externalURL : { type: "externalURL", order : null, required : null, repeatable: null, 
-						link : { label : null, wrapper : { pre : null, post : null }, data : [] },
-						name : { label : null, wrapper : { pre : null, post : null }, data : [] }},
+						link : { label : null, wrapper : { pre : null, post : null }, data : null },
+						name : { label : null, wrapper : { pre : null, post : null }, data : null }},
 	datePicker	: { type: "datePicker", order : null, required : null, repeatable: null, 
-						label : null, wrapper : { pre : null, post : null }, format : null, data : [] },
+						label : null, wrapper : { pre : null, post : null }, format : null, data : null },
 	tinyMCE		: { type: "tinyMCE", order : null, required : null, 
 						label : null, wrapper : { pre : null, post : null }, data : null },
-	table		: { type: "table", order : null, required : null, repeatable: null, columns : 3, header : "yes/no", 
-						column	: { label: null, wrapper : { pre : null, post : null }, data : [] },
-						column	: { label: null, wrapper : { pre : null, post : null }, data : [] },
-						column	: { label: null, wrapper : { pre : null, post : null }, data : [] } },
+	table		: { type: "table", order : null, required : null, repeatable: 1, columns : 3, header : 1, 
+						column1	: { label: null, wrapper : { pre : null, post : null }, data : null },
+						column2	: { label: null, wrapper : { pre : null, post : null }, data : null },
+						column3	: { label: null, wrapper : { pre : null, post : null }, data : null } },
 };
 
 /**
@@ -58,15 +58,8 @@ function VIEW_default() {
 		// get object of data from database
 		var fieldData = plugins.serialize.fromJSON(globals.CMS.data.block_data[i])
 		
-		//we need order, type, and whatnot that may be buried in an array
-		if (fieldData instanceof Array && fieldData[0]) {
-			var order = fieldData[0].order
-			var type = fieldData[0].type
-		}
-		else {
-			var order = fieldData.order
-			var type = fieldData.type
-		}
+		var order = fieldData.order
+		var type = fieldData.type
 		
 		// there is a valid order, push into array
 		if (typeof order == 'number') {
@@ -79,7 +72,7 @@ function VIEW_default() {
 
 	// return markup by order and type
 	var markup = ""
-	for (var i = 0; i < instance.length; i++) {
+	for (var i = 1; i < instance.length; i++) {
 		var method = 'MRKP_' + instance[i].type
 		
 		// this method exists
@@ -148,8 +141,8 @@ function INIT_block() {
  * @properties={typeid:24,uuid:"1745BEE8-D91F-45CF-86BB-BEB3FEB208E9"}
  */
 function BLOCK_save(event) {
-	for (var i = 0; i < _blockList.length; i++) {
-		globals.CMS.ui.setData(event,_blockList[i].key,plugins.serialize.toJSON(_blockList[i].data))
+	for (var i = 1; i < _blockList.length; i++) {
+		globals.CMS.ui.setData(event,_blockList[i].key,plugins.serialize.toJSON(_blockList[i].record))
 	}
 }
 
@@ -179,14 +172,8 @@ function INIT_data() {
 		var fieldData = plugins.serialize.fromJSON(allFields[i])
 		
 		//we need order, type, and whatnot that may be buried in an array
-		if (fieldData instanceof Array && fieldData[0]) {
-			var order = fieldData[0].order
-			var type = fieldData[0].type
-		}
-		else {
-			var order = fieldData.order
-			var type = fieldData.type
-		}
+		var order = fieldData.order
+		var type = fieldData.type
 		
 		//create object to use for reference while on this block
 		_blockList[order] = {
@@ -195,19 +182,12 @@ function INIT_data() {
 					}
 		
 		//this is a repeatable field that hasn't been used before
-		if (!(fieldData instanceof Array) && fieldData.repeatable) {
-			_blockList[order].data = new Array(fieldData)
-		}
-		//this isn't a repeatable field or it has already been array-ized
-		else {
-			_blockList[order].data = fieldData
-		}
-		
+		_blockList[order].record = fieldData
 	}
 	
 	//build list
 	var dataset = databaseManager.createEmptyDataSet(null,['data_key','row_order'])
-	for (var i = 0; i < _blockList.length; i++) {
+	for (var i = 1; i < _blockList.length; i++) {
 		var row = _blockList[i]
 		
 		//don't show staticHTML as editable areas

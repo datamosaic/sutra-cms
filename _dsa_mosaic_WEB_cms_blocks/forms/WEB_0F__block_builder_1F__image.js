@@ -108,7 +108,7 @@ function BLOCK_choose(event) {
 		
 			if (assetRec) {
 				application.updateUI()
-				forms.WEB_0F__block_builder._blockList[forms.WEB_0F__block_builder._blockSelected].data.data = assetRec.id_asset_instance.toString()
+				forms.WEB_0F__block_builder._blockList[forms.WEB_0F__block_builder._blockSelected].record.data = assetRec.id_asset_instance.toString()
 				_file = assetRec.asset_title
 				_directory = assetRec.asset_directory
 				 
