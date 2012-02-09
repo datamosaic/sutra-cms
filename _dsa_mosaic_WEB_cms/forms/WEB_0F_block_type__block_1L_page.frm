@@ -52,7 +52,7 @@ typeid:19,
 uuid:"963DBAED-00F1-4F36-9222-DE4562D582CA"
 }
 ],
-name:"WEB_0F_block_type_1L_page",
+name:"WEB_0F_block_type__block_1L_page",
 namedFoundSet:"separate",
 onLoadMethodID:"-1",
 onRecordSelectionMethodID:"-1",

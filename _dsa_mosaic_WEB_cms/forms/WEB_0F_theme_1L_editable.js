@@ -9,41 +9,28 @@ var _license_dsa_mosaic_WEB_cms = 'Module: _dsa_mosaic_WEB_cms \
  *
  * @properties={typeid:24,uuid:"3CF34834-3DD2-4A79-A731-3642C26847D7"}
  */
-function REC_delete()
-{
-
-/*
- *	TITLE    :	REC_delete
- *			  	
- *	MODULE   :	start_CRM_mosaic
- *			  	
- *	ABOUT    :	prompts to delete the currently selected record
- *			  	
- *	INPUT    :	
- *			  	
- *	OUTPUT   :	
- *			  	
- *	REQUIRES :	
- *			  	
- *	USAGE    :	REC_delete()
- *			  	
- *	MODIFIED :	July 31, 2008 -- Troy Elliott, Data Mosaic
- *			  	
- */
-
-var delRec = plugins.dialogs.showWarningDialog(
-'Delete record',
-'Do you really want to delete this record?',
-'Yes',
-'No')
-
-if (delRec == 'Yes') {
-
-controller.deleteRecord()
-
-
-}
-
+function REC_delete() {
+	var delRec = plugins.dialogs.showWarningDialog(
+						'Delete record',
+						'Do you really want to delete this record?',
+						'Yes',
+						'No'
+					)
+	
+	if (delRec == 'Yes') {
+		//get record to delete
+		var recDelete = foundset.getSelectedRecord()
+		
+		for (var i = 1; i <= foundset.getSize(); i++) {
+			var record = foundset.getRecord(i)
+			
+			if (record.row_order > recDelete.row_order) {
+				record.row_order--
+			}
+		}
+		
+		foundset.deleteRecord(recDelete)	
+	}
 }
 
 /**
@@ -61,19 +48,7 @@ function REC_new(event) {
  *
  * @properties={typeid:24,uuid:"414400F7-ED90-49B2-9616-BAD31B41EFEC"}
  */
-function DIR_down()
-{
-	/*
-	 *	TITLE:		DIR_down
-	 *
-	 *	MODULE:		fw_NAV_navigation_standard
-	 *
-	 *	ABOUT:		Move navigation_item down in list
-	 *
-	 *	MODIFIED:	Aug 27, 2007 - Troy Elliott, Data Mosaic
-	 *
-	 */
-
+function DIR_down() {
 	 //if max index, exit
 	 if (foundset.getSelectedIndex() == foundset.getSize()) {
 		 return
@@ -112,19 +87,7 @@ function DIR_down()
  *
  * @properties={typeid:24,uuid:"62AC953B-1A76-4958-BB92-4DE470F621F4"}
  */
-function DIR_up()
-{
-	/*
-	 *	TITLE:		DIR_up
-	 *
-	 *	MODULE:		fw_NAV_navigation_standard
-	 *
-	 *	ABOUT:		Move navigation_item up in list
-	 *
-	 *	MODIFIED:	Aug 27, 2007 - Troy Elliott, Data Mosaic
-	 *
-	 */
-
+function DIR_up() {
 	 //if index = 1, exit
 	 if (foundset.getSelectedIndex() == 1) {
 		 return

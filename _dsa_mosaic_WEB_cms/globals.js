@@ -1210,3 +1210,38 @@ function WEB_browser_forms(beanType) {
 	
 	return browserForms
 }
+
+/**
+ * Handle changed data.
+ *
+ * @param {Object} oldValue old value
+ * @param {Object} newValue new value
+ * @param {JSEvent} event the event that triggered the action
+ *
+ * @returns {Boolean}
+ *
+ * @properties={typeid:24,uuid:"DB478DF1-A3C2-4D4D-BF6E-7A40B23E4F5D"}
+ */
+function WEB_block_builder__data_change(oldValue, newValue, event) {
+	var location = 'value'
+	var formName = event.getFormName()
+	var elemName = event.getElementName()
+	var colArray = elemName.split('_')
+	
+	//get rid of 'var_' prefix
+	colArray.shift()
+	
+	//get string that will put us into
+	if (colArray.length > 1) {
+		var point = colArray.pop()
+		location += '.' + colArray.join('.')
+	}
+	else {
+		var point = colArray[0]
+	}
+	
+	//change this data point
+	var value = plugins.serialize.fromJSON(forms[formName].column_value)
+	eval(location)[point] = newValue
+	forms[formName].column_value = plugins.serialize.toJSON(value)
+}

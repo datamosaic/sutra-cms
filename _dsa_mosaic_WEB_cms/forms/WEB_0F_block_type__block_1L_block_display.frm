@@ -116,7 +116,7 @@ typeid:4,
 uuid:"FAE56E79-57BC-4B41-BF32-84268053E342"
 }
 ],
-name:"WEB_0F_block_type_1L_block_display",
+name:"WEB_0F_block_type__block_1L_block_display",
 onRecordSelectionMethodID:"-1",
 onShowMethodID:"-1",
 paperPrintScale:100,

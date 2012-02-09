@@ -613,9 +613,10 @@ function ACTION_search(event) {
 		//load up everything
 		fs.loadAllRecords()
 		
-		//restrict based on search criteria and site
+		//restrict based on search criteria, site, and availability
 		fs.find()
 		fs.id_site = forms.WEB_0F_site.id_site
+		fs.flag_unavailable = '^='
 		if (_search) {
 			fs.block_name = '%' + _search + '%'
 		}

@@ -1,5 +1,5 @@
 /**
- * @properties={typeid:35,uuid:"04fde543-69cc-4de9-af47-7f7c22221f19"}
+ * @properties={typeid:35,uuid:"8D5C8FCA-9D3D-46EA-A42F-AD49AEB2D65E"}
  */
 var _license_dsa_mosaic_WEB_cms = 'Module: _dsa_mosaic_WEB_cms \
 									Copyright (C) 2011 Data Mosaic \
@@ -22,40 +22,6 @@ function FILTER_records(event) {
 	else {
 		foundset.clear()
 	}
-}
-
-/**
- * Handle changed data.
- *
- * @param {Object} oldValue old value
- * @param {Object} newValue new value
- * @param {JSEvent} event the event that triggered the action
- *
- * @returns {Boolean} valid value
- *
- * @properties={typeid:24,uuid:"4FCD8412-C8D2-4B99-92FA-B1A96F9984E0"}
- */
-function FLD_data_change__block_name(oldValue, newValue, event) {
-	
-	var fsBlockType = databaseManager.getFoundSet(controller.getServerName(),controller.getTableName())
-	fsBlockType.find()
-	fsBlockType.id_site = forms.WEB_0F_site.id_site
-	fsBlockType.block_name = newValue
-	var results = fsBlockType.search()
-	
-	if (results > 1) {
-		plugins.dialogs.showErrorDialog(
-					'Error',
-					'This block name is not unique...rename'
-			)
-		block_name = oldValue
-		return false
-	}
-	else {
-		return true
-	}
-	
-	return true
 }
 
 /**
@@ -114,18 +80,18 @@ function REC_new(flagRefresh,formName,fs) {
 									)	
 					
 					//this should be forms.WEB_P__block_type__new._formName...some scoping issue (fid cancel hack...)
-					if ( forms.WEB_0F_block_type._formName == undefined ) {
+					if ( forms.WEB_0F_block_type__block._formName == undefined ) {
 						return "Action cancelled"
 					}	
 					
-					var formName = forms.WEB_0F_block_type._formName
-					var blockName = forms.WEB_0F_block_type._blockName
-					var blockDescription = forms.WEB_0F_block_type._blockDescription
+					var formName = forms.WEB_0F_block_type__block._formName
+					var blockName = forms.WEB_0F_block_type__block._blockName
+					var blockDescription = forms.WEB_0F_block_type__block._blockDescription
 					
 					//now delete _formName (.../fid cancel hack)
-					delete forms.WEB_0F_block_type._formName
-					delete forms.WEB_0F_block_type._blockName
-					delete forms.WEB_0F_block_type._blockDescription
+					delete forms.WEB_0F_block_type__block._formName
+					delete forms.WEB_0F_block_type__block._blockName
+					delete forms.WEB_0F_block_type__block._blockDescription
 				}
 				else {
 					plugins.dialogs.showErrorDialog(
@@ -190,6 +156,11 @@ function REC_new(flagRefresh,formName,fs) {
 				}
 			}
 			
+			//set flag for type
+			if (objBlock.record.form_name == 'WEB_0F__block_builder') {
+				var blockType = 1
+			}
+			
 			//turn on notification when called directly from block type workflow form
 			if (nonBatch) {
 				globals.WEBc_sutra_trigger('TRIGGER_progressbar_start',[null,(flagRefresh ? 'Refreshing' : 'Registering') + ' block: ' + objBlock.record.block_name + '.  Please wait...'])
@@ -215,6 +186,15 @@ function REC_new(flagRefresh,formName,fs) {
 			block.block_description = blockDescription || objBlock.record.block_description
 			block.form_name = objBlock.record.form_name
 			block.form_name_display = objBlock.record.form_name_display	
+			
+			//dealing with a builder...bob, perhaps?
+			if (blockType) {
+				//set flag that this is a block builder form
+				block.block_type = blockType
+				
+				//mark as inactive until published
+				block.flag_unavailable = 1
+			}
 			
 			// remove related block records
 			if (flagRefresh) {
@@ -383,9 +363,18 @@ function REC_new(flagRefresh,formName,fs) {
 				}
 			}
 			
-			//turn off notification when called directly from block type workflow form
 			if (nonBatch) {
+				//turn off notification when called directly from block type workflow form
 				globals.WEBc_sutra_trigger('TRIGGER_progressbar_stop')
+				
+				//update button status
+				REC_on_select()
+				
+				//go to configure tab for either of the builders
+				if (blockType) {
+					//go to correct tab
+					TAB_change(null,blockType + 1)
+				}
 			}
 		}
 	}
@@ -531,89 +520,6 @@ function REC_delete() {
 }
 
 /**
- * Perform the element default action.
- *
- * @param {JSEvent} event the event that triggered the action
- *
- * @properties={typeid:24,uuid:"7BD4A6A0-6B1F-44A7-B568-6DE0DE6B06E2"}
- */
-function TAB_key_change(event) {
-	globals.TAB_change_grid(null,null,'tab_key','tab_k','btn_key_add','btn_key_actions','btn_key_help')
-}
-
-/**
- * Perform the element default action.
- *
- * @param {JSEvent} event the event that triggered the action
- *
- * @properties={typeid:24,uuid:"BB3E7EFA-EE07-453A-8B1C-E4DEF897D44D"}
- */
-function TAB_key_add(event) {
-	globals.TAB_btn_rec_new(null,'tab_key')
-}
-
-/**
- * Handle record selected.
- *
- * @param {JSEvent} event the event that triggered the action
- *
- * @properties={typeid:24,uuid:"4FE94177-EF8D-49B1-855F-D9F35D57EB6E"}
- */
-function REC_on_select(event) {
-	var fsPages = forms.WEB_0F_block_type_1L_page.foundset
-	
-	//there is something to do on this page
-	if (utils.hasRecords(foundset)) {
-		globals.CODE_cursor_busy(true)
-		
-		var query = 
-"SELECT DISTINCT c.id_page FROM web_platform a, web_version b, web_page c WHERE  \
-b.id_version IN ( \
-SELECT DISTINCT c.id_version from web_block a, web_scope b, web_area c WHERE  \
-c.id_area = b.id_area AND \
-b.id_block = a.id_block AND \
-a.id_block_type = ? \
-) AND \
-a.id_platform = b.id_platform AND \
-a.id_page = c.id_page"
-		
-		var dataset = databaseManager.getDataSetByQuery(
-					'sutra_cms', 
-					query, 
-					[id_block_type.toString()], 
-					-1
-				)
-		
-		//load correct pages that this is used on
-		fsPages.loadRecords(dataset)
-		
-		globals.CODE_cursor_busy(false)
-	}
-	//clear out the related pages link
-	else {
-		fsPages.clear()
-	}
-}
-
-/**
- * Handle changed data.
- *
- * @param {Object} oldValue old value
- * @param {Object} newValue new value
- * @param {JSEvent} event the event that triggered the action
- *
- * @returns {Boolean}
- *
- * @properties={typeid:24,uuid:"0102A5D3-E8AA-4536-B8D8-89C1CDA3C67A"}
- */
-function FLD_data_change__form_name(oldValue, newValue, event) {
-	//get methods for current form
-	var formMethods = (form_name && forms[form_name]) ? forms[form_name].allmethods : new Array()
-	
-	application.setValueListItems('WEB_block_type_method', formMethods)
-}
-
-/**
  * Callback method for when form is shown.
  *
  * @param {Boolean} firstShow form is shown first time after load
@@ -660,4 +566,49 @@ function FORM_on_hide(event) {
 function REC_refresh() {
 	// call with refresh flag
 	REC_new(true)
+}
+
+/**
+ * Perform the element default action.
+ *
+ * @param {JSEvent} event the event that triggered the action
+ *
+ * @properties={typeid:24,uuid:"4A701DEE-F683-45CC-B1FC-72DEDEE5B73B"}
+ */
+function TAB_change(event,tabNumber) {
+	if (!tabNumber && event) {
+		tabNumber = utils.stringToNumber(event.getElementName().split('_')[1])
+	}
+	
+	//1st tab ok for all types, other ones not so much
+	if (block_type == tabNumber - 1 || tabNumber == 1) {
+		globals.TAB_change_inline(controller.getName(),'tab_d' + tabNumber)
+		
+		client_tab_selected = tabNumber
+	}
+}
+
+/**
+ * Handle record selected.
+ *
+ * @param {JSEvent} event the event that triggered the action
+ *
+ * @properties={typeid:24,uuid:"38B83400-18B2-404D-B6F7-0C7D6AF7C837"}
+ */
+function REC_on_select(event) {
+	//set enablement of tabs
+	elements.tab_d2.enabled = false
+	elements.tab_d3.enabled = false
+	
+	if (block_type == 1) {
+		elements.tab_d2.enabled = true
+	}
+	else if (block_type == 2) {
+		elements.tab_d3.enabled = true
+	}
+	
+	//return to last used tab on this record
+	if (client_tab_selected && client_tab_selected != elements.tab_detail.tabIndex) {
+		TAB_change(null,client_tab_selected)
+	}
 }
