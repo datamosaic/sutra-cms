@@ -1,0 +1,15 @@
+customValues:"dd-MM-yyyy
+dd/MM/yyyy
+MM-dd-yyyy
+MM/dd/yyyy
+dd-MM-yyyy HH:mm:ss
+MM-dd-yyyy hh:mm:ss
+dd-MM-yyyy HH:mm
+MM-dd-yyyy hh:mm
+yyyy-MM-dd HH:mm:ss",
+name:"WEB_date_format",
+returnDataProviders:1,
+separator:" ",
+showDataProviders:1,
+typeid:34,
+uuid:"27C22821-3F80-4C88-A3CD-0EE2D28B5AA4"
