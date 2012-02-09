@@ -67,12 +67,12 @@ function PAGE_picker(event,record) {
 		}
 		
 		//actual page
-		forms.WEB_0F__block_builder._blockList[forms.WEB_0F__block_builder._blockSelected].data.link.data = event
+		forms.WEB_0F__block_builder._blockList[forms.WEB_0F__block_builder._blockSelected].record.link.data = event
 		_link = record.page_name
 		
 		//display value for page
 		if (resetName) {
-			forms.WEB_0F__block_builder._blockList[forms.WEB_0F__block_builder._blockSelected].data.name.data = record.page_name
+			forms.WEB_0F__block_builder._blockList[forms.WEB_0F__block_builder._blockSelected].record.name.data = record.page_name
 			_name = record.page_name
 		}
 	}
@@ -90,5 +90,5 @@ function PAGE_picker(event,record) {
  * @properties={typeid:24,uuid:"A330C9C7-36EF-43FD-83AC-A5EBBD2BD0C4"}
  */
 function onDataChange(oldValue, newValue, event) {
-	forms.WEB_0F__block_builder._blockList[forms.WEB_0F__block_builder._blockSelected].data.name.data = newValue
+	forms.WEB_0F__block_builder._blockList[forms.WEB_0F__block_builder._blockSelected].record.name.data = newValue
 }

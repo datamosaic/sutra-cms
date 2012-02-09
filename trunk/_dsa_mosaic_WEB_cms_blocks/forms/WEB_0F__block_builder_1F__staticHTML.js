@@ -22,7 +22,7 @@ var _html = null;
  * @properties={typeid:24,uuid:"A630C9C7-36EF-43FD-83AC-A5EBBD2BD0C4"}
  */
 function onDataChange(oldValue, newValue, event) {
-	forms.WEB_0F__block_builder._blockList[forms.WEB_0F__block_builder._blockSelected].data.data = newValue
+	forms.WEB_0F__block_builder._blockList[forms.WEB_0F__block_builder._blockSelected].record.data = newValue
 }
 
 /**

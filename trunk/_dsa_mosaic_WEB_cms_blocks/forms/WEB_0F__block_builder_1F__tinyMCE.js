@@ -130,7 +130,7 @@ function TINYMCE_init(mode) {
  * @properties={typeid:24,uuid:"E2F1544A-6933-40C1-BA92-02BF6A87C0B9"}
  */
 function ACTION_data_change() {
-	forms.WEB_0F__block_builder._blockList[forms.WEB_0F__block_builder._blockSelected].data.data = elements.bn_tinymce.html
+	forms.WEB_0F__block_builder._blockList[forms.WEB_0F__block_builder._blockSelected].record.data = elements.bn_tinymce.html
 	
 	return false
 }
@@ -141,7 +141,7 @@ function ACTION_data_change() {
  * @properties={typeid:24,uuid:"553CBBDB-2219-49ED-BEC5-A585CBC2011A"}
  */
 function BLOCK_save(event) {
-	forms.WEB_0F__block_builder._blockList[forms.WEB_0F__block_builder._blockSelected].data.data = elements.bn_tinymce.html
+	forms.WEB_0F__block_builder._blockList[forms.WEB_0F__block_builder._blockSelected].record.data = elements.bn_tinymce.html
 	
 	elements.bn_tinymce.clearDirtyState()
 }
@@ -195,7 +195,7 @@ function BLOCK_reset(event) {
 	
 	//cancel current edits, and reset to defaults
 	forms.WEB_0F__block_builder._blockList[forms.WEB_0F__block_builder._blockSelected].data = plugins.serialize.fromJSON(globals.CMS.ui.getData('WEB_0F__block_builder')[forms.WEB_0F__block_builder._blockList[forms.WEB_0F__block_builder._blockSelected].key])
-	elements.bn_tinymce.html = forms.WEB_0F__block_builder._blockList[forms.WEB_0F__block_builder._blockSelected].data.data || ''
+	elements.bn_tinymce.html = forms.WEB_0F__block_builder._blockList[forms.WEB_0F__block_builder._blockSelected].record.data || ''
 }
 
 /**

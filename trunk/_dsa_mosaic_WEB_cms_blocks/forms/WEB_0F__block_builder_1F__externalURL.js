@@ -47,5 +47,5 @@ function onDataChange(oldValue, newValue, event) {
 	var posn = elemName[2]
 	
 	var data = forms.WEB_0F__block_builder._blockList[forms.WEB_0F__block_builder._blockSelected]
-	data.data[varName].data = newValue
+	data.record[varName].data = newValue
 }
