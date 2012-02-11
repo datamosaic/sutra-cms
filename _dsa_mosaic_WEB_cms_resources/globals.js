@@ -128,6 +128,9 @@ var CMS = {
 					},
 				stripPunctuation : function(/**String*/ str) {
 						return WEBc_data_strip_punctuation(str)
+					},
+				getCMSVersion : function() {
+						return globals.CMS.data.cmsVersion
 					}
 			}
 	};
