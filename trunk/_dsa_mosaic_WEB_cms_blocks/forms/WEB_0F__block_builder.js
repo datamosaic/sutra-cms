@@ -71,8 +71,9 @@ function VIEW_default() {
 	}
 
 	// return markup by order and type
+	var start = (instance[0]) ? 0 : 1
 	var markup = ""
-	for (var i = 1; i < instance.length; i++) {
+	for (var i = start; i < instance.length; i++) {
 		var method = 'MRKP_' + instance[i].type
 		
 		// this method exists
