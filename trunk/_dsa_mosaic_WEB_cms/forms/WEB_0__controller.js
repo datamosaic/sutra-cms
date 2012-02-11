@@ -23,12 +23,15 @@ function CONTROLLER(app, session, request, response, mode) {
 	// initialize CMS variable (would be nice if this worked correctly)
 //	globals.CMS = eval(solutionModel.getGlobalVariable('CMS').defaultValue)
 	
+	// CMS Version
+	var cmsVersion = "3.0b3"
+
 	// initialize good dataset to return to jsp
 	var results = databaseManager.createEmptyDataSet(0,["key","value"])
-	results.addRow(["cmsVersion","Sutra CMS - 3.0b2"])
+	results.addRow(["cmsVersion", "Sutra CMS - " + cmsVersion])
 	
 	// STEP 1: Setup
-	CONTROLLER_setup(results, app, session, request, response, mode)
+	CONTROLLER_setup(results, app, session, request, response, mode, cmsVersion)
 	
 	// STEP 2: Session control
 	if ( !globals.CMS.data.error.code ) {
@@ -307,10 +310,11 @@ function CONTROLLER_builder(results) {
  * @param {Javax.servlet.http.httpservletrequest} request Data for page request.
  * @param {Javax.servlet.http.httpservletresponse} response Data for page response.
  * @param {String} [mode] URL parameter denoting whether in edit mode or not.
+ * @param {String} cmsVersion cms current version number
  * 
  * @properties={typeid:24,uuid:"251216CD-208E-4A2A-8237-1196E2032EC1"}
  */
-function CONTROLLER_setup(results, app, session, request, response, mode) {
+function CONTROLLER_setup(results, app, session, request, response, mode, cmsVersion) {
 	
 	/* response object notes: can be used for creating HTTP Headers, creating cookies, setting content type and redirecting workflow
 	* assign directly to response. ie:
@@ -349,7 +353,8 @@ function CONTROLLER_setup(results, app, session, request, response, mode) {
 	       		    cookies : '',
 	       		    response : { record : response },
 	       		    app		: { record : app },
-	       		    error	: { code : '', message : ''}
+	       		    error	: { code : '', message : ''},
+	       		    cmsVersion : cmsVersion
 			}
 	
 	// directly expose some data points used in this method
