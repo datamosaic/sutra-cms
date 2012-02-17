@@ -175,7 +175,7 @@ function UTIL_link_area_editable() {
  * @properties={typeid:24,uuid:"CCA1ABBD-6ECE-4C54-A81A-D8FC33781F50"}
  */
 function ACTION_edit(event) {
-	globals.WEB_simple_edit('WEB_0F_page__design_1F__button_tab')
+	forms.WEB_0F_page__design_1F__button_tab.ACTION_edit()
 }
 
 /**
@@ -276,6 +276,7 @@ function TOGGLE_elements(editAllow) {
 	elements.fld_title_override.editable = editAllow
 	elements.fld_description.editable = editAllow
 	elements.btn_add.enabled = editAllow
+	elements.lbl_edit.visible = editAllow
 	
 	//attributes
 	forms.WEB_0F_page__design_1F__properties_2L_attribute.elements.btn_delete.visible = editAllow
