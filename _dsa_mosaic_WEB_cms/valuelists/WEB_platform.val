@@ -1,7 +1,9 @@
 addEmptyValue:1,
 customValues:"Web
 Phone
-Tablet",
+Tablet
+Email
+Book",
 name:"WEB_platform",
 returnDataProviders:1,
 separator:" ",
