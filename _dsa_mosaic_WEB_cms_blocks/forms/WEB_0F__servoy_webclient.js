@@ -1,4 +1,19 @@
 /**
+ * @properties={typeid:35,uuid:"D9C45892-D610-4019-AB9A-09E6EAF488BE"}
+ */
+var _loginLink = null;
+
+/**
+ * @properties={typeid:35,uuid:"65E9004B-1EC5-4F28-B456-8223965BAA5D"}
+ */
+var _loginObjName = null;
+
+/**
+ * @properties={typeid:35,uuid:"4C3EECF0-46D8-47C7-9B9F-56E4405731AC",variableType:4}
+ */
+var _loginRequired = null;
+
+/**
  * @properties={typeid:35,uuid:"F5A86BA7-FC8F-448E-B31F-2A787207A97B"}
  */
 var _license_dsa_mosaic_WEB_cms_blocks = 'Module: _dsa_mosaic_WEB_cms_blocks \
@@ -45,54 +60,30 @@ var _cssId = null;
  * 
  * @properties={typeid:24,uuid:"399C16F5-0026-4B84-A2B5-01231434CB1A"}
  */
-function VIEW_default(obj, results) {
-	//get login
-	var login = globals.WEBc_session_getData(obj.session_server.record.session_id, "login")
-	
-	//get solution model form
-	var smForm = solutionModel.getForm(obj.block_data.form)
-	//for width
-	var defaultWidth = (smForm) ? smForm.width : 0
-	//for height
-	var totalHeight = 0
-	if (smForm) {
-		for (var i in smForm.getParts()) {
-			totalHeight += smForm.getParts()[i].height
+function CONTROLLER_default(obj, results) {
+
+	var configuration = globals.CMS.data.block_configure
+
+	// check login
+	if ( configuration.loginRequired ) {
+
+		//get login
+		var login = globals.WEBc_session_getData(obj.session_server.record.session_id, configuration.loginObjName)
+		
+		if ( login ) {
+			// show swc view
+			return _VIEW_swc(obj, results, login)
+		}
+		else {
+			// show no login view
+			return _VIEW_no_login(configuration.loginLink)
 		}
 	}
-	var defaultHeight = totalHeight
-	
-	//TODO: abstract the passing in of record
-	var record		= (login && login.customer && login.customer.loginID) ? login.customer.loginID : ''
-	
-	var url 		= globals.WEBc_markup_link_servlet(obj)
-	var module		= '_dsa_mosaic_WEB_cms'
-	var method		= 'WEB_servoy_wc_controller'
-	var template	= '<iframe src="http://{{url}}/\
-						servoy-webclient/ss?s={{module}}&m={{method}}&a=\
-						sutraCMS&form={{form}}&\
-						id={{record}}" width="{{width}}" height="{{height}}" frameborder="0" \
-						scrolling="no" id="{{id}}" '
-						//only assign a class if one was specified
-						if (obj.block_configure.cssClass) {
-							template += 'class="{{class}}" '
-						}
-template +=	'	>\n\
-							Servoy Web Client cannot load\n\
-						</iframe>'
-	var html = template.replace(/\t/g, '')
-	html = utils.stringReplace(html, "{{url}}", url)
-	html = utils.stringReplace(html, "{{module}}", module)
-	html = utils.stringReplace(html, "{{method}}", method)
-	html = utils.stringReplace(html, "{{form}}", obj.block_data.form)
-	html = utils.stringReplace(html, "{{record}}", record)
-	html = utils.stringReplace(html, "{{width}}", obj.block_configure.width || defaultWidth)
-	html = utils.stringReplace(html, "{{height}}", obj.block_configure.height || defaultHeight)
-	html = utils.stringReplace(html, "{{id}}", obj.block_configure.cssId || 'swc')
-	html = utils.stringReplace(html, "{{class}}", obj.block_configure.cssClass)
-	html = utils.stringReplace(html, "{{transparent}}", (obj.block_configure.transparent ? 'true' : 'false'))
-	
-	return html
+	else {
+		// show swc view
+		return _VIEW_swc(obj, results, login)
+	}
+
 }
 
 /**
@@ -113,6 +104,9 @@ function INIT_data() {
 	_transparent = dataConfig.transparent
 	_cssId = dataConfig.cssId
 	_cssClass = dataConfig.cssClass
+	_loginRequired = dataConfig.loginRequired
+	_loginObjName = dataConfig.loginObjName
+	_loginLink = dataConfig.loginLink
 	
 	//set status of variables
 	var editMode = globals.CMS.ui.getEdit()
@@ -130,6 +124,9 @@ function INIT_data() {
 	elements.var_cssId.editable = editMode
 	elements.var_cssClass.transparent = editMode
 	elements.var_cssClass.editable = editMode
+	elements.var_loginRequired.readOnly = !editMode
+	elements.var_loginObjName.transparent = editMode
+	elements.var_loginObjName.editable = editMode
 	
 	//fill valuelist appropriately
 	SET_forms()
@@ -225,7 +222,10 @@ function INIT_block() {
 		height : 'INTEGER',
 		transparent : 'INTEGER',
 		cssId : 'TEXT',
-		cssClass : 'TEXT'
+		cssClass : 'TEXT',
+		loginRequired : 'INTEGER',
+		loginObjName : 'TEXT',
+		loginLink : 'TEXT'
 	}
 	
 	// block response data points
@@ -253,4 +253,94 @@ function FLD_module__data_change(oldValue, newValue, event) {
 	
 	//refresh form valuelist
 	SET_forms()
+}
+
+/**
+ * @properties={typeid:24,uuid:"18FF2C5F-9F17-4AE7-BBF8-C6DD844A92C7"}
+ */
+function _VIEW_swc(obj, results, login) {
+
+		//get solution model form
+	var smForm = solutionModel.getForm(obj.block_data.form)
+	//for width
+	var defaultWidth = (smForm) ? smForm.width : 0
+	//for height
+	var totalHeight = 0
+	if (smForm) {
+		for (var i in smForm.getParts()) {
+			totalHeight += smForm.getParts()[i].height
+		}
+	}
+	var defaultHeight = totalHeight
+	
+	//TODO: abstract the passing in of record
+	var record		= (login && login.customer && login.customer.loginID) ? login.customer.loginID : ''
+	
+	var url 		= globals.WEBc_markup_link_servlet(obj)
+	var module		= '_dsa_mosaic_WEB_cms'
+	var method		= 'WEB_servoy_wc_controller'
+	var template	= '<iframe src="http://{{url}}/\
+						servoy-webclient/ss?s={{module}}&m={{method}}&a=\
+						sutraCMS&form={{form}}&\
+						id={{record}}" width="{{width}}" height="{{height}}" frameborder="0" \
+						scrolling="no" id="{{id}}" '
+						//only assign a class if one was specified
+						if (obj.block_configure.cssClass) {
+							template += 'class="{{class}}" '
+						}
+template +=	'	>\n\
+							Servoy Web Client cannot load\n\
+						</iframe>'
+	var html = template.replace(/\t/g, '')
+	html = utils.stringReplace(html, "{{url}}", url)
+	html = utils.stringReplace(html, "{{module}}", module)
+	html = utils.stringReplace(html, "{{method}}", method)
+	html = utils.stringReplace(html, "{{form}}", obj.block_data.form)
+	html = utils.stringReplace(html, "{{record}}", record)
+	html = utils.stringReplace(html, "{{width}}", obj.block_configure.width || defaultWidth)
+	html = utils.stringReplace(html, "{{height}}", obj.block_configure.height || defaultHeight)
+	html = utils.stringReplace(html, "{{id}}", obj.block_configure.cssId || 'swc')
+	html = utils.stringReplace(html, "{{class}}", obj.block_configure.cssClass)
+	html = utils.stringReplace(html, "{{transparent}}", (obj.block_configure.transparent ? 'true' : 'false'))
+	
+	return html
+
+
+}
+
+/**
+ * @properties={typeid:24,uuid:"1EF67102-5F99-4C5A-A20D-1A98EABC3A8C"}
+ */
+function _VIEW_no_login(pageID) {
+	
+	// get page link token
+	var pageLink = globals.CMS.token.getPage(pageID)
+	
+	// return markup to login page
+	return '<p>Your session has expired. Please <a href="'+  pageLink.link +'">login</a> again.</p>'
+}
+
+/**
+ * Perform the element default action.
+ *
+ * @param {JSEvent} event the event that triggered the action
+ *
+ * @properties={typeid:24,uuid:"B206DA14-241E-41A0-946A-FCB31366D1DE"}
+ */
+function PICK_page(input,pageRec,event) {
+	//show page picker when in edit mode
+	if (input instanceof JSEvent && globals.WEBc_block_getEdit()) {
+		globals.WEBc_page_picker(PICK_page,input)
+	}
+	//page picked
+	else if (pageRec) {
+		if (event) {
+			switch (event.getElementName().substr(4)) {
+				case 'loginLink':
+					_loginLink = pageRec.page_name
+					globals.WEBc_block_setConfig(event,'loginLink',pageRec.id_page.toString())
+					break
+			}
+		}
+	}
 }
