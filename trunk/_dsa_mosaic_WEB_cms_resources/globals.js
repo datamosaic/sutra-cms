@@ -131,6 +131,9 @@ var CMS = {
 					},
 				getCMSVersion : function() {
 						return globals.CMS.data.cmsVersion
+					},
+				log : function(/**String*/ logType, /**String*/ message, /**String|UUID*/ sitePK, /**String*/ tableName, /**String|UUID*/ tablePK, /**String*/ tableName2, /**String|UUID*/ tablePK2 ) {
+						return globals.WEBc_log_create(logType,message,sitePK,tableName,tablePK,tableName2,tablePK2)
 					}
 			}
 	};
@@ -2357,6 +2360,8 @@ function WEBc_log_create(logType,message,siteID,pkTable,pkID,pk2Table,pk2ID) {
 		logRec.record_id = pkID
 		logRec.record_2_table = pk2Table
 		logRec.record_2_id = pk2ID
+		
+		databaseManager.saveData(logRec)
 	}
 }
 
