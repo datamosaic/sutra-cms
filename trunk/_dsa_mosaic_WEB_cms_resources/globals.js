@@ -35,6 +35,9 @@ var CMS = {
 				getHomePage : function(/**JSRecord<db:/sutra_cms/web_site>*/ siteRec) {
 						return globals.WEBc_markup_link_home(siteRec)
 					},
+				getLanguages : function() {
+						return globals.WEBc_markup_site_languages(globals.CMS.data)
+					},
 				getPagesAttribute : function(/**String*/ att) {
 						return globals.WEBc_markup_pages_attribute(globals.CMS.data, att)
 					},
@@ -1997,6 +2000,24 @@ function WEBc_markup_pages_up(obj, order, pageRec, pathRec) {
 	}
 	
 	return pages
+}
+
+/**
+ * Return array of site language records
+ * 
+ * @param {Object}		obj Sutra CMS controller obj.
+ * 
+ * @returns {JSRecord<db:/sutra_cms/web_page>[]}	Array of language records for current site
+ * 
+ * @properties={typeid:24,uuid:"69D28FAB-CD7D-4A2D-85B3-24037D00B135"}
+ */
+function WEBc_markup_site_languages(obj) {
+	var languages = []
+	var recs = globals.CMS.data.site.record.web_site_to_site_language
+	for (var i = 0; i < recs.getSize(); i++) {
+		languages.push(recs.getRecord(i + 1))
+	}
+	return languages
 }
 
 /**
