@@ -1,16 +1,22 @@
 /**
- * @properties={typeid:35,uuid:"2DC677B3-626D-47FA-A92B-A13D32236BF6"}
+ * @type {String}
+ *
+ * @properties={typeid:35,uuid:"2DC677B3-626D-47FA-A92B-A13D32236BF6",variableType:12}
  */
 var _license_dsa_mosaic_WEB_cms_resources = 'Module: _dsa_mosaic_WEB_cms_resources \
 									Copyright (C) 2011 Data Mosaic \
 									MIT Licensed';
 
 /**
+ * @type {Boolean}
+ *
  * @properties={typeid:35,uuid:"D055F5E5-A18B-459B-9D17-86A082C98715",variableType:-4}
  */
 var WEB_block_page_mode = false;
 
 /**
+ * @type {Boolean}
+ *
  * @properties={typeid:35,uuid:"669F48AD-6BF9-4038-A808-1A8530337316",variableType:-4}
  */
 var WEB_block_on_select = true;
@@ -713,6 +719,7 @@ function WEBc_block_getEdit() {
  * @returns {Object} Javascript object with your data or null.
  * 
  * @properties={typeid:24,uuid:"15B7A603-F30F-4772-9AF6-AA7BB70AAE83"}
+ * @AllowToRunInFind
  */
 function WEBc_session_getData(sessionID, dataKey) {
 	// get session	
@@ -744,6 +751,7 @@ function WEBc_session_getData(sessionID, dataKey) {
  * @returns {Object} Javascript object with your data.
  * 
  * @properties={typeid:24,uuid:"6839C1C3-962D-40B9-BE58-D22880BD5BBE"}
+ * @AllowToRunInFind
  */
 function WEBc_session_setData(sessionID, dataKey, dataValue) {
 	// get session	
@@ -782,6 +790,7 @@ function WEBc_session_setData(sessionID, dataKey, dataValue) {
  * @returns {Object} Javascript object with your data or null.
  * 
  * @properties={typeid:24,uuid:"35B7A603-F30F-4772-9AF6-AA7BB70AAE83"}
+ * @AllowToRunInFind
  */
 function WEBc_session_deleteData(sessionID, dataKey) {
 	// get session	
@@ -812,6 +821,7 @@ function WEBc_session_deleteData(sessionID, dataKey) {
  * @returns {JSRecord} session record or null
  * 
  * @properties={typeid:24,uuid:"F2E852B4-71FA-4A91-A9BA-87781B082C6C"}
+ * @AllowToRunInFind
  */
 function WEBc_session_getSession(sessionID) {
 	
@@ -942,6 +952,7 @@ function WEBc_cookie_getValue(request, name) {
  * @return {String} Domain (and folder, if specified) for a site.
  * 
  * @properties={typeid:24,uuid:"AFA318BF-7E29-4E7D-BE9D-CE4085851DF3"}
+ * @AllowToRunInFind
  */
 function WEBc_markup_link_base(pageID, siteURL, siteLanguageRec) {
 	
@@ -1046,6 +1057,7 @@ function WEBc_markup_link_base(pageID, siteURL, siteLanguageRec) {
  * @return {String} Path to land in the site directory (no domain).
  * 
  * @properties={typeid:24,uuid:"CF88AF63-45F2-4BC4-95BC-8E6D653A58BC"}
+ * @AllowToRunInFind
  */
 function WEBc_markup_link_resources(pageID, siteURL, linkType) {
 	
@@ -1089,7 +1101,6 @@ function WEBc_markup_link_resources(pageID, siteURL, linkType) {
 }
 
 /**
- * @param markup text that contain internal page link keys
  * Replace tokens with correct references to items referenced by the tokens.
  * 
  * @param {String}	markup Text for a particular area (and all activated blocks) that may contain tokens.
@@ -1101,6 +1112,7 @@ function WEBc_markup_link_resources(pageID, siteURL, linkType) {
  * @return {String} URL for a page.
  * 
  * @properties={typeid:24,uuid:"19AD8258-86F2-48AB-AA1B-713A2D08D77D"}
+ * @AllowToRunInFind
  */
 function WEBc_markup_link_internal(markup,siteURL,linkType,areaID,obj) {
 	// object not passed in, grab it
@@ -1220,6 +1232,7 @@ function WEBc_markup_link_internal(markup,siteURL,linkType,areaID,obj) {
  * @return {String} URL for a page.
  * 
  * @properties={typeid:24,uuid:"8D473D49-2039-49AC-B633-72E88E736CA9"}
+ * @AllowToRunInFind
  */
 function WEBc_markup_link_page(pageID, siteURL, linkType, webMode, obj) {
 	
@@ -1599,6 +1612,7 @@ function WEBc_markup_token(input,tokenType) {
  * @param {Boolean} [showLanguage=false] Allow to target a specific page's language.
  *
  * @properties={typeid:24,uuid:"D05AA53E-5D46-4534-A2AC-A55D700F29C0"}
+ * @AllowToRunInFind
  */
 function WEBc_page_picker(method,elem,showLanguage) {
 	function GET_page(pageRec) {
@@ -1767,6 +1781,7 @@ function WEBc_page_picker(method,elem,showLanguage) {
  * @returns	{JSRecord}	Newly created page record.
  * 
  * @properties={typeid:24,uuid:"A7F7C059-3707-498F-A0B6-C1334EDA6A10"}
+ * @AllowToRunInFind
  */
 function WEBc_page_new(pageName,pageType,parentID,themeID,layoutID) {
 	if (!pageName) {
@@ -2098,6 +2113,7 @@ function WEBc_install_getRewrite() {
  * @returns {JSRecord<db:/sutra_cms/web_page>[]}	Array of parent records from given record
  * 
  * @properties={typeid:24,uuid:"CFD41FEB-A2F8-4CC3-87B9-3458CA5E74F3"}
+ * @AllowToRunInFind
  */
 function WEBc_markup_link_servlet(obj,siteID) {
 	// object not passed in, grab it
@@ -2262,6 +2278,7 @@ function WEBc_sutra_trigger(method,arguments) {
  * @returns {JSFoundset|Integer} Foundset of pages that have attribute
  * 
  * @properties={typeid:24,uuid:"66B67CD6-DBF9-4EF4-B330-EC7562A8E415"}
+ * @AllowToRunInFind
  */
 function WEBc_markup_pages_attribute(obj, att) {
     // find pages with supplied attribute
@@ -2289,6 +2306,7 @@ function WEBc_markup_pages_attribute(obj, att) {
  * @return {String} URL for a page.
  * 
  * @properties={typeid:24,uuid:"22E8DF83-30A3-4D46-A7A6-5464F76E1FAE"}
+ * @AllowToRunInFind
  */
 function WEBc_markup_link_asset(assetInstanceID, pageID, siteURL, linkType, obj) {
 	var returnObj = new Object()
@@ -2398,6 +2416,7 @@ function WEBc_log_create(logType,message,siteID,pkTable,pkID,pk2Table,pk2ID) {
  * @return {String} URL for a page.
  * 
  * @properties={typeid:24,uuid:"F1467DE2-99B2-49CE-8D67-278946FAEC9F"}
+ * @AllowToRunInFind
  */
 function WEBc_markup_page_name(pageID, siteURL, linkType, webMode, obj) {
 	
