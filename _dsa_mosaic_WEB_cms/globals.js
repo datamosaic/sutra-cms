@@ -1,7 +1,7 @@
 /**
  * @type {String}
  *
- * @properties={typeid:35,uuid:"24fde543-69cc-4de9-af47-7f7c22221f17",variableType:12}
+ * @properties={typeid:35,uuid:"24fde543-69cc-4de9-af47-7f7c22221f17"}
  */
 var _license_dsa_mosaic_WEB_cms = 'Module: _dsa_mosaic_WEB_cms \
 									Copyright (C) 2011 Data Mosaic \
@@ -17,7 +17,7 @@ var WEB_block_scope__new = null;
 /**
  * @type {String}
  *
- * @properties={typeid:35,uuid:"484C4F77-B18E-4B39-89C7-59BFCFB5B6E5",variableType:12}
+ * @properties={typeid:35,uuid:"484C4F77-B18E-4B39-89C7-59BFCFB5B6E5"}
  */
 var WEB_block_version = null;
 
@@ -31,14 +31,14 @@ var WEB_block_scope = null;
 /**
  * @type {String}
  *
- * @properties={typeid:35,uuid:"B1FA121E-7FCE-4CD5-97D2-AE0E75D79440",variableType:12}
+ * @properties={typeid:35,uuid:"B1FA121E-7FCE-4CD5-97D2-AE0E75D79440"}
  */
 var WEB_page_group = null;
 
 /**
  * @type {String}
  *
- * @properties={typeid:35,uuid:"86AA4208-BDF9-4D86-8267-C3EB48EC6C32",variableType:12}
+ * @properties={typeid:35,uuid:"86AA4208-BDF9-4D86-8267-C3EB48EC6C32"}
  */
 var WEB_page_platform = null;
 
@@ -50,7 +50,7 @@ var WEB_page_version = null;
 /**
  * @type {String}
  *
- * @properties={typeid:35,uuid:"5DDBD6FC-A0E1-4395-B10B-6154C12B4285",variableType:12}
+ * @properties={typeid:35,uuid:"5DDBD6FC-A0E1-4395-B10B-6154C12B4285"}
  */
 var WEB_page_language = null;
 
@@ -66,28 +66,28 @@ var WEB_page_mode = 2;
 /**
  * @type {String}
  *
- * @properties={typeid:35,uuid:"F5BD30C1-1A0F-436A-9320-9812076B6B72",variableType:12}
+ * @properties={typeid:35,uuid:"F5BD30C1-1A0F-436A-9320-9812076B6B72"}
  */
 var WEB_page_sort = 'order_by asc';
 
 /**
  * @type {String}
  *
- * @properties={typeid:35,uuid:"14FD6120-E9BF-4EC2-973D-9790A6F6903F",variableType:12}
+ * @properties={typeid:35,uuid:"14FD6120-E9BF-4EC2-973D-9790A6F6903F"}
  */
 var WEB_preview_url = null;
 
 /**
  * @type {String}
  *
- * @properties={typeid:35,uuid:"87BE1F80-1634-4DC2-B9DA-29CB5B7CF054",variableType:12}
+ * @properties={typeid:35,uuid:"87BE1F80-1634-4DC2-B9DA-29CB5B7CF054"}
  */
 var WEB_site_display = null;
 
 /**
  * @type {String}
  *
- * @properties={typeid:35,uuid:"15313654-99B2-4BCA-9D6F-0D37F917C5DD",variableType:12}
+ * @properties={typeid:35,uuid:"15313654-99B2-4BCA-9D6F-0D37F917C5DD"}
  */
 var WEB_tag_choose = null;
 

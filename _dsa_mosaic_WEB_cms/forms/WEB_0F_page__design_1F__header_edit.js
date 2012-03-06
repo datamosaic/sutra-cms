@@ -1,7 +1,7 @@
 /**
  * @type {String}
  *
- * @properties={typeid:35,uuid:"04fde543-69cc-4de9-af47-7f7c22221f58",variableType:12}
+ * @properties={typeid:35,uuid:"04fde543-69cc-4de9-af47-7f7c22221f58"}
  */
 var _license_dsa_mosaic_WEB_cms = 'Module: _dsa_mosaic_WEB_cms \
 									Copyright (C) 2011 Data Mosaic \
@@ -15,21 +15,21 @@ var _recPlatform = null;
 /**
  * @type {String}
  *
- * @properties={typeid:35,uuid:"CC26ACA4-3B56-44EC-B3D4-AE6A34325492",variableType:12}
+ * @properties={typeid:35,uuid:"CC26ACA4-3B56-44EC-B3D4-AE6A34325492"}
  */
 var _idSitePlatform = 'null';
 
 /**
  * @type {String}
  *
- * @properties={typeid:35,uuid:"26090AA2-08B5-4C9B-BA39-F10CA9B8E602",variableType:12}
+ * @properties={typeid:35,uuid:"26090AA2-08B5-4C9B-BA39-F10CA9B8E602"}
  */
 var _idSiteGroup = 'null';
 
 /**
  * @type {String}
  *
- * @properties={typeid:35,uuid:"25B01FDD-1E2F-4764-8B62-0A382867E26D",variableType:12}
+ * @properties={typeid:35,uuid:"25B01FDD-1E2F-4764-8B62-0A382867E26D"}
  */
 var _idLayout = null;
 
@@ -41,7 +41,7 @@ var _recGroup = null;
 /**
  * @type {String}
  *
- * @properties={typeid:35,uuid:"A75B46EF-6BDE-4485-8BCF-9C1F0949075C",variableType:12}
+ * @properties={typeid:35,uuid:"A75B46EF-6BDE-4485-8BCF-9C1F0949075C"}
  */
 var _idTheme = null;
 
@@ -60,14 +60,14 @@ var _themeSet = null;
 /**
  * @type {String}
  *
- * @properties={typeid:35,uuid:"444198EB-FCF8-447C-86AF-681420811E77",variableType:12}
+ * @properties={typeid:35,uuid:"444198EB-FCF8-447C-86AF-681420811E77"}
  */
 var _idSiteLanguage = '';
 
 /**
  * @type {String}
  *
- * @properties={typeid:35,uuid:"83AB2103-85F5-4138-B635-CBB0370DB1D8",variableType:12}
+ * @properties={typeid:35,uuid:"83AB2103-85F5-4138-B635-CBB0370DB1D8"}
  */
 var _pageName = null;
 
