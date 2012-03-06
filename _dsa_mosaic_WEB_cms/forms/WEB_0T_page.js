@@ -1,26 +1,36 @@
 /**
- * @properties={typeid:35,uuid:"04fde543-69cc-4de9-af47-7f7c22221f66"}
+ * @type {String}
+ *
+ * @properties={typeid:35,uuid:"04fde543-69cc-4de9-af47-7f7c22221f66",variableType:12}
  */
 var _license_dsa_mosaic_WEB_cms = 'Module: _dsa_mosaic_WEB_cms \
 									Copyright (C) 2011 Data Mosaic \
 									MIT Licensed';
 
 /**
- * @properties={typeid:35,uuid:"9369E074-5F4A-46A1-BFA4-741F442248F6"}
+ * @type {String}
+ *
+ * @properties={typeid:35,uuid:"9369E074-5F4A-46A1-BFA4-741F442248F6",variableType:12}
  */
 var _scopePlatform = null;
 
 /**
- * @properties={typeid:35,uuid:"AD05F666-8B75-40D6-BD00-B381C4C503B4"}
+ * @type {String}
+ *
+ * @properties={typeid:35,uuid:"AD05F666-8B75-40D6-BD00-B381C4C503B4",variableType:12}
  */
 var _scopeGroup = null;
 
 /**
- * @properties={typeid:35,uuid:"3937DFE9-2396-4648-9CFC-22A6D98FC82E"}
+ * @type {String}
+ *
+ * @properties={typeid:35,uuid:"3937DFE9-2396-4648-9CFC-22A6D98FC82E",variableType:12}
  */
 var _scopeLanguage = null;
 
 /**
+ * @type {Boolean}
+ *
  * @properties={typeid:35,uuid:"D30001EE-2E04-408B-87BA-0DE1CFC32E23",variableType:-4}
  */
 var _refresh = false;
@@ -460,6 +470,7 @@ function MOVE_down() {
 /**
  *
  * @properties={typeid:24,uuid:"421A6D06-74E9-413A-96A9-314C87694CAB"}
+ * @AllowToRunInFind
  */
 function MOVE_generic(input) {
 	
@@ -685,6 +696,7 @@ function MOVE_up() {
 /**
  *
  * @properties={typeid:24,uuid:"3B580755-B893-42F4-AE94-DF9F21A77783"}
+ * @AllowToRunInFind
  */
 function REC_column_publish(pagePK) {
 	var fsPage = databaseManager.getFoundSet('sutra_cms','web_page')
@@ -770,6 +782,7 @@ function REC_column_publish(pagePK) {
 /**
  *
  * @properties={typeid:24,uuid:"952D8326-37DC-44A3-B6E9-F2212C1A87BE"}
+ * @AllowToRunInFind
  */
 function REC_delete(record) {
 	
@@ -898,6 +911,7 @@ function REC_delete(record) {
 /**
  *
  * @properties={typeid:24,uuid:"5B6856DD-D4F5-441D-AC03-E1847019B19C"}
+ * @AllowToRunInFind
  */
 function REC_duplicate() {
 	//TODO: need a better way to check than just by version number
@@ -1108,6 +1122,7 @@ function REC_new() {
 /**
  *
  * @properties={typeid:24,uuid:"6C822BD6-4F1B-4B48-B0A2-C695A0DDC47B"}
+ * @AllowToRunInFind
  */
 function REC_on_select(selectedRecord) {
 	//make record clicked in tree be selected on foundset also
@@ -1159,6 +1174,8 @@ function TOGGLE_nodes() {
 }
 
 /**
+ * @type {Number}
+ *
  * @properties={typeid:35,uuid:"87F7463B-C4D2-4335-90C8-3D90D8A7607D",variableType:4}
  */
 var _addRecord = null;
@@ -1171,6 +1188,7 @@ var _oldRecord = null;
 /**
  *
  * @properties={typeid:24,uuid:"DAE442BF-2FB3-4EA6-A964-E71EC173A19F"}
+ * @AllowToRunInFind
  */
 function SET_page(pageID) {
 	var fsPage = databaseManager.getFoundSet(controller.getServerName(),"web_page")
@@ -1190,6 +1208,7 @@ function SET_page(pageID) {
  * @param {JSEvent} event the event that triggered the action
  *
  * @properties={typeid:24,uuid:"00D5F9DC-EFC1-45AD-8AB1-D7574EB41971"}
+ * @AllowToRunInFind
  */
 function TABS_list(input) {
 	//should just call this method, but need to do something different when chosen
@@ -1359,6 +1378,7 @@ function TABS_list(input) {
 
 /**
  * @properties={typeid:24,uuid:"FF2A28E9-E80B-4ECE-B76D-34E9765F7640"}
+ * @AllowToRunInFind
  */
 function TREE_refresh(firstLoad) {
 	//disable record selection of page

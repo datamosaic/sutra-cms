@@ -1,5 +1,7 @@
 /**
- * @properties={typeid:35,uuid:"04fde543-69cc-4de9-af47-7f7c22221f47"}
+ * @type {String}
+ *
+ * @properties={typeid:35,uuid:"04fde543-69cc-4de9-af47-7f7c22221f47",variableType:12}
  */
 var _license_dsa_mosaic_WEB_cms = 'Module: _dsa_mosaic_WEB_cms \
 									Copyright (C) 2011 Data Mosaic \
@@ -161,6 +163,7 @@ function ACTION_blow_in_missing_areas_to_all_pagesz() {
  * @param {JSEvent} event the event that triggered the action
  *
  * @properties={typeid:24,uuid:"C79053B1-CA2A-4820-A7D3-65D2AD816FA3"}
+ * @AllowToRunInFind
  */
 function ACTION_path_generate(event) {
 	var input = plugins.dialogs.showWarningDialog(
@@ -364,6 +367,7 @@ function FORM_on_load(event) {
  * @returns {Boolean}
  *
  * @properties={typeid:24,uuid:"A6977F22-63A1-4823-AE8D-C43D5A7A6B16"}
+ * @AllowToRunInFind
  */
 function FIELD_directory_onLost(event) {
 	// don't allow trailing "/"

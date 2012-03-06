@@ -1,5 +1,7 @@
 /**
- * @properties={typeid:35,uuid:"04fde543-69cc-4de9-af47-7f7c22221f18"}
+ * @type {String}
+ *
+ * @properties={typeid:35,uuid:"04fde543-69cc-4de9-af47-7f7c22221f18",variableType:12}
  */
 var _license_dsa_mosaic_WEB_cms = 'Module: _dsa_mosaic_WEB_cms \
 									Copyright (C) 2011 Data Mosaic \
@@ -66,6 +68,7 @@ function CONTROLLER(app, session, request, response, mode) {
  * Handles session management
  * 
  * @properties={typeid:24,uuid:"BD755ACA-11CF-4E17-9041-42853B2E14E4"}
+ * @AllowToRunInFind
  */
 function CONTROLLER_session() {
 	// assign main CMS object for easier reference
@@ -313,6 +316,7 @@ function CONTROLLER_builder(results) {
  * @param {String} cmsVersion cms current version number
  * 
  * @properties={typeid:24,uuid:"251216CD-208E-4A2A-8237-1196E2032EC1"}
+ * @AllowToRunInFind
  */
 function CONTROLLER_setup(results, app, session, request, response, mode, cmsVersion) {
 	
@@ -1316,6 +1320,7 @@ function CONTROLLER_setup(results, app, session, request, response, mode, cmsVer
  * Gracefully handle page requests that don't resolve properly
  * 
  * @properties={typeid:24,uuid:"2421EBCC-CD1C-4ACF-BE86-02167F1EA742"}
+ * @AllowToRunInFind
  */
 function CONTROLLER_error() {
 	// assign main CMS object for easier reference

@@ -1,11 +1,15 @@
 /**
- * @properties={typeid:35,uuid:"D72452C6-C104-4BDF-B9BC-9A79695092C2"}
+ * @type {String}
+ *
+ * @properties={typeid:35,uuid:"D72452C6-C104-4BDF-B9BC-9A79695092C2",variableType:12}
  */
 var _license_dsa_mosaic_WEB_cms = 'Module: _dsa_mosaic_WEB_cms \
 									Copyright (C) 2011 Data Mosaic \
 									MIT Licensed';
 
 /**
+ * @type {Number}
+ *
  * @properties={typeid:35,uuid:"02B408A8-5629-4892-AE08-90EB9C748B07",variableType:4}
  */
 var _contentFilter = 1;

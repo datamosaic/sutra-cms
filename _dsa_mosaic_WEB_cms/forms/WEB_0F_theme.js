@@ -1,11 +1,15 @@
 /**
- * @properties={typeid:35,uuid:"04fde543-69cc-4de9-af47-7f7c22221f42"}
+ * @type {String}
+ *
+ * @properties={typeid:35,uuid:"04fde543-69cc-4de9-af47-7f7c22221f42",variableType:12}
  */
 var _license_dsa_mosaic_WEB_cms = 'Module: _dsa_mosaic_WEB_cms \
 									Copyright (C) 2011 Data Mosaic \
 									MIT Licensed';
 
 /**
+ * @type {Boolean}
+ *
  * @properties={typeid:35,uuid:"A93B2937-07EF-4D98-900A-03670B87BE7F",variableType:-4}
  */
 var _flagRefresh = false;
@@ -16,61 +20,85 @@ var _flagRefresh = false;
 var _elements = {};
 
 /**
+ * @type {Array}
+ *
  * @properties={typeid:35,uuid:"7AE439CD-9A40-42C7-93ED-C0E0A73DCD0A",variableType:-4}
  */
 var _elementsLayoutSelected = [];
 
 /**
+ * @type {Array}
+ *
  * @properties={typeid:35,uuid:"9C377FD4-9471-47A7-A964-5F92707A3478",variableType:-4}
  */
 var _elementsSelected = [];
 
 /**
+ * @type {Number}
+ *
  * @properties={typeid:35,uuid:"6C1C3646-D6BD-49D3-BF86-BFE0E9CA4F6F",variableType:4}
  */
 var _elementsProgressTotal = 0;
 
 /**
+ * @type {Number}
+ *
  * @properties={typeid:35,uuid:"A48A461A-64DF-4483-9E9B-3777231B95F6",variableType:4}
  */
 var _elementsPathsIncrementer = 0;
 
 /**
+ * @type {Number}
+ *
  * @properties={typeid:35,uuid:"0554ECE9-051E-4327-B18D-E2CAB4805CEB",variableType:4}
  */
 var _themesPathsIncrementer = 0;
 
 /**
+ * @type {Number}
+ *
  * @properties={typeid:35,uuid:"B6F9030C-6D6F-49E5-833C-84BA10D0C982",variableType:4}
  */
 var _elementsDone = 0;
 
 /**
+ * @type {Array}
+ *
  * @properties={typeid:35,uuid:"1E47C10C-B99F-4515-A4B9-B7B9E6C21C32",variableType:-4}
  */
 var _themesLayoutSelected = [];
 
 /**
+ * @type {Array}
+ *
  * @properties={typeid:35,uuid:"F4A4D331-DC9D-4A88-92BA-1C3DB491C91E",variableType:-4}
  */
 var _themesSelected = [];
 
 /**
+ * @type {Number}
+ *
  * @properties={typeid:35,uuid:"FBEF5A88-6127-4EB8-B47C-1E98E64213DF",variableType:4}
  */
 var _themesProgressTotal = 0;
 
 /**
+ * @type {Number}
+ *
  * @properties={typeid:35,uuid:"BF4E5E80-2FAA-4433-A737-EF8364AD273E",variableType:4}
  */
 var _themesProgressCount = 0;
 
 /**
+ * @type {Number}
+ *
  * @properties={typeid:35,uuid:"91FDF507-D6E2-4E87-BF0D-C0D2A6946A57",variableType:4}
  */
 var _themesDone = 0;
 
 /**
+ * @type {Array}
+ *
  * @properties={typeid:35,uuid:"563E0740-3E65-4C43-84B2-5EE80C9D81C3",variableType:-4}
  */
 var _themesPaths = [];
@@ -182,6 +210,7 @@ function REC_delete() {
  * @returns {Boolean}
  *
  * @properties={typeid:24,uuid:"F0F3FB67-B1E6-4D1F-9AE5-940B22838CE7"}
+ * @AllowToRunInFind
  */
 function FLD_data_change__flag_default(oldValue, newValue, event) {
 	var record = foundset.getRecord(foundset.getSelectedIndex())
@@ -263,6 +292,7 @@ function LAYOUTS_action_list(event) {
 
 /**
  * @properties={typeid:24,uuid:"332C7622-77A2-42B8-A8EB-B4135890E333"}
+ * @AllowToRunInFind
  */
 function LAYOUTS_action_list_control(selected) {
 	switch (selected) {
@@ -329,7 +359,7 @@ function LAYOUTS_action_list_control(selected) {
  * 
  * @properties={typeid:24,uuid:"B757D4CF-18E5-4D51-8A9B-9E4D5686530D"}
  */
-function REC_new(progress) {
+function REC_new(progress,_flagRefresh) {
 	// call file streaming functionality
 	forms.WEB_0C__file_stream.THEME_new(0)
 }
@@ -342,6 +372,7 @@ function REC_new(progress) {
  * @returns {Boolean}
  *
  * @properties={typeid:24,uuid:"E1AF70C2-4087-41C1-A588-5F413DD0FD5A"}
+ * @AllowToRunInFind
  */
 function FIELD_directory_onLost(event) {
 	// don't allow trailing "/"
@@ -391,6 +422,7 @@ function FORM_on_show(firstShow, event) {
  * @param {JSEvent} event the event that triggered the action
  * 
  * @properties={typeid:24,uuid:"A7C0E994-A29D-4BBA-9677-8F7608F29578"}
+ * @AllowToRunInFind
  */
 function FILTER_records(event) {
 	//find stuff for the selected site
@@ -447,6 +479,7 @@ function REC_refresh() {
  * @param {JSEvent} input the event that triggered the action
  *
  * @properties={typeid:24,uuid:"229D5D35-E92C-4629-8759-6AAD67F19B95"}
+ * @AllowToRunInFind
  */
 function ACTIONS_list(input) {
 	//menu items

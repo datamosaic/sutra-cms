@@ -1,41 +1,57 @@
 /**
- * @properties={typeid:35,uuid:"1E256446-5720-4637-9FCB-AC0BD88C1218"}
+ * @type {String}
+ *
+ * @properties={typeid:35,uuid:"1E256446-5720-4637-9FCB-AC0BD88C1218",variableType:12}
  */
 var _license_dsa_mosaic_WEB_cms = 'Module: _dsa_mosaic_WEB_cms_blocks \
 									Copyright (C) 2011 Data Mosaic \
 									MIT Licensed';
 
 /**
- * @properties={typeid:35,uuid:"79D3BC3A-FA39-4539-B294-44025409B130"}
+ * @type {String}
+ *
+ * @properties={typeid:35,uuid:"79D3BC3A-FA39-4539-B294-44025409B130",variableType:12}
  */
 var _data = null;
 
 /**
- * @properties={typeid:35,uuid:"6459A7B6-6096-4B5F-934E-972B54947037"}
+ * @type {String}
+ *
+ * @properties={typeid:35,uuid:"6459A7B6-6096-4B5F-934E-972B54947037",variableType:12}
  */
 var _label = null;
 
 /**
- * @properties={typeid:35,uuid:"1DA47DF9-6D78-43A5-AD7A-875F76A04CC5"}
+ * @type {String}
+ *
+ * @properties={typeid:35,uuid:"1DA47DF9-6D78-43A5-AD7A-875F76A04CC5",variableType:12}
  */
 var _post = null;
 
 /**
- * @properties={typeid:35,uuid:"351A4B8F-1944-4B77-9891-B0D0CF1EC461"}
+ * @type {String}
+ *
+ * @properties={typeid:35,uuid:"351A4B8F-1944-4B77-9891-B0D0CF1EC461",variableType:12}
  */
 var _pre = null;
 
 /**
+ * @type {Number}
+ *
  * @properties={typeid:35,uuid:"279F3ABE-7545-4F7D-CABC-C686E75A6305",variableType:4}
  */
 var _chars = null;
 
 /**
+ * @type {Number}
+ *
  * @properties={typeid:35,uuid:"279F3ABE-7545-4F7D-BABC-C686E75A6305",variableType:4}
  */
 var _repeatable = null;
 
 /**
+ * @type {Number}
+ *
  * @properties={typeid:35,uuid:"A5A79513-59D6-4604-B1B1-A9E81B99C2FB",variableType:4}
  */
 var _required = null;

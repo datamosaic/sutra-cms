@@ -1,5 +1,7 @@
 /**
- * @properties={typeid:35,uuid:"01E8184B-FD76-4964-AB42-A83CBDF51EAB"}
+ * @type {String}
+ *
+ * @properties={typeid:35,uuid:"01E8184B-FD76-4964-AB42-A83CBDF51EAB",variableType:12}
  */
 var _license_dsa_mosaic_WEB_cms = 'Module: _dsa_mosaic_WEB_cms \
 									Copyright (C) 2011 Data Mosaic \
@@ -11,32 +13,44 @@ var _license_dsa_mosaic_WEB_cms = 'Module: _dsa_mosaic_WEB_cms \
 var _fsVersion = databaseManager.getFoundSet('sutra_cms','web_version');
 
 /**
- * @properties={typeid:35,uuid:"E02416C7-257C-4C49-AEE1-B81E2C2EA04E"}
+ * @type {String}
+ *
+ * @properties={typeid:35,uuid:"E02416C7-257C-4C49-AEE1-B81E2C2EA04E",variableType:12}
  */
 var _idGroup = null;
 
 /**
- * @properties={typeid:35,uuid:"B4C92A93-6095-4716-8DCD-2D07604EA7F1"}
+ * @type {String}
+ *
+ * @properties={typeid:35,uuid:"B4C92A93-6095-4716-8DCD-2D07604EA7F1",variableType:12}
  */
 var _idLanguage = null;
 
 /**
- * @properties={typeid:35,uuid:"A6AE2FE6-7934-4127-9317-CFFEDE755D7D"}
+ * @type {String}
+ *
+ * @properties={typeid:35,uuid:"A6AE2FE6-7934-4127-9317-CFFEDE755D7D",variableType:12}
  */
 var _idPlatform = null;
 
 /**
+ * @type {Number}
+ *
  * @properties={typeid:35,uuid:"884E78BA-3B15-43CF-B187-7B319F4F4DF2",variableType:4}
  */
 var _posnVersion = null;
 
 /**
+ * @type {Number}
+ *
  * @properties={typeid:35,uuid:"8502BC09-C939-41B9-AEB0-C143C0448F6F",variableType:4}
  */
 var _fidAccept = null;
 
 /**
- * @properties={typeid:35,uuid:"ECFE243F-45B0-49CA-90B6-F6755D622195"}
+ * @type {String}
+ *
+ * @properties={typeid:35,uuid:"ECFE243F-45B0-49CA-90B6-F6755D622195",variableType:12}
  */
 var _versionDescription = null;
 
@@ -181,6 +195,7 @@ function FORM_on_show() {
  * @returns {Boolean}
  *
  * @properties={typeid:24,uuid:"AE695C02-9334-4760-8D3E-1EB72FCD7330"}
+ * @AllowToRunInFind
  */
 function FLD_idPlatform__data_change(oldValue, newValue, event) {
 	//set up language valuelist
@@ -232,6 +247,7 @@ function FLD_idPlatform__data_change(oldValue, newValue, event) {
  * @returns {Boolean}
  *
  * @properties={typeid:24,uuid:"37153F49-12D2-43C1-8EFC-0DD816D25A26"}
+ * @AllowToRunInFind
  */
 function FLD_idLanguage__data_change(oldValue, newValue, event) {
 	//set up group valuelist
@@ -283,6 +299,7 @@ function FLD_idLanguage__data_change(oldValue, newValue, event) {
  * @returns {Boolean}
  *
  * @properties={typeid:24,uuid:"3BCBFC86-819E-43A4-A4D3-04F5DDF5E276"}
+ * @AllowToRunInFind
  */
 function FLD_idGroup__data_change(oldValue, newValue, event) {
 	//reset variables

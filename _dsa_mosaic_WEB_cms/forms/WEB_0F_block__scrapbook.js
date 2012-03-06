@@ -1,16 +1,22 @@
 /**
+ * @type {Boolean}
+ *
  * @properties={typeid:35,uuid:"EECFB2A2-AB6E-4059-B9B9-2D18C2C450CD",variableType:-4}
  */
 var _skipSelect = false;
 
 /**
- * @properties={typeid:35,uuid:"04fde543-69cc-4de9-af47-7f7c22221f51"}
+ * @type {String}
+ *
+ * @properties={typeid:35,uuid:"04fde543-69cc-4de9-af47-7f7c22221f51",variableType:12}
  */
 var _license_dsa_mosaic_WEB_cms = 'Module: _dsa_mosaic_WEB_cms \
 									Copyright (C) 2011 Data Mosaic \
 									MIT Licensed';
 
 /**
+ * @type {Boolean}
+ *
  * @properties={typeid:35,uuid:"6E70A90A-35E2-488D-92AD-0D5F99E8CEE4",variableType:-4}
  */
 var _editMode = false;
@@ -18,6 +24,7 @@ var _editMode = false;
 /**
  *
  * @properties={typeid:24,uuid:"69CCDB89-DD7A-46C7-BF3D-F1BD0BC5BF7F"}
+ * @AllowToRunInFind
  */
 function REC_delete() {
 	var delRec = plugins.dialogs.showWarningDialog(
@@ -668,6 +675,7 @@ function REC_refresh_synchronize(newVersion) {
 
 /**
  * @properties={typeid:24,uuid:"573F36C0-638A-494B-80D5-C24DD8BC1688"}
+ * @AllowToRunInFind
  */
 function FOUNDSET_restrict(returnContent, noSutra, scrapbookScope) {
 	//get parent form

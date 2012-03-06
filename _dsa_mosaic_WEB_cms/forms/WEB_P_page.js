@@ -1,5 +1,7 @@
 /**
- * @properties={typeid:35,uuid:"04fde543-69cc-4de9-af47-7f7c23221f58"}
+ * @type {String}
+ *
+ * @properties={typeid:35,uuid:"04fde543-69cc-4de9-af47-7f7c23221f58",variableType:12}
  */
 var _license_dsa_mosaic_WEB_cms = 'Module: _dsa_mosaic_WEB_cms \
 									Copyright (C) 2011 Data Mosaic \
@@ -11,17 +13,23 @@ var _license_dsa_mosaic_WEB_cms = 'Module: _dsa_mosaic_WEB_cms \
 var _recPlatform = null;
 
 /**
- * @properties={typeid:35,uuid:"CC26ACA4-3B56-44EC-B334-AE6A34325492"}
+ * @type {String}
+ *
+ * @properties={typeid:35,uuid:"CC26ACA4-3B56-44EC-B334-AE6A34325492",variableType:12}
  */
 var _idSitePlatform = 'null';
 
 /**
- * @properties={typeid:35,uuid:"26030AA2-08B5-4C9B-BA39-F10CA9B8E602"}
+ * @type {String}
+ *
+ * @properties={typeid:35,uuid:"26030AA2-08B5-4C9B-BA39-F10CA9B8E602",variableType:12}
  */
 var _idSiteGroup = 'null';
 
 /**
- * @properties={typeid:35,uuid:"25B01FDD-1E2F-4364-8B62-0A382867E26D"}
+ * @type {String}
+ *
+ * @properties={typeid:35,uuid:"25B01FDD-1E2F-4364-8B62-0A382867E26D",variableType:12}
  */
 var _idLayout = null;
 
@@ -31,7 +39,9 @@ var _idLayout = null;
 var _recGroup = null;
 
 /**
- * @properties={typeid:35,uuid:"A73B46EF-6BDE-4485-8BCF-9C1F0949075C"}
+ * @type {String}
+ *
+ * @properties={typeid:35,uuid:"A73B46EF-6BDE-4485-8BCF-9C1F0949075C",variableType:12}
  */
 var _idTheme = null;
 
@@ -41,17 +51,23 @@ var _idTheme = null;
 var _recLanguage = null;
 
 /**
+ * @type {Number}
+ *
  * @properties={typeid:35,uuid:"2663ABEA-5268-43B2-B657-157535A41384",variableType:4}
  */
 var _themeSet = null;
 
 /**
- * @properties={typeid:35,uuid:"444198EB-FCF8-447C-86AF-681420311E77"}
+ * @type {String}
+ *
+ * @properties={typeid:35,uuid:"444198EB-FCF8-447C-86AF-681420311E77",variableType:12}
  */
 var _idSiteLanguage = '';
 
 /**
- * @properties={typeid:35,uuid:"83AB2103-85F5-4138-B635-C3B0370DB1D8"}
+ * @type {String}
+ *
+ * @properties={typeid:35,uuid:"83AB2103-85F5-4138-B635-C3B0370DB1D8",variableType:12}
  */
 var _pageName = null;
 
@@ -90,6 +106,7 @@ function ACTION_cancel() {
 /**
  *
  * @properties={typeid:24,uuid:"836DDC99-6CFF-499B-8949-E79373BD1DFB"}
+ * @AllowToRunInFind
  */
 function ACTION_ok() {
 	//see forms.WEB_0F_page__design_1F__header_edit.ACTION_save
@@ -409,6 +426,7 @@ function ACTION_ok() {
  * @param {JSEvent} event the event that triggered the action
  *
  * @properties={typeid:24,uuid:"C344B26D-6EEF-4AC0-8762-CB520CCB37C3"}
+ * @AllowToRunInFind
  */
 function FORM_on_show(firstShow, event) {
 	//disable closing the form
@@ -605,6 +623,7 @@ function FLD_data_change__id_theme_layout(oldValue, newValue, event) {
 
 /**
  * @properties={typeid:24,uuid:"9BACCA00-A7D8-4635-84D3-4B953E4B9B75"}
+ * @AllowToRunInFind
  */
 function SET_valuelist_layout() {
 	//grab the layouts for this platform

@@ -1,5 +1,7 @@
 /**
- * @properties={typeid:35,uuid:"04fde543-69cc-4de9-af47-7f7c22221f58"}
+ * @type {String}
+ *
+ * @properties={typeid:35,uuid:"04fde543-69cc-4de9-af47-7f7c22221f58",variableType:12}
  */
 var _license_dsa_mosaic_WEB_cms = 'Module: _dsa_mosaic_WEB_cms \
 									Copyright (C) 2011 Data Mosaic \
@@ -11,17 +13,23 @@ var _license_dsa_mosaic_WEB_cms = 'Module: _dsa_mosaic_WEB_cms \
 var _recPlatform = null;
 
 /**
- * @properties={typeid:35,uuid:"CC26ACA4-3B56-44EC-B3D4-AE6A34325492"}
+ * @type {String}
+ *
+ * @properties={typeid:35,uuid:"CC26ACA4-3B56-44EC-B3D4-AE6A34325492",variableType:12}
  */
 var _idSitePlatform = 'null';
 
 /**
- * @properties={typeid:35,uuid:"26090AA2-08B5-4C9B-BA39-F10CA9B8E602"}
+ * @type {String}
+ *
+ * @properties={typeid:35,uuid:"26090AA2-08B5-4C9B-BA39-F10CA9B8E602",variableType:12}
  */
 var _idSiteGroup = 'null';
 
 /**
- * @properties={typeid:35,uuid:"25B01FDD-1E2F-4764-8B62-0A382867E26D"}
+ * @type {String}
+ *
+ * @properties={typeid:35,uuid:"25B01FDD-1E2F-4764-8B62-0A382867E26D",variableType:12}
  */
 var _idLayout = null;
 
@@ -31,7 +39,9 @@ var _idLayout = null;
 var _recGroup = null;
 
 /**
- * @properties={typeid:35,uuid:"A75B46EF-6BDE-4485-8BCF-9C1F0949075C"}
+ * @type {String}
+ *
+ * @properties={typeid:35,uuid:"A75B46EF-6BDE-4485-8BCF-9C1F0949075C",variableType:12}
  */
 var _idTheme = null;
 
@@ -41,17 +51,23 @@ var _idTheme = null;
 var _recLanguage = null;
 
 /**
+ * @type {Number}
+ *
  * @properties={typeid:35,uuid:"2663ABEA-5268-43B2-B657-1575D5A41384",variableType:4}
  */
 var _themeSet = null;
 
 /**
- * @properties={typeid:35,uuid:"444198EB-FCF8-447C-86AF-681420811E77"}
+ * @type {String}
+ *
+ * @properties={typeid:35,uuid:"444198EB-FCF8-447C-86AF-681420811E77",variableType:12}
  */
 var _idSiteLanguage = '';
 
 /**
- * @properties={typeid:35,uuid:"83AB2103-85F5-4138-B635-CBB0370DB1D8"}
+ * @type {String}
+ *
+ * @properties={typeid:35,uuid:"83AB2103-85F5-4138-B635-CBB0370DB1D8",variableType:12}
  */
 var _pageName = null;
 
@@ -110,6 +126,7 @@ function TAB_sec_change() {
 
 /**
  * @properties={typeid:24,uuid:"FA2FEA2B-DF7F-4CB8-BBDF-6A0D7F8C9CA2"}
+ * @AllowToRunInFind
  */
 function FORM_on_show(firstShow, event) {
 	if (firstShow) {
@@ -195,6 +212,7 @@ function FORM_on_show(firstShow, event) {
 
 /**
  * @properties={typeid:24,uuid:"CA3C8B9D-121C-41C4-8E43-DE25CD43BDA6"}
+ * @AllowToRunInFind
  */
 function SET_valuelist_layout() {
 	//grab the layouts for this platform
@@ -240,6 +258,7 @@ function FLD_data_change__idTheme(oldValue, newValue, event) {
  * @param {JSEvent} event the event that triggered the action
  *
  * @properties={typeid:24,uuid:"EB585F60-3597-44A6-AC80-E77B46CAE26E"}
+ * @AllowToRunInFind
  */
 function ACTION_cancel() {
 	//this will rollback and turn autoSave back on
@@ -284,6 +303,7 @@ function ACTION_cancel() {
 /**
  *
  * @properties={typeid:24,uuid:"2C217D68-302D-4F96-920E-E5145C9C19E9"}
+ * @AllowToRunInFind
  */
 function ACTION_save() {
 	//see forms.WEB_P_page.ACTION_ok
@@ -954,6 +974,7 @@ function FLD_data_change__idLayout(oldValue, newValue, event) {
  * @returns {Boolean}
  *
  * @properties={typeid:24,uuid:"23F9EBE0-F71A-4544-B415-774181AD82E7"}
+ * @AllowToRunInFind
  */
 function FLD_data_change__idSitePlatform(oldValue, newValue, event) {
 	// this is a newly created record

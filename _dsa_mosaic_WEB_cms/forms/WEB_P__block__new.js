@@ -1,32 +1,44 @@
 /**
- * @properties={typeid:35,uuid:"9D831A70-C8CC-47D2-AA16-62C3DF71093C"}
+ * @type {String}
+ *
+ * @properties={typeid:35,uuid:"9D831A70-C8CC-47D2-AA16-62C3DF71093C",variableType:12}
  */
 var _license_dsa_mosaic_WEB_cms = 'Module: _dsa_mosaic_WEB_cms \
 									Copyright (C) 2011 Data Mosaic \
 									MIT Licensed';
 
 /**
- * @properties={typeid:35,uuid:"8AFFF4F0-4E67-4D20-9052-BC413C3A7667"}
+ * @type {String}
+ *
+ * @properties={typeid:35,uuid:"8AFFF4F0-4E67-4D20-9052-BC413C3A7667",variableType:12}
  */
 var _search = null;
 
 /**
+ * @type {Boolean}
+ *
  * @properties={typeid:35,uuid:"658ECA76-12FB-4935-96EC-E3210C1DB583",variableType:-4}
  */
 var _success = false;
 
 /**
+ * @type {Number}
+ *
  * @properties={typeid:35,uuid:"FC3CD649-29A4-47F3-ABE1-DECC13F777FE",variableType:4}
  */
 var _scope = null;
 
 /**
- * @properties={typeid:35,uuid:"B2836A0B-B9E9-4B7F-A4BF-4B815CCC5E94"}
+ * @type {String}
+ *
+ * @properties={typeid:35,uuid:"B2836A0B-B9E9-4B7F-A4BF-4B815CCC5E94",variableType:12}
  */
 var _areaID = null;
 
 /**
- * @properties={typeid:35,uuid:"D1A3FA4E-6361-4889-9A11-742B137EBBCB"}
+ * @type {String}
+ *
+ * @properties={typeid:35,uuid:"D1A3FA4E-6361-4889-9A11-742B137EBBCB",variableType:12}
  */
 var _blockID = null;
 
@@ -40,6 +52,7 @@ var _blockID = null;
  * @returns {Boolean}
  *
  * @properties={typeid:24,uuid:"9315BD82-99D4-4F0E-980B-A8A3EC282A6D"}
+ * @AllowToRunInFind
  */
 function FLD_scope__data_change(oldValue, newValue, event) {
 	//show scrapbooks
@@ -78,6 +91,8 @@ function FLD_scope__data_change(oldValue, newValue, event) {
 }
 
 /**
+ * @type {Boolean}
+ *
  * @properties={typeid:35,uuid:"7763A650-5938-48BD-8252-6B21A0FFFA94",variableType:-4}
  */
 var _calledFrom = false;
@@ -86,6 +101,7 @@ var _calledFrom = false;
  * @param {JSEvent} event the event that triggered the action
  * 
  * @properties={typeid:24,uuid:"6B93DF03-DE1C-4104-A956-D2A4D99E1B59"}
+ * @AllowToRunInFind
  */
 function ACTION_ok(event) {
 	//set flag to copy scrapbook instead of connecting it
@@ -604,6 +620,7 @@ function TOGGLE_buttons() {
  * @param {JSEvent} event the event that triggered the action
  *
  * @properties={typeid:24,uuid:"4ED1E729-218B-428E-8F5D-1F1DE6EF2893"}
+ * @AllowToRunInFind
  */
 function ACTION_search(event) {
 	//finding on block types

@@ -1,5 +1,7 @@
 /**
- * @properties={typeid:35,uuid:"ABF7F17A-EA83-401A-B284-FB6AA2F07391"}
+ * @type {String}
+ *
+ * @properties={typeid:35,uuid:"ABF7F17A-EA83-401A-B284-FB6AA2F07391",variableType:12}
  */
 var _license_dsa_mosaic_WEB_cms = 'Module: _dsa_mosaic_WEB_cms \
 									Copyright (C) 2011 Data Mosaic \

@@ -1,5 +1,7 @@
 /**
- * @properties={typeid:35,uuid:"04fde543-69cc-4de9-af47-7f7c22221f45"}
+ * @type {String}
+ *
+ * @properties={typeid:35,uuid:"04fde543-69cc-4de9-af47-7f7c22221f45",variableType:12}
  */
 var _license_dsa_mosaic_WEB_cms = 'Module: _dsa_mosaic_WEB_cms \
 									Copyright (C) 2011 Data Mosaic \
@@ -59,6 +61,7 @@ function REC_new() {
  * @returns {Boolean} valid value
  *
  * @properties={typeid:24,uuid:"B35372DB-490C-4E30-BE71-1D86BC5075B2"}
+ * @AllowToRunInFind
  */
 function FLD_data_change__group_name(oldValue, newValue, event) {
 	//can't rename everybody
@@ -103,6 +106,7 @@ function FLD_data_change__group_name(oldValue, newValue, event) {
  * @param {JSEvent} event the event that triggered the action
  *
  * @properties={typeid:24,uuid:"130809CF-8CCF-4180-AED8-BC70FA29B24B"}
+ * @AllowToRunInFind
  */
 function REC_on_select(event) {
 	var fsPage = forms.WEB_0F_site_1L_page__groups.foundset

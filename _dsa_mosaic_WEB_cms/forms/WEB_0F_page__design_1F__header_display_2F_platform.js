@@ -1,5 +1,7 @@
 /**
- * @properties={typeid:35,uuid:"04fde543-89cc-4de9-af47-7f7c22221f18"}
+ * @type {String}
+ *
+ * @properties={typeid:35,uuid:"04fde543-89cc-4de9-af47-7f7c22221f18",variableType:12}
  */
 var _license_dsa_mosaic_WEB_cms = 'Module: _dsa_mosaic_WEB_cms \
 									Copyright (C) 2011 Data Mosaic \
@@ -184,6 +186,7 @@ function CREATE_platform(versionOld) {
  * @param {JSEvent} event the event that triggered the action
  *
  * @properties={typeid:24,uuid:"A4236D3E-DFCE-4102-8025-C98164A63BD2"}
+ * @AllowToRunInFind
  */
 function DEL_platform(event) {
 	//cannot delete last platform

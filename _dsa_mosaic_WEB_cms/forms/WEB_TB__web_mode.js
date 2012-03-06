@@ -1,5 +1,7 @@
 /**
- * @properties={typeid:35,uuid:"04fde543-69cc-4de9-af47-7f7c22221f65"}
+ * @type {String}
+ *
+ * @properties={typeid:35,uuid:"04fde543-69cc-4de9-af47-7f7c22221f65",variableType:12}
  */
 var _license_dsa_mosaic_WEB_cms = 'Module: _dsa_mosaic_WEB_cms \
 									Copyright (C) 2011 Data Mosaic \
@@ -27,7 +29,7 @@ function ACTION_edit(event) {
 	// button setup
 //	elements.btn_add.visible = false
 //	elements.lbl_add.visible = false	
-	elements.btn_edit.visible = false	
+	elements.btn_edit.visible = false
 //	elements.lbl_edit.visible = false
 //	elements.btn_groups.visible = false
 //	elements.lbl_groups.visible = false	

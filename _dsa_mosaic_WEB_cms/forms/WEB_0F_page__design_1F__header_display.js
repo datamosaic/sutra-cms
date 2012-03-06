@@ -1,5 +1,7 @@
 /**
- * @properties={typeid:35,uuid:"04fde543-69cc-4de9-af47-7f7c22221f59"}
+ * @type {String}
+ *
+ * @properties={typeid:35,uuid:"04fde543-69cc-4de9-af47-7f7c22221f59",variableType:12}
  */
 var _license_dsa_mosaic_WEB_cms = 'Module: _dsa_mosaic_WEB_cms \
 									Copyright (C) 2011 Data Mosaic \
@@ -193,6 +195,7 @@ function NEW_version(event) {
  * @param {JSEvent} event the event that triggered the action
  *
  * @properties={typeid:24,uuid:"BA841370-FC0A-41E0-9D98-98EBA4D4A9C4"}
+ * @AllowToRunInFind
  */
 function SET_active(event) {
 	//find this version
@@ -246,6 +249,7 @@ function SET_active(event) {
  * @param {JSEvent} event the event that triggered the action
  *
  * @properties={typeid:24,uuid:"9AE6A24D-2DA7-4DA9-BB55-E113EEC4A73F"}
+ * @AllowToRunInFind
  */
 function EDIT_version(event) {
 	//if version is not working copy, allow edits

@@ -1,5 +1,7 @@
 /**
- * @properties={typeid:35,uuid:"A9AC62EB-5C7C-4559-B231-67076B5EB855"}
+ * @type {String}
+ *
+ * @properties={typeid:35,uuid:"A9AC62EB-5C7C-4559-B231-67076B5EB855",variableType:12}
  */
 var _license_dsa_mosaic_WEB_cms = 'Module: _dsa_mosaic_WEB_cms \
 									Copyright (C) 2011 Data Mosaic \
@@ -48,6 +50,7 @@ function REC_new() {
  * @param {JSEvent} event the event that triggered the action
  *
  * @properties={typeid:24,uuid:"9E666570-A83D-4F2E-A313-3B458326C798"}
+ * @AllowToRunInFind
  */
 function REC_on_select(event) {
 //	var fsPage = forms.WEB_0F_site_1L_page__languages.foundset

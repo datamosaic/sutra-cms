@@ -1,32 +1,44 @@
 /**
- * @properties={typeid:35,uuid:"76462F92-66C1-4BD5-8BF2-514D99234191"}
+ * @type {String}
+ *
+ * @properties={typeid:35,uuid:"76462F92-66C1-4BD5-8BF2-514D99234191",variableType:12}
  */
 var _license_dsa_mosaic_WEB_cms = 'Module: _dsa_mosaic_WEB_cms \
 									Copyright (C) 2011 Data Mosaic \
 									MIT Licensed';
 
 /**
- * @properties={typeid:35,uuid:"EBBB9B5D-13A2-47D7-8684-A61E6DD0FADB"}
+ * @type {String}
+ *
+ * @properties={typeid:35,uuid:"EBBB9B5D-13A2-47D7-8684-A61E6DD0FADB",variableType:12}
  */
 var _moshPit = null;
 
 /**
- * @properties={typeid:35,uuid:"A26DE770-1FC5-4342-BA15-DB1E038A938C"}
+ * @type {String}
+ *
+ * @properties={typeid:35,uuid:"A26DE770-1FC5-4342-BA15-DB1E038A938C",variableType:12}
  */
 var _area = null;
 
 /**
- * @properties={typeid:35,uuid:"AEF20EA7-6503-4FC5-834F-F00FB03E07BB"}
+ * @type {String}
+ *
+ * @properties={typeid:35,uuid:"AEF20EA7-6503-4FC5-834F-F00FB03E07BB",variableType:12}
  */
 var _group = null;
 
 /**
- * @properties={typeid:35,uuid:"D0B360CC-B333-4324-AB6D-42D7CA0E253A"}
+ * @type {String}
+ *
+ * @properties={typeid:35,uuid:"D0B360CC-B333-4324-AB6D-42D7CA0E253A",variableType:12}
  */
 var _language = null;
 
 /**
- * @properties={typeid:35,uuid:"5E9BBFFD-BB26-4E2B-A1A0-1E32E6AF5528"}
+ * @type {String}
+ *
+ * @properties={typeid:35,uuid:"5E9BBFFD-BB26-4E2B-A1A0-1E32E6AF5528",variableType:12}
  */
 var _platform = null;
 
@@ -36,6 +48,7 @@ var _platform = null;
  * @param {JSEvent} event the event that triggered the action
  *
  * @properties={typeid:24,uuid:"E5DCDB50-4E13-4376-88F0-061CDDD46183"}
+ * @AllowToRunInFind
  */
 function GOTO_page(event) {
 	//not running in data sutra application framework, just show form
