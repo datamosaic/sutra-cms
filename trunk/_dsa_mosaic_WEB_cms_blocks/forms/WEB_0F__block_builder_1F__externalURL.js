@@ -1,7 +1,7 @@
 /**
  * @type {String}
  *
- * @properties={typeid:35,uuid:"F9CF727A-000F-4981-9A35-993357C6788F",variableType:12}
+ * @properties={typeid:35,uuid:"F9CF727A-000F-4981-9A35-993357C6788F"}
  */
 var _license_dsa_mosaic_WEB_cms_blocks = 'Module: _dsa_mosaic_WEB_cms_blocks \
 									Copyright (C) 2011 Data Mosaic \
@@ -10,14 +10,14 @@ var _license_dsa_mosaic_WEB_cms_blocks = 'Module: _dsa_mosaic_WEB_cms_blocks \
 /**
  * @type {String}
  *
- * @properties={typeid:35,uuid:"8CE03E61-230C-4C68-A01A-A4CFAF784508",variableType:12}
+ * @properties={typeid:35,uuid:"8CE03E61-230C-4C68-A01A-A4CFAF784508"}
  */
 var _link = null;
 
 /**
  * @type {String}
  *
- * @properties={typeid:35,uuid:"BC5889C0-D828-4D62-810C-E1796A0530F9",variableType:12}
+ * @properties={typeid:35,uuid:"BC5889C0-D828-4D62-810C-E1796A0530F9"}
  */
 var _name = null;
 
