@@ -1,5 +1,7 @@
 /**
- * @properties={typeid:35,uuid:"3508A4FC-A664-4C36-A9B0-EC66AD37D8EA"}
+ * @type {String}
+ *
+ * @properties={typeid:35,uuid:"3508A4FC-A664-4C36-A9B0-EC66AD37D8EA",variableType:12}
  */
 var _license_dsa_mosaic_WEB_cms = 'Module: _dsa_mosaic_WEB_cms \
 									Copyright (C) 2011 Data Mosaic \
@@ -11,6 +13,7 @@ var _license_dsa_mosaic_WEB_cms = 'Module: _dsa_mosaic_WEB_cms \
  * @param {JSEvent} event the event that triggered the action
  *
  * @properties={typeid:24,uuid:"57B64A28-D673-4B51-B6B7-4835000AAEE0"}
+ * @AllowToRunInFind
  */
 function GOTO_page(event) {
 	//not running in data sutra application framework, just show form

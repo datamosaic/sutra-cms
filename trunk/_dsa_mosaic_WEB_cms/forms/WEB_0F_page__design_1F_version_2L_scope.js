@@ -1,5 +1,7 @@
 /**
- * @properties={typeid:35,uuid:"4FDACEFD-6F16-46F7-827B-375E23824AD6"}
+ * @type {String}
+ *
+ * @properties={typeid:35,uuid:"4FDACEFD-6F16-46F7-827B-375E23824AD6",variableType:12}
  */
 var _license_dsa_mosaic_WEB_cms = 'Module: _dsa_mosaic_WEB_cms \
 									Copyright (C) 2011 Data Mosaic \
@@ -258,6 +260,8 @@ function REC_delete() {
 }
 
 /**
+ * @type {Boolean}
+ *
  * @properties={typeid:35,uuid:"FF646EF2-49F9-4BB9-B941-28E24ADB67D2",variableType:-4}
  */
 var _skipSelect = false;
@@ -369,6 +373,8 @@ function FORM_on_show(firstShow, event) {
 }
 
 /**
+ * @type {Boolean}
+ *
  * @properties={typeid:35,uuid:"1C9EB357-1747-4330-B3CF-CF5D5F2F1559",variableType:-4}
  */
 var _guiLoading = false;

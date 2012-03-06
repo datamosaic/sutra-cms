@@ -1,5 +1,7 @@
 /**
- * @properties={typeid:35,uuid:"8D5C8FCA-9D3D-46EA-A42F-AD49AEB2D65E"}
+ * @type {String}
+ *
+ * @properties={typeid:35,uuid:"8D5C8FCA-9D3D-46EA-A42F-AD49AEB2D65E",variableType:12}
  */
 var _license_dsa_mosaic_WEB_cms = 'Module: _dsa_mosaic_WEB_cms \
 									Copyright (C) 2011 Data Mosaic \
@@ -11,6 +13,7 @@ var _license_dsa_mosaic_WEB_cms = 'Module: _dsa_mosaic_WEB_cms \
  * @param {JSEvent} event the event that triggered the action
  *
  * @properties={typeid:24,uuid:"4581AF20-5EEC-4B8D-9F54-56EB4AE0D46C"}
+ * @AllowToRunInFind
  */
 function FILTER_records(event) {
 	//find stuff for the selected site
@@ -388,6 +391,7 @@ function REC_new(flagRefresh,formName,fs) {
 
 /**
  * @properties={typeid:24,uuid:"8313F67E-2C06-4A31-B5AA-65ECB86C5801"}
+ * @AllowToRunInFind
  */
 function FIND_forms() {
 	var formNames = forms.allnames

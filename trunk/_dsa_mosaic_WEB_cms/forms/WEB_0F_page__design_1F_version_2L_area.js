@@ -1,5 +1,7 @@
 /**
- * @properties={typeid:35,uuid:"4FDACEFD-6F16-46F7-827B-375E25024AD6"}
+ * @type {String}
+ *
+ * @properties={typeid:35,uuid:"4FDACEFD-6F16-46F7-827B-375E25024AD6",variableType:12}
  */
 var _license_dsa_mosaic_WEB_cms = 'Module: _dsa_mosaic_WEB_cms \
 									Copyright (C) 2011 Data Mosaic \
@@ -8,6 +10,7 @@ var _license_dsa_mosaic_WEB_cms = 'Module: _dsa_mosaic_WEB_cms \
 /**
  *
  * @properties={typeid:24,uuid:"35FDA09F-74E0-45AF-9BC1-C682E4F0F549"}
+ * @AllowToRunInFind
  */
 function AREA_add_missing(versionStack, recLatest, recSelected, autoActivate) {
 	//MEMO: only works on selected version stack (does not take into account multiple groups, languages, or platforms)
@@ -155,6 +158,7 @@ function AREA_add_missing(versionStack, recLatest, recSelected, autoActivate) {
 
 /**
  * @properties={typeid:24,uuid:"340A4C68-CFF4-4CF1-A790-750511C79F9E"}
+ * @AllowToRunInFind
  */
 function AREA_reset(versionStack, recLatest, recSelected, autoActivate) {
 	

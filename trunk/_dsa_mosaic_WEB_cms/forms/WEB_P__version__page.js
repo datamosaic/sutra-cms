@@ -1,17 +1,23 @@
 /**
- * @properties={typeid:35,uuid:"04fde543-69cc-4de9-af47-7f7c22221f61"}
+ * @type {String}
+ *
+ * @properties={typeid:35,uuid:"04fde543-69cc-4de9-af47-7f7c22221f61",variableType:12}
  */
 var _license_dsa_mosaic_WEB_cms = 'Module: _dsa_mosaic_WEB_cms \
 									Copyright (C) 2011 Data Mosaic \
 									MIT Licensed';
 
 /**
+ * @type {Number}
+ *
  * @properties={typeid:35,uuid:"9E607ECD-C191-4A4E-ABA3-4CBC5040FC5B",variableType:4}
  */
 var _versionType = 1;
 
 /**
- * @properties={typeid:35,uuid:"6A9C8F70-07D8-489F-831C-AD9B6611F5C5"}
+ * @type {String}
+ *
+ * @properties={typeid:35,uuid:"6A9C8F70-07D8-489F-831C-AD9B6611F5C5",variableType:12}
  */
 var _versionDescription = null;
 
@@ -21,6 +27,8 @@ var _versionDescription = null;
 var _versionName = null;
 
 /**
+ * @type {Number}
+ *
  * @properties={typeid:35,uuid:"0DB8F194-B241-4646-8A35-6F27D096B1B5",variableType:4}
  */
 var _fidAccept = null;

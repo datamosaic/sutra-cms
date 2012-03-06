@@ -1,56 +1,78 @@
 /**
- * @properties={typeid:35,uuid:"2F354E60-3FD4-4156-8580-47CF8B945CCD"}
+ * @type {String}
+ *
+ * @properties={typeid:35,uuid:"2F354E60-3FD4-4156-8580-47CF8B945CCD",variableType:12}
  */
 var _license_dsa_mosaic_WEB_cms = 'Module: _dsa_mosaic_WEB_cms_blocks \
 									Copyright (C) 2011 Data Mosaic \
 									MIT Licensed';
 
 /**
- * @properties={typeid:35,uuid:"5EB60DEA-554D-4DF2-91A7-0ABAACBB1B32"}
+ * @type {String}
+ *
+ * @properties={typeid:35,uuid:"5EB60DEA-554D-4DF2-91A7-0ABAACBB1B32",variableType:12}
  */
 var _link_data = null;
 
 /**
- * @properties={typeid:35,uuid:"8C19A6C7-F4B1-49E9-9B8E-C23D22CA9E78"}
+ * @type {String}
+ *
+ * @properties={typeid:35,uuid:"8C19A6C7-F4B1-49E9-9B8E-C23D22CA9E78",variableType:12}
  */
 var _link_label = null;
 
 /**
- * @properties={typeid:35,uuid:"7E9A9A92-263D-45E0-A134-5C7C10607EBE"}
+ * @type {String}
+ *
+ * @properties={typeid:35,uuid:"7E9A9A92-263D-45E0-A134-5C7C10607EBE",variableType:12}
  */
 var _link_post = null;
 
 /**
- * @properties={typeid:35,uuid:"68395AFC-BF1F-4FF3-8017-3F0467250656"}
+ * @type {String}
+ *
+ * @properties={typeid:35,uuid:"68395AFC-BF1F-4FF3-8017-3F0467250656",variableType:12}
  */
 var _link_pre = null;
 
 /**
- * @properties={typeid:35,uuid:"C7F794EF-225D-4252-9480-044E1CDA6397"}
+ * @type {String}
+ *
+ * @properties={typeid:35,uuid:"C7F794EF-225D-4252-9480-044E1CDA6397",variableType:12}
  */
 var _name_data = null;
 
 /**
- * @properties={typeid:35,uuid:"EDBFD039-BD59-499D-A9E6-7A285FDF55B9"}
+ * @type {String}
+ *
+ * @properties={typeid:35,uuid:"EDBFD039-BD59-499D-A9E6-7A285FDF55B9",variableType:12}
  */
 var _name_label = null;
 
 /**
- * @properties={typeid:35,uuid:"D6A7B556-45FB-451A-AF80-CFD89A59EEF0"}
+ * @type {String}
+ *
+ * @properties={typeid:35,uuid:"D6A7B556-45FB-451A-AF80-CFD89A59EEF0",variableType:12}
  */
 var _name_post = null;
 
 /**
- * @properties={typeid:35,uuid:"F4A0AE40-460B-44B0-A005-EF0BE0DABA6F"}
+ * @type {String}
+ *
+ * @properties={typeid:35,uuid:"F4A0AE40-460B-44B0-A005-EF0BE0DABA6F",variableType:12}
  */
 var _name_pre = null;
 
 /**
+ * @type {Number}
+ *
  * @properties={typeid:35,uuid:"DB567D39-9EBF-4A01-916C-B33B7EA77CF8",variableType:4}
  */
 var _repeatable = null;
 
 /**
+ * @type {Number}
+ *
  * @properties={typeid:35,uuid:"2E98A16C-BA3B-4E11-9227-AC2CCB6A5A41",variableType:4}
  */
 var _required = null;

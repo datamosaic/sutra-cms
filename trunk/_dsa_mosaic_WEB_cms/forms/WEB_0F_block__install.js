@@ -1,11 +1,15 @@
 /**
- * @properties={typeid:35,uuid:"4FDACEED-6F16-46F7-807B-375E25824AD6"}
+ * @type {String}
+ *
+ * @properties={typeid:35,uuid:"4FDACEED-6F16-46F7-807B-375E25824AD6",variableType:12}
  */
 var _license_dsa_mosaic_WEB_cms = 'Module: _dsa_mosaic_WEB_cms \
 									Copyright (C) 2011 Data Mosaic \
 									MIT Licensed';
 
 /**
+ * @type {Boolean}
+ *
  * @properties={typeid:35,uuid:"05AD2F46-2DB3-4588-AAAE-F7AB1C93C10B",variableType:-4}
  */
 var _skipSelect = false;
@@ -22,7 +26,9 @@ function FORM_on_load(event) {
 }
 
 /**
- * @properties={typeid:35,uuid:"A29A45BC-AF85-431C-9770-50DEE6E993BC"}
+ * @type {String}
+ *
+ * @properties={typeid:35,uuid:"A29A45BC-AF85-431C-9770-50DEE6E993BC",variableType:12}
  */
 var _selected = null;
 
