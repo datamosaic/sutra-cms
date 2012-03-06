@@ -1,13 +1,17 @@
 /**
- * @properties={typeid:35,uuid:"4FDACEFD-6F16-46F7-827B-375E25824AC6"}
+ * @type {String}
+ *
+ * @properties={typeid:35,uuid:"4FDACEFD-6F16-46F7-827B-375E25824AC6",variableType:12}
  */
 var _license_dsa_mosaic_WEB_cms_blocks = 'Module: _dsa_mosaic_WEB_cms_blocks \
 									Copyright (C) 2011 Data Mosaic \
 									MIT Licensed';
 
 /**
- * @param {} obj Data object passed to all markup methods
+ * @param {Object} obj Data object passed to all markup methods
+ * 
  * @properties={typeid:24,uuid:"DD75748B-D0DF-4F21-A608-3182579FA18E"}
+ * @AllowToRunInFind
  */
 function VIEW_main(obj) {
 	
@@ -81,8 +85,9 @@ function VIEW_main(obj) {
 }
 
 /**
- * @param {} obj Data object passed to all markup methods
+ * @param {Object} obj Data object passed to all markup methods
  * @properties={typeid:24,uuid:"6B0D3857-E472-4792-B226-C6E2BE405B45"}
+ * @AllowToRunInFind
  */
 function VIEW_head(obj) {
 	var linkType = obj.type
@@ -128,8 +133,9 @@ function VIEW_head(obj) {
 }
 
 /**
- * @param {} obj Data object passed to all markup methods
+ * @param {Object} obj Data object passed to all markup methods
  * @properties={typeid:24,uuid:"6029C149-3FBA-4153-B39D-888D2B9C293A"}
+ * @AllowToRunInFind
  */
 function VIEW_footer(obj) {
 
@@ -181,8 +187,9 @@ function VIEW_footer(obj) {
 }
 
 /**
- * @param {} obj Data object passed to all markup methods
+ * @param {Object} obj Data object passed to all markup methods
  * @properties={typeid:24,uuid:"97840FD3-E36C-498D-B991-CAC69238B483"}
+ * @AllowToRunInFind
  */
 function VIEW_actions(obj) {
 	
@@ -219,7 +226,7 @@ function VIEW_actions(obj) {
 }
 
 /**
- * @param {} obj Data object passed to all markup methods
+ * @param {Object} obj Data object passed to all markup methods
  * @properties={typeid:24,uuid:"2B0D739C-279B-4E6D-B8A0-E1F6E555391B"}
  */
 function VIEW_breadcrumb(obj) {

@@ -1,57 +1,79 @@
 /**
- * @properties={typeid:35,uuid:"D9C45892-D610-4019-AB9A-09E6EAF488BE"}
+ * @type {String}
+ *
+ * @properties={typeid:35,uuid:"D9C45892-D610-4019-AB9A-09E6EAF488BE",variableType:12}
  */
 var _loginLink = null;
 
 /**
- * @properties={typeid:35,uuid:"65E9004B-1EC5-4F28-B456-8223965BAA5D"}
+ * @type {String}
+ *
+ * @properties={typeid:35,uuid:"65E9004B-1EC5-4F28-B456-8223965BAA5D",variableType:12}
  */
 var _loginObjName = null;
 
 /**
+ * @type {Number}
+ *
  * @properties={typeid:35,uuid:"4C3EECF0-46D8-47C7-9B9F-56E4405731AC",variableType:4}
  */
 var _loginRequired = null;
 
 /**
- * @properties={typeid:35,uuid:"F5A86BA7-FC8F-448E-B31F-2A787207A97B"}
+ * @type {String}
+ *
+ * @properties={typeid:35,uuid:"F5A86BA7-FC8F-448E-B31F-2A787207A97B",variableType:12}
  */
 var _license_dsa_mosaic_WEB_cms_blocks = 'Module: _dsa_mosaic_WEB_cms_blocks \
 									Copyright (C) 2011 Data Mosaic \
 									MIT Licensed';
 
 /**
- * @properties={typeid:35,uuid:"D0E1184A-C03A-4F5D-A2C5-D023B469A350"}
+ * @type {String}
+ *
+ * @properties={typeid:35,uuid:"D0E1184A-C03A-4F5D-A2C5-D023B469A350",variableType:12}
  */
 var _module = null;
 
 /**
- * @properties={typeid:35,uuid:"339695F3-4B5B-4B4B-979D-AFB3C827D5C0"}
+ * @type {String}
+ *
+ * @properties={typeid:35,uuid:"339695F3-4B5B-4B4B-979D-AFB3C827D5C0",variableType:12}
  */
 var _form = null;
 
 /**
+ * @type {Number}
+ *
  * @properties={typeid:35,uuid:"9495B9C2-7483-4D34-95EC-4D1421BC7681",variableType:4}
  */
 var _height = null;
 
 /**
+ * @type {Number}
+ *
  * @properties={typeid:35,uuid:"A5CA0FEC-57FD-4947-8B03-48C50608177B",variableType:4}
  */
 var _width = null;
 
 /**
+ * @type {Number}
+ *
  * @properties={typeid:35,uuid:"B2570C0E-8077-4812-95C0-903D4A57EFE1",variableType:4}
  */
 var _transparent = null;
 
 /**
- * @properties={typeid:35,uuid:"4077BE6B-B900-4C25-AB33-B0C2764299DD"}
+ * @type {String}
+ *
+ * @properties={typeid:35,uuid:"4077BE6B-B900-4C25-AB33-B0C2764299DD",variableType:12}
  */
 var _cssClass = null;
 
 /**
- * @properties={typeid:35,uuid:"FFA48B49-8645-4C42-8B43-96E81DF8D4E0"}
+ * @type {String}
+ *
+ * @properties={typeid:35,uuid:"FFA48B49-8645-4C42-8B43-96E81DF8D4E0",variableType:12}
  */
 var _cssId = null;
 
@@ -181,8 +203,7 @@ function SET_forms() {
  * Build a data object that defines this block. Called when creating a new block.
  * Used to create all meta data associated with this block (register a block in the CMS)
  * 
- * @returns Data object that is used to register a block
- * @type object
+ * @returns {Object} Data object that is used to register a block
  * 
  * @properties={typeid:24,uuid:"EB40FAF9-1C53-4828-91FF-2087CBDF39BE"}
  */

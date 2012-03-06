@@ -1,5 +1,7 @@
 /**
- * @properties={typeid:35,uuid:"4FDACEED-6F16-46F7-827B-375E25824AD6"}
+ * @type {String}
+ *
+ * @properties={typeid:35,uuid:"4FDACEED-6F16-46F7-827B-375E25824AD6",variableType:12}
  */
 var _license_dsa_mosaic_WEB_cms_blocks = 'Module: _dsa_mosaic_WEB_cms_blocks \
 									Copyright (C) 2011 Data Mosaic \
@@ -8,6 +10,7 @@ var _license_dsa_mosaic_WEB_cms_blocks = 'Module: _dsa_mosaic_WEB_cms_blocks \
 /**
  * param {} obj Data object passed to all markup methods
  * @properties={typeid:24,uuid:"889FE03F-2A19-4773-B3D4-BA7D2D7BC15C"}
+ * @AllowToRunInFind
  */
 function VIEW_default(obj)
 {

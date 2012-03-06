@@ -1,32 +1,44 @@
 /**
- * @properties={typeid:35,uuid:"4FDBCEFD-6F16-46F7-827B-375E25824AD6"}
+ * @type {String}
+ *
+ * @properties={typeid:35,uuid:"4FDBCEFD-6F16-46F7-827B-375E25824AD6",variableType:12}
  */
 var _license_dsa_mosaic_WEB_cms_blocks = 'Module: _dsa_mosaic_WEB_cms_blocks \
 									Copyright (C) 2011 Data Mosaic \
 									MIT Licensed';
 
 /**
- * @properties={typeid:35,uuid:"7EC90C89-6147-49DD-82A6-A41A364B4D2D"}
+ * @type {String}
+ *
+ * @properties={typeid:35,uuid:"7EC90C89-6147-49DD-82A6-A41A364B4D2D",variableType:12}
  */
 var _cssClass = null;
 
 /**
- * @properties={typeid:35,uuid:"98B1121B-AEE0-4845-91FE-31514646D9DC"}
+ * @type {String}
+ *
+ * @properties={typeid:35,uuid:"98B1121B-AEE0-4845-91FE-31514646D9DC",variableType:12}
  */
 var _title = null;
 
 /**
- * @properties={typeid:35,uuid:"86A68FF7-1ACC-42C6-A601-64396E8EE603"}
+ * @type {String}
+ *
+ * @properties={typeid:35,uuid:"86A68FF7-1ACC-42C6-A601-64396E8EE603",variableType:12}
  */
 var _cssId = null;
 
 /**
- * @properties={typeid:35,uuid:"1C693A02-303B-4BB0-96CB-9F8C7865CC0A"}
+ * @type {String}
+ *
+ * @properties={typeid:35,uuid:"1C693A02-303B-4BB0-96CB-9F8C7865CC0A",variableType:12}
  */
 var _alt = null;
 
 /**
- * @properties={typeid:35,uuid:"C12AC761-67DE-4861-BBB0-F32EDC4C852E"}
+ * @type {String}
+ *
+ * @properties={typeid:35,uuid:"C12AC761-67DE-4861-BBB0-F32EDC4C852E",variableType:12}
  */
 var _file = null;
 
@@ -193,6 +205,7 @@ function VIEW_default(obj) {
  * @param {JSEvent} event the event that triggered the action
  *
  * @properties={typeid:24,uuid:"E78D3F8A-024C-4F3C-8E4A-CFB6EE31E3DD"}
+ * @AllowToRunInFind
  */
 function GOTO_asset(event) {
 	var pk = globals.CMS.ui.getData(controller.getName()).id_asset_instance
@@ -233,6 +246,7 @@ function VIEW_lightbox() {
  * @param {JSEvent} event the event that triggered the action
  * 
  * @properties={typeid:24,uuid:"581D1472-7339-4669-A110-353A1904B241"}
+ * @AllowToRunInFind
  */
 function TOGGLE_buttons(event) {
 	var editStatus = globals.CMS.ui.getEdit()

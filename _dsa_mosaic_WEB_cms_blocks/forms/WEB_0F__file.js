@@ -1,32 +1,44 @@
 /**
- * @properties={typeid:35,uuid:"241F5F4F-9C73-4887-97D1-EF587A25BB99"}
+ * @type {String}
+ *
+ * @properties={typeid:35,uuid:"241F5F4F-9C73-4887-97D1-EF587A25BB99",variableType:12}
  */
 var _license_dsa_mosaic_WEB_cms_blocks = 'Module: _dsa_mosaic_WEB_cms_blocks \
 									Copyright (C) 2011 Data Mosaic \
 									MIT Licensed';
 
 /**
- * @properties={typeid:35,uuid:"64E46BDA-8C6B-4C47-9572-5AC39F6670CB"}
+ * @type {String}
+ *
+ * @properties={typeid:35,uuid:"64E46BDA-8C6B-4C47-9572-5AC39F6670CB",variableType:12}
  */
 var _cssClass = null;
 
 /**
- * @properties={typeid:35,uuid:"4C04AB4F-6410-477C-B9EF-40AE679826D0"}
+ * @type {String}
+ *
+ * @properties={typeid:35,uuid:"4C04AB4F-6410-477C-B9EF-40AE679826D0",variableType:12}
  */
 var _file = null;
 
 /**
- * @properties={typeid:35,uuid:"EA9526B7-FCE6-4996-B668-8326B81A3414"}
+ * @type {String}
+ *
+ * @properties={typeid:35,uuid:"EA9526B7-FCE6-4996-B668-8326B81A3414",variableType:12}
  */
 var _cssId = null;
 
 /**
- * @properties={typeid:35,uuid:"A929CE9E-C3C1-4939-81B6-A5FE6D4B3B33"}
+ * @type {String}
+ *
+ * @properties={typeid:35,uuid:"A929CE9E-C3C1-4939-81B6-A5FE6D4B3B33",variableType:12}
  */
 var _title = null;
 
 /**
- * @properties={typeid:35,uuid:"F33F74AF-C42E-4C71-8B83-D673D26A06D2"}
+ * @type {String}
+ *
+ * @properties={typeid:35,uuid:"F33F74AF-C42E-4C71-8B83-D673D26A06D2",variableType:12}
  */
 var _tooltip = null;
 
@@ -72,6 +84,7 @@ function VIEW_default(obj, results) {
  * Update display as needed when block selected.
  *
  * @properties={typeid:24,uuid:"BBFD23D3-E654-470E-8240-06EAC71A5F7A"}
+ * @AllowToRunInFind
  */
 function INIT_data() {
 	//get data
@@ -125,6 +138,7 @@ function INIT_data() {
  * @param {JSEvent} event the event that triggered the action
  *
  * @properties={typeid:24,uuid:"E78D3F8C-024C-4F3C-8E4A-CFB6EE31E3DD"}
+ * @AllowToRunInFind
  */
 function GOTO_asset(event) {
 	var pk = globals.CMS.ui.getData(controller.getName()).id_asset_instance
@@ -151,8 +165,7 @@ function GOTO_asset(event) {
  * Build a data object that defines this block. Called when creating a new block.
  * Used to create all meta data associated with this block (register a block in the CMS)
  * 
- * @returns Data object that is used to register a block
- * @type object
+ * @returns {Object} Data object that is used to register a block
  * 
  * @properties={typeid:24,uuid:"9762873B-C7D9-4C39-BBE6-470547E1CB47"}
  */

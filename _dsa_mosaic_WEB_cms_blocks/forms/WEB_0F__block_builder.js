@@ -1,5 +1,7 @@
 /**
- * @properties={typeid:35,uuid:"64CDD89C-D4CF-4B05-ABE7-B913A7558558"}
+ * @type {String}
+ *
+ * @properties={typeid:35,uuid:"64CDD89C-D4CF-4B05-ABE7-B913A7558558",variableType:12}
  */
 var _license_dsa_mosaic_WEB_cms_blocks = 'Module: _dsa_mosaic_WEB_cms_blocks \
 									Copyright (C) 2011 Data Mosaic \
@@ -43,6 +45,8 @@ var BUILDER = {
 var _blockList = null;
 
 /**
+ * @type {Number}
+ *
  * @properties={typeid:35,uuid:"84026904-8F0E-409A-A20D-0ADF1747E6F1",variableType:4}
  */
 var _blockSelected = null;
@@ -89,8 +93,7 @@ function VIEW_default() {
  * Build a data object that defines this block. Called when creating a new block.
  * Used to create all meta data associated with this block (register a block in the CMS)
  * 
- * @returns Data object that is used to register a block
- * @type object
+ * @returns {Object} Data object that is used to register a block
  * 
  * @properties={typeid:24,uuid:"F1E25A12-9BF5-4C13-B2F6-0E14144AFFBD"}
  */

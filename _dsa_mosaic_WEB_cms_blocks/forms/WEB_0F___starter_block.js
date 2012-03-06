@@ -1,5 +1,7 @@
 /**
- * @properties={typeid:35,uuid:"4FDACEFD-6F26-46F7-827B-375E25824AD6"}
+ * @type {String}
+ *
+ * @properties={typeid:35,uuid:"4FDACEFD-6F26-46F7-827B-375E25824AD6",variableType:12}
  */
 var _license_dsa_mosaic_WEB_cms_blocks = 'Module: _dsa_mosaic_WEB_cms_blocks \
 									Copyright (C) 2011 Data Mosaic \
@@ -34,8 +36,7 @@ function BLOCK_sample_method() {
  * Build a data object that defines this block. Called when creating a new block.
  * Used to create all meta data associated with this block (register a block in the CMS)
  * 
- * @returns Data object that is used to register a block
- * @type object
+ * @returns {Object} Data object that is used to register a block
  * 
  * @properties={typeid:24,uuid:"B1A1F180-3F8A-47FE-8D44-F3FFC0CBEE9A"}
  */

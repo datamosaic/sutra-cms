@@ -1,17 +1,23 @@
 /**
- * @properties={typeid:35,uuid:"F9C97E5D-97C9-449E-A979-716462FAFB00"}
+ * @type {String}
+ *
+ * @properties={typeid:35,uuid:"F9C97E5D-97C9-449E-A979-716462FAFB00",variableType:12}
  */
 var _license_dsa_mosaic_WEB_cms_blocks = 'Module: _dsa_mosaic_WEB_cms_blocks \
 									Copyright (C) 2011 Data Mosaic \
 									MIT Licensed';
 
 /**
- * @properties={typeid:35,uuid:"A7E4C666-0E2A-4606-A473-E3F5B1530ED4"}
+ * @type {String}
+ *
+ * @properties={typeid:35,uuid:"A7E4C666-0E2A-4606-A473-E3F5B1530ED4",variableType:12}
  */
 var _codeType = null;
 
 /**
- * @properties={typeid:35,uuid:"B3A5E4A5-A194-4AC6-9349-01DB3DAA2591"}
+ * @type {String}
+ *
+ * @properties={typeid:35,uuid:"B3A5E4A5-A194-4AC6-9349-01DB3DAA2591",variableType:12}
  */
 var _dataValue = null;
 
@@ -262,8 +268,7 @@ function ACTION_insert_image(event) {
  * Build a data object that defines this block. Called when creating a new block.
  * Used to create all meta data associated with this block (register a block in the CMS)
  * 
- * @returns Data object that is used to register a block
- * @type object
+ * @returns {Object} Data object that is used to register a block
  * 
  * @author Data Mosaic (C)
  * 

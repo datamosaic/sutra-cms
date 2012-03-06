@@ -1,17 +1,23 @@
 /**
- * @properties={typeid:35,uuid:"F9CF727A-000F-4981-9A35-993357C6788F"}
+ * @type {String}
+ *
+ * @properties={typeid:35,uuid:"F9CF727A-000F-4981-9A35-993357C6788F",variableType:12}
  */
 var _license_dsa_mosaic_WEB_cms_blocks = 'Module: _dsa_mosaic_WEB_cms_blocks \
 									Copyright (C) 2011 Data Mosaic \
 									MIT Licensed';
 
 /**
- * @properties={typeid:35,uuid:"8CE03E61-230C-4C68-A01A-A4CFAF784508"}
+ * @type {String}
+ *
+ * @properties={typeid:35,uuid:"8CE03E61-230C-4C68-A01A-A4CFAF784508",variableType:12}
  */
 var _link = null;
 
 /**
- * @properties={typeid:35,uuid:"BC5889C0-D828-4D62-810C-E1796A0530F9"}
+ * @type {String}
+ *
+ * @properties={typeid:35,uuid:"BC5889C0-D828-4D62-810C-E1796A0530F9",variableType:12}
  */
 var _name = null;
 
