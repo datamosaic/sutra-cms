@@ -1,7 +1,7 @@
 /**
  * @type {String}
  *
- * @properties={typeid:35,uuid:"6932AE1C-A885-4BD0-8CF0-B90CF31F27AD",variableType:12}
+ * @properties={typeid:35,uuid:"6932AE1C-A885-4BD0-8CF0-B90CF31F27AD"}
  */
 var _license_dsa_mosaic_WEB_cms = 'Module: _dsa_mosaic_WEB_cms \
 									Copyright (C) 2011 Data Mosaic \
@@ -18,4 +18,3 @@ function TAB_change(formName,elemName) {
 	forms.WEB_0F_block__install.elements.tab_detail.tabIndex = elements.tab_button.tabIndex
 	forms.WEB_0F_block__site.elements.tab_detail.tabIndex = elements.tab_button.tabIndex
 }
-

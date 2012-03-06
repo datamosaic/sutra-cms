@@ -1,7 +1,7 @@
 /**
  * @type {String}
  *
- * @properties={typeid:35,uuid:"01E8184B-FD76-4964-AB42-A83CBDF51EAB",variableType:12}
+ * @properties={typeid:35,uuid:"01E8184B-FD76-4964-AB42-A83CBDF51EAB"}
  */
 var _license_dsa_mosaic_WEB_cms = 'Module: _dsa_mosaic_WEB_cms \
 									Copyright (C) 2011 Data Mosaic \
@@ -15,21 +15,21 @@ var _fsVersion = databaseManager.getFoundSet('sutra_cms','web_version');
 /**
  * @type {String}
  *
- * @properties={typeid:35,uuid:"E02416C7-257C-4C49-AEE1-B81E2C2EA04E",variableType:12}
+ * @properties={typeid:35,uuid:"E02416C7-257C-4C49-AEE1-B81E2C2EA04E"}
  */
 var _idGroup = null;
 
 /**
  * @type {String}
  *
- * @properties={typeid:35,uuid:"B4C92A93-6095-4716-8DCD-2D07604EA7F1",variableType:12}
+ * @properties={typeid:35,uuid:"B4C92A93-6095-4716-8DCD-2D07604EA7F1"}
  */
 var _idLanguage = null;
 
 /**
  * @type {String}
  *
- * @properties={typeid:35,uuid:"A6AE2FE6-7934-4127-9317-CFFEDE755D7D",variableType:12}
+ * @properties={typeid:35,uuid:"A6AE2FE6-7934-4127-9317-CFFEDE755D7D"}
  */
 var _idPlatform = null;
 
@@ -50,7 +50,7 @@ var _fidAccept = null;
 /**
  * @type {String}
  *
- * @properties={typeid:35,uuid:"ECFE243F-45B0-49CA-90B6-F6755D622195",variableType:12}
+ * @properties={typeid:35,uuid:"ECFE243F-45B0-49CA-90B6-F6755D622195"}
  */
 var _versionDescription = null;
 
