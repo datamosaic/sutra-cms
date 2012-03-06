@@ -1,5 +1,7 @@
 /**
- * @properties={typeid:35,uuid:"2DC677B3-626D-47FA-A92B-D13D32236BF6"}
+ * @type {String}
+ *
+ * @properties={typeid:35,uuid:"2DC677B3-626D-47FA-A92B-D13D32236BF6",variableType:12}
  */
 var _license_dsa_mosaic_WEB_cms = 'Module: _dsa_mosaic_WEB_cms_resources \
 									Copyright (C) 2011 Data Mosaic \
@@ -11,26 +13,36 @@ var _license_dsa_mosaic_WEB_cms = 'Module: _dsa_mosaic_WEB_cms_resources \
 var _elements = {};
 
 /**
+ * @type {Number}
+ *
  * @properties={typeid:35,uuid:"B07736AF-EADE-4194-8F91-EBFB80BD34A0",variableType:4}
  */
 var _elementsDone = 0;
 
 /**
+ * @type {Array}
+ *
  * @properties={typeid:35,uuid:"DD57E988-7B31-4C21-8207-706F28A7F82B",variableType:-4}
  */
 var _elementsLayoutSelected = [];
 
 /**
+ * @type {Number}
+ *
  * @properties={typeid:35,uuid:"9AC35751-762E-41B0-AB63-18286CF90F09",variableType:4}
  */
 var _elementsPathsIncrementer = 0;
 
 /**
+ * @type {Number}
+ *
  * @properties={typeid:35,uuid:"77C979BD-3461-4E59-B2B6-2CECB34F7DB5",variableType:4}
  */
 var _elementsProgressTotal = 0;
 
 /**
+ * @type {Array}
+ *
  * @properties={typeid:35,uuid:"3F03274E-0C82-42F0-AD28-D2EF48944EFA",variableType:-4}
  */
 var _elementsSelected = [];
@@ -41,6 +53,8 @@ var _elementsSelected = [];
 var _file = {};
 
 /**
+ * @type {Boolean}
+ *
  * @properties={typeid:35,uuid:"3F0941BE-2D6B-42BA-A931-4910330A1CD8",variableType:-4}
  */
 var _flagRefresh = false;
@@ -51,36 +65,50 @@ var _flagRefresh = false;
 var _themes = {};
 
 /**
+ * @type {Number}
+ *
  * @properties={typeid:35,uuid:"452A199F-D69C-414B-A5DF-A3A59E3CB4FD",variableType:4}
  */
 var _themesDone = 0;
 
 /**
+ * @type {Array}
+ *
  * @properties={typeid:35,uuid:"42B1F8AA-7119-4D5A-8BC2-80030261C615",variableType:-4}
  */
 var _themesLayoutSelected = [];
 
 /**
+ * @type {Array}
+ *
  * @properties={typeid:35,uuid:"8014240B-58DB-4A6D-A01E-F576C0EB72DE",variableType:-4}
  */
 var _themesPaths = [];
 
 /**
+ * @type {Number}
+ *
  * @properties={typeid:35,uuid:"BA6C15BF-9944-4627-83E7-14D3918E5A46",variableType:4}
  */
 var _themesPathsIncrementer = 0;
 
 /**
+ * @type {Number}
+ *
  * @properties={typeid:35,uuid:"91F892B5-039E-4A21-9DAC-A3610FFCA08A",variableType:4}
  */
 var _themesProgressCount = 0;
 
 /**
+ * @type {Number}
+ *
  * @properties={typeid:35,uuid:"5CCAB31D-9A98-4074-B8A3-40F9D9A5000B",variableType:4}
  */
 var _themesProgressTotal = 0;
 
 /**
+ * @type {Array}
+ *
  * @properties={typeid:35,uuid:"EB3C0879-5DEC-4BF1-8C46-2A4637DF3B97",variableType:-4}
  */
 var _themesSelected = [];
@@ -104,12 +132,13 @@ function _INFO() {}
  * File streaming for CMS all in one place. One of these figure out generic file streaming functions.
  * 
  * 
- * @param {Integer} progress : used by streaming file callbacks to pass control back to this method
- * @param {boolean} _flagRefresh : sudo-parameter/form variable tracks if creating new theme or refreshing current theme
+ * @param {Number} progress : used by streaming file callbacks to pass control back to this method
+ * @param {Boolean} _flagRefresh : sudo-parameter/form variable tracks if creating new theme or refreshing current theme
  * 
  * @properties={typeid:24,uuid:"63BDBFCB-609A-4735-A981-CF0DEE9C5BFC"}
+ * @AllowToRunInFind
  */
-function THEME_new(progress) {
+function THEME_new(progress,_flagRefresh) {
 	var fsTheme = forms.WEB_0F_theme.foundset
 	
 	// *** STAGE #1: get available themes *** //
@@ -546,6 +575,7 @@ function FUNCTION_theme_directory() {
  * Reads the description.txt file in the theme directory for meta information.
  * 
  * @properties={typeid:24,uuid:"C66AFE31-3D3F-4E7A-A39D-874A1C9A634F"}
+ * @AllowToRunInFind
  */
 function THEME_callback_theme(result, e) {
 	if (e) {
@@ -773,6 +803,7 @@ function IMAGE_import(directory) {
 
 /**
  * @properties={typeid:24,uuid:"1EAFF07F-DE7A-4271-B1CB-138ED45A1BFE"}
+ * @AllowToRunInFind
  */
 function IMAGE_import_callback(result, e) {
 	
@@ -1025,6 +1056,7 @@ function FILE_import(directory) {
 
 /**
  * @properties={typeid:24,uuid:"2EAFF07F-DE7A-4271-B1CB-138ED45A1BFE"}
+ * @AllowToRunInFind
  */
 function FILE_import_callback(result, e) {
 	
