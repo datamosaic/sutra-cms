@@ -1,5 +1,7 @@
 /**
- * @properties={typeid:35,uuid:"4FDACEFD-6F16-46F7-827B-375E25824DD6"}
+ * @type {String}
+ *
+ * @properties={typeid:35,uuid:"4FDACEFD-6F16-46F7-827B-375E25824DD6",variableType:12}
  */
 var _license_dsa_mosaic_WEB_cms_blocks = 'Module: _dsa_mosaic_WEB_cms_blocks \
 									Copyright (C) 2011 Data Mosaic \
@@ -15,12 +17,13 @@ function VIEW_breadcrumb()
 /**
  *
  * @properties={typeid:24,uuid:"8FCD8F00-F3DC-4368-8FBE-5ED4CACE8652"}
+ * @AllowToRunInFind
  */
 function VIEW_default()
 {
 	var data 		= arguments[0] // data	
 	maxLevel 		= arguments[1]	// params
-	currentLevel	= 0        
+	currentLevel	= 0
 
 	// get top level pages 
 	var pages = databaseManager.getFoundSet(controller.getServerName(),"web_page")
@@ -42,6 +45,7 @@ function VIEW_default()
 /**
  *
  * @properties={typeid:24,uuid:"22F0D6E7-5C55-45F4-B8C1-C9C2C1CC769B"}
+ * @AllowToRunInFind
  */
 function VIEW_default_recurse()
 {

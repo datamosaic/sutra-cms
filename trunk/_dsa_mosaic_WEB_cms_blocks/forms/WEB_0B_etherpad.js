@@ -1,11 +1,15 @@
 /**
- * @properties={typeid:35,uuid:"4FDACEFD-6F16-96F7-827B-375E25824AD6"}
+ * @type {String}
+ *
+ * @properties={typeid:35,uuid:"4FDACEFD-6F16-96F7-827B-375E25824AD6",variableType:12}
  */
 var _license_dsa_mosaic_WEB_cms_blocks = 'Module: _dsa_mosaic_WEB_cms_blocks \
 									Copyright (C) 2011 Data Mosaic \
 									MIT Licensed';
 
 /**
+ * @type {String}
+ *
  * @properties={typeid:35,uuid:"ABD4728C-CA5C-4D79-AB42-470E0C2435DF"}
  */
 var _etherpadUUID = null;
@@ -21,7 +25,7 @@ function ACTION_import()
 	// input file	  
 	var file = plugins.file.showFileOpenDialog()
 	if ( !file ) {
-		return "Selection cancelled"
+		return "Selection cancelled" 
 	}
 	
 	// copy file details to block data points

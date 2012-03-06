@@ -1,22 +1,29 @@
 /**
- * @properties={typeid:35,uuid:"C7D81C36-DD36-4C76-9F11-B462B1CEFB4F"}
+ * @type {String}
+ *
+ * @properties={typeid:35,uuid:"C7D81C36-DD36-4C76-9F11-B462B1CEFB4F",variableType:12}
  */
 var _license_dsa_mosaic_WEB_cms_blocks = 'Module: _dsa_mosaic_WEB_cms_blocks \
 									Copyright (C) 2011 Data Mosaic \
 									MIT Licensed';
 
 /**
- * @properties={typeid:35,uuid:"346FEC3F-F398-4D41-AAED-610CCBB58F0B"}
+ * @type {String}
+ *
+ * @properties={typeid:35,uuid:"346FEC3F-F398-4D41-AAED-610CCBB58F0B",variableType:12}
  */
 var _link = null;
 
 /**
- * @properties={typeid:35,uuid:"346FEC3F-F398-6D41-AAED-610CCBB58F0B"}
+ * @type {String}
+ *
+ * @properties={typeid:35,uuid:"346FEC3F-F398-6D41-AAED-610CCBB58F0B",variableType:12}
  */
 var _name = null;
 
 /**
  * @properties={typeid:24,uuid:"6E5DBDB8-F58E-40AB-9E1F-CF96F2CAD453"}
+ * @AllowToRunInFind
  */
 function INIT_data(data) {
 	if (!(data instanceof Array)) {

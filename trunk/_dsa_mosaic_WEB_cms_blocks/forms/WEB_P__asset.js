@@ -1,5 +1,7 @@
 /**
- * @properties={typeid:35,uuid:"4FDACEFD-6F16-47F7-827B-375E25824AD6"}
+ * @type {String}
+ *
+ * @properties={typeid:35,uuid:"4FDACEFD-6F16-47F7-827B-375E25824AD6",variableType:12}
  */
 var _license_dsa_mosaic_WEB_cms_blocks = 'Module: _dsa_mosaic_WEB_cms_blocks \
 									Copyright (C) 2011 Data Mosaic \
@@ -68,6 +70,7 @@ function ACTION_ok() {
  * @param	{Integer}	assetType Type of asset to select (1 image, 2 file, etc)
  * 
  * @properties={typeid:24,uuid:"BE1F62DB-1D14-464C-96F5-1A8D252C761B"}
+ * @AllowToRunInFind
  */
 function LOAD_data(assetType) {
 	var fsAsset = forms.WEB_P__asset_1L_asset.foundset
