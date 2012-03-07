@@ -1,7 +1,7 @@
 /**
  * @type {String}
  *
- * @properties={typeid:35,uuid:"2F354E60-3FD4-4156-8580-47CF8B945CCD",variableType:12}
+ * @properties={typeid:35,uuid:"2F354E60-3FD4-4156-8580-47CF8B945CCD"}
  */
 var _license_dsa_mosaic_WEB_cms = 'Module: _dsa_mosaic_WEB_cms_blocks \
 									Copyright (C) 2011 Data Mosaic \
@@ -10,56 +10,56 @@ var _license_dsa_mosaic_WEB_cms = 'Module: _dsa_mosaic_WEB_cms_blocks \
 /**
  * @type {String}
  *
- * @properties={typeid:35,uuid:"5EB60DEA-554D-4DF2-91A7-0ABAACBB1B32",variableType:12}
+ * @properties={typeid:35,uuid:"5EB60DEA-554D-4DF2-91A7-0ABAACBB1B32"}
  */
 var _link_data = null;
 
 /**
  * @type {String}
  *
- * @properties={typeid:35,uuid:"8C19A6C7-F4B1-49E9-9B8E-C23D22CA9E78",variableType:12}
+ * @properties={typeid:35,uuid:"8C19A6C7-F4B1-49E9-9B8E-C23D22CA9E78"}
  */
 var _link_label = null;
 
 /**
  * @type {String}
  *
- * @properties={typeid:35,uuid:"7E9A9A92-263D-45E0-A134-5C7C10607EBE",variableType:12}
+ * @properties={typeid:35,uuid:"7E9A9A92-263D-45E0-A134-5C7C10607EBE"}
  */
 var _link_post = null;
 
 /**
  * @type {String}
  *
- * @properties={typeid:35,uuid:"68395AFC-BF1F-4FF3-8017-3F0467250656",variableType:12}
+ * @properties={typeid:35,uuid:"68395AFC-BF1F-4FF3-8017-3F0467250656"}
  */
 var _link_pre = null;
 
 /**
  * @type {String}
  *
- * @properties={typeid:35,uuid:"C7F794EF-225D-4252-9480-044E1CDA6397",variableType:12}
+ * @properties={typeid:35,uuid:"C7F794EF-225D-4252-9480-044E1CDA6397"}
  */
 var _name_data = null;
 
 /**
  * @type {String}
  *
- * @properties={typeid:35,uuid:"EDBFD039-BD59-499D-A9E6-7A285FDF55B9",variableType:12}
+ * @properties={typeid:35,uuid:"EDBFD039-BD59-499D-A9E6-7A285FDF55B9"}
  */
 var _name_label = null;
 
 /**
  * @type {String}
  *
- * @properties={typeid:35,uuid:"D6A7B556-45FB-451A-AF80-CFD89A59EEF0",variableType:12}
+ * @properties={typeid:35,uuid:"D6A7B556-45FB-451A-AF80-CFD89A59EEF0"}
  */
 var _name_post = null;
 
 /**
  * @type {String}
  *
- * @properties={typeid:35,uuid:"F4A0AE40-460B-44B0-A005-EF0BE0DABA6F",variableType:12}
+ * @properties={typeid:35,uuid:"F4A0AE40-460B-44B0-A005-EF0BE0DABA6F"}
  */
 var _name_pre = null;
 

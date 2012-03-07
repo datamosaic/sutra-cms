@@ -1,7 +1,7 @@
 /**
  * @type {String}
  *
- * @properties={typeid:35,uuid:"1E256446-5720-4637-9FCB-AC0BD88C1218",variableType:12}
+ * @properties={typeid:35,uuid:"1E256446-5720-4637-9FCB-AC0BD88C1218"}
  */
 var _license_dsa_mosaic_WEB_cms = 'Module: _dsa_mosaic_WEB_cms_blocks \
 									Copyright (C) 2011 Data Mosaic \
@@ -10,28 +10,28 @@ var _license_dsa_mosaic_WEB_cms = 'Module: _dsa_mosaic_WEB_cms_blocks \
 /**
  * @type {String}
  *
- * @properties={typeid:35,uuid:"79D3BC3A-FA39-4539-B294-44025409B130",variableType:12}
+ * @properties={typeid:35,uuid:"79D3BC3A-FA39-4539-B294-44025409B130"}
  */
 var _data = null;
 
 /**
  * @type {String}
  *
- * @properties={typeid:35,uuid:"6459A7B6-6096-4B5F-934E-972B54947037",variableType:12}
+ * @properties={typeid:35,uuid:"6459A7B6-6096-4B5F-934E-972B54947037"}
  */
 var _label = null;
 
 /**
  * @type {String}
  *
- * @properties={typeid:35,uuid:"1DA47DF9-6D78-43A5-AD7A-875F76A04CC5",variableType:12}
+ * @properties={typeid:35,uuid:"1DA47DF9-6D78-43A5-AD7A-875F76A04CC5"}
  */
 var _post = null;
 
 /**
  * @type {String}
  *
- * @properties={typeid:35,uuid:"351A4B8F-1944-4B77-9891-B0D0CF1EC461",variableType:12}
+ * @properties={typeid:35,uuid:"351A4B8F-1944-4B77-9891-B0D0CF1EC461"}
  */
 var _pre = null;
 
