@@ -89,7 +89,8 @@ function ACTIONS_list() {
 			'-',
 //			'Delete all unnamed pages',
 //			'-',
-			'Flush client cache'
+			'Flush client cache',
+			'Reset tree'
 		]
 	
 	//get site record for this page; or the record selected on the site form; or blank
@@ -316,6 +317,12 @@ function ACTIONS_list_control(input,scopeType,scopeValue) {
 				plugins.rawSQL.flushAllClientsCache('sutra_cms', tables[i])
 			}
 			globals.CODE_cursor_busy(false)
+			break
+		
+		case 11: //reset tree
+			var path = FIND_path(forms.WEB_0F_page.foundset.getSelectedRecord())
+			TREE_refresh()
+			elements.bean_tree.selectionPath = path
 			break
 			
 	}
