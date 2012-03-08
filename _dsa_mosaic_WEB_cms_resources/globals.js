@@ -1,10 +1,10 @@
 /**
  * @type {String}
  *
- * @properties={typeid:35,uuid:"2DC677B3-626D-47FA-A92B-A13D32236BF6",variableType:12}
+ * @properties={typeid:35,uuid:"2DC677B3-626D-47FA-A92B-A13D32236BF6"}
  */
 var _license_dsa_mosaic_WEB_cms_resources = 'Module: _dsa_mosaic_WEB_cms_resources \
-									Copyright (C) 2011 Data Mosaic \
+									Copyright (C) 2011, 2012 Data Mosaic \
 									MIT Licensed';
 
 /**
