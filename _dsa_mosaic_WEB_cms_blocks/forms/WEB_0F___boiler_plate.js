@@ -8,15 +8,15 @@ var _license_dsa_mosaic_WEB_cms_blocks = 'Module: _dsa_mosaic_WEB_cms_blocks \
 									MIT Licensed';
 
 /**
- * @param	{Object}	obj Data object passed to all markup methods
+ * The objective of VIEW methods is to return markup back to the page request
+ * 
+ * @returns {String}	markup for this block
  * 
  * @properties={typeid:24,uuid:"F20BDBF7-8CB2-4035-A50B-0785CE98FC00"}
  */
 function VIEW_default(obj) {
 	
-	// The main CMS page object gets passed to block VIEW methods.
-	// So include "obj" in the parameter slot for these methods
-	// The objective of VIEW methods is to return markup back to the page request.
+	// The main CMS page object globals.CMS.data is available for all VIEW methods
 
 	return 'Hello world!'
 }
@@ -50,7 +50,7 @@ function INIT_block() {
 	        block_name			: 'Starter block',
 			block_description	: 'Boiler template for creating a custom block',		
 			form_name			: controller.getName()//,
-//			form_name_display	: 'WEB_0F___starter_block'	//this line only required when form_name_display different than form_name
+//			form_name_display	: 'WEB_0F___boiler_plate'	//this line only required when form_name_display different than form_name
 		}
 	
 	// block views
