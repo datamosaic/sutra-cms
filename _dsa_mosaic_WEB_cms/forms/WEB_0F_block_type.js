@@ -402,7 +402,7 @@ function FIND_forms() {
 	for (var i = 0; i < formNames.length; i++) {
 		var formName = formNames[i]
 		
-		if (!solutionModel.getForm(formName).getFormMethod('INIT_block') || formName == 'WEB_0F___starter_block' || formName == 'WEB_0F__block_builder') {
+		if (!solutionModel.getForm(formName).getFormMethod('INIT_block') || formName == 'WEB_0F___boiler_plate' || formName == 'WEB_0F__block_builder') {
 			formNames.splice(i,1)
 			i--
 		}
