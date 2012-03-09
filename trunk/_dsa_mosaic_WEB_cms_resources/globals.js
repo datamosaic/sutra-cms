@@ -1883,6 +1883,10 @@ function WEBc_page_new(pageName,pageType,parentID,themeID,layoutID) {
 		var pathNameWanted = languageRec.page_name || 'untitled-page'
 		pathNameWanted = pathNameWanted.toLowerCase()
 		pathNameWanted = utils.stringReplace(pathNameWanted, ' ', '-')
+		//replace two consecutive dashes with one
+		while (utils.stringPatternCount(pathNameWanted,'--')) {
+			pathNameWanted = utils.stringReplace(pathNameWanted, '--', '-')
+		}
 		
 		var pathName = pathNameWanted
 		var cnt = 1
