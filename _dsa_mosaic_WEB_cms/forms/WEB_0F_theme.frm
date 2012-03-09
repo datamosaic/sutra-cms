@@ -186,7 +186,7 @@ uuid:"59362627-3371-4DC1-8CC5-9CAB1A7A2B88"
 formIndex:11900,
 horizontalAlignment:0,
 imageMediaID:"a2e147c1-5027-45cb-abf0-ddf2d8588969",
-location:"331,40",
+location:"331,390",
 mediaOptions:1,
 name:"help_contact_details",
 onActionMethodID:"6a193823-8789-4ec3-a7bf-45d1238dc5bd",

@@ -602,14 +602,14 @@ function TAB_change(event,tabNumber) {
 function REC_on_select(event) {
 	//set enablement of tabs
 	elements.tab_d2.enabled = false
-	elements.tab_d3.enabled = false
+//	elements.tab_d3.enabled = false
 	
 	if (block_type == 1) {
 		elements.tab_d2.enabled = true
 	}
-	else if (block_type == 2) {
-		elements.tab_d3.enabled = true
-	}
+//	else if (block_type == 2) {
+//		elements.tab_d3.enabled = true
+//	}
 	
 	//return to last used tab on this record
 	if (client_tab_selected && client_tab_selected != elements.tab_detail.tabIndex) {
