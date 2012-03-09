@@ -723,9 +723,19 @@ function FUNCTION_streaming_check() {
 /**
  * @properties={typeid:24,uuid:"21DA8183-8F34-4363-AC99-5AD696827909"}
  */
-function IMAGE_import(directory) {
+function IMAGE_import(directory,uuid) {
+	// directory for this file
+	if (!directory) {
+		directory = 'images'
+	}
+	
+	// no uuid for asset group, make one up
+	if (!uuid) {
+		uuid = application.getUUID().toString()
+	}
+	
 	// scope to unique directory for this asset instance
-	directory += "/" + application.getUUID().toString()
+	directory += "/" + uuid
 	_file.directory = directory
 	
 	// root directory for this site
@@ -773,32 +783,10 @@ function IMAGE_import(directory) {
 	// stream to server
 	if ( application.__parent__.solutionPrefs ) {
 		globals.WEBc_sutra_trigger('TRIGGER_progressbar_start',[null, "Streaming file to server..."])
-		
-//		//only upload picture if directory tree exists
-//		if (ASSET_directory_tree(directory)) {
-//			var monitor = plugins.file.streamFilesToServer(file, uploadFile, IMAGE_import_callback)
-//		}
-//		else {
-//			plugins.dialogs.showErrorDialog(
-//					'Error',
-//					'Directory specified does not exist'
-//			)
-//			globals.WEBc_sutra_trigger('TRIGGER_progressbar_stop')
-//		}
-		
-		//file streaming plugin creates directories as needed
-		var monitor = plugins.file.streamFilesToServer(file, uploadFile, IMAGE_import_callback)
-	}
-	else {
-//		//only upload picture if directory tree exists
-//		if (ASSET_directory_tree(directory)) {
-//			var monitor = plugins.file.streamFilesToServer(file, uploadFile, IMAGE_import_callback)
-//		}
-		
-		//file streaming plugin creates directories as needed
-		var monitor = plugins.file.streamFilesToServer(file, uploadFile, IMAGE_import_callback)
-	}
+	}	
 	
+	//file streaming plugin creates directories as needed
+	var monitor = plugins.file.streamFilesToServer(file, uploadFile, IMAGE_import_callback)
 }
 
 /**
@@ -824,6 +812,7 @@ function IMAGE_import_callback(result, e) {
 	
 	//enable on select method
 	forms.WEB_0F_asset._skipSelect = false
+	forms.WEB_0F_asset.REC_on_select()
 	
 	//create asset instance record
 	var assetInstanceRec = assetRec.web_asset_to_asset_instance.getRecord(assetRec.web_asset_to_asset_instance.newRecord(false,true))
@@ -872,18 +861,19 @@ function IMAGE_import_callback(result, e) {
 }
 
 /**
- * @properties={typeid:24,uuid:"4A3BA365-3E63-4789-8256-54365B865356"}
- */
-function IMAGE_import_monitor() {
-	// TODO Auto-generated method stub
-}
-
-/**
  * @properties={typeid:24,uuid:"29BE1270-988B-4D4D-BF2C-A13382E05870"}
  */
 function ASSET_delete(filePathObj) {
 	if (filePathObj && filePathObj.file) {
 		if (plugins.file.deleteFile(filePathObj.file)) {
+			return true
+		}
+		else {
+			return false
+		}
+	}
+	else if (filePathObj && filePathObj.directory) {
+		if (plugins.file.deleteFolder(filePathObj.directory,false)) {
 			return true
 		}
 		else {
@@ -996,14 +986,19 @@ function ASSET_directory_tree(directory,autoCreate) {
 /**
  * @properties={typeid:24,uuid:"11DA8183-8F34-4363-AC99-5AD696827909"}
  */
-function FILE_import(directory) {
+function FILE_import(directory,uuid) {
 	// directory for this file
 	if (!directory) {
 		directory = 'files'
 	}
 	
+	// no uuid for asset group, make one up
+	if (!uuid) {
+		uuid = application.getUUID().toString()
+	}
+	
 	// scope to unique directory for this asset instance
-	directory += "/" + application.getUUID().toString()
+	directory += "/" + uuid
 	_file.directory = directory
 	
 	// root directory for this site
@@ -1026,32 +1021,10 @@ function FILE_import(directory) {
 	// stream to server
 	if ( application.__parent__.solutionPrefs ) {
 		globals.WEBc_sutra_trigger('TRIGGER_progressbar_start',[null, "Streaming file to server..."])
-		
-//		//only upload file if directory tree exists
-//		if (ASSET_directory_tree(directory)) {
-//			var monitor = plugins.file.streamFilesToServer(file, uploadFile, FILE_import_callback)
-//		}
-//		else {
-//			plugins.dialogs.showErrorDialog(
-//					'Error',
-//					'Directory specified does not exist'
-//			)
-//			globals.WEBc_sutra_trigger('TRIGGER_progressbar_stop')
-//		}
-		
-		//file streaming plugin creates directories as needed
-		var monitor = plugins.file.streamFilesToServer(file, uploadFile, IMAGE_import_callback)
-	}
-	else {
-//		//only upload picture if directory tree exists
-//		if (ASSET_directory_tree(directory)) {
-//			var monitor = plugins.file.streamFilesToServer(file, uploadFile, FILE_import_callback)
-//		}
-		
-		//file streaming plugin creates directories as needed
-		var monitor = plugins.file.streamFilesToServer(file, uploadFile, IMAGE_import_callback)
 	}
 	
+	//file streaming plugin creates directories as needed
+	var monitor = plugins.file.streamFilesToServer(file, uploadFile, FILE_import_callback)	
 }
 
 /**
@@ -1113,11 +1086,4 @@ function FILE_import_callback(result, e) {
 	if (application.__parent__.solutionPrefs && solutionPrefs.design.statusLockWorkflow) {
 		globals.WEB_lock_workflow(false)
 	}
-}
-
-/**
- * @properties={typeid:24,uuid:"1A3BA365-3E63-4789-8256-54365B865356"}
- */
-function FILE_import_monitor() {
-	// TODO Auto-generated method stub
 }
