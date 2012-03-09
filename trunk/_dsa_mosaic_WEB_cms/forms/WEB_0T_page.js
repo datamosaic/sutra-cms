@@ -89,8 +89,7 @@ function ACTIONS_list() {
 			'-',
 //			'Delete all unnamed pages',
 //			'-',
-			'Flush client cache',
-			'Reset tree'
+			'Flush client cache'
 		]
 	
 	//get site record for this page; or the record selected on the site form; or blank
