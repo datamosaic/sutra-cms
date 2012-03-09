@@ -190,6 +190,10 @@ function ACTION_path_generate(event) {
 				
 				pathNameWanted = (pathNameWanted) ? pathNameWanted.toLowerCase() : 'blank'
 				pathNameWanted = utils.stringReplace(pathNameWanted, ' ', '-')
+				//replace two consecutive dashes with one
+				while (utils.stringPatternCount(pathNameWanted,'--')) {
+					pathNameWanted = utils.stringReplace(pathNameWanted, '--', '-')
+				}
 				
 				var pathName = pathNameWanted
 				var cnt = 1

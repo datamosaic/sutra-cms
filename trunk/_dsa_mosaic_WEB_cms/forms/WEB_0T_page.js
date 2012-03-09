@@ -980,6 +980,10 @@ function REC_duplicate() {
 		var pathNameWanted = destRecord.page_name
 		pathNameWanted = pathNameWanted.toLowerCase()
 		pathNameWanted = utils.stringReplace(pathNameWanted, ' ', '-')
+		//replace two consecutive dashes with one
+		while (utils.stringPatternCount(pathNameWanted,'--')) {
+			pathNameWanted = utils.stringReplace(pathNameWanted, '--', '-')
+		}
 		
 		var pathName = pathNameWanted
 		var cnt = 1
