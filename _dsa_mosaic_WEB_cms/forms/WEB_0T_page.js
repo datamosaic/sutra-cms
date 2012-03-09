@@ -318,11 +318,11 @@ function ACTIONS_list_control(input,scopeType,scopeValue) {
 			globals.CODE_cursor_busy(false)
 			break
 		
-		case 11: //reset tree
-			var path = FIND_path(forms.WEB_0F_page.foundset.getSelectedRecord())
-			TREE_refresh()
-			elements.bean_tree.selectionPath = path
-			break
+//		case 11: //reset tree
+//			var path = FIND_path(forms.WEB_0F_page.foundset.getSelectedRecord())
+//			TREE_refresh()
+//			elements.bean_tree.selectionPath = path
+//			break
 			
 	}
 }

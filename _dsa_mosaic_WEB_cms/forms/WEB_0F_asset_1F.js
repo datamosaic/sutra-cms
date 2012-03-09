@@ -29,3 +29,11 @@ function ACTIONS_list(event) {
 				)
 	}
 }
+
+/**
+ * @properties={typeid:24,uuid:"6B2F8112-92F0-485B-A0CF-33381A40AEB8"}
+ */
+function TOGGLE_elements(isGroup) {
+	elements.btn_add.enabled = isGroup
+	elements.btn_actions.enabled = !isGroup
+}
