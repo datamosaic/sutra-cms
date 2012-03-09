@@ -75,6 +75,7 @@ uuid:"DA2B8DFE-2269-467B-9985-B712828B04E0"
 }
 ],
 name:"WEB_P__asset_1L_asset",
+namedFoundSet:"separate",
 onRecordSelectionMethodID:"-1",
 onShowMethodID:"-1",
 paperPrintScale:100,
