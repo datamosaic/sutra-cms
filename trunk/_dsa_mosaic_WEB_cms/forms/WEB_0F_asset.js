@@ -27,7 +27,31 @@ function REC_delete() {
 					)
 
 	if (input == 'Yes') {
-		//TODO: delete all files
+		//delete all assets when not a group
+		if (asset_type != 3) {
+			//grab directory name
+			var directory = web_asset_to_asset_instance__initial.asset_directory
+			var baseDirectory = forms.WEB_0F_install.ACTION_get_install() +
+					'/application_server/server/webapps/ROOT/sutraCMS/sites/' +
+					forms.WEB_0F_site.directory						
+			var deleteThis		= {}
+			deleteThis.directory	 	= baseDirectory + '/' + directory
+			
+			for (var i = 1; i <= web_asset_to_asset_instance.getSize(); i++) {
+				forms.WEB_0F_asset_1F_2L_asset_instance.REC_delete(null,true,forms.WEB_0F_asset_1F_2L_asset_instance.foundset.getRecord(i))
+			}
+			
+		//delete directory
+			// developer version (use local file system method since headless client plugin bugged)
+			if ( application.isInDeveloper() ) {
+				forms.WEB_0C__file_stream.ASSET_delete(deleteThis)
+			}
+			// file streaming version when on a service
+			else {
+				var jsclient = plugins.headlessclient.createClient("_dsa_mosaic_WEB_cms", null, null, null)
+				jsclient.queueMethod("WEB_0C__file_stream", "ASSET_delete", [deleteThis], null)
+			}
+		}
 		
 		controller.deleteRecord()
 		
@@ -110,7 +134,8 @@ function REC_new(assetType) {
 					"Asset", 
 					"Select asset type", 
 					"Image",
-					"File"
+					"File",
+					"Group"
 				)
 	
 	//something selected, do the right kind of import
@@ -120,6 +145,20 @@ function REC_new(assetType) {
 			break
 		case 'File':
 			forms.WEB_0C__file_stream.FILE_import("files")
+			break
+		case 'Group':
+			// create asset record
+			var fsAsset = foundset
+			//disable on select method
+			_skipSelect = true
+			
+			var assetRec = fsAsset.getRecord(fsAsset.newRecord(true,true))
+			assetRec.id_site = forms.WEB_0F_site.id_site
+			assetRec.asset_type = 3
+			
+			//enable on select method
+			_skipSelect = false
+			REC_on_select()
 			break
 	}
 }
@@ -230,10 +269,13 @@ function TAB_change(event) {
 function REC_on_select(event) {
 	//disable select method when new asset created
 	if (!_skipSelect) {
+		//show appropriate buttons on asset instance list
+		forms.WEB_0F_asset_1F.TOGGLE_elements(asset_type == 3)
+		
 		var fsPages = forms.WEB_0F_asset_1L_page.foundset
 		
 		//there is something to do on this page
-		if (utils.hasRecords(foundset)) {
+		if (utils.hasRecords(foundset) && utils.hasRecords(web_asset_to_asset_instance)) {
 			globals.CODE_cursor_busy(true)
 			var args = [1,'id_asset_instance']
 			

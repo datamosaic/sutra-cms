@@ -47,38 +47,88 @@ function REC_on_select(event) {
  *
  * @properties={typeid:24,uuid:"F2373AA4-4FB7-4DF7-8809-A0277D3CFCBC"}
  */
-function REC_delete() {
+function REC_delete(event,batch,record) {
+	if (!record) {
+		record = foundset.getSelectedRecord()
+	}
+	
+	var fsAssetInstance = databaseManager.getFoundSet('sutra_cms','web_asset_instance')
 	
 	// root directory for this site
 	var baseDirectory = forms.WEB_0F_install.ACTION_get_install() +
 						'/application_server/server/webapps/ROOT/sutraCMS/sites/' +
 						forms.WEB_0F_site.directory						
 	var deleteThis		= {}
-	deleteThis.file	 	= baseDirectory + '/' + asset_directory + '/' + asset_title
+	deleteThis.file	 	= baseDirectory + '/' + record.asset_directory + '/' + record.asset_title
 	
-	var input = plugins.dialogs.showWarningDialog(
+	if (!batch) {
+		var input = plugins.dialogs.showWarningDialog(
 						'Delete record',
 						'Do you really want to delete this record?',
 						'Yes',
 						'No'
 					)
-
-	if (input == 'Yes') {
+	}
+	
+	if (batch || input == 'Yes') {
 		// developer version (use local file system method since headless client plugin bugged)
 		if ( application.isInDeveloper() ) {
-			if ( forms.WEB_0C__file_stream.ASSET_delete(deleteThis) ) {
-				controller.deleteRecord()
-				plugins.dialogs.showInfoDialog("Success","Record deleted")
+			//delete all related records for non-groups
+			if (record.web_asset_instance_to_asset.asset_type != 3) {
+				//shoe FiD
+				if (!batch) {
+					if ( forms.WEB_0C__file_stream.ASSET_delete(deleteThis) ) {
+						plugins.dialogs.showInfoDialog("Success","Record deleted")
+					}
+					//file not deleted
+					else {
+						plugins.dialogs.showWarningDialog("Warning","File not found; record deleted")
+					}
+				}
+				
+				//hunt for all other asset instances pointing to the same location
+				fsAssetInstance.find()
+				fsAssetInstance.asset_directory = record.asset_directory
+				fsAssetInstance.asset_title = record.asset_title
+				var results = fsAssetInstance.search()
+				
+				if (results) {
+					fsAssetInstance.deleteAllRecords()
+				}
 			}
+			//just delete selected record
 			else {
-				controller.deleteRecord()
-				plugins.dialogs.showWarningDialog("Warning","File not found; record deleted")
+				foundset.deleteRecord(record)
 			}
 		}
 		// file streaming version when on a service
 		else {
 			var jsclient = plugins.headlessclient.createClient("_dsa_mosaic_WEB_cms", null, null, null)
-			jsclient.queueMethod("WEB_0C__file_stream", "ASSET_delete", [deleteThis], REC_delete_callback)
+			
+			//delete all related records for non-groups
+			if (record.web_asset_instance_to_asset.asset_type != 3) {
+				//no FiD
+				if (batch) {
+					jsclient.queueMethod("WEB_0C__file_stream", "ASSET_delete", [deleteThis], null)
+				}
+				//show FiD when done
+				else {
+					jsclient.queueMethod("WEB_0C__file_stream", "ASSET_delete", [deleteThis], REC_delete_callback)
+				}
+				
+				//hunt for all other asset instances pointing to the same location
+				fsAssetInstance.find()
+				fsAssetInstance.asset_directory = record.asset_directory
+				var results = fsAssetInstance.search()
+				
+				if (results) {
+					fsAssetInstance.deleteAllRecords()
+				}
+			}
+			//just delete selected record
+			else {
+				foundset.deleteRecord(record)
+			}
 		}
 	}
 }
@@ -87,14 +137,33 @@ function REC_delete() {
  * @properties={typeid:24,uuid:"E6D98BA1-59D4-4944-B212-119CE8F0982D"}
  */
 function REC_new() {
-	var srcRecord = foundset.getSelectedRecord()
-	var dupeRecord = globals.CODE_record_duplicate(srcRecord,['web_asset_instance_to_asset_instance_meta'])
+	//load all asset types
+	forms.WEB_P__asset.LOAD_data()
+		
+	//show asset chooser
+	application.showFormInDialog(
+					forms.WEB_P__asset,
+					-1,-1,-1,-1,
+					" ",
+					true,
+					false,
+					"CMS_assetChoose"
+				)
 	
-	//make sure duped record is not flagged as base
-	dupeRecord.flag_initial = 0
-	databaseManager.saveData(dupeRecord)
-	
-	foundset.selectRecord(dupeRecord.id_asset_instance)
+	//something chosen, duplicate asset here
+	if (forms.WEB_P__asset._assetChosen) {
+		var newAssetInstance = foundset.getRecord(foundset.newRecord(false,true))
+		databaseManager.copyMatchingColumns(forms.WEB_P__asset._assetChosen.asset,newAssetInstance)
+		databaseManager.saveData(newAssetInstance)
+		
+		for (var i in forms.WEB_P__asset._assetChosen.meta) {
+			var newMeta = newAssetInstance.web_asset_instance_to_asset_instance_meta.getRecord(newAssetInstance.web_asset_instance_to_asset_instance_meta.newRecord(false,true))
+			newMeta.data_key = i
+			newMeta.data_value = forms.WEB_P__asset._assetChosen.meta[i]
+		}
+		
+		databaseManager.saveData()
+	}
 }
 
 /**
@@ -128,11 +197,9 @@ function FLD_data_change__flag_initial(oldValue, newValue, event) {
  */
 function REC_delete_callback(callback) {
 	if ( callback.data ) {
-		controller.deleteRecord()
 		plugins.dialogs.showInfoDialog("Success","Record deleted")
 	}
 	else {
-		controller.deleteRecord()
 		plugins.dialogs.showWarningDialog("Warning","File not found; record deleted")
 	}
 }

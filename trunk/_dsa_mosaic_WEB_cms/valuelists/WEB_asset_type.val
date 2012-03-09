@@ -1,6 +1,7 @@
 addEmptyValue:1,
 customValues:"Image|1
-File|2",
+File|2
+Group|3",
 name:"WEB_asset_type",
 returnDataProviders:1,
 separator:" ",
