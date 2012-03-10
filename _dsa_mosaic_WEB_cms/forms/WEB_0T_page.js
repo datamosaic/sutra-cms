@@ -352,7 +352,7 @@ function FIND_path(input) {
 	 *	MODIFIED :	August 30, 2009 -- Troy Elliott, Data Mosaic
 	 *			  	
 	 */
-	
+
 	if (input && input.id_page) {
 		var thisPage = input
 		var treePath = new Array()
@@ -534,6 +534,11 @@ function MOVE_generic(input) {
 				//swap ordering
 				recordPrev.order_by = recMove.order_by
 				recMove.order_by --
+				
+				// bean management
+				TREE_refresh()
+				REC_on_select(recMove.id_page)
+				elements.bean_tree.selectionPath = FIND_path(recMove)
 			}
 			else {
 				return
@@ -556,6 +561,11 @@ function MOVE_generic(input) {
 				//swap ordering
 				recordNext.order_by = recMove.order_by
 				recMove.order_by ++
+				
+				// bean management
+				TREE_refresh()
+				REC_on_select(recMove.id_page)
+				elements.bean_tree.selectionPath = FIND_path(recMove)
 			}
 			else {
 				return
@@ -596,6 +606,11 @@ function MOVE_generic(input) {
 				//add recMove to bottom of new foundset
 				recMove.order_by = (utils.hasRecords(fsPeersNew)) ? fsPeersNew.getSize() + 1 : 1
 				recMove.parent_id_page = idParent
+				
+				// bean management
+				REC_on_select(recMove.id_page)
+				TREE_refresh()
+				elements.bean_tree.selectionPath = FIND_path(recMove)
 				
 			}
 			else {
@@ -644,6 +659,11 @@ function MOVE_generic(input) {
 				recMove.order_by = recMove.web_page_to_page__parent.order_by + 1
 				recMove.parent_id_page = idParent
 				
+				// bean management
+				REC_on_select(recMove.id_page)
+				TREE_refresh()
+				elements.bean_tree.selectionPath = FIND_path(recMove)
+				
 			}
 			else {
 				return
@@ -660,6 +680,7 @@ function MOVE_generic(input) {
 	}
 	*/
 	//MEMO: as it turns out, when resorting, we need to blow out the whole tree
+	return
 	TREE_refresh()
 	
 	//need to reselect
