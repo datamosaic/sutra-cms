@@ -610,7 +610,9 @@ function MOVE_generic(input) {
 				// bean management
 				REC_on_select(recMove.id_page)
 				TREE_refresh()
+				application.updateUI(20)
 				elements.bean_tree.selectionPath = FIND_path(recMove)
+				
 				
 			}
 			else {
@@ -662,7 +664,9 @@ function MOVE_generic(input) {
 				// bean management
 				REC_on_select(recMove.id_page)
 				TREE_refresh()
+				application.updateUI(20)
 				elements.bean_tree.selectionPath = FIND_path(recMove)
+				
 				
 			}
 			else {
