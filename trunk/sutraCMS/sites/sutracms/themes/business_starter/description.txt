@@ -1,0 +1,2 @@
+Business Starter
+Template with all of the main elements of a business website. Includes a home page with three column layout and main advertising flipper, two column and one column inner layouts, search, contact us form, SEO footer, news summary widget, call to action widget, highlight widget, and content style guide.
