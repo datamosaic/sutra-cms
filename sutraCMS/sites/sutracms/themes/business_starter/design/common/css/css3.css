@@ -1,0 +1,15 @@
+.top_navigation { -webkit-border-radius: 5px; -moz-border-radius: 5px; -o-border-radius:5px 5px 5px 5px; border-radius: 5px 5px 5px 5px; behavior: url(includes/PIE.htc); position:relative; z-index:999 }
+.header_right_section { -webkit-border-top-left-radius:6px; -moz-border-radius: 6px 0 0 0; -o-border-radius: 6px 0 0 0; border-radius: 6px 0 0 0; behavior: url(includes/PIE.htc); position:relative; z-index:999 }
+#products_top .product_order .order_form { -webkit-border-radius: 5px; -moz-border-radius: 5px; -o-border-radius:5px 5px 5px 5px; border-radius: 5px 5px 5px 5px; behavior: url(includes/PIE.htc); z-index:99999 }
+#products_top .product_img { -moz-box-shadow: 0 0 6px #dcdcdc; -webkit-box-shadow: 0 0 6px #dcdcdc; box-shadow: 0 0 6px #dcdcdc; -o-box-shadow: 0 0 6px #dcdcdc; -webkit-border-radius: 5px; -moz-border-radius: 5px; -o-border-radius:5px 5px 5px 5px; border-radius: 5px 5px 5px 5px; behavior: url(includes/PIE.htc); z-index:99999 }
+#products_bottom ul li .image_frame { -moz-box-shadow: 0 0 6px #dcdcdc; -webkit-box-shadow:0 0 6px #dcdcdc; box-shadow:0 0 6px #dcdcdc; -o-box-shadow:0 0 6px #dcdcdc; -webkit-border-radius: 5px; -moz-border-radius: 5px; -o-border-radius:5px 5px 5px 5px; border-radius: 5px 5px 5px 5px; behavior: url(includes/PIE.htc); z-index:99999 }
+.top_navigation ul li a { text-shadow:1px 1px 1px #000000 }
+#navigation ul li a { text-shadow:0 0 1px #000000 }
+.header_right_section .header_content h2 { text-shadow:1px 1px 1px #000000 }
+#products_top .product_order .order_form ul li form input { -moz-box-shadow: 0 0 6px #c9bb95; -webkit-box-shadow: 0 0 6px #c9bb95; box-shadow: 0 0 6px #c9bb95; -o-box-shadow: 0 0 6px #c9bb95; behavior: url(includes/PIE.htc); z-index:99999 }
+
+/*index*/
+#banner{moz-box-shadow: #a7a7a7 0 0px 5px; -webkit-box-shadow: #a7a7a7 0 0px 5px; box-shadow: #ebebeb 5px 14px 10px; -o-box-shadow: #a7a7a7 0 0px 5px ; behavior: url(common/css/PIE.htc);}
+
+.col_01 .inner span{moz-box-shadow: 0 0 6px #a2a2a2; -webkit-box-shadow: 0 0 6px #a2a2a2; box-shadow: 0 0 6px #a2a2a2; -o-box-shadow: 0 0 6px #a2a2a2; behavior: url(common/css/PIE.htc); z-index:99999}
+.col_02 .inner span{moz-box-shadow: 0 0 6px #a2a2a2; -webkit-box-shadow: 0 0 6px #a2a2a2; box-shadow: 0 0 6px #a2a2a2; -o-box-shadow: 0 0 6px #a2a2a2; behavior: url(common/css/PIE.htc); z-index:99999}
