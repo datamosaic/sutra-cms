@@ -1,0 +1,8 @@
+.png,img, .h_right span, #banner ul li .info, .bx-pager a.pager-link,{behavior: url("common/css/iepngfix.htc")}
+body{ font-size:10px}
+.navigation_right ul li a span { line-height:14px; background-position: right 2px}
+
+.bx-pager{ position:relative; top:-150px;}
+
+#banner{position:relative; top:-11px; }
+#body_container{float:left; width:100%; position:relative; margin:-15px 0 0 0; z-index:999}
