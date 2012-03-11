@@ -14,14 +14,23 @@
 
 <body id="home">
 	<header>
-	      <h1>Simple Boilerplate</h1>
+		<%=pageData.get("Header")%>
 	</header>
+
+	<section>
+		<article>
+			<header>
+				<%=pageData.get("Title")%>
+			</header>
+			<section>
+				<%=pageData.get("Main")%>
+			</section>		
+		</article>
+	</section>
 	
-	<article>
-		<section>
-			<%=pageData.get("Main")%>
-		</section>
-	</article>
+	<footer>
+		<%=pageData.get("Footer")%>
+	</footer>
 	
 <jsp:include page='<%= (String)request.getAttribute("foot") %>' /> 
 </body>
