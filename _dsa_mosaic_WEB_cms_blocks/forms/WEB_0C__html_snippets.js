@@ -29,7 +29,7 @@ function SNIPPET_states_us(selected) {
 	<option' + isSelected("CO") + ' value="CO">Colorado</option>\n\
 	<option' + isSelected("CT") + ' value="CT">Connecticut</option>\n\
 	<option' + isSelected("DE") + ' value="DE">Delaware</option>\n\
-	<option' + isSelected("DC") + ' value="DC">Dist of Columbia</option>\n\
+	<option' + isSelected("DC") + ' value="DC">District of Columbia</option>\n\
 	<option' + isSelected("FL") + ' value="FL">Florida</option>\n\
 	<option' + isSelected("GA") + ' value="GA">Georgia</option>\n\
 	<option' + isSelected("HI") + ' value="HI">Hawaii</option>\n\
