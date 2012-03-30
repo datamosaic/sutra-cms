@@ -66,6 +66,9 @@ var CMS = {
 						
 						//both the base and resource url methods will return with "sutraCMS/"; need to remove from one so no doubling
 						return utils.stringReplace(globals.WEBc_markup_link_base(pageID,null,siteLanguageRec),'sutraCMS/','') + globals.WEBc_markup_link_resources(pageID)
+					},
+				saveResponseData : function() {
+						return globals.WEBc_markup_block_saveResponse(globals.CMS.data)
 					}
 			},
 		session : {
