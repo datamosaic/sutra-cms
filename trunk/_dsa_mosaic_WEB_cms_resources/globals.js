@@ -619,10 +619,12 @@ function WEBc_markup_block_saveResponse(obj) {
 	}
 	
 	if (i) {
-		return true
+		// save UUID to block response data
+		globals.CMS.data.block_response.UUID = instanceUUID
+		return instanceUUID
 	}
 	else {
-		return false
+		return null
 	}
 }
 
