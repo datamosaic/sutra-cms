@@ -133,12 +133,11 @@ function _INFO() {}
  * 
  * 
  * @param {Number} progress : used by streaming file callbacks to pass control back to this method
- * @param {Boolean} _flagRefresh : sudo-parameter/form variable tracks if creating new theme or refreshing current theme
  * 
  * @properties={typeid:24,uuid:"63BDBFCB-609A-4735-A981-CF0DEE9C5BFC"}
  * @AllowToRunInFind
  */
-function THEME_new(progress,_flagRefresh) {
+function THEME_new(progress) {
 	var fsTheme = forms.WEB_0F_theme.foundset
 	
 	// *** STAGE #1: get available themes *** //
