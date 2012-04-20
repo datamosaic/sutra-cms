@@ -26,7 +26,9 @@ var _lastToolbar = null;
  */
 function FORM_on_show(firstShow, event) {
 	//don't run in headless or web client (they use whatever solution is activated as context)
-	if (application.getApplicationType() == APPLICATION_TYPES.SMART_CLIENT || application.getApplicationType() == APPLICATION_TYPES.RUNTIME_CLIENT) {
+	if ((application.getApplicationType() == APPLICATION_TYPES.SMART_CLIENT || application.getApplicationType() == APPLICATION_TYPES.RUNTIME_CLIENT) &&
+		//don't run if in a preload
+		!(application.__parent__.solutionPrefs && solutionPrefs.config.prefs.formPreloading)) {
 		
 		//first time go to sitemap view (do at end so everything loaded already)
 		if (firstShow) {
@@ -101,7 +103,10 @@ function FORM_on_show(firstShow, event) {
  */
 function FORM_on_hide(event) {
 	//don't run in headless or web client (they use whatever solution is activated as context)
-	if (application.getApplicationType() == APPLICATION_TYPES.SMART_CLIENT || application.getApplicationType() == APPLICATION_TYPES.RUNTIME_CLIENT) {
+	if ((application.getApplicationType() == APPLICATION_TYPES.SMART_CLIENT || application.getApplicationType() == APPLICATION_TYPES.RUNTIME_CLIENT) &&
+		//don't run if in a preload
+		!(application.__parent__.solutionPrefs && solutionPrefs.config.prefs.formPreloading)) {
+		
 		//undo locked screen
 		globals.WEB_lock_workflow(false)
 		

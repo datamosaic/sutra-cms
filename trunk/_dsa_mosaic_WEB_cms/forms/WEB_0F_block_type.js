@@ -537,7 +537,7 @@ function FORM_on_show(firstShow, event) {
 		FILTER_records(event)
 	}
 	
-	if (!utils.hasRecords(foundset)) {
+	if (!utils.hasRecords(foundset) && !solutionPrefs.config.prefs.formPreloading) {
 		//make sure that doesn't lock us out of left-side lists
 		if (solutionPrefs.config.activeSpace == 'workflow') {
 			solutionPrefs.config.activeSpace = 'standard'
@@ -557,7 +557,7 @@ function FORM_on_show(firstShow, event) {
  * @properties={typeid:24,uuid:"F43028E6-9A22-4FBB-980A-B415493E4E9E"}
  */
 function FORM_on_hide(event) {
-	if (application.__parent__.solutionPrefs && solutionPrefs.design.statusLockWorkflow) {
+	if (application.__parent__.solutionPrefs && solutionPrefs.design.statusLockWorkflow && !solutionPrefs.config.prefs.formPreloading) {
 		globals.WEB_lock_workflow(false)
 	}
 	

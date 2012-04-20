@@ -107,7 +107,7 @@ function FOUNDSET_restrict(noSutra) {
  * @properties={typeid:24,uuid:"2C6B0344-4096-4E8E-8D17-F9707FAEB21A"}
  */
 function FORM_on_hide(event) {
-	if (application.__parent__.solutionPrefs && solutionPrefs.design.statusLockWorkflow) {
+	if (application.__parent__.solutionPrefs && solutionPrefs.design.statusLockWorkflow && !solutionPrefs.config.prefs.formPreloading) {
 		globals.WEB_lock_workflow(false)
 	}
 	
