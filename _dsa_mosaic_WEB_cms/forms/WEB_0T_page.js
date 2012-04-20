@@ -1282,8 +1282,8 @@ function TABS_list(input) {
 		//grab the actions to this
 		var valueList = new Array()
 		var formNames = new Array()
-		for (var i = 0; i < navigationPrefs.byNavItemID[solutionPrefs.config.currentFormID].universalList.buttons.tabs.length ; i++) {
-			var actionItem = navigationPrefs.byNavItemID[solutionPrefs.config.currentFormID].universalList.buttons.tabs[i]
+		for (var i = 0; i < navigationPrefs.byNavItemID[solutionPrefs.config.currentFormID].buttons.tabs.length ; i++) {
+			var actionItem = navigationPrefs.byNavItemID[solutionPrefs.config.currentFormID].buttons.tabs[i]
 			valueList.push(actionItem.menuName)
 			formNames.push(actionItem.formToLoad)
 		}
@@ -1391,11 +1391,11 @@ function TABS_list(input) {
 				
 				//using a custom tab, note which one it is
 				if (tabSelected >= 0) {
-					navigationPrefs.byNavItemID[solutionPrefs.config.currentFormID].universalList.buttons.tabs.tabPosn = tabSelected
+					navigationPrefs.byNavItemID[solutionPrefs.config.currentFormID].buttons.tabs.tabPosn = tabSelected
 				}
 				//using default list (UL or other)
-				else if (navigationPrefs.byNavItemID[solutionPrefs.config.currentFormID].universalList.buttons.tabs) {
-					delete navigationPrefs.byNavItemID[solutionPrefs.config.currentFormID].universalList.buttons.tabs.tabPosn
+				else if (navigationPrefs.byNavItemID[solutionPrefs.config.currentFormID].buttons.tabs) {
+					delete navigationPrefs.byNavItemID[solutionPrefs.config.currentFormID].buttons.tabs.tabPosn
 				}
 				
 				//LOG ul tab change
