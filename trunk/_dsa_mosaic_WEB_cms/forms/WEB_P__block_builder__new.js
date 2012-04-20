@@ -51,7 +51,7 @@ function ACTION_ok(event) {
 		forms.WEB_0F_block_type__builder_1L_block_builder._fieldName = _fieldName
 		forms.WEB_0F_block_type__builder_1L_block_builder._fieldDescription = _fieldDescription
 		
-		application.closeFormDialog('cmsBlockBuilderNew')
+		globals.CODE_form_in_dialog_close('cmsBlockBuilderNew')
 	}
 	else {
 		plugins.dialogs.showErrorDialog('Error','Please select a type and provide a name')
@@ -64,7 +64,7 @@ function ACTION_ok(event) {
  */
 function ACTION_cancel() {
 	globals.CODE_hide_form = 1
-	application.closeFormDialog('cmsBlockBuilderNew')
+	globals.CODE_form_in_dialog_close('cmsBlockBuilderNew')
 }
 
 /**

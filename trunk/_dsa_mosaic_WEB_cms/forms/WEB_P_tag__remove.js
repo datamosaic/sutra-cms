@@ -49,7 +49,7 @@ if (!globals.CODE_hide_form) {
 	//enaable closing the form
 	globals.CODE_hide_form = 1
 	
-	application.closeFormDialog('tagDelete')
+	globals.CODE_form_in_dialog_close('tagDelete')
 }
 }
 
@@ -115,7 +115,7 @@ databaseManager.setAutoSave(true)
 globals.CODE_hide_form = 1
 
 //close the form
-application.closeFormDialog('tagDelete')
+globals.CODE_form_in_dialog_close('tagDelete')
 }
 
 /**

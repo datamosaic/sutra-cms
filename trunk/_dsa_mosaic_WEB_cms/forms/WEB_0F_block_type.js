@@ -73,7 +73,7 @@ function REC_new(flagRefresh,formName,fs) {
 	//					)
 					
 					// 1) choose form to register as a block
-					application.showFormInDialog(
+					globals.CODE_form_in_dialog(
 										forms.WEB_P__block_type__new,
 										-1,-1,-1,-1,
 										' ',

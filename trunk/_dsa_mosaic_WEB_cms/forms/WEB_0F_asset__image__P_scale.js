@@ -81,7 +81,7 @@ function ACTION_cancel() {
 		//enaable closing the form
 		globals.CODE_hide_form = 1
 		
-		application.closeFormDialog('CMS_imageScale')
+		globals.CODE_form_in_dialog_close('CMS_imageScale')
 	}
 }
 
@@ -99,7 +99,7 @@ function ACTION_ok() {
 	globals.CODE_hide_form = 1
 	
 	//close the form
-	application.closeFormDialog('CMS_imageScale')
+	globals.CODE_form_in_dialog_close('CMS_imageScale')
 
 }
 

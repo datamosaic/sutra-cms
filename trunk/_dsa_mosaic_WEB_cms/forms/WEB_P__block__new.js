@@ -114,7 +114,7 @@ function ACTION_ok(event) {
 		globals.CODE_hide_form = 1
 		
 		//close it
-		application.closeFormDialog('cmsBlockNew')
+		globals.CODE_form_in_dialog_close('cmsBlockNew')
 	}
 	
 	//not already ok to close, continue
@@ -491,7 +491,7 @@ function ACTION_cancel() {
 		//enaable closing the form
 		globals.CODE_hide_form = 1
 		
-		application.closeFormDialog('cmsBlockNew')
+		globals.CODE_form_in_dialog_close('cmsBlockNew')
 	}
 }
 

@@ -141,7 +141,7 @@ function REC_new() {
 	forms.WEB_P__asset.LOAD_data()
 		
 	//show asset chooser
-	application.showFormInDialog(
+	globals.CODE_form_in_dialog(
 					forms.WEB_P__asset,
 					-1,-1,-1,-1,
 					" ",

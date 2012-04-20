@@ -76,7 +76,7 @@ function TAG_add(event) {
 		
 		forms.WEB_P_tag__add._callingForm = controller.getName()
 		
-		application.showFormInDialog(
+		globals.CODE_form_in_dialog(
 					forms.WEB_P_tag__add,
 					400,-1,-1,-1,
 					'Tags',
@@ -107,7 +107,7 @@ function TAG_delete(event) {
 		
 		forms.WEB_P_tag__remove._callingForm = controller.getName()
 		
-		application.showFormInDialog(
+		globals.CODE_form_in_dialog(
 					forms.WEB_P_tag__remove,
 					400,-1,-1,-1,
 					'Tags',

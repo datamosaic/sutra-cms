@@ -38,7 +38,7 @@ function ACTION_cancel() {
 	//enable closing the form
 	globals.CODE_hide_form = 1
 	
-	application.closeFormDialog('cmsBlockVersion')
+	globals.CODE_form_in_dialog_close('cmsBlockVersion')
 
 }
 
@@ -54,7 +54,7 @@ function ACTION_ok() {
 	//accept
 	_fidAccept = 1
 	
-	application.closeFormDialog('cmsBlockVersion')
+	globals.CODE_form_in_dialog_close('cmsBlockVersion')
 
 }
 

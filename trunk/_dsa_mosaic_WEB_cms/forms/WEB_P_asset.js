@@ -24,7 +24,7 @@ function ACTION_ok(event) {
 		//enaable closing the form
 		globals.CODE_hide_form = 1
 		
-		application.closeFormDialog('cmsAssetNew')
+		globals.CODE_form_in_dialog_close('cmsAssetNew')
 	}
 }
 
@@ -44,7 +44,7 @@ function ACTION_cancel() {
 		//enaable closing the form
 		globals.CODE_hide_form = 1
 		
-		application.closeFormDialog('cmsAssetNew')
+		globals.CODE_form_in_dialog_close('cmsAssetNew')
 	}
 }
 

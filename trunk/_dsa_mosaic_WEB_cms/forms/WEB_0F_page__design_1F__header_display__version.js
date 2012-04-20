@@ -202,7 +202,7 @@ function ADD_version(event) {
 		}
 		
 		//prompt for version name
-		application.showFormInDialog(
+		globals.CODE_form_in_dialog(
 						forms.WEB_P__version__page,
 						-1,-1,-1,-1,
 						' ',
@@ -219,7 +219,7 @@ function ADD_version(event) {
 			//copy from an existing version
 			if (forms.WEB_P__version__page._versionType == 1) {
 				//prompt for which version to copy from
-				application.showFormInDialog(
+				globals.CODE_form_in_dialog(
 								forms.WEB_P_page__version,
 								-1,-1,-1,-1,
 								' ',

@@ -25,7 +25,7 @@ function BLOCK_new() {
 	forms.WEB_P__block__new._calledFrom = 'Theme'
 	
 	//show FiD for adding a new block
-	application.showFormInDialog(
+	globals.CODE_form_in_dialog(
 				forms.WEB_P__block__new,
 				-1,-1,-1,-1,
 				' ',

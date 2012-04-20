@@ -71,7 +71,7 @@ function ASSET_scale(assetRecord,editMode) {
 	forms[fidForm]._imageDirectory = asset.asset_directory
 	
 	//show FiD
-	application.showFormInDialog(
+	globals.CODE_form_in_dialog(
 			forms[fidForm],
 			-1,-1,-1,-1,
 			" ", 
