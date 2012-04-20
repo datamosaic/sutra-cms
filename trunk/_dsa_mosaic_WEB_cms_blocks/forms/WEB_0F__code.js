@@ -225,7 +225,7 @@ function ACTION_insert_image(event) {
 	if (globals.CMS.ui.getEdit()) {
 		forms.WEB_P__asset.LOAD_data(1)
 		
-		application.showFormInDialog(
+		globals.CODE_form_in_dialog(
 					forms.WEB_P__asset,
 					-1,-1,-1,-1,
 					" ",

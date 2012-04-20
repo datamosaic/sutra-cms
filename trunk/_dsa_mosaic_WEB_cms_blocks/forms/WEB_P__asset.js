@@ -23,7 +23,7 @@ function ACTION_cancel()
 		//enable closing the form
 		globals.CODE_hide_form = 1
 		
-		application.closeFormDialog('CMS_assetChoose')
+		globals.CODE_form_in_dialog_close('CMS_assetChoose')
 	}
 }
 
@@ -53,7 +53,7 @@ function ACTION_ok() {
 		globals.CODE_hide_form = 1
 		
 		//close the form
-		application.closeFormDialog('CMS_assetChoose')
+		globals.CODE_form_in_dialog_close('CMS_assetChoose')
 	}
 	//nothing selected
 	else {
