@@ -1114,7 +1114,7 @@ function REC_new() {
 			//let sleep for a second so doesn't crash
 			application.sleep(1000)
 			
-			application.showFormInDialog(
+			globals.CODE_form_in_dialog(
 						forms.WEB_P_page,
 						-1,-1,-1,-1,
 						' ',

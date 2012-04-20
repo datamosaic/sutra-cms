@@ -71,7 +71,7 @@ function ACTION_ok(event) {
 	forms.WEB_0F_block_type__block._blockName = _blockName
 	forms.WEB_0F_block_type__block._blockDescription = _blockDescription
 	
-	application.closeFormDialog('cmsBlockTypeNew')
+	globals.CODE_form_in_dialog_close('cmsBlockTypeNew')
 }
 
 /**
@@ -80,7 +80,7 @@ function ACTION_ok(event) {
  */
 function ACTION_cancel() {
 	globals.CODE_hide_form = 1
-	application.closeFormDialog('cmsBlockTypeNew')
+	globals.CODE_form_in_dialog_close('cmsBlockTypeNew')
 }
 
 /**

@@ -99,7 +99,7 @@ function ACTION_cancel() {
 		//enable closing the form
 		globals.CODE_hide_form = 1
 		
-		application.closeFormDialog('cmsNewPage')
+		globals.CODE_form_in_dialog_close('cmsNewPage')
 	}
 }
 
@@ -144,7 +144,7 @@ function ACTION_ok() {
 	else {
 		//enable closing the form
 		globals.CODE_hide_form = 1
-		application.closeFormDialog('cmsNewPage')
+		globals.CODE_form_in_dialog_close('cmsNewPage')
 		
 		globals.CODE_cursor_busy(true)
 		

@@ -118,7 +118,7 @@ function BLOCK_new(input) {
 	}
 	
 	//show FiD for adding a new block
-	application.showFormInDialog(
+	globals.CODE_form_in_dialog(
 				forms.WEB_P__block__new,
 				-1,-1,-1,-1,
 				' ',

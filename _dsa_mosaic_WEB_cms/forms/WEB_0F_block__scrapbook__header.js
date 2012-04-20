@@ -208,7 +208,7 @@ function ACTION_duplicate(event) {
 			var selectedVersion = fsVersion.getSelectedRecord()
 			
 			//show form in dialog
-			application.showFormInDialog(
+			globals.CODE_form_in_dialog(
 							forms.WEB_P__version__block,
 							-1,-1,-1,-1,
 							' ',

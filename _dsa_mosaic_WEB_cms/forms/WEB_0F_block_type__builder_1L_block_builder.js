@@ -40,7 +40,7 @@ var _fieldName = null;
  */
 function REC_new() {
 	//show FiD
-	application.showFormInDialog(
+	globals.CODE_form_in_dialog(
 			forms.WEB_P__block_builder__new,
 			-1,-1,-1,-1,
 			' ',

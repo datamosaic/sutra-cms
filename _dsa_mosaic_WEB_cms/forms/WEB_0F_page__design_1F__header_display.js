@@ -155,7 +155,7 @@ function FLD_data_change__group_selected(oldValue, newValue, event) {
 function NEW_version(event) {
 	if (utils.hasRecords(forms.WEB_0F_page__design.foundset)) {
 		//show form in dialog
-		application.showFormInDialog(
+		globals.CODE_form_in_dialog(
 						forms.WEB_P_version,
 						-1,-1,-1,-1,
 						' ',
