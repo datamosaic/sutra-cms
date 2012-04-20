@@ -227,7 +227,7 @@ function BLOCK_choose(event) {
 		forms.WEB_P__asset.LOAD_data(2)
 		
 		//show file chooser
-		application.showFormInDialog(
+		globals.CODE_form_in_dialog(
 						forms.WEB_P__asset,
 						-1,-1,-1,-1,
 						" ",
