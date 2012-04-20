@@ -82,7 +82,7 @@ function FORM_on_show(firstShow, event) {
  * @properties={typeid:24,uuid:"A7E8E770-A7AC-469E-AE39-43D84BA38A3F"}
  */
 function FORM_on_hide(event) {
-	if (application.__parent__.solutionPrefs && solutionPrefs.design.statusLockWorkflow) {
+	if (application.__parent__.solutionPrefs && solutionPrefs.design.statusLockWorkflow && !solutionPrefs.config.prefs.formPreloading) {
 		globals.WEB_lock_workflow(false)
 	}
 	

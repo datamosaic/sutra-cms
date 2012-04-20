@@ -77,7 +77,7 @@ function REC_delete() {
  * @properties={typeid:24,uuid:"1F26A1AB-A7AB-4E89-92EA-4B3F4ADF38C4"}
  */
 function FORM_on_hide(event) {
-	if (application.__parent__.solutionPrefs && solutionPrefs.design.statusLockWorkflow) {
+	if (application.__parent__.solutionPrefs && solutionPrefs.design.statusLockWorkflow && !solutionPrefs.config.prefs.formPreloading) {
 		globals.WEB_lock_workflow(false)
 	}
 	
@@ -420,7 +420,7 @@ function FORM_on_show(firstShow, event) {
 	}
 	
 	//disable form if no records
-	if (!utils.hasRecords(foundset)) {
+	if (!utils.hasRecords(foundset) && !solutionPrefs.config.prefs.formPreloading) {
 		//make sure that doesn't lock us out of left-side lists
 		if (solutionPrefs.config.activeSpace == 'workflow') {
 			solutionPrefs.config.activeSpace = 'standard'

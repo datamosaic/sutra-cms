@@ -196,18 +196,23 @@ function FORM_on_show(firstShow, event) {
 	if (!application.__parent__.solutionPrefs) {
 		FILTER_records(event)
 	}
+	//don't run in headless or web client (they use whatever solution is activated as context)
+	else if ((application.getApplicationType() == APPLICATION_TYPES.SMART_CLIENT || application.getApplicationType() == APPLICATION_TYPES.RUNTIME_CLIENT) &&
+		//don't run if in a preload
+		!(application.__parent__.solutionPrefs && solutionPrefs.config.prefs.formPreloading)) {
 	
-	if (!utils.hasRecords(foundset)) {
-		//make sure that doesn't lock us out of left-side lists
-		if (solutionPrefs.config.activeSpace == 'workflow') {
-			solutionPrefs.config.activeSpace = 'standard'
-		}
-		
-		globals.WEB_lock_workflow(true)
-		
-		//there are records in the pages used on list, clear
-		if (utils.hasRecords(forms.WEB_0F_asset_1L_page.foundset)) {
-			forms.WEB_0F_asset_1L_page.foundset.clear()
+		if (!utils.hasRecords(foundset)) {
+			//make sure that doesn't lock us out of left-side lists
+			if (solutionPrefs.config.activeSpace == 'workflow') {
+				solutionPrefs.config.activeSpace = 'standard'
+			}
+			
+			globals.WEB_lock_workflow(true)
+			
+			//there are records in the pages used on list, clear
+			if (utils.hasRecords(forms.WEB_0F_asset_1L_page.foundset)) {
+				forms.WEB_0F_asset_1L_page.foundset.clear()
+			}
 		}
 	}
 }
@@ -222,7 +227,7 @@ function FORM_on_show(firstShow, event) {
  * @properties={typeid:24,uuid:"6F9735E5-4802-4370-9526-80C07653820B"}
  */
 function FORM_on_hide(event) {
-	if (application.__parent__.solutionPrefs && solutionPrefs.design.statusLockWorkflow) {
+	if (application.__parent__.solutionPrefs && solutionPrefs.design.statusLockWorkflow && !solutionPrefs.config.prefs.formPreloading) {
 		globals.WEB_lock_workflow(false)
 	}
 	

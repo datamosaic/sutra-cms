@@ -392,29 +392,31 @@ function FIELD_directory_onLost(event) {
  * @properties={typeid:24,uuid:"6A6517C7-831B-4579-A192-2ED134AEBB4C"}
  */
 function FORM_on_show(firstShow, event) {
-	if (firstShow) {
-		//set divider locations
-		var spacing = (application.__parent__.solutionPrefs) ? solutionPrefs.screenAttrib.spaces[solutionPrefs.config.activeSpace].currentHorizontal : 0
-		var aThird = (application.getWindowWidth() - spacing - 22) / 3
-//		application.updateUI()
-		elements.bean_split_1.dividerLocation = aThird
-		elements.bean_split_2.dividerLocation = aThird
-		elements.bean_split_3.dividerLocation = aThird
-		elements.bean_split_4.dividerLocation = aThird
-	}
-	
-	//only do this when not running in data sutra
-	if (!application.__parent__.solutionPrefs) {
-		FILTER_records(event)
-	}
-	
-	if (!utils.hasRecords(foundset)) {
-		//make sure that doesn't lock us out of left-side lists
-		if (solutionPrefs.config.activeSpace == 'workflow') {
-			solutionPrefs.config.activeSpace = 'standard'
+	if (!solutionPrefs.config.prefs.formPreloading) {
+		if (firstShow) {
+			//set divider locations
+			var spacing = (application.__parent__.solutionPrefs) ? solutionPrefs.screenAttrib.spaces[solutionPrefs.config.activeSpace].currentHorizontal : 0
+			var aThird = (application.getWindowWidth() - spacing - 22) / 3
+	//		application.updateUI()
+			elements.bean_split_1.dividerLocation = aThird
+			elements.bean_split_2.dividerLocation = aThird
+			elements.bean_split_3.dividerLocation = aThird
+			elements.bean_split_4.dividerLocation = aThird
 		}
 		
-		globals.WEB_lock_workflow(true)
+		//only do this when not running in data sutra
+		if (!application.__parent__.solutionPrefs) {
+			FILTER_records(event)
+		}
+		
+		if (!utils.hasRecords(foundset)) {
+			//make sure that doesn't lock us out of left-side lists
+			if (solutionPrefs.config.activeSpace == 'workflow') {
+				solutionPrefs.config.activeSpace = 'standard'
+			}
+			
+			globals.WEB_lock_workflow(true)
+		}
 	}
 }
 
@@ -457,7 +459,7 @@ function ACTION_new_block(event) {
  * @properties={typeid:24,uuid:"C8199313-FD5E-49CD-BC36-6971DF267DAF"}
  */
 function FORM_on_hide(event) {
-	if (application.__parent__.solutionPrefs && solutionPrefs.design.statusLockWorkflow) {
+	if (application.__parent__.solutionPrefs && solutionPrefs.design.statusLockWorkflow && !solutionPrefs.config.prefs.formPreloading) {
 		globals.WEB_lock_workflow(false)
 	}
 	
