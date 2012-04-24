@@ -46,6 +46,7 @@ function REC_on_select(event) {
 /**
  *
  * @properties={typeid:24,uuid:"F2373AA4-4FB7-4DF7-8809-A0277D3CFCBC"}
+ * @AllowToRunInFind
  */
 function REC_delete(event,batch,record) {
 	if (!record) {
