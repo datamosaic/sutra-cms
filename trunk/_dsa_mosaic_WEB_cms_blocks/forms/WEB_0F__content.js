@@ -78,7 +78,7 @@ function TINYMCE_init(mode) {
 				cssFile += 'sites/' + forms.WEB_0F_page.web_page_to_site.directory + '/'
 			}
 			
-			if (utils.hasRecords(forms.WEB_0F_page__design_1F__header_display_2F_platform._platform,'web_platform_to_theme') && forms.WEB_0F_page__design_1F__header_display_2F_platform._platform.web_platform_to_theme.theme_directory) {
+			if (utils.hasRecords(forms.WEB_0F_page__design_1F__header_display_2F_platform._platform) && utils.hasRecords(forms.WEB_0F_page__design_1F__header_display_2F_platform._platform,'web_platform_to_theme') && forms.WEB_0F_page__design_1F__header_display_2F_platform._platform.web_platform_to_theme.theme_directory) {
 				cssFile += 'themes/' + forms.WEB_0F_page__design_1F__header_display_2F_platform._platform.web_platform_to_theme.theme_directory + '/css/tinymce.css'
 				
 				//read in cssFile to see if exists
