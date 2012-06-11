@@ -316,7 +316,7 @@ if (application.__parent__.solutionPrefs) {
  */
 function WEB_startup() {
 	//over ride style for webclient
-	if (application.getApplicationType() == APPLICATION_TYPES.WEB_CLIENT) {
+	if (application.getApplicationType() == APPLICATION_TYPES.WEB_CLIENT && application.getClientProperty(APP_WEB_PROPERTY.WEBCLIENT_TEMPLATES_DIR) != 'datasutra') {
 		application.setUIProperty(APP_WEB_PROPERTY.WEBCLIENT_TEMPLATES_DIR, 'harjo_alternate')
 	}
 	//hacks to load in all browser bean forms
