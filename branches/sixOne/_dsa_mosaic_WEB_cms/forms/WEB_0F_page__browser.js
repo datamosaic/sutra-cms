@@ -189,7 +189,7 @@ function URL_update(webMode) {
 //			globals.WEB_preview_url = 
 //				globals.WEBc_markup_link_page(page_link_internal,null,'Edit',webMode) + 
 //				"&version=" + forms.WEB_0F_page__browser_1F_block__editor.url_param
-//			plugins.dialogs.showInfoDialog('Coming soon...','Internal links can not be edited in real mode yet')
+//			globals.DIALOGS.showInfoDialog('Coming soon...','Internal links can not be edited in real mode yet')
 			var fsPage = databaseManager.getFoundSet('sutra_cms','web_page')
 			fsPage.find()
 			fsPage.id_page = page_link_internal

@@ -319,7 +319,7 @@ function ACTION_ok(event) {
 				}
 			}
 			else {
-				plugins.dialogs.showErrorDialog(
+				globals.DIALOGS.showErrorDialog(
 							'Error',
 							'No block chosen'
 					)
@@ -465,7 +465,7 @@ function ACTION_ok(event) {
 				}
 			}
 			else {
-				plugins.dialogs.showErrorDialog(
+				globals.DIALOGS.showErrorDialog(
 							'Error',
 							'No block chosen'
 					)

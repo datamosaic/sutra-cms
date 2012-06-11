@@ -95,7 +95,7 @@ function AREA_add_missing(versionStack, recLatest, recSelected, autoActivate) {
 	if ( !selectedVersion.id_theme ) {
 		//only show pop-up dialog for one off blow in of missing areas
 		if (!batchUpdate) {
-			plugins.dialogs.showErrorDialog(
+			globals.DIALOGS.showErrorDialog(
 							"Error",
 							"No theme selected for this page"
 						)
@@ -107,7 +107,7 @@ function AREA_add_missing(versionStack, recLatest, recSelected, autoActivate) {
 	if (!(utils.hasRecords(selectedVersion,'web_version_to_layout.web_layout_to_editable'))) {
 		//only show pop-up dialog for one off blow in of missing areas
 		if (!batchUpdate) {
-			plugins.dialogs.showErrorDialog( 
+			globals.DIALOGS.showErrorDialog( 
 						"Error",
 						"No editable regions set up in layout selected."
 					)
@@ -148,7 +148,7 @@ function AREA_add_missing(versionStack, recLatest, recSelected, autoActivate) {
 		
 		//warn when newly created version not activated
 		if (!autoActivate) {
-			plugins.dialogs.showInfoDialog(
+			globals.DIALOGS.showInfoDialog(
 						'Success',
 						'The theme has been updated.\nYou must activate this version to publish your changes.'
 				)
@@ -237,7 +237,7 @@ function AREA_reset(versionStack, recLatest, recSelected, autoActivate) {
 	if ( !selectedVersion.id_theme ) {
 		//only show pop-up dialog for one off reset
 		if (!batchUpdate) {
-			plugins.dialogs.showErrorDialog(
+			globals.DIALOGS.showErrorDialog(
 							"Error",
 							"No theme selected for this page"
 						)
@@ -249,7 +249,7 @@ function AREA_reset(versionStack, recLatest, recSelected, autoActivate) {
 	if (!(utils.hasRecords(selectedVersion,'web_version_to_layout.web_layout_to_editable'))) {
 		//only show pop-up dialog for one off reset
 		if (!batchUpdate) {
-			plugins.dialogs.showErrorDialog( 
+			globals.DIALOGS.showErrorDialog( 
 						"Error",
 						"No editable regions set up in layout selected."
 					)
@@ -279,7 +279,7 @@ function AREA_reset(versionStack, recLatest, recSelected, autoActivate) {
 	//reload this page when not called from a batch
 	if (!batchUpdate) {
 		forms.WEB_0F_page__design.REC_on_select(true,true,1)
-		plugins.dialogs.showInfoDialog(
+		globals.DIALOGS.showInfoDialog(
 					'Success',
 					'The theme has been updated.\nYou must activate this version to publish your changes.'
 			)

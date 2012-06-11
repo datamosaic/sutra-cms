@@ -15,7 +15,7 @@ var _license_dsa_mosaic_WEB_cms = 'Module: _dsa_mosaic_WEB_cms \
  * @properties={typeid:24,uuid:"AFD9DE7F-B435-4E32-B9AA-E1B808A00BD3"}
  */
 function UTIL_add_versioning(event) {
-	var input = plugins.dialogs.showWarningDialog(
+	var input = globals.DIALOGS.showWarningDialog(
 					'Warning!',
 					'You only need to press this button once. It will...\n' + 
 					'1- Create an "Everybody" group for all existing pages,\n' +
@@ -64,7 +64,7 @@ function UTIL_add_versioning(event) {
 			}
 		}
 		
-		plugins.dialogs.showInfoDialog(
+		globals.DIALOGS.showInfoDialog(
 					'Complete',
 					'Versioning has been successfully added'
 			)
@@ -76,7 +76,7 @@ function UTIL_add_versioning(event) {
  * @properties={typeid:24,uuid:"DDC0907D-C04A-4759-A049-2D547368944E"}
  */
 function UTIL_link_area_editable() {
-	var input = plugins.dialogs.showWarningDialog(
+	var input = globals.DIALOGS.showWarningDialog(
 					'Warning!',
 					'You only need to press this button once. It will create\n' + 
 					'a link from all existing areas to their editable template.' +
@@ -162,7 +162,7 @@ function UTIL_link_area_editable() {
 		}
 		
 		//show alert that completed
-		plugins.dialogs.showInfoDialog(
+		globals.DIALOGS.showInfoDialog(
 					'Completed',
 					'Exactly ' + cnt + ' record(s) have linked.'
 			)
@@ -204,7 +204,7 @@ function UTIL_page_type() {
 	}
 	
 	//show alert that completed
-	plugins.dialogs.showInfoDialog(
+	globals.DIALOGS.showInfoDialog(
 				'Completed',
 				'Exactly ' + cnt + ' page(s) have been updated.'
 		)

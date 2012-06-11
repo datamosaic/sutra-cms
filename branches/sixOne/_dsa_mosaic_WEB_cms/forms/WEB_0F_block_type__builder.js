@@ -28,7 +28,7 @@ function FLD_data_change__block_name(oldValue, newValue, event) {
 	var results = fsBlockType.search()
 	
 	if (results > 1) {
-		plugins.dialogs.showErrorDialog(
+		globals.DIALOGS.showErrorDialog(
 					'Error',
 					'This block name is not unique...rename'
 			)
@@ -91,7 +91,7 @@ function ACTION_publish(event) {
 	
 	REC_on_select()
 	
-	plugins.dialogs.showInfoDialog(
+	globals.DIALOGS.showInfoDialog(
 					'Done',
 					'Block builder published'
 			)

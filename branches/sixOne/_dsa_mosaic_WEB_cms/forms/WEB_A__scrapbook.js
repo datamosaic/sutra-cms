@@ -57,7 +57,7 @@ function TOGGLE_edit_mode(editMode,saveData) {
 	if (_editMode && !utils.hasRecords(forms.WEB_0F_block__scrapbook.foundset)) {
 		_editMode = false
 		
-		plugins.dialogs.showErrorDialog(
+		globals.DIALOGS.showErrorDialog(
 						'Error',
 						'You must have a scrapbook in order to enter edit mode'
 				)

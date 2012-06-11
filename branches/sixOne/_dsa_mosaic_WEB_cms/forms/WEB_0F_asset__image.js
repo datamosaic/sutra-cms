@@ -106,7 +106,7 @@ function ASSET_scale(assetRecord,editMode) {
 			IMAGE_resize(params)
 			//select correct record
 			forms.WEB_0F_asset_1F_2L_asset_instance.foundset.selectRecord(asset.id_asset_instance)				
-			plugins.dialogs.showInfoDialog("Image",  "Image resized")
+			globals.DIALOGS.showInfoDialog("Image",  "Image resized")
 		}
 		else {
 			// headless client plugin
@@ -266,5 +266,5 @@ function IMAGE_resize(params) {
 function IMAGE_resize_callback(callback) {
 	//select last record
 	forms.WEB_0F_asset_1F_2L_asset_instance.foundset.selectRecord(callback.data)
-	plugins.dialogs.showInfoDialog("Image",  "Image resized")
+	globals.DIALOGS.showInfoDialog("Image",  "Image resized")
 }

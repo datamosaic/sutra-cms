@@ -224,7 +224,7 @@ function ACTIONS_list_control(input,scopeType,scopeValue) {
 			break
 	
 		case 1: //refresh theme
-			var input = plugins.dialogs.showQuestionDialog(
+			var input = globals.DIALOGS.showQuestionDialog(
 						'Update theme',
 						'Do you want to keep current data or reset to the theme\'s defaults?',
 						'Keep data',
@@ -281,7 +281,7 @@ function ACTIONS_list_control(input,scopeType,scopeValue) {
 //			//MEMO: this option was put in because blank pages were created when canceling a new page...this bug should be gone
 //			var fsPages = forms.WEB_0F_site.web_site_to_page
 //			
-//			var input = plugins.dialogs.showQuestionDialog(
+//			var input = globals.DIALOGS.showQuestionDialog(
 //						'Delete record?',
 //						'Do you want to delete all unnamed records from this site?',
 //						'Yes',
@@ -834,7 +834,7 @@ function REC_delete(record) {
 			var skipSelect = true
 		}
 		else {
-			var delRec = plugins.dialogs.showWarningDialog(
+			var delRec = globals.DIALOGS.showWarningDialog(
 								'Delete record',
 								'Do you really want to delete this record?',
 								'Yes',
@@ -846,7 +846,7 @@ function REC_delete(record) {
 		if (delRec == 'Yes') {
 			
 			if (utils.hasRecords(record,'web_page_to_page__child')) {
-				var delRec = plugins.dialogs.showWarningDialog(
+				var delRec = globals.DIALOGS.showWarningDialog(
 								'Delete child records',
 								'This page has sub-pages. All will be deleted.\nContinue with delete?',
 								'Yes',
@@ -932,7 +932,7 @@ function REC_delete(record) {
 		}
 	}
 	else {
-		plugins.dialogs.showErrorDialog(
+		globals.DIALOGS.showErrorDialog(
 						'Error',
 						'There are no records to delete'
 				)
@@ -1048,7 +1048,7 @@ function REC_new() {
 	
 	//check if can add record
 	if (!globals.WEBc_sutra_trigger('TRIGGER_registered_action_authenticate',['cms page add'])) {
-		plugins.dialogs.showErrorDialog(
+		globals.DIALOGS.showErrorDialog(
 						'Error',
 						'You are not authorized to add new pages'
 				)
@@ -1139,14 +1139,14 @@ function REC_new() {
 	else {
 		//not all defaults specified
 		if (utils.hasRecords(forms.WEB_0F_page.foundset)) {
-			plugins.dialogs.showErrorDialog(
+			globals.DIALOGS.showErrorDialog(
 							'Error',
 							'The defaults are not set correctly for this site'
 					)
 		}
 		//no site record
 		else {
-			plugins.dialogs.showErrorDialog(
+			globals.DIALOGS.showErrorDialog(
 							'Error',
 							'You must add a site record first'
 					)

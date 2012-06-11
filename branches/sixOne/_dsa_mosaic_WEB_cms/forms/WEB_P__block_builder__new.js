@@ -40,7 +40,7 @@ var _fieldName = null;
 function ACTION_ok(event) {
 	if (_fieldType && _fieldName) {
 		if (_fieldType == 'table') {
-			plugins.dialogs.showErrorDialog('Error','Table type is not implemented yet')
+			globals.DIALOGS.showErrorDialog('Error','Table type is not implemented yet')
 			return
 		}
 		
@@ -54,7 +54,7 @@ function ACTION_ok(event) {
 		globals.CODE_form_in_dialog_close('cmsBlockBuilderNew')
 	}
 	else {
-		plugins.dialogs.showErrorDialog('Error','Please select a type and provide a name')
+		globals.DIALOGS.showErrorDialog('Error','Please select a type and provide a name')
 	}
 }
 

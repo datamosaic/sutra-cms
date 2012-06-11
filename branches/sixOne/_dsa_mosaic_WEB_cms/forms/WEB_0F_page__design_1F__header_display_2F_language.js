@@ -69,7 +69,7 @@ function ADD_language(event) {
 	//no more to add
 	if (fsLanguage.getSize() == fsLanguageAll.getSize()) {
 		//show info that logout canceled
-		plugins.dialogs.showWarningDialog(
+		globals.DIALOGS.showWarningDialog(
 				'Warning',
 				'No more languages to add'
 			)
@@ -171,7 +171,7 @@ function CREATE_language(versionOld) {
 		return 'Language "' + languageNew.language_name + '" added.\n'
 	}
 	else {
-		plugins.dialogs.showErrorDialog(
+		globals.DIALOGS.showErrorDialog(
 					'Error',
 					'Language not selected'
 			)
@@ -186,7 +186,7 @@ function CREATE_language(versionOld) {
 function DEL_language(event) {
 	//cannot delete last language
 	if (web_page_to_language.getSize() > 1) {
-		var delRec = plugins.dialogs.showWarningDialog(
+		var delRec = globals.DIALOGS.showWarningDialog(
 						'Delete record',
 						'Do you really want to delete this record?',
 						'Yes',
@@ -224,7 +224,7 @@ function DEL_language(event) {
 		}
 	}
 	else {
-		plugins.dialogs.showWarningDialog(
+		globals.DIALOGS.showWarningDialog(
 				'Warning',
 				'There must always be one language'
 			)

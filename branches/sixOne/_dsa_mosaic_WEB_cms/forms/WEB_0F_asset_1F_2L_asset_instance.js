@@ -46,6 +46,7 @@ function REC_on_select(event) {
 /**
  *
  * @properties={typeid:24,uuid:"F2373AA4-4FB7-4DF7-8809-A0277D3CFCBC"}
+ * @AllowToRunInFind
  */
 function REC_delete(event,batch,record) {
 	if (!record) {
@@ -62,7 +63,7 @@ function REC_delete(event,batch,record) {
 	deleteThis.file	 	= baseDirectory + '/' + record.asset_directory + '/' + record.asset_title
 	
 	if (!batch) {
-		var input = plugins.dialogs.showWarningDialog(
+		var input = globals.DIALOGS.showWarningDialog(
 						'Delete record',
 						'Do you really want to delete this record?',
 						'Yes',
@@ -78,11 +79,11 @@ function REC_delete(event,batch,record) {
 				//shoe FiD
 				if (!batch) {
 					if ( forms.WEB_0C__file_stream.ASSET_delete(deleteThis) ) {
-						plugins.dialogs.showInfoDialog("Success","Record deleted")
+						globals.DIALOGS.showInfoDialog("Success","Record deleted")
 					}
 					//file not deleted
 					else {
-						plugins.dialogs.showWarningDialog("Warning","File not found; record deleted")
+						globals.DIALOGS.showWarningDialog("Warning","File not found; record deleted")
 					}
 				}
 				
@@ -197,9 +198,9 @@ function FLD_data_change__flag_initial(oldValue, newValue, event) {
  */
 function REC_delete_callback(callback) {
 	if ( callback.data ) {
-		plugins.dialogs.showInfoDialog("Success","Record deleted")
+		globals.DIALOGS.showInfoDialog("Success","Record deleted")
 	}
 	else {
-		plugins.dialogs.showWarningDialog("Warning","File not found; record deleted")
+		globals.DIALOGS.showWarningDialog("Warning","File not found; record deleted")
 	}
 }

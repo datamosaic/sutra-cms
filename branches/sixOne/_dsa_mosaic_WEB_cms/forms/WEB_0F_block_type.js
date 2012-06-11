@@ -66,7 +66,7 @@ function REC_new(flagRefresh,formName,fs) {
 				var validForms = FIND_forms()
 				
 				if (validForms && validForms.length) {
-	//				var formName = plugins.dialogs.showSelectDialog(
+	//				var formName = globals.DIALOGS.showSelectDialog(
 	//							'New block',
 	//							'Choose the form that describes the block you want to create',
 	//							validForms
@@ -97,7 +97,7 @@ function REC_new(flagRefresh,formName,fs) {
 					delete forms.WEB_0F_block_type__block._blockDescription
 				}
 				else {
-					plugins.dialogs.showErrorDialog(
+					globals.DIALOGS.showErrorDialog(
 								'Error',
 								'There are no unadded blocks in this solution'
 						)
@@ -154,7 +154,7 @@ function REC_new(flagRefresh,formName,fs) {
 					var objBlock = forms[formName].INIT_block()
 				}
 				else {
-					plugins.dialogs.showErrorDialog( "Error", "Selected block does not have an INIT_block method")
+					globals.DIALOGS.showErrorDialog( "Error", "Selected block does not have an INIT_block method")
 					return
 				}
 			}
@@ -328,7 +328,7 @@ function REC_new(flagRefresh,formName,fs) {
 			databaseManager.saveData()
 			
 			if (flagRefresh) {
-				plugins.dialogs.showInfoDialog(
+				globals.DIALOGS.showInfoDialog(
 							'Done',
 							'Block successfully refreshed'
 					)
@@ -359,7 +359,7 @@ function REC_new(flagRefresh,formName,fs) {
 				
 				//alert that meta data has been modified
 				if (changedData) {
-					plugins.dialogs.showInfoDialog(
+					globals.DIALOGS.showInfoDialog(
 								'Done',
 								'Block data changed. Currently used blocks on pages haven\'t been updated.\nYou will need to do this manually on each page.'
 						)
@@ -382,7 +382,7 @@ function REC_new(flagRefresh,formName,fs) {
 		}
 	}
 	else {
-		plugins.dialogs.showErrorDialog(
+		globals.DIALOGS.showErrorDialog(
 						'Error',
 						'You must add a site record first'
 				)
@@ -506,13 +506,19 @@ function FIND_forms() {
  * @properties={typeid:24,uuid:"10050C5D-2C00-4EEC-B0EE-189FBCA3CAFB"}
  */
 function REC_delete() {
-	var delRec = plugins.dialogs.showWarningDialog(
-				'Delete record',
-				'Do you really want to delete this record?',
-				'Yes',
-				'No'
-			)
-
+//	var delRec = globals.DIALOGS.showWarningDialog(
+//				'Delete record',
+//				'Do you really want to delete this record?',
+//				'Yes',
+//				'No'
+//			)
+			
+	var delRec = globals.DIALOGS.showWarningDialog(
+		'Delete record',
+		'Do you really want to delete this record?',
+		'Yes',
+		'No'
+		)
 	if (delRec == 'Yes') {
 		controller.deleteRecord()
 		

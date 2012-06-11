@@ -27,7 +27,7 @@ var _editMode = false;
  * @AllowToRunInFind
  */
 function REC_delete() {
-	var delRec = plugins.dialogs.showWarningDialog(
+	var delRec = globals.DIALOGS.showWarningDialog(
 				'Delete record',
 				'Deleting a scrapbook will remove it from all pages.\nDo you really want to delete this record?',
 				'Yes',
@@ -124,7 +124,7 @@ function REC_new() {
 		}
 	}
 	else {
-		plugins.dialogs.showErrorDialog(
+		globals.DIALOGS.showErrorDialog(
 						'Error',
 						'You must add a site record first'
 				)
@@ -385,7 +385,7 @@ function ACTION_gui_mode_load() {
 					forms[formName].foundset.loadRecords(foundset)
 				}
 				else {
-					var restart = plugins.dialogs.showWarningDialog(
+					var restart = globals.DIALOGS.showWarningDialog(
 							'Warning',
 							'Changes made in developer have caused foundsets to become unhooked.\nRestart?',
 							'Yes',
@@ -584,14 +584,14 @@ function REC_refresh(allVersions, selectedVersion) {
 			}
 		}
 		else {
-			plugins.dialogs.showErrorDialog(
+			globals.DIALOGS.showErrorDialog(
 						'Error',
 						'No content version selected'
 				)
 		}
 	}
 	else {
-		plugins.dialogs.showErrorDialog(
+		globals.DIALOGS.showErrorDialog(
 					'Error',
 					'No content selected'
 			)

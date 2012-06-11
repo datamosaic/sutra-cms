@@ -439,7 +439,7 @@ function WEB_upgrade() {
 		if (utils.hasRecords(fsOldSite)) {
 			fsOldSite.sort('site_name asc')
 			
-			var theSite = plugins.dialogs.showSelectDialog(
+			var theSite = globals.DIALOGS.showSelectDialog(
 					'Import',
 					'Choose site to import',
 					databaseManager.getFoundSetDataProviderAsArray(fsOldSite,'site_name')
@@ -1182,7 +1182,7 @@ function WEB_upgrade() {
 		}
 		//no sites
 		else {
-			plugins.dialogs.showErrorDialog(
+			globals.DIALOGS.showErrorDialog(
 					'Error',
 					'There are no sites to import'
 			)
@@ -1190,7 +1190,7 @@ function WEB_upgrade() {
 	}
 	//no connection
 	else {
-		plugins.dialogs.showErrorDialog(
+		globals.DIALOGS.showErrorDialog(
 					'Error',
 					'You do not have a database connection "sutra_cms_v1" defined.'
 			)

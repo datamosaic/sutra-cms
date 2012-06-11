@@ -76,7 +76,7 @@ function REC_new() {
  * @properties={typeid:24,uuid:"AD276C21-6A83-49FC-9F30-898970DB7ECA"}
  */
 function REC_delete() {
-	var delRec = plugins.dialogs.showWarningDialog(
+	var delRec = globals.DIALOGS.showWarningDialog(
 						'Delete record',
 						'Do you really want to delete this record?',
 						'Yes',

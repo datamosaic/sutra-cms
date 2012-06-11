@@ -144,7 +144,7 @@ if (true) {
 	globals.CODE_form_in_dialog_close('tagAdd')
 }
 else {
-	plugins.dialogs.showErrorDialog(
+	globals.DIALOGS.showErrorDialog(
 				'Not enough data', 
 				'You must fill out all of the fields in order to create a valuelist',
 				'OK'

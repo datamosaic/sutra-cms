@@ -125,7 +125,7 @@ function ACTION_new_layout()
 		application.updateUI()
 	}
 	else {
-		plugins.dialogs.showErrorDialog(
+		globals.DIALOGS.showErrorDialog(
 					'Error',
 					'No theme selected.'
 			)
@@ -139,7 +139,7 @@ function ACTION_new_layout()
 function ACTION_set_path()
 {
 	// TODO: Currently only works from client on a server. Implement server directory browsing.
-	var input = plugins.dialogs.showInfoDialog(	"Note",
+	var input = globals.DIALOGS.showInfoDialog(	"Note",
 	"Currently only works from client running on the Server.",
 	"Continue", "Cancel")
 	if ( input == "Continue") {
@@ -183,7 +183,7 @@ function FORM_on_load(event) {
  * @properties={typeid:24,uuid:"A0A26AD2-C1ED-4D39-B923-4901B33B9CF6"}
  */
 function REC_delete() {
-	var delRec = plugins.dialogs.showWarningDialog(
+	var delRec = globals.DIALOGS.showWarningDialog(
 				'Delete record',
 				'Deleting this theme will cause all pages using it to be orphaned.\nAre you sure you want to delete this theme?',
 				'Yes',
@@ -241,7 +241,7 @@ function FLD_data_change__flag_default(oldValue, newValue, event) {
 		databaseManager.saveData()
 	}
 	else {
-		plugins.dialogs.showErrorDialog(
+		globals.DIALOGS.showErrorDialog(
 					'Error',
 					'There must be a default theme set'
 			)
@@ -283,7 +283,7 @@ function LAYOUTS_action_list(event) {
 		}
 	}
 	else {
-		plugins.dialogs.showErrorDialog(
+		globals.DIALOGS.showErrorDialog(
 					'Error',
 					'No theme selected.'
 			)
@@ -305,7 +305,7 @@ function LAYOUTS_action_list_control(selected) {
 				var dupRecord = globals.CODE_record_duplicate(record, relations, override)
 				dupRecord.flag_default = null
 				
-				plugins.dialogs.showInfoDialog("Complete", "Layout duplicated")
+				globals.DIALOGS.showInfoDialog("Complete", "Layout duplicated")
 			}
 			break
 		case "Re-order editables on pages using selected layout":
@@ -320,7 +320,7 @@ function LAYOUTS_action_list_control(selected) {
 				
 				//prompt to continue
 				if (results) {
-					var input = plugins.dialogs.showQuestionDialog(
+					var input = globals.DIALOGS.showQuestionDialog(
 								'Re-order?',
 								results + ' pages will be updated in this site. Proceed?',
 								'Yes',
@@ -337,14 +337,14 @@ function LAYOUTS_action_list_control(selected) {
 					}
 				}
 				else {
-					plugins.dialogs.showInfoDialog(
+					globals.DIALOGS.showInfoDialog(
 									'Nothing to do',
 									'No pages found in current site using this layout'
 							)
 				}
 			}
 			else {
-				plugins.dialogs.showInfoDialog(
+				globals.DIALOGS.showInfoDialog(
 							'No layouts',
 							'There are no layouts for the selected theme'
 					)
@@ -512,7 +512,7 @@ function ACTIONS_list(input) {
 	}
 	else {
 		if (globals.WEBc_sutra_trigger('TRIGGER_registered_action_authenticate',['cms theme layout page update'])) {
-			var refreshType = plugins.dialogs.showQuestionDialog(
+			var refreshType = globals.DIALOGS.showQuestionDialog(
 						'Update layout',
 						'Do you want to keep current data or reset to the theme\'s defaults?',
 						'Keep data',
@@ -520,7 +520,7 @@ function ACTIONS_list(input) {
 				)
 				
 			if (refreshType) {
-				input = plugins.dialogs.showQuestionDialog(
+				input = globals.DIALOGS.showQuestionDialog(
 							'Auto-activate?',
 							'Should the updated versions be activated?',
 							'Yes',
@@ -587,7 +587,7 @@ function ACTIONS_list(input) {
 					}		
 				}
 				
-				plugins.dialogs.showInfoDialog(
+				globals.DIALOGS.showInfoDialog(
 							'Success',
 							'The selected layout has been updated on ' + pagesActivated + ' page' + (pagesActivated == 1 ? '' : 's')  + '.'
 					)
