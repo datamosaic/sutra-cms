@@ -1,0 +1,8 @@
+foreignDataSource:"db:/sutra_cms/web_asset",
+items:[
+{foreignColumnName:"id_asset",primaryDataProviderID:"id_asset",typeid:23,uuid:"DE93F89A-C006-47BB-8696-F305AE7B9232"}
+],
+name:"web_asset_instance_to_asset",
+primaryDataSource:"db:/sutra_cms/web_asset_instance",
+typeid:22,
+uuid:"EC8D9D31-A5EA-44F2-8E36-2BC63FA6B025"

@@ -1,0 +1,9 @@
+foreignDataSource:"db:/sutra_cms/web_layout",
+items:[
+{foreignColumnName:"flag_default",primaryDataProviderID:"globals.CODE_constant_1",typeid:23,uuid:"C9AB6719-7BCC-47D7-A841-B0C7E65A139B"},
+{foreignColumnName:"id_theme",primaryDataProviderID:"id_theme",typeid:23,uuid:"F223E0D5-1FC8-4BDD-9862-AFA7627FE808"}
+],
+name:"web_theme_to_layout__default",
+primaryDataSource:"db:/sutra_cms/web_theme",
+typeid:22,
+uuid:"3625832E-619B-4A35-BD72-1DE826516798"
