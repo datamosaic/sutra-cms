@@ -57,7 +57,7 @@ function ACTION_ok() {
 	}
 	//nothing selected
 	else {
-		plugins.dialogs.showErrorDialog(
+		globals.DIALOGS.showErrorDialog(
 					'Error',
 					'Nothing chosen'
 			)
