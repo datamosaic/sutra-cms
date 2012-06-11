@@ -1,0 +1,11 @@
+addEmptyValue:1,
+dataProviderID1:"block_name",
+dataProviderID2:"id_block_type",
+dataSource:"db:/sutra_cms/web_block_type",
+name:"WEB_block_types",
+returnDataProviders:2,
+separator:" ",
+showDataProviders:1,
+typeid:34,
+uuid:"6171777B-FECD-4072-8E13-5CF251FCD891",
+valueListType:1
