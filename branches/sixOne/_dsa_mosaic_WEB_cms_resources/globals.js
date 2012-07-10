@@ -154,7 +154,7 @@ var CMS = {
  * @properties={typeid:24,uuid:"88B20E7F-82B4-4235-87EE-C291469E681A"}
  */
 function WEBc_browser_error() {
-	var input = plugins.dialogs.showErrorDialog(
+	var input = globals.DIALOGS.showErrorDialog(
 				'Error',
 				'The Browser Suite did not initialize properly.\nRestart client now.',
 				'Yes',
@@ -1800,7 +1800,7 @@ function WEBc_page_new(pageName,pageType,parentID,themeID,layoutID) {
 	//check if can add record
 	
 	if (!globals.WEBc_sutra_trigger('TRIGGER_registered_action_authenticate',['cms page add'])) {
-		plugins.dialogs.showErrorDialog(
+		globals.DIALOGS.showErrorDialog(
 						'Error',
 						'You are not authorized to add new pages'
 				)
@@ -1954,14 +1954,14 @@ function WEBc_page_new(pageName,pageType,parentID,themeID,layoutID) {
 	else {
 		//not all defaults specified
 		if (utils.hasRecords(forms.WEB_0F_page.foundset)) {
-			plugins.dialogs.showErrorDialog(
+			globals.DIALOGS.showErrorDialog(
 							'Error',
 							'The defaults are not set correctly for this site'
 					)
 		}
 		//no site record
 		else {
-			plugins.dialogs.showErrorDialog(
+			globals.DIALOGS.showErrorDialog(
 							'Error',
 							'You must add a site record first'
 					)
