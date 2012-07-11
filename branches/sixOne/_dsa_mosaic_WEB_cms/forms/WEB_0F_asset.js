@@ -133,9 +133,11 @@ function REC_new(assetType) {
 	var input = globals.DIALOGS.showSelectDialog( 
 					"Asset", 
 					"Select asset type", 
-					"Image",
-					"File",
-					"Group"
+					[	"Image",
+						"File",
+						"Group"
+					
+					]
 				)
 	
 	//something selected, do the right kind of import
