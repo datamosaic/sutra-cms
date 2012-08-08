@@ -238,7 +238,7 @@ location:"5,5",
 name:"fld_data_value",
 scrollbars:32,
 size:"290,140",
-styleClass:"textareanoborder",
+styleClass:"nobordertextarea",
 transparent:true,
 typeid:4,
 uuid:"E96BF1E2-CA69-4953-9DC5-9CF1E87AEC38"

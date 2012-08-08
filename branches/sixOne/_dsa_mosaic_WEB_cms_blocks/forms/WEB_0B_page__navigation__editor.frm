@@ -8,7 +8,7 @@ formIndex:11801,
 location:"0,0",
 scrollbars:32,
 size:"300,145",
-styleClass:"textareanoborder",
+styleClass:"nobordertextarea",
 typeid:4,
 uuid:"0B40FAF5-6E7D-4DB9-A35A-EF8395BF7D30"
 },
