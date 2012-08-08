@@ -156,7 +156,7 @@ onFocusLostMethodID:"-1",
 scrollbars:32,
 selectOnEnter:true,
 size:"480,70",
-styleClass:"textareanoborder",
+styleClass:"nobordertextarea",
 typeid:4,
 uuid:"C1F6E6BD-B18E-42D4-AC7E-BB6432F724F1"
 }

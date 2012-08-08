@@ -532,7 +532,7 @@ margin:"4,8,4,6",
 name:"fld_description",
 scrollbars:32,
 size:"120,114",
-styleClass:"textareanoborder",
+styleClass:"nobordertextarea",
 transparent:true,
 typeid:4,
 uuid:"DDDBC0B2-8F28-498E-9FC2-575175D53FE3"

@@ -50,7 +50,7 @@ onActionMethodID:"D617947B-912F-4AFF-8999-A3FC97D56836",
 scrollbars:32,
 selectOnEnter:true,
 size:"180,70",
-styleClass:"textareanoborder",
+styleClass:"nobordertextarea",
 tabSeq:3,
 typeid:4,
 uuid:"5628F67E-1250-4DEA-9D21-15A6ADDEB6B2"

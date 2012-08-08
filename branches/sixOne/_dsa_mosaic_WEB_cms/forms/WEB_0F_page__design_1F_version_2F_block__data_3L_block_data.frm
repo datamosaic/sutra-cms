@@ -93,7 +93,7 @@ location:"10,85",
 name:"edit_data_value",
 scrollbars:32,
 size:"230,215",
-styleClass:"textareanoborder",
+styleClass:"nobordertextarea",
 text:"Data",
 typeid:4,
 uuid:"F83C9772-FE37-4932-8E22-C444E4F35CA7"

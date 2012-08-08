@@ -74,7 +74,7 @@ location:"10,65",
 scrollbars:32,
 selectOnEnter:true,
 size:"230,65",
-styleClass:"textareanoborder",
+styleClass:"nobordertextarea",
 tabSeq:3,
 typeid:4,
 uuid:"D517C796-59BC-446D-8283-DAA238B5B681"
