@@ -113,28 +113,28 @@ function ACTION_ok() {
 	
 	//check for enough data
 	if (!_pageName) {
-		plugins.dialogs.showErrorDialog(
+		globals.DIALOGS.showErrorDialog(
 					"Error",
 					"Page name is required"
 				)
 		return false
 	}
 	else if (page_type == 0  && !(_idTheme || _idLayout)) {
-		plugins.dialogs.showErrorDialog(
+		globals.DIALOGS.showErrorDialog(
 					"Error",
 					"Theme and layout are required"
 				)
 		return false
 	}
 	else if (page_type == 2 && !page_link) {
-		plugins.dialogs.showErrorDialog(
+		globals.DIALOGS.showErrorDialog(
 					"Error",
 					"Link is required"
 				)
 		return false
 	}
 	else if (page_type == 3 && !page_link_internal) {
-		plugins.dialogs.showErrorDialog(
+		globals.DIALOGS.showErrorDialog(
 					"Error",
 					"Page link is required"
 				)
@@ -153,7 +153,7 @@ function ACTION_ok() {
 			var pageRec = foundset.getSelectedRecord()
 			
 			//unfreeze screen when in frameworks
-			if (application.__parent__.solutionPrefs && solutionPrefs.config.lockStatus) {
+			if (application.__parent__.solutionPrefs && solutionPrefs.config.lockStatus && !!solutionPrefs.config.webClient) {
 				globals.WEBc_sutra_trigger('TRIGGER_interface_lock',[false])
 			}
 			
@@ -308,7 +308,7 @@ function ACTION_ok() {
 			//prompt
 			else {
 				globals.CODE_cursor_busy(false)
-				var input = plugins.dialogs.showWarningDialog(
+				var input = globals.DIALOGS.showWarningDialog(
 								"Warning",
 								"New theme layout selected. All area records that\ndo not exist in the new theme will be deleted.\nContinue?", 
 								"Yes", 

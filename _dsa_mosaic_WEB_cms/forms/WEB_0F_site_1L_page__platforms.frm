@@ -12,7 +12,6 @@ showClick:false,
 showFocus:false,
 size:"15,23",
 toolTipText:"Go to page",
-transparent:true,
 typeid:7,
 uuid:"0E035D44-B43A-4573-86BD-537B7C24109C"
 },

@@ -80,28 +80,28 @@ function ACTION_cancel() {
 function ACTION_ok() {
 	//check for enough data
 	if (!_idPlatform) {
-		plugins.dialogs.showErrorDialog(
+		globals.DIALOGS.showErrorDialog(
 					"Error",
 					"Platform is required"
 				)
 		return false
 	}
 	else if (!_idLanguage) {
-		plugins.dialogs.showErrorDialog(
+		globals.DIALOGS.showErrorDialog(
 					"Error",
 					"Language is required"
 				)
 		return false
 	}
 	else if (!_idGroup) {
-		plugins.dialogs.showErrorDialog(
+		globals.DIALOGS.showErrorDialog(
 					"Error",
 					"Group is required"
 				)
 		return false
 	}
 	else if (!_posnVersion) {
-		plugins.dialogs.showErrorDialog(
+		globals.DIALOGS.showErrorDialog(
 					"Error",
 					"Version is required"
 				)

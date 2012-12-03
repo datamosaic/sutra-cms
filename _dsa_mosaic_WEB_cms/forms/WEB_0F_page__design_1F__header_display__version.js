@@ -184,7 +184,7 @@ function ADD_version(event) {
 					forms.WEB_0F_page__design.REC_on_select()
 				}
 				else {
-					plugins.dialogs.showInfoDialog(
+					globals.DIALOGS.showInfoDialog(
 								'Error',
 								'No editables for selected layout'
 						)
@@ -333,7 +333,7 @@ function ADD_version(event) {
 						destVersion.web_version_to_area.setSelectedIndex(1)
 					}
 					else {
-						plugins.dialogs.showErrorDialog(
+						globals.DIALOGS.showErrorDialog(
 									'Error',
 									'There is not a layout for the chosen platform'
 							)
@@ -440,7 +440,7 @@ function ADD_version(event) {
 		}
 	}
 	else {
-		plugins.dialogs.showErrorDialog(
+		globals.DIALOGS.showErrorDialog(
 					'Error',
 					'No page selected'
 			)
@@ -603,7 +603,7 @@ function LOCK_version(event) {
 		else {
 			if (globals.WEBc_sutra_trigger('TRIGGER_registered_action_authenticate',['cms edit version'])) {
 				if (version.flag_active) {
-					var input = plugins.dialogs.showQuestionDialog(
+					var input = globals.DIALOGS.showQuestionDialog(
 								'Unlock',
 								'Do you want to allow edits to the active version?',
 								'Yes',
@@ -626,7 +626,7 @@ function LOCK_version(event) {
 				forms.WEB_A__page.TOGGLE_edit_mode(forms.WEB_A__page._editMode)
 			}
 			else {
-				plugins.dialogs.showErrorDialog(
+				globals.DIALOGS.showErrorDialog(
 							'Insufficient access',
 							'You are not allowed to change the lockedness of a page'
 					)
@@ -637,7 +637,7 @@ function LOCK_version(event) {
 		forms.WEB_0F_page__design.REC_on_select(null,true,null,true)
 	}
 	else {
-		plugins.dialogs.showErrorDialog(
+		globals.DIALOGS.showErrorDialog(
 					'Error',
 					'No version active'
 			)
@@ -671,7 +671,7 @@ function ACTIVATE_version(event) {
 			break
 		case 'btn_check_off':
 			if (utils.hasRecords(fsVersion) && !fsVersion.flag_active) {
-//				var input = plugins.dialogs.showQuestionDialog(
+//				var input = globals.DIALOGS.showQuestionDialog(
 //								'Activate?',
 //								'Activating this version will make it live on the web if the page is published.\nContinue?',
 //								'Yes',
@@ -708,7 +708,7 @@ function ACTIVATE_version(event) {
 				}
 			}
 			else {
-				plugins.dialogs.showErrorDialog(
+				globals.DIALOGS.showErrorDialog(
 							'Error',
 							'You cannot mark this as active'
 					)

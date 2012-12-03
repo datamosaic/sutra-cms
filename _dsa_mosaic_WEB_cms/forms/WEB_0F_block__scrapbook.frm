@@ -8,67 +8,6 @@ typeid:19,
 uuid:"0EE3CB33-B800-48E6-B08F-DE80989932FA"
 },
 {
-anchors:7,
-beanClassName:"javax.swing.JSplitPane",
-beanXML:"<?xml version=\"1.0\" encoding=\"UTF-8\"?> 
-<java version=\"1.5.0_19\" class=\"java.beans.XMLDecoder\"> 
- <object class=\"javax.swing.JSplitPane\"> 
-  <int>0<\/int> 
-  <void property=\"background\"> 
-   <object class=\"java.awt.Color\"> 
-    <int>209<\/int> 
-    <int>215<\/int> 
-    <int>226<\/int> 
-    <int>255<\/int> 
-   <\/object> 
-  <\/void> 
-  <void property=\"size\"> 
-   <object class=\"java.awt.Dimension\"> 
-    <int>170<\/int> 
-    <int>90<\/int> 
-   <\/object> 
-  <\/void> 
-  <void property=\"UI\"> 
-   <void property=\"continuousLayout\"> 
-    <boolean>true<\/boolean> 
-   <\/void> 
-  <\/void> 
-  <void property=\"border\"> 
-   <null/> 
-  <\/void> 
-  <void property=\"continuousLayout\"> 
-   <boolean>true<\/boolean> 
-  <\/void> 
-  <void property=\"dividerLocation\"> 
-   <int>0<\/int> 
-  <\/void> 
-  <void property=\"dividerSize\"> 
-   <int>0<\/int> 
-  <\/void> 
-  <void property=\"focusable\"> 
-   <boolean>false<\/boolean> 
-  <\/void> 
-  <void property=\"lastDividerLocation\"> 
-   <int>0<\/int> 
-  <\/void> 
-  <void property=\"name\"> 
-   <string>bean_split_2<\/string> 
-  <\/void> 
-  <void property=\"resizeWeight\"> 
-   <double>0.25<\/double> 
-  <\/void> 
- <\/object> 
-<\/java> 
-",
-formIndex:9996,
-location:"390,0",
-name:"split_sidebar",
-size:"200,193",
-typeid:12,
-usesUI:true,
-uuid:"76974EB8-3B78-4CDF-AAE8-ADAE81DDB409"
-},
-{
 anchors:15,
 formIndex:11801,
 items:[
@@ -82,7 +21,7 @@ uuid:"9EFE6A97-45EF-42A0-8EAB-028963F38CC2"
 },
 {
 containsFormID:"34A061E0-0D92-413A-827D-985565BA7BA6",
-location:"21,10",
+location:"106,67",
 relationName:"web_block_to_block",
 text:"WEB_0F_block__scrapbook_1F__gui",
 typeid:15,
@@ -98,17 +37,45 @@ typeid:16,
 uuid:"A278FE47-942B-4CAA-986F-0C352EA5EF58"
 },
 {
+anchors:7,
+formIndex:12706,
+items:[
+{
+containsFormID:"B1C07BF4-D1E3-420A-9238-C9B5B63E9BBD",
+location:"419,27",
+text:"WEB_0F_block__scrapbook_1F_page__blocks",
+typeid:15,
+uuid:"AA6FD2F4-7BB7-4404-9268-BB02CE691CAE"
+},
+{
+containsFormID:"10337119-F8DC-4508-8F38-0AFBE7A3ECD1",
+location:"446,138",
+relationName:"web_block_to_block",
+text:"WEB_0F_block__scrapbook_1F__sidebar",
+typeid:15,
+uuid:"D3A101A7-E086-49AF-BA5B-313DB97C529B"
+}
+],
+location:"386,0",
+name:"split",
+printable:false,
+size:"204,195",
+tabOrientation:-3,
+typeid:16,
+uuid:"BFA6EEE1-BC94-4102-B456-BC7AED5E5B84"
+},
+{
 formIndex:12704,
 items:[
 {
 containsFormID:"B1C07BF4-D1E3-420A-9238-C9B5B63E9BBD",
-location:"410,12",
+location:"121,301",
 text:"WEB_0F_block__scrapbook_1F_page__blocks",
 typeid:15,
 uuid:"AB6A32B3-6A1F-466A-91E0-A1EBCC8E027E"
 }
 ],
-location:"390,6",
+location:"101,295",
 name:"tab_blocks",
 printable:false,
 size:"204,64",
@@ -121,14 +88,14 @@ formIndex:12705,
 items:[
 {
 containsFormID:"10337119-F8DC-4508-8F38-0AFBE7A3ECD1",
-location:"410,122",
+location:"121,411",
 relationName:"web_block_to_block",
 text:"WEB_0F_block__scrapbook_1F__sidebar",
 typeid:15,
 uuid:"8989B909-EDEB-42E7-B6C2-B6F2A71BD1E0"
 }
 ],
-location:"390,116",
+location:"101,405",
 name:"tab_versions",
 printable:false,
 size:"204,54",

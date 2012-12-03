@@ -28,7 +28,6 @@ showClick:false,
 showFocus:false,
 size:"15,23",
 toolTipText:"Go to page",
-transparent:true,
 typeid:7,
 uuid:"1C058BD1-DF40-40F9-8502-00D25857DAF9"
 },

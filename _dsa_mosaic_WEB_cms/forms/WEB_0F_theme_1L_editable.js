@@ -12,7 +12,7 @@ var _license_dsa_mosaic_WEB_cms = 'Module: _dsa_mosaic_WEB_cms \
  * @properties={typeid:24,uuid:"3CF34834-3DD2-4A79-A731-3642C26847D7"}
  */
 function REC_delete() {
-	var delRec = plugins.dialogs.showWarningDialog(
+	var delRec = globals.DIALOGS.showWarningDialog(
 						'Delete record',
 						'Do you really want to delete this record?',
 						'Yes',
@@ -120,6 +120,6 @@ function DIR_up() {
 function REC_on_select(event) {
 	//give the triple-level relation forms a little extra help
 	if (utils.hasRecords(foundset)) {
-		forms.WEB_0F_theme_1L_editable_default.foundset.loadRecords(web_editable_to_editable_default)
+//		forms.WEB_0F_theme_1L_editable_default.foundset.loadRecords(web_editable_to_editable_default)
 	}
 }

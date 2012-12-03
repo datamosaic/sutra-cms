@@ -77,7 +77,7 @@ function FLD_data_change__version_selected(oldValue, newValue, event) {
 	
 	//only run when clicked on...this won't fire frequently enough, but will get around running an extra time on load 
 	if (event) {
-		forms.WEB_0F_page__design__content_1L_block.ACTION_gui_mode_load()
+//		forms.WEB_0F_page__design__content_1L_block.ACTION_gui_mode_load()
 	}
 	
 	return true
@@ -182,7 +182,7 @@ function NEW_version(event) {
 		}
 	}
 	else {
-		plugins.dialogs.showErrorDialog(
+		globals.DIALOGS.showErrorDialog(
 					'Error',
 					'No page selected'
 			)
@@ -205,7 +205,7 @@ function SET_active(event) {
 	fsVersion.search()
 	
 	if (utils.hasRecords(fsVersion) && !fsVersion.flag_active) {
-		var input = plugins.dialogs.showQuestionDialog(
+		var input = globals.DIALOGS.showQuestionDialog(
 						'Activate?',
 						'Do you want to set the selected snapshot active?\nNOTE: this will make it live on the web',
 						'Yes',
@@ -236,7 +236,7 @@ function SET_active(event) {
 		}
 	}
 	else {
-		plugins.dialogs.showErrorDialog(
+		globals.DIALOGS.showErrorDialog(
 					'Error',
 					'You cannot mark this as active'
 			)
@@ -265,7 +265,7 @@ function EDIT_version(event) {
 		if (fsVersion.flag_edit) {
 			//if top of the stack and more than one snapshot and not active, refuse to proceed
 			if (fsVersion.id_version == web_page_to_version.getRecord(1).id_version && web_page_to_version.getSize() > 1 && !fsVersion.flag_active) {
-				plugins.dialogs.showErrorDialog(
+				globals.DIALOGS.showErrorDialog(
 							'Error',
 							'The working copy must be editable'
 					)
@@ -280,7 +280,7 @@ function EDIT_version(event) {
 		else {
 			if (true) {		//globals.WEBc_sutra_trigger('TRIGGER_registered_action_authenticate',['cms edit snapshot'])) {
 				if (fsVersion.flag_active) {
-					var input = plugins.dialogs.showQuestionDialog(
+					var input = globals.DIALOGS.showQuestionDialog(
 								'Edit?',
 								'Do you want to allow edits to the active snapshot?',
 								'Yes',
@@ -302,7 +302,7 @@ function EDIT_version(event) {
 		FLD_data_change__version_selected()
 	}
 	else {
-		plugins.dialogs.showErrorDialog(
+		globals.DIALOGS.showErrorDialog(
 					'Error',
 					'No snapshot active'
 			)
@@ -382,7 +382,7 @@ function NEW_group(event) {
 		
 		if (vlDisplay && vlDisplay.length) {
 			//show select dialog
-			var newGroup = plugins.dialogs.showSelectDialog( 
+			var newGroup = globals.DIALOGS.showSelectDialog( 
 						'Select group',
 						'Choose a group to duplicate the current area to',
 						vlDisplay
@@ -416,7 +416,7 @@ function NEW_group(event) {
 			}
 		}
 		else {
-			plugins.dialogs.showErrorDialog(
+			globals.DIALOGS.showErrorDialog(
 						'Error',
 						'There are no unassigned groups'
 				)

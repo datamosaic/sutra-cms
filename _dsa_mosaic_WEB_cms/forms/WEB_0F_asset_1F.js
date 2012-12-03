@@ -23,7 +23,7 @@ function ACTIONS_list(event) {
 		forms[template.formName].ASSET_actions(event,foundset.getSelectedRecord())
 	}
 	else {
-		plugins.dialogs.showInformationDialog(
+		globals.DIALOGS.showInformationDialog(
 					'Alert',
 					'This type of asset has no actions defined'
 				)

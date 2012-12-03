@@ -26,7 +26,7 @@ function TAB_change(formName,elemName) {
 	
 	//disallow going to scrapbook when in edit mode
 	if (forms.WEB_0F_page.ACTION_edit_get() && utils.stringToNumber(elem) == 3) {
-		plugins.dialogs.showErrorDialog(
+		globals.DIALOGS.showErrorDialog(
 					'Error',
 					'You must exit Edit mode before visiting page scrapbooks'
 				)
@@ -35,7 +35,7 @@ function TAB_change(formName,elemName) {
 	
 	//disallow leaving scrapbook when in scrapbook edit mode
 	if (forms.WEB_0F_block__scrapbook.ACTION_edit_get() && elements.tab_button.tabIndex == 3) {
-		plugins.dialogs.showErrorDialog(
+		globals.DIALOGS.showErrorDialog(
 					'Error',
 					'You must exit Scrapbook Edit mode before leaving page scrapbooks'
 				)
@@ -131,7 +131,7 @@ function VISIT_page(event,returnURL,toClippy) {
 		}
 	}
 	else if (!returnURL) {
-		plugins.dialogs.showErrorDialog(
+		globals.DIALOGS.showErrorDialog(
 					'Error',
 					'You must have a page selected in order to preview it'
 			)
@@ -156,7 +156,7 @@ function ACTION_edit(event) {
 	//allowed to roll-down header area?
 		//MEMO: this global method only used on pages screen; so modifcations ok
 	if (!forms.WEB_0T_page._addRecord && forms.WEB_0F_page.page_type == 0 && !utils.hasRecords(forms.WEB_0F_page__design_1F_version.foundset)) {
-		plugins.dialogs.showQuestionDialog(
+		globals.DIALOGS.showQuestionDialog(
 					'Error',
 					'No version selected'
 			)

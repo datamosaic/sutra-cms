@@ -129,7 +129,7 @@ function FUNCTION_getInstallDirectory() {
 	}
 	
 	if ( error ) {
-		plugins.dialogs.showErrorDialog( "Error", error )
+		globals.DIALOGS.showErrorDialog( "Error", error )
 		return error
 	}
 }

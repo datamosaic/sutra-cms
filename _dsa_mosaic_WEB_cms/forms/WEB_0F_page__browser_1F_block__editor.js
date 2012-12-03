@@ -44,7 +44,7 @@ function FORM_on_show(firstShow, event) {
 		//TODO: remove!
 		//is this a scrapbook
 		if (recBlock.scope_type) {
-			plugins.dialogs.showWarningDialog(
+			globals.DIALOGS.showWarningDialog(
 						'Warning',
 						'Scrapbooks cannot be edited when in real mode.'
 					)
@@ -78,7 +78,7 @@ function FORM_on_show(firstShow, event) {
 						forms[formName].foundset.loadRecords(foundset)
 					}
 					else {
-						var restart = plugins.dialogs.showWarningDialog(
+						var restart = globals.DIALOGS.showWarningDialog(
 								'Warning',
 								'Changes made in developer have caused foundsets to become unhooked.\nRestart?',
 								'Yes',

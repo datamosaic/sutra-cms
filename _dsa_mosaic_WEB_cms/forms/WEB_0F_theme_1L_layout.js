@@ -14,7 +14,7 @@ var _license_dsa_mosaic_WEB_cms = 'Module: _dsa_mosaic_WEB_cms \
 function REC_delete() {
 	//there are records using this layout, give a strong warning message
 	if (forms.WEB_0F_theme_1L_page.foundset) {
-		var delRec = plugins.dialogs.showWarningDialog(
+		var delRec = globals.DIALOGS.showWarningDialog(
 					'Delete record',
 					'Some pages reference this layout and deleting it will cause those pages to be orphaned from a layout.\nAre you sure you want to delete this layout?',
 					'Yes',
@@ -22,7 +22,7 @@ function REC_delete() {
 				)
 	}
 	else {
-		var delRec = plugins.dialogs.showWarningDialog(
+		var delRec = globals.DIALOGS.showWarningDialog(
 					'Delete record',
 					'Do you really want to delete this record?',
 					'Yes',
@@ -44,7 +44,7 @@ function REC_on_select() {
 	
 	if (utils.hasRecords(foundset)) {
 		
-		forms.WEB_0F_theme_1L_editable.foundset.loadRecords(web_layout_to_editable)
+//		forms.WEB_0F_theme_1L_editable.foundset.loadRecords(web_layout_to_editable)
 		
 		globals.CODE_cursor_busy(true)
 		
@@ -112,7 +112,7 @@ function FLD_data_change__flag_default(oldValue, newValue, event) {
 //		databaseManager.saveData()
 //	}
 //	else {
-//		plugins.dialogs.showErrorDialog(
+//		globals.DIALOGS.showErrorDialog(
 //					'Error',
 //					'There must be a default layout set'
 //			)

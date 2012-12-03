@@ -59,7 +59,7 @@ location:"10,160",
 name:"var_blockDescription",
 scrollbars:32,
 size:"180,70",
-styleClass:"textareanoborder",
+styleClass:"nobordertextarea",
 typeid:4,
 uuid:"5818C70A-71B2-44BE-99BF-87DFB9B80395"
 },

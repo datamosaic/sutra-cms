@@ -69,7 +69,7 @@ function ADD_platform(event) {
 	//no more to add
 	if (fsPlatform.getSize() == fsPlatformAll.getSize()) {
 		//show info that logout canceled
-		plugins.dialogs.showWarningDialog(
+		globals.DIALOGS.showWarningDialog(
 				'Warning',
 				'No more platforms to add'
 			)
@@ -172,7 +172,7 @@ function CREATE_platform(versionOld) {
 		return 'Platform "' + platformNew.platform_name + '" added.\n'
 	}
 	else {
-		plugins.dialogs.showErrorDialog(
+		globals.DIALOGS.showErrorDialog(
 					'Error',
 					'Platform not selected'
 			)
@@ -191,7 +191,7 @@ function CREATE_platform(versionOld) {
 function DEL_platform(event) {
 	//cannot delete last platform
 	if (web_page_to_platform.getSize() > 1) {
-		var delRec = plugins.dialogs.showWarningDialog(
+		var delRec = globals.DIALOGS.showWarningDialog(
 						'Delete record',
 						'Do you really want to delete this record?',
 						'Yes',
@@ -229,7 +229,7 @@ function DEL_platform(event) {
 		}
 	}
 	else {
-		plugins.dialogs.showWarningDialog(
+		globals.DIALOGS.showWarningDialog(
 				'Warning',
 				'There must always be one platform'
 			)

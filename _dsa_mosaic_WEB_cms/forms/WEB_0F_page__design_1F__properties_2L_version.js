@@ -34,7 +34,7 @@ function REC_delete()
  */	//TODO: renumber the remaining versions
 
 if (utils.hasRecords(foundset)) {
-	var delRec = plugins.dialogs.showWarningDialog(
+	var delRec = globals.DIALOGS.showWarningDialog(
 			'Delete record',
 			'Do you really want to delete this record?',
 			'Yes',
@@ -58,7 +58,7 @@ if (utils.hasRecords(foundset)) {
 	}
 }
 else {
-	plugins.dialogs.showErrorDialog(
+	globals.DIALOGS.showErrorDialog(
 					'Error',
 					'No records'
 			)

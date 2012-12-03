@@ -43,7 +43,7 @@ function REC_on_select(event) {
  * @properties={typeid:24,uuid:"5F06FB01-8EE2-4283-A5F5-E2C1E4802045"}
  */
 function REC_delete() {
-	var delRec = plugins.dialogs.showWarningDialog(
+	var delRec = globals.DIALOGS.showWarningDialog(
 				'Delete record',
 				'Do you really want to delete this site?',
 				'Yes',
@@ -133,7 +133,7 @@ function REC_new() {
 function ACTION_blow_in_missing_areas_to_all_pagesz() {
 	return
 	if (globals.WEBc_sutra_trigger('TRIGGER_registered_action_authenticate',['cms site page update'])) {
-		var input = plugins.dialogs.showWarningDialog(
+		var input = globals.DIALOGS.showWarningDialog(
 						'Continue?',
 						'Are you sure you want to modify all pages.\nWarning! This is irreversible.',
 						'Yes',
@@ -166,7 +166,7 @@ function ACTION_blow_in_missing_areas_to_all_pagesz() {
  * @AllowToRunInFind
  */
 function ACTION_path_generate(event) {
-	var input = plugins.dialogs.showWarningDialog(
+	var input = globals.DIALOGS.showWarningDialog(
 					'Continue?',
 					'This will add pretty URLs to all pages in this site\nthat do not have a default pretty URL',
 					'Yes',
@@ -219,7 +219,7 @@ function ACTION_path_generate(event) {
 			}
 		}
 		
-		plugins.dialogs.showInfoDialog(
+		globals.DIALOGS.showInfoDialog(
 					'Completed',
 					'All pages for this site now have pretty urls'
 			)
@@ -276,7 +276,7 @@ function ACTION_set_error(inputID,inputRec) {
  * @properties={typeid:24,uuid:"E27281B4-BC5B-46C5-8993-51C3F9CBE5BC"}
  */
 function ACTION_attribute_update() {
-	var input = plugins.dialogs.showWarningDialog(
+	var input = globals.DIALOGS.showWarningDialog(
 				'Continue?',
 				'This will link all page attributes to specific site attributes.\nYou must first define the attributes below.\n\nNote: this must be run once per site.',
 				'Yes',
@@ -311,7 +311,7 @@ function ACTION_attribute_update() {
 			}
 		}
 		
-		plugins.dialogs.showInfoDialog(
+		globals.DIALOGS.showInfoDialog(
 					'Completed',
 					'All page attributes on this site are now linked'
 			)

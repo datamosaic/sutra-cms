@@ -60,7 +60,7 @@ uuid:"1AEB74DE-DABA-4616-8AEE-7F0608FA9B95"
 anchors:15,
 background:"#323a4b",
 formIndex:12001,
-location:"10,0",
+location:"0,310",
 mediaOptions:4,
 name:"gfx_curtain",
 onActionMethodID:"CBA4256A-1CF7-42E4-A265-237E6AB08408",
@@ -98,13 +98,6 @@ typeid:15,
 uuid:"329F358F-3A3A-4964-9796-D4C818C854F2"
 },
 {
-containsFormID:"4C400AD6-1DC0-4B6F-AB83-2E7FE97698C0",
-location:"50,150",
-text:"CODE__blank",
-typeid:15,
-uuid:"4E27C7E6-ED04-461E-8471-164B6CFC27BC"
-},
-{
 containsFormID:"BCFF9EA7-553E-4DE3-974B-EDD827A7FB8D",
 location:"70,170",
 text:"Log",
@@ -117,6 +110,13 @@ location:"80,192",
 text:"Blank",
 typeid:15,
 uuid:"69B44A6B-EE46-4C23-BE24-D5886642FEDC"
+},
+{
+containsFormID:"9B12B90D-4A8D-4FA4-AFAB-21F32C288976",
+location:"46,149",
+text:"Permissions",
+typeid:15,
+uuid:"B5A89549-5CF4-4D0C-8624-E56545E392C4"
 },
 {
 containsFormID:"859221B7-EE3A-4309-88A3-4B2ACB4F18BD",

@@ -11,7 +11,7 @@ showFocus:false,
 size:"194,18",
 styleClass:"tabpanel",
 tabSeq:-1,
-text:"Fields",
+text:"Builders",
 transparent:true,
 typeid:7,
 uuid:"06491724-496F-4797-8B89-2986DBA972AB"

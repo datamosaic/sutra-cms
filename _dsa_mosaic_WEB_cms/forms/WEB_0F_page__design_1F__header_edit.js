@@ -311,28 +311,28 @@ function ACTION_save() {
 	
 	//check for enough data
 	if (!_pageName) {
-		plugins.dialogs.showErrorDialog(
+		globals.DIALOGS.showErrorDialog(
 					"Error",
 					"Page name is required"
 				)
 		return false
 	}
 	else if (page_type == 0  && !(_idTheme || _idLayout)) {
-		plugins.dialogs.showErrorDialog(
+		globals.DIALOGS.showErrorDialog(
 					"Error",
 					"Theme and layout are required"
 				)
 		return false
 	}
 	else if (page_type == 2 && !page_link) {
-		plugins.dialogs.showErrorDialog(
+		globals.DIALOGS.showErrorDialog(
 					"Error",
 					"Link is required"
 				)
 		return false
 	}
 	else if (page_type == 3 && !page_link_internal) {
-		plugins.dialogs.showErrorDialog(
+		globals.DIALOGS.showErrorDialog(
 					"Error",
 					"Page link is required"
 				)
@@ -353,7 +353,7 @@ function ACTION_save() {
 			var pageRec = foundset.getSelectedRecord()
 			
 			//unfreeze screen when in frameworks
-			if (application.__parent__.solutionPrefs && solutionPrefs.config.lockStatus) {
+			if (application.__parent__.solutionPrefs && solutionPrefs.config.lockStatus && !solutionPrefs.config.webClient) {
 				globals.WEBc_sutra_trigger('TRIGGER_interface_lock',[false])
 			}
 			
@@ -512,7 +512,7 @@ function ACTION_save() {
 			//prompt
 			else {
 				globals.CODE_cursor_busy(false)
-				var input = plugins.dialogs.showWarningDialog(
+				var input = globals.DIALOGS.showWarningDialog(
 								"Warning",
 								"New theme layout selected. All area records that\ndo not exist in the new theme will be deleted.\nContinue?", 
 								"Yes", 
@@ -845,7 +845,7 @@ function REC_new() {
 		//allowed to roll-down header area?
 			//MEMO: this global method only used on pages screen; so modifcations ok
 		if (!forms.WEB_0T_page._addRecord && forms.WEB_0F_page.page_type == 0 && !utils.hasRecords(forms.WEB_0F_page__design_1F_version.foundset)) {
-			plugins.dialogs.showQuestionDialog(
+			globals.DIALOGS.showQuestionDialog(
 						'Error',
 						'No version selected'
 				)
@@ -879,7 +879,7 @@ function REC_new() {
 	//prompt to cancel current edits
 	else {
 	
-	//	var answer = plugins.dialogs.showWarningDialog(
+	//	var answer = globals.DIALOGS.showWarningDialog(
 	//							'Cancel?',
 	//							'Cancel all header edits?',
 	//							'Yes',
