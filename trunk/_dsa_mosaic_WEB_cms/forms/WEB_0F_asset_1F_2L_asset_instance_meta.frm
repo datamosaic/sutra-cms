@@ -23,7 +23,7 @@ location:"10,85",
 name:"fld_data_value",
 scrollbars:32,
 size:"230,75",
-styleClass:"textareanoborder",
+styleClass:"nobordertextarea",
 text:"Data",
 typeid:4,
 uuid:"49D637EC-4F53-4EFD-B2B8-046A1A2AB31A"

@@ -91,7 +91,7 @@ function BLOCK_action_list() {
 		}
 	}
 	else {
-		plugins.dialogs.showErrorDialog(
+		globals.DIALOGS.showErrorDialog(
 					'Error',
 					'No block selected.  You must create/select a block first'
 			)
@@ -230,7 +230,7 @@ function FORM_on_load() {
  */
 function REC_delete() {
 	
-	var delRec = plugins.dialogs.showWarningDialog(
+	var delRec = globals.DIALOGS.showWarningDialog(
 						'Delete record',
 						'Do you really want to delete this record?',
 						'Yes',
@@ -273,14 +273,19 @@ function REC_on_select(event,fireSelect) {
 	//we're not intentially skipping this method, run it
 	if (!_skipSelect) {
 		
-		//give the triple-level relation forms a little extra help
-		if (utils.hasRecords(foundset)) {
-			if (globals.WEB_page_mode == 1) {
-				forms.WEB_0F_page__design_1F_version_2F_block__data.foundset.loadRecords(web_scope_to_block)
+		//give the triple-level relation forms a little extra help (not really legal...)
+		try {
+			if (utils.hasRecords(foundset)) {
+				if (globals.WEB_page_mode == 1) {
+					forms.WEB_0F_page__design_1F_version_2F_block__data.foundset.loadRecords(web_scope_to_block)
+				}
+				else if (globals.WEB_page_mode == 2) {
+					forms.WEB_0F_page__design_1F_version_2F_block__gui.foundset.loadRecords(web_scope_to_block)
+				}
 			}
-			else if (globals.WEB_page_mode == 2) {
-				forms.WEB_0F_page__design_1F_version_2F_block__gui.foundset.loadRecords(web_scope_to_block)
-			}
+		}
+		catch (e) {
+			
 		}
 		
 		if (utils.hasRecords(web_scope_to_block)) {
@@ -438,7 +443,7 @@ function ACTION_gui_mode_load(fireSelect) {
 								forms[formName].foundset.loadRecords(web_scope_to_block)
 							}
 							else {
-								var restart = plugins.dialogs.showWarningDialog(
+								var restart = globals.DIALOGS.showWarningDialog(
 										'Warning',
 										'Changes made in developer have caused foundsets to become unhooked.\nRestart?',
 										'Yes',
@@ -488,7 +493,7 @@ function ACTION_gui_mode_load(fireSelect) {
 	}
 	
 	function defaultForms() {
-		forms[contextForm].foundset.loadRecords(web_scope_to_block)
+//		forms[contextForm].foundset.loadRecords(web_scope_to_block)
 		tabPanel.tabIndex = 1
 		
 		forms[contextForm].elements.lbl_banner.text = "Content"
@@ -615,7 +620,7 @@ function BLOCK_duplicate() {
 function BLOCK_goto(scope) {
 	var blockRec = web_scope_to_block.getSelectedRecord()
 	
-	var question = plugins.dialogs.showQuestionDialog(
+	var question = globals.DIALOGS.showQuestionDialog(
 				'Leave edit mode?',
 				'You must exit edit mode before viewing the scrapbook manager.\nAll changes will be saved.\nContinue?',
 				'Yes',
@@ -677,7 +682,7 @@ function BLOCK_refresh() {
 		REC_on_select(null,true)
 	}
 	else {
-		plugins.dialogs.showErrorDialog(
+		globals.DIALOGS.showErrorDialog(
 				'Error',
 				'The selected block cannot be updated.\nDelete and re-add.'
 			)
@@ -690,7 +695,7 @@ function BLOCK_refresh() {
 function BLOCK_scope(scope,copy,promote) {
 	var blockRec = web_scope_to_block.getSelectedRecord()
 	
-	var input = plugins.dialogs.showInputDialog(
+	var input = globals.DIALOGS.showInputDialog(
 					'Name',
 					'Please (re)name the block you are working with',
 					blockRec.block_name

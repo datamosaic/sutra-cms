@@ -26,7 +26,7 @@ function GOTO_site(event) {
  * @properties={typeid:24,uuid:"A4F191DC-B992-4F25-B595-6AB2460E840F"}
  */
 function REC_ungroup() {
-	var delRec = plugins.dialogs.showWarningDialog(
+	var delRec = globals.DIALOGS.showWarningDialog(
 						'Ungroup',
 						'Do you really want to remove this site from the group?',
 						'Yes',

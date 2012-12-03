@@ -248,7 +248,7 @@ onDataChangeMethodID:"-1",
 scrollbars:36,
 selectOnEnter:true,
 size:"235,23",
-styleClass:"standard_table_noedit",
+styleClass:"standard_table",
 typeid:4,
 uuid:"9368CA18-345D-4447-A6E9-2561D0594380",
 valuelistID:"48A848FB-45E0-4D3C-978B-91C2C9C27CE7"

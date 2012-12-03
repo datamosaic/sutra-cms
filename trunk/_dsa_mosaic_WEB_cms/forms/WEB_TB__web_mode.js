@@ -174,7 +174,7 @@ function ACTION_version(input) {
 			var displayVal = ''
 			
 			if (recVersion.flag_active) {
-				displayVal += '<html><body><strong>ACTIVE</strong> '
+				displayVal += 'ACTIVE '
 			}
 			else if (i == 1) {
 				displayVal += 'Working copy'
@@ -304,7 +304,7 @@ function ACTION_dashboard(event) {
 //		
 //		//in edit mode with unsaved changes
 //		if (elements.btn_save.visible && forms.WEB_0F_page__browser_1F_block__editor.GET_modify()) {
-//			var input = plugins.dialogs.showWarningDialog(
+//			var input = globals.DIALOGS.showWarningDialog(
 //						'Unsaved changes',
 //						'There are unsaved changes.  Continue without saving?',
 //						'Yes',
@@ -368,7 +368,7 @@ function ACTION_mode(event) {
 //			(currentMode == 'DESIGN' && forms.WEB_0F_page__design_1F_version_2F_block__gui.elements.tab_detail.getTabFormNameAt(2) == 'WEB_0F__content' &&
 //			forms.WEB_0F__content.elements.btn_save.enabled)) {
 //			
-//			var input = plugins.dialogs.showWarningDialog(
+//			var input = globals.DIALOGS.showWarningDialog(
 //						'Unsaved changes',
 //						'There are unsaved changes.  Continue without saving?',
 //						'Yes',
@@ -438,7 +438,7 @@ function ACTION_mode(event) {
 					MODE_set("Design")
 					
 					//refire toggle (may fire too frequently)
-					forms.WEB_0F_page__design_1F_version_2L_scope.ACTION_gui_mode_load(true)
+//					forms.WEB_0F_page__design_1F_version_2L_scope.ACTION_gui_mode_load(true)
 				}
 				
 				//set mode
@@ -508,7 +508,7 @@ function TOGGLE_edit(editMode) {
 function ACTION_save(event) {
 	//any unsaved changes?
 	if (forms.WEB_0F_page__browser_1F_block__editor.GET_modify()) {
-		var input = plugins.dialogs.showWarningDialog(
+		var input = globals.DIALOGS.showWarningDialog(
 					'Unsaved changes',
 					'There are unsaved changes.  Continue without saving?',
 					'Yes',
@@ -580,7 +580,7 @@ function ACTION_sitemap(event) {
 //		
 //		//in edit mode with unsaved changes
 //		if (elements.btn_save.visible && forms.WEB_0F_page__browser_1F_block__editor.GET_modify()) {
-//			var input = plugins.dialogs.showWarningDialog(
+//			var input = globals.DIALOGS.showWarningDialog(
 //						'Unsaved changes',
 //						'There are unsaved changes.  Continue without saving?',
 //						'Yes',
@@ -714,7 +714,7 @@ function ACTION_visit(event,returnURL,toClippy) {
 		}
 	}
 	else if (!returnURL) {
-		plugins.dialogs.showErrorDialog(
+		globals.DIALOGS.showErrorDialog(
 					'Error',
 					'You must have a page selected in order to preview it'
 			)

@@ -27,7 +27,7 @@ var _editMode = false;
  * @AllowToRunInFind
  */
 function REC_delete() {
-	var delRec = plugins.dialogs.showWarningDialog(
+	var delRec = globals.DIALOGS.showWarningDialog(
 				'Delete record',
 				'Deleting a scrapbook will remove it from all pages.\nDo you really want to delete this record?',
 				'Yes',
@@ -64,7 +64,7 @@ function REC_delete() {
  * @properties={typeid:24,uuid:"A17B8FB8-4920-4F9A-92F8-6B9C7F3B4E0D"}
  */
 function FORM_on_load(event) {
-	//set up split bean
+	//set up split pane
 	SPLIT_set(false)
 	
 	//MEMO: the list of blocks is shown/hidden from the page form tab controller
@@ -124,7 +124,7 @@ function REC_new() {
 		}
 	}
 	else {
-		plugins.dialogs.showErrorDialog(
+		globals.DIALOGS.showErrorDialog(
 						'Error',
 						'You must add a site record first'
 				)
@@ -269,7 +269,7 @@ function REC_on_select(event) {
 		forms.WEB_0F_block__scrapbook__header.TOGGLE_elements()
 		
 		//load correct gui form
-		ACTION_gui_mode_load()
+//		ACTION_gui_mode_load()
 	}
 }
 
@@ -385,7 +385,7 @@ function ACTION_gui_mode_load() {
 					forms[formName].foundset.loadRecords(foundset)
 				}
 				else {
-					var restart = plugins.dialogs.showWarningDialog(
+					var restart = globals.DIALOGS.showWarningDialog(
 							'Warning',
 							'Changes made in developer have caused foundsets to become unhooked.\nRestart?',
 							'Yes',
@@ -458,7 +458,7 @@ function SET_versions() {
 			var displayVal = ''
 			
 			if (recVersion.flag_active) {
-				displayVal += '<html><body><strong>ACTIVE</strong> '
+				displayVal += 'ACTIVE '
 				var active = recVersion
 			}
 			
@@ -584,14 +584,14 @@ function REC_refresh(allVersions, selectedVersion) {
 			}
 		}
 		else {
-			plugins.dialogs.showErrorDialog(
+			globals.DIALOGS.showErrorDialog(
 						'Error',
 						'No content version selected'
 				)
 		}
 	}
 	else {
-		plugins.dialogs.showErrorDialog(
+		globals.DIALOGS.showErrorDialog(
 					'Error',
 					'No content selected'
 			)
@@ -708,20 +708,18 @@ function FOUNDSET_restrict(returnContent, noSutra, scrapbookScope) {
 		return scrapbookScope
 	}
 }
-
 /**
  * @properties={typeid:24,uuid:"CB7E7C07-4E17-4542-B7BE-B59820F4E885"}
  */
-function SPLIT_set(show) {
-	elements.split_sidebar.topComponent	= elements.tab_blocks
-	elements.split_sidebar.bottomComponent = elements.tab_versions
+function SPLIT_set(show) { 
 	
 	if (show) {
-		elements.split_sidebar.dividerLocation = 200
-		forms.WEB_0F_block__scrapbook_1F__sidebar.elements.bean_drag.visible = true
+		elements.split.dividerLocation = 200
+		elements.split.dividerSize = 8
+		elements.split.bgcolor = '#ffffff'
 	}
 	else {
-		elements.split_sidebar.topComponent = null
-		forms.WEB_0F_block__scrapbook_1F__sidebar.elements.bean_drag.visible = false
+		elements.split.dividerLocation = 0
+		elements.split.dividerSize = 0
 	}
 }

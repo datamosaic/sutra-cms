@@ -57,7 +57,7 @@ function TOGGLE_edit_mode(editMode,saveData) {
 	if (_editMode && !utils.hasRecords(forms.WEB_0F_block__scrapbook.foundset)) {
 		_editMode = false
 		
-		plugins.dialogs.showErrorDialog(
+		globals.DIALOGS.showErrorDialog(
 						'Error',
 						'You must have a scrapbook in order to enter edit mode'
 				)
@@ -74,7 +74,9 @@ function TOGGLE_edit_mode(editMode,saveData) {
 		}
 		
 		//lock the screen
-		globals.WEBc_sutra_trigger('TRIGGER_interface_lock',[true])
+		if (!solutionPrefs.config.webClient) {
+			globals.WEBc_sutra_trigger('TRIGGER_interface_lock',[true])
+		}
 		
 		//show actions
 		forms.WEB_0F_block__scrapbook_1F__gui.elements.btn_data_actions.enabled = true
@@ -135,7 +137,9 @@ function TOGGLE_edit_mode(editMode,saveData) {
 		databaseManager.setAutoSave(true)
 		
 		//unlock the screen
-		globals.WEBc_sutra_trigger('TRIGGER_interface_lock',[false])
+		if (!solutionPrefs.config.webClient) {
+			globals.WEBc_sutra_trigger('TRIGGER_interface_lock',[false])
+		}
 		
 		//hide actions
 		forms.WEB_0F_block__scrapbook_1F__gui.elements.btn_data_actions.enabled = false

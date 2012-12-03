@@ -10,7 +10,7 @@ location:"10,188",
 scrollbars:33,
 selectOnEnter:true,
 size:"300,93",
-styleClass:"textareanoborder",
+styleClass:"nobordertextarea",
 transparent:true,
 typeid:4,
 uuid:"2273C31C-CC7A-4CB4-BEB7-AF1463CBAAD7"

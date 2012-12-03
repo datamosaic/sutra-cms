@@ -32,7 +32,7 @@ function ACTION_edit(event) {
 	
 	//locked version
 	if (!utils.hasRecords(forms.WEB_0F_page__design_1F_version.foundset) || forms.WEB_0F_page__design_1F_version.flag_lock) {
-		plugins.dialogs.showErrorDialog(
+		globals.DIALOGS.showErrorDialog(
 					'Error',
 					'The selected version is locked.  To enter edit mode it must be unlocked.'
 			)
@@ -115,7 +115,9 @@ function TOGGLE_edit_mode(editMode,saveData) {
 		}
 		
 		//lock the screen
-		globals.WEBc_sutra_trigger('TRIGGER_interface_lock',[true])
+		if (!solutionPrefs.config.webClient) {
+			globals.WEBc_sutra_trigger('TRIGGER_interface_lock',[true])
+		}
 		
 		//toggle elements
 		TOGGLE_buttons()
@@ -180,7 +182,9 @@ function TOGGLE_edit_mode(editMode,saveData) {
 		databaseManager.setAutoSave(true)
 		
 		//unlock the screen
-		globals.WEBc_sutra_trigger('TRIGGER_interface_lock',[false])
+		if (!solutionPrefs.config.webClient) {
+			globals.WEBc_sutra_trigger('TRIGGER_interface_lock',[false])
+		}
 		
 		//toggle elements
 		TOGGLE_buttons()
@@ -236,7 +240,7 @@ function ACTION_done(event) {
 function ACTION_reorder(event) {
 	//locked version
 	if (!_reorderMode && !utils.hasRecords(forms.WEB_0F_page__design_1F_version.foundset) || forms.WEB_0F_page__design_1F_version.flag_lock) {
-		plugins.dialogs.showErrorDialog(
+		globals.DIALOGS.showErrorDialog(
 					'Error',
 					'The selected version is locked.  To reorder blocks it must be unlocked.'
 			)
@@ -292,6 +296,6 @@ function ACTION_reorder(event) {
 		forms.WEB_0F_page__design_1F_version_2L_scope.elements.btn_up.enabled = _reorderMode
 		
 		//refresh block
-		forms.WEB_0F_page__design_1F_version_2L_scope.ACTION_gui_mode_load()
+//		forms.WEB_0F_page__design_1F_version_2L_scope.ACTION_gui_mode_load()
 	}
 }

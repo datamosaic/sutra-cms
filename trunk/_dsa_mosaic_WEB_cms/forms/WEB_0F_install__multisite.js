@@ -15,5 +15,5 @@ var _license_dsa_mosaic_WEB_cms = 'Module: _dsa_mosaic_WEB_cms \
  * @properties={typeid:24,uuid:"E25AE669-7ACF-4095-B2E5-6D986327BE38"}
  */
 function ADD_sites(event) {
-	plugins.dialogs.showInfoDialog('Coming soon','For now, go to the site record and choose a multi-site key')
+	globals.DIALOGS.showInfoDialog('Coming soon','For now, go to the site record and choose a multi-site key')
 }

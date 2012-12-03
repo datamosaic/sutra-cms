@@ -12,7 +12,7 @@ var _license_dsa_mosaic_WEB_cms = 'Module: _dsa_mosaic_WEB_cms \
  * @properties={typeid:24,uuid:"604E8D87-5665-4199-9163-734E7F667C5B"}
  */
 function REC_delete() {
-	var delRec = plugins.dialogs.showWarningDialog(
+	var delRec = globals.DIALOGS.showWarningDialog(
 					'Delete record',
 					'Warning! This will delete all localized info for this page.\nDo you really want to delete this record?',
 					'Yes',

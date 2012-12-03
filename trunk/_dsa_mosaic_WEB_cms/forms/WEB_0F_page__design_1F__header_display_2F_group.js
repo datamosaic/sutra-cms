@@ -69,7 +69,7 @@ function ADD_group(event) {
 	//no more to add
 	if (fsGroup.getSize() == fsGroupAll.getSize()) {
 		//show info that logout canceled
-		plugins.dialogs.showWarningDialog(
+		globals.DIALOGS.showWarningDialog(
 				'Warning',
 				'No more groups to add'
 			)
@@ -148,7 +148,7 @@ function ADD_group(event) {
 function DEL_group(event) {
 	//cannot delete last group
 	if (web_page_to_group.getSize() > 1) {
-		var delRec = plugins.dialogs.showWarningDialog(
+		var delRec = globals.DIALOGS.showWarningDialog(
 						'Delete record',
 						'Do you really want to delete this record?',
 						'Yes',
@@ -186,7 +186,7 @@ function DEL_group(event) {
 		}
 	}
 	else {
-		plugins.dialogs.showWarningDialog(
+		globals.DIALOGS.showWarningDialog(
 				'Warning',
 				'There must always be one group'
 			)
@@ -222,7 +222,7 @@ function CREATE_group(versionOld) {
 		return 'Group "' + groupNew.group_name + '" added.\n'
 	}
 	else {
-		plugins.dialogs.showErrorDialog(
+		globals.DIALOGS.showErrorDialog(
 					'Error',
 					'Group not selected'
 			)

@@ -118,13 +118,6 @@ function TOGGLE_mode(event,mode) {
 		
 		//go to gui if not already there
 		if (mode == 'gui' && forms.WEB_0F_block__scrapbook.elements.tab_main.tabIndex != 1) {
-//			forms.WEB_0F_block__scrapbook.elements.lbl_edit.visible = true
-//			forms.WEB_0F_block__scrapbook.elements.lbl_edit_left.visible = true
-//			forms.WEB_0F_block__scrapbook.elements.lbl_edit_right.visible = true
-//			forms.WEB_0F_block__scrapbook.elements.btn_edit.visible = true
-			
-//			elements.btn_gui.visible = false
-//			elements.btn_data.visible = true
 			
 			//show correct data buttons
 			forms.WEB_A__scrapbook.elements.btn_data.visible = true
@@ -139,17 +132,12 @@ function TOGGLE_mode(event,mode) {
 		}
 		//go to data if not already there
 		else if (mode == 'data' && forms.WEB_0F_block__scrapbook.elements.tab_main.tabIndex != 2) {
-//			forms.WEB_0F_block__scrapbook.elements.lbl_edit.visible = false
-//			forms.WEB_0F_block__scrapbook.elements.lbl_edit_left.visible = false
-//			forms.WEB_0F_block__scrapbook.elements.lbl_edit_right.visible = false
-//			forms.WEB_0F_block__scrapbook.elements.btn_edit.visible = false
-			
-//			elements.btn_gui.visible = true
-//			elements.btn_data.visible = false
+
 			
 			//if we're in edit mode, exit
 			if (forms.WEB_0F_block__scrapbook._editMode) {
-				forms.WEB_0F_block__scrapbook.ACTION_edit_toggle(event)
+				//TODO: track down edit mode
+//				forms.WEB_0F_block__scrapbook.ACTION_edit_toggle(event)
 			}
 			
 			forms.WEB_0F_block__scrapbook.elements.tab_main.tabIndex = 2
@@ -259,14 +247,14 @@ function ACTION_duplicate(event) {
 			}
 		}
 		else {
-			plugins.dialogs.showErrorDialog(
+			globals.DIALOGS.showErrorDialog(
 						'Error',
 						'No content version selected'
 				)
 		}
 	}
 	else {
-		plugins.dialogs.showErrorDialog(
+		globals.DIALOGS.showErrorDialog(
 					'Error',
 					'No content selected'
 			)
@@ -296,7 +284,7 @@ function ACTION_activate(event) {
 		case 'btn_check_off':
 			var fsVersion = web_block_to_block_version__all
 			if (utils.hasRecords(fsVersion) && !selectedVersion.flag_active) {
-//				var input = plugins.dialogs.showQuestionDialog(
+//				var input = globals.DIALOGS.showQuestionDialog(
 //								'Activate?',
 //								'Activating this version will make it live on the web if the page is published.\nContinue?',
 //								'Yes',
@@ -324,7 +312,7 @@ function ACTION_activate(event) {
 				}
 			}
 			else {
-				plugins.dialogs.showErrorDialog(
+				globals.DIALOGS.showErrorDialog(
 							'Error',
 							'You cannot mark this as active'
 					)
@@ -349,7 +337,7 @@ function ACTION_lock(event) {
 		if (!version.flag_lock) {
 //			//if top of the stack and more than one version and not active, refuse to proceed
 //			if (forms.WEB_0F_page__design_1F_version.foundset.getSelectedIndex() == 1 && forms.WEB_0F_page__design_1F_version.foundset.getSize() > 1 && !version.flag_active) {
-//				plugins.dialogs.showErrorDialog(
+//				globals.DIALOGS.showErrorDialog(
 //							'Error',
 //							'The working copy must be editable'
 //					)
@@ -363,7 +351,7 @@ function ACTION_lock(event) {
 		else {
 			if (globals.WEBc_sutra_trigger('TRIGGER_registered_action_authenticate',['cms edit block version'])) {
 				if (version.flag_active) {
-					var input = plugins.dialogs.showQuestionDialog(
+					var input = globals.DIALOGS.showQuestionDialog(
 								'Edit?',
 								'Do you want to allow edits to the active version?',
 								'Yes',
@@ -379,7 +367,7 @@ function ACTION_lock(event) {
 //				databaseManager.saveData(version)
 			}
 			else {
-				plugins.dialogs.showErrorDialog(
+				globals.DIALOGS.showErrorDialog(
 							'Insufficient access',
 							'You are not allowed to change the editability of a scrapbook'
 					)
@@ -393,7 +381,7 @@ function ACTION_lock(event) {
 		forms.WEB_0F_block__scrapbook.REC_on_select()
 	}
 	else {
-		plugins.dialogs.showErrorDialog(
+		globals.DIALOGS.showErrorDialog(
 					'Error',
 					'No version active'
 			)

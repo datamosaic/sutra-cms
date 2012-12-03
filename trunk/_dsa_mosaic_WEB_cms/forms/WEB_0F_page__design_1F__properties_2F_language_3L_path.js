@@ -36,13 +36,13 @@ function REC_delete()
 if (utils.hasRecords(foundset)) {
 	//can't delete default
 	if (flag_default) {
-		plugins.dialogs.showErrorDialog(
+		globals.DIALOGS.showErrorDialog(
 					'Error',
 					'The default path cannot be deleted'
 			)
 	}
 	else {
-		var delRec = plugins.dialogs.showWarningDialog(
+		var delRec = globals.DIALOGS.showWarningDialog(
 				'Delete record',
 				'Do you really want to delete this record?',
 				'Yes',
@@ -55,7 +55,7 @@ if (utils.hasRecords(foundset)) {
 	}
 }
 else {
-	plugins.dialogs.showErrorDialog(
+	globals.DIALOGS.showErrorDialog(
 					'Error',
 					'No records'
 			)
@@ -87,7 +87,7 @@ function FLD_data_change__flag_default(oldValue, newValue, event) {
 //			record.flag_default = 1
 //		}
 //		else {
-//			plugins.dialogs.showErrorDialog(
+//			globals.DIALOGS.showErrorDialog(
 //						'Error',
 //						'There must always be a default'
 //				)
@@ -110,7 +110,7 @@ function FLD_data_change__flag_default(oldValue, newValue, event) {
 		}
 	}
 	else {
-		plugins.dialogs.showErrorDialog(
+		globals.DIALOGS.showErrorDialog(
 						'Error',
 						'There must always be a default'
 				)
@@ -144,7 +144,7 @@ function FLD_data_change__path(oldValue, newValue, event) {
 	
 	//the path is not unique for this site
 	if (results > 1) {
-		plugins.dialogs.showErrorDialog(
+		globals.DIALOGS.showErrorDialog(
 					'Error',
 					'The path is not unique'
 			)

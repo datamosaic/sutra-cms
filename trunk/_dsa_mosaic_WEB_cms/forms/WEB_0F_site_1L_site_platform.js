@@ -12,7 +12,7 @@ var _license_dsa_mosaic_WEB_cms = 'Module: _dsa_mosaic_WEB_cms \
  * @properties={typeid:24,uuid:"F8783226-EBD5-4459-A05D-9CEBB94C648C"}
  */
 function REC_delete() {
-	var delRec = plugins.dialogs.showWarningDialog(
+	var delRec = globals.DIALOGS.showWarningDialog(
 					'Delete record',
 					'Do you really want to delete this record?',
 					'Yes',
@@ -107,7 +107,7 @@ function FLD_data_change__flag_default(oldValue, newValue, event) {
 		}
 	}
 	else {
-		plugins.dialogs.showErrorDialog(
+		globals.DIALOGS.showErrorDialog(
 						'Error',
 						'There must always be a default'
 				)

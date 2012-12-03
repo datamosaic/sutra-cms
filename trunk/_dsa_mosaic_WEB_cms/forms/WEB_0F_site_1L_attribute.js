@@ -16,7 +16,7 @@ function ACTIONS_list() {
 		globals.WEBc_page_picker(ACTION_add_attribute,arguments[0])
 	}
 	else {
-		plugins.dialogs.showErrorDialog(
+		globals.DIALOGS.showErrorDialog(
 					'Error',
 					'You must select an attribute to add a page to'
 			)
@@ -45,7 +45,7 @@ function ACTION_add_attribute(inputID) {
  * @properties={typeid:24,uuid:"863281D0-6224-4569-8FB5-8FE76235CA1E"}
  */
 function REC_delete(event) {
-	var delRec = plugins.dialogs.showWarningDialog(
+	var delRec = globals.DIALOGS.showWarningDialog(
 					'Delete record',
 					'Do you really want to delete this record?',
 					'Yes',

@@ -8,7 +8,16 @@ PAGE LINK|pageLink
 URL|externalURL
 DATE|datePicker
 WYSIWYG|tinyMCE
-TABLE|table",
+TABLE|table
+FORM: text field|fField
+FORM: text area|fArea
+FORM: select|fSelect
+FORM: check|fCheck
+FORM: radio|fRadio
+FORM: password|fPassword
+FORM: file upload|fUpload
+FORM: submit|fSubmit
+FORM: action|fAction",
 name:"WEB_block_builder_field_type",
 returnDataProviders:1,
 separator:" ",

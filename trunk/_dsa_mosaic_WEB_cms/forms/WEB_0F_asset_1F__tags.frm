@@ -15,7 +15,7 @@ formIndex:10600,
 location:"0,0",
 scrollbars:33,
 size:"190,100",
-styleClass:"textareanoborder",
+styleClass:"nobordertextarea",
 transparent:true,
 typeid:4,
 uuid:"D69C7D0C-07CE-4FAB-BEA4-35EE850117F5"

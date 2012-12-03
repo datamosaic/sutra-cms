@@ -19,7 +19,7 @@ var _skipSelect = false;
  * @properties={typeid:24,uuid:"022C11EE-D472-44B4-88EA-873A195E7136"}
  */
 function REC_delete() {
-	var input = plugins.dialogs.showWarningDialog(
+	var input = globals.DIALOGS.showWarningDialog(
 						'Delete',
 						'Do you really want to delete this record?',
 						'Yes',
@@ -86,7 +86,7 @@ function TAG_add(event) {
 				)
 	}
 	else {
-		plugins.dialogs.showErrorDialog(
+		globals.DIALOGS.showErrorDialog(
 						'Error',
 						'There is no record to add tags to'
 					)
@@ -117,7 +117,7 @@ function TAG_delete(event) {
 				)
 	}
 	else {
-		plugins.dialogs.showErrorDialog(
+		globals.DIALOGS.showErrorDialog(
 						'Error',
 						'There is no record to remove tags from'
 					)
@@ -130,7 +130,7 @@ function TAG_delete(event) {
  * @properties={typeid:24,uuid:"FF5AF14C-E836-4D15-897E-FC174AA6C371"}
  */
 function REC_new(assetType) {
-	var input = plugins.dialogs.showSelectDialog( 
+	var input = globals.DIALOGS.showSelectDialog( 
 					"Asset", 
 					"Select asset type", 
 					"Image",

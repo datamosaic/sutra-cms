@@ -716,7 +716,7 @@ location:"145,127",
 name:"fld_url_servlet",
 scrollbars:36,
 size:"140,23",
-styleClass:"standard_table_noedit",
+styleClass:"standard_table",
 transparent:true,
 typeid:4,
 uuid:"EBD8DC2A-49E4-4258-906A-2A9E50B8AD90"

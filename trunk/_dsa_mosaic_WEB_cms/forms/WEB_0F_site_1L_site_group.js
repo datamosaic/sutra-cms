@@ -15,13 +15,13 @@ function REC_delete()
 {
 	//can't rename everybody
 	if (group_name == 'Everybody') {
-		plugins.dialogs.showErrorDialog(
+		globals.DIALOGS.showErrorDialog(
 					'Error',
 					'You cannot delete the "Everybody" group'
 			)
 	}
 	else {
-		var delRec = plugins.dialogs.showWarningDialog(
+		var delRec = globals.DIALOGS.showWarningDialog(
 						'Delete record',
 						'Do you really want to delete this record?',
 						'Yes',
@@ -66,7 +66,7 @@ function REC_new() {
 function FLD_data_change__group_name(oldValue, newValue, event) {
 	//can't rename everybody
 	if (oldValue == 'Everybody') {
-		plugins.dialogs.showErrorDialog(
+		globals.DIALOGS.showErrorDialog(
 					'Error',
 					'You cannot rename the "Everybody" group'
 			)
@@ -82,7 +82,7 @@ function FLD_data_change__group_name(oldValue, newValue, event) {
 		
 		//the path is not unique for this site
 		if (results > 1) {
-			plugins.dialogs.showErrorDialog(
+			globals.DIALOGS.showErrorDialog(
 						'Error',
 						'The group name is not unique'
 				)
@@ -145,7 +145,7 @@ function FLD_data_change__flag_default(oldValue, newValue, event) {
 		}
 	}
 	else {
-		plugins.dialogs.showErrorDialog(
+		globals.DIALOGS.showErrorDialog(
 						'Error',
 						'There must always be a default'
 				)

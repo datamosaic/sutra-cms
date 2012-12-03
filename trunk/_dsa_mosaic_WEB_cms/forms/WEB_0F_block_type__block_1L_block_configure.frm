@@ -29,7 +29,7 @@ location:"10,65",
 scrollbars:32,
 selectOnEnter:true,
 size:"230,65",
-styleClass:"textareanoborder",
+styleClass:"nobordertextarea",
 typeid:4,
 uuid:"6E88C678-26B6-48F3-A78B-D1539A357849"
 },
