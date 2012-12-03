@@ -145,7 +145,7 @@ function THEME_new(progress) {
 		
 		// streaming file upload directory check
 		if ( !FUNCTION_streaming_check() ) {
-			plugins.dialogs.showErrorDialog( "Error", 'File streaming default folder needs to be set to operating system root ("/" or "C:\")')
+			globals.DIALOGS.showErrorDialog( "Error", 'File streaming default folder needs to be set to operating system root ("/" or "C:\")')
 			return 'File streaming default folder needs to be set to operating system root ("/" or "C:\")'
 		}
 
@@ -164,7 +164,7 @@ function THEME_new(progress) {
 		// get theme directories and descriptor files
 		var themesArray = plugins.file.getRemoteFolderContents(directory, null, 2)
 		if (!themesArray || (themesArray instanceof Array && !themesArray.length)) {
-			plugins.dialogs.showErrorDialog( 
+			globals.DIALOGS.showErrorDialog( 
 							"Error", 
 							'The directory specified does not exist\nCheck the installation and site directories.'
 						)
@@ -213,7 +213,7 @@ function THEME_new(progress) {
 			}
 		}
 		else {
-			plugins.dialogs.showErrorDialog( "Error", "No themes available")
+			globals.DIALOGS.showErrorDialog( "Error", "No themes available")
 			return "No themes available"
 		}
 	}
@@ -228,7 +228,7 @@ function THEME_new(progress) {
 	
 		// choose theme
 		if ( !_flagRefresh ) {  // user choose theme
-			var input =	plugins.dialogs.showSelectDialog("Themes", "Choose a theme to register", themes)
+			var input =	globals.DIALOGS.showSelectDialog("Themes", "Choose a theme to register", themes)
 			if ( !input ) {
 				globals.WEBc_sutra_trigger('TRIGGER_progressbar_stop')
 				return "No theme selected"
@@ -237,7 +237,7 @@ function THEME_new(progress) {
 			var names = databaseManager.getFoundSetDataProviderAsArray(
 							fsTheme, "theme_name")
 			if ( names.lastIndexOf(input, 0) > -1 ) {
-				plugins.dialogs.showErrorDialog(
+				globals.DIALOGS.showErrorDialog(
 					"Error",  "Theme with same name not allowed")
 				globals.WEBc_sutra_trigger('TRIGGER_progressbar_stop')
 				return "Duplicate theme"
@@ -248,7 +248,7 @@ function THEME_new(progress) {
 				var input = fsTheme.theme_name				
 			}
 			else {
-				plugins.dialogs.showErrorDialog( "Error", "No matching theme found")
+				globals.DIALOGS.showErrorDialog( "Error", "No matching theme found")
 				globals.WEBc_sutra_trigger('TRIGGER_progressbar_stop')
 				return "No matching theme"
 			}
@@ -269,7 +269,7 @@ function THEME_new(progress) {
 		for (var i = 0; i < jspArray.length; i++) {
 			if ( jspArray[i].getName().search(/\.jsp$/) > 0 ) { // only get jsp files
 				_themesLayoutSelected[incrementer] = jspArray[i].getName()
-				sourceArray[incrementer] = jspArray[i]
+				sourceArray[incrementer] = jspArray[i].getPath()
 				tempArray[incrementer] = plugins.file.createTempFile(jspArray[i].getName(),".txt")
 				_themesProgressTotal += jspArray[i].size()
 				incrementer ++				
@@ -297,7 +297,7 @@ function THEME_new(progress) {
 			//jump to stage 3
 			THEME_new(3)
 			
-//			plugins.dialogs.showErrorDialog( "Error", "No theme files defined in selected theme")
+//			globals.DIALOGS.showErrorDialog( "Error", "No theme files defined in selected theme")
 //			globals.WEBc_sutra_trigger('TRIGGER_progressbar_stop')
 //			return "No theme files defined in selected theme"
 		}
@@ -332,7 +332,7 @@ function THEME_new(progress) {
 		for (var i = 0; i < jspArray.length; i++) {
 			if ( jspArray[i].getName().search(/\.jspf$/) > 0 ) { // only get jsp files
 				_elementsLayoutSelected[incrementer] = jspArray[i].getName()
-				sourceArray[incrementer] = jspArray[i]
+				sourceArray[incrementer] = jspArray[i].getPath()
 				tempArray[incrementer] = plugins.file.createTempFile(jspArray[i].getName(),".txt")
 				_elementsProgressTotal += jspArray[i].size()
 				incrementer ++				
@@ -564,7 +564,7 @@ function FUNCTION_theme_directory() {
 	}
 	
 	if ( error ) {
-		plugins.dialogs.showErrorDialog( "Error", error )
+		globals.DIALOGS.showErrorDialog( "Error", error )
 		return error
 	}
 	
@@ -751,14 +751,14 @@ function IMAGE_import(directory,uuid) {
 	// error check for images only
 	if ( file.getContentType() != null ) {
 		if ( file.getContentType().split("/")[0] != "image" ) {
-			plugins.dialogs.showErrorDialog( "Error",  
+			globals.DIALOGS.showErrorDialog( "Error",  
 				"Only image file types can be imported")
 			IMAGE_import()
 			return "Incorrect file type selected"
 		}
 	}
 	else {
-		plugins.dialogs.showErrorDialog( "Error",  
+		globals.DIALOGS.showErrorDialog( "Error",  
 				"Only image file types can be imported")
 			IMAGE_import()
 			return "Incorrect file type selected"
@@ -795,7 +795,7 @@ function IMAGE_import(directory,uuid) {
 function IMAGE_import_callback(result, e) {
 	
 	if (e) {
-		plugins.dialogs.showErrorDialog("Error", "Error with image upload to server")
+		globals.DIALOGS.showErrorDialog("Error", "Error with image upload to server")
 		globals.WEBc_sutra_trigger('TRIGGER_progressbar_stop')
 		return "Error with image upload to server"
 	}
@@ -851,7 +851,7 @@ function IMAGE_import_callback(result, e) {
 		globals.WEBc_sutra_trigger('TRIGGER_progressbar_stop')
 	}
 	
-	plugins.dialogs.showInfoDialog("Image",  "Image uploaded")
+	globals.DIALOGS.showInfoDialog("Image",  "Image uploaded")
 	
 	//no records created yet and interface locked
 	if (application.__parent__.solutionPrefs && solutionPrefs.design.statusLockWorkflow) {
@@ -1033,7 +1033,7 @@ function FILE_import(directory,uuid) {
 function FILE_import_callback(result, e) {
 	
 	if (e) {
-		plugins.dialogs.showErrorDialog("Error", "Error with file upload to server")
+		globals.DIALOGS.showErrorDialog("Error", "Error with file upload to server")
 		globals.WEBc_sutra_trigger('TRIGGER_progressbar_stop')
 		return "Error with file upload to server"
 	}
@@ -1079,7 +1079,7 @@ function FILE_import_callback(result, e) {
 		globals.WEBc_sutra_trigger('TRIGGER_progressbar_stop')
 	}
 	
-	plugins.dialogs.showInfoDialog("File",  "File uploaded")
+	globals.DIALOGS.showInfoDialog("File",  "File uploaded")
 	
 	//no records created yet and interface locked
 	if (application.__parent__.solutionPrefs && solutionPrefs.design.statusLockWorkflow) {

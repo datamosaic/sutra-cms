@@ -154,7 +154,7 @@ var CMS = {
  * @properties={typeid:24,uuid:"88B20E7F-82B4-4235-87EE-C291469E681A"}
  */
 function WEBc_browser_error() {
-	var input = plugins.dialogs.showErrorDialog(
+	var input = globals.DIALOGS.showErrorDialog(
 				'Error',
 				'The Browser Suite did not initialize properly.\nRestart client now.',
 				'Yes',
@@ -278,8 +278,8 @@ function WEBc_block_getData(formName) {
 	//we know where this is being called from
 	if (formName) {
 		//get the block record they were on
-		/** @type {JSFoundSet<db:/sutra_cms/web_block>}*/
-		var blockRec = forms[formName].foundset
+		/** @type {JSRecord<db:/sutra_cms/web_block>}*/
+		var blockRec = forms[formName].foundset.getSelectedRecord()
 		
 		//on the page and not viewing page scrapbooks, just use active version
 		if (globals.WEB_block_page_mode) {
@@ -332,8 +332,8 @@ function WEBc_block_setData(event, key, value, formName) {
 	//we know where this is being called from
 	if (formName) {
 		//get the block foundset
-		/** @type {JSFoundSet<db:/sutra_cms/web_block>}*/
-		var blockRec = forms[formName].foundset
+		/** @type {JSRecord<db:/sutra_cms/web_block>}*/
+		var blockRec = forms[formName].foundset.getSelectedRecord()
 		
 		//on the page and not viewing page scrapbooks, just use active version
 		if (globals.WEB_block_page_mode) {
@@ -395,8 +395,8 @@ function WEBc_block_getConfig(formName) {
 	//we know where this is being called from
 	if (formName) {
 		//get the block record they were on
-		/** @type {JSFoundSet<db:/sutra_cms/web_block>}*/
-		var blockRec = forms[formName].foundset
+		/** @type {JSRecord<db:/sutra_cms/web_block>}*/
+		var blockRec = forms[formName].foundset.getSelectedRecord()
 		
 		//on the page and not viewing page scrapbooks, just use active version
 		if (globals.WEB_block_page_mode) {
@@ -449,8 +449,8 @@ function WEBc_block_setConfig(event, key, value, formName) {
 	//we know where this is being called from
 	if (formName) {
 		//get the block foundset
-		/** @type {JSFoundSet<db:/sutra_cms/web_block>}*/
-		var blockRec = forms[formName].foundset
+		/** @type {JSRecord<db:/sutra_cms/web_block>}*/
+		var blockRec = forms[formName].foundset.getSelectedRecord()
 		
 		//on the page and not viewing page scrapbooks, just use active version
 		if (globals.WEB_block_page_mode) {
@@ -512,8 +512,8 @@ function WEBc_block_getResponse(formName) {
 	//we know where this is being called from
 	if (formName) {
 		//get the block record they were on
-		/** @type {JSFoundSet<db:/sutra_cms/web_block>}*/
-		var blockRec = forms[formName].foundset
+		/** @type {JSRecord<db:/sutra_cms/web_block>}*/
+		var blockRec = forms[formName].foundset.getSelectedRecord()
 		
 		//on the page and not viewing page scrapbooks, just use active version
 		if (globals.WEB_block_page_mode) {
@@ -561,8 +561,8 @@ function WEBc_block_getDisplay(formName) {
 	//we know where this is being called from
 	if (formName) {
 		//get the block record they were on
-		/** @type {JSFoundSet<db:/sutra_cms/web_block>}*/
-		var blockRec = forms[formName].foundset
+		/** @type {JSRecord<db:/sutra_cms/web_block>}*/
+		var blockRec = forms[formName].foundset.getSelectedRecord()
 		
 		//on the page and not viewing page scrapbooks, just use active version
 		if (globals.WEB_block_page_mode) {
@@ -856,11 +856,11 @@ function WEBc_session_getSession(sessionID) {
  * @properties={typeid:24,uuid:"69DE3CBB-B513-4C89-BEEA-C9CBFC2C41A8"}
  */
 function WEBc_cookie_delete(response, name) {
-
-	var cookie = new Packages.javax.servlet.http.Cookie(name,"")
-	cookie.setMaxAge(0)
-	response.addCookie(cookie)
-	return cookie
+	return
+//	var cookie = new Packages.javax.servlet.http.Cookie(name,"")
+//	cookie.setMaxAge(0)
+//	response.addCookie(cookie)
+//	return cookie
 
 }
 
@@ -1800,7 +1800,7 @@ function WEBc_page_new(pageName,pageType,parentID,themeID,layoutID) {
 	//check if can add record
 	
 	if (!globals.WEBc_sutra_trigger('TRIGGER_registered_action_authenticate',['cms page add'])) {
-		plugins.dialogs.showErrorDialog(
+		globals.DIALOGS.showErrorDialog(
 						'Error',
 						'You are not authorized to add new pages'
 				)
@@ -1954,14 +1954,14 @@ function WEBc_page_new(pageName,pageType,parentID,themeID,layoutID) {
 	else {
 		//not all defaults specified
 		if (utils.hasRecords(forms.WEB_0F_page.foundset)) {
-			plugins.dialogs.showErrorDialog(
+			globals.DIALOGS.showErrorDialog(
 							'Error',
 							'The defaults are not set correctly for this site'
 					)
 		}
 		//no site record
 		else {
-			plugins.dialogs.showErrorDialog(
+			globals.DIALOGS.showErrorDialog(
 							'Error',
 							'You must add a site record first'
 					)
