@@ -1,0 +1,11 @@
+foreignDataSource:"db:/sutra_cms/web_page",
+initialSort:"order_by asc",
+items:[
+{foreignColumnName:"flag_publish",primaryDataProviderID:"globals.CODE_constant_1",typeid:23,uuid:"994AC95C-F52A-4B06-9C61-D834D4117455"},
+{foreignColumnName:"parent_id_page",primaryDataProviderID:"id_page",typeid:23,uuid:"AAC80802-2188-4B4D-B2AA-0217ECBBB141"}
+],
+joinType:1,
+name:"web_page_to_page__child__publish",
+primaryDataSource:"db:/sutra_cms/web_page",
+typeid:22,
+uuid:"D45484C3-8072-4D5C-A5B4-FAD53B772D59"

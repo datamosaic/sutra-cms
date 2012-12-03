@@ -1,0 +1,63 @@
+div#cmsHilite {
+	filter: alpha(opacity=60);
+	background-image: url(../images/bg_trans.png);
+/*	background-color: #B6E6B6;*/
+	z-index: 5;
+	cursor: pointer;
+	position: absolute;
+	display: none;
+}
+
+div#cmsOverlay {
+	position: fixed;
+	z-index:99;
+	top: 0px;
+	left: 0px;
+	background-color:#000;
+	filter:alpha(opacity=50);
+	-moz-opacity: 0.5;
+	opacity: 0.5;
+	height:100%;
+	width:100%;
+	display: none;
+}
+
+div.editable, p.editable {
+	margin: 0px;
+	border: 1px dashed #AE0345;
+	padding: 2px;
+	margin-bottom: 4px;
+	margin-right: 2px;
+	overflow: hidden;
+/*	z-index: 2147483647;
+    position: absolute;
+    background-color: #3875d7;*/
+}
+
+div.block_new {
+	margin: 0px;
+	border: 1px dashed #7E8286;
+/*	padding: 2px;*/
+	margin-bottom: 4px;
+	margin-right: 2px;
+	text-align: center;
+	overflow: hidden;
+	display: none;
+}
+
+div.block_new a, div.block_new a:visited, div.block_new a:active {
+	background-color: #F6F6F6;
+	color: #7E8286;
+	text-decoration: none;
+	display: block;
+	padding: 2px;
+}
+
+div.block_new a:hover {
+	background-color: #7E8286;
+	color: #FFFFFF;
+	font-weight: bold;
+	text-decoration: none;
+	display: block;
+	padding: 2px;
+}
