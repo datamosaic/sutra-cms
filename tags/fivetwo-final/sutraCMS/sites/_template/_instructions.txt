@@ -1,0 +1,54 @@
+------------------------
+Create a new site
+------------------------
+
+This _template folder is a starting point for creating a new site directory.
+
+It contains the directory structures that Sutra CMS expects.
+
+To use, duplicate and rename to whatever your site name is. On the site record, enter the same name for the site directory data point.
+
+------------------------
+Directories
+------------------------
+
+The files, images and videos folders store uploaded assets of those types.
+
+The themes directory contains all the themes your site has access to. Each theme has it's own folder.
+
+------------------------
+Cutting a theme layout
+------------------------
+
+Static html files can easily be "cut" into a files that Sutra CMS can recognize:
+
+1- change extension from html to jsp
+
+2- add the following to very top of page before the <html> tag:
+
+<%@ page import = "java.util.*" %>
+<% HashMap pageData = (HashMap)request.getAttribute("pageData");%> 
+
+3- insert following resource prefix for all local resource calls (src, href, hrf, @import url, etc):
+
+<%=(String)request.getAttribute("themeDirectory")%>
+
+4- header modifications:
+
+- remove title tag
+- remove all other meta attributes that you want to be dynamically generated
+- add before closing </head> tag:
+
+<jsp:include page='<%= (String)request.getAttribute("head") %>' /> 
+
+5- bottom of the page modification:
+
+- add before the closing </body> tag:
+
+<jsp:include page='<%= (String)request.getAttribute("foot") %>' /> 
+
+6- cut in content areas wherever you want editable content (names should be unique per page when multiple editable areas):
+
+<%=pageData.get("Name of editable area")%>
+
+7- register the theme and you're ready to create pages!

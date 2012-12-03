@@ -1,0 +1,12 @@
+allowCreationRelatedRecords:true,
+deleteRelatedRecords:true,
+foreignDataSource:"db:/sutra_cms/web_group",
+initialSort:"web_group_to_site_group.group_name asc",
+items:[
+{foreignColumnName:"id_page",primaryDataProviderID:"id_page",typeid:23,uuid:"1069FB75-CBD3-460E-B2E3-B8083063F752"}
+],
+joinType:1,
+name:"web_page_to_group",
+primaryDataSource:"db:/sutra_cms/web_page",
+typeid:22,
+uuid:"464AA1D9-EAB5-473D-956A-78F6407CA7AB"

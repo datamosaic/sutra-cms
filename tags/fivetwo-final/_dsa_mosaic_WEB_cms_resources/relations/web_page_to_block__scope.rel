@@ -1,0 +1,10 @@
+foreignDataSource:"db:/sutra_cms/web_block",
+initialSort:"web_block_to_block_type.block_name asc, block_name asc",
+items:[
+{foreignColumnName:"id_page",primaryDataProviderID:"id_page",typeid:23,uuid:"6CA4528F-43ED-4217-A445-676C62DDD345"},
+{foreignColumnName:"scope_type",primaryDataProviderID:"globals.CODE_constant_1",typeid:23,uuid:"FC2D9C6A-DADE-46BA-BEB1-D2D6254E6DFA"}
+],
+name:"web_page_to_block__scope",
+primaryDataSource:"db:/sutra_cms/web_page",
+typeid:22,
+uuid:"761FF172-C32A-4D6E-9C9A-732F9DD23526"

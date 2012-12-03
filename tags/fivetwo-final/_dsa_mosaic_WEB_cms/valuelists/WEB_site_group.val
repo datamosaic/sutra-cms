@@ -1,0 +1,11 @@
+addEmptyValue:1,
+dataProviderID1:"id_site_group",
+dataProviderID2:"group_name",
+name:"WEB_site_group",
+relationName:"web_site_to_site_group",
+returnDataProviders:1,
+separator:" ",
+showDataProviders:2,
+typeid:34,
+uuid:"97626C29-E21A-4225-BDD5-B40C846C58C1",
+valueListType:1
