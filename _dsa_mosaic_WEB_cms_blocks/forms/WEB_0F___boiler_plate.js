@@ -28,7 +28,7 @@ function BLOCK_sample_method() {
 	// method of type BLOCK
 	// BLOCK type methods are used in the CMS GUI
 	// not required
-	plugins.dialogs.showInfoDialog( "Block action demo", "Block action just occurred" )
+	globals.DIALOGS.showInfoDialog( "Block action demo", "Block action just occurred" )
 
 }
 
@@ -88,7 +88,7 @@ function INIT_block() {
  * @properties={typeid:24,uuid:"7E3894A3-27A8-4435-AEAA-36891B21E483"}
  */
 function PAGE_sample_method() {
-	plugins.dialogs.showInfoDialog( "Page action demo", "Block page actions added to this menu")
+	globals.DIALOGS.showInfoDialog( "Page action demo", "Block page actions added to this menu")
 }
 
 /**
