@@ -1290,7 +1290,9 @@ function TABS_list(input) {
 		
 		//tack on the selected UL to the top of the pop-down
 		valueList.unshift(navigationPrefs.byNavItemID[solutionPrefs.config.currentFormID].universalList.displays[navigationPrefs.byNavItemID[solutionPrefs.config.currentFormID].universalList.displays.displayPosn].listTitle || navigationPrefs.byNavItemID[solutionPrefs.config.currentFormID].navigationItem.fwListTitle)
-		formNames.unshift((navigationPrefs.byNavItemID[solutionPrefs.config.currentFormID].listData.withButtons) ? 'NAV_T_universal_list' : 'NAV_T_universal_list__no_buttons')
+		var navForm = (solutionPrefs.config.webClient) ? '__WEB' : ''
+		formNames.unshift((navigationPrefs.byNavItemID[solutionPrefs.config.currentFormID].listData.withButtons) ? 'NAV_T_universal_list' + navForm : 'NAV_T_universal_list__no_buttons' + navForm)
+		
 		
 		//called to depress menu
 		if (input instanceof JSEvent) {

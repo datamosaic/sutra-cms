@@ -219,9 +219,11 @@ function UTIL_page_type() {
  */
 function FORM_on_load(event) {
 	// set detail split
-	elements.split_details.topComponent		= elements.tab_detail
-	elements.split_details.bottomComponent	= elements.tab_detail_bottom
-	elements.split_details.bottomComponent	= null
+	if (!solutionPrefs.config.webClient) {
+		elements.split_details.topComponent		= elements.tab_detail
+		elements.split_details.bottomComponent	= elements.tab_detail_bottom
+		elements.split_details.bottomComponent	= null
+	}
 }
 
 /**

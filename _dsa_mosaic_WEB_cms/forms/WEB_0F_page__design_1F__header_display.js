@@ -19,14 +19,16 @@ function FORM_on_load(event) {
 	elements.lbl_folder.visible = false
 	
 	//set up beans
-	elements.split_picker_2.leftComponent = elements.tab_platform
-	elements.split_picker_2.rightComponent = elements.split_picker_3
-	
-	elements.split_picker_3.leftComponent = elements.tab_language
-	elements.split_picker_3.rightComponent = elements.tab_group
-	
-	elements.split_picker_1.leftComponent = elements.split_picker_2
-	elements.split_picker_1.rightComponent = elements.tab_version
+	if (!solutionPrefs.config.webClient) {
+		elements.split_picker_2.leftComponent = elements.tab_platform
+		elements.split_picker_2.rightComponent = elements.split_picker_3
+		
+		elements.split_picker_3.leftComponent = elements.tab_language
+		elements.split_picker_3.rightComponent = elements.tab_group
+		
+		elements.split_picker_1.leftComponent = elements.split_picker_2
+		elements.split_picker_1.rightComponent = elements.tab_version
+	}
 }
 
 /**

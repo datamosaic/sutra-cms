@@ -13,16 +13,17 @@ var _license_dsa_mosaic_WEB_cms = 'Module: _dsa_mosaic_WEB_cms \
  */
 function FORM_on_load()
 {
-	// set split 2
-	elements.bean_split_2.topComponent		= elements.tab_area
-	elements.bean_split_2.bottomComponent	= elements.tab_block
-	elements.bean_split_2.dividerLocation	= 200	
-	
-	// set split 1
-	elements.bean_split_1.leftComponent	= elements.bean_split_2
-	elements.bean_split_1.rightComponent	= elements.tab_content
-	elements.bean_split_1.dividerLocation	= 300
-	
+	if (!solutionPrefs.config.webClient) {
+		// set split 2
+		elements.bean_split_2.topComponent		= elements.tab_area
+		elements.bean_split_2.bottomComponent	= elements.tab_block
+		elements.bean_split_2.dividerLocation	= 200	
+		
+		// set split 1
+		elements.bean_split_1.leftComponent	= elements.bean_split_2
+		elements.bean_split_1.rightComponent	= elements.tab_content
+		elements.bean_split_1.dividerLocation	= 300
+	}
 }
 
 /**
