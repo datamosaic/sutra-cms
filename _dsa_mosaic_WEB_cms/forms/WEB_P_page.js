@@ -153,7 +153,7 @@ function ACTION_ok() {
 			var pageRec = foundset.getSelectedRecord()
 			
 			//unfreeze screen when in frameworks
-			if (application.__parent__.solutionPrefs && solutionPrefs.config.lockStatus && !!solutionPrefs.config.webClient) {
+			if (application.__parent__.solutionPrefs && solutionPrefs.config.lockStatus) {
 				globals.WEBc_sutra_trigger('TRIGGER_interface_lock',[false])
 			}
 			
