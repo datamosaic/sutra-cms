@@ -115,9 +115,7 @@ function TOGGLE_edit_mode(editMode,saveData) {
 		}
 		
 		//lock the screen
-		if (!solutionPrefs.config.webClient) {
-			globals.WEBc_sutra_trigger('TRIGGER_interface_lock',[true])
-		}
+		globals.WEBc_sutra_trigger('TRIGGER_interface_lock',[true])
 		
 		//toggle elements
 		TOGGLE_buttons()
@@ -182,9 +180,7 @@ function TOGGLE_edit_mode(editMode,saveData) {
 		databaseManager.setAutoSave(true)
 		
 		//unlock the screen
-		if (!solutionPrefs.config.webClient) {
-			globals.WEBc_sutra_trigger('TRIGGER_interface_lock',[false])
-		}
+		globals.WEBc_sutra_trigger('TRIGGER_interface_lock',[false])
 		
 		//toggle elements
 		TOGGLE_buttons()
