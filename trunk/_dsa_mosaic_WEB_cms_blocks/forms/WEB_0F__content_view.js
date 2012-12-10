@@ -21,7 +21,7 @@ function INIT_data() {
 	}
 	html += '</body></html>'
 	
-	if (elements.bn_browser) {
+	if (elements.bn_browser && !solutionPrefs.config.webClient) {
 		elements.bn_browser.html = html
 	}
 	else {
