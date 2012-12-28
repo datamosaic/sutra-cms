@@ -54,16 +54,16 @@ function INIT_block() {
 		}
 	
 	// block views
-	block.views = globals.WEBc_block_type_getMethods(controller.getName(),"VIEW")
+	block.views = globals.CMS.ui.getMethods(controller.getName(), "VIEW")
 	
 	// block client actions - Block
-	block.clientActionsBlock = globals.WEBc_block_type_getMethods(controller.getName(),"BLOCK")
+	block.views = globals.CMS.ui.getMethods(controller.getName(), "BLOCK")
 	
 	// block client actions - Page
-	block.clientActionsPage = globals.WEBc_block_type_getMethods(controller.getName(),"PAGE")
+	block.views = globals.CMS.ui.getMethods(controller.getName(), "PAGE")
 	
 	// block web actions
-	block.webActions = globals.WEBc_block_type_getMethods(controller.getName(),"WEB")
+	block.views = globals.CMS.ui.getMethods(controller.getName(), "WEB")
 	
 	// block data points
 	block.data = {
