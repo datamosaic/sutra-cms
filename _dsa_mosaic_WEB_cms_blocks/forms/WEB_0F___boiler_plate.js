@@ -57,13 +57,13 @@ function INIT_block() {
 	block.views = globals.CMS.ui.getMethods(controller.getName(), "VIEW")
 	
 	// block client actions - Block
-	block.views = globals.CMS.ui.getMethods(controller.getName(), "BLOCK")
+	block.clientActionsBlock = globals.CMS.ui.getMethods(controller.getName(), "BLOCK")
 	
 	// block client actions - Page
-	block.views = globals.CMS.ui.getMethods(controller.getName(), "PAGE")
+	block.clientActionsPage = globals.CMS.ui.getMethods(controller.getName(), "PAGE")
 	
 	// block web actions
-	block.views = globals.CMS.ui.getMethods(controller.getName(), "WEB")
+	block.webActions = globals.CMS.ui.getMethods(controller.getName(), "WEB")
 	
 	// block data points
 	block.data = {
