@@ -132,7 +132,10 @@ var CMS = {
 					},
 				getEdit : function() {
 						return globals.WEBc_block_getEdit()
-					}
+					},
+				getMethods : function(/**String*/ context, /**String*/ key) { // controller.getName(), "VIEW | BLOCK | PAGE | WEB"
+					return globals.WEBc_block_type_getMethods(context, key)
+				}
 			},
 		"utils" : {
 				stripHTML : function(/**String*/ str) {
