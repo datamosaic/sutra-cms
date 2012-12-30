@@ -256,6 +256,7 @@ function REC_new(flagRefresh,formName,fs) {
 			for (var i = 0; i < displayDelete.length; i++) {
 				displayDelete[i].fs.deleteRecord(displayDelete[i])
 			}
+
 			
 			// block client actions - "Block"
 			for (var i in objBlock.clientActionsBlock) {

@@ -59,7 +59,7 @@ else {
  */
 function REC_new() {
 	if ( utils.hasRecords( forms.WEB_0F_site.web_site_to_site_attribute) ) {
-		controller.newRecord(false, true)
+		controller.newRecord()
 	}
 	else {
 		globals.DIALOGS.showErrorDialog(
