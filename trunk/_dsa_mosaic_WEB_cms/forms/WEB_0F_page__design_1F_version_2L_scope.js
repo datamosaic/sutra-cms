@@ -698,7 +698,7 @@ function BLOCK_scope(scope,copy,promote) {
 	var input = globals.DIALOGS.showInputDialog(
 					'Name',
 					'Please (re)name the block you are working with',
-					blockRec.block_name
+					blockRec.block_name || ''
 			)
 	
 	//make a copy of this block
