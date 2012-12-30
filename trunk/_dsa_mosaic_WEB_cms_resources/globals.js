@@ -44,6 +44,9 @@ var CMS = {
 				getLanguages : function() {
 						return globals.WEBc_markup_site_languages(globals.CMS.data)
 					},
+				getPageAttributes : function(/**JSRecord<db:/sutra_cms/web_page>*/ pageRec) {
+						return globals.WEBc_markup_page_attributes(pageRec)
+					},
 				getPagesAttribute : function(/**String*/ att) {
 						return globals.WEBc_markup_pages_attribute(globals.CMS.data, att)
 					},
@@ -2307,6 +2310,32 @@ function WEBc_markup_pages_attribute(obj, att) {
 		return (count) ? pages : 0
 	}
 	else return 0
+}
+
+/**
+ * @AllowToRunInFind
+ * 
+ * @param {JSRecord} pageRec
+ * 
+ * @returns {Object} key/value pair for each attribute row 
+ *
+ * @properties={typeid:24,uuid:"F5E48EBC-9FDA-4ABA-881C-871E05CF57BE"}
+ */
+function WEBc_markup_page_attributes(pageRec) {
+    // return attributes for a page
+	if ( pageRec ) {
+	    var values = {}
+	    var attributeFS = pageRec.web_page_to_attribute
+	    for (var i = 1; i <= attributeFS.getSize(); i++) {
+	    	var row = attributeFS.getRecord(i)
+
+	    	values[row.attribute_key] = row.attribute_value
+
+	    }
+	    return values
+	}
+	
+	else return null
 }
 
 /**
