@@ -1535,6 +1535,7 @@ function WEBc_markup_token(input,tokenType) {
 	var tokenPageName = '{DS:NAME_'
 	var tokenImage = '{DS:IMG_'
 	var tokenFile = '{DS:FILE_'
+	var errorLength = 15 // if not over this length, token is null
 	
 	//no type specified, try to determine
 	if (!tokenType) {
@@ -1615,7 +1616,13 @@ function WEBc_markup_token(input,tokenType) {
 	//suffix for token
 	token += '}'
 	
-	return token
+	// no token error check
+	if ( token.length > errorLength ) {
+		return token
+	}
+	else {
+		return null
+	}
 }
 
 /**
@@ -2081,7 +2088,7 @@ function WEBc_markup_pages_down(obj, pageRec, pathRec) {
 	}
 	
 	//array of pages to return
-	var pages = new Array()
+	var pages = []
 	
 	function iterate(foundset, pages) {
 		for (var i = 0; i < foundset.getSize(); i++) {
