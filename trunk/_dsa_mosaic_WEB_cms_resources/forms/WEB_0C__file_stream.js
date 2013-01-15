@@ -391,7 +391,7 @@ function THEME_new(progress) {
 			for (key in _themes[_themesSelected].editables) {
 				if (_themes[_themesSelected].editables.hasOwnProperty(key)) size++;
 			}	
-			application.sleep(200) // needed to clear other file streaming method threads that have progress bars
+			application.sleep(500) // needed to clear other file streaming method threads that have progress bars
 			globals.WEBc_sutra_trigger('TRIGGER_progressbar_start',[0, "Creating records...", null, 0, size])
 		}		
 		
