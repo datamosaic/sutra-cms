@@ -4,7 +4,7 @@
  * @properties={typeid:35,uuid:"2DC677B3-626D-47FA-A91B-D13D32236BF6"}
  */
 var _license_dsa_mosaic_WEB_cms_resources = 'Module: _dsa_mosaic_WEB_cms_resources \
-									Copyright (C) 2011, 2012 Data Mosaic \
+									Copyright (C) 2011-2013 Data Mosaic \
 									MIT Licensed';
 
 /**
