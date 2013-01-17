@@ -1,9 +1,0 @@
-addEmptyValue:1,
-customValues:"Existing tag|1
-Create a new tag|2",
-name:"WEB_tag_kind",
-returnDataProviders:1,
-separator:" ",
-showDataProviders:1,
-typeid:34,
-uuid:"C9619002-9F8F-4767-B16B-D933692AFAC9"

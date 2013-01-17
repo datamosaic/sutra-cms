@@ -1,8 +1,0 @@
-foreignDataSource:"db:/sutra_cms/web_site",
-items:[
-{foreignColumnName:"id_site",primaryDataProviderID:"id_site",typeid:23,uuid:"31022959-C96E-421C-B337-00E2B21F84D8"}
-],
-name:"web_site_platform_to_site",
-primaryDataSource:"db:/sutra_cms/web_site_platform",
-typeid:22,
-uuid:"8994E606-E260-4EEE-B7BB-97588952DDB9"
