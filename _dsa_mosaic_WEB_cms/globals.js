@@ -8,6 +8,13 @@ var _license_dsa_mosaic_WEB_cms = 'Module: _dsa_mosaic_WEB_cms \
 									MIT Licensed';
 
 /**
+ * @type {Object}
+ * 
+ * @properties={typeid:35,uuid:"047CD542-9062-4012-8397-5B6B2290D120",variableType:-4}
+ */
+var WEB_swc_arguments = new Object();
+
+/**
  * @type {Number}
  *
  * @properties={typeid:35,uuid:"59111D71-665C-4CE1-BBEF-EA4B1ADB6F0D",variableType:4}
@@ -315,12 +322,8 @@ if (application.__parent__.solutionPrefs) {
  * @properties={typeid:24,uuid:"48FC5C3F-2354-442E-BE6A-4963B953E080"}
  */
 function WEB_startup() {
-	//over ride style for webclient
-	if (application.getApplicationType() == APPLICATION_TYPES.WEB_CLIENT && application.getClientProperty(APP_WEB_PROPERTY.WEBCLIENT_TEMPLATES_DIR) != 'datasutra') {
-		application.setUIProperty(APP_WEB_PROPERTY.WEBCLIENT_TEMPLATES_DIR, 'harjo_alternate')
-	}
 	//hacks to load in all browser bean forms
-	else if (application.getApplicationType() == APPLICATION_TYPES.SMART_CLIENT || application.getApplicationType() == APPLICATION_TYPES.RUNTIME_CLIENT) {
+	if (application.getApplicationType() == APPLICATION_TYPES.SMART_CLIENT || application.getApplicationType() == APPLICATION_TYPES.RUNTIME_CLIENT) {
 		return
 		//disable rec_on_select of the block type form
 		globals.WEB_block_on_select = false
@@ -378,13 +381,36 @@ function WEB_startup() {
 function WEB_servoy_wc_controller(startup, args) {
 	// TODO: error checking
 	
+	//TODO: need to pick up the requested style override from downstream
+	var styleName = 'harjo_alternate'
+	
+	//over ride style for webclient (if not already overridden)
+	if (application.getApplicationType() == APPLICATION_TYPES.WEB_CLIENT && application.getClientProperty(APP_WEB_PROPERTY.WEBCLIENT_TEMPLATES_DIR) != styleName) {
+		application.putClientProperty(APP_WEB_PROPERTY.WEBCLIENT_TEMPLATES_DIR, styleName)
+	}
+	
+	//when running in developer, to avoid needing the cms module activated
+	function checkForm(formName) {
+		//form available; run
+		if (forms[formName]) {
+			return true
+		}
+		//form not available, save things to use later
+		else {
+			globals.WEB_swc_arguments = args
+		}
+	}
+	
 	function findMethod(formName, methodName) {
 		if (formName && methodName) {
 			var smForm = solutionModel.getForm(formName)
 			var smFormParent = smForm.extendsForm
 			
 			if (smForm.getFormMethod('CMS_iFrame_load')) {
-				forms[formName][methodName](args)
+				//run method if form is available; otherwise, it will get caught in web client startup (developer only issue)
+				if (checkForm(formName)) {
+					forms[formName][methodName](args)
+				}
 				return true
 			}
 			else if (smFormParent) {
@@ -401,7 +427,10 @@ function WEB_servoy_wc_controller(startup, args) {
 		}
 		// show the form without changing the url
 		else {
-			forms[args.form].controller.show()
+			//run method if form is available; otherwise, it will get caught in web client startup (developer only issue)
+			if (checkForm(args.form)) {
+				forms[args.form].controller.show()
+			}
 		}
 	}
 	//show blank page because something not configured correctly
