@@ -18,7 +18,8 @@ name:"data_key"
 },
 {
 allowNull:true,
-converterName:"StringSerializer",
+converterName:"GlobalMethodConverter",
+converterProperties:"{fromObjectMethodName:\"scopes.globals.WEBc_convertJSONtoDB\",toObjectMethodName:\"scopes.globals.WEBc_convertDBtoJSON\",type:\"<as is>\"}",
 creationOrderIndex:3,
 dataType:-1,
 length:16777215,
