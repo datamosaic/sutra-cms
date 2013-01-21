@@ -2733,3 +2733,42 @@ function WEBc_markup_merge(template, data){
             }
         });
 }
+
+
+/**
+ * Called for performing a conversion between a displayed value and a database value.
+ *
+ * @param displayedValue The displayed value.
+ * @param {String} dbType The type of the database column. Can be one of "TEXT", "INTEGER", "NUMBER", "DATETIME" or "MEDIA".
+ *
+ * @returns {Object} the database value.
+ *
+ * @properties={typeid:24,uuid:"6F9746C9-9603-4D56-B1BD-B43F4F1AD72F"}
+ */
+function WEBc_convertJSONtoDB(displayedValue, dbType) {
+	if (displayedValue) {
+		return JSON.stringify(displayedValue)
+	}
+	else {
+		return null
+	}
+}
+
+/**
+ * Called for performing a conversion between a database value and a displayed value.
+ *
+ * @param databaseValue The database value.
+ * @param {String} dbType The type of the database column. Can be one of "TEXT", "INTEGER", "NUMBER", "DATETIME" or "MEDIA".
+ *
+ * @returns {Object} the displayed value.
+ *
+ * @properties={typeid:24,uuid:"0DBEADBE-9DA4-458F-96C8-BC1F6AC3B14A"}
+ */
+function WEBc_convertDBtoJSON(databaseValue, dbType) {
+	if (databaseValue) {
+		return JSON.parse(databaseValue)
+	}
+	else {
+		return null
+	}
+}
