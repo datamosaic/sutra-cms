@@ -83,10 +83,9 @@ function FORM_on_show(firstShow, event) {
 			//enable rec_on_select of the block type form
 			globals.WEB_block_on_select = true
 			
-			//need to reload the tree, update globals showing
+			//need to reload the tree
 			if (forms.WEB_0T_page._refresh || firstShow) {
 				_loadFilters = true
-				SET_globals()
 			}
 		}
 	}
