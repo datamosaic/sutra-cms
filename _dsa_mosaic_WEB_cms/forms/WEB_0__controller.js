@@ -26,7 +26,7 @@ function CONTROLLER(app, session, request, response, mode) {
 //	globals.CMS = eval(solutionModel.getGlobalVariable('CMS').defaultValue)
 	
 	// CMS Version
-	var cmsVersion = "3.0b3"
+	var cmsVersion = "4.0b1"
 
 	// initialize good dataset to return to jsp
 	var results = databaseManager.createEmptyDataSet(0,["key","value"])
