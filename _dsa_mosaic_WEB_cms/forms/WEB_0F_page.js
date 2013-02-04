@@ -79,7 +79,7 @@ function FORM_on_show(firstShow, event) {
 			
 			forms.WEB_A__page.TOGGLE_edit_mode(false)
 		}
-		else {
+		else {			
 			//enable rec_on_select of the block type form
 			globals.WEB_block_on_select = true
 			
