@@ -365,7 +365,7 @@ function CONTROLLER_setup(results, app, session, request, response, mode, cmsVer
 	var pageServer	= request.getServerName()
 	var pageURI		= request.getRequestURI()
 	var pageQuery	= request.getQueryString()
-	var pagePath	= request.getAttribute("path").replace(/\/$/,'') // strip trailing forward slash
+	var pagePath	= (request.getAttribute("path")) ? request.getAttribute("path").replace(/\/$/,'') : null // strip trailing forward slash
 	var pageID 		= request.getParameter("id")
 	var platformID	= request.getParameter("platform")
 	var languageID	= request.getParameter("language")
