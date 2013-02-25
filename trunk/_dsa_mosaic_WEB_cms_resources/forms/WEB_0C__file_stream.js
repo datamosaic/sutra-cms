@@ -371,20 +371,20 @@ function THEME_new(progress) {
 		}
 		
 		// 1 get theme record 
+		var themeDirectory = _themes[_themesSelected].path.split("/")
 		if ( !_flagRefresh ) {
 			var theme = fsTheme.getRecord(fsTheme.newRecord())
+			theme.theme_directory = themeDirectory[themeDirectory.length - 1]
+			theme.theme_name = _themes[_themesSelected].name
+			theme.description = _themes[_themesSelected].description
+			theme.id_site = forms.WEB_0F_site.id_site
+			theme.activated = 1
+			databaseManager.saveData(theme)
 		}
 		else {
 			var theme = fsTheme.getSelectedRecord()
 		}
-		theme.theme_name = _themes[_themesSelected].name
-		theme.description = _themes[_themesSelected].description
-		theme.id_site = forms.WEB_0F_site.id_site
-		theme.activated = 1
-		var themeDirectory = _themes[_themesSelected].path.split("/")
-		theme.theme_directory = themeDirectory[themeDirectory.length - 1]
-		databaseManager.saveData(theme)
-		
+
 		// progress bar
 		if ( application.__parent__.solutionPrefs ) {
 			var size = 0, key;
