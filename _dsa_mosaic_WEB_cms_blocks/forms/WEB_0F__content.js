@@ -71,29 +71,29 @@ function TINYMCE_init(mode) {
 		//rewrite mode
 		var rewriteMode = globals.WEBc_install_getRewrite()
 		
-		//no pages, no css
-		if (utils.hasRecords(forms.WEB_0F_page.foundset)) {
-			//rewrites are disabled, spell out all the way to the site directory
-			if (!rewriteMode) {
-				cssFile += 'sites/' + forms.WEB_0F_page.web_page_to_site.directory + '/'
-			}
-			
-			if (utils.hasRecords(forms.WEB_0F_page__design_1F__header_display_2F_platform._platform) && utils.hasRecords(forms.WEB_0F_page__design_1F__header_display_2F_platform._platform,'web_platform_to_theme') && forms.WEB_0F_page__design_1F__header_display_2F_platform._platform.web_platform_to_theme.theme_directory) {
-				cssFile += 'themes/' + forms.WEB_0F_page__design_1F__header_display_2F_platform._platform.web_platform_to_theme.theme_directory + '/css/tinymce.css'
-				
-				//read in cssFile to see if exists
-				var fileExists = plugins.http.getPageData(cssFile)
-			}
-		}
-		
-		//tinymce file 
-		if (fileExists) {
-			js.content_css = cssFile
-		}
-		//no specific tinymce file present, use default css for entire site
-		else {
-			
-		}
+//		//no pages, no css
+//		if (utils.hasRecords(forms.WEB_0F_page.foundset)) {
+//			//rewrites are disabled, spell out all the way to the site directory
+//			if (!rewriteMode) {
+//				cssFile += 'sites/' + forms.WEB_0F_page.web_page_to_site.directory + '/'
+//			}
+//			
+//			if (utils.hasRecords(forms.WEB_0F_page__design_1F__header_display_2F_platform._platform) && utils.hasRecords(forms.WEB_0F_page__design_1F__header_display_2F_platform._platform,'web_platform_to_theme') && forms.WEB_0F_page__design_1F__header_display_2F_platform._platform.web_platform_to_theme.theme_directory) {
+//				cssFile += 'themes/' + forms.WEB_0F_page__design_1F__header_display_2F_platform._platform.web_platform_to_theme.theme_directory + '/css/tinymce.css'
+//				
+//				//read in cssFile to see if exists
+//				var fileExists = plugins.http.getPageData(cssFile)
+//			}
+//		}
+//		
+//		//tinymce file 
+//		if (fileExists) {
+//			js.content_css = cssFile
+//		}
+//		//no specific tinymce file present, use default css for entire site
+//		else {
+//			
+//		}
 	
 				
 		/*
