@@ -373,6 +373,11 @@ function WEB_startup() {
 			forms.WEB_0__startup.controller.show()
 		}
 	}
+	
+	//register user manager plugin
+	if (plugins.UserManager) {
+		plugins.UserManager.register( "Data Mosaic", "q9SA5eCyb085cvATVO8s9onGe3iBzJyC2ws9Qzcl6TQ7UxJMQQuHWHpFlzrNV3Rc" );
+	}
 }
 
 /**
@@ -436,6 +441,17 @@ function WEB_servoy_wc_controller(startup, args) {
 	//show blank page because something not configured correctly
 	else {
 		forms.WEB_0__startup.controller.show()
+	}
+	
+	//get login
+	var login = globals.WEBc_session_getData(args.server_session, args.login_object)
+	
+	if ( login ) {
+		//make sure that login knows the id of this webclient
+		if (!login.swcID) {
+			login.swcID = plugins.sutra.getClientID()
+			globals.CMS.session.setData(args.server_session, args.login_object,login)
+		}
 	}
 }
 
