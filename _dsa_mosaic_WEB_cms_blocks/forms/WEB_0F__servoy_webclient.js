@@ -93,6 +93,12 @@ function CONTROLLER_default(obj, results) {
 		var login = globals.WEBc_session_getData(obj.session_server.record.session_id, configuration.loginObjName)
 		
 		if ( login ) {
+			//make sure that login knows the id of this webclient
+			if (!login.swcID) {
+				login.swcID = plugins.sutra.getClientID()
+				globals.CMS.session.setData(obj.session_server.record.session_id,configuration.loginObjName,login)
+			}
+			
 			// show swc view
 			return _VIEW_swc(obj, results, login)
 		}
