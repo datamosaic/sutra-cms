@@ -93,12 +93,6 @@ function CONTROLLER_default(obj, results) {
 		var login = globals.WEBc_session_getData(obj.session_server.record.session_id, configuration.loginObjName)
 		
 		if ( login ) {
-			//make sure that login knows the id of this webclient
-			if (!login.swcID) {
-				login.swcID = plugins.sutra.getClientID()
-				globals.CMS.session.setData(obj.session_server.record.session_id,configuration.loginObjName,login)
-			}
-			
 			// show swc view
 			return _VIEW_swc(obj, results, login)
 		}
@@ -308,7 +302,7 @@ function _VIEW_swc(obj, results, login) {
 	var method		= 'WEB_servoy_wc_controller'
 	var template	= '<iframe src="http://{{url}}/\
 						servoy-webclient/ss?s={{module}}&m={{method}}&a=\
-						sutraCMS&form={{form}}&\
+						sutraCMS&form={{form}}&server_session={{session}}&login_object={{login}}&\
 						id={{record}}" width="{{width}}" height="{{height}}" frameborder="0" \
 						scrolling="no" id="{{id}}" '
 						//only assign a class if one was specified
@@ -323,6 +317,8 @@ template +=	'	>\n\
 	html = utils.stringReplace(html, "{{module}}", module)
 	html = utils.stringReplace(html, "{{method}}", method)
 	html = utils.stringReplace(html, "{{form}}", obj.block_data.form)
+	html = utils.stringReplace(html, "{{session}}", obj.session_server.record.session_id)
+	html = utils.stringReplace(html, "{{login}}", obj.block_configure.loginObjName)	
 	html = utils.stringReplace(html, "{{record}}", record)
 	html = utils.stringReplace(html, "{{width}}", obj.block_configure.width || defaultWidth)
 	html = utils.stringReplace(html, "{{height}}", obj.block_configure.height || defaultHeight)
@@ -331,8 +327,6 @@ template +=	'	>\n\
 	html = utils.stringReplace(html, "{{transparent}}", (obj.block_configure.transparent ? 'true' : 'false'))
 	
 	return html
-
-
 }
 
 /**
