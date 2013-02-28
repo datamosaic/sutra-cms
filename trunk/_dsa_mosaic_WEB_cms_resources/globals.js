@@ -1269,6 +1269,7 @@ function WEBc_markup_link_page(pageID, siteURL, linkType, webMode, obj) {
 			var languageID = reference[1]
 		}
 		
+		/** @type {JSFoundSet<db:/sutra_cms/web_page>} */
 		var fsPage = databaseManager.getFoundSet("sutra_cms","web_page")
 		fsPage.find()
 		fsPage.id_page = pageID.toString()
@@ -1321,6 +1322,17 @@ function WEBc_markup_link_page(pageID, siteURL, linkType, webMode, obj) {
 		//get the site's language record
 		if (obj && obj.language && obj.language.record && utils.hasRecords(obj.language.record.web_language_to_site_language)) {
 			var siteLanguageRec = obj.language.record.web_language_to_site_language.getRecord(1)
+		}
+		//obj not defined fully
+		else if (utils.hasRecords(siteRec,'web_site_to_site_language')) {
+			for (var i = 1; i <= siteRec.web_site_to_site_language.getSize(); i++) {
+				var record = siteRec.web_site_to_site_language.getRecord(i)
+				
+				if (record.flag_default) {
+					siteLanguageRec = record
+					break
+				}
+			}
 		}
 		
 		//get the page's language record
