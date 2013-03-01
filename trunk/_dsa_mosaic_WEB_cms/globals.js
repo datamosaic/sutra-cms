@@ -448,7 +448,7 @@ function WEB_servoy_wc_controller(startup, args) {
 	
 	if ( login ) {
 		//make sure that login knows the id of this webclient
-		if (!login.swcID) {
+		if (login.swcID != plugins.sutra.getClientID()) {
 			login.swcID = plugins.sutra.getClientID()
 			globals.CMS.session.setData(args.server_session, args.login_object,login)
 		}
