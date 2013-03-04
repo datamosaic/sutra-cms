@@ -1336,7 +1336,7 @@ function WEBc_markup_link_page(pageID, siteURL, linkType, webMode, obj) {
 		}
 		
 		//get the page's language record
-		if (pageRec && utils.hasRecords(pageRec.web_page_to_language) && siteLanguageRec) {
+		if (pageRec instanceof JSRecord && utils.hasRecords(pageRec.web_page_to_language) && siteLanguageRec) {
 			//loop to find selected language
 			for (var i = 1; i <= pageRec.web_page_to_language.getSize(); i++) {
 				var languageRec = pageRec.web_page_to_language.getRecord(i)
@@ -1350,7 +1350,7 @@ function WEBc_markup_link_page(pageID, siteURL, linkType, webMode, obj) {
 	}
 	
 	//find default language
-	if (utils.hasRecords(pageRec,'web_page_to_language')) {
+	if (pageRec instanceof JSRecord && utils.hasRecords(pageRec,'web_page_to_language')) {
 		pageRec.web_page_to_language.sort('rec_created asc')
 		var pageLanguageDefaultRec =  pageRec.web_page_to_language.getRecord(1)
 	}
@@ -1649,7 +1649,7 @@ function WEBc_markup_token(input,tokenType) {
  */
 function WEBc_page_picker(method,elem,showLanguage) {
 	function GET_page(pageRec) {
-		if (utils.hasRecords(pageRec[relnPage])) {
+		if (pageRec instanceof JSRecord && utils.hasRecords(pageRec[relnPage])) {
 //			//check to see what languages this page has; give option when more than one
 //			if (showLanguage && utils.hasRecords(pageRec.web_page_to_language) && pageRec.web_page_to_language.getSize() > 1) {
 //				var languageArray = new Array()
@@ -2557,7 +2557,7 @@ function WEBc_markup_page_name(pageID, siteURL, linkType, webMode, obj) {
 		}
 		
 		//get the page's language record
-		if (pageRec && utils.hasRecords(pageRec.web_page_to_language) && siteLanguageRec) {
+		if (pageRec instanceof JSRecord && utils.hasRecords(pageRec.web_page_to_language) && siteLanguageRec) {
 			//loop to find selected language
 			for (var i = 1; i <= pageRec.web_page_to_language.getSize(); i++) {
 				var languageRec = pageRec.web_page_to_language.getRecord(i)
@@ -2571,7 +2571,7 @@ function WEBc_markup_page_name(pageID, siteURL, linkType, webMode, obj) {
 	}
 	
 	//find default language
-	if (utils.hasRecords(pageRec,'web_page_to_language')) {
+	if (pageRec instanceof JSRecord && utils.hasRecords(pageRec,'web_page_to_language')) {
 		pageRec.web_page_to_language.sort('rec_created asc')
 		var pageLanguageDefaultRec =  pageRec.web_page_to_language.getRecord(1)
 	}
