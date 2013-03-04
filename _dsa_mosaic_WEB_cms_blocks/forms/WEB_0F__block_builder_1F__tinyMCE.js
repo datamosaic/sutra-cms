@@ -196,7 +196,7 @@ function BLOCK_reset(event) {
 	elements.bn_tinymce.setCustomConfiguration(TINYMCE_init('simple'))
 	
 	//cancel current edits, and reset to defaults
-	forms.WEB_0F__block_builder._blockList[forms.WEB_0F__block_builder._blockSelected].data = plugins.serialize.fromJSON(globals.CMS.ui.getData('WEB_0F__block_builder')[forms.WEB_0F__block_builder._blockList[forms.WEB_0F__block_builder._blockSelected].key])
+	forms.WEB_0F__block_builder._blockList[forms.WEB_0F__block_builder._blockSelected].data = JSON.parse(globals.CMS.ui.getData('WEB_0F__block_builder')[forms.WEB_0F__block_builder._blockList[forms.WEB_0F__block_builder._blockSelected].key])
 	elements.bn_tinymce.html = forms.WEB_0F__block_builder._blockList[forms.WEB_0F__block_builder._blockSelected].record.data || ''
 }
 
