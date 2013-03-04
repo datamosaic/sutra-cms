@@ -62,7 +62,7 @@ function REC_new() {
 		record.column_type = _fieldType
 		record.column_name = _fieldName
 		record.description = _fieldDescription
-		record.column_value = plugins.serialize.toJSON(template)
+		record.column_value = JSON.stringify(template,null,'\t')
 		                                                          
 		databaseManager.saveData(record)
 		
@@ -167,12 +167,12 @@ function DIR_down() {
 	recordCurr.row_order = recordNext.row_order
 	recordNext.row_order --
 	
-	var valueOne = plugins.serialize.fromJSON(recordCurr.column_value)
+	var valueOne = JSON.parse(recordCurr.column_value)
 	valueOne.order = recordCurr.row_order
-	recordCurr.column_value = plugins.serialize.toJSON(valueOne)
-	var valueTwo = plugins.serialize.fromJSON(recordNext.column_value)
+	recordCurr.column_value = JSON.stringify(valueOne,null,'\t')
+	var valueTwo = JSON.parse(recordNext.column_value)
 	valueTwo.order = recordNext.row_order
-	recordNext.column_value = plugins.serialize.toJSON(valueTwo)
+	recordNext.column_value = JSON.stringify(valueTwo,null,'\t')
 
 	foundset.sort('row_order asc')
 
@@ -204,12 +204,12 @@ function DIR_up() {
 	recordCurr.row_order = recordPrev.row_order
 	recordPrev.row_order ++
 	
-	var valueOne = plugins.serialize.fromJSON(recordCurr.column_value)
+	var valueOne = JSON.parse(recordCurr.column_value)
 	valueOne.order = recordCurr.row_order
-	recordCurr.column_value = plugins.serialize.toJSON(valueOne)
-	var valueTwo = plugins.serialize.fromJSON(recordPrev.column_value)
+	recordCurr.column_value = JSON.stringify(valueOne,null,'\t')
+	var valueTwo = JSON.parse(recordPrev.column_value)
 	valueTwo.order = recordPrev.row_order
-	recordPrev.column_value = plugins.serialize.toJSON(valueTwo)
+	recordPrev.column_value = JSON.stringify(valueTwo,null,'\t')
 
 	foundset.sort('row_order asc')
 }
@@ -229,7 +229,7 @@ function REC_on_select(event) {
 		//this is a block builder and we have data
 		if (utils.hasRecords(foundset) && column_value) {
 			//grab data for selected record
-			var fieldData = plugins.serialize.fromJSON(column_value)
+			var fieldData = JSON.parse(column_value)
 			
 			var formName = tabForm + '_1F_block_builder__' + fieldData.type
 			
