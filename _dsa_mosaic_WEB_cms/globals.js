@@ -1314,7 +1314,7 @@ function WEB_block_builder__data_change(oldValue, newValue, event) {
 	}
 	
 	//change this data point
-	var value = plugins.serialize.fromJSON(forms[formName].column_value)
+	var value = JSON.parse(forms[formName].column_value)
 	eval(location)[point] = newValue
-	forms[formName].column_value = plugins.serialize.toJSON(value)
+	forms[formName].column_value = JSON.stringify(value,null,'\t')
 }
