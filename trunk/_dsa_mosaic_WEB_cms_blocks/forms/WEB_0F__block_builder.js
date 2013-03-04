@@ -60,7 +60,7 @@ function VIEW_default() {
 	var instance = new Array()
 	for (var i in globals.CMS.data.block_data) {
 		// get object of data from database
-		var fieldData = plugins.serialize.fromJSON(globals.CMS.data.block_data[i])
+		var fieldData = JSON.parse(globals.CMS.data.block_data[i])
 		
 		var order = fieldData.order
 		var type = fieldData.type
@@ -146,7 +146,7 @@ function INIT_block() {
  */
 function BLOCK_save(event) {
 	for (var i = 1; i < _blockList.length; i++) {
-		globals.CMS.ui.setData(event,_blockList[i].key,plugins.serialize.toJSON(_blockList[i].record))
+		globals.CMS.ui.setData(event,_blockList[i].key,JSON.stringify(_blockList[i].record),null,'\t')
 	}
 }
 
@@ -173,7 +173,7 @@ function INIT_data() {
 	
 	//build object for list to operate from
 	for (var i in allFields) {
-		var fieldData = plugins.serialize.fromJSON(allFields[i])
+		var fieldData = JSON.parse(allFields[i])
 		
 		//we need order, type, and whatnot that may be buried in an array
 		var order = fieldData.order
@@ -190,7 +190,7 @@ function INIT_data() {
 	}
 	
 	//build list
-	var dataset = databaseManager.createEmptyDataSet(null,['data_key','row_order'])
+	var dataset = databaseManager.createEmptyDataSet(0,['data_key','row_order'])
 	for (var i = 1; i < _blockList.length; i++) {
 		var row = _blockList[i]
 		
@@ -205,8 +205,8 @@ function INIT_data() {
 	//throw dataSource over onto my form (if it doesn't have one) and call it a day
 	if (!elements.tab_list.getMaxTabIndex()) {
 		elements.tab_list.removeAllTabs()
-		var success = history.removeForm(forms[fieldForm])
-		success = solutionModel.removeForm(fieldForm)
+//		var success = history.removeForm(forms[fieldForm])
+//		success = solutionModel.removeForm(fieldForm)
 		
 		solutionModel.getForm(fieldForm).dataSource = dataSource
 		
@@ -376,7 +376,7 @@ function MRKP_pageLink(fieldSet) {
 		for (var i = 0; i < fieldSet.length; i++) {
 			var field = fieldSet[i]
 			
-			if (field.link) {
+			if (field.link && field.link.data) {
 				markup += MRKP__null_check(field.link.wrapper.pre) + '<a href="' + '{DS:ID_' + MRKP__null_check(field.link.data) + '}">'
 				markup += MRKP__null_check(field.name.wrapper.pre) + MRKP__null_check(field.name.data,'{DS:NAME_' + MRKP__null_check(field.link.data) + '}') + MRKP__null_check(field.name.wrapper.post)
 				markup += '</a>' + MRKP__null_check(field.link.wrapper.post)

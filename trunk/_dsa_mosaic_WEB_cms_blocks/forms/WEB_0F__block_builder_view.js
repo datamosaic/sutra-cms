@@ -22,7 +22,7 @@ function INIT_data() {
 	
 	//build object for list to operate from
 	for (var i in allFields) {
-		var fieldData = plugins.serialize.fromJSON(allFields[i])
+		var fieldData = JSON.parse(allFields[i])
 		
 		//we need order, type, and whatnot that may be buried in an array
 		var order = fieldData.order
