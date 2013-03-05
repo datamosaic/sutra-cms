@@ -163,15 +163,17 @@ var CMS = {
  * @properties={typeid:24,uuid:"88B20E7F-82B4-4235-87EE-C291469E681A"}
  */
 function WEBc_browser_error() {
-	var input = globals.DIALOGS.showErrorDialog(
-				'Error',
-				'The Browser Suite did not initialize properly.\nRestart client now.',
-				'Yes',
-				'No'
-		)
-	
-	if (input == 'Yes') {
-		application.exit()
+	if (application.getApplicationType() != APPLICATION_TYPES.WEB_CLIENT) {
+		var input = globals.DIALOGS.showErrorDialog(
+					'Error',
+					'The Browser Suite did not initialize properly.\nRestart client now.',
+					'Yes',
+					'No'
+			)
+		
+		if (input == 'Yes') {
+			application.exit()
+		}
 	}
 }
 
