@@ -169,7 +169,7 @@ uuid:"86E77198-D88E-4752-A64D-AB60F47632B4"
 location:"10,26",
 name:"tab_platform",
 printable:false,
-size:"174,18",
+size:"170,18",
 tabOrientation:-1,
 transparent:true,
 typeid:16,

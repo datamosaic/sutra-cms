@@ -86,7 +86,8 @@ function TOGGLE_elements() {
 	elements.btn_lock_off.visible = (forms.WEB_0F_page__design_1F_version.flag_lock) ? false : true
 			
 	//toggle enabled state of combobox based on value
-	if (application.getValueListDisplayValue('WEB_page_version',null) == '<html><body>Click <strong>+</strong> button to create a version') {
+	if (application.getValueListDisplayValue('WEB_page_version',null) == '<html><body>Click <strong>+</strong> button to create a version' || 
+		application.getValueListDisplayValue('WEB_page_version',null) == 'Click + button to create a version') {
 		elements.fld_version.enabled = false
 //		elements.btn_check_off.enabled = false
 //		elements.btn_edit_off.enabled = false

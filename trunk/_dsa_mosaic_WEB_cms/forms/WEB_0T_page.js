@@ -1288,11 +1288,16 @@ function TABS_list(input) {
 			formNames.push(actionItem.formToLoad)
 		}
 		
+		var listTabForm = (solutionPrefs.config.webClient) ? 'DATASUTRA_WEB_0F__list__universal' : 'DATASUTRA_0F_solution'
+		
 		//tack on the selected UL to the top of the pop-down
 		valueList.unshift(navigationPrefs.byNavItemID[solutionPrefs.config.currentFormID].universalList.displays[navigationPrefs.byNavItemID[solutionPrefs.config.currentFormID].universalList.displays.displayPosn].listTitle || navigationPrefs.byNavItemID[solutionPrefs.config.currentFormID].navigationItem.fwListTitle)
-		var navForm = (solutionPrefs.config.webClient) ? '__WEB' : ''
-		formNames.unshift((navigationPrefs.byNavItemID[solutionPrefs.config.currentFormID].listData.withButtons) ? 'NAV_T_universal_list' + navForm : 'NAV_T_universal_list__no_buttons' + navForm)
-		
+		if (solutionPrefs.config.webClient) {
+			formNames.unshift((navigationPrefs.byNavItemID[solutionPrefs.config.currentFormID].listData.withButtons) ? 'NAV_T_universal_list__WEB__buttons' : 'NAV_T_universal_list__WEB__no_buttons')
+		}
+		else {
+			formNames.unshift((navigationPrefs.byNavItemID[solutionPrefs.config.currentFormID].listData.withButtons) ? 'NAV_T_universal_list' : 'NAV_T_universal_list__no_buttons')
+		}
 		
 		//called to depress menu
 		if (input instanceof JSEvent) {
@@ -1306,7 +1311,7 @@ function TABS_list(input) {
 				var menu = new Array()
 				for ( var i = 0 ; i < valueList.length ; i++ ) {
 				    //set check on universal list
-					if (formNames[i] == forms.DATASUTRA_0F_solution.elements.tab_content_B.getTabFormNameAt(forms.DATASUTRA_0F_solution.elements.tab_content_B.tabIndex)) {
+					if (formNames[i] == forms[listTabForm].elements.tab_content_B.getTabFormNameAt(forms[listTabForm].elements.tab_content_B.tabIndex)) {
 						menu[i] = plugins.popupmenu.createCheckboxMenuItem(valueList[i] + "", TABS_list)
 						menu[i].setSelected(true)
 					}
@@ -1335,10 +1340,12 @@ function TABS_list(input) {
 				if (forms[popForm].elements[btnInvisible]) {
 					var elem = forms[popForm].elements[btnInvisible]
 					
-					var currentLocationX = elem.getLocationX()
-					var currentLocationY = elem.getLocationY()
-					
-					elem.setLocation(currentLocationX, currentLocationY + 3)
+					if (!solutionPrefs.config.webClient) {
+						var currentLocationX = elem.getLocationX()
+						var currentLocationY = elem.getLocationY()
+						
+						elem.setLocation(currentLocationX, currentLocationY + 3)
+					}
 				}
 				else {
 					var elem = forms[popForm].elements[popElem]
@@ -1350,7 +1357,7 @@ function TABS_list(input) {
 				}
 				
 				//set invisible btn back to original location
-				if (forms[popForm].elements[btnInvisible]) {
+				if (forms[popForm].elements[btnInvisible] && !solutionPrefs.config.webClient) {
 					elem.setLocation(currentLocationX, currentLocationY)
 				}
 			}
@@ -1360,7 +1367,6 @@ function TABS_list(input) {
 			var formName = arguments[0]
 			var itemName = arguments[1]
 			var tabSelected = arguments[2]
-			var baseForm = solutionPrefs.config.formNameBase
 			var prefName = 'Custom tab ' + solutionPrefs.config.currentFormID + ': ' + formName
 			
 			if (forms[formName]) {
@@ -1371,24 +1377,20 @@ function TABS_list(input) {
 				if (formName != 'DATASUTRA_0F_solution__blank_2' && !navigationPrefs.byNavSetName.configPanes.itemsByName[prefName]) {
 					
 					//assign to list tab panel
-					forms[baseForm].elements.tab_content_B.addTab(forms[formName],'',null,null,null,null)
-					forms[baseForm].elements.tab_content_B.tabIndex = forms[baseForm].elements.tab_content_B.getMaxTabIndex()
+					forms[listTabForm].elements.tab_content_B.addTab(forms[formName],'',null,null,null,null)
+					forms[listTabForm].elements.tab_content_B.tabIndex = forms[listTabForm].elements.tab_content_B.getMaxTabIndex()
 					
 					//save status info
 					navigationPrefs.byNavSetName.configPanes.itemsByName[prefName] = new Object()
 					navigationPrefs.byNavSetName.configPanes.itemsByName[prefName].listData = {
-												tabNumber : forms[baseForm].elements.tab_content_B.tabIndex,
+												tabNumber : forms[listTabForm].elements.tab_content_B.tabIndex,
 												dateAdded : application.getServerTimeStamp()
 										}
 					
 				}
-				//blank form, set to blank tab
-				else if (formName == 'DATASUTRA_0F_solution__blank_2') {
-					forms[baseForm].elements.tab_content_B.tabIndex = 1
-				}
 				//set tab to this preference
 				else {
-					forms[baseForm].elements.tab_content_B.tabIndex = navigationPrefs.byNavSetName.configPanes.itemsByName[prefName].listData.tabNumber
+					forms[listTabForm].elements.tab_content_B.tabIndex = navigationPrefs.byNavSetName.configPanes.itemsByName[prefName].listData.tabNumber
 				}
 				
 				//using a custom tab, note which one it is
