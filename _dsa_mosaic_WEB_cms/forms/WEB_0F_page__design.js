@@ -386,6 +386,10 @@ function SET_versions(skipLoad,pageInvalid) {
 		forms.WEB_0F_page__design_1F__header_display__version.elements.btn_new_bold.visible = true
 	}
 	
+	if (application.__parent__.solutionPrefs && solutionPrefs.config.webClient) {
+		vlDisplay = vlDisplay.map(function(item){return item.replace(/(<([^>]+)>)/ig,'')})
+	}
+	
 	application.setValueListItems('WEB_page_version',vlDisplay,vlReal)
 	
 	return active

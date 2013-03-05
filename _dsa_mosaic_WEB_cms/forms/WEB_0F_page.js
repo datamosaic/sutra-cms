@@ -25,13 +25,15 @@ var _lastToolbar = null;
  * @properties={typeid:24,uuid:"10F5E463-15E2-4C0B-858D-F62E76FEDFBF"}
  */
 function FORM_on_show(firstShow, event) {
-	//don't run in headless or web client (they use whatever solution is activated as context)
-	if ((application.getApplicationType() == APPLICATION_TYPES.SMART_CLIENT || application.getApplicationType() == APPLICATION_TYPES.RUNTIME_CLIENT) &&
+	//don't run in headless or web client unless sutra (they use whatever solution is activated as context)
+	if ((application.getApplicationType() == APPLICATION_TYPES.SMART_CLIENT || application.getApplicationType() == APPLICATION_TYPES.RUNTIME_CLIENT || 
+		(application.__parent__.solutionPrefs && solutionPrefs.config.webClient)) &&
 		//don't run if in a preload
 		!(application.__parent__.solutionPrefs && solutionPrefs.config.prefs.formPreloading)) {
 		
 		//first time go to sitemap view (do at end so everything loaded already)
-		if (firstShow) {
+			//TODO: this causes webclient to get an internal error...must be something not set up correctly
+		if (firstShow && !solutionPrefs.config.webClient) {
 			globals.WEBc_sutra_trigger('TRIGGER_ul_tab_list',['WEB_0T_page','Sitemap',0])
 		}
 		
@@ -102,7 +104,8 @@ function FORM_on_show(firstShow, event) {
  */
 function FORM_on_hide(event) {
 	//don't run in headless or web client (they use whatever solution is activated as context)
-	if ((application.getApplicationType() == APPLICATION_TYPES.SMART_CLIENT || application.getApplicationType() == APPLICATION_TYPES.RUNTIME_CLIENT) &&
+	if ((application.getApplicationType() == APPLICATION_TYPES.SMART_CLIENT || application.getApplicationType() == APPLICATION_TYPES.RUNTIME_CLIENT || 
+		(application.__parent__.solutionPrefs && solutionPrefs.config.webClient)) &&
 		//don't run if in a preload
 		!(application.__parent__.solutionPrefs && solutionPrefs.config.prefs.formPreloading)) {
 		
@@ -364,6 +367,10 @@ function SET_valuelists() {
 		}
 	}
 	
+	if (application.__parent__.solutionPrefs && solutionPrefs.config.webClient) {
+		vlPlatformDisplay = vlPlatformDisplay.map(function(item){return item.replace(/(<([^>]+)>)/ig,'')})
+	}
+	
 	//set valuelist
 	application.setValueListItems('WEB_page_platform',vlPlatformDisplay,vlPlatformReal)
 	
@@ -419,6 +426,10 @@ function SET_valuelists() {
 			}
 			vlLanguageReal.push(recSite.id_site_language)
 		}
+	}
+	
+	if (application.__parent__.solutionPrefs && solutionPrefs.config.webClient) {
+		vlLanguageDisplay = vlLanguageDisplay.map(function(item){return item.replace(/(<([^>]+)>)/ig,'')})
 	}
 	
 	//set valuelist
@@ -478,6 +489,10 @@ function SET_valuelists() {
 			}
 			vlGroupReal.push(recSite.id_site_group)
 		}
+	}
+	
+	if (application.__parent__.solutionPrefs && solutionPrefs.config.webClient) {
+		vlGroupDisplay = vlGroupDisplay.map(function(item){return item.replace(/(<([^>]+)>)/ig,'')})
 	}
 	
 	//set valuelist
