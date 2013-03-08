@@ -15,7 +15,7 @@ var BUILDER = {
 						data : null },
 	textBox		: { type: "textBox", order : null, required : null, repeatable: null, 
 						label : null, wrapper : { pre : null, post : null }, chars : null, data : null },
-	textArea	: { type: "textArea", order : null, required : null, repeatable: null, 
+	textArea	: { type: "textArea", order : null, required : null, repeatable: null, htmlAllow: null,
 						label : null, wrapper : { pre : null, post : null }, data : null },
 	image		: { type: "image", order : null, required : null, repeatable: null, 
 						image : { label: null, wrapper : { pre : null, post : null }, data : null },
@@ -78,11 +78,15 @@ function VIEW_default() {
 	var start = (instance[0]) ? 0 : 1
 	var markup = ""
 	for (var i = start; i < instance.length; i++) {
-		var method = 'MRKP_' + instance[i].type
+		var thisInstance = instance[i]
 		
-		// this method exists
-		if (solutionModel.getForm(controller.getName()).getFormMethod(method)) {
-			markup += forms.WEB_0F__block_builder[method](instance[i].value) + '\n'
+		if (thisInstance) {
+			var method = 'MRKP_' + instance[i].type
+			
+			// this method exists
+			if (solutionModel.getForm(controller.getName()).getFormMethod(method)) {
+				markup += forms.WEB_0F__block_builder[method](instance[i].value) + '\n'
+			}
 		}
 	}
 
@@ -146,7 +150,11 @@ function INIT_block() {
  */
 function BLOCK_save(event) {
 	for (var i = 1; i < _blockList.length; i++) {
-		globals.CMS.ui.setData(event,_blockList[i].key,JSON.stringify(_blockList[i].record),null,'\t')
+		var blockItem = _blockList[i]
+		
+		if (blockItem) {
+			globals.CMS.ui.setData(event,_blockList[i].key,JSON.stringify(_blockList[i].record),null,'\t')
+		}
 	}
 }
 
@@ -194,9 +202,11 @@ function INIT_data() {
 	for (var i = 1; i < _blockList.length; i++) {
 		var row = _blockList[i]
 		
-		//don't show staticHTML as editable areas
-		if (row.type != 'staticHTML') {
-			dataset.addRow([row.key,i])
+		if (row) {
+			//don't show staticHTML as editable areas
+			if (row.type != 'staticHTML') {
+				dataset.addRow([row.key,i])
+			}
 		}
 	}
 	
@@ -294,7 +304,9 @@ function MRKP_textArea(fieldSet) {
 			var text = MRKP__null_check(field.data)
 			
 			// strip html characters
-			text = globals.CMS.utils.stripHTML(text)
+			if (field.htmlAllow != 1) {
+				text = globals.CMS.utils.stripHTML(text)
+			}
 			
 			markup += MRKP__null_check(field.wrapper.pre) + text + MRKP__null_check(field.wrapper.post)
 		}
@@ -500,4 +512,24 @@ function MRKP__null_check(value,defaultValue) {
 	}
 	
 	return value || defaultValue
+}
+
+/**
+ * Replace block builder variables with correct value
+ * 
+ * @param {String}	value The value to check for bb vars
+ * @param {Object[]}	fieldSet The object with all meta data for this fieldset
+ * 
+ * @properties={typeid:24,uuid:"6D12618D-7B0A-4D3B-B0FA-AAC489648889"}
+ */
+function MRKP__var_replace(value,fieldSet) {
+	var newValue = ''
+	
+	if (value) {
+		newValue = value
+		
+		//
+	}
+	
+	return newValue
 }

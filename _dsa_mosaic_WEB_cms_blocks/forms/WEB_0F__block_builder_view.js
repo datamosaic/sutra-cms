@@ -40,11 +40,14 @@ function INIT_data() {
 	
 	var html = '<html><body><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8" /></head>'
 	for (var i = 1; i < blockList.length; i++) {
-		var method = 'MRKP_' + blockList[i].type
-		
-		// this method exists
-		if (solutionModel.getForm(formName).getFormMethod(method)) {
-			html += forms[formName][method](blockList[i].record) + '\n'
+		var blockItem = blockList[i]
+		if (blockItem) {
+			var method = 'MRKP_' + blockItem.type
+			
+			// this method exists
+			if (solutionModel.getForm(formName).getFormMethod(method)) {
+				html += forms[formName][method](blockItem.record) + '\n'
+			}
 		}
 	}
 	html += '</body></html>'
