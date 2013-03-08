@@ -8,6 +8,13 @@ var _license_dsa_mosaic_WEB_cms = 'Module: _dsa_mosaic_WEB_cms_blocks \
 									MIT Licensed';
 
 /**
+ * @type {Number}
+ *
+ * @properties={typeid:35,uuid:"FB8FA72A-56E6-49F6-9888-9D4D26810EB6",variableType:4}
+ */
+var _htmlAllow = 0;
+
+/**
  * @type {String}
  *
  * @properties={typeid:35,uuid:"6B637BF1-0435-460C-B17C-257A3F7ECA6A"}
@@ -54,6 +61,7 @@ var _data = null;
  */
 function INIT_data(row) {
 	_data = row.data
+	_html_allow = row.html_allow
 	_label = row.label
 	_pre = row.wrapper.pre
 	_post = row.wrapper.post
