@@ -50,7 +50,6 @@ function TINYMCE_init(mode) {
 		//set toolbar location
 		js.theme_advanced_toolbar_location = 'top'
 		js.theme_advanced_toolbar_align = 'left'
-			
 		
 		//clear all buttons from toolbar
 		js.theme_advanced_buttons1 = '""'
@@ -60,7 +59,7 @@ function TINYMCE_init(mode) {
 			
 		//set pop-up forms to be small enough to fit in smallest instance where used
 		js.theme_advanced_source_editor_width = '400'	
-		js.theme_advanced_source_editor_height = '160' 
+		js.theme_advanced_source_editor_height = '160'
 		
 		//set spellchecker
 //		js.spellchecker_rpc_url = 
@@ -123,8 +122,6 @@ function TINYMCE_init(mode) {
 				custom_format : {block : 'h1', attributes : {title : "Header"}, styles : {color : red}}
 			}*/
 		
-		
-		
 		if (mode == 'simple') {
 			js.theme_advanced_buttons1 = 'bold,italic,underline,strikethrough,|,justifyleft,justifycenter,justifyright,justifyfull,|,forecolor,backcolor,|,formatselect'//,|,styleselect'
 		    js.theme_advanced_buttons2 = 'bullist,numlist,|,outdent,indent,blockquote,|,link,unlink,anchor,image,|,search,replace,|,spellchecker,|,pastetext'
@@ -132,6 +129,10 @@ function TINYMCE_init(mode) {
 			
 		    js.paste_text_use_dialog = 'true'
 		    js.theme_advanced_blockformats = "h1,h2,h3,h4,h5,h6,p"
+		    
+		    //don't show path bar
+			js.theme_advanced_statusbar_location = 'none'
+			js.theme_advanced_path = false
 		}
 		else if (mode == 'advanced') {
 		    js.theme_advanced_buttons1 = 'bold,italic,underline,strikethrough,sub,sup,|,justifyleft,justifycenter,justifyright,justifyfull,|,forecolor,backcolor,|,formatselect'//,|,styleselect,styleprops',
@@ -357,6 +358,17 @@ function ACTION_pop_toolbar(event) {
  * @properties={typeid:24,uuid:"E285B1BC-2924-477D-8F4C-D8B94FCF01A6"}
  */
 function ACTION_insert_image(event) {
+	//when right clicked, give a moment to grab focus elsewhere
+	if (event instanceof JSEvent && event.getType() == JSEvent.RIGHTCLICK) {
+		var elem = elements[event.getElementName()]
+		
+		var menu = plugins.window.createPopupMenu()
+		menu.addMenuItem("Show image picker").setMethod(ACTION_insert_image)
+		
+		menu.show(elem)
+		return
+	}
+	
 	forms.WEB_P__asset.LOAD_data(1)
 	
 	globals.CODE_form_in_dialog(
@@ -377,7 +389,6 @@ function ACTION_insert_image(event) {
 		
 		var js = "tinyMCE.execCommand('mceInsertContent', false, '" + html + "');"
 		elements.bn_tinymce.executeJavaScript(js)
-		
 	}
 }
 
