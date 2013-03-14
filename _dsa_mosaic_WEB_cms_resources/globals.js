@@ -340,6 +340,14 @@ function WEBc_block_setData(event, key, value, formName) {
 		formName = event.getFormName()
 	}
 	
+	//when in real mode, do hard save
+	function realSave(record) {
+		if (globals.WEB_page_mode == 3) {
+			databaseManager.saveData(record)
+			forms.WEB_0F_page__browser.URL_update(true)
+		}
+	}
+	
 	//we know where this is being called from
 	if (formName) {
 		//get the block foundset
@@ -360,6 +368,7 @@ function WEBc_block_setData(event, key, value, formName) {
 						record.data_value = value
 						
 						//data found and changed
+						realSave(record)
 						return true
 					}
 				}
@@ -379,6 +388,7 @@ function WEBc_block_setData(event, key, value, formName) {
 						record.data_value = value
 						
 						//data found and changed
+						realSave(record)
 						return true
 					}
 				}
@@ -1134,6 +1144,10 @@ function WEBc_markup_link_internal(markup,siteURL,linkType,areaID,obj) {
 	// object not passed in, grab it
 	if (!obj) {
 		obj = globals.CMS.data
+		
+		if (!obj.hasOwnProperty('page')) {
+			var emptyObj = true
+		}
 	}
 	
 	// page link
@@ -1188,7 +1202,7 @@ function WEBc_markup_link_internal(markup,siteURL,linkType,areaID,obj) {
 		markup 		= utils.stringMiddle(markup, end + 1, 100000)
 		
 		// add markup link
-		newMarkup	+= globals.WEBc_markup_link_asset(id,obj.page.id,siteURL,linkType,obj).link
+		newMarkup	+= globals.WEBc_markup_link_asset(id,(emptyObj ? null : obj.page.id),siteURL,linkType,obj).link
 		
 		markup		= newMarkup + markup
 	}
@@ -1207,7 +1221,7 @@ function WEBc_markup_link_internal(markup,siteURL,linkType,areaID,obj) {
 		markup 		= utils.stringMiddle(markup, end + 1, 100000)
 		
 		// add markup link
-		newMarkup	+= globals.WEBc_markup_link_asset(id,obj.page.id,siteURL,linkType,obj).link
+		newMarkup	+= globals.WEBc_markup_link_asset(id,(emptyObj ? null : obj.page.id),siteURL,linkType,obj).link
 		
 		markup		= newMarkup + markup
 	}
