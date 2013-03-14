@@ -55,9 +55,14 @@ function FORM_on_show(firstShow, event) {
 		
 		
 		//in workflow maximized view
-		if (firstShow && application.__parent__.solutionPrefs && solutionPrefs.config.activeSpace == 'workflow') {
+		if (firstShow && application.__parent__.solutionPrefs && (solutionPrefs.config.activeSpace == 'list' || solutionPrefs.config.activeSpace == 'workflow')) {
 			//switch modes
-			forms.WEB_TB__web_mode.MODE_set('Real')
+			var guiEvent = new Object()
+			guiEvent.getElementName = function() {
+					return 'lbl_mode_real'
+				}
+			
+			forms.WEB_TB__web_mode.ACTION_mode(guiEvent)
 			return
 		}
 		

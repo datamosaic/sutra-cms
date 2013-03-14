@@ -458,7 +458,7 @@ function SET_versions() {
 			var displayVal = ''
 			
 			if (recVersion.flag_active) {
-				displayVal += 'ACTIVE '
+				displayVal += '<html><body><strong>ACTIVE</strong> '
 				var active = recVersion
 			}
 			
@@ -497,6 +497,10 @@ function SET_versions() {
 			
 			vlDisplay.push(displayVal)
 		}
+	}
+	
+	if (application.__parent__.solutionPrefs && solutionPrefs.config.webClient) {
+		vlDisplay = vlDisplay.map(function(item){return item.replace(/(<([^>]+)>)/ig,'')})
 	}
 	
 	application.setValueListItems('WEB_block_version',vlDisplay,vlReal)

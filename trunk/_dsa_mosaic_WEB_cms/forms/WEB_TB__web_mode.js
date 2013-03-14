@@ -43,6 +43,9 @@ function ACTION_edit(event) {
 	elements.highlighter.setLocation(elements.btn_edit.getLocationX() - 5,0)
 	elements.highlighter.visible = true
 	
+	elements.lbl_asset.visible = true
+	elements.btn_asset.visible = true
+	
 	// toggle to browser if not there already
 	if (globals.WEB_page_mode != 3) {
 		MODE_set("Real")
@@ -50,7 +53,6 @@ function ACTION_edit(event) {
 	
 	// turn on jquery edit stuff
 	forms.WEB_0F_page__browser.EDIT_on()
-	
 }
 
 /**
@@ -174,7 +176,7 @@ function ACTION_version(input) {
 			var displayVal = ''
 			
 			if (recVersion.flag_active) {
-				displayVal += 'ACTIVE '
+				displayVal += '<html><body><strong>ACTIVE</strong> '
 			}
 			else if (i == 1) {
 				displayVal += 'Working copy'
@@ -186,6 +188,10 @@ function ACTION_version(input) {
 				if (recVersion.version_name) {
 					displayVal += ': ' + recVersion.version_name
 				}
+			}
+			
+			if (application.__parent__.solutionPrefs && solutionPrefs.config.webClient) {
+				displayVal = displayVal.replace(/(<([^>]+)>)/ig,'')
 			}
 			
 			if (globals.WEB_page_version.toString() == recVersion.id_version.toString()) {
@@ -522,7 +528,7 @@ function ACTION_save(event) {
 //			forms.WEB_0F_page__browser_1F_block__editor._dataRec = null
 //		}
 	}
-		
+	
 	elements.btn_edit.visible = true
 	elements.btn_save.visible = false	
 	
@@ -531,6 +537,8 @@ function ACTION_save(event) {
 	TOGGLE_version()
 	
 	elements.highlighter.visible = false
+	elements.lbl_asset.visible = false
+	elements.btn_asset.visible = false
 	
 	forms.WEB_0F_page__browser.EDIT_off()
 }
@@ -549,6 +557,8 @@ function FORM_on_load() {
 //	elements.lbl_versions_tick.visible = false	
 	elements.btn_edit.visible = false
 	elements.lbl_edit.visible = false
+	elements.btn_asset.visible = false
+	elements.lbl_asset.visible = false
 	TOGGLE_visit(false)
 	
 //	var modeToggle = globals.WEBc_sutra_trigger('TRIGGER_registered_action_authenticate',['cms page mode toggle'])
@@ -718,5 +728,19 @@ function ACTION_visit(event,returnURL,toClippy) {
 					'Error',
 					'You must have a page selected in order to preview it'
 			)
+	}
+}
+
+/**
+ * Perform the element default action.
+ *
+ * @param {JSEvent} event the event that triggered the action
+ *
+ * @properties={typeid:24,uuid:"3DFBF4A6-2167-4F76-8D44-D51BF9289ED9"}
+ */
+function ACTION_import(event) {
+	//only run in edit mode
+	if (globals.CMS.ui.getEdit()) {
+		forms.WEB_0C__file_stream.IMAGE_import("images")
 	}
 }
