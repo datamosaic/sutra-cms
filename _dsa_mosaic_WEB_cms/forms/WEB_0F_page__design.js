@@ -262,7 +262,7 @@ function REC_on_select(event,skipLoad,verIndex,fireSelect,areaName,blockIndex) {
 			forms.WEB_0F_page__design_1F_version_2L_scope._skipSelect = false
 			
 			//may fire too frequently
-//			forms.WEB_0F_page__design_1F_version_2L_scope.ACTION_gui_mode_load(fireSelect)
+			forms.WEB_0F_page__design_1F_version_2L_scope.ACTION_gui_mode_load(fireSelect)
 		}
 		
 		//update log view
@@ -334,7 +334,7 @@ function SET_versions(skipLoad,pageInvalid) {
 			var displayVal = ''
 			
 			if (recVersion.flag_active) {
-				displayVal += 'ACTIVE '
+				displayVal += '<html><body><strong>ACTIVE</strong> '
 				var active = {
 					position: i,
 					record: recVersion
@@ -403,7 +403,7 @@ function SET_versions(skipLoad,pageInvalid) {
  * @properties={typeid:24,uuid:"0F8B8765-1036-412D-88DB-7C65A6C6710C"}
  */
 function FORM_on_load(event) {
-//	elements.gfx_curtain.visible = false
+	elements.gfx_curtain.visible = false
 }
 
 /**

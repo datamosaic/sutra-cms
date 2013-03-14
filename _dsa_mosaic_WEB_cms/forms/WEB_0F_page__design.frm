@@ -60,7 +60,7 @@ uuid:"1AEB74DE-DABA-4616-8AEE-7F0608FA9B95"
 anchors:15,
 background:"#323a4b",
 formIndex:12001,
-location:"0,310",
+location:"10,0",
 mediaOptions:4,
 name:"gfx_curtain",
 onActionMethodID:"CBA4256A-1CF7-42E4-A265-237E6AB08408",
@@ -70,7 +70,8 @@ size:"590,300",
 transparent:true,
 typeid:7,
 uuid:"A3857223-83DC-4AFD-BC24-FD479C635C9A",
-verticalAlignment:0
+verticalAlignment:0,
+visible:false
 },
 {
 height:300,

@@ -493,7 +493,10 @@ function ACTION_gui_mode_load(fireSelect) {
 	}
 	
 	function defaultForms() {
-//		forms[contextForm].foundset.loadRecords(web_scope_to_block)
+		try {
+			forms[contextForm].foundset.loadRecords(web_scope_to_block)
+		}
+		catch (e) {}
 		tabPanel.tabIndex = 1
 		
 		forms[contextForm].elements.lbl_banner.text = "Content"
