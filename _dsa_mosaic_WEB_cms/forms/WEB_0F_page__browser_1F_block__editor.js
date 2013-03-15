@@ -133,8 +133,9 @@ function ACTION_hide(event) {
 	forms.WEB_0F_page__browser.URL_update(true)
 	
 	//wiggle window by 1px to force refresh
-	application.setWindowSize(application.getWindowWidth(),application.getWindowHeight() - 1)
-	application.setWindowSize(application.getWindowWidth(),application.getWindowHeight() + 1)
+//	var mainWindow = application.getWindow()
+//	mainWindow.setSize(mainWindow.getWidth(), mainWindow.getHeight() - 1)
+//	mainWindow.setSize(mainWindow.getWidth(), mainWindow.getHeight() + 1)
 	
 	globals.CODE_cursor_busy(false)
 	
@@ -191,13 +192,14 @@ function GET_modify() {
 	if (_dataRec && utils.hasRecords(_dataRec.web_block_data_to_block) && utils.hasRecords(_dataRec.web_block_data_to_block.web_block_to_block_display)) {
 		//type of data, set different tab active to edit
 		switch (_dataRec.web_block_data_to_block.web_block_to_block_type.block_name) {
-			case false:
-				
-			break
-			
 			//tinymce
 			case 'Content':
 				return forms.WEB_0F__content.elements.btn_save.enabled
+			
+			default:
+			case false:
+				
+				break
 		}
 	}
 }
