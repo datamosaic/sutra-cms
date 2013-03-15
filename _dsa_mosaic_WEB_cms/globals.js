@@ -313,7 +313,7 @@ if (application.__parent__.solutionPrefs) {
 	}
 	//most recent version
 	else {
-		globals.DEV_lock_workflow(lockWorkflow,lockList)
+		DEV_lock_workflow(lockWorkflow,lockList)
 	}
 }
 }
@@ -326,7 +326,7 @@ function WEB_startup() {
 	if (application.getApplicationType() == APPLICATION_TYPES.SMART_CLIENT || application.getApplicationType() == APPLICATION_TYPES.RUNTIME_CLIENT) {
 		return
 		//disable rec_on_select of the block type form
-		globals.WEB_block_on_select = false
+		WEB_block_on_select = false
 		
 		//show all forms with browser beans so they don't error out on initial view
 //		forms.WEB_0F__image.controller.show()
@@ -338,8 +338,8 @@ function WEB_startup() {
 //		//also hits up headless client so get zooming effect on first load
 //		forms.WEB_0F_page__browser.controller.show()
 		
-		var browserForms = globals.WEB_browser_forms()
-		var tinyMCEForms = globals.WEB_browser_forms('net.stuff.servoy.browser.beans.ServoyHtmlEditor')
+		var browserForms = WEB_browser_forms()
+		var tinyMCEForms = WEB_browser_forms('net.stuff.servoy.browser.beans.ServoyHtmlEditor')
 		for (var i = 0; i < browserForms.length; i++) {
 			var showForm = browserForms[i]
 			
@@ -402,7 +402,7 @@ function WEB_servoy_wc_controller(startup, args) {
 		}
 		//form not available, save things to use later
 		else {
-			globals.WEB_swc_arguments = args
+			WEB_swc_arguments = args
 		}
 	}
 	
@@ -444,13 +444,13 @@ function WEB_servoy_wc_controller(startup, args) {
 	}
 	
 	//get login
-	var login = globals.WEBc_session_getData(args.server_session, args.login_object)
+	var login = WEBc_session_getData(args.server_session, args.login_object)
 	
 	if ( login ) {
 		//make sure that login knows the id of this webclient
 		if (login.swcID != plugins.sutra.getClientID()) {
 			login.swcID = plugins.sutra.getClientID()
-			globals.CMS.session.setData(args.server_session, args.login_object,login)
+			CMS.session.setData(args.server_session, args.login_object,login)
 		}
 	}
 }
@@ -485,11 +485,11 @@ function WEB_upgrade() {
 		if (utils.hasRecords(fsOldSite)) {
 			fsOldSite.sort('site_name asc')
 			
-			var theSite = globals.DIALOGS.showSelectDialog(
+			var theSite = DIALOGS.showSelectDialog(
 					'Import',
 					'Choose site to import',
 					databaseManager.getFoundSetDataProviderAsArray(fsOldSite,'site_name')
-			)
+				)
 			
 			if (theSite) {
 				for (var i = 1; i <= fsOldSite.getSize(); i++) {
@@ -504,7 +504,7 @@ function WEB_upgrade() {
 				//a site has been selected
 				if (oldSite) {
 					
-					globals.WEBc_sutra_trigger('TRIGGER_progressbar_start',[0,'Importing "' + oldSite.site_name + '". Please wait....'])
+					WEBc_sutra_trigger('TRIGGER_progressbar_start',[0,'Importing "' + oldSite.site_name + '". Please wait....'])
 					
 					//mapping object for pages
 					var mapping = {
@@ -572,7 +572,7 @@ function WEB_upgrade() {
 					
 					databaseManager.copyMatchingColumns(oldSite,newSite,['organization_id'])
 					
-					globals.WEBc_sutra_trigger('TRIGGER_progressbar_set',[5])
+					WEBc_sutra_trigger('TRIGGER_progressbar_set',[5])
 					
 					//site attribute columns
 					var fsOldSiteAttribute = databaseManager.getFoundSet('sutra_cms_v1','web_site_attribute')
@@ -623,7 +623,7 @@ function WEB_upgrade() {
 					newSitePlatform.flag_default = 1
 					newSitePlatform.platform_name = 'Web'
 					
-					globals.WEBc_sutra_trigger('TRIGGER_progressbar_set',[10,'Importing block types for "' + oldSite.site_name + '". Please wait....'])
+					WEBc_sutra_trigger('TRIGGER_progressbar_set',[10,'Importing block types for "' + oldSite.site_name + '". Please wait....'])
 					
 					//blocks
 					var fsOldBlockType = databaseManager.getFoundSet('sutra_cms_v1','web_block_type')
@@ -640,7 +640,7 @@ function WEB_upgrade() {
 						var mod = 5 / fsOldBlockType.getSize()
 						
 						for (var i = 1; i <= fsOldBlockType.getSize(); i++) {
-							globals.WEBc_sutra_trigger('TRIGGER_progressbar_set',[10 + i * mod,'Importing block types for "' + oldSite.site_name + '". Please wait....'])
+							WEBc_sutra_trigger('TRIGGER_progressbar_set',[10 + i * mod,'Importing block types for "' + oldSite.site_name + '". Please wait....'])
 							
 							var oldBlockType = fsOldBlockType.getRecord(i)
 							var newBlockType = newSite.web_site_to_block_type.getRecord(newSite.web_site_to_block_type.newRecord(false,true))
@@ -739,7 +739,7 @@ function WEB_upgrade() {
 						var mod = 5 / fsOldScrapbook.getSize()
 						
 						for (var i = 1; i <= fsOldScrapbook.getSize(); i++) {
-							globals.WEBc_sutra_trigger('TRIGGER_progressbar_set',[15 + i * mod,'Importing scrapbooks for "' + oldSite.site_name + '". Please wait....'])
+							WEBc_sutra_trigger('TRIGGER_progressbar_set',[15 + i * mod,'Importing scrapbooks for "' + oldSite.site_name + '". Please wait....'])
 							
 							var oldRecord = fsOldScrapbook.getRecord(i)
 							var newRecord = fsNewBlock.getRecord(fsNewBlock.newRecord(false,true))
@@ -793,7 +793,7 @@ function WEB_upgrade() {
 						var mod = 10 / fsOldTheme.getSize()
 						
 						for (var i = 1; i <= fsOldTheme.getSize(); i++) {
-							globals.WEBc_sutra_trigger('TRIGGER_progressbar_set',[20 + i * mod,'Importing themes for "' + oldSite.site_name + '". Please wait....'])
+							WEBc_sutra_trigger('TRIGGER_progressbar_set',[20 + i * mod,'Importing themes for "' + oldSite.site_name + '". Please wait....'])
 							
 							var oldTheme = fsOldTheme.getRecord(i)
 							var newTheme = newSite.web_site_to_theme.getRecord(newSite.web_site_to_theme.newRecord(false,true))
@@ -883,7 +883,7 @@ function WEB_upgrade() {
 						var mod = 5 / fsOldImage.getSize()
 						
 						for (var i = 1; i <= fsOldImage.getSize(); i++) {
-							globals.WEBc_sutra_trigger('TRIGGER_progressbar_set',[30 + i * mod,'Importing images for "' + oldSite.site_name + '". Please wait....'])
+							WEBc_sutra_trigger('TRIGGER_progressbar_set',[30 + i * mod,'Importing images for "' + oldSite.site_name + '". Please wait....'])
 							
 							var oldAsset = fsOldImage.getRecord(i)
 							var newAsset = newSite.web_site_to_asset.getRecord(newSite.web_site_to_asset.newRecord(false,true))
@@ -959,7 +959,7 @@ function WEB_upgrade() {
 						var mod = 40 / fsOldPage.getSize()
 						
 						for (var i = 1; i <= fsOldPage.getSize(); i++) {
-							globals.WEBc_sutra_trigger('TRIGGER_progressbar_set',[35 + i * mod,'Importing pages for "' + oldSite.site_name + '". Please wait....'])
+							WEBc_sutra_trigger('TRIGGER_progressbar_set',[35 + i * mod,'Importing pages for "' + oldSite.site_name + '". Please wait....'])
 							
 							var oldPage = fsOldPage.getRecord(i)
 							var newPage = newSite.web_site_to_page.getRecord(newSite.web_site_to_page.newRecord(false,true))
@@ -1117,7 +1117,7 @@ function WEB_upgrade() {
 					}
 					
 					//re-loop through pages and update parent_id_page appropriately
-					globals.WEBc_sutra_trigger('TRIGGER_progressbar_set',[80,'Processing pages. Please wait....'])
+					WEBc_sutra_trigger('TRIGGER_progressbar_set',[80,'Processing pages. Please wait....'])
 					for (var i = 1; i <= newSite.web_site_to_page.getSize(); i++) {
 						var record = newSite.web_site_to_page.getRecord(i)
 						
@@ -1130,7 +1130,7 @@ function WEB_upgrade() {
 					//loop all blocks and replace out image and page references
 					for (var i = 0; i < allBlocks.length; i++) {
 						if (!(i % 5)) {
-							globals.WEBc_sutra_trigger('TRIGGER_progressbar_set',[85 + mod,'Processing blocks. Please wait....'])
+							WEBc_sutra_trigger('TRIGGER_progressbar_set',[85 + mod,'Processing blocks. Please wait....'])
 						}
 						var item = allBlocks[i]
 						var markup = item.data_value
@@ -1191,7 +1191,7 @@ function WEB_upgrade() {
 						databaseManager.saveData(item)
 					}
 					
-					globals.WEBc_sutra_trigger('TRIGGER_progressbar_set',[100,'Finishing import of "' + oldSite.site_name + '". Please wait....'])
+					WEBc_sutra_trigger('TRIGGER_progressbar_set',[100,'Finishing import of "' + oldSite.site_name + '". Please wait....'])
 					
 					//revisit site (home/error pages)
 					newSite.id_page__home = getMap(oldSite.id_page,mapping.page)
@@ -1217,28 +1217,28 @@ function WEB_upgrade() {
 					databaseManager.saveData()
 					forms.WEB_0F_site.controller.loadAllRecords()
 					forms.WEB_0F_site.foundset.selectRecord(newSite.id_site)
-					globals.WEBc_sutra_trigger('TRIGGER_progressbar_stop')
+					WEBc_sutra_trigger('TRIGGER_progressbar_stop')
 					
 					//enable form if was disabled
 					if (nowLocked) {
-						globals.WEB_lock_workflow(false)
+						WEB_lock_workflow(false)
 					}
 				}
 			}
 		}
 		//no sites
 		else {
-			globals.DIALOGS.showErrorDialog(
+			DIALOGS.showErrorDialog(
 					'Error',
 					'There are no sites to import'
-			)
+				)
 		}
 	}
 	//no connection
 	else {
-		globals.DIALOGS.showErrorDialog(
-					'Error',
-					'You do not have a database connection "sutra_cms_v1" defined.'
+		DIALOGS.showErrorDialog(
+				'Error',
+				'You do not have a database connection "sutra_cms_v1" defined.'
 			)
 	}
 }
