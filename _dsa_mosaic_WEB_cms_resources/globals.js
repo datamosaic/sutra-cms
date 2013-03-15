@@ -33,45 +33,45 @@ var CMS = {
 		data : new Object(),
 		markup : {
 				getAsset : function(/**String*/ assetInstanceID) {
-						return globals.WEBc_markup_link_asset(assetInstanceID, globals.CMS.data, null, null, globals.CMS.data)
+						return WEBc_markup_link_asset(assetInstanceID, CMS.data, null, null, CMS.data)
 					},
 				getErrorPage : function(/**JSRecord<db:/sutra_cms/web_site>*/ siteRec) {
-						return globals.WEBc_markup_link_error(siteRec)
+						return WEBc_markup_link_error(siteRec)
 					},
 				getHomePage : function(/**JSRecord<db:/sutra_cms/web_site>*/ siteRec) {
-						return globals.WEBc_markup_link_home(siteRec)
+						return WEBc_markup_link_home(siteRec)
 					},
 				getLanguages : function() {
-						return globals.WEBc_markup_site_languages(globals.CMS.data)
+						return WEBc_markup_site_languages(CMS.data)
 					},
 				getPageAttributes : function(/**JSRecord<db:/sutra_cms/web_page>*/ pageRec) {
-						return globals.WEBc_markup_page_attributes(pageRec)
+						return WEBc_markup_page_attributes(pageRec)
 					},
 				getPagesAttribute : function(/**String*/ att) {
-						return globals.WEBc_markup_pages_attribute(globals.CMS.data, att)
+						return WEBc_markup_pages_attribute(CMS.data, att)
 					},
 				getPagesDown : function(/**JSRecord<db:/sutra_cms/web_page>*/pageRec, /**JSRecord<db:/sutra_cms/web_path>*/ pathRec) {
-						return globals.WEBc_markup_pages_down(null, pageRec, pathRec)
+						return WEBc_markup_pages_down(null, pageRec, pathRec)
 					},
 				getPagesUp : function(/**JSRecord<db:/sutra_cms/web_page>*/pageRec, /**JSRecord<db:/sutra_cms/web_path>*/ pathRec, /**String*/ order) {
-						return globals.WEBc_markup_pages_up(null, order, pageRec, pathRec)
+						return WEBc_markup_pages_up(null, order, pageRec, pathRec)
 					},
 				getSiteDirectory : function(/**String*/ pageID) {
-						//check if globals.CMS.data is defined to get language
-						if (globals.CMS.data && globals.CMS.data.language && globals.CMS.data.language.record && utils.hasRecords(globals.CMS.data.language.record,'web_language_to_site_language')) {
-							var siteLanguageRec = globals.CMS.data.language.record.web_language_to_site_language.getSelectedRecord()
+						//check if CMS.data is defined to get language
+						if (CMS.data && CMS.data.language && CMS.data.language.record && utils.hasRecords(CMS.data.language.record,'web_language_to_site_language')) {
+							var siteLanguageRec = CMS.data.language.record.web_language_to_site_language.getSelectedRecord()
 						}
 						
 						//check if page specified; pass in object if not
 						if (!pageID) {
-							pageID = globals.CMS.data
+							pageID = CMS.data
 						}
 						
 						//both the base and resource url methods will return with "sutraCMS/"; need to remove from one so no doubling
-						return utils.stringReplace(globals.WEBc_markup_link_base(pageID,null,siteLanguageRec),'sutraCMS/','') + globals.WEBc_markup_link_resources(pageID)
+						return utils.stringReplace(WEBc_markup_link_base(pageID,null,siteLanguageRec),'sutraCMS/','') + WEBc_markup_link_resources(pageID)
 					},
 				saveResponseData : function() {
-						return globals.WEBc_markup_block_saveResponse(globals.CMS.data)
+						return WEBc_markup_block_saveResponse(CMS.data)
 					},
 				merge : function (/**String*/ template, /**Object*/ data) {
 					return WEBc_markup_merge(template, data)
@@ -79,65 +79,65 @@ var CMS = {
 			},
 		session : {
 				clearData : function(/**String*/ sessionID, /**String*/ dataKey) {
-						return globals.WEBc_session_deleteData(sessionID,dataKey)
+						return WEBc_session_deleteData(sessionID,dataKey)
 					},
 				getData : function(/**String*/ sessionID, /**String*/ dataKey) {
-						return globals.WEBc_session_getData(sessionID,dataKey)
+						return WEBc_session_getData(sessionID,dataKey)
 					},
 				getSession : function(/**String*/ sessionID) {
-						return globals.WEBc_session_getSession(sessionID)
+						return WEBc_session_getSession(sessionID)
 					},
 				setData : function(/**String*/ sessionID, /**String*/ dataKey, /**Object*/ dataValue) {
-						return globals.WEBc_session_setData(sessionID, dataKey, dataValue)
+						return WEBc_session_setData(sessionID, dataKey, dataValue)
 					}
 			},
 		token : {
 				getFile : function(/**JSRecord|String|UUID*/ input) {
 						return {
-							link : globals.WEBc_markup_token(input, 'file'),
-							name : globals.WEBc_markup_token(input, 'fileName')
+							link : WEBc_markup_token(input, 'file'),
+							name : WEBc_markup_token(input, 'fileName')
 						}
 					},
 				getImage : function(/**JSRecord|String|UUID*/ input) {
 						return {
-							link : globals.WEBc_markup_token(input, 'image'),
-							name : globals.WEBc_markup_token(input, 'imageName')
+							link : WEBc_markup_token(input, 'image'),
+							name : WEBc_markup_token(input, 'imageName')
 						}
 					},
 				getPage : function(/**JSRecord|String|UUID*/ input) {
 						return {
-							link : globals.WEBc_markup_token(input, 'page'),
-							name : globals.WEBc_markup_token(input, 'pageName')
+							link : WEBc_markup_token(input, 'page'),
+							name : WEBc_markup_token(input, 'pageName')
 						}
 					}
 			},
 		ui : {
 				getData : function(/**JSForm*/ formName) {
-						return globals.WEBc_block_getData(formName)
+						return WEBc_block_getData(formName)
 					},
 				setData : function(/**JSEvent*/ event, /**String*/ key, /**String*/ value, /**JSForm*/ formName) {
-						return globals.WEBc_block_setData(event,key,value,formName)
+						return WEBc_block_setData(event,key,value,formName)
 					},
 				getConfig : function(/**JSForm*/ formName) {
-						return globals.WEBc_block_getConfig(formName)
+						return WEBc_block_getConfig(formName)
 					},
 				setConfig : function(/**JSEvent*/ event, /**String*/ key, /**String*/ value, /**JSForm*/ formName) {
-						return globals.WEBc_block_setConfig(event,key,value,formName)
+						return WEBc_block_setConfig(event,key,value,formName)
 					},
 				getResponse : function(/**JSForm*/ formName) {
-						return globals.WEBc_block_getResponse(formName)
+						return WEBc_block_getResponse(formName)
 					},
 				setResponse : function() {
-						return globals.WEBc_markup_block_saveResponse(globals.CMS.data)
+						return WEBc_markup_block_saveResponse(CMS.data)
 					},
 				getDisplay : function(/**JSForm*/ formName) {
-						return globals.WEBc_block_getDisplay(formName)
+						return WEBc_block_getDisplay(formName)
 					},
 				getEdit : function() {
-						return globals.WEBc_block_getEdit()
+						return WEBc_block_getEdit()
 					},
 				getMethods : function(/**String*/ context, /**String*/ key) { // controller.getName(), "VIEW | BLOCK | PAGE | WEB"
-					return globals.WEBc_block_type_getMethods(context, key)
+					return WEBc_block_type_getMethods(context, key)
 				}
 			},
 		"utils" : {
@@ -151,10 +151,10 @@ var CMS = {
 						return WEBc_data_strip_punctuation(str)
 					},
 				getCMSVersion : function() {
-						return globals.CMS.data.cmsVersion
+						return CMS.data.cmsVersion
 					},
 				log : function(/**String*/ logType, /**String*/ message, /**String|UUID*/ sitePK, /**String*/ tableName, /**String|UUID*/ tablePK, /**String*/ tableName2, /**String|UUID*/ tablePK2 ) {
-						return globals.WEBc_log_create(logType,message,sitePK,tableName,tablePK,tableName2,tablePK2)
+						return WEBc_log_create(logType,message,sitePK,tableName,tablePK,tableName2,tablePK2)
 					}
 			}
 	};
@@ -164,12 +164,12 @@ var CMS = {
  */
 function WEBc_browser_error() {
 	if (application.getApplicationType() != APPLICATION_TYPES.WEB_CLIENT) {
-		var input = globals.DIALOGS.showErrorDialog(
-					'Error',
-					'The Browser Suite did not initialize properly.\nRestart client now.',
-					'Yes',
-					'No'
-			)
+		var input = DIALOGS.showErrorDialog(
+						'Error',
+						'The Browser Suite did not initialize properly.\nRestart client now.',
+						'Yes',
+						'No'
+					)
 		
 		if (input == 'Yes') {
 			application.exit()
@@ -235,11 +235,11 @@ function WEBc_block_type_getMethods(formName, type) {
  */
 function WEBc_block_form_refresh() {
 //	//update display
-//	if (globals.WEB_page_mode == 2) {
+//	if (WEB_page_mode == 2) {
 //		forms.WEB_0F_page__design_1F_version_2L_scope.ACTION_gui_mode_refresh()
 //	}
 //	else 
-	if (globals.WEB_page_mode == 3) {
+	if (WEB_page_mode == 3) {
 		forms.WEB_0F_page__browser_1F_block__editor.FORM_on_show()
 	}
 }
@@ -268,7 +268,7 @@ function WEBc_block_enable(event) {
 		(event.getFormName() == forms[event.getFormName()].web_block_to_block_type.form_name ||
 		event.getFormName() == (forms[event.getFormName()].web_block_to_block_type.form_name_display || forms[event.getFormName()].web_block_to_block_type.form_name) ) &&
 	//on_select not manually disabled
-		globals.WEB_block_on_select
+		WEB_block_on_select
 		
 	return blockEnable
 }
@@ -293,7 +293,7 @@ function WEBc_block_getData(formName) {
 		var blockRec = forms[formName].foundset.getSelectedRecord()
 		
 		//on the page and not viewing page scrapbooks, just use active version
-		if (globals.WEB_block_page_mode) {
+		if (WEB_block_page_mode) {
 			if (utils.hasRecords(blockRec,'web_block_to_block_version.web_block_version_to_block_data')) {
 				/** @type {JSFoundSet<db:/sutra_cms/web_block_data>}*/
 				var fsBlockData = blockRec.web_block_to_block_version.web_block_version_to_block_data
@@ -342,7 +342,7 @@ function WEBc_block_setData(event, key, value, formName) {
 	
 	//when in real mode, do hard save
 	function realSave(record) {
-		if (globals.WEB_page_mode == 3) {
+		if (WEB_page_mode == 3) {
 			databaseManager.saveData(record)
 			forms.WEB_0F_page__browser.URL_update(true)
 		}
@@ -355,7 +355,7 @@ function WEBc_block_setData(event, key, value, formName) {
 		var blockRec = forms[formName].foundset.getSelectedRecord()
 		
 		//on the page and not viewing page scrapbooks, just use active version
-		if (globals.WEB_block_page_mode) {
+		if (WEB_block_page_mode) {
 			if (utils.hasRecords(blockRec,'web_block_to_block_version.web_block_version_to_block_data')) {
 				/** @type {JSFoundSet<db:/sutra_cms/web_block_data>}*/
 				var fsBlockData = blockRec.web_block_to_block_version.web_block_version_to_block_data
@@ -420,7 +420,7 @@ function WEBc_block_getConfig(formName) {
 		var blockRec = forms[formName].foundset.getSelectedRecord()
 		
 		//on the page and not viewing page scrapbooks, just use active version
-		if (globals.WEB_block_page_mode) {
+		if (WEB_block_page_mode) {
 			if (utils.hasRecords(blockRec,'web_block_to_block_version.web_block_version_to_block_data_configure')) {
 				/** @type {JSFoundSet<db:/sutra_cms/web_block_data_configure>}*/
 				var fsBlockData = blockRec.web_block_to_block_version.web_block_version_to_block_data_configure
@@ -474,7 +474,7 @@ function WEBc_block_setConfig(event, key, value, formName) {
 		var blockRec = forms[formName].foundset.getSelectedRecord()
 		
 		//on the page and not viewing page scrapbooks, just use active version
-		if (globals.WEB_block_page_mode) {
+		if (WEB_block_page_mode) {
 			if (utils.hasRecords(blockRec,'web_block_to_block_version.web_block_version_to_block_data_configure')) {
 				/** @type {JSFoundSet<db:/sutra_cms/web_block_data_configure>}*/
 				var fsBlockData = blockRec.web_block_to_block_version.web_block_version_to_block_data_configure
@@ -537,7 +537,7 @@ function WEBc_block_getResponse(formName) {
 		var blockRec = forms[formName].foundset.getSelectedRecord()
 		
 		//on the page and not viewing page scrapbooks, just use active version
-		if (globals.WEB_block_page_mode) {
+		if (WEB_block_page_mode) {
 			if (utils.hasRecords(blockRec,'web_block_to_block_version.web_block_version_to_block_data_response')) {
 				/** @type {JSFoundSet<db:/sutra_cms/web_block_data_response>}*/
 				var fsBlockData = blockRec.web_block_to_block_version.web_block_version_to_block_data_response
@@ -586,7 +586,7 @@ function WEBc_block_getDisplay(formName) {
 		var blockRec = forms[formName].foundset.getSelectedRecord()
 		
 		//on the page and not viewing page scrapbooks, just use active version
-		if (globals.WEB_block_page_mode) {
+		if (WEB_block_page_mode) {
 			if (utils.hasRecords(blockRec,'web_block_to_block_version.web_block_version_to_block_data_response')) {
 				/** @type {JSRecord<db:/sutra_cms/web_block_display>}*/
 				recDisplay = blockRec.web_block_to_block_display.getSelectedRecord()
@@ -641,7 +641,7 @@ function WEBc_markup_block_saveResponse(obj) {
 	
 	if (i) {
 		// save UUID to block response data
-		globals.CMS.data.block_response.UUID = instanceUUID
+		CMS.data.block_response.UUID = instanceUUID
 		return instanceUUID
 	}
 	else {
@@ -654,10 +654,10 @@ function WEBc_markup_block_saveResponse(obj) {
  */
 function WEBc_block_save() {
 //	//don't run when in real mode
-//	if (globals.WEB_page_mode != 3) {
+//	if (WEB_page_mode != 3) {
 //		var formName = 'WEB_A__scrapbook'
 //		//on page gui detail
-//		if (globals.WEB_block_scope == 1 && globals.WEB_page_mode == 2 && forms.WEB_0F_page__design.elements.tab_main.tabIndex == 1) {
+//		if (WEB_block_scope == 1 && WEB_page_mode == 2 && forms.WEB_0F_page__design.elements.tab_main.tabIndex == 1) {
 //			formName = 'WEB_A__page'
 //		}
 //		
@@ -680,7 +680,7 @@ function WEBc_block_save() {
 function WEBc_block_fld_data_change__data(oldValue, newValue, event) {
 	var key = event.getSource().getDataProviderID().substr(1)
 	
-	globals.WEBc_block_setData(event,key,newValue)
+	WEBc_block_setData(event,key,newValue)
 }
 
 /**
@@ -697,7 +697,7 @@ function WEBc_block_fld_data_change__data(oldValue, newValue, event) {
 function WEBc_block_fld_data_change__config(oldValue, newValue, event) {
 	var key = event.getSource().getDataProviderID().substr(1)
 	
-	globals.WEBc_block_setConfig(event,key,newValue)
+	WEBc_block_setConfig(event,key,newValue)
 }
 
 /**
@@ -705,10 +705,10 @@ function WEBc_block_fld_data_change__config(oldValue, newValue, event) {
  */
 function WEBc_block_cancel() {
 //	//don't run when in real mode
-//	if (globals.WEB_page_mode != 3) {
+//	if (WEB_page_mode != 3) {
 //		var formName = 'WEB_A__scrapbook'
 //		//on page gui detail
-//		if (globals.WEB_block_scope == 1 && globals.WEB_page_mode == 2 && forms.WEB_0F_page__design.elements.tab_main.tabIndex == 1) {
+//		if (WEB_block_scope == 1 && WEB_page_mode == 2 && forms.WEB_0F_page__design.elements.tab_main.tabIndex == 1) {
 //			formName = 'WEB_A__page'
 //		}
 //		
@@ -726,7 +726,7 @@ function WEBc_block_cancel() {
  */
 function WEBc_block_getEdit() {
 	//page scope
-	if (globals.WEB_block_page_mode) {
+	if (WEB_block_page_mode) {
 		return forms.WEB_0F_page.ACTION_edit_get()
 	}
 	//scrapbook scope
@@ -749,7 +749,7 @@ function WEBc_block_getEdit() {
  */
 function WEBc_session_getData(sessionID, dataKey) {
 	// get session	
-	var snRec = globals.WEBc_session_getSession(sessionID)
+	var snRec = WEBc_session_getSession(sessionID)
 
 	// find matching session data record 
 	var sd = databaseManager.getFoundSet("sutra_cms","web_session_data")
@@ -781,7 +781,7 @@ function WEBc_session_getData(sessionID, dataKey) {
  */
 function WEBc_session_setData(sessionID, dataKey, dataValue) {
 	// get session	
-	var snRec = globals.WEBc_session_getSession(sessionID)	
+	var snRec = WEBc_session_getSession(sessionID)	
 	
 	// find matching session data record 
 	var sd = databaseManager.getFoundSet("sutra_cms","web_session_data")
@@ -820,7 +820,7 @@ function WEBc_session_setData(sessionID, dataKey, dataValue) {
  */
 function WEBc_session_deleteData(sessionID, dataKey) {
 	// get session	
-	var snRec = globals.WEBc_session_getSession(sessionID)
+	var snRec = WEBc_session_getSession(sessionID)
 
 	// find matching session data record 
 	var sd = databaseManager.getFoundSet("sutra_cms","web_session_data")
@@ -988,7 +988,7 @@ function WEBc_markup_link_base(pageID, siteURL, siteLanguageRec) {
 	}
 	
 	//rewrite mode
-	var rewriteMode = globals.WEBc_install_getRewrite()
+	var rewriteMode = WEBc_install_getRewrite()
 	
 	//get page requested
 	var fsPage = databaseManager.getFoundSet("sutra_cms","web_page")
@@ -1095,7 +1095,7 @@ function WEBc_markup_link_resources(pageID, siteURL, linkType) {
 	var siteDirectory = ''
 	
 	//rewrite mode
-	var rewriteMode = globals.WEBc_install_getRewrite()
+	var rewriteMode = WEBc_install_getRewrite()
 	
 	//get page requested
 	var fsPage = databaseManager.getFoundSet("sutra_cms","web_page")
@@ -1143,7 +1143,7 @@ function WEBc_markup_link_resources(pageID, siteURL, linkType) {
 function WEBc_markup_link_internal(markup,siteURL,linkType,areaID,obj) {
 	// object not passed in, grab it
 	if (!obj) {
-		obj = globals.CMS.data
+		obj = CMS.data
 		
 		if (!obj.hasOwnProperty('page')) {
 			var emptyObj = true
@@ -1164,7 +1164,7 @@ function WEBc_markup_link_internal(markup,siteURL,linkType,areaID,obj) {
 		markup 		= utils.stringMiddle(markup, end + 1, 100000)
 		
 		// add markup link
-		newMarkup	+= globals.WEBc_markup_link_page(id,siteURL,linkType,null,obj)
+		newMarkup	+= WEBc_markup_link_page(id,siteURL,linkType,null,obj)
 		
 		markup		= newMarkup + markup
 	}
@@ -1183,7 +1183,7 @@ function WEBc_markup_link_internal(markup,siteURL,linkType,areaID,obj) {
 		markup 		= utils.stringMiddle(markup, end + 1, 100000)
 		
 		// add markup link
-		newMarkup	+= globals.WEBc_markup_page_name(id,siteURL,linkType,null,obj)
+		newMarkup	+= WEBc_markup_page_name(id,siteURL,linkType,null,obj)
 		
 		markup		= newMarkup + markup
 	}
@@ -1202,7 +1202,7 @@ function WEBc_markup_link_internal(markup,siteURL,linkType,areaID,obj) {
 		markup 		= utils.stringMiddle(markup, end + 1, 100000)
 		
 		// add markup link
-		newMarkup	+= globals.WEBc_markup_link_asset(id,(emptyObj ? null : obj.page.id),siteURL,linkType,obj).link
+		newMarkup	+= WEBc_markup_link_asset(id,(emptyObj ? null : obj.page.id),siteURL,linkType,obj).link
 		
 		markup		= newMarkup + markup
 	}
@@ -1221,7 +1221,7 @@ function WEBc_markup_link_internal(markup,siteURL,linkType,areaID,obj) {
 		markup 		= utils.stringMiddle(markup, end + 1, 100000)
 		
 		// add markup link
-		newMarkup	+= globals.WEBc_markup_link_asset(id,(emptyObj ? null : obj.page.id),siteURL,linkType,obj).link
+		newMarkup	+= WEBc_markup_link_asset(id,(emptyObj ? null : obj.page.id),siteURL,linkType,obj).link
 		
 		markup		= newMarkup + markup
 	}
@@ -1273,7 +1273,7 @@ function WEBc_markup_link_page(pageID, siteURL, linkType, webMode, obj) {
 	
 	// object not passed in, grab it
 	if (!obj) {
-		obj = globals.CMS.data
+		obj = CMS.data
 	}
 	
 	//get page requested
@@ -1372,7 +1372,7 @@ function WEBc_markup_link_page(pageID, siteURL, linkType, webMode, obj) {
 	}
 	
 	//get url up to sutraCMS directory
-	var pageLink = globals.WEBc_markup_link_base(pageID, siteURL, siteLanguageRec)
+	var pageLink = WEBc_markup_link_base(pageID, siteURL, siteLanguageRec)
 	
 	//this is an external link type of page, pageLink == its link
 	if (pageRec.page_type == 2 && pageRec.page_link) {
@@ -1381,7 +1381,7 @@ function WEBc_markup_link_page(pageID, siteURL, linkType, webMode, obj) {
 	//page/folder within the cms, generate link
 	else {
 		//rewrite mode
-		var rewriteMode = globals.WEBc_install_getRewrite()
+		var rewriteMode = WEBc_install_getRewrite()
 		
 		//use default link type if none specified
 		if (!linkType) {
@@ -1426,7 +1426,7 @@ function WEBc_markup_link_page(pageID, siteURL, linkType, webMode, obj) {
 				}
 				
 				//get page stack
-				var pageStack = globals.WEBc_markup_pages_up(null,null,pageRec)
+				var pageStack = WEBc_markup_pages_up(null,null,pageRec)
 				
 				var folder = ''
 				pageLanguageRec = null
@@ -1789,7 +1789,7 @@ function WEBc_page_picker(method,elem,showLanguage) {
 	
 	//there is an element for this popup to be attached, build!
 	if (elem != null) {
-		globals.CODE_cursor_busy(true)
+		CODE_cursor_busy(true)
 		
 		var fsPages = databaseManager.getFoundSet('sutra_cms', 'web_page')
 		var relnPage = 'web_page_to_page__child'
@@ -1809,13 +1809,13 @@ function WEBc_page_picker(method,elem,showLanguage) {
 				menu.push(GET_page(fsPages.getRecord(i)))
 			}
 			
-			globals.CODE_cursor_busy(false)
+			CODE_cursor_busy(false)
 			
 			//pop up the popup menu
 		    plugins.popupmenu.showPopupMenu(elem, menu);
 		}
 		else {
-			globals.CODE_cursor_busy(false)
+			CODE_cursor_busy(false)
 		}
 	}
 }
@@ -1843,11 +1843,11 @@ function WEBc_page_new(pageName,pageType,parentID,themeID,layoutID) {
 	
 	//check if can add record
 	
-	if (!globals.WEBc_sutra_trigger('TRIGGER_registered_action_authenticate',['cms page add'])) {
-		globals.DIALOGS.showErrorDialog(
-						'Error',
-						'You are not authorized to add new pages'
-				)
+	if (!WEBc_sutra_trigger('TRIGGER_registered_action_authenticate',['cms page add'])) {
+		DIALOGS.showErrorDialog(
+				'Error',
+				'You are not authorized to add new pages'
+			)
 		return
 	}
 	
@@ -1860,11 +1860,11 @@ function WEBc_page_new(pageName,pageType,parentID,themeID,layoutID) {
 	if (siteDefaults) {
 		
 		//turn on feedback indicator
-		globals.CODE_cursor_busy(true)
+		CODE_cursor_busy(true)
 		
 		//turn on progressbar if not already on
-		if (!globals.WEBc_sutra_trigger('TRIGGER_progressbar_get')) {
-			globals.WEBc_sutra_trigger('TRIGGER_progressbar_start',[null,'Creating new page...'])
+		if (!WEBc_sutra_trigger('TRIGGER_progressbar_get')) {
+			WEBc_sutra_trigger('TRIGGER_progressbar_start',[null,'Creating new page...'])
 		}
 		
 		var fsPage = databaseManager.getFoundSet('sutra_cms','web_page')
@@ -1964,7 +1964,7 @@ function WEBc_page_new(pageName,pageType,parentID,themeID,layoutID) {
 		
 		// get editable regions based on layout selected
 		if (!utils.hasRecords(platformRec,'web_platform_to_layout.web_layout_to_editable')) {
-			globals.CODE_cursor_busy(false)
+			CODE_cursor_busy(false)
 			return
 		}
 		
@@ -1985,12 +1985,12 @@ function WEBc_page_new(pageName,pageType,parentID,themeID,layoutID) {
 		forms.WEB_0T_page._refresh = true
 		
 		//turn off feedback indicator if on
-		if (globals.WEBc_sutra_trigger('TRIGGER_progressbar_get') instanceof Array) {
-			if (globals.WEBc_sutra_trigger('TRIGGER_progressbar_get')[1] == 'Creating new page...') {
-				globals.WEBc_sutra_trigger('TRIGGER_progressbar_stop')
+		if (WEBc_sutra_trigger('TRIGGER_progressbar_get') instanceof Array) {
+			if (WEBc_sutra_trigger('TRIGGER_progressbar_get')[1] == 'Creating new page...') {
+				WEBc_sutra_trigger('TRIGGER_progressbar_stop')
 			}
 		}
-		globals.CODE_cursor_busy(false)
+		CODE_cursor_busy(false)
 		
 		return pageRec
 	}
@@ -1998,17 +1998,17 @@ function WEBc_page_new(pageName,pageType,parentID,themeID,layoutID) {
 	else {
 		//not all defaults specified
 		if (utils.hasRecords(forms.WEB_0F_page.foundset)) {
-			globals.DIALOGS.showErrorDialog(
-							'Error',
-							'The defaults are not set correctly for this site'
-					)
+			DIALOGS.showErrorDialog(
+					'Error',
+					'The defaults are not set correctly for this site'
+				)
 		}
 		//no site record
 		else {
-			globals.DIALOGS.showErrorDialog(
-							'Error',
-							'You must add a site record first'
-					)
+			DIALOGS.showErrorDialog(
+					'Error',
+					'You must add a site record first'
+				)
 		}
 	}
 }
@@ -2028,7 +2028,7 @@ function WEBc_page_new(pageName,pageType,parentID,themeID,layoutID) {
 function WEBc_markup_pages_up(obj, order, pageRec, pathRec) {
 	// object not passed in, grab it
 	if (!obj) {
-		obj = globals.CMS.data
+		obj = CMS.data
 	}
 	
 	//given a path (language); get primed
@@ -2081,7 +2081,7 @@ function WEBc_markup_pages_up(obj, order, pageRec, pathRec) {
  */
 function WEBc_markup_site_languages(obj) {
 	var languages = []
-	var recs = globals.CMS.data.site.record.web_site_to_site_language
+	var recs = CMS.data.site.record.web_site_to_site_language
 	for (var i = 0; i < recs.getSize(); i++) {
 		languages.push(recs.getRecord(i + 1))
 	}
@@ -2102,7 +2102,7 @@ function WEBc_markup_site_languages(obj) {
 function WEBc_markup_pages_down(obj, pageRec, pathRec) {
 	// object not passed in, grab it
 	if (!obj) {
-		obj = globals.CMS.data
+		obj = CMS.data
 	}
 	
 	//given a path (language); get primed
@@ -2171,7 +2171,7 @@ function WEBc_install_getRewrite() {
 function WEBc_markup_link_servlet(obj,siteID) {
 	// object not passed in, grab it
 	if (!obj) {
-		obj = globals.CMS.data
+		obj = CMS.data
 	}
 	
 	//how requested
@@ -2397,7 +2397,7 @@ function WEBc_markup_link_asset(assetInstanceID, pageID, siteURL, linkType, obj)
 	
 	// object not passed in, grab it
 	if (!obj) {
-		obj = globals.CMS.data
+		obj = CMS.data
 	}
 
 	//get page requested
@@ -2438,7 +2438,7 @@ function WEBc_markup_link_asset(assetInstanceID, pageID, siteURL, linkType, obj)
 	}
 	
 	//get url up to files directory
-	var pageLink = utils.stringReplace(globals.WEBc_markup_link_base(pageID, siteURL, siteLanguageRec),'sutraCMS/','') + globals.WEBc_markup_link_resources(pageID,siteURL,linkType)
+	var pageLink = utils.stringReplace(WEBc_markup_link_base(pageID, siteURL, siteLanguageRec),'sutraCMS/','') + WEBc_markup_link_resources(pageID,siteURL,linkType)
 	
 	//tack on directory and file name
 	pageLink += assetInstanceRec.asset_directory + '/' + assetInstanceRec.asset_title
@@ -2506,7 +2506,7 @@ function WEBc_markup_page_name(pageID, siteURL, linkType, webMode, obj) {
 	
 	// object not passed in, grab it
 	if (!obj) {
-		obj = globals.CMS.data
+		obj = CMS.data
 	}
 	
 	//get page requested
@@ -2619,13 +2619,13 @@ function WEBc_markup_page_name(pageID, siteURL, linkType, webMode, obj) {
 function WEBc_markup_link_home(siteRec) {
 	var token = ''
 		
-	if (!siteRec && globals.CMS && globals.CMS.data && globals.CMS.data.site && globals.CMS.data.site.record) {
-		siteRec = globals.CMS.data.site.record
+	if (!siteRec && CMS && CMS.data && CMS.data.site && CMS.data.site.record) {
+		siteRec = CMS.data.site.record
 	}
 	
 	//check to see if there is a home page specified for the requested site
 	if (utils.hasRecords(siteRec,'web_site_to_page__home')) {
-		token = globals.WEBc_markup_token(siteRec.web_site_to_page__home.getSelectedRecord())
+		token = WEBc_markup_token(siteRec.web_site_to_page__home.getSelectedRecord())
 	}
 	
 	return token
@@ -2643,13 +2643,13 @@ function WEBc_markup_link_home(siteRec) {
 function WEBc_markup_link_error(siteRec) {
 	var token = ''
 		
-	if (!siteRec && globals.CMS && globals.CMS.data && globals.CMS.data.site && globals.CMS.data.site.record) {
-		siteRec = globals.CMS.data.site.record
+	if (!siteRec && CMS && CMS.data && CMS.data.site && CMS.data.site.record) {
+		siteRec = CMS.data.site.record
 	}
 	
 	//check to see if there is a home page specified for the requested site
 	if (utils.hasRecords(siteRec,'web_site_to_page__error')) {
-		token = globals.WEBc_markup_token(siteRec.web_site_to_page__error.getSelectedRecord())
+		token = WEBc_markup_token(siteRec.web_site_to_page__error.getSelectedRecord())
 	}
 	
 	return token
