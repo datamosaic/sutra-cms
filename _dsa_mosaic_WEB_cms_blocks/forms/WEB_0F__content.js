@@ -8,6 +8,11 @@ var _license_dsa_mosaic_WEB_cms_blocks = 'Module: _dsa_mosaic_WEB_cms_blocks \
 									MIT Licensed';
 
 /**
+ * @properties={typeid:35,uuid:"C8D17B02-9CFF-45FD-8C4A-27EFFC339E13",variableType:-4}
+ */
+var _firstShown = false;
+
+/**
  * @type {Number}
  *
  * @properties={typeid:35,uuid:"A5E7C6DE-46F3-4090-AECA-E3CA22A9EB84",variableType:4}
@@ -208,6 +213,12 @@ function FORM_on_show(firstShow, event) {
 	if (firstShow) {
 		//load up easy tinymce
 		elements.bn_tinymce.setCustomConfiguration(TINYMCE_init("simple"))
+		
+		//data already attempted to load here
+		if (_firstShown == 'fireAgain') {
+			INIT_data()
+		}
+		_firstShown = true
 	}
 }
 
@@ -217,6 +228,12 @@ function FORM_on_show(firstShow, event) {
  * @properties={typeid:24,uuid:"BD06F60E-C5F0-4770-B6F0-7C6287A1C7DB"}
  */
 function INIT_data() {
+	//tinymce not initialized yet; continue call a little later
+	if (!_firstShown) {
+		_firstShown = 'fireAgain'
+		return
+	}
+	
 	var data = globals.CMS.ui.getData(controller.getName())
 	
 	TOGGLE_buttons(false)
