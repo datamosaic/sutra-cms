@@ -141,15 +141,14 @@ function TOGGLE_visit(shown) {
  * @properties={typeid:24,uuid:"530CE94C-E1F2-47D0-9BF9-C4FF4FD027DF"}
  */
 function TOGGLE_version(showVersion) {
-//	
-//	if (typeof showVersion != 'boolean') {
-//		var versions = application.getValueListItems('WEB_page_version')
-//		showVersion = (versions.getMaxRowIndex() > 1) ? true : false
-//	}
-//	
-//	elements.btn_versions.visible = showVersion
-//	elements.lbl_versions.visible = showVersion
-//	elements.lbl_versions_tick.visible = showVersion
+	if (typeof showVersion != 'boolean') {
+		var versions = application.getValueListItems('WEB_page_version')
+		showVersion = (versions.getMaxRowIndex() > 1) ? true : false
+	}
+	
+	elements.btn_versions.visible = showVersion
+	elements.lbl_versions.visible = showVersion
+	elements.lbl_versions_tick.visible = showVersion
 }
 
 /**
@@ -254,30 +253,110 @@ function ACTION_version(input) {
 	}
 }
 
+
+/**
+ * Perform the element right-click action.
+ *
+ * @param {JSEvent} event the event that triggered the action
+ *
+ * @properties={typeid:24,uuid:"E8F05192-65E5-4A40-9EB5-B423B34F8371"}
+ */
+function ACTION_version_actions(event) {
+	//when right clicked, give a moment to grab focus elsewhere
+	if (event instanceof JSEvent) {
+		var elem = elements[event.getElementName()]
+		
+		var menu = plugins.window.createPopupMenu()
+		var item
+		
+		item = menu.addMenuItem("Activate version")
+		item.setMethod(ACTION_version_actions)
+		item.enabled = !forms.WEB_0F_page__design_1F_version.foundset.flag_active
+		item.methodArguments = ['Activate']
+		
+		if (forms.WEB_0F_page__design_1F_version.foundset.flag_lock) {
+			item = menu.addMenuItem("Unlock version")
+			item.setMethod(ACTION_version_actions)
+			item.enabled = globals.WEBc_sutra_trigger('TRIGGER_registered_action_authenticate',['cms edit version'])
+			item.methodArguments = ['Unlock']
+		}
+		else {
+			item = menu.addMenuItem("Lock version")
+			item.setMethod(ACTION_version_actions)
+			item.enabled = globals.WEBc_sutra_trigger('TRIGGER_registered_action_authenticate',['cms edit version'])
+			item.methodArguments = ['Lock']
+		}
+		
+		menu.addSeparator()
+		
+		
+		item = menu.addMenuItem("New version")
+		item.setMethod(ACTION_version_actions)
+		item.methodArguments = ['New']
+		
+		menu.show(elem)
+	}
+	else {
+		var pseudoEvent = new Object()
+		
+		switch (arguments[5]) {
+			case 'New':
+				forms.WEB_0F_page__design_1F__header_display__version.ADD_version(event)
+				break
+			case 'Lock':
+				forms.WEB_0F_page__design_1F__header_display__version.LOCK_version(event)
+				break
+			case 'Unlock':
+				forms.WEB_0F_page__design_1F__header_display__version.LOCK_version(event)
+				break
+			case 'Activate':
+				pseudoEvent.getElementName = function() {return 'btn_check_off'}
+				forms.WEB_0F_page__design_1F__header_display__version.ACTIVATE_version(pseudoEvent)
+				break
+		}
+		
+		//show/hide edit button
+		TOGGLE_edit()
+		
+		//regenerate html
+		forms.WEB_0F_page__browser.URL_update()
+		
+		//assumption here is that foundset is in sync with this valuelist (convert version to reverse ordered record list)
+		forms.WEB_0F_page__design_1F_version.foundset.selectRecord(globals.WEB_page_version)
+		
+		//update display and reload version valuelist; don't reload versions foundset
+		forms.WEB_0F_page__browser.REC_on_select(null,null,true)
+	}
+}
+
 /**
  *
  * @properties={typeid:24,uuid:"37CB81D0-259B-445E-9FDC-C15B3328574D"}
  */
 function BREAD_update() {
-//	var simple = true
-//	
-//	var label = '<html><body><center>'
+	var simple = true
+	
+	var label = '<html><body><center>'
 //	label += 'Group ' + application.getValueListDisplayValue('WEB_page_group',globals.WEB_page_group).substr(12) + '&nbsp;&nbsp;&nbsp;&nbsp;'
 //	
 //	if (simple) {
 //		label += '<br>'
 //	}
-//	
-//	label += '' + application.getValueListDisplayValue('WEB_page_version',globals.WEB_page_version)
-//	
+	
+	if (forms.WEB_0F_page__design_1F_version.foundset.flag_lock) {
+		label += '<strong>LOCKED</strong><br />'
+	}
+	
+	label += '' + application.getValueListDisplayValue('WEB_page_version',globals.WEB_page_version)
+	
 //	if (!simple) {
 //		label += '<br>'
 //		label += '<b>URL</b> ' + globals.WEB_preview_url + '<br>'
 //	}
-//	
-//	label += '</center></body></html>'
 	
-//	elements.lbl_detail.text = label
+	label += '</center></body></html>'
+	
+	elements.lbl_detail.text = label
 //	elements.lbl_detail.toolTipText = '<html><body>Click to copy URL to clipboard<br>' + globals.WEB_preview_url
 }
 
@@ -392,9 +471,9 @@ function ACTION_mode(event) {
 		elements.btn_edit.visible = false
 		elements.btn_save.visible = false
 		elements.highlighter.visible = false
-//		elements.lbl_detail.visible = false
+		elements.lbl_detail.visible = false
 //		TOGGLE_group(false)
-//		TOGGLE_version(false)
+		TOGGLE_version(false)
 		TOGGLE_visit(false)
 		
 		//turn off all switches
@@ -469,12 +548,12 @@ function ACTION_mode(event) {
 					MODE_set("Real")
 					
 					//show breadcrumb url info
-//					elements.lbl_detail.visible = true
+					elements.lbl_detail.visible = true
 					
 					//toggle edit, groups, versions
 					TOGGLE_edit()
 //					TOGGLE_group()
-//					TOGGLE_version()	
+					TOGGLE_version()	
 					TOGGLE_visit(true)
 				}
 				
@@ -744,3 +823,4 @@ function ACTION_import(event) {
 		forms.WEB_0C__file_stream.IMAGE_import("images")
 	}
 }
+
