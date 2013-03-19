@@ -169,7 +169,39 @@ function ACTION_version(input) {
 		
 		//set up menu with arguments
 		var menu = new Array()
-		for ( var i = 1 ; i <= fsVersions.getSize() ; i++ ) {
+		
+		//actions at the top of menu
+			menu[0] = plugins.popupmenu.createMenuItem("Activate version",ACTION_version)
+			if (forms.WEB_0F_page__design_1F_version.foundset.flag_active) {
+				menu[0].setEnabled(false)
+			}
+			menu[0].setMethodArguments('Activate')
+			
+			if (forms.WEB_0F_page__design_1F_version.foundset.flag_lock) {
+				menu[1] = plugins.popupmenu.createMenuItem("Unlock version",ACTION_version)
+				if (!globals.WEBc_sutra_trigger('TRIGGER_registered_action_authenticate',['cms edit version'])) {
+					menu[1].setEnabled(false)
+				}
+				menu[1].setMethodArguments('Unlock')
+			}
+			else {
+				menu[1] = plugins.popupmenu.createMenuItem("Lock version",ACTION_version)
+				if (!globals.WEBc_sutra_trigger('TRIGGER_registered_action_authenticate',['cms edit version'])) {
+					menu[1].setEnabled(false)
+				}
+				menu[1].setMethodArguments('Lock')
+			}
+			
+			menu.push(plugins.popupmenu.createMenuItem('---'))
+			menu[2].setEnabled(false)
+			
+			menu[3] = plugins.popupmenu.createMenuItem("New version",ACTION_version)
+			menu[3].setMethodArguments('New')
+			
+			menu.push(plugins.popupmenu.createMenuItem('-'))
+			
+		//hard code to only show 15 most recent versions
+		for ( var i = 1 ; i <= fsVersions.getSize() && i < 15; i++ ) {
 			var recVersion = fsVersions.getRecord(i)
 			
 			var displayVal = ''
@@ -194,17 +226,17 @@ function ACTION_version(input) {
 			}
 			
 			if (globals.WEB_page_version.toString() == recVersion.id_version.toString()) {
-				menu[i] = plugins.popupmenu.createCheckboxMenuItem(displayVal,ACTION_version)
-				menu[i].setSelected(true)
+				menu[i + 4] = plugins.popupmenu.createCheckboxMenuItem(displayVal,ACTION_version)
+				menu[i + 4].setSelected(true)
 			}
 			else {
-				menu[i] = plugins.popupmenu.createMenuItem(displayVal,ACTION_version)
+				menu[i + 4] = plugins.popupmenu.createMenuItem(displayVal,ACTION_version)
 			}
 			
-			menu[i].setMethodArguments(recVersion.id_version)
+			menu[i + 4].setMethodArguments(recVersion.id_version)
 			
-			if (menu[i].text == '-') {
-				menu[i].setEnabled(false)
+			if (menu[i + 4].text == '-') {
+				menu[i + 4].setEnabled(false)
 			}
 		}
 		
@@ -216,8 +248,31 @@ function ACTION_version(input) {
 	}
 	//menu shown and item chosen
 	else {
-		//update selected version
-		globals.WEB_page_version = input
+		//switch version
+		if (input instanceof UUID) {
+			//update selected version
+			globals.WEB_page_version = input
+		}
+		//perform action
+		else {
+			var pseudoEvent = new Object()
+			
+			switch (input) {
+				case 'New':
+					forms.WEB_0F_page__design_1F__header_display__version.ADD_version(event)
+					break
+				case 'Lock':
+					forms.WEB_0F_page__design_1F__header_display__version.LOCK_version(event)
+					break
+				case 'Unlock':
+					forms.WEB_0F_page__design_1F__header_display__version.LOCK_version(event)
+					break
+				case 'Activate':
+					pseudoEvent.getElementName = function() {return 'btn_check_off'}
+					forms.WEB_0F_page__design_1F__header_display__version.ACTIVATE_version(pseudoEvent)
+					break
+			}
+		}
 		
 		//show/hide edit button
 		TOGGLE_edit()
