@@ -84,8 +84,8 @@ var CMS = {
 				getData : function(/**String*/ sessionID, /**String*/ dataKey) {
 						return WEBc_session_getData(sessionID,dataKey)
 					},
-				getSession : function(/**String*/ sessionID) {
-						return WEBc_session_getSession(sessionID)
+				getSession : function(/**String*/ sessionID, /** @type {String} */ dataValue) {
+						return WEBc_session_getSession(sessionID,dataValue)
 					},
 				setData : function(/**String*/ sessionID, /**String*/ dataKey, /**Object*/ dataValue) {
 						return WEBc_session_setData(sessionID, dataKey, dataValue)
@@ -811,7 +811,7 @@ function WEBc_session_setData(sessionID, dataKey, dataValue) {
  * 
  * @param {String} sessionID Pass in either session.getId() from web session object
  * or obj.session_server.record.session_id from controller object.
- * @param {String} dataKey Key name of data object to return
+ * @param {String|Array} dataKey Key name of data object to return (or several keys to delete)
  * 
  * @returns {Object} Javascript object with your data or null.
  * 
@@ -826,12 +826,12 @@ function WEBc_session_deleteData(sessionID, dataKey) {
 	var sd = databaseManager.getFoundSet("sutra_cms","web_session_data")
 	sd.find()
 	sd.id_session = snRec.id_session
-	sd.data_key = dataKey
+	sd.data_key = dataKey instanceof Array ? dataKey.join('||') : dataKey
 	var count = sd.search()
 	// delete specified session record
-	if (count == 1) {
+	if (count) {
 		// delete and return true or false depending on delete success
-		return sd.deleteRecord(1)
+		return sd.deleteAllRecords()
 	}
 	else {
 		// no record found
@@ -843,18 +843,25 @@ function WEBc_session_deleteData(sessionID, dataKey) {
  * Use this method from AJAX method calls where you know pass in session.getId().
  * Otherwise, pass in obj.session_server.record.session_id.
  * 
- * @param {Javax.servlet.http.httpsession} session Web session to pass in 
+ * @param {Javax.servlet.http.httpsession} [session] Web session to pass in 
+ * @param [value] Value (preferably unique) to search by to get session (among other things)
  * @returns {JSRecord} session record or null
  * 
  * @properties={typeid:24,uuid:"F2E852B4-71FA-4A91-A9BA-87781B082C6C"}
  * @AllowToRunInFind
  */
-function WEBc_session_getSession(sessionID) {
+function WEBc_session_getSession(sessionID,value) {
 	
-	// find matching session record 
+	// find matching session record
+	/** @type {JSFoundSet<db:/sutra_cms/web_session>} */
 	var sn = databaseManager.getFoundSet("sutra_cms","web_session")
 	sn.find()
-	sn.session_id = sessionID
+	if (sessionID) {
+		sn.session_id = sessionID
+	}
+	if (value) {
+		sn.web_session_to_session_data.data_value = '%' + value + '%'
+	}
 	var count = sn.search()
 	
 	// get existing session record
@@ -1145,7 +1152,7 @@ function WEBc_markup_link_internal(markup,siteURL,linkType,areaID,obj) {
 	if (!obj) {
 		obj = CMS.data
 		
-		if (!obj.hasOwnProperty('page')) {
+		if (!obj || (obj && !obj.hasOwnProperty('page'))) {
 			var emptyObj = true
 		}
 	}
@@ -2338,8 +2345,10 @@ function WEBc_markup_pages_attribute(obj, att) {
 	if ( att ) {
     	var pages = databaseManager.getFoundSet("sutra_cms", "web_page")
 	    pages.find()
-	    pages.id_site = obj.site.id
-	    pages.web_page_to_attribute.attribute_key = att
+		if (obj && obj.site && obj.site.id) {
+			pages.id_site = obj.site.id
+		}
+		pages.web_page_to_attribute.attribute_key = att
 	    pages.flag_publish = 1
 	    var count = pages.search()
 		return (count) ? pages : 0
