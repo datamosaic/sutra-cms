@@ -1,6 +1,7 @@
 allowCreationRelatedRecords:true,
 deleteRelatedRecords:true,
 foreignDataSource:"db:/sutra_cms/web_block_input",
+initialSort:"web_block_input_to_block_builder.row_order asc",
 items:[
 {foreignColumnName:"id_block_type",primaryDataProviderID:"id_block_type",typeid:23,uuid:"A74BC0AE-A836-4FF0-B526-202C3DBEA119"}
 ],
