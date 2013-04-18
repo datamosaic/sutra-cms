@@ -39,8 +39,18 @@ var _fieldName = null;
  */
 function ACTION_ok(event) {
 	if (_fieldType && _fieldName) {
-		if (_fieldType == 'table') {
-			globals.DIALOGS.showErrorDialog('Error','Table type is not implemented yet')
+		//when name not unique, prompt to enter a new name
+		var fsBuilders = forms.WEB_0F_block_type__builder_1L_block_builder.foundset
+		for (var i = 1; i <= fsBuilders.getSize(); i++) {
+			var record = fsBuilders.getRecord(i)
+			if (_fieldName == record.column_name) {
+				var nonUnique = true
+				break
+			}
+		}
+		if (nonUnique) {
+			globals.DIALOGS.showErrorDialog('Error','Name must be unique')
+			elements.var_fieldName.requestFocus()
 			return
 		}
 		
