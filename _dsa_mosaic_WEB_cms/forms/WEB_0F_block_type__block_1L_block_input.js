@@ -58,8 +58,9 @@ function TOGGLE_builder_object(event) {
 		controller.recreateUI()
 			
 		//wiggle screen to make description show up
-		application.setWindowSize(application.getWindowWidth(),application.getWindowHeight() - 1)
-		application.setWindowSize(application.getWindowWidth(),application.getWindowHeight() + 1)
+		var mainWindow = application.getWindow()
+		mainWindow.setSize(mainWindow.getWidth(), mainWindow.getHeight() - 1)
+		mainWindow.setSize(mainWindow.getWidth(), mainWindow.getHeight() + 1)
 	}
 	
 	//reload foundset
