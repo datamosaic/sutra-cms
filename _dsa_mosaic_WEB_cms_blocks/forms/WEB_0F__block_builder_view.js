@@ -38,7 +38,8 @@ function INIT_data() {
 		blockList[order].record = fieldData
 	}
 	
-	var html = '<html><body><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8" /></head>'
+	var html = '<html>'
+	html += globals.WEBb_index_edit() + '<body>'
 	for (var i = 1; i < blockList.length; i++) {
 		var blockItem = blockList[i]
 		if (blockItem) {
@@ -46,7 +47,7 @@ function INIT_data() {
 			
 			// this method exists
 			if (solutionModel.getForm(formName).getFormMethod(method)) {
-				html += forms[formName][method](blockItem.record) + '\n'
+				html += globals.WEBc_markup_link_internal(forms[formName][method](blockItem.record),null,'Edit') + '\n'
 			}
 		}
 	}
