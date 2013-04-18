@@ -153,7 +153,7 @@ function BLOCK_save(event) {
 		var blockItem = _blockList[i]
 		
 		if (blockItem) {
-			globals.CMS.ui.setData(event,_blockList[i].key,JSON.stringify(_blockList[i].record),null,'\t')
+			globals.CMS.ui.setData(event,_blockList[i].key,JSON.stringify(_blockList[i].record,null,'\t'))
 		}
 	}
 }
@@ -265,8 +265,8 @@ function MRKP_textBox(fieldSet) {
 			var field = fieldSet[i]
 			
 			// only use x amount of characters
-			if (typeof field.maxChars == 'number' && field.data) {
-				var text = field.data.substr(0,field.maxChars)
+			if (typeof field.chars == 'number' && field.data) {
+				var text = field.data.substr(0,field.chars)
 			}
 			else {
 				var text = MRKP__null_check(field.data)
