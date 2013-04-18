@@ -1234,7 +1234,7 @@ function WEBc_markup_link_internal(markup,siteURL,linkType,areaID,obj) {
 	}
 	
 	//tack on add new record button if editable
-	if (linkType == 'Edit') {
+	if (linkType == 'Edit' && areaID instanceof UUID) {
 		var area = databaseManager.getFoundSet("sutra_cms","web_area")
 		area.find()
 		area.id_area = areaID

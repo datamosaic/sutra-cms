@@ -238,7 +238,9 @@ function REC_on_select(event) {
 			forms.WEB_0F_block_type__builder.ACTION_manage_view(formName,column_name,application.getValueListDisplayValue('WEB_block_builder_field_type',column_type))
 			
 			//punch data in
-			forms[formName].INIT_data(fieldData)
+			if (forms[formName]) {
+				forms[formName].INIT_data(fieldData)
+			}
 		}
 		//no data here
 		else {
