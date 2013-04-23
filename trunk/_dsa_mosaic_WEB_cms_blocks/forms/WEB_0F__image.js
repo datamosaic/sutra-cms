@@ -106,7 +106,7 @@ function BLOCK_scale(event) {
 	//only run in edit mode
 	if (globals.CMS.ui.getEdit()) {
 		var fsAssetInstance = databaseManager.getFoundSet('sutra_cms','web_asset_instance')
-		fsAssetInstance.loadRecords([application.getUUID(globals.CMS.ui.getData(event).id_asset_instance)])
+		fsAssetInstance.loadRecords([application.getUUID(globals.CMS.ui.getData(controller.getName()).id_asset_instance)])
 		var recAsset = fsAssetInstance.web_asset_instance_to_asset.getRecord(1)
 		
 		var newAsset = forms.WEB_0F_asset__image.ASSET_scale(recAsset,true)
