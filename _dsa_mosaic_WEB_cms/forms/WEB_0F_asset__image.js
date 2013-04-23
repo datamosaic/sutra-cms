@@ -23,7 +23,7 @@ var _editMode = false;
 function ASSET_scale(assetRecord,editMode) {
 	var fidForm = 'WEB_0F_asset__image__P_scale'
 	
-	if (!assetRecord.data) {
+	if (!assetRecord instanceof JSRecord) {
 		assetRecord = foundset.getSelectedRecord()
 	}
 	
