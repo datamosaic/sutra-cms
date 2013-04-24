@@ -47,7 +47,7 @@ function REC_on_select(event,webMode,skipLoad,verIndex,fireSelect) {
 			
 			//record not clicked on before, throw up busy bar and busy cursor
 			var record = forms[formName].foundset.getRecord(rowSelected)
-			if (navigationPrefs.byNavItemID[currentNavItem].navigationItem.initialRecord && !navigationPrefs.byNavItemID[currentNavItem].listData.visitedPKs[record[pkName]]) {
+			if (record && navigationPrefs.byNavItemID[currentNavItem].navigationItem.initialRecord && !navigationPrefs.byNavItemID[currentNavItem].listData.visitedPKs[record[pkName]]) {
 				var recNotLoaded = true
 				
 				//don't turn busy indicator on if it is already on
@@ -336,13 +336,13 @@ function SPLIT_set(editMode) {
 		if (editLocation) {
 			elements.bean_split.leftComponent	= elements.bn_browser
 			elements.bean_split.rightComponent	= elements.tab_editor
-			elements.bean_split.dividerLocation	= elements.bean_split.getWidth() - 300
+			elements.bean_split.dividerLocation	= elements.bean_split.getWidth() - 400
 		}
 		//bottom location
 		else {
 			elements.bean_split.topComponent	= elements.bn_browser
 			elements.bean_split.bottomComponent	= elements.tab_editor
-			elements.bean_split.dividerLocation	= elements.bean_split.getHeight() - 250
+			elements.bean_split.dividerLocation	= elements.bean_split.getHeight() / 2
 		}
 		
 		elements.bean_split.dividerSize = 8
