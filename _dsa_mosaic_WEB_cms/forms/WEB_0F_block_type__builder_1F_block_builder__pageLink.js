@@ -24,9 +24,23 @@ var _required = null;
 /**
  * @type {String}
  *
+ * @properties={typeid:35,uuid:"EA64C3B3-CC79-4A58-BC76-B9BA7D9BED28"}
+ */
+var _link_attributes = null;
+
+/**
+ * @type {String}
+ *
  * @properties={typeid:35,uuid:"EA64B3B3-CC79-4A58-BC76-B9BA7D9BED28"}
  */
 var _link_data = null;
+
+/**
+ * @type {String}
+ *
+ * @properties={typeid:35,uuid:"328E51ED-3384-4BDF-8458-3250BBB83248"}
+ */
+var _link_data_display = null;
 
 /**
  * @type {String}
@@ -79,12 +93,26 @@ var _name_pre = null;
 
 /**
  * @properties={typeid:24,uuid:"AA125E2A-BA39-4D57-A9B5-D802FD882324"}
+ * @AllowToRunInFind
  */
 function INIT_data(row) {
+	if (row.link.data) {
+		var fsPage = databaseManager.getFoundSet('sutra_cms','web_page')
+		fsPage.find()
+		fsPage.id_page = row.link.data
+		var results = fsPage.search()
+		
+		if (results) {
+			var pageName = fsPage.page_name
+		}
+	}
+	
 	_required = row.required
 	_repeatable = row.repeatable
 	
+	_link_attributes = row.link.attributes
 	_link_data = row.link.data
+	_link_data_display = pageName || ''
 	_link_label = row.link.label
 	_link_pre = row.link.wrapper.pre
 	_link_post = row.link.wrapper.post
@@ -99,12 +127,23 @@ function INIT_data(row) {
 }
 
 /**
- * Perform the element default action.
- *
- * @param {JSEvent} event the event that triggered the action
+ *  @param {JSEvent} event the event that triggered the action
+ *  @param {JSRecord<db:/sutra_cms/web_page>} [record]
  *
  * @properties={typeid:24,uuid:"1F26665C-5D17-4EEE-9289-1283AE8F3EF9"}
  */
-function PICK_page(event) {
-	// TODO Auto-generated method stub
+function PICK_page(event,record) {
+	if (event instanceof JSEvent) {
+		globals.WEBc_page_picker(PICK_page,elements.var_link_wrapper_post)
+	}
+	else {
+		//display
+		_link_data = event
+		_link_data_display = record.page_name
+		
+		//save in backend (see WEB_block_builder__data_change)
+		var value = JSON.parse(column_value)
+		value.link.data = _link_data
+		column_value = JSON.stringify(value,null,'\t')
+	}
 }

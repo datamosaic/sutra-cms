@@ -10,6 +10,13 @@ var _license_dsa_mosaic_WEB_cms = 'Module: _dsa_mosaic_WEB_cms_blocks \
 /**
  * @type {String}
  *
+ * @properties={typeid:35,uuid:"5EB60AEA-554D-4DF2-91A7-0ABAACBB1B32"}
+ */
+var _link_attributes = null;
+
+/**
+ * @type {String}
+ *
  * @properties={typeid:35,uuid:"5EB60DEA-554D-4DF2-91A7-0ABAACBB1B32"}
  */
 var _link_data = null;
@@ -84,6 +91,7 @@ function INIT_data(row) {
 	_required = row.required
 	_repeatable = row.repeatable
 	
+	_link_attributes = row.link.attributes
 	_link_data = row.link.data
 	_link_label = row.link.label
 	_link_pre = row.link.wrapper.pre
@@ -96,15 +104,4 @@ function INIT_data(row) {
 	
 	//
 	
-}
-
-/**
- * Perform the element default action.
- *
- * @param {JSEvent} event the event that triggered the action
- *
- * @properties={typeid:24,uuid:"E72857FE-9FC1-4B41-A78D-4E254491A5CA"}
- */
-function PICK_page(event) {
-	// TODO Auto-generated method stub
 }

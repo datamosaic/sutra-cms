@@ -18,16 +18,16 @@ var BUILDER = {
 	textArea	: { type: "textArea", order : null, required : null, repeatable: null, htmlAllow: null,
 						label : null, wrapper : { pre : null, post : null }, data : null },
 	image		: { type: "image", order : null, required : null, repeatable: null, 
-						image : { label: null, wrapper : { pre : null, post : null }, data : null },
-						link:  { label: null, wrapper : { pre : null, post : null }, data : null },
+						image : { label: null, wrapper : { pre : null, post : null }, attributes: null, data : null },
+						link:  { label: null, wrapper : { pre : null, post : null }, attributes: null, data : null },
 						resizing: { label: null, data : null } }, 
 	fileDownload: { type: "fileDownload", order : null, required : null, repeatable: null,
-						label : null, wrapper : { pre : null, post : null }, data : null },				
+						label : null, wrapper : { pre : null, post : null }, attributes: null, data : null },				
 	pageLink	: { type: "pageLink", order : null, required : null, repeatable: null,
-						link : { label : null, wrapper : { pre : null, post : null }, data : null },
+						link : { label : null, wrapper : { pre : null, post : null }, attributes: null, data : null },
 						name : { label : null, wrapper : { pre : null, post : null }, data : null }},							
 	externalURL : { type: "externalURL", order : null, required : null, repeatable: null, 
-						link : { label : null, wrapper : { pre : null, post : null }, data : null },
+						link : { label : null, wrapper : { pre : null, post : null }, attributes: null, data : null },
 						name : { label : null, wrapper : { pre : null, post : null }, data : null }},
 	datePicker	: { type: "datePicker", order : null, required : null, repeatable: null, 
 						label : null, wrapper : { pre : null, post : null }, format : null, data : null },
@@ -335,7 +335,18 @@ function MRKP_image(fieldSet) {
 		for (var i = 0; i < fieldSet.length; i++) {
 			var field = fieldSet[i]
 			
-			markup += '<img src="' + "{DS:IMG_" + MRKP__null_check(field.data) + "}" + '" />'
+			var img = ''
+			img += MRKP__null_check(field.image.wrapper.pre) + '<img src="{DS:IMG_' + MRKP__null_check(field.image.data) + '}" ' + MRKP__null_check(field.image.attributes) + '/>'
+			img += MRKP__null_check(field.image.wrapper.post)
+			
+			if (field.link && field.link.data) {
+				markup += MRKP__null_check(field.link.wrapper.pre) + '<a href="' + MRKP__null_check(field.link.data) + '" ' + MRKP__null_check(field.link.attributes) + '>'
+				markup += img
+				markup += '</a>' + MRKP__null_check(field.link.wrapper.post)
+			}
+			else {
+				markup = img
+			}
 		}
 	}
 	
@@ -389,7 +400,7 @@ function MRKP_pageLink(fieldSet) {
 			var field = fieldSet[i]
 			
 			if (field.link && field.link.data) {
-				markup += MRKP__null_check(field.link.wrapper.pre) + '<a href="' + '{DS:ID_' + MRKP__null_check(field.link.data) + '}">'
+				markup += MRKP__null_check(field.link.wrapper.pre) + '<a href="' + '{DS:ID_' + MRKP__null_check(field.link.data) + '}" ' + MRKP__null_check(field.link.attributes) + '>'
 				markup += MRKP__null_check(field.name.wrapper.pre) + MRKP__null_check(field.name.data,'{DS:NAME_' + MRKP__null_check(field.link.data) + '}') + MRKP__null_check(field.name.wrapper.post)
 				markup += '</a>' + MRKP__null_check(field.link.wrapper.post)
 			}
@@ -419,7 +430,7 @@ function MRKP_externalURL(fieldSet) {
 		for (var i = 0; i < fieldSet.length; i++) {
 			var field = fieldSet[i]
 			
-			markup += MRKP__null_check(field.link.wrapper.pre) + '<a href="' + MRKP__null_check(field.link.data) + '">'
+			markup += MRKP__null_check(field.link.wrapper.pre) + '<a href="' + MRKP__null_check(field.link.data) + '" ' + MRKP__null_check(field.link.attributes) + '>'
 			markup += MRKP__null_check(field.name.wrapper.pre) + MRKP__null_check(field.name.data,field.link.data) + MRKP__null_check(field.name.wrapper.post)
 			markup += '</a>' + MRKP__null_check(field.link.wrapper.post)
 		}
