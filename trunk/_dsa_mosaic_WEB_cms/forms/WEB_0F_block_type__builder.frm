@@ -134,10 +134,10 @@ uuid:"AF2D1140-4233-493E-A53D-71FB38F64195"
 {
 anchors:15,
 formIndex:9998,
-location:"0,32",
+location:"0,33",
 name:"tab_detail",
 printable:false,
-size:"575,261",
+size:"575,260",
 tabOrientation:-1,
 tabSeq:8,
 transparent:true,

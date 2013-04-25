@@ -10,6 +10,13 @@ var _license_dsa_mosaic_WEB_cms = 'Module: _dsa_mosaic_WEB_cms_blocks \
 /**
  * @type {String}
  *
+ * @properties={typeid:35,uuid:"EA3143E8-02C0-42A7-B3BE-0DF28FE092CF"}
+ */
+var _attributes = null;
+
+/**
+ * @type {String}
+ *
  * @properties={typeid:35,uuid:"4A4BF373-4DAA-4C77-B2A1-4967314ED01A"}
  */
 var _data = null;
@@ -53,6 +60,7 @@ var _required = null;
  * @properties={typeid:24,uuid:"1ABDC5A1-D0C8-453C-B994-D2E04E56DC17"}
  */
 function INIT_data(row) {
+	_attributes = row.attributes
 	_data = row.data
 	_label = row.label
 	_pre = row.wrapper.pre

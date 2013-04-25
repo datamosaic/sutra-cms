@@ -6,6 +6,12 @@
 var _license_dsa_mosaic_WEB_cms_blocks = 'Module: _dsa_mosaic_WEB_cms_blocks \
 									Copyright (C) 2011-2013 Data Mosaic \
 									MIT Licensed';
+/**
+ * @type {String}
+ *
+ * @properties={typeid:35,uuid:"DA804FC6-D16B-4AB4-9D94-4092FA40DA9A"}
+ */
+var _link = null;
 
 /**
  * @type {String}
@@ -39,14 +45,15 @@ function INIT_data(data,html) {
 		    if (row.data) {
 				var fsAssetInstance = databaseManager.getFoundSet('sutra_cms','web_asset_instance')
 				fsAssetInstance.find()
-				fsAssetInstance.id_asset_instance = row.data
+				fsAssetInstance.id_asset_instance = row.image.data
 				var fileFound = fsAssetInstance.search()
 			}
 		    
 		    _file = (fileFound) ? fsAssetInstance.asset_title : ''
 		    _directory = (fileFound) ? fsAssetInstance.asset_directory : ''
 		    
-			elements.lbl_label.text = row.label || solutionModel.getForm(controller.getName()).getLabel('lbl_label').text
+		    elements.lbl_link.text = row.link.label || solutionModel.getForm(controller.getName()).getLabel('lbl_link').text
+			elements.lbl_image.text = row.image.label || solutionModel.getForm(controller.getName()).getLabel('lbl_image').text
 		}
 	}
 	
@@ -62,6 +69,26 @@ function INIT_data(data,html) {
 	else {
 		globals.WEBc_browser_error()
 	}
+}
+
+/**
+ * Handle changed data.
+ *
+ * @param {Object} oldValue old value
+ * @param {Object} newValue new value
+ * @param {JSEvent} event the event that triggered the action
+ *
+ * @returns {Boolean}
+ *
+ * @properties={typeid:24,uuid:"FDBE875B-D3D9-4FF1-992E-C3AC6D444B81"}
+ */
+function onDataChange(oldValue, newValue, event) {
+	var elemName = event.getElementName().split('_')
+	var varName = elemName[1]
+	var posn = elemName[2]
+	
+	var data = forms.WEB_0F__block_builder._blockList[forms.WEB_0F__block_builder._blockSelected]
+	data.record[varName].data = newValue
 }
 
 /**
@@ -115,7 +142,7 @@ function BLOCK_choose(event) {
 		
 			if (assetRec) {
 				application.updateUI()
-				forms.WEB_0F__block_builder._blockList[forms.WEB_0F__block_builder._blockSelected].record.data = assetRec.id_asset_instance.toString()
+				forms.WEB_0F__block_builder._blockList[forms.WEB_0F__block_builder._blockSelected].record.image.data = assetRec.id_asset_instance.toString()
 				_file = assetRec.asset_title
 				_directory = assetRec.asset_directory
 				 

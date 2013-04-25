@@ -6,6 +6,12 @@
 var _license_dsa_mosaic_WEB_cms = 'Module: _dsa_mosaic_WEB_cms_blocks \
 									Copyright (C) 2011-2013 Data Mosaic \
 									MIT Licensed';
+/**
+ * @type {String}
+ *
+ * @properties={typeid:35,uuid:"74ADDA9A-F40A-4297-95B4-03C264D99C9E"}
+ */
+var _image_attributes = null;
 
 /**
  * @type {String}
@@ -34,6 +40,13 @@ var _image_post = null;
  * @properties={typeid:35,uuid:"2192DE0E-820D-4497-8FA8-BFACD82E2652"}
  */
 var _image_pre = null;
+
+/**
+ * @type {String}
+ *
+ * @properties={typeid:35,uuid:"F0808521-AE61-49E3-B2D5-2AF31302F312"}
+ */
+var _link_attributes = null;
 
 /**
  * @type {String}
@@ -98,11 +111,13 @@ function INIT_data(row) {
 	_required = row.required
 	_repeatable = row.repeatable
 	
+	_image_attributes = row.image.attributes
 	_image_data = row.image.data
 	_image_label = row.image.label
 	_image_pre = row.image.wrapper.pre
 	_image_post = row.image.wrapper.post
 	
+	_link_attributes = row.link.attributes
 	_link_data = row.link.data
 	_link_label = row.link.label
 	_link_pre = row.link.wrapper.pre
