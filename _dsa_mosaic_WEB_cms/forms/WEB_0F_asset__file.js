@@ -31,37 +31,74 @@ function INIT_asset() {
  * @properties={typeid:24,uuid:"8B9BBDD7-FB8F-4B2D-9790-E308D20CFB40"}
  */
 function ASSET_actions(input,assetRecord) {
-//	//menu items
-//	var valuelist = new Array(
-//					'Scale image'
-//				)
-//	
-//	//called to depress menu
-//	if (input instanceof JSEvent) {
-//		//set up menu with arguments
-//		var menu = new Array()
-//		
-//		for ( var i = 0 ; i < valuelist.length ; i++ ) {
-//			menu[i] = plugins.popupmenu.createMenuItem(valuelist[i],ASSET_actions)
-//			
-//			menu[i].setMethodArguments(i,assetRecord)
-//			
-//			if (menu[i].text == '----') {
-//				menu[i].setEnabled(false)
-//			}
-//		}
-//		//popup
-//		var elem = forms[input.getFormName()].elements[input.getElementName()]
-//		if (elem != null) {
-//			plugins.popupmenu.showPopupMenu(elem, menu)
-//		}
-//	}
-//	//menu shown and item chosen
-//	else {
-//		switch( input ) {
-//			case 0:	//
-//				ASSET_scale(assetRecord)
-//				break
-//		}
-//	}
+	//menu items
+	var valuelist = new Array(
+					'Copy link'
+				)
+	
+	//called to depress menu
+	if (input instanceof JSEvent) {
+		//set up menu with arguments
+		var menu = new Array()
+		
+		for ( var i = 0 ; i < valuelist.length ; i++ ) {
+			menu[i] = plugins.popupmenu.createMenuItem(valuelist[i],ASSET_actions)
+			
+			menu[i].setMethodArguments(i,assetRecord)
+			
+			if (menu[i].text == '----') {
+				menu[i].setEnabled(false)
+			}
+		}
+		//popup
+		var elem = forms[input.getFormName()].elements[input.getElementName()]
+		if (elem != null) {
+			plugins.popupmenu.showPopupMenu(elem, menu)
+		}
+	}
+	//menu shown and item chosen
+	else {
+		switch( input ) {
+			case 0:	//
+				ASSET_copy_link(assetRecord)
+				break
+		}
+	}
 }
+
+
+/**
+ * @param	{JSRecord}	[assetRecord] Record that we are working with
+ * @param	{Boolean}	[editMode] Save data or leave in pseudo-transaction
+ * 
+ * @properties={typeid:24,uuid:"C37CDF64-0B6B-4908-9DD2-52593E9A0F1D"}
+ */
+function ASSET_copy_link(assetRecord,editMode) {
+	
+	if (!assetRecord instanceof JSRecord) {
+		assetRecord = foundset.getSelectedRecord()
+	}
+	
+	if (editMode) {
+		_editMode = true
+	}
+	else {
+		_editMode = false
+	}
+	
+	//save outstanding data and turn autosave off
+	if (!_editMode) {
+		databaseManager.saveData()
+		databaseManager.setAutoSave(false)
+	}
+	
+	//get default asset instance
+	var srcAsset = assetRecord.web_asset_to_asset_instance__initial.getRecord(1)
+
+	var template 	= '<a href="/{{path}}/{{name}}">LINK</a>'
+	var data		= { path : srcAsset.asset_directory, name : srcAsset.asset_title }
+	var link		= globals.CMS.markup.merge(template,data)
+	
+	application.setClipboardContent(link)
+}
+
