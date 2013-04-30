@@ -43,9 +43,6 @@ function ACTION_edit(event) {
 	elements.highlighter.setLocation(elements.btn_edit.getLocationX() - 5,0)
 	elements.highlighter.visible = true
 	
-	elements.lbl_asset.visible = true
-	elements.btn_asset.visible = true
-	
 	// toggle to browser if not there already
 	if (globals.WEB_page_mode != 3) {
 		MODE_set("Real")
@@ -527,6 +524,8 @@ function ACTION_mode(event) {
 		elements.btn_save.visible = false
 		elements.highlighter.visible = false
 		elements.lbl_detail.visible = false
+		elements.lbl_asset.visible = false
+		elements.btn_asset.visible = false
 //		TOGGLE_group(false)
 		TOGGLE_version(false)
 		TOGGLE_visit(false)
@@ -610,6 +609,9 @@ function ACTION_mode(event) {
 //					TOGGLE_group()
 					TOGGLE_version()	
 					TOGGLE_visit(true)
+					
+					elements.lbl_asset.visible = true
+					elements.btn_asset.visible = true
 				}
 				
 				break
@@ -671,8 +673,6 @@ function ACTION_save(event) {
 	TOGGLE_version()
 	
 	elements.highlighter.visible = false
-	elements.lbl_asset.visible = false
-	elements.btn_asset.visible = false
 	
 	forms.WEB_0F_page__browser.EDIT_off()
 }
@@ -873,9 +873,6 @@ function ACTION_visit(event,returnURL,toClippy) {
  * @properties={typeid:24,uuid:"3DFBF4A6-2167-4F76-8D44-D51BF9289ED9"}
  */
 function ACTION_import(event) {
-	//only run in edit mode
-	if (globals.CMS.ui.getEdit()) {
-		forms.WEB_0C__file_stream.IMAGE_import("images")
-	}
+	forms.WEB_0C__file_stream.IMAGE_import("images")
 }
 
