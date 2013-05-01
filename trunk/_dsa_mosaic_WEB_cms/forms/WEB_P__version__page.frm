@@ -136,7 +136,7 @@ typeid:7,
 uuid:"AC44FC39-3A09-4DFF-B88F-A06A3611D437"
 },
 {
-anchors:11,
+anchors:14,
 dataProviderID:"_versionType",
 displayType:3,
 formIndex:10600,
