@@ -19,9 +19,9 @@ var formName = 'WEB_P__asset_1L_asset'
 forms[formName].controller.find()
 	
 	if (_assetName) {forms[formName].asset_name = '%' + _assetName + '%'}
-	forms[formName].asset_type = forms.WEB_P__asset._assetType
-
-var results = forms[formName].controller.search()
+	if (forms.WEB_P__asset._assetType) {forms[formName].asset_type = forms.WEB_P__asset._assetType}
+	forms[formName].id_site = forms.WEB_0F_site.id_site
+	var results = forms[formName].controller.search()
 
 }
 
@@ -46,30 +46,4 @@ function FILTER_clear()
 function FORM_on_show(firstShow)
 {
 
-/*
- *	TITLE    :	FORM_on_show
- *			  	
- *	MODULE   :	rsrc_TIP_tooltip
- *			  	
- *	ABOUT    :	
- *			  	
- *	INPUT    :	
- *			  	
- *	OUTPUT   :	
- *			  	
- *	REQUIRES :	
- *			  	
- *	USAGE    :	FORM_on_show()
- *			  	
- *	MODIFIED :	March 8, 2009 -- Troy Elliott, Data Mosaic
- *			  	
- */
-
-if (firstShow) {
-	// make sure sutra_solution record is loaded
-	
-	FILTER_clear()
-	
-	
-}
 }
