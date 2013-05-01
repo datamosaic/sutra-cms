@@ -139,8 +139,11 @@ function TOGGLE_visit(shown) {
  */
 function TOGGLE_version(showVersion) {
 	if (typeof showVersion != 'boolean') {
-		var versions = application.getValueListItems('WEB_page_version')
-		showVersion = (versions.getMaxRowIndex() > 1) ? true : false
+		//only show button when more than one version
+//		var versions = application.getValueListItems('WEB_page_version')
+//		showVersion = (versions.getMaxRowIndex() > 1) ? true : false
+		//need button to create versions even when only one
+		showVersion = true
 	}
 	
 	elements.btn_versions.visible = showVersion
@@ -151,7 +154,7 @@ function TOGGLE_version(showVersion) {
 /**
  * Perform the element default action.
  *
- * @param {JSEvent} event the event that triggered the action
+ * @param {JSEvent} input the event that triggered the action
  *
  * @properties={typeid:24,uuid:"96F08190-4E9C-47EE-9FA2-638627C39748"}
  */
@@ -256,13 +259,13 @@ function ACTION_version(input) {
 			
 			switch (input) {
 				case 'New':
-					forms.WEB_0F_page__design_1F__header_display__version.ADD_version(event)
+					forms.WEB_0F_page__design_1F__header_display__version.ADD_version()
 					break
 				case 'Lock':
-					forms.WEB_0F_page__design_1F__header_display__version.LOCK_version(event)
+					forms.WEB_0F_page__design_1F__header_display__version.LOCK_version()
 					break
 				case 'Unlock':
-					forms.WEB_0F_page__design_1F__header_display__version.LOCK_version(event)
+					forms.WEB_0F_page__design_1F__header_display__version.LOCK_version()
 					break
 				case 'Activate':
 					pseudoEvent.getElementName = function() {return 'btn_check_off'}
