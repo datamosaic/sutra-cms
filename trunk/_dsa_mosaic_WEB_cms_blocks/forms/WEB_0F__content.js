@@ -371,22 +371,36 @@ function ACTION_pop_toolbar(event) {
  * Perform the element default action.
  *
  * @param {JSEvent} event the event that triggered the action
+ * @param blah1
+ * @param blah2
+ * @param blah3
+ * @param blah4
+ * @param {Number} assetType
  *
  * @properties={typeid:24,uuid:"E285B1BC-2924-477D-8F4C-D8B94FCF01A6"}
  */
-function ACTION_insert_image(event) {
+function ACTION_insert_image(event,blah1,blah2,blah3,blah4,assetType) {
 	//when right clicked, give a moment to grab focus elsewhere
-	if (event instanceof JSEvent && event.getType() == JSEvent.RIGHTCLICK) {
+	if (event instanceof JSEvent) {
 		var elem = elements[event.getElementName()]
 		
 		var menu = plugins.window.createPopupMenu()
 		menu.addMenuItem("Show image picker").setMethod(ACTION_insert_image)
+		menu.addMenuItem("Show file picker").setMethod(ACTION_insert_image).methodArguments = [2]
+		menu.addSeparator()
+		menu.addMenuItem("Show group picker").setMethod(ACTION_insert_image).methodArguments = [3]
 		
 		menu.show(elem)
 		return
 	}
 	
-	forms.WEB_P__asset.LOAD_data(1)
+	//work with images if nothing specified
+	if (!assetType) {
+		assetType = 1
+	}
+	
+	//default to image unless something else specified
+	forms.WEB_P__asset.LOAD_data(assetType)
 	
 	globals.CODE_form_in_dialog(
 				forms.WEB_P__asset,
@@ -399,13 +413,31 @@ function ACTION_insert_image(event) {
 	
 	//something chosen, insert image link at cursor location
 	if (forms.WEB_P__asset._assetChosen) {
-		var image = forms.WEB_P__asset._assetChosen
-		var token = globals.CMS.token.getImage(image.asset).link
-		
-		var html = '<img src="' + token + '" width="' + image.meta.width + '" height="' + image.meta.height + '" alt="' + image.asset.asset_title +'">'
-		
-		var js = "tinyMCE.execCommand('mceInsertContent', false, '" + html + "');"
-		elements.bn_tinymce.executeJavaScript(js)
+		switch (assetType) {
+			case 1:	//image
+				var image = forms.WEB_P__asset._assetChosen
+				var token = globals.CMS.token.getImage(image.asset).link
+				
+				var html = '<img src="' + token + '" width="' + image.meta.width + '" height="' + image.meta.height + '" alt="' + image.asset.asset_title +'">'
+				
+				var js = "tinyMCE.execCommand('mceInsertContent', false, '" + html + "');"
+				elements.bn_tinymce.executeJavaScript(js)
+				break
+			case 2:	//file
+			case 3:	//group
+				var file = forms.WEB_P__asset._assetChosen
+				var token = globals.CMS.token.getFile(file.asset).link
+				
+				var js = "tinyMCE.execCommand('mceInsertLink', false, '" + token + "');"
+				
+//				var html = '<a href="' + token + '" name="' + file.asset.asset_title +'">'
+//				var js = "tinyMCE.execCommand('mceInsertContent', false, '" + html + "');"
+//				application.output(elements.bn_tinymce.executeJavaScriptWithResult(js))
+
+				elements.bn_tinymce.executeJavaScript(js)
+
+				break
+		}
 	}
 }
 
