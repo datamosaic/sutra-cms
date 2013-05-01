@@ -477,9 +477,7 @@ function FORM_on_show(firstShow, event) {
 		_pageName = _recLanguage.page_name
 		
 		//if there is a theme set, populate layout valuelist
-		if (_idTheme) {
-			SET_valuelist_layout()
-		}
+		SET_valuelist_layout()
 	}
 	//when adding a record, blow in defaults
 	else {
@@ -494,9 +492,6 @@ function FORM_on_show(firstShow, event) {
 			//set theme
 			_idTheme = _siteDefaults.platform.id_theme
 			
-			//set valuelist for default layout
-			SET_valuelist_layout()
-			
 			//set layout
 			if (utils.hasRecords(_siteDefaults.platform.web_site_platform_to_layout)) {
 				_idLayout = _siteDefaults.platform.id_layout
@@ -505,6 +500,8 @@ function FORM_on_show(firstShow, event) {
 			//set flag that theme has been set and all areas should be blown in
 			_themeSet = 1
 		}
+		//set valuelist for default layout (null out if no theme selected)
+		SET_valuelist_layout()		
 		
 		//fill in language defaults (page name and seo)
 		_idSiteLanguage = _siteDefaults.language.id_site_language
@@ -630,20 +627,21 @@ function FLD_data_change__id_theme_layout(oldValue, newValue, event) {
  * @AllowToRunInFind
  */
 function SET_valuelist_layout() {
-	//grab the layouts for this platform
-	var fsLayout = databaseManager.getFoundSet('sutra_cms','web_layout')
-	fsLayout.find()
-	fsLayout.id_theme = _idTheme
-	var results = fsLayout.search()
+	var layoutNames = new Array()
+	var layoutIDs = new Array()
 	
-	if (results) {
-		fsLayout.sort('layout_name asc')
-		var layoutNames = databaseManager.getFoundSetDataProviderAsArray(fsLayout,'layout_name')
-		var layoutIDs = databaseManager.getFoundSetDataProviderAsArray(fsLayout,'id_layout')
-	}
-	else {
-		var layoutNames = new Array()
-		var layoutIDs = new Array()
+	if (_idTheme) {
+		//grab the layouts for this platform
+		var fsLayout = databaseManager.getFoundSet('sutra_cms','web_layout')
+		fsLayout.find()
+		fsLayout.id_theme = _idTheme
+		var results = fsLayout.search()
+		
+		if (results) {
+			fsLayout.sort('layout_name asc')
+			layoutNames = databaseManager.getFoundSetDataProviderAsArray(fsLayout,'layout_name')
+			layoutIDs = databaseManager.getFoundSetDataProviderAsArray(fsLayout,'id_layout')
+		}
 	}
 	
 	//populate layout valuelist
