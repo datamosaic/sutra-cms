@@ -74,7 +74,7 @@ function ACTION_ok() {
 /**
  *	Only show the type of data interested in selecting
  * 
- * @param	{Integer}	assetType Type of asset to select (1 image, 2 file, etc)
+ * @param	{Number}	assetType Type of asset to select (1 image, 2 file, etc)
  * 
  * @properties={typeid:24,uuid:"BE1F62DB-1D14-464C-96F5-1A8D252C761B"}
  * @AllowToRunInFind
@@ -82,41 +82,25 @@ function ACTION_ok() {
 function LOAD_data(assetType) {
 	var fsAsset = forms.WEB_P__asset_1L_asset.foundset
 	
-	//asset type specified, only show those records
-	if (assetType) {
-		//remember what kind of asset we're working with
-		_assetType = assetType
-		
-		//only load up requested assets, scope by site
-		fsAsset.find()
-		fsAsset.asset_type = assetType
-		fsAsset.id_site = forms.WEB_0F_site.id_site
-		var results = fsAsset.search()
-		
-		//set title text
-		elements.lbl_heading.text = 'Choose ' + application.getValueListDisplayValue('WEB_asset_type',assetType)
-		
-		//show preview
-		if (assetType == 1) {
-			forms.WEB_P__asset_1L_asset.elements.fld_thumb.visible = true
-		}
-		//hide preview
-		else {
-			forms.WEB_P__asset_1L_asset.elements.fld_thumb.visible = false
-		}
-	}
-	//no asset type specified, show everything all together
-	else {
-		//no particular asset type
-		_assetType = null
-		
-		fsAsset.loadAllRecords()
-		
-		//set title text
-		elements.lbl_heading.text = 'Choose Asset'
-		
-		//show preview
+	//remember what kind of asset we're working with
+	_assetType = assetType
+	
+	//only load up requested assets, scope by site
+	fsAsset.find()
+	if (assetType) {fsAsset.asset_type = assetType}
+	fsAsset.id_site = forms.WEB_0F_site.id_site
+	var results = fsAsset.search()
+	
+	//set title text
+	elements.lbl_heading.text = 'Choose ' + (assetType ? application.getValueListDisplayValue('WEB_asset_type',assetType) : 'Asset')
+	
+	//show preview
+	if (assetType == 1 || !assetType) {
 		forms.WEB_P__asset_1L_asset.elements.fld_thumb.visible = true
+	}
+	//hide preview
+	else {
+		forms.WEB_P__asset_1L_asset.elements.fld_thumb.visible = false
 	}
 	
 	//close form in dialog or warn if nothing
@@ -126,10 +110,11 @@ function LOAD_data(assetType) {
 }
 
 /**
- *
+ * @param {Boolean} firstShow
+ * 
  * @properties={typeid:24,uuid:"F9CB0AE8-38FD-48C2-82B8-1804803BDA80"}
  */
-function FORM_on_show() {
+function FORM_on_show(firstShow) {
 	//disable closing the form
 	globals.CODE_hide_form = 0
 	
