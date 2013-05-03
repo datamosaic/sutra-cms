@@ -95,7 +95,7 @@ function ASSET_copy_link(assetRecord,editMode) {
 	//get default asset instance
 	var srcAsset = assetRecord.web_asset_to_asset_instance__initial.getRecord(1)
 
-	var template 	= '<a href="/{{path}}/{{name}}">LINK</a>'
+	var template 	= '/{{path}}/{{name}}'
 	var data		= { path : srcAsset.asset_directory, name : srcAsset.asset_title }
 	var link		= globals.CMS.markup.merge(template,data)
 	
