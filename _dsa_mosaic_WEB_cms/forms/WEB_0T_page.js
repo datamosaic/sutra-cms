@@ -89,7 +89,8 @@ function ACTIONS_list() {
 			'-',
 //			'Delete all unnamed pages',
 //			'-',
-			'Flush client cache'
+			'Flush client cache',
+			'Cache page'
 		]
 	
 	//get site record for this page; or the record selected on the site form; or blank
@@ -316,6 +317,10 @@ function ACTIONS_list_control(input,scopeType,scopeValue) {
 				plugins.rawSQL.flushAllClientsCache('sutra_cms', tables[i])
 			}
 			globals.CODE_cursor_busy(false)
+			break
+		case 11: // cache page
+			var success = scopes.CMS.utils.setCache(forms.WEB_0F_page.id_page)
+			application.updateUI()
 			break
 		
 //		case 11: //reset tree
