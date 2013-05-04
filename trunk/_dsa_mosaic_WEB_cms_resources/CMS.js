@@ -143,15 +143,16 @@ var utils = {
 			// error: something happened grabbing page
 			_error.code		= "303"
 			_error.message	= "Problem with http page request"
+			return _error
 		}
 		
 		// get cache attribute record, create if needed
 		var cacheRec
-		if ( !utils.hasRecords(pageRec.web_page_to_attribute__cache) ) {
-			cacheRec = pageRec.web_page_to_attribute__cache.newRecord()
+		if ( pageRec.web_page_to_attribute__cache.getSize() == 0 ) {
+			cacheRec = pageRec.web_page_to_attribute__cache.getRecord(pageRec.web_page_to_attribute__cache.newRecord())
 		}
 		else {
-			cacheRec = pageRec.web_page_to_attribute__cache.getRecord(0)
+			cacheRec = pageRec.web_page_to_attribute__cache.getRecord(1)
 		}
 		
 		// store pageData
