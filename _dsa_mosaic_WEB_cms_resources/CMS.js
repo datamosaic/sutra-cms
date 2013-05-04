@@ -12,6 +12,7 @@ var _cache = "cache"
 /**
  * Error object template
  * 
+ * @protected 
  * @properties={typeid:35,uuid:"DBE7242D-E0BA-4D80-A66B-F47C0D7E02BD",variableType:-4}
  */
 var _error = { code : null, message : null }
@@ -32,7 +33,7 @@ var utils = {
 		// get page record
 		var pageRec = scopes.CMS.utils.getPageRecord(page)
 		
-		if ( pageRec instanceof "object" ) {
+		if ( typeof pageRec == "object" ) {
 			// error: problem with getting page record
 			return pageRec
 		}
@@ -73,9 +74,9 @@ var utils = {
 	getPageRecord : function(page) {
 
 		// error setup
-		var isString 	= (page instanceof "string")
-		var isUUID		= (page instanceof "UUID")
-		var isRecord	= (page instanceof JSRecord && page.foundset.getDataSource() == 'db:/sutra_cms/web_page')
+		var isString 	= (typeof page == "string")
+		var isUUID		= (!isString && /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(page) )
+		var isRecord	= (!isUUID && typeof page == "object" && page.foundset.getDataSource() == 'db:/sutra_cms/web_page')
 		
 		// init pageRec
 		var pageRec
@@ -122,7 +123,7 @@ var utils = {
 		// get page record
 		var pageRec = scopes.CMS.utils.getPageRecord(page)
 		
-		if ( pageRec instanceof "object" ) {
+		if ( "error" instanceof pageRec ) {
 			// error: problem with getting page record
 			return pageRec
 		}
@@ -130,7 +131,7 @@ var utils = {
 		// get URL
 		var urls = scopes.CMS.utils.getURL(pageRec)
 		
-		if ( urls instanceof "object" ) {
+		if ( "error" instanceof urls ) {
 			// error: no urls
 			return urls
 		}
