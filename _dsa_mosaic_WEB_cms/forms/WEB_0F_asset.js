@@ -28,7 +28,7 @@ function REC_delete() {
 
 	if (input == 'Yes') {
 		//delete all assets when not a group
-		if (asset_type != 3) {
+		if (asset_type != 3 && utils.hasRecords(web_asset_to_asset_instance)) {
 			//grab directory name
 			var directory = web_asset_to_asset_instance__initial.asset_directory
 			var baseDirectory = forms.WEB_0F_install.ACTION_get_install() +
