@@ -7,7 +7,6 @@
  * @properties={typeid:35,uuid:"F1EB3EF6-6AA3-4D87-9EE3-5F714A25F285"}
  */
 var _cache = "cache"
-	
 
 /**
  * Error object template
@@ -24,7 +23,7 @@ var utils = {
 	
 	/**
 	 * Get a CMS page's cache attribute data.
-	 * @returns {String|{code:String,message:String}}
+	 * @returns {Object|{code:String,message:String}}
 	 * 	
 	 * @param {UUID|String|JSRecord<db:/sutra_cms/web_page>} page page to get
 	 */
@@ -33,13 +32,13 @@ var utils = {
 		// get page record
 		var pageRec = scopes.CMS.utils.getPageRecord(page)
 		
-		if ( typeof pageRec == "object" ) {
+		if ( "error" instanceof pageRec ) {
 			// error: problem with getting page record
 			return pageRec
 		}
 		
 		// get attribute record with key = "cache"
-		if ( !utils.hasRecords(pageRec.web_page_to_attribute__cache) ) {
+		if ( pageRec.web_page_to_attribute__cache.getSize() == 0 ) {
 			// error: attribute with key of "cache" doesn't exist for this page
 			_error.code		= "412"
 			_error.message	= "Precondition Failed"
@@ -47,12 +46,14 @@ var utils = {
 		}
 		
 		// return cache
-		return pageRec.web_page_to_attribute__cache.attribute_value
+		/** {{iso:String,content:String}} */
+		var stored = JSON.parse(pageRec.web_page_to_attribute__cache.attribute_value)
+		return stored
 		
 	},
 	/**
 	 * Get all resolving URLs for a page.
- 	 * @returns {String[]|{code:String,message:String}}
+ 	 * @returns {object[]|{code:String,message:String}}
 	 * 	
 	 * @param {JSRecord<db:/sutra_cms/web_page>} page page to get	
 	 */
@@ -62,7 +63,7 @@ var utils = {
 		// 2. get page paths
 		// 3. get urls somehow from record and paths and whatever else
 		
-		return ["http://www.google.com"]
+		return [{ iso: "en", url: "http://www.google.com"}]
 
 	},
 	/**
@@ -120,7 +121,7 @@ var utils = {
 	 */
 	setCache : function(page) {
 		
-		// get page record
+		/** {{JSRecord<db:/sutra_cms/web_page>}} */
 		var pageRec = scopes.CMS.utils.getPageRecord(page)
 		
 		if ( "error" instanceof pageRec ) {
@@ -128,7 +129,8 @@ var utils = {
 			return pageRec
 		}
 		
-		// get URL
+		// get URL (TODO: active for each language)
+		/** @type {object[]|{code:String,message:String}} */
 		var urls = scopes.CMS.utils.getURL(pageRec)
 		
 		if ( "error" instanceof urls ) {
@@ -136,15 +138,19 @@ var utils = {
 			return urls
 		}
 		
-		// get page data
-		try {
-			var pageData = plugins.http.getPageData(urls[0])
-		} catch (e) {
-			// error: something happened grabbing page
-			_error.code		= "303"
-			_error.message	= "Problem with http page request"
-			return _error
-		}
+		// TODO: store pageData for each page language
+		var store = {}
+//		for (var i = 0; i < urls.length; i++) {
+//			// get page data
+//			try {
+//				store[urls[i].iso] = plugins.http.getPageData(urls[i].url)
+//			} catch (e) {
+//				// error: something happened grabbing page
+//				_error.code		= "303"
+//				_error.message	= "Problem with http page request"
+//				return _error
+//			}	
+//		}
 		
 		// get cache attribute record, create if needed
 		var cacheRec
@@ -155,10 +161,12 @@ var utils = {
 			cacheRec = pageRec.web_page_to_attribute__cache.getRecord(1)
 		}
 		
-		// store pageData
-		cacheRec.attribute_value = pageData
+		// temp object until languages implemented
+		store[urls[0].iso] = plugins.http.getPageData(urls[0].url)
+		cacheRec.attribute_value = JSON.stringify(store)
 		databaseManager.saveData(cacheRec)
 		
 		return true
 	}
 }
+
