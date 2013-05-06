@@ -32,7 +32,7 @@ var utils = {
 		// get page record
 		var pageRec = scopes.CMS.utils.getPageRecord(page)
 		
-		if ( "error" instanceof pageRec ) {
+		if ( "code" instanceof pageRec ) {
 			// error: problem with getting page record
 			return pageRec
 		}
@@ -124,7 +124,7 @@ var utils = {
 		/** {{JSRecord<db:/sutra_cms/web_page>}} */
 		var pageRec = scopes.CMS.utils.getPageRecord(page)
 		
-		if ( "error" instanceof pageRec ) {
+		if ( "code" instanceof pageRec ) {
 			// error: problem with getting page record
 			return pageRec
 		}
@@ -133,7 +133,7 @@ var utils = {
 		/** @type {object[]|{code:String,message:String}} */
 		var urls = scopes.CMS.utils.getURL(pageRec)
 		
-		if ( "error" instanceof urls ) {
+		if ( "code" instanceof urls ) {
 			// error: no urls
 			return urls
 		}
