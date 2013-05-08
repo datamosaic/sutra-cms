@@ -624,27 +624,33 @@ function CONTROLLER_setup(results, app, session, request, response, mode, cmsVer
 	obj.cookies = request.getCookies()
 
 	
-	// set flag that we're in edit mode
-	if (mode && mode == 'Edit') {
-		//this makes all links go through index_edit.jsp
-		obj.type = 'Edit'
-		
-		//alert that we're in browser edit mode
-		results.addRow(["cmsMode","Browser Edit Mode"])
-		
-		//edit mode is turned on
-		if (getPairs.webmode == 'edit') {
-			results.addRow(["cmsModeStatus","1"])
+	// set flag that we're in edit/cache mode
+	if (mode) {
+		if (mode == 'Edit') {
+			//this makes all links go through index_edit.jsp
+			obj.type = 'Edit'
+			
+			//alert that we're in browser edit mode
+			results.addRow(["cmsMode","Browser Edit Mode"])
+			
+			//edit mode is turned on
+			if (getPairs.webmode == 'edit') {
+				results.addRow(["cmsModeStatus","1"])
+			}
+			else {
+				results.addRow(["cmsModeStatus","0"])
+			}
+			
+			//variable for easy access
+			var editMode = true
+			
+			// show all block datapoints
+			obj.allblocks	= request.getParameter("showall") ? true : false
 		}
-		else {
-			results.addRow(["cmsModeStatus","0"])
+		else if (mode == 'Cache') {
+			//variable for easy access
+			var cacheMode = true
 		}
-		
-		//variable for easy access
-		var editMode = true
-		
-		// show all block datapoints
-		obj.allblocks	= request.getParameter("showall") ? true : false
 	}
 	
 	// PAGE
@@ -835,7 +841,7 @@ function CONTROLLER_setup(results, app, session, request, response, mode, cmsVer
 	}
 	
 	// publishable...only matters for a live site
-	if ( !editMode && !page.flag_publish ) {
+	if ( !(editMode || cacheMode) && !page.flag_publish ) {
 		obj.error.code = 403
 		obj.error.message = "Page not published"
 		return
@@ -1153,7 +1159,7 @@ function CONTROLLER_setup(results, app, session, request, response, mode, cmsVer
 	//if page requested is using different link type (folder, pretty, index), send redirect so site is uniform
 	var goodLink = globals.WEBc_markup_link_page(page.id_page, null, (editMode ? 'Edit' : null), null, obj)
 	var thisLink = request.getAttribute("javax.servlet.forward.request_uri") || pageURI
-	if (!utils.stringPatternCount(goodLink,thisLink)) {
+	if (!utils.stringPatternCount(goodLink,thisLink) && !cacheMode) {
 		obj.response.record.sendRedirect(goodLink)
 	}
 	

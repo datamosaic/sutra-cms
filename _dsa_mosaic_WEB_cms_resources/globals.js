@@ -1406,7 +1406,12 @@ function WEBc_markup_link_page(pageID, siteURL, linkType, webMode, obj) {
 		switch (linkType) {
 			case "Index":
 				pageLink += 'index.jsp?id=' + pageRec.url_param
+			
+			case "Cache":
+				pageLink += 'index_cache.jsp?id=' + pageRec.url_param
 				
+			case "Index":
+			case "Cache":
 				//rewrite mode turned off and language specified is not the default
 				if (siteLanguageRec && !rewriteMode && !siteLanguageRec.flag_default) {
 					
@@ -1424,8 +1429,8 @@ function WEBc_markup_link_page(pageID, siteURL, linkType, webMode, obj) {
 						pageLink += '&language=' + param
 					}
 				}
-				
 				break
+			
 			case "Folder":
 				//on home page, don't specify a path
 				if (siteRec.id_page__home == pageRec.id_page) {
@@ -1498,6 +1503,7 @@ function WEBc_markup_link_page(pageID, siteURL, linkType, webMode, obj) {
 				
 				pageLink += folder
 				break
+			
 			case "Pretty":
 				//on home page, don't specify a path
 				if (siteRec.id_page__home == pageRec.id_page) {
@@ -1533,6 +1539,7 @@ function WEBc_markup_link_page(pageID, siteURL, linkType, webMode, obj) {
 				
 				pageLink += urlString
 				break
+			
 			case "Edit":
 				//selection set in site tree which will trigger a loading in the main workflow
 				//jQuery changes index_edits to fire servoy callbacks on form load
@@ -1543,6 +1550,7 @@ function WEBc_markup_link_page(pageID, siteURL, linkType, webMode, obj) {
 				}
 				
 				break
+			
 			default:
 				pageLink += 'index.jsp?id=' + pageRec.url_param
 		}
