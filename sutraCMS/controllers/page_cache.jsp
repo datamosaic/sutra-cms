@@ -1,5 +1,5 @@
 <%
-	Object[] obj = new Object[]{application, session, request, response, "Edit"};
+	Object[] obj = new Object[]{application, session, request, response, "Cache"};
 	
 	IDataSet results = (IDataSet)servoy_hc.executeMethod(null,"CONTROLLER", obj);
 
