@@ -2,7 +2,7 @@ allowCreationRelatedRecords:true,
 deleteRelatedRecords:true,
 foreignDataSource:"db:/sutra_cms/web_attribute",
 items:[
-{foreignColumnName:"attribute_key",primaryDataProviderID:"scopes.CMS._cache",typeid:23,uuid:"80CCFA11-C875-4E07-80DF-B58E28DCA50B"},
+{foreignColumnName:"attribute_key",primaryDataProviderID:"LITERAL:'cache'",typeid:23,uuid:"80CCFA11-C875-4E07-80DF-B58E28DCA50B"},
 {foreignColumnName:"id_page",primaryDataProviderID:"id_page",typeid:23,uuid:"A03465DE-0234-4897-9C33-08B263F2A5DA"}
 ],
 joinType:1,
