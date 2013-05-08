@@ -1,0 +1,7 @@
+customValues:"Allow HTML|htmlAllow
+Markdown|markdown",
+name:"WEB_block_builder__textarea",
+returnDataProviders:1,
+showDataProviders:1,
+typeid:34,
+uuid:"F31EBF12-9CDC-4760-9867-2E1CA3B9A35B"
