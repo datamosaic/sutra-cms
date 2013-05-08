@@ -695,7 +695,7 @@ function ACTIVATE_version(event) {
 					
 					//save data when not in edit mode
 					if (!forms.WEB_A__page._editMode) {
-						databaseManager.saveData(selectedVersion)
+						databaseManager.saveData()
 					}
 					
 					//create log record when version set as active
