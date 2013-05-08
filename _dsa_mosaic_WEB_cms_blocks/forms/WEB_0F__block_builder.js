@@ -17,6 +17,8 @@ var BUILDER = {
 						label : null, wrapper : { pre : null, post : null }, chars : null, data : null },
 	textArea	: { type: "textArea", order : null, required : null, repeatable: null, htmlAllow: null, markdown: null,
 						label : null, wrapper : { pre : null, post : null }, data : null },
+	valuelist	: { type: "valuelist", order : null, required : null, repeatable: null, values : null, display: 'combobox',
+						label : null, wrapper : { pre : null, post : null }, data : null },
 	image		: { type: "image", order : null, required : null, repeatable: null, 
 						image : { label: null, wrapper : { pre : null, post : null }, attributes: null, data : null },
 						link:  { label: null, wrapper : { pre : null, post : null }, attributes: null, data : null },
@@ -274,6 +276,38 @@ function MRKP_textBox(fieldSet) {
 			
 			// strip html characters
 			text = globals.CMS.utils.stripHTML(text)
+			
+			markup += MRKP__null_check(field.wrapper.pre) + text + MRKP__null_check(field.wrapper.post)
+		}
+	}
+	
+	return markup
+}
+
+/**
+ * Markup for the valuelist field
+ * 
+ * @param {Object[]}	fieldSet The object with all meta data for this fieldset
+ * 
+ * @returns {String} The markup generated for this field
+ * 
+ * @properties={typeid:24,uuid:"E9E27D76-B3C9-436D-B73F-3A9F474AE14E"}
+ */
+function MRKP_valuelist(fieldSet) {
+	var markup = ''
+	
+	if (fieldSet) {
+		if (!(fieldSet instanceof Array)) {
+			fieldSet = new Array(fieldSet)
+		}
+		
+		for (var i = 0; i < fieldSet.length; i++) {
+			var field = fieldSet[i]
+			
+			var text = MRKP__null_check(field.data)
+			
+			// strip html characters
+//			text = globals.CMS.utils.stripHTML(text)
 			
 			markup += MRKP__null_check(field.wrapper.pre) + text + MRKP__null_check(field.wrapper.post)
 		}

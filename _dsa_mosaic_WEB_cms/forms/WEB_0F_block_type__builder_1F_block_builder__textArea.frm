@@ -217,6 +217,7 @@ scrollbars:33,
 selectOnEnter:true,
 size:"185,179",
 styleClass:"standard_table_textarea_bottom",
+transparent:true,
 typeid:4,
 uuid:"D57B61ED-C790-4C20-8BDF-DB3C14FCF285",
 valuelistID:"48A848FB-45E0-4D3C-978B-91C2C9C27CE7"
