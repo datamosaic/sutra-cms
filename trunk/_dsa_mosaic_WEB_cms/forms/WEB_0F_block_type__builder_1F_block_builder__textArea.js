@@ -17,6 +17,13 @@ var _htmlAllow = 0;
 /**
  * @type {String}
  *
+ * @properties={typeid:35,uuid:"747239F5-DF26-4669-B2A8-100AA85DBB25"}
+ */
+var _display = null;
+
+/**
+ * @type {String}
+ *
  * @properties={typeid:35,uuid:"6B637BF1-0435-460C-B17C-257A3F7ECA6A"}
  */
 var _label = null;
@@ -61,10 +68,36 @@ var _data = null;
  */
 function INIT_data(row) {
 	_data = row.data
-	_html_allow = row.html_allow
+//	_htmlAllow = row.htmlAllow
 	_label = row.label
 	_pre = row.wrapper.pre
 	_post = row.wrapper.post
 	_required = row.required
 	_repeatable = row.repeatable
+	_display = row.htmlAllow ? 'htmlAllow' : row.markdown ? 'markdown' : null
+}
+
+/**
+ * @param {Number} oldValue old value
+ * @param {Number} newValue new value
+ * @param {JSEvent} event the event that triggered the action
+ *
+ * @properties={typeid:24,uuid:"E0D4C38D-A54F-4A5C-8AA8-CDEC4711CBC2"}
+ */
+function RADIO__data_change(oldValue, newValue, event) {
+	var value = JSON.parse(column_value)
+	
+	//reset
+	value.htmlAllow = 0
+	value.markdown = 0
+	
+	//for now, these two are mutually exclusive
+	if (newValue == 'htmlAllow') {
+		value.htmlAllow = 1
+	}
+	if (newValue == 'markdown') {
+		value.markdown = 1
+	}
+	
+	column_value = JSON.stringify(value,null,'\t')
 }

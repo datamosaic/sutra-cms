@@ -15,7 +15,7 @@ var BUILDER = {
 						data : null },
 	textBox		: { type: "textBox", order : null, required : null, repeatable: null, 
 						label : null, wrapper : { pre : null, post : null }, chars : null, data : null },
-	textArea	: { type: "textArea", order : null, required : null, repeatable: null, htmlAllow: null,
+	textArea	: { type: "textArea", order : null, required : null, repeatable: null, htmlAllow: null, markdown: null,
 						label : null, wrapper : { pre : null, post : null }, data : null },
 	image		: { type: "image", order : null, required : null, repeatable: null, 
 						image : { label: null, wrapper : { pre : null, post : null }, attributes: null, data : null },
@@ -306,6 +306,11 @@ function MRKP_textArea(fieldSet) {
 			// strip html characters
 			if (field.htmlAllow != 1) {
 				text = globals.CMS.utils.stripHTML(text)
+			}
+			
+			// convert markdown (if library available)
+			if (field.markdown == 1 && true) {
+				text = new org.pegdown.PegDownProcessor().markdownToHtml(text)
 			}
 			
 			markup += MRKP__null_check(field.wrapper.pre) + text + MRKP__null_check(field.wrapper.post)
