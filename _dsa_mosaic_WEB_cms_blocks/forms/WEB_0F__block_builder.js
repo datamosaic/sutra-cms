@@ -382,9 +382,10 @@ function MRKP_image(fieldSet) {
 			var field = fieldSet[i]
 			
 			var img = ''
-			img += MRKP__null_check(field.image.wrapper.pre) + '<img src="{DS:IMG_' + MRKP__null_check(field.image.data) + '}" ' + MRKP__null_check(field.image.attributes) + '/>'
-			img += MRKP__null_check(field.image.wrapper.post)
-			
+			if (field.image && field.image.data) {
+				img += MRKP__null_check(field.image.wrapper.pre) + '<img src="{DS:IMG_' + MRKP__null_check(field.image.data) + '}" ' + MRKP__null_check(field.image.attributes) + '/>'
+				img += MRKP__null_check(field.image.wrapper.post)
+			}
 			if (field.link && field.link.data) {
 				markup += MRKP__null_check(field.link.wrapper.pre) + '<a href="' + MRKP__null_check(field.link.data) + '" ' + MRKP__null_check(field.link.attributes) + '>'
 				markup += img
