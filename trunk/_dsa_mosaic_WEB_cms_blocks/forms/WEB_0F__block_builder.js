@@ -342,9 +342,16 @@ function MRKP_textArea(fieldSet) {
 				text = globals.CMS.utils.stripHTML(text)
 			}
 			
-			// convert markdown (if library available)
-			if (field.markdown == 1 && true) {
-				text = new org.pegdown.PegDownProcessor().markdownToHtml(text)
+			// convert markdown
+			if (field.markdown == 1) {
+				//if library available, actually do markdown conversion
+				if (typeof org.pegdown.PegDownProcessor == 'function') {
+					text = new org.pegdown.PegDownProcessor().markdownToHtml(text)
+				}
+				//show line breaks
+				else {
+					text = utils.stringReplace(text,'\n','<br />')
+				}
 			}
 			
 			markup += MRKP__null_check(field.wrapper.pre) + text + MRKP__null_check(field.wrapper.post)
