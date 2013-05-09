@@ -42,7 +42,7 @@ function INIT_data(data,html) {
 		if (row) {
 			var fileFound = false
 		    
-		    if (row.data) {
+		    if (row.image.data) {
 				var fsAssetInstance = databaseManager.getFoundSet('sutra_cms','web_asset_instance')
 				fsAssetInstance.find()
 				fsAssetInstance.id_asset_instance = row.image.data
