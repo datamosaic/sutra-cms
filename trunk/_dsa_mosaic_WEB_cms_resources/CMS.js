@@ -44,7 +44,7 @@ var _error = {
  * 
  * @properties={typeid:35,uuid:"0B1825E6-59F2-4139-98C1-1F4A306BAA7B",variableType:-4}
  */
-var utils = {
+var util = {
 	/**
 	 * Get a CMS page's cache attribute data.
 	 * @return {_constant.cache[]|{code:String,message:String}}
@@ -53,7 +53,7 @@ var utils = {
 	 */
 	getCache : function(page) {
 		// get page record
-		var pageRec = utils.getPageRecord(page)
+		var pageRec = util.getPageRecord(page)
 		
 		if ( pageRec.hasOwnProperty && pageRec.hasOwnProperty("code") ) {
 			// error: problem with getting page record
@@ -61,7 +61,7 @@ var utils = {
 		}
 		
 		// get attribute record with key = "cache"
-		if ( !application.__parent__.utils.hasRecords(pageRec,'web_page_to_attribute__cache')) {
+		if ( !utils.hasRecords(pageRec,'web_page_to_attribute__cache')) {
 			// error: attribute with key of "cache" doesn't exist for this page
 			_error.set("412","Cache does not exist for requested page")
 			return _error
@@ -87,63 +87,29 @@ var utils = {
 		var i
 		
 		if (page) {
-//			//platform
-//			var fsPlatform = page.web_page_to_site.web_site_to_site_platform
-//			for (i = 1; i <= fsPlatform.getSize(); i++) {
-//				var sitePlatform = fsPlatform.getRecord(i)
-//				if (sitePlatform.flag_default) {
-//					break
-//				}
-//			}
-//			
-//			//group
-//			var fsGroup = page.web_page_to_site.web_site_to_site_group
-//			for (i = 1; i <= fsGroup.getSize(); i++) {
-//				var siteGroup = fsGroup.getRecord(i)
-//				if (siteGroup.flag_default) {
-//					break
-//				}
-//			}
-			
+	
 			//loop over all languages
 			for (i = 1; i <= page.web_page_to_language.getSize(); i++) {
 				//language
 				var pageLang = page.web_page_to_language.getRecord(i)
 				var siteLang = pageLang.web_language_to_site_language.getSelectedRecord()
 				
-//				//grab active version for this language (default platform/group)
-//				/** @type {JSFoundset<db:/sutra_cms/web_version>} */
-//				var fsVersion = databaseManager.getFoundSet('db:/sutra_cms/web_version')
-//				fsVersion.find()
-//				fsVersion.id_language = pageLang.id_language
-//				fsVersion.web_version_to_platform.id_site_platform = sitePlatform.id_site_platform
-//				fsVersion.web_version_to_group.id_site_group = siteGroup.id_site_group
-//				fsVersion.flag_active = 1
-//				var results = fsVersion.search()
-//				
-//				//only use active version
-//				if (results == 1) {
-//					var pageVersion = fsVersion.getSelectedRecord()
-//					
-//					//base url for this site (may depend on language, so inside the loop)
-//					var siteURL = globals.WEBc_markup_link_base(siteLang)
-					
-					/** @type {{iso: String, url: String}} */
-					var urlLang = {
-						iso: siteLang.language_code
-					}
-					
-					//want to send through cache
-					if (cache) {
-						urlLang.url = globals.WEBc_markup_link_page(page.id_page.toString() + '_' + pageLang.id_language.toString(),null,'Cache')
-					}
-					//grab pretty/folder/index version of url
-					else {
-						urlLang.url = globals.WEBc_markup_link_page(page.id_page.toString() + '_' + pageLang.id_language.toString())
-					}
-					
-					langURLs.push(urlLang)
-//				}
+				/** @type {{iso: String, url: String}} */
+				var urlLang = {
+					iso: siteLang.language_code
+				}
+				
+				//want to send through cache
+				if (cache) {
+					urlLang.url = globals.WEBc_markup_link_page(page.id_page.toString() + '_' + pageLang.id_language.toString(),null,'Cache')
+				}
+				//grab pretty/folder/index version of url
+				else {
+					urlLang.url = globals.WEBc_markup_link_page(page.id_page.toString() + '_' + pageLang.id_language.toString())
+				}
+				
+				langURLs.push(urlLang)
+
 			}
 		}
 		
@@ -201,7 +167,7 @@ var utils = {
 	 * @param {UUID|String|JSRecord<db:/sutra_cms/web_page>} page page to get	
 	 */
 	setCache : function(page) {
-		var pageRec = utils.getPageRecord(page)
+		var pageRec = util.getPageRecord(page)
 		
 		if ( pageRec.hasOwnProperty && pageRec.hasOwnProperty("code") ) {
 			// error: problem with getting page record
@@ -209,7 +175,7 @@ var utils = {
 		}
 		
 		// get URL
-		var urls = utils.getURL(pageRec,true)
+		var urls = util.getURL(pageRec,true)
 		
 		if ( urls.hasOwnProperty && urls.hasOwnProperty("code") ) {
 			// error: no urls
