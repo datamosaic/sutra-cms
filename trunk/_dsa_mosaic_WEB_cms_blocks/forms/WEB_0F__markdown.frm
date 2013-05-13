@@ -1,0 +1,257 @@
+dataSource:"db:/sutra_cms/web_block",
+items:[
+{
+anchors:6,
+formIndex:11804,
+location:"230,147",
+mediaOptions:14,
+mnemonic:"",
+name:"lbl_edit",
+rolloverCursor:12,
+showClick:false,
+showFocus:false,
+size:"58,20",
+styleClass:"button",
+tabSeq:-1,
+text:"Edit",
+transparent:true,
+typeid:7,
+uuid:"16BD1732-3592-449B-8747-8BA3CE53073F"
+},
+{
+anchors:6,
+formIndex:15704,
+imageMediaID:"f27c82c9-3a7e-4b29-9d3d-38857a387710",
+location:"113,147",
+mediaOptions:14,
+name:"gfx_pages",
+showClick:false,
+showFocus:false,
+size:"32,20",
+tabSeq:-1,
+text:"",
+transparent:true,
+typeid:7,
+uuid:"1C82F4C7-6AB7-4A9A-82DB-584BDD12BF3A"
+},
+{
+anchors:6,
+borderType:"EmptyBorder,0,0,0,0",
+formIndex:10900,
+imageMediaID:"95a43c06-8988-440c-a759-e453d5712411",
+location:"230,146",
+mediaOptions:6,
+mnemonic:"",
+name:"btn_save",
+onActionMethodID:"3BE6D873-FF4E-4FE2-AA82-C6228EA2B319",
+rolloverCursor:12,
+rolloverImageMediaID:"2f6dee3a-854c-47a6-9e15-3f7660c783e4",
+showClick:false,
+showFocus:false,
+size:"60,22",
+transparent:true,
+typeid:7,
+uuid:"320C8FD4-4C3C-4153-87AE-FB307DFFE0B9"
+},
+{
+anchors:6,
+formIndex:11800,
+location:"160,147",
+mediaOptions:14,
+mnemonic:"",
+name:"lbl_cancel",
+rolloverCursor:12,
+showClick:false,
+showFocus:false,
+size:"60,20",
+styleClass:"button",
+tabSeq:-1,
+text:"Cancel",
+transparent:true,
+typeid:7,
+uuid:"5E786F8B-15D8-476A-A4C7-90DE88FD4787"
+},
+{
+anchors:6,
+formIndex:15704,
+imageMediaID:"40f4e676-61cb-4e92-baad-57528a06f1e1",
+location:"75,147",
+mediaOptions:14,
+name:"gfx_graphic",
+showClick:false,
+showFocus:false,
+size:"22,20",
+tabSeq:-1,
+text:"",
+transparent:true,
+typeid:7,
+uuid:"69F23E25-6F17-40B4-A876-530506FC5D59"
+},
+{
+height:170,
+partType:5,
+typeid:19,
+uuid:"71DA757C-539F-48D9-86FF-373E4365D694"
+},
+{
+anchors:15,
+dataProviderID:"_dataValue",
+displayType:1,
+location:"5,5",
+name:"fld_data_value",
+scrollbars:32,
+size:"290,140",
+styleClass:"nobordertextarea",
+transparent:true,
+typeid:4,
+uuid:"B37680AE-ABA8-4A52-9FF0-A0B975C80271"
+},
+{
+anchors:6,
+borderType:"EmptyBorder,0,0,0,0",
+formIndex:11803,
+imageMediaID:"95a43c06-8988-440c-a759-e453d5712411",
+location:"230,146",
+mediaOptions:6,
+mnemonic:"",
+name:"btn_edit",
+onActionMethodID:"D1B5EE94-CBB6-4B91-A37B-BD16543EE49F",
+rolloverCursor:12,
+rolloverImageMediaID:"2f6dee3a-854c-47a6-9e15-3f7660c783e4",
+showClick:false,
+showFocus:false,
+size:"60,22",
+transparent:true,
+typeid:7,
+uuid:"B7FBE723-A08C-42DE-8A18-5161842B44F9"
+},
+{
+anchors:6,
+borderType:"EmptyBorder,0,0,0,0",
+formIndex:10900,
+imageMediaID:"95a43c06-8988-440c-a759-e453d5712411",
+location:"160,146",
+mediaOptions:6,
+mnemonic:"",
+name:"btn_cancel",
+onActionMethodID:"2BC3C618-8169-40B6-8884-92979E8872FE",
+rolloverCursor:12,
+rolloverImageMediaID:"2f6dee3a-854c-47a6-9e15-3f7660c783e4",
+showClick:false,
+showFocus:false,
+size:"62,22",
+transparent:true,
+typeid:7,
+uuid:"D6F1A4B7-7E2A-40A7-BFD6-8A5D127EA75A"
+},
+{
+anchors:6,
+borderType:"EmptyBorder,0,0,0,0",
+formIndex:12200,
+imageMediaID:"95a43c06-8988-440c-a759-e453d5712411",
+location:"71,146",
+mediaOptions:6,
+name:"btn_graphic",
+onActionMethodID:"043EBD69-96B9-4BFD-9F3E-F69AD542F937",
+rolloverCursor:12,
+rolloverImageMediaID:"2f6dee3a-854c-47a6-9e15-3f7660c783e4",
+showClick:false,
+showFocus:false,
+size:"30,22",
+toolTipText:"Image chooser",
+transparent:true,
+typeid:7,
+uuid:"DAEA3ED5-E3AA-4B32-9E55-A188FFEED09F"
+},
+{
+anchors:15,
+beanClassName:"net.stuff.servoy.browser.beans.ServoyBrowser",
+beanXML:"<?xml version=\"1.0\" encoding=\"UTF-8\"?> 
+<java version=\"1.6.0_22\" class=\"java.beans.XMLDecoder\"> 
+ <object class=\"net.stuff.servoy.browser.beans.ServoyBrowser\"> 
+  <void property=\"allowDownloads\"> 
+   <boolean>false<\/boolean> 
+  <\/void> 
+  <void property=\"buttonBarVisible\"> 
+   <boolean>false<\/boolean> 
+  <\/void> 
+  <void property=\"confirmCancelDownload\"> 
+   <boolean>false<\/boolean> 
+  <\/void> 
+  <void property=\"dataProviderIsURL\"> 
+   <boolean>false<\/boolean> 
+  <\/void> 
+  <void property=\"downloadManagerVisible\"> 
+   <boolean>false<\/boolean> 
+  <\/void> 
+  <void property=\"enablePopup\"> 
+   <boolean>false<\/boolean> 
+  <\/void> 
+  <void property=\"locationBarVisible\"> 
+   <boolean>false<\/boolean> 
+  <\/void> 
+  <void property=\"menuBarVisible\"> 
+   <boolean>false<\/boolean> 
+  <\/void> 
+  <void property=\"trapStatusMessages\"> 
+   <boolean>false<\/boolean> 
+  <\/void> 
+ <\/object> 
+<\/java> 
+",
+location:"0,0",
+name:"bn_browser",
+printable:false,
+size:"300,145",
+typeid:12,
+uuid:"EDC8B4B5-D980-4508-8F3D-5FCE149D9653"
+},
+{
+anchors:6,
+formIndex:11800,
+location:"230,147",
+mediaOptions:14,
+mnemonic:"",
+name:"lbl_save",
+rolloverCursor:12,
+showClick:false,
+showFocus:false,
+size:"58,20",
+styleClass:"button",
+tabSeq:-1,
+text:"Save",
+transparent:true,
+typeid:7,
+uuid:"EEDD1C58-C76D-4461-BFE7-1F92E27862B0"
+},
+{
+anchors:6,
+borderType:"EmptyBorder,0,0,0,0",
+formIndex:12200,
+imageMediaID:"95a43c06-8988-440c-a759-e453d5712411",
+location:"109,146",
+mediaOptions:6,
+name:"btn_pages",
+onActionMethodID:"71815F3C-7799-4CBA-95EB-80AE7CB46F03",
+rolloverCursor:12,
+rolloverImageMediaID:"2f6dee3a-854c-47a6-9e15-3f7660c783e4",
+showClick:false,
+showFocus:false,
+size:"40,22",
+toolTipText:"Page link",
+transparent:true,
+typeid:7,
+uuid:"FE183D30-A81C-4C95-B95A-DC822276FF45"
+}
+],
+name:"WEB_0F__markdown",
+namedFoundSet:"separate",
+navigatorID:"-1",
+onLoadMethodID:"B93799CC-28F6-4CF6-9771-4A6A46567C66",
+onShowMethodID:"A762DB94-F131-4D6E-8709-82C92420FC1C",
+paperPrintScale:100,
+scrollbars:36,
+size:"300,170",
+styleName:"_DATASUTRA_",
+typeid:3,
+uuid:"7B0692A4-855A-4E72-9F0E-AEBCF501BB41"
