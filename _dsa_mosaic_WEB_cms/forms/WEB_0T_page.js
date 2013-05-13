@@ -319,7 +319,7 @@ function ACTIONS_list_control(input,scopeType,scopeValue) {
 			globals.CODE_cursor_busy(false)
 			break
 		case 11: // cache page
-			var success = scopes.CMS.utils.setCache(forms.WEB_0F_page.foundset.getSelectedRecord())
+			var success = scopes.CMS.util.setCache(forms.WEB_0F_page.foundset.getSelectedRecord())
 			break
 		
 //		case 11: //reset tree
