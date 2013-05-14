@@ -332,9 +332,7 @@ function BLOCK_reset(event) {
  * @properties={typeid:24,uuid:"55863A61-FD4C-4238-8DFF-BED3877F72C3"}
  */
 function ACTION_internal_link(event) {
-
 	globals.WEBc_page_picker(ACTION_add_token,null,true)
-
 }
 
 /**
@@ -352,7 +350,6 @@ function ACTION_add_token(inputID,pageRec) {
 		var js = "tinyMCE.execCommand('mceInsertLink', false, '" + token + "');"
 		elements.bn_tinymce.executeJavaScript(js)
 	}
-	
 }
 
 /**
@@ -379,16 +376,16 @@ function ACTION_pop_toolbar(event) {
  *
  * @properties={typeid:24,uuid:"E285B1BC-2924-477D-8F4C-D8B94FCF01A6"}
  */
-function ACTION_insert_image(event,blah1,blah2,blah3,blah4,assetType) {
+function ACTION_insert_asset(event,blah1,blah2,blah3,blah4,assetType) {
 	//when right clicked, give a moment to grab focus elsewhere
 	if (event instanceof JSEvent) {
 		var elem = elements[event.getElementName()]
 		
 		var menu = plugins.window.createPopupMenu()
-		menu.addMenuItem("Show image picker").setMethod(ACTION_insert_image)
-		menu.addMenuItem("Show file picker").setMethod(ACTION_insert_image).methodArguments = [2]
+		menu.addMenuItem("Show image picker").setMethod(ACTION_insert_asset)
+		menu.addMenuItem("Show file picker").setMethod(ACTION_insert_asset).methodArguments = [2]
 		menu.addSeparator()
-		menu.addMenuItem("Show group picker").setMethod(ACTION_insert_image).methodArguments = [3]
+		menu.addMenuItem("Show group picker").setMethod(ACTION_insert_asset).methodArguments = [3]
 		
 		menu.show(elem)
 		return

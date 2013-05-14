@@ -158,9 +158,10 @@ function TOGGLE_buttons(state) {
  * @properties={typeid:24,uuid:"FDAAF912-04DD-4F30-9FD4-91F46C152C8D"}
  */
 function ACTION_internal_link(event) {
-
-	globals.WEBc_page_picker(ACTION_add_token,null,true)
-
+	//only run in edit mode
+	if (globals.CMS.ui.getEdit()) {
+		globals.WEBc_page_picker(ACTION_add_token,null,true)
+	}
 }
 
 /**
@@ -188,7 +189,7 @@ function ACTION_add_token(inputID,pageRec) {
 	
 	elem.replaceSelectedText(linkStart + linkPage + linkEnd)
 	
-	var dataSave = globals.CMS.ui.setData(event,'HTML',_dataValue)
+	var dataSave = globals.CMS.ui.setData(null,'HTML',_dataValue,controller.getName())
 	
 	elem.caretPosition = cursor + offset
 	elem.requestFocus()
@@ -199,11 +200,35 @@ function ACTION_add_token(inputID,pageRec) {
  * Perform the element default action.
  *
  * @param {JSEvent} event the event that triggered the action
+ * @param blah1
+ * @param blah2
+ * @param blah3
+ * @param blah4
+ * @param {Number} assetType
  *
  * @properties={typeid:24,uuid:"1134822A-1145-4653-AFC5-9C08C58EDFDC"}
  */
-function ACTION_insert_image(event) {
-	forms.WEB_P__asset.LOAD_data(1)
+function ACTION_insert_asset(event,blah1,blah2,blah3,blah4,assetType) {
+	if (event instanceof JSEvent) {
+		var elem = elements[event.getElementName()]
+		
+		var menu = plugins.window.createPopupMenu()
+		menu.addMenuItem("Show image picker").setMethod(ACTION_insert_asset)
+		menu.addMenuItem("Show file picker").setMethod(ACTION_insert_asset).methodArguments = [2]
+		menu.addSeparator()
+		menu.addMenuItem("Show group picker").setMethod(ACTION_insert_asset).methodArguments = [3]
+		
+		menu.show(elem)
+		return
+	}
+	
+	//work with images if nothing specified
+	if (!assetType) {
+		assetType = 1
+	}
+	
+	//default to image unless something else specified
+	forms.WEB_P__asset.LOAD_data(assetType)
 	
 	globals.CODE_form_in_dialog(
 				forms.WEB_P__asset,
@@ -218,12 +243,26 @@ function ACTION_insert_image(event) {
 	if (forms.WEB_P__asset._assetChosen) {
 		//wrap currently selected text with link
 		var elem = elements.fld_data_value
-	
-		var image = forms.WEB_P__asset._assetChosen
-		var token = globals.CMS.token.getImage(image.asset).link
 		
-		//insert image at current location
-		var html = '<img src="' + token + '" width="' + image.meta.width + '" height="' + image.meta.height + '" alt="' + image.asset.asset_title +'">'
+		switch (assetType) {
+			case 1:	//image
+				var image = forms.WEB_P__asset._assetChosen
+				var asset = globals.CMS.token.getImage(image.asset)
+				
+				//insert image at current location
+				var html = '<img src="' + asset.link + '" width="' + image.meta.width + '" height="' + image.meta.height + '" alt="' + asset.name +'">'
+				
+				break
+			case 2:	//file
+			case 3:	//group
+				var file = forms.WEB_P__asset._assetChosen
+				var asset = globals.CMS.token.getFile(file.asset)
+				
+				//insert image at current location
+				var html = '<a href="' + asset.link + '">' + (elem.getSelectedText() || asset.name || 'Link') + '</a>'
+				
+				break
+		}
 		
 		//length of tag
 		var offset = html.length
