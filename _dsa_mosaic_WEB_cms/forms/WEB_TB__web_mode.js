@@ -45,7 +45,7 @@ function ACTION_edit(event) {
 	
 	// toggle to browser if not there already
 	if (globals.WEB_page_mode != 3) {
-		MODE_set("Real")
+		MODE_set("Live")
 	}
 	
 	// turn on jquery edit stuff
@@ -478,7 +478,7 @@ function ACTION_dashboard(event) {
 //			elements.lbl_detail.visible = true
 //			
 ////			forms.WEB_0F_page__browser.elements.bn_browser.reload()
-//			MODE_set("Real")	
+//			MODE_set("Live")	
 //			
 //			//toggle edit, groups, versions
 //			TOGGLE_edit()
@@ -544,7 +544,7 @@ function ACTION_mode(event) {
 		if (utils.stringPatternCount(mode,'gfx')) {
 			var whereClick = event.getX()
 			if (whereClick > 73) {
-				mode = 'lbl_mode_real'
+				mode = 'lbl_mode_live'
 			}
 			else if (whereClick < 37) {
 				mode = 'lbl_mode_data'
@@ -596,13 +596,13 @@ function ACTION_mode(event) {
 				forms.WEB_0F_page__design_1F_version.elements.tab_content.tabIndex = 1
 				
 				break
-			case 'lbl_mode_real':
+			case 'lbl_mode_live':
 				//go to real mode if not there already
 				if (currentMode != 3) {
 					//set mode
 					globals.WEB_page_mode = 3
 					elements.gfx_switch_3.visible = true
-					MODE_set("Real")
+					MODE_set("Live")
 					
 					//show breadcrumb url info
 					elements.lbl_detail.visible = true
@@ -768,7 +768,7 @@ function MODE_set(mode) {
 			forms.WEB_0F_page__browser.elements.bn_browser.html = '<html><body></body></html>'
 			
 			break;
-		case "Real":	
+		case "Live":	
 			//following line only needed when returning to web mode after not being in it fulltime
 			forms.WEB_0F_page__browser.REC_on_select(null,null,true)
 			
