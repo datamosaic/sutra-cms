@@ -32,7 +32,7 @@ function FILTER_records(event) {
  * @properties={typeid:24,uuid:"4BC73EC6-1B92-4A66-92D8-8CB57957F0D4"}
  */
 function BATCH_create(fs) {
-	REC_new(null,'WEB_0F__content',fs)
+	REC_new(null,'WEB_0F__markdown',fs)
 	REC_new(null,'WEB_0F__image',fs)
 }
 
