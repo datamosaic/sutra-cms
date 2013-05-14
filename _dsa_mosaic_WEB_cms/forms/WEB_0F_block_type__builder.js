@@ -61,6 +61,22 @@ function TAB_list_add(event) {
  * @properties={typeid:24,uuid:"4E77B51D-461D-4829-8F63-D866E4184E66"}
  */
 function ACTION_publish(event) {
+	if (utils.hasRecords(web_block_type_to_block_input)) {
+		var input = globals.DIALOGS.showQuestionDialog(
+				'Builder already published',
+				'Re-publishing the builder will not update existing blocks.\nProceed?',
+				'Yes',
+				'No'
+			)
+		
+		if (input == 'Yes') {
+			web_block_type_to_block_input.deleteAllRecords()
+		}
+		else {
+			return
+		}
+	}
+	
 	// create block inputs from block builder
 	for (var i = 1; i <= web_block_type_to_block_builder.getSize(); i++) {
 		var record = web_block_type_to_block_builder.getRecord(i)
@@ -105,15 +121,6 @@ function ACTION_publish(event) {
  * @properties={typeid:24,uuid:"3A258EDC-F6F4-40A7-9FB0-B687FD712F7D"}
  */
 function REC_on_select(event) {
-	//already published block cannot be republished
-		//TODO: allow for this to happen
-	if (flag_unavailable) {
-		elements.btn_publish.enabled = true
-	}
-	else {
-		elements.btn_publish.enabled = false
-	}
-	
 	if (!utils.hasRecords(web_block_type_to_block_builder)) {
 		forms.WEB_0F_block_type__builder.ACTION_manage_view()
 	}
