@@ -1,4 +1,6 @@
-customValues:"Allow HTML|htmlAllow
+addEmptyValue:1,
+customValues:"Text|text
+Allow HTML|htmlAllow
 Markdown|markdown",
 name:"WEB_block_builder__textarea",
 returnDataProviders:1,
