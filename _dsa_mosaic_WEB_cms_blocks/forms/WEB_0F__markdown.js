@@ -167,7 +167,10 @@ function TOGGLE_buttons(state) {
  * @properties={typeid:24,uuid:"71815F3C-7799-4CBA-95EB-80AE7CB46F03"}
  */
 function ACTION_internal_link(event) {
-	globals.WEBc_page_picker(ACTION_add_token,null,true)
+	//only run in edit mode
+	if (globals.CMS.ui.getEdit()) {
+		globals.WEBc_page_picker(ACTION_add_token,null,true)
+	}
 }
 
 /**
@@ -180,12 +183,15 @@ function ACTION_add_token(inputID,pageRec) {
 	//wrap currently selected text with link
 	var elem = elements.fld_data_value
 	
-	var linkStart = '<a href="' + token + '">'
-	var linkPage = elem.getSelectedText() || pageRec.page_name
-	var linkEnd = '</a>'
+	var template = '[{{text}}]({{url}})'
+	var data = {
+			text : elem.getSelectedText() || pageRec.page_name,
+			url : token
+		}
+	var link = globals.CMS.markup.merge(template,data)
 	
 	//length of tag
-	var offset = (linkStart + linkPage + linkEnd).length
+	var offset = link.length
 	
 	//cut selected text so we can get the correct cursor position
 	elem.replaceSelectedText('')
@@ -193,9 +199,9 @@ function ACTION_add_token(inputID,pageRec) {
 	//get cursor location
 	var cursor = elem.caretPosition
 	
-	elem.replaceSelectedText(linkStart + linkPage + linkEnd)
+	elem.replaceSelectedText(link)
 	
-	var dataSave = globals.CMS.ui.setData(event,'markdown',_dataValue)
+	var dataSave = globals.CMS.ui.setData(null,'markdown',_dataValue,controller.getName())
 	
 	elem.caretPosition = cursor + offset
 	elem.requestFocus()
@@ -214,15 +220,15 @@ function ACTION_add_token(inputID,pageRec) {
  *
  * @properties={typeid:24,uuid:"043EBD69-96B9-4BFD-9F3E-F69AD542F937"}
  */
-function ACTION_insert_image(event,blah1,blah2,blah3,blah4,assetType) {
+function ACTION_insert_asset(event,blah1,blah2,blah3,blah4,assetType) {
 	if (event instanceof JSEvent) {
 		var elem = elements[event.getElementName()]
 		
 		var menu = plugins.window.createPopupMenu()
-		menu.addMenuItem("Show image picker").setMethod(ACTION_insert_image)
-		menu.addMenuItem("Show file picker").setMethod(ACTION_insert_image).methodArguments = [2]
+		menu.addMenuItem("Show image picker").setMethod(ACTION_insert_asset)
+		menu.addMenuItem("Show file picker").setMethod(ACTION_insert_asset).methodArguments = [2]
 		menu.addSeparator()
-		menu.addMenuItem("Show group picker").setMethod(ACTION_insert_image).methodArguments = [3]
+		menu.addMenuItem("Show group picker").setMethod(ACTION_insert_asset).methodArguments = [3]
 		
 		menu.show(elem)
 		return
@@ -253,19 +259,28 @@ function ACTION_insert_image(event,blah1,blah2,blah3,blah4,assetType) {
 		switch (assetType) {
 			case 1:	//image
 				var image = forms.WEB_P__asset._assetChosen
-				var token = globals.CMS.token.getImage(image.asset).link
+				var asset = globals.CMS.token.getImage(image.asset)
 				
 				//insert image at current location
-				var html = '<img src="' + token + '" width="' + image.meta.width + '" height="' + image.meta.height + '" alt="' + image.asset.asset_title +'">'
+				var template = '![{{text}}]({{url}})'
+				var data = {
+						text : asset.name,
+						url : asset.link
+					}
+				var html = globals.CMS.markup.merge(template,data)
 				
 				break
 			case 2:	//file
 			case 3:	//group
 				var file = forms.WEB_P__asset._assetChosen
-				var token = globals.CMS.token.getFile(file.asset).link
+				var asset = globals.CMS.token.getFile(file.asset)
 				
-				//insert image at current location
-				var html = '<a href="' + token + '">' + (elem.getSelectedText() || 'File name') + '</a>'
+				var template = '[{{text}}]({{url}})'
+				var data = {
+						text : elem.getSelectedText() || asset.name || 'Link',
+						url : asset.link
+					}
+				var html = globals.CMS.markup.merge(template,data)
 				
 				break
 		}
@@ -281,7 +296,7 @@ function ACTION_insert_image(event,blah1,blah2,blah3,blah4,assetType) {
 		
 		elem.replaceSelectedText(html)
 		
-		var dataSave = globals.CMS.ui.setData(event,'HTML',_dataValue)
+		var dataSave = globals.CMS.ui.setData(event,'markdown',_dataValue)
 		
 		elem.caretPosition = cursor + offset
 		elem.requestFocus()
@@ -352,14 +367,33 @@ function ACTION_preview() {
 	
 	var htmlData = globals.CMS.ui.getData(controller.getName()).markdown
 	
-	//if there's data, color it
+	//if there's data
 	if (htmlData) {
-		
-		//when running in tinymce
-		prefix = globals.WEBc_markup_link_base()
-		
-		//show html markup
-		var html = 
+		//if library available, actually do markdown conversion
+		if (typeof org.pegdown.PegDownProcessor == 'function') {
+			htmlData = new org.pegdown.PegDownProcessor().markdownToHtml(htmlData)
+			
+			html = 
+			'<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">\n\
+			<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">\n\
+				<head>\n\
+					<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />\n\
+				</head>\n\
+				\n\
+				<body style="background: white;">\n' + 
+					htmlData + 
+				'</body>\n\
+			</html>'
+		}
+		//show line breaks
+		else {
+			htmlData = utils.stringReplace(htmlData,'\n','<br />')
+			
+			//when running in tinymce
+			prefix = globals.WEBc_markup_link_base()
+			
+			//show html markup
+			html = 
 '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">\n\
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">\n\
 	<head>\n\
@@ -381,11 +415,11 @@ function ACTION_preview() {
 		'</pre>\n\
 	</body>\n\
 </html>'
-		
+		}
 	}
 	
 	if (elements.bn_browser) {
-		elements.bn_browser.html = html
+		elements.bn_browser.html = globals.WEBc_markup_link_internal(html,null,'Edit')
 	}
 	else {
 		globals.WEBc_browser_error()
