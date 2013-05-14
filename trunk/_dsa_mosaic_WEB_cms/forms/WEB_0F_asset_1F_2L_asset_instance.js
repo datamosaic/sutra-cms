@@ -139,7 +139,7 @@ function REC_delete(event,batch,record) {
  */
 function REC_new() {
 	//load all asset types
-	forms.WEB_P__asset.LOAD_data()
+	forms.WEB_P__asset.LOAD_data('1||2')
 		
 	//show asset chooser
 	globals.CODE_form_in_dialog(

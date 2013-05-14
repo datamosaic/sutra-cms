@@ -1,7 +1,7 @@
 /**
- * @type {Number}
+ * @type {String}
  *
- * @properties={typeid:35,uuid:"97F60F62-502A-4BC0-82F2-1D7E9C9C142A",variableType:4}
+ * @properties={typeid:35,uuid:"97F60F62-502A-4BC0-82F2-1D7E9C9C142A"}
  */
 var _assetType = null;
 
@@ -74,7 +74,7 @@ function ACTION_ok() {
 /**
  *	Only show the type of data interested in selecting
  * 
- * @param	{Number}	assetType Type of asset to select (1 image, 2 file, etc)
+ * @param	{Number|String}	assetType Type of asset to select (1 image, 2 file, etc)
  * 
  * @properties={typeid:24,uuid:"BE1F62DB-1D14-464C-96F5-1A8D252C761B"}
  * @AllowToRunInFind
