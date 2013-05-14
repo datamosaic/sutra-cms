@@ -50,7 +50,7 @@ var _file = null;
 function BLOCK_choose(event) {
 	//only run in edit mode
 	if (globals.CMS.ui.getEdit()) {
-		forms.WEB_P__asset.LOAD_data(1)
+		forms.WEB_P__asset.LOAD_data('1||3')
 		
 		//show image chooser
 		globals.CODE_form_in_dialog(
