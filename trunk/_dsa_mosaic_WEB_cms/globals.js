@@ -64,7 +64,7 @@ var WEB_page_language = null;
 /**
  * @type {Number}
  *
- * Default to GUI mode on page (Data|1, GUI|2, Real|3)
+ * Default to GUI mode on page (Data|1, GUI|2, Live|3)
  * 
  * @properties={typeid:35,uuid:"DD53BF5B-DD20-4B47-911A-41051101A010",variableType:4}
  */

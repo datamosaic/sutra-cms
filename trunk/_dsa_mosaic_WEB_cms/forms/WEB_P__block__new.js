@@ -190,7 +190,7 @@ function ACTION_ok(event) {
 							globals.WEB_block_on_select = false
 							
 							//create scope record in real mode
-							if (_calledFrom == 'Real') {
+							if (_calledFrom == 'Live') {
 								var fsScope = databaseManager.getFoundSet('sutra_cms','web_scope')
 								var scopeRec = fsScope.getRecord(fsScope.newRecord(false,true))
 								
@@ -285,7 +285,7 @@ function ACTION_ok(event) {
 						globals.WEB_block_on_select = false
 						
 						//create scope record in real mode
-						if (_calledFrom == 'Real') {
+						if (_calledFrom == 'Live') {
 							var fsScope = databaseManager.getFoundSet('sutra_cms','web_scope')
 							var scopeRec = fsScope.getRecord(fsScope.newRecord(false,true))
 							
@@ -379,7 +379,7 @@ function ACTION_ok(event) {
 						globals.WEB_block_on_select = false
 						
 						//create scope record in real mode
-						if (_calledFrom == 'Real') {
+						if (_calledFrom == 'Live') {
 							var fsScope = databaseManager.getFoundSet('sutra_cms','web_scope')
 							var scopeRec = fsScope.getRecord(fsScope.newRecord(false,true))
 							
@@ -535,7 +535,7 @@ function FORM_on_show() {
 	TOGGLE_buttons()
 	
 	//only show combobox when called from page or theme
-	if (_calledFrom == 'Real' || _calledFrom == 'GUI' || _calledFrom == 'Theme') {
+	if (_calledFrom == 'Live' || _calledFrom == 'GUI' || _calledFrom == 'Theme') {
 		elements.lbl_scope.visible = true
 		elements.fld_scope.visible = true
 		
