@@ -74,7 +74,7 @@ function INIT_data(row) {
 	_post = row.wrapper.post
 	_required = row.required
 	_repeatable = row.repeatable
-	_display = row.htmlAllow ? 'htmlAllow' : row.markdown ? 'markdown' : null
+	_display = row.htmlAllow ? 'htmlAllow' : row.markdown ? 'markdown' : 'text'
 }
 
 /**
