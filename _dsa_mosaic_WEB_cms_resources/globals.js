@@ -1630,6 +1630,10 @@ function WEBc_markup_token(input,tokenType) {
 		case 'file':
 			token = tokenFile
 			break
+		case 'fileName':
+		case 'imageName':
+			//asset names do not get tokenized
+			break
 		default:
 			return token
 	}
@@ -1640,12 +1644,12 @@ function WEBc_markup_token(input,tokenType) {
 	}
 	//passed in an asset instance record
 	else if (input instanceof JSRecord && input.foundset.getDataSource() == 'db:/sutra_cms/web_asset_instance' && input.id_asset_instance) {
-		token += input.id_asset_instance.toString()
-		
 		//we don't want the token, just give the filename
 		if (tokenType == 'imageName' || tokenType == 'fileName') {
 			return input.asset_title
 		}
+		
+		token += input.id_asset_instance.toString()
 	}
 	//passed in a (uuid) string
 	else if (typeof input == 'string') {
@@ -1671,12 +1675,13 @@ function WEBc_markup_token(input,tokenType) {
 /**
  * Show a popupmenu with all of the curretly selected site's pages
  * 
- * @param {JSMethod} method Name of method to run when menu item selected.
- * @param {JSEvent|Element} elem The element from which to pop open the menu.
+ * @param {Function} method Name of method to run when menu item selected.
+ * @param {JSEvent|Element} [elem] The element from which to pop open the menu.
  * @param {Boolean} [showLanguage=false] Allow to target a specific page's language.
  *
  * @properties={typeid:24,uuid:"D05AA53E-5D46-4534-A2AC-A55D700F29C0"}
  * @AllowToRunInFind
+ * @SuppressWarnings(deprecated)
  */
 function WEBc_page_picker(method,elem,showLanguage) {
 	function GET_page(pageRec) {
