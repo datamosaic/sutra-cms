@@ -1263,7 +1263,7 @@ function WEBc_markup_link_internal(markup,siteURL,linkType,areaID,obj) {
  * @param {UUID|String|Object} pageID The page (language can be specified) requested.
  * @param {String}	[siteURL] Domain name request came in on.
  * @param {String}	[linkType] Style of URLs (index, folder, pretty).
- * @param {String}	[webMode] Editing the page in Real Mode (only an option from the admin interface).
+ * @param {String}	[webMode] Editing the page in Live Mode (only an option from the admin interface).
  * @param {Object}	[obj] Object used to drive headless client.
  * 
  * @return {String} URL for a page.
@@ -2511,7 +2511,7 @@ function WEBc_log_create(logType,message,siteID,pkTable,pkID,pk2Table,pk2ID) {
  * @param {UUID|String|Object} pageID The page (language can be specified) requested.
  * @param {String}	[siteURL] Domain name request came in on.
  * @param {String}	[linkType] Style of URLs (index, folder, pretty).
- * @param {String}	[webMode] Editing the page in Real Mode (only an option from the admin interface).
+ * @param {String}	[webMode] Editing the page in Live Mode (only an option from the admin interface).
  * @param {Object}	[obj] Object used to drive headless client.
  * 
  * @return {String} URL for a page.
