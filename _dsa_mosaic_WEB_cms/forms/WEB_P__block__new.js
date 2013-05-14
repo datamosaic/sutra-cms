@@ -523,7 +523,7 @@ function FORM_on_show() {
 			record.client_id_block_display = record.web_block_type_to_block_display__default.id_block_display
 			
 			//highlight content block
-			if (record.block_name == 'Content') {
+			if (record.block_name == 'Markdown') {
 				fsBlockType.setSelectedIndex(i)
 			}
 		}
