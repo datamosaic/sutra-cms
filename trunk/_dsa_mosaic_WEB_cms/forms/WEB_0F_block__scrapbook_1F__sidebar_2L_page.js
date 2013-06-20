@@ -114,10 +114,10 @@ function REC_on_select(event) {
 	//htmlicize
 	var html = '<html><head>'
 	html += '<style type="text/css" media="screen"><!--'
-	html += 'table { table-layout: fixed; width: 100%; border-spacing: 0px; border: 0px; }'
-	html += '.bold { font-weight: bold; text-align: right; }'
+	html += 'table.sutra { table-layout: fixed; width: 100%; border-spacing: 0px; border: 0px; }'
+	html += 'table.sutra .bold { font-weight: bold; text-align: right; }'
 	html += '--></style></head>'
-	html += '<body><table>'
+	html += '<body><table class="sutra">'
 	
 	for (var i = 1; i <= dataset.getMaxRowIndex(); i++) {
 		html += '<tr>'
