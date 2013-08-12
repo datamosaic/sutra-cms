@@ -1318,3 +1318,64 @@ function WEB_block_builder__data_change(oldValue, newValue, event) {
 	eval(location)[point] = newValue
 	forms[formName].column_value = JSON.stringify(value,null,'\t')
 }
+
+/**
+ * @param {JSRecord<db:/sutra_cms/web_site>} siteRec
+ * @properties={typeid:24,uuid:"51E6CE76-C75F-49AC-90B4-831ABDDEFA32"}
+ * @AllowToRunInFind
+ */
+function WEB_convert__row(siteRec) {
+	var input = globals.DIALOGS.showQuestionDialog(
+			'Add rows?',
+			'Upgrade selected site to bootstrappy row stuffs?',
+			'Yes',
+			'No'
+		)
+	
+	if (input == 'Yes') {
+		var newRows = 0
+		
+		if (utils.hasRecords(siteRec,'web_site_to_page')) {
+			for (var i = 1; i <= siteRec.web_site_to_page.getSize(); i++) {
+				var pageRec = siteRec.web_site_to_page.getRecord(i)
+				
+				/** @type {JSFoundSet<db:/sutra_cms/web_version>} */
+				var fsVersion = databaseManager.getFoundSet('db:/sutra_cms/web_version')
+				fsVersion.find()
+				fsVersion.web_version_to_language.id_page = pageRec.id_page
+				var results = fsVersion.search()
+				
+				if (results) {
+					for (var j = 1; j <= fsVersion.getSize(); j++) {
+						var versionRec = fsVersion.getRecord(j)
+						
+						for (var k = 1; k <= versionRec.web_version_to_area.getSize(); k++) {
+							var areaRec = versionRec.web_version_to_area.getRecord(k)
+							
+							//no rows, create dummy and move all scopes into it
+							if (!utils.hasRecords(areaRec.web_area_to_row)) {
+								var rowRec = areaRec.web_area_to_row.getRecord(areaRec.web_area_to_row.newRecord(false,true))
+								rowRec.row_order = 1
+								rowRec.row_name = 'Default'
+								
+								newRows++
+								
+								for (var m = 1; m <= areaRec.web_area_to_scope.getSize(); m++) {
+									var scopeRec = areaRec.web_area_to_scope.getRecord(m)
+									scopeRec.id_row = rowRec.id_row
+								}
+							}
+						}
+					}
+				}
+				
+				databaseManager.saveData()
+			}
+		}
+		
+		globals.DIALOGS.showInfoDialog(
+				'Conversion complete',
+				newRows + ' new rows added'
+			)
+	}
+}

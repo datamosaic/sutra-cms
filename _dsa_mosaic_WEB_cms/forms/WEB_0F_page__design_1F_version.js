@@ -14,10 +14,15 @@ var _license_dsa_mosaic_WEB_cms = 'Module: _dsa_mosaic_WEB_cms \
 function FORM_on_load()
 {
 	if (!solutionPrefs.config.webClient) {
+		// set split 3
+		elements.bean_split_3.topComponent		= elements.tab_area
+		elements.bean_split_3.bottomComponent	= elements.tab_row
+		elements.bean_split_3.dividerLocation	= 180	
+		
 		// set split 2
-		elements.bean_split_2.topComponent		= elements.tab_area
+		elements.bean_split_2.topComponent		= elements.bean_split_3
 		elements.bean_split_2.bottomComponent	= elements.tab_block
-		elements.bean_split_2.dividerLocation	= 200	
+		elements.bean_split_2.dividerLocation	= 300	
 		
 		// set split 1
 		elements.bean_split_1.leftComponent	= elements.bean_split_2

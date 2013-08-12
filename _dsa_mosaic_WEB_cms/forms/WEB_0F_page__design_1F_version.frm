@@ -10,7 +10,7 @@ items:[
 {
 containsFormID:"9AD527D7-8F06-4D85-80A0-AA7FFE661278",
 location:"261,30",
-relationName:"web_version_to_area.web_area_to_scope.web_scope_to_block",
+relationName:"web_version_to_area.web_area_to_row.web_row_to_scope.web_scope_to_block",
 text:"WEB_0F_page__design_1F_version_2F_block__data",
 typeid:15,
 uuid:"90808B7B-E299-48D1-BD66-9096F66C7217"
@@ -18,7 +18,7 @@ uuid:"90808B7B-E299-48D1-BD66-9096F66C7217"
 {
 containsFormID:"6D758DEA-1F08-4DC6-A248-076D7BB84AEA",
 location:"251,10",
-relationName:"web_version_to_area.web_area_to_scope.web_scope_to_block",
+relationName:"web_version_to_area.web_area_to_row.web_row_to_scope.web_scope_to_block",
 text:"WEB_0F_page__design_1F_version_2F_block__gui",
 typeid:15,
 uuid:"A8C3FC14-DD6E-4AF1-895D-3E77B8914597"
@@ -117,7 +117,7 @@ uuid:"9CF13E2D-BD02-47C2-908F-9FDF103CFB24"
 location:"0,0",
 name:"tab_area",
 printable:false,
-size:"241,202",
+size:"241,132",
 tabOrientation:-1,
 transparent:true,
 typeid:16,
@@ -132,7 +132,7 @@ items:[
 {
 containsFormID:"E9C7C76B-1706-4C88-B126-39DCF7E0C980",
 location:"0,232",
-relationName:"web_version_to_area.web_area_to_scope",
+relationName:"web_version_to_area.web_area_to_row.web_row_to_scope",
 text:"WEB_0F_page__design_1F_version_2L_scope",
 typeid:15,
 uuid:"71501240-BA32-4015-B39E-55CE0D05C484"
@@ -204,12 +204,99 @@ beanXML:"<?xml version=\"1.0\" encoding=\"UTF-8\"?>
 <\/java> 
 ",
 formIndex:9999,
-location:"40,90",
+location:"40,130",
+name:"bean_split_3",
+size:"170,50",
+typeid:12,
+usesUI:true,
+uuid:"8F962C65-56B7-4D04-84F1-F9E13BA00000"
+},
+{
+anchors:15,
+beanClassName:"javax.swing.JSplitPane",
+beanXML:"<?xml version=\"1.0\" encoding=\"UTF-8\"?> 
+<java version=\"1.5.0_19\" class=\"java.beans.XMLDecoder\"> 
+ <object class=\"javax.swing.JSplitPane\"> 
+  <int>0<\/int> 
+  <void property=\"background\"> 
+   <object class=\"java.awt.Color\"> 
+    <int>209<\/int> 
+    <int>215<\/int> 
+    <int>226<\/int> 
+    <int>255<\/int> 
+   <\/object> 
+  <\/void> 
+  <void property=\"size\"> 
+   <object class=\"java.awt.Dimension\"> 
+    <int>170<\/int> 
+    <int>90<\/int> 
+   <\/object> 
+  <\/void> 
+  <void property=\"UI\"> 
+   <void property=\"continuousLayout\"> 
+    <boolean>true<\/boolean> 
+   <\/void> 
+  <\/void> 
+  <void property=\"border\"> 
+   <null/> 
+  <\/void> 
+  <void property=\"continuousLayout\"> 
+   <boolean>true<\/boolean> 
+  <\/void> 
+  <void property=\"dividerLocation\"> 
+   <int>0<\/int> 
+  <\/void> 
+  <void property=\"dividerSize\"> 
+   <int>0<\/int> 
+  <\/void> 
+  <void property=\"focusable\"> 
+   <boolean>false<\/boolean> 
+  <\/void> 
+  <void property=\"lastDividerLocation\"> 
+   <int>0<\/int> 
+  <\/void> 
+  <void property=\"name\"> 
+   <string>bean_split_2<\/string> 
+  <\/void> 
+  <void property=\"opaque\"> 
+   <boolean>false<\/boolean> 
+  <\/void> 
+  <void property=\"resizeWeight\"> 
+   <double>0.25<\/double> 
+  <\/void> 
+ <\/object> 
+<\/java> 
+",
+formIndex:9999,
+location:"40,70",
 name:"bean_split_2",
-size:"170,90",
+size:"170,50",
 typeid:12,
 usesUI:true,
 uuid:"A9715309-41BC-4F71-8025-9264F9526155"
+},
+{
+background:"#d1d7e2",
+borderType:"MatteBorder,0,0,1,0,#808080",
+formIndex:10502,
+items:[
+{
+containsFormID:"1D7CFB8D-4187-406C-8282-100D1FABF9EB",
+location:"0,162",
+relationName:"web_version_to_area.web_area_to_row",
+text:"WEB_0F_page__design_1F_version_2L_row",
+typeid:15,
+uuid:"6D251306-C601-45D0-A770-3D4CA2AD2798"
+}
+],
+location:"0,132",
+name:"tab_row",
+printable:false,
+size:"241,72",
+tabOrientation:-1,
+transparent:true,
+typeid:16,
+uuid:"DE6741BD-B6D0-4934-9223-CBBBDCA55860"
 },
 {
 height:300,
