@@ -514,3 +514,10 @@ function ACTION_get_defaults(siteRec) {
 function ACTION_upgrade_cms1() {
 	globals.WEB_upgrade()
 }
+
+/**
+ * @properties={typeid:24,uuid:"A3744249-5C4B-4075-A1FD-1E58204E1827"}
+ */
+function ACTION_upgrade_rows() {
+	globals.WEB_convert__row(foundset.getSelectedRecord())
+}

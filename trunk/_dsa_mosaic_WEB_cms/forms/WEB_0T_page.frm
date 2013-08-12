@@ -112,7 +112,7 @@ uuid:"6786C87F-7BC3-411C-8A23-AAD5EA138D18"
 {
 anchors:3,
 formIndex:9999,
-location:"103,2",
+location:"98,2",
 mediaOptions:14,
 name:"btn_tabs_down",
 showClick:false,
