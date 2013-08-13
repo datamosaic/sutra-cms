@@ -1,4 +1,23 @@
 /**
+ * Display name of block (if scrapbook) otherwise type of block
+ * 
+ * @properties={type:12,typeid:36,uuid:"3F7650D8-DCBE-4F90-B448-717CCBFE8B4D"}
+ */
+function display_block() {
+	if (utils.hasRecords(web_editable_default_to_block)) {
+		if (web_editable_default_to_block.block_name) {
+			return web_editable_default_to_block.block_name
+		}
+		else {
+			return web_editable_default_to_block.web_block_to_block_type.block_name + ' Scrapbook'
+		}
+	}
+	else {
+		return application.getValueListDisplayValue('WEB_block_types',id_block_type)
+	}
+}
+
+/**
  * Calculate the row background color.
  *
  * @param {Number} index row index

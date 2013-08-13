@@ -1,0 +1,12 @@
+allowCreationRelatedRecords:true,
+deleteRelatedRecords:true,
+foreignDataSource:"db:/sutra_cms/web_editable_row",
+initialSort:"row_order asc",
+items:[
+{foreignColumnName:"id_editable",primaryDataProviderID:"id_editable",typeid:23,uuid:"68C1D0E1-F749-4635-A6FD-113D6C015BEC"}
+],
+joinType:1,
+name:"web_editable_to_editable_row",
+primaryDataSource:"db:/sutra_cms/web_editable",
+typeid:22,
+uuid:"82FE0EC9-ADAA-4CA8-BC1C-740FBB78E0A1"
