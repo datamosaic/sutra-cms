@@ -1,0 +1,10 @@
+allowCreationRelatedRecords:true,
+foreignDataSource:"db:/sutra_cms/web_row",
+items:[
+{foreignColumnName:"id_row",primaryDataProviderID:"parent_id_row",typeid:23,uuid:"40F2A67E-5500-4C64-BDC0-1F3F1D426FCC"}
+],
+joinType:1,
+name:"web_row_to_row__child",
+primaryDataSource:"db:/sutra_cms/web_row",
+typeid:22,
+uuid:"DAFE51D7-7ABA-4BDD-BA69-AEDD31FFCCEC"
