@@ -188,6 +188,7 @@ function TOGGLE_edit_mode(editMode,saveData) {
 	
 	//set elements appropriately
 	forms.WEB_0F_page__design_1F__header_display__version.TOGGLE_elements()
+	forms.WEB_0F_page__design_1F_version_2L_row.TOGGLE_elements(_editMode)
 	forms.WEB_0F_page__design_1F_version_2L_scope.TOGGLE_elements(_editMode)
 	forms.WEB_0F_page__design_1F_version_2F_block__data.REC_on_select()
 	forms.WEB_0F_page__design_1F__properties.TOGGLE_elements(_editMode)

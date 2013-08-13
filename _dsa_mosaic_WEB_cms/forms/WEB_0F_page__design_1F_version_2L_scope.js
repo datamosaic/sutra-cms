@@ -111,7 +111,7 @@ function BLOCK_new(input) {
 		
 		//notify which area we're adding to when in real mode
 		forms.WEB_P__block__new._calledFrom = 'Live'
-		forms.WEB_P__block__new._areaID = convertUUID(input)
+		forms.WEB_P__block__new._rowID = convertUUID(input)
 	}
 	else {
 		forms.WEB_P__block__new._calledFrom = 'GUI'

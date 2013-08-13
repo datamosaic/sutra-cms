@@ -10,8 +10,13 @@
 <!-- editable browser stuff -->
 <script type="text/javascript">
 
-	show_highlighter = function(domID) {
-		var hilite = $("#cmsHilite");
+	show_highlighter = function(domID,type) {
+		if (type == 'row') {
+			var hilite = $("#cmsRowHilite");
+		}
+		else {
+			var hilite = $("#cmsBlockHilite");
+		}
 		var divObj = $(domID);
 
 		var offset = divObj.offset();
@@ -31,48 +36,81 @@
 				hiliteTwo.css("display", "block");
 				
 				//tell servoy which block we want to edit
-				sendNSCommand("WEB_0F_page__browser.BLOCK_edit",domID);
+				if (type == 'row') {
+					sendNSCommand("WEB_0F_page__browser.ROW_edit",domID);
+				}
+				else {
+					sendNSCommand("WEB_0F_page__browser.BLOCK_edit",domID);
+				}
 			}
 		);
 	};
 
 	hide_highlighter = function() {
-		$("#cmsHilite").css('display', 'none');
+		$("#cmsRowHilite").css('display', 'none');
+		$("#cmsBlockHilite").css('display', 'none');
 		$("#cmsOverlay").css('display', 'none');
 	}
 
-	function editOn(divPrefix) {
-		//make all editable areas clickable and show rollover highlightion
-		$("div[id^='" + divPrefix + "'],p[id^='" + divPrefix + "']").mouseover(function(e) {
-			show_highlighter('#' + this.id);
+	function editOn() {
+		//make all row/block editable areas clickable and show rollover highlightion
+		$("div[id^='sutra-row-'],p[id^='sutra-row-']").mouseover(function(e) {
+			show_highlighter('#' + this.id,'row');
 		});
-		$("div[id^='" + divPrefix + "'],p[id^='" + divPrefix + "']").addClass("editable");
+		$("div[id^='sutra-row-'],p[id^='sutra-row-']").addClass("row_editable");
 		
-		//show new block
+		$("div[id^='sutra-block-data-'],p[id^='sutra-block-data-']").mouseover(function(e) {
+			show_highlighter('#' + this.id,'block');
+		});
+		$("div[id^='sutra-block-data-'],p[id^='sutra-block-data-']").addClass("block_editable");
+		
+		
+		//show new row/block buttons
+		$("div[id^='sutra-row-add-']").css("display","block");
+		$("div[id^='sutra-row-add-']").mouseover(function(e) {
+			hide_highlighter();
+		});
+		
 		$("div[id^='sutra-block-add-']").css("display","block");
 		$("div[id^='sutra-block-add-']").mouseover(function(e) {
 			hide_highlighter();
 		});
 	}
 
-	function editOff(divPrefix) {
+	function editOff() {
 		hide_highlighter();
 		
-		//existing blocks
-		$("div[id^='" + divPrefix + "'],p[id^='" + divPrefix + "']").unbind("mouseover");
-		$("div[id^='" + divPrefix + "'],p[id^='" + divPrefix + "']").removeClass("editable");
+		//existing rows/blocks
+		$("div[id^='sutra-row-'],p[id^='sutra-row-']").unbind("mouseover");
+		$("div[id^='sutra-row-'],p[id^='sutra-row-']").removeClass("row_editable");
 		
-		//hide new block
+		$("div[id^='sutra-block-data-'],p[id^='sutra-block-data-']").unbind("mouseover");
+		$("div[id^='sutra-block-data-'],p[id^='sutra-block-data-']").removeClass("block_editable");
+		
+		//hide new row/block buttons
+		$("div[id^='sutra-row-add-']").css("display","none");
+		$("div[id^='sutra-row-add-']").unbind("mouseover");
+		
 		$("div[id^='sutra-block-add-']").css("display","none");
+		$("div[id^='sutra-block-add-']").unbind("mouseover");
 	}
 	
-	function blockNew(areaID) {
+	function blockNew(rowID) {
 		//put secondary hover craft over the whole mothership
 		var hiliteTwo = $("#cmsOverlay");
 		hiliteTwo.css("display", "block");
 		
 		//tell servoy which area is getting a new block appended
-		sendNSCommand("WEB_0F_page__browser.BLOCK_new",areaID);
+		sendNSCommand("WEB_0F_page__browser.BLOCK_new",rowID);
+	}
+	
+	function rowNew(areaID) {
+		//put secondary hover craft over the whole mothership
+		var hiliteTwo = $("#cmsOverlay");
+		hiliteTwo.css("display", "block");
+		
+		//tell servoy which area is getting a new block appended
+		sendNSCommand("WEB_0F_page__browser.ROW_new",areaID);
 	}
 	
 	$(function() {

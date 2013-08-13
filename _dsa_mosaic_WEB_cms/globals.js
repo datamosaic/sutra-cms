@@ -1327,7 +1327,7 @@ function WEB_block_builder__data_change(oldValue, newValue, event) {
 function WEB_convert__row(siteRec) {
 	var input = globals.DIALOGS.showQuestionDialog(
 			'Add rows?',
-			'Upgrade selected site to bootstrappy row stuffs?',
+			'Upgrade selected site with bootstrappy rows?',
 			'Yes',
 			'No'
 		)
@@ -1364,6 +1364,36 @@ function WEB_convert__row(siteRec) {
 									var scopeRec = areaRec.web_area_to_scope.getRecord(m)
 									scopeRec.id_row = rowRec.id_row
 								}
+							}
+						}
+					}
+				}
+				
+				databaseManager.saveData()
+			}
+		}
+		
+		if (utils.hasRecords(siteRec,'web_site_to_theme')) {
+			for (var i = 1; i <= siteRec.web_site_to_theme.getSize(); i++) {
+				var themeRec = siteRec.web_site_to_theme.getRecord(i)
+				
+				for (var j = 1; j <= themeRec.web_theme_to_layout.getSize(); j++) {
+					var layoutRec = themeRec.web_theme_to_layout.getRecord(j)
+					
+					for (var k = 1; k <= layoutRec.web_layout_to_editable.getSize(); k++) {
+						var editableRec = layoutRec.web_layout_to_editable.getRecord(k)
+						
+						//no rows, create dummy and move all editable defaults into it
+						if (!utils.hasRecords(editableRec.web_editable_to_editable_row)) {
+							rowRec = editableRec.web_editable_to_editable_row.getRecord(editableRec.web_editable_to_editable_row.newRecord(false,true))
+							rowRec.row_order = 1
+							rowRec.row_name = 'Default'
+							
+							newRows++
+							
+							for (var m = 1; m <= editableRec.web_editable_to_editable_default.getSize(); m++) {
+								var editableDefaultRec = editableRec.web_editable_to_editable_default.getRecord(m)
+								editableDefaultRec.id_editable_row = rowRec.id_editable_row
 							}
 						}
 					}

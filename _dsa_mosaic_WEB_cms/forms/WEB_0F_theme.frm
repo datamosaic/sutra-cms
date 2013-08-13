@@ -31,7 +31,7 @@ uuid:"12ECD7CB-523F-463A-A6D5-26EE3A8586A1"
 {
 anchors:13,
 background:"#d1d7e2",
-borderType:"MatteBorder,0,1,0,0,#A1B0CF",
+borderType:"MatteBorder,0,1,0,1,#a1b0cf",
 formIndex:10502,
 items:[
 {
@@ -41,13 +41,21 @@ relationName:"web_theme_to_layout.web_layout_to_editable",
 text:"WEB_0F_theme_1L_editable",
 typeid:15,
 uuid:"D086AAF1-9919-409C-B6BB-C4E765B95494"
+},
+{
+containsFormID:"817FE5CE-A475-4F11-9EF7-E49719AABF3A",
+location:"221,297",
+relationName:"web_theme_to_layout.web_layout_to_editable.web_editable_to_editable_row",
+text:"WEB_0F_theme_1L_editable_row",
+typeid:15,
+uuid:"E15ACB59-8BF4-4075-92A5-F0C0C9FA280C"
 }
 ],
 location:"212,189",
 name:"tab_editable",
 printable:false,
 size:"200,180",
-tabOrientation:-1,
+tabOrientation:-3,
 typeid:16,
 uuid:"14378C46-02FD-431F-AA28-00978E0EF7D7"
 },
@@ -83,7 +91,7 @@ uuid:"211789C9-B4A8-4878-8B8D-7FA5A6131801"
 anchors:15,
 beanClassName:"javax.swing.JSplitPane",
 beanXML:"<?xml version=\"1.0\" encoding=\"UTF-8\"?> 
-<java version=\"1.6.0_22\" class=\"java.beans.XMLDecoder\"> 
+<java version=\"1.6.0_45\" class=\"java.beans.XMLDecoder\"> 
  <object class=\"javax.swing.JSplitPane\"> 
   <int>1<\/int> 
   <void property=\"background\"> 
@@ -126,9 +134,6 @@ beanXML:"<?xml version=\"1.0\" encoding=\"UTF-8\"?>
   <void property=\"name\"> 
    <string>bean_split_2<\/string> 
   <\/void> 
-  <void property=\"opaque\"> 
-   <boolean>false<\/boolean> 
-  <\/void> 
   <void property=\"resizeWeight\"> 
    <double>0.5<\/double> 
   <\/void> 
@@ -162,13 +167,12 @@ uuid:"4B15062C-5D60-4BB8-87B1-54FC58394328"
 {
 anchors:15,
 background:"#d1d7e2",
-borderType:"MatteBorder,0,0,0,0,#A1B0CF",
 formIndex:10502,
 items:[
 {
 containsFormID:"80CBD273-902F-47A8-9E61-F956D26EF9E9",
 location:"413,220",
-relationName:"web_theme_to_layout.web_layout_to_editable.web_editable_to_editable_default",
+relationName:"web_theme_to_layout.web_layout_to_editable.web_editable_to_editable_row.web_editable_row_to_editable_default",
 text:"WEB_0F_theme_1L_editable_default",
 typeid:15,
 uuid:"7413E68A-7293-4352-A4B7-618FFF9A1AD9"
@@ -434,7 +438,7 @@ uuid:"D4E98555-BDA8-4D3E-BC76-DD77EDC402EF"
 anchors:15,
 beanClassName:"javax.swing.JSplitPane",
 beanXML:"<?xml version=\"1.0\" encoding=\"UTF-8\"?> 
-<java version=\"1.6.0_22\" class=\"java.beans.XMLDecoder\"> 
+<java version=\"1.6.0_45\" class=\"java.beans.XMLDecoder\"> 
  <object class=\"javax.swing.JSplitPane\"> 
   <int>1<\/int> 
   <void property=\"background\"> 
@@ -447,8 +451,8 @@ beanXML:"<?xml version=\"1.0\" encoding=\"UTF-8\"?>
   <\/void> 
   <void property=\"size\"> 
    <object class=\"java.awt.Dimension\"> 
-    <int>760<\/int> 
-    <int>190<\/int> 
+    <int>558<\/int> 
+    <int>180<\/int> 
    <\/object> 
   <\/void> 
   <void property=\"UI\"> 
@@ -477,9 +481,6 @@ beanXML:"<?xml version=\"1.0\" encoding=\"UTF-8\"?>
   <void property=\"name\"> 
    <string>bean_split_1<\/string> 
   <\/void> 
-  <void property=\"opaque\"> 
-   <boolean>false<\/boolean> 
-  <\/void> 
   <void property=\"resizeWeight\"> 
    <double>0.5<\/double> 
   <\/void> 
@@ -501,6 +502,7 @@ location:"30,172",
 mediaOptions:14,
 name:"lbl_slide_1",
 onDoubleClickMethodID:"18AE6366-B709-4281-A66D-257152B3377C",
+rolloverCursor:12,
 showClick:false,
 showFocus:false,
 size:"190,18",
@@ -624,7 +626,6 @@ uuid:"E7BC986A-E386-4565-9CB8-4C4E50688C33"
 {
 anchors:13,
 background:"#d1d7e2",
-borderType:"MatteBorder,0,1,0,0,#A1B0CF",
 formIndex:10502,
 items:[
 {

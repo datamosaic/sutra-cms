@@ -1233,26 +1233,6 @@ function WEBc_markup_link_internal(markup,siteURL,linkType,areaID,obj) {
 		markup		= newMarkup + markup
 	}
 	
-	//tack on add new record button if editable
-	if (linkType == 'Edit' && areaID instanceof UUID) {
-		var area = databaseManager.getFoundSet("sutra_cms","web_area")
-		area.find()
-		area.id_area = areaID
-		var count = area.search()
-		
-		//this is linked up to a theme editable and set to allow records to be created
-		if (count && utils.hasRecords(area.web_area_to_editable) && area.web_area_to_editable.flag_new_block) {
-			var areaString = utils.stringReplace(areaID.toString(),'-','')
-			
-			var newBlock = '<!-- add new block -->'
-			newBlock += '<div id="sutra-block-add-' + areaString + '" class="block_new">'
-			newBlock += '<a href="javascript:blockNew(\'' + areaString + '\')">' + area.area_name.toUpperCase() + ': Add block</a>'
-			newBlock += '</div>'
-				
-			markup += newBlock
-		}
-	}
-	
 	return markup
 
 }
