@@ -124,6 +124,7 @@ function CONTROLLER_session() {
  * @param {JSDataSet}	results Dataset that will be returned to the jsp.
  *   
  * @properties={typeid:24,uuid:"AFD23FBD-CE21-4C2C-BDA2-75C68969ACDB"}
+ * @AllowToRunInFind
  */
 function CONTROLLER_builder(results) {
 	// assign main CMS object for easier reference
@@ -160,6 +161,12 @@ function CONTROLLER_builder(results) {
 		// PROCESS: ROW
 		for (var h = 1; h <= rows.getSize(); h++) {
 			var row = rows.getRecord(h)
+			
+			// edit mode, need extra div wrappers
+				//this is linked up to a theme editable and set to allow records to be created
+			if (obj.type == 'Edit' && utils.hasRecords(area.web_area_to_editable) && area.web_area_to_editable.flag_new_block) {
+				areaMarkup += '<div id="sutra-row-' + utils.stringReplace(row.id_row.toString(),'-','') + '">\n'
+			}
 			
 			// SCOPE(S)
 			var scopes = row.web_row_to_scope
@@ -296,6 +303,35 @@ function CONTROLLER_builder(results) {
 					}
 				}
 			}
+			
+			//tack on add new block button if editable
+				//this is linked up to a theme editable and set to allow records to be created
+			if (obj.type == 'Edit' && utils.hasRecords(area.web_area_to_editable) && area.web_area_to_editable.flag_new_block) {
+				var rowString = utils.stringReplace(row.id_row.toString(),'-','')
+				
+				var newBlock = '<!-- add new block -->'
+				newBlock += '<div id="sutra-block-add-' + rowString + '" class="block_new">'
+				newBlock += '<a href="javascript:blockNew(\'' + rowString + '\')">' + row.row_name.toUpperCase() + ': Add block</a>'
+				newBlock += '</div>'
+				
+				areaMarkup += newBlock
+				
+				//close down row
+				areaMarkup += '</div>\n'
+			}
+		}
+		
+		//tack on add new row button if editable
+		//this is linked up to a theme editable and set to allow records to be created
+		if (obj.type == 'Edit' && utils.hasRecords(area.web_area_to_editable) && area.web_area_to_editable.flag_new_block) {
+			var areaString = utils.stringReplace(area.id_area.toString(),'-','')
+			
+			var newRow = '<!-- add new row -->'
+			newRow += '<div id="sutra-row-add-' + areaString + '" class="row_new">\n'
+			newRow += '<a href="javascript:rowNew(\'' + areaString + '\')">' + area.area_name.toUpperCase() + ': Add row</a>\n'
+			newRow += '</div>\n'
+			
+			areaMarkup += newRow
 		}
 		
 		// replace out place holders (DS_* links)

@@ -1,3 +1,4 @@
+borderType:"MatteBorder,0,0,1,0,#a1b0cf",
 dataSource:"db:/sutra_cms/web_editable",
 initialSort:"row_order asc",
 items:[
@@ -95,6 +96,7 @@ verticalAlignment:0
 anchors:11,
 borderType:"SpecialMatteBorder,0.0,0.0,1.0,0.0,#000000,#000000,#999999,#000000,0.0,1.0",
 dataProviderID:"editable_name",
+editable:false,
 formIndex:10700,
 location:"0,40",
 name:"fld_name",

@@ -49,6 +49,7 @@ uuid:"697AE970-B4C1-44C0-8016-B069F8A4BAA7"
 {
 anchors:15,
 dataProviderID:"layout_path",
+editable:false,
 formIndex:10700,
 location:"10,80",
 scrollbars:32,

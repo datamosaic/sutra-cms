@@ -75,7 +75,6 @@ uuid:"3161EE9C-7308-49D9-9566-107F69100A0D"
 },
 {
 borderType:"SpecialMatteBorder,0.0,0.0,1.0,0.0,#000000,#000000,#999999,#000000,0.0,1.0",
-enabled:false,
 formIndex:14900,
 imageMediaID:"16c4d692-c1ea-4200-a078-1150b1da4d5f",
 location:"221,31",
@@ -88,7 +87,8 @@ showFocus:false,
 size:"20,23",
 toolTipText:"Delete record",
 typeid:7,
-uuid:"3342D55D-1514-4FF4-B000-8F9D5529F226"
+uuid:"3342D55D-1514-4FF4-B000-8F9D5529F226",
+visible:false
 },
 {
 anchors:11,
@@ -153,7 +153,6 @@ imageMediaID:"f27c82c9-3a7e-4b29-9d3d-38857a387710",
 location:"220,4",
 mediaOptions:14,
 name:"btn_actions",
-onActionMethodID:"1480B246-ADDF-4A53-BBE8-C489910C1BAC",
 rolloverCursor:12,
 rolloverImageMediaID:"1dd5b54e-f2f1-408d-9591-2179f743386c",
 showClick:false,

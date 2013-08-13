@@ -1,8 +1,10 @@
 <!-- editable browser stuff -->
-<div id="cmsHilite">
+<div id="cmsRowHilite">
 	&nbsp;
 </div>
-
+<div id="cmsBlockHilite">
+	&nbsp;
+</div>
 <div id="cmsOverlay">
 	&nbsp;
 </div>

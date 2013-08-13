@@ -31,17 +31,16 @@ uuid:"49D56461-2FA9-473E-8221-71D85C80FC60"
 {
 anchors:11,
 borderType:"SpecialMatteBorder,0.0,0.0,1.0,0.0,#000000,#000000,#999999,#000000,0.0,1.0",
-dataProviderID:"id_block_type",
+dataProviderID:"display_block",
 editable:false,
 formIndex:10200,
 location:"0,40",
-name:"fld_id_block_type",
+name:"fld_display_block",
 size:"92,23",
 styleClass:"tableview",
-text:"Block type",
+text:"Block",
 typeid:4,
-uuid:"6104812F-4C13-4202-B89B-2A043CB5B756",
-valuelistID:"6171777B-FECD-4072-8E13-5CF251FCD891"
+uuid:"6104812F-4C13-4202-B89B-2A043CB5B756"
 },
 {
 anchors:11,

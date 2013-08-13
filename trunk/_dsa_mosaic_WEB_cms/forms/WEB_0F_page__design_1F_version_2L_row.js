@@ -9,6 +9,19 @@ var _license_dsa_mosaic_WEB_cms = 'Module: _dsa_mosaic_WEB_cms \
 
 /**
 *
+* @properties={typeid:24,uuid:"C729EF63-F185-4CF0-AF80-10241A2DB90F"}
+*/
+function TOGGLE_elements(editAllow) {
+	var status = globals.WEBc_block_getEdit() && editAllow
+	
+//	elements.btn_actions.enabled = status
+	elements.btn_add.enabled = status
+	elements.btn_delete.visible = status
+	elements.fld_row_name.editable = status
+}
+
+/**
+*
 * @properties={typeid:24,uuid:"15AF973A-AAB9-4F3A-8E39-52F50FB3338F"}
 */
 function DIR_down() {
