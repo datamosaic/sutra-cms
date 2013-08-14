@@ -43,14 +43,6 @@ name:"id_editable"
 },
 {
 allowNull:true,
-creationOrderIndex:9,
-dataType:12,
-flags:4,
-length:50,
-name:"id_editable_row"
-},
-{
-allowNull:true,
 autoEnterType:5,
 creationOrderIndex:4,
 dataType:4,

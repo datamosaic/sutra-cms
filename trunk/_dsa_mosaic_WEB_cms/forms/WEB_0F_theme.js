@@ -174,10 +174,6 @@ function FORM_on_load(event) {
 	elements.bean_split_3.leftComponent = elements.lbl_slide_1
 	elements.bean_split_3.rightComponent = elements.bean_split_4
 	elements.bean_split_3.dividerLocation = 300
-	
-	elements.tab_editable.continuousLayout = true
-	elements.tab_editable.dividerSize = 0
-	elements.tab_editable.dividerLocation = 0.5
 }
 
 /**
@@ -612,25 +608,22 @@ function TOGGLE_splits(event) {
 	var divSize = (elements.bean_split_1.dividerSize) ? 0 : 10
 	
 	if (elements.bean_split_1.dividerSize) {
+		elements.tab_layout.border = 'MatteBorder,0,1,0,0,#a1b0cf'
+		elements.tab_editable.border = 'MatteBorder,0,1,0,0,#a1b0cf'
+		elements.tab_editable_default.border = 'MatteBorder,0,0,0,0,#a1b0cf'		
+			
 		elements.bean_split_1.dividerSize = 0
 		elements.bean_split_2.dividerSize = 0
 		elements.bean_split_3.dividerLocation = elements.bean_split_1.dividerLocation
 		application.updateUI()
 		elements.bean_split_4.dividerLocation = elements.bean_split_2.dividerLocation
-		
-		elements.tab_editable.dividerSize = 0
-		
-		elements.tab_layout.border = 'MatteBorder,0,0,0,0,#a1b0cf'
-		elements.tab_editable_default.border = 'MatteBorder,0,0,0,0,#a1b0cf'
-		forms.WEB_0F_theme_1L_editable_row.elements.lbl_splits_show.visible = false
 	}
 	else {
-		elements.bean_split_1.dividerSize = 10
-		elements.bean_split_2.dividerSize = 10
-		elements.tab_editable.dividerSize = 10
-		
 		elements.tab_layout.border = 'MatteBorder,0,1,0,0,#a1b0cf'
-		elements.tab_editable_default.border = 'MatteBorder,0,0,0,1,#a1b0cf'
-		forms.WEB_0F_theme_1L_editable_row.elements.lbl_splits_show.visible = true
+		elements.tab_editable.border = 'MatteBorder,0,1,0,1,#a1b0cf'
+		elements.tab_editable_default.border = 'MatteBorder,0,0,0,1,#a1b0cf'		
+			
+		elements.bean_split_1.dividerSize = 8
+		elements.bean_split_2.dividerSize = 8
 	}
 }

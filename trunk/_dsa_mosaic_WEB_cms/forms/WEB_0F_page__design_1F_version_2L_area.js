@@ -296,13 +296,11 @@ function AREA_reset(versionStack, recLatest, recSelected, autoActivate) {
 function RESIZE_beans(event) {
 	var divOne = forms.WEB_0F_page__design_1F_version.elements.bean_split_1
 	var divTwo = forms.WEB_0F_page__design_1F_version.elements.bean_split_2
-	var divThree = forms.WEB_0F_page__design_1F_version.elements.bean_split_3
 	
 	//turn off
 	if (divOne.dividerSize || divTwo.dividerSize) {
 		divOne.dividerSize = 0
 		divTwo.dividerSize = 0
-		divThree.dividerSize = 0
 		
 		//set lefthand border to size
 		forms.WEB_0F_page__design_1F_version_2F_block__gui.elements.lbl_lefthand.setSize(
@@ -316,14 +314,12 @@ function RESIZE_beans(event) {
 		)
 		
 		forms.WEB_0F_page__design_1F_version.elements.tab_area.setBorder('MatteBorder,0,0,1,0,#808080')
-		forms.WEB_0F_page__design_1F_version.elements.tab_row.setBorder('MatteBorder,0,0,1,0,#808080')
 		forms.WEB_0F_page__design_1F_version.elements.tab_block.setBorder('MatteBorder,0,0,0,0,#808080')
 	}
 	//turn on
 	else {
 		divOne.dividerSize = 8
 		divTwo.dividerSize = 8
-		divThree.dividerSize = 8
 		
 		//set lefthand border to size
 		forms.WEB_0F_page__design_1F_version_2F_block__gui.elements.lbl_lefthand.setSize(
@@ -337,7 +333,6 @@ function RESIZE_beans(event) {
 		)
 		
 		forms.WEB_0F_page__design_1F_version.elements.tab_area.setBorder('MatteBorder,0,1,1,0,#808080')
-		forms.WEB_0F_page__design_1F_version.elements.tab_row.setBorder('MatteBorder,1,1,1,0,#808080')
 		forms.WEB_0F_page__design_1F_version.elements.tab_block.setBorder('MatteBorder,1,1,0,0,#808080')		
 	}
 }

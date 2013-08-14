@@ -33,7 +33,7 @@ var _scope = null;
  *
  * @properties={typeid:35,uuid:"B2836A0B-B9E9-4B7F-A4BF-4B815CCC5E94"}
  */
-var _rowID = null;
+var _areaID = null;
 
 /**
  * @type {String}
@@ -195,10 +195,10 @@ function ACTION_ok(event) {
 								var scopeRec = fsScope.getRecord(fsScope.newRecord(false,true))
 								
 								fsScope.find()
-								fsScope.id_row = _rowID
+								fsScope.id_area = _areaID
 								fsScope.search()
 								
-								scopeRec.id_row = _rowID
+								scopeRec.id_area = _areaID
 								scopeRec.row_order = fsScope.getSize() + 1
 								databaseManager.saveData(scopeRec)
 							}
@@ -290,10 +290,10 @@ function ACTION_ok(event) {
 							var scopeRec = fsScope.getRecord(fsScope.newRecord(false,true))
 							
 							fsScope.find()
-							fsScope.id_row = _rowID
+							fsScope.id_area = _areaID
 							fsScope.search()
 							
-							scopeRec.id_row = _rowID
+							scopeRec.id_area = _areaID
 							scopeRec.row_order = fsScope.getSize() + 1
 							databaseManager.saveData(scopeRec)
 						}
@@ -384,10 +384,10 @@ function ACTION_ok(event) {
 							var scopeRec = fsScope.getRecord(fsScope.newRecord(false,true))
 							
 							fsScope.find()
-							fsScope.id_row = _rowID
+							fsScope.id_area = _areaID
 							fsScope.search()
 							
-							scopeRec.id_row = _rowID
+							scopeRec.id_area = _areaID
 							scopeRec.row_order = fsScope.getSize() + 1
 							databaseManager.saveData(scopeRec)
 						}

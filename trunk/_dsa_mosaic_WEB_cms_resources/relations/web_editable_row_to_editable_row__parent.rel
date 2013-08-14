@@ -1,9 +1,0 @@
-foreignDataSource:"db:/sutra_cms/web_editable_row",
-items:[
-{foreignColumnName:"parent_id_editable_row",primaryDataProviderID:"id_editable_row",typeid:23,uuid:"04A698DB-D2CB-46BF-987B-80ABBDD2F6F3"}
-],
-joinType:1,
-name:"web_editable_row_to_editable_row__parent",
-primaryDataSource:"db:/sutra_cms/web_editable_row",
-typeid:22,
-uuid:"1C56711F-E126-44A5-9BA6-C3D7CA844C6D"

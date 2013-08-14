@@ -462,68 +462,60 @@ function AREA_new(editable,destVersion,rowOrder) {
 	areaRec.id_editable = editable.id_editable
 	areaRec.row_order = rowOrder
 	
-	//create a row for each editable row
-	for (var i = 1; i <= editable.web_editable_to_editable_row.getSize(); i++ ) {
-		var editableRowRec = editable.web_editable_to_editable_row.getRecord(i)
-		var rowRec = areaRec.web_area_to_row.getRecord(areaRec.web_area_to_row.newRecord(false,true))
-		rowRec.row_name = editableRowRec.row_name
-		rowRec.row_order = editableRowRec.row_order
+	//create a block record for each editable default
+	for (var j = 1; j <= editable.web_editable_to_editable_default.getSize(); j++ ) {
+		var tempEditableDefaultRec = editable.web_editable_to_editable_default.getRecord(j)
 		
-		//create a block record for each editable default
-		for (var j = 1; j <= editableRowRec.web_editable_row_to_editable_default.getSize(); j++ ) {
-			var tempEditableDefaultRec = editableRowRec.web_editable_row_to_editable_default.getRecord(j)
+		//disale/enable rec on select on the block type forms when creating scope
+		globals.WEB_block_on_select = false
+		
+		//create scope record
+		var scopeRec = areaRec.web_area_to_scope.getRecord(areaRec.web_area_to_scope.newRecord(false, true))
+		scopeRec.row_order = j
+		
+		//disable/enable rec on select on the block type forms when creating scope
+		globals.WEB_block_on_select = true
+		
+		//this is a scrapbook, just connect
+		if (tempEditableDefaultRec.id_block) {
+			scopeRec.id_block = tempEditableDefaultRec.id_block
+		}
+		//unique block
+		else {
+			//create block record
+			var fsBlock = databaseManager.getFoundSet('sutra_cms','web_block')
+			var blockRec = fsBlock.getRecord(fsBlock.newRecord(false,true))
 			
-			//disale/enable rec on select on the block type forms when creating scope
-			globals.WEB_block_on_select = false
+			scopeRec.id_block = blockRec.id_block
 			
-			//create scope record
-			var scopeRec = rowRec.web_row_to_scope.getRecord(rowRec.web_row_to_scope.newRecord(false, true))
-			scopeRec.row_order = j
+			//create first block version record
+			var blockVersionRec = blockRec.web_block_to_block_version__all.getRecord(blockRec.web_block_to_block_version__all.newRecord(false,true))
+			blockVersionRec.flag_active = 1
+			blockVersionRec.version_number = 1
+			blockVersionRec.id_block_type = tempEditableDefaultRec.id_block_type
+			blockVersionRec.id_block_display = tempEditableDefaultRec.id_block_display
 			
-			//disable/enable rec on select on the block type forms when creating scope
-			globals.WEB_block_on_select = true
-			
-			//this is a scrapbook, just connect
-			if (tempEditableDefaultRec.id_block) {
-				scopeRec.id_block = tempEditableDefaultRec.id_block
-			}
-			//unique block
-			else {
-				//create block record
-				var fsBlock = databaseManager.getFoundSet('sutra_cms','web_block')
-				var blockRec = fsBlock.getRecord(fsBlock.newRecord(false,true))
-				
-				scopeRec.id_block = blockRec.id_block
-				
-				//create first block version record
-				var blockVersionRec = blockRec.web_block_to_block_version__all.getRecord(blockRec.web_block_to_block_version__all.newRecord(false,true))
-				blockVersionRec.flag_active = 1
-				blockVersionRec.version_number = 1
-				blockVersionRec.id_block_type = tempEditableDefaultRec.id_block_type
-				blockVersionRec.id_block_display = tempEditableDefaultRec.id_block_display
-				
-				// INPUT
-				// create a block_data record for each block_input
-				if ( utils.hasRecords(tempEditableDefaultRec.web_editable_default_to_block_input) ) {
-					for (var k = 1; k <= tempEditableDefaultRec.web_editable_default_to_block_input.getSize(); k++) {
-						var tempEditableDefaultDetailRec = tempEditableDefaultRec.web_editable_default_to_block_input.getRecord(k)
-	
-						var blockDataRec = blockVersionRec.web_block_version_to_block_data.getRecord(blockVersionRec.web_block_version_to_block_data.newRecord(false,true))
-						blockDataRec.data_key = tempEditableDefaultDetailRec.column_name
-						blockDataRec.data_value = tempEditableDefaultDetailRec.column_value
-					}
+			// INPUT
+			// create a block_data record for each block_input
+			if ( utils.hasRecords(tempEditableDefaultRec.web_editable_default_to_block_input) ) {
+				for (var k = 1; k <= tempEditableDefaultRec.web_editable_default_to_block_input.getSize(); k++) {
+					var tempEditableDefaultDetailRec = tempEditableDefaultRec.web_editable_default_to_block_input.getRecord(k)
+
+					var blockDataRec = blockVersionRec.web_block_version_to_block_data.getRecord(blockVersionRec.web_block_version_to_block_data.newRecord(false,true))
+					blockDataRec.data_key = tempEditableDefaultDetailRec.column_name
+					blockDataRec.data_value = tempEditableDefaultDetailRec.column_value
 				}
-				
-				// CONFIG
-				// create a block data configure record for each data point
-				if ( utils.hasRecords(tempEditableDefaultRec.web_editable_default_to_block_configure) ) {
-					for (var k = 1; k <= tempEditableDefaultRec.web_editable_default_to_block_configure.getSize(); k++) {
-						var configTemplate = tempEditableDefaultRec.web_editable_default_to_block_configure.getRecord(k)
-						
-						var configRec = blockVersionRec.web_block_version_to_block_data_configure.getRecord(blockVersionRec.web_block_version_to_block_data_configure.newRecord(false, true))
-						configRec.data_key = configTemplate.column_name
-						configRec.data_value = configTemplate.column_valueame
-					}
+			}
+			
+			// CONFIG
+			// create a block data configure record for each data point
+			if ( utils.hasRecords(tempEditableDefaultRec.web_editable_default_to_block_configure) ) {
+				for (var k = 1; k <= tempEditableDefaultRec.web_editable_default_to_block_configure.getSize(); k++) {
+					var configTemplate = tempEditableDefaultRec.web_editable_default_to_block_configure.getRecord(k)
+					
+					var configRec = blockVersionRec.web_block_version_to_block_data_configure.getRecord(blockVersionRec.web_block_version_to_block_data_configure.newRecord(false, true))
+					configRec.data_key = configTemplate.column_name
+					configRec.data_value = configTemplate.column_valueame
 				}
 			}
 		}
@@ -546,52 +538,45 @@ function AREA_copy(srcArea,destVersion,rowOrder) {
 	
 	destArea.row_order = rowOrder
 	
-	//go through rows
-	for (var i = 1; i <= srcArea.web_area_to_row.getSize(); i++) {
-		var srcRow = srcArea.web_area_to_row.getRecord(i)
-		var destRow = destArea.web_area_to_row.getRecord(destArea.web_area_to_row.newRecord(false,true))
-		databaseManager.copyMatchingColumns(srcRow,destRow)
+	//go through scopes
+	for (var j = 1; j <= srcArea.web_area_to_scope.getSize(); j++) {
+		var srcScope = srcArea.web_area_to_scope.getRecord(j)
+		var destScope = destArea.web_area_to_scope.getRecord(destArea.web_area_to_scope.newRecord(false,true))
+		databaseManager.copyMatchingColumns(srcScope,destScope)
 		
-		//go through scopes
-		for (var j = 1; j <= srcRow.web_row_to_scope.getSize(); j++) {
-			var srcScope = srcRow.web_row_to_scope.getRecord(j)
-			var destScope = destRow.web_row_to_scope.getRecord(destRow.web_row_to_scope.newRecord(false,true))
-			databaseManager.copyMatchingColumns(srcScope,destScope)
+		//there is a block attached to this scope
+		if (utils.hasRecords(srcScope.web_scope_to_block)) {
+			var srcBlock = srcScope.web_scope_to_block.getRecord(1)
 			
-			//there is a block attached to this scope
-			if (utils.hasRecords(srcScope.web_scope_to_block)) {
-				var srcBlock = srcScope.web_scope_to_block.getRecord(1)
+			//block is a scrapbook, don't duplicate
+			if (srcBlock.scope_type) {
+				//don't need to do anything as the copyMatchingColumns in scope already hooked it up
+			}
+			//block is unique, duplicate
+			else {
+				//create new block record
+				var fsBlock = databaseManager.getFoundSet('sutra_cms','web_block')
+				var destBlock = fsBlock.getRecord(fsBlock.newRecord(false,true))
 				
-				//block is a scrapbook, don't duplicate
-				if (srcBlock.scope_type) {
-					//don't need to do anything as the copyMatchingColumns in scope already hooked it up
-				}
-				//block is unique, duplicate
-				else {
-					//create new block record
-					var fsBlock = databaseManager.getFoundSet('sutra_cms','web_block')
-					var destBlock = fsBlock.getRecord(fsBlock.newRecord(false,true))
-					
-					//re-hook this unique block back in to the current scope
-					destScope.id_block = destBlock.id_block
-					
-					//get active source block version
-					var srcBlockVer = srcBlock.web_block_to_block_version.getRecord(1)
-					
-					//create destination block version record
-					var destBlockVer = globals.CODE_record_duplicate(srcBlockVer,[
-														"web_block_version_to_block_data",
-														"web_block_version_to_block_data_configure"
-													])
-					
-					//set datapoints on new block version
-					destBlockVer.id_block = destBlock.id_block
-					destBlockVer.flag_active = 1
-					destBlockVer.version_number = 1
-					
-					//make sure that meta data columns are in sync with current block type definition
-					forms.WEB_0F_block__scrapbook.REC_refresh_synchronize(destBlockVer)
-				}
+				//re-hook this unique block back in to the current scope
+				destScope.id_block = destBlock.id_block
+				
+				//get active source block version
+				var srcBlockVer = srcBlock.web_block_to_block_version.getRecord(1)
+				
+				//create destination block version record
+				var destBlockVer = globals.CODE_record_duplicate(srcBlockVer,[
+													"web_block_version_to_block_data",
+													"web_block_version_to_block_data_configure"
+												])
+				
+				//set datapoints on new block version
+				destBlockVer.id_block = destBlock.id_block
+				destBlockVer.flag_active = 1
+				destBlockVer.version_number = 1
+				
+				//make sure that meta data columns are in sync with current block type definition
+				forms.WEB_0F_block__scrapbook.REC_refresh_synchronize(destBlockVer)
 			}
 		}
 	}
