@@ -1,9 +1,0 @@
-foreignDataSource:"db:/sutra_cms/web_row",
-items:[
-{foreignColumnName:"parent_id_row",primaryDataProviderID:"id_row",typeid:23,uuid:"19AA2D83-7E01-4C7E-B8A0-04682DC10D37"}
-],
-joinType:1,
-name:"web_row_to_row__parent",
-primaryDataSource:"db:/sutra_cms/web_row",
-typeid:22,
-uuid:"4E95F8EC-28D8-41A5-9062-9D95E021A290"

@@ -365,15 +365,6 @@ function THEME_new(progress) {
 	
 	// *** STAGE #4: create theme, layouts and editable areas *** //
 	else if ( progress == 4 ) {
-		
-		// create editable rows as needed
-		function editableRow(editableRec) {
-			if (!utils.hasRecords(editableRec.web_editable_to_editable_row)) {
-				var rowRec = editableRec.web_editable_to_editable_row.getRecord(editableRec.web_editable_to_editable_row.newRecord(false,true))
-				rowRec.row_name = 'Default'
-			}	
-		}
-		
 		//no records created yet and interface locked
 		if (application.__parent__.solutionPrefs && solutionPrefs.design.statusLockWorkflow) {
 			globals.WEB_lock_workflow(false)
@@ -469,8 +460,6 @@ function THEME_new(progress) {
 					}
 					layout.web_layout_to_editable.loadAllRecords()
 				}
-				
-				editableRow(editable)
 				databaseManager.saveData(editable) 
 				editablesList.push(_themes[_themesSelected].editables[i][j])
 			}
@@ -503,7 +492,6 @@ function THEME_new(progress) {
 						layout.web_layout_to_editable.loadAllRecords()
 						editablesList.push(_elements[_themesSelected].editables[_themes[_themesSelected].includes[i][k] + ".jspf"][m])
 					}
-					editableRow(editable)
 					databaseManager.saveData(editable) 
 				}
 			}
