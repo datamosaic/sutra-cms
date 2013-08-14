@@ -11,6 +11,12 @@ name:"id_block_type"
 },
 {
 allowNull:true,
+creationOrderIndex:11,
+dataType:4,
+name:"block_category"
+},
+{
+allowNull:true,
 creationOrderIndex:3,
 dataType:-1,
 length:16777215,
