@@ -1,0 +1,10 @@
+addEmptyValue:1,
+customValues:"Design Time|0
+Block Builder|1
+Form Builder|2",
+name:"WEB_block_type",
+returnDataProviders:1,
+separator:" ",
+showDataProviders:1,
+typeid:34,
+uuid:"1080A393-B2A0-4E95-A310-5355ED977D17"
