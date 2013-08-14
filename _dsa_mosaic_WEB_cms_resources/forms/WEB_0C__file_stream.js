@@ -153,7 +153,7 @@ function THEME_new(progress) {
 		var install = forms.WEB_0F_install.FUNCTION_getInstallDirectory() 
 		var theme = FUNCTION_theme_directory()
 		
-		//errorer out
+		//error out
 		if (theme == "No theme site directory specified") {
 			return
 		}
@@ -365,6 +365,15 @@ function THEME_new(progress) {
 	
 	// *** STAGE #4: create theme, layouts and editable areas *** //
 	else if ( progress == 4 ) {
+		
+		// create editable rows as needed
+		function editableRow(editableRec) {
+			if (!utils.hasRecords(editableRec.web_editable_to_editable_row)) {
+				var rowRec = editableRec.web_editable_to_editable_row.getRecord(editableRec.web_editable_to_editable_row.newRecord(false,true))
+				rowRec.row_name = 'Default'
+			}	
+		}
+		
 		//no records created yet and interface locked
 		if (application.__parent__.solutionPrefs && solutionPrefs.design.statusLockWorkflow) {
 			globals.WEB_lock_workflow(false)
@@ -460,6 +469,8 @@ function THEME_new(progress) {
 					}
 					layout.web_layout_to_editable.loadAllRecords()
 				}
+				
+				editableRow(editable)
 				databaseManager.saveData(editable) 
 				editablesList.push(_themes[_themesSelected].editables[i][j])
 			}
@@ -481,6 +492,8 @@ function THEME_new(progress) {
 						if ( count == 1 ) {
 							var editable = layout.web_layout_to_editable.getRecord(1)
 							editable.editable_name = _elements[_themesSelected].editables[_themes[_themesSelected].includes[i][k] + ".jspf"][m]
+							
+							
 						}
 						else {
 							var editable = layout.web_layout_to_editable.getRecord(layout.web_layout_to_editable.newRecord())
@@ -490,6 +503,7 @@ function THEME_new(progress) {
 						layout.web_layout_to_editable.loadAllRecords()
 						editablesList.push(_elements[_themesSelected].editables[_themes[_themesSelected].includes[i][k] + ".jspf"][m])
 					}
+					editableRow(editable)
 					databaseManager.saveData(editable) 
 				}
 			}
@@ -511,7 +525,6 @@ function THEME_new(progress) {
 					}
 				}			
 			}
-			
 			
 			// sort editables by row_order
 			forms.WEB_0F_theme_1L_layout.web_layout_to_editable.sort( "row_order asc" )
