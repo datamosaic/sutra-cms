@@ -22,6 +22,10 @@ div#cmsBlockHilite {
 	display: none;
 }
 
+div.row_editable * {
+	cursor: pointer !important;
+}
+
 div#cmsBlockHilite {
 	background-image: url(../images/bg_trans.png);
 	opacity: 0.5;
