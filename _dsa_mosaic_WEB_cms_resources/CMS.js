@@ -1,4 +1,58 @@
 /**
+ * Sutra CMS Configuration
+ * 
+ * @properties={typeid:35,uuid:"0016790E-70BB-4B13-B6FE-39E641E98126",variableType:-4}
+ */
+var init = new function() {
+	/**
+	 * App name
+	 * @return {String}
+	 */
+	this.name = new function() {
+		return 'Sutra CMS'
+	}
+		
+	/**
+	 * App description
+	 * return {String}
+	 */
+	this.description = new function() {
+		return 'Sutra CMS is full featured CMS with SaaS, multi-site, blogging, versioning, content per groups, login, image management, tight integration with Servoy\'s web client, and all kinds of other good stuff baked into the core feature set.'
+	}
+		
+	/**
+	 * App unique identifier
+	 * return {UUID}
+	 */
+	this.uuid = new function() {
+		return application.getUUID('0016790E-70BB-4B13-B6FE-39E641E98120')
+	}
+	
+	//setup
+		//navset, valuelists, messages, actions
+	
+	/**
+	 * Registry actions for app
+	 * 
+	 * @return {Object[]}
+	 */
+	this.items =  new function() {
+		return [
+			{name: 'Block version editable', registry: 'cms edit block version', description: 'Allow scrapbook versions to be re-opened for editing', uuid: '0016790E-70BB-4B13-B6FE-39E641E98121'},
+			{name: 'Page version editable', registry: 'cms edit version', description: 'Allow versions to be re-opened for editing', uuid: '0016790E-70BB-4B13-B6FE-39E641E98122'},
+			{name: 'Add a new page', registry: 'cms page add', description: 'Allow a new page to be created', uuid: '0016790E-70BB-4B13-B6FE-39E641E98123'},
+			{name: 'Delete selected page', registry: 'cms page delete', description: 'Allow the selected page to be deleted', uuid: '0016790E-70BB-4B13-B6FE-39E641E98124'},
+			{name: 'Create duplicate of selected page', registry: 'cms page duplicate', description: 'Allow duplication of selected page', uuid: '0016790E-70BB-4B13-B6FE-39E641E98125'},
+			{name: 'Page setup: Real mode v. GUI', registry: 'cms page mode toggle', description: 'Allow viewing the selected page as it will appear on the web', uuid: '0016790E-70BB-4B13-B6FE-39E641E98126'},
+			{name: 'Reorder pages within a site', registry: 'cms page reorder', description: 'Allow the positionment of pages within a site to be changed', uuid: '0016790E-70BB-4B13-B6FE-39E641E98127'},
+			{name: 'Only show full-screen page', registry: 'cms page sitemap', description: 'Show sitemap only when needed', uuid: '0016790E-70BB-4B13-B6FE-39E641E98128'},
+			{name: 'Update all pages', registry: 'cms site page update', description: 'Add missing areas to all pages in a site. Useful for when a major template change occurs.', uuid: '0016790E-70BB-4B13-B6FE-39E641E98129'},
+			{name: 'Refresh all theme pages', registry: 'cms theme layout page update', description: 'Update all pages using a theme', uuid: '0016790E-70BB-4B13-B6FE-39E641E9812A'}
+		]
+	}
+}
+
+/**
  * Constants used in this scope (for code completion, etc)
  * 
  * @properties={typeid:35,uuid:"D46A7551-AA0B-4052-93BD-230E7CBC3555",variableType:-4}
