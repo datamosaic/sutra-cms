@@ -22,6 +22,14 @@ var WEB_swc_arguments = new Object();
 var WEB_block_scope__new = null;
 
 /**
+ * @type {Number}
+ *
+ * @properties={typeid:35,uuid:"59111D71-665C-4CE2-BBEF-EA4B1ADB6F0D",variableType:4}
+ */
+var WEB_block_category__new = null;
+
+
+/**
  * @type {String}
  *
  * @properties={typeid:35,uuid:"484C4F77-B18E-4B39-89C7-59BFCFB5B6E5"}
