@@ -43,54 +43,6 @@ var _areaID = null;
 var _blockID = null;
 
 /**
- * Handle changed data.
- *
- * @param {Object} oldValue old value
- * @param {Object} newValue new value
- * @param {JSEvent} event the event that triggered the action
- *
- * @returns {Boolean}
- *
- * @properties={typeid:24,uuid:"9315BD82-99D4-4F0E-980B-A8A3EC282A6D"}
- * @AllowToRunInFind
- */
-function FLD_scope__data_change(oldValue, newValue, event) {
-	//show scrapbooks
-	if (utils.stringToNumber(newValue)) {
-		var fsBlock = forms.WEB_P__block__new_1L_block.foundset
-		
-		fsBlock.find()
-		fsBlock.scope_type = globals.WEB_block_scope__new
-		
-		//find correct records
-		switch (globals.WEB_block_scope__new) {
-			case 1: //scope to current page unless empty foundset, then clear
-				fsBlock.id_page = utils.hasRecords(forms.WEB_0F_page.foundset) ? forms.WEB_0F_page.id_page : application.getUUID()
-				break
-			case 2: //scope to current site unless empty foundset, then clear
-				fsBlock.id_site = utils.hasRecords(forms.WEB_0F_site.foundset) ? forms.WEB_0F_site.id_site : application.getUUID()
-				break
-		}
-		
-		var results = fsBlock.search()
-		
-		elements.tab_detail.tabIndex = 2
-		
-		TOGGLE_buttons()
-	}
-	//create new block
-	else if (elements.tab_detail.tabIndex != 1) {
-		elements.tab_detail.tabIndex = 1
-		
-		TOGGLE_buttons()
-	}
-	
-	ACTION_search()
-	
-	return true
-}
-
-/**
  * @type {Boolean}
  *
  * @properties={typeid:35,uuid:"7763A650-5938-48BD-8252-6B21A0FFFA94",variableType:-4}
@@ -540,14 +492,14 @@ function FORM_on_show() {
 		elements.fld_scope.visible = true
 		
 		//only move search box if not in correct place
-		if (elements.lbl_search.getLocationY() != 63) {
-			elements.lbl_search.setLocation(elements.lbl_search.getLocationX(), 63)
-			elements.var_search.setLocation(elements.var_search.getLocationX(), 63)
+		if (elements.lbl_search.getLocationY() != 90) {
+			elements.lbl_search.setLocation(elements.lbl_search.getLocationX(), 90)
+			elements.var_search.setLocation(elements.var_search.getLocationX(), 90)
 		}
 		
 		//only move tabpanel if it's been moved before
-		if (elements.tab_detail.getLocationY() != 90) {
-			elements.tab_detail.setLocation(0, 90)
+		if (elements.tab_detail.getLocationY() != 120) {
+			elements.tab_detail.setLocation(0, 120)
 			elements.tab_detail.setSize(elements.tab_detail.getWidth(),elements.tab_detail.getHeight() - 25)
 		}
 	}
@@ -563,8 +515,8 @@ function FORM_on_show() {
 		}
 		
 		//only move tabpanel if it's not here yet
-		if (elements.tab_detail.getLocationY() != 65) {
-			elements.tab_detail.setLocation(0, 65)
+		if (elements.tab_detail.getLocationY() != 90) {
+			elements.tab_detail.setLocation(0, 90)
 			elements.tab_detail.setSize(elements.tab_detail.getWidth(),elements.tab_detail.getHeight() + 25)
 		}
 	}
@@ -634,6 +586,7 @@ function ACTION_search(event) {
 		fs.find()
 		fs.id_site = forms.WEB_0F_site.id_site
 		fs.flag_unavailable = '^='
+		fs.block_category = globals.WEB_block_category__new	
 		if (_search) {
 			fs.block_name = '%' + _search + '%'
 		}
@@ -698,4 +651,71 @@ function FORM_on_unload(event) {
 	if (plugins.keyListeners) {
 		plugins.keyListeners.removeKeyListener(elements.var_search)
 	}
+}
+
+/**
+ * Handle changed data.
+ *
+ * @param {Object} oldValue old value
+ * @param {Object} newValue new value
+ * @param {JSEvent} event the event that triggered the action
+ *
+ * @returns {Boolean}
+ *
+ * @properties={typeid:24,uuid:"9315BD82-99D4-4F0E-980B-A8A3EC282A6D"}
+ * @AllowToRunInFind
+ */
+function FLD_scope__data_change(oldValue, newValue, event) {
+	//show scrapbooks
+	if (utils.stringToNumber(newValue)) {
+		var fsBlock = forms.WEB_P__block__new_1L_block.foundset
+		
+		fsBlock.find()
+		fsBlock.scope_type = globals.WEB_block_scope__new
+		
+		//find correct records
+		switch (globals.WEB_block_scope__new) {
+			case 1: //scope to current page unless empty foundset, then clear
+				fsBlock.id_page = utils.hasRecords(forms.WEB_0F_page.foundset) ? forms.WEB_0F_page.id_page : application.getUUID()
+				break
+			case 2: //scope to current site unless empty foundset, then clear
+				fsBlock.id_site = utils.hasRecords(forms.WEB_0F_site.foundset) ? forms.WEB_0F_site.id_site : application.getUUID()
+				break
+		}
+				
+		var results = fsBlock.search()
+		
+		elements.tab_detail.tabIndex = 2
+		
+		TOGGLE_buttons()
+	}
+	//create new block
+	else if (elements.tab_detail.tabIndex != 1) {
+		elements.tab_detail.tabIndex = 1
+		
+		TOGGLE_buttons()
+	}
+	
+	ACTION_search(event)
+	
+	return true
+}
+
+/**
+ * Handle changed data.
+ *
+ * @param {Object} oldValue old value
+ * @param {Object} newValue new value
+ * @param {JSEvent} event the event that triggered the action
+ *
+ * @returns {Boolean}
+ * 
+ * @properties={typeid:24,uuid:"7B4397D4-09D5-481A-9550-131F188078CB"}
+ * @AllowToRunInFind
+ */
+function FLD_category__data_change(oldValue, newValue, event) {
+	
+	ACTION_search(event)
+	
+	return true
 }
