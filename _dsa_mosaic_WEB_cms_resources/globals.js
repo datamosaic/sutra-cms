@@ -1385,13 +1385,14 @@ function WEBc_markup_link_page(pageID, siteURL, linkType, webMode, obj) {
 		
 		switch (linkType) {
 			case "Index":
-				pageLink += 'index.jsp?id=' + pageRec.url_param
-			
 			case "Cache":
-				pageLink += 'index_cache.jsp?id=' + pageRec.url_param
+				if (linkType == 'Index') {
+					pageLink += 'index.jsp?id=' + pageRec.url_param
+				}
+				else if (linkType == 'Cache') {
+					pageLink += 'index_cache.jsp?id=' + pageRec.url_param
+				}
 				
-			case "Index":
-			case "Cache":
 				//rewrite mode turned off and language specified is not the default
 				if (siteLanguageRec && !rewriteMode && !siteLanguageRec.flag_default) {
 					
