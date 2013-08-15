@@ -24,7 +24,7 @@ function INIT_block() {
 	
 	// block record data
 	block.record = {
-	        block_name			: 'Row Formatter',
+	        block_name			: 'Layouts',
 			block_description	: 'Various views to divide a row up into columns',
 			block_type			: 'ROW', // see valuelist WEB_block_category for values
 			form_name			: controller.getName()//,
