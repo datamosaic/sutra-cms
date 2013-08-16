@@ -582,7 +582,7 @@ function TOGGLE_buttons() {
 /**
  * Perform the element default action.
  *
- * @param {JSEvent} event the event that triggered the action
+ * @param {JSEvent} [event] the event that triggered the action
  *
  * @properties={typeid:24,uuid:"4ED1E729-218B-428E-8F5D-1F1DE6EF2893"}
  * @AllowToRunInFind
@@ -608,13 +608,13 @@ function ACTION_search(event) {
 	//finding within scrapbooks
 	else if (globals.WEB_block_scope__new) {
 		var fs = forms.WEB_P__block__new_1L_block.foundset
-		
 		//load up everything
 		fs.loadAllRecords()
 		
 		//restrict based on search criteria
 		fs.find()
 		fs.scope_type = globals.WEB_block_scope__new
+		fs.web_block_to_block_type.block_category = globals.WEB_block_category__new
 		if (_search) {
 			fs.block_name = '%' + _search + '%'
 		}
@@ -681,23 +681,6 @@ function FORM_on_unload(event) {
 function FLD_scope__data_change(oldValue, newValue, event) {
 	//show scrapbooks
 	if (utils.stringToNumber(newValue)) {
-		var fsBlock = forms.WEB_P__block__new_1L_block.foundset
-		
-		fsBlock.find()
-		fsBlock.scope_type = globals.WEB_block_scope__new
-		
-		//find correct records
-		switch (globals.WEB_block_scope__new) {
-			case 1: //scope to current page unless empty foundset, then clear
-				fsBlock.id_page = utils.hasRecords(forms.WEB_0F_page.foundset) ? forms.WEB_0F_page.id_page : application.getUUID()
-				break
-			case 2: //scope to current site unless empty foundset, then clear
-				fsBlock.id_site = utils.hasRecords(forms.WEB_0F_site.foundset) ? forms.WEB_0F_site.id_site : application.getUUID()
-				break
-		}
-				
-		var results = fsBlock.search()
-		
 		elements.tab_detail.tabIndex = 2
 		
 		TOGGLE_buttons()
@@ -709,7 +692,7 @@ function FLD_scope__data_change(oldValue, newValue, event) {
 		TOGGLE_buttons()
 	}
 	
-	ACTION_search(event)
+	ACTION_search()
 	
 	return true
 }
@@ -728,7 +711,7 @@ function FLD_scope__data_change(oldValue, newValue, event) {
  */
 function FLD_category__data_change(oldValue, newValue, event) {
 	
-	ACTION_search(event)
+	ACTION_search()
 	
 	return true
 }
