@@ -165,7 +165,9 @@ function GOTO_asset(event) {
  * Build a data object that defines this block. Called when creating a new block.
  * Used to create all meta data associated with this block (register a block in the CMS)
  * 
- * @returns {Object} Data object that is used to register a block
+ * @returns {scopes.CMS._constant.blockInit} Data object that is used to register a block
+ * 
+ * @author &copy; Data Mosaic
  * 
  * @properties={typeid:24,uuid:"9762873B-C7D9-4C39-BBE6-470547E1CB47"}
  */
@@ -177,7 +179,8 @@ function INIT_block() {
 	// block record data
 	block.record = {
 	        block_name			: 'File',
-			block_description	: 'Downloadable file block',		
+			block_description	: 'Downloadable file block',
+			block_category		: scopes.CMS._constant.blockCategory.CONTENT,
 			form_name			: controller.getName()
 		}
 	

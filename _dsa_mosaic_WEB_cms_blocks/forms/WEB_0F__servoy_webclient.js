@@ -203,7 +203,9 @@ function SET_forms() {
  * Build a data object that defines this block. Called when creating a new block.
  * Used to create all meta data associated with this block (register a block in the CMS)
  * 
- * @returns {Object} Data object that is used to register a block
+ * @returns {scopes.CMS._constant.blockInit} Data object that is used to register a block
+ * 
+ * @author &copy; Data Mosaic
  * 
  * @properties={typeid:24,uuid:"EB40FAF9-1C53-4828-91FF-2087CBDF39BE"}
  */
@@ -215,7 +217,8 @@ function INIT_block() {
 	// block record data
 	block.record = {
 	        block_name			: 'Servoy Web Client',
-			block_description	: "Integrates Servoy's web client",		
+			block_description	: "Integrates Servoy's web client",
+			block_category		: scopes.CMS._constant.blockCategory.APP,
 			form_name			: 'WEB_0F__servoy_webclient'
 		}
 	

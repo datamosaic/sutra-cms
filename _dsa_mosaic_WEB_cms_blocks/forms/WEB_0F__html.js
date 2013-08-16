@@ -286,9 +286,9 @@ function ACTION_insert_asset(event,blah1,blah2,blah3,blah4,assetType) {
  * Build a data object that defines this block. Called when creating a new block.
  * Used to create all meta data associated with this block (register a block in the CMS)
  * 
- * @returns {Object} Data object that is used to register a block
+ * @returns {scopes.CMS._constant.blockInit} Data object that is used to register a block
  * 
- * @author Data Mosaic (C)
+ * @author &copy; Data Mosaic
  * 
  * @properties={typeid:24,uuid:"082630B8-D99A-41B2-8022-8D8335EFA21D"}
  */
@@ -300,7 +300,8 @@ function INIT_block() {
 	// block record data
 	block.record = {
 			block_name			: 'HTML',
-			block_description	: 'Generic freeform content. HTML/CSS for structure and formatting.\n\nPlain Jane HTML editing by default.',		
+			block_description	: 'Generic freeform content. HTML/CSS for structure and formatting.\n\nPlain Jane HTML editing by default.',
+			block_category		: scopes.CMS._constant.blockCategory.CONTENT,
 			form_name			: 'WEB_0F__html'
 		}
 	

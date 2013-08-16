@@ -307,9 +307,9 @@ function ACTION_insert_asset(event,blah1,blah2,blah3,blah4,assetType) {
  * Build a data object that defines this block. Called when creating a new block.
  * Used to create all meta data associated with this block (register a block in the CMS)
  * 
- * @returns {Object} Data object that is used to register a block
+ * @returns {scopes.CMS._constant.blockInit} Data object that is used to register a block
  * 
- * @author Data Mosaic (C)
+ * @author &copy; Data Mosaic
  * 
  * @properties={typeid:24,uuid:"90A784ED-2570-423C-A2CB-D0C9F73981AC"}
  */
@@ -321,7 +321,8 @@ function INIT_block() {
 	// block record data
 	block.record = {
 			block_name			: 'Markdown',
-			block_description	: 'Write using an easy-to-read, easy-to-write plain text format, then convert it to structurally valid XHTML (or HTML)',		
+			block_description	: 'Write using an easy-to-read, easy-to-write plain text format, then convert it to structurally valid XHTML (or HTML)',
+			block_category		: scopes.CMS._constant.blockCategory.CONTENT,
 			form_name			: 'WEB_0F__markdown'
 		}
 	
