@@ -59,7 +59,7 @@ function FORM_on_show(firstShow, event) {
 			//switch modes
 			var guiEvent = new Object()
 			guiEvent.getElementName = function() {
-					return 'lbl_mode_real'
+					return 'lbl_mode_live'
 				}
 			
 			forms.WEB_TB__web_mode.ACTION_mode(guiEvent)
