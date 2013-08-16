@@ -47,10 +47,6 @@ function INIT_block() {
 	
 	// block data points
 	block.data = {
-		begin 	: 'TEXT',
-		end		: 'TEXT',
-		count	: 'TEXT',
-		items	: 'ARRAY'
 	}
 	
 	return block
@@ -173,6 +169,48 @@ function VIEW_columns_4(obj) {
 		</div>\n\
 		<div class="span3">\n\
 			<<BLOCK>>\n\
+		</div>\n\
+	</div>\n'
+}
+
+/**
+ * 3 column formatter for testing on centerline
+ * 
+ * @returns {String}	markup for this block
+ * 
+ * @properties={typeid:24,uuid:"CCB9069D-F4FD-4BAE-90BB-5C8BE1DA102F"}
+ */
+function VIEW_columns_centerline_3(obj) {
+	return '<div class="row feature_wrapper">\n\
+	<div class="features_op1_row">\n\
+	    <!-- Feature -->\n\
+	    <div class="span4 feature first">\n\
+			<<BLOCK>>\n\
+	    </div>\n\
+	    <!-- Feature -->\n\
+	    <div class="span4 feature">\n\
+	        <<BLOCK>>\n\
+	    </div>\n\
+	    <!-- Feature -->\n\
+	    <div class="span4 feature last">\n\
+	        <<BLOCK>>\n\
+	    </div>\n\
+	</div>\n\
+</div>'
+}
+
+/**
+ * 1 column formatter
+ * 
+ * @returns {String}	markup for this block
+ * 
+ * @properties={typeid:24,uuid:"76037340-C8A9-4B8D-B25A-E48BD245871A"}
+ */
+function VIEW_collection(obj) {
+	return '\
+	<div class="row">\n\
+		<div class="span12">\n\
+			<<COLLECTION>>\n\
 		</div>\n\
 	</div>\n'
 }
