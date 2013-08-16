@@ -19,6 +19,12 @@ uuid:"98971673-8104-492A-993B-86C4550943D4"
 },
 {
 mimeType:"image/png",
+name:"collection-screen.png",
+typeid:37,
+uuid:"41492F58-79FB-4E53-B5A3-EEF2E53A7538"
+},
+{
+mimeType:"image/png",
 name:"icon_header_add.png",
 typeid:37,
 uuid:"0F98BDD6-8D4C-4C18-8CB1-7EA7C87EE376"
