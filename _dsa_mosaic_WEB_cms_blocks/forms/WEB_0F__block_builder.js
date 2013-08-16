@@ -114,7 +114,7 @@ function INIT_block() {
 	block.record = {
 	        block_name			: 'Block builder',
 			block_description	: 'Your custom block',
-			block_category		: scopes.CMS._constant.blockCategory.COLLECTION,
+			block_category		: scopes.CMS._constant.blockCategory.CONTENT,
 			form_name			: controller.getName(),
 			form_name_display	: 'WEB_0F__block_builder_view'
 		}
