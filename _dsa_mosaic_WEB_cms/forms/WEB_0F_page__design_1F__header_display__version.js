@@ -543,6 +543,7 @@ function AREA_copy(srcArea,destVersion,rowOrder) {
 		var srcScope = srcArea.web_area_to_scope.getRecord(j)
 		var destScope = destArea.web_area_to_scope.getRecord(destArea.web_area_to_scope.newRecord(false,true))
 		databaseManager.copyMatchingColumns(srcScope,destScope)
+		destScope.flag_active = srcScope.flag_active
 		
 		//there is a block attached to this scope
 		if (utils.hasRecords(srcScope.web_scope_to_block)) {
