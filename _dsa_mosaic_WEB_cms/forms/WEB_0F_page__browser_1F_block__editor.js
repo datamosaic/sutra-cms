@@ -20,11 +20,20 @@ var _editLocation = 0;
 var _dataRec = null;
 
 /**
+ * Block ID being edited
  * @type {String}
  *
  * @properties={typeid:35,uuid:"CE5D34A7-41F1-4B14-A923-B7CB21F02EAE"}
  */
 var _dataID = null;
+
+/**
+ * Scope ID for block being edited (where is the block connected to)
+ * @type {String}
+ *
+ * @properties={typeid:35,uuid:"98C55605-13F3-4259-943B-A0C220ECF124"}
+ */
+var _scopeID = null;
 
 /**
  * Callback method for when form is shown.
