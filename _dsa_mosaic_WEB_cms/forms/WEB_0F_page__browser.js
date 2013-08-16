@@ -263,11 +263,10 @@ function EDIT_off() {
 
 /**
  * @param {String} idPKs Details about scope and block sutra-block-data-UUIDforSCOPE-UUIDforBLOCK
- * 
+ *
  * @properties={typeid:24,uuid:"AE8C14E7-851C-475B-A830-A03AF6B7BFE3"}
  */
 function BLOCK_edit(idPKs) {
-	
 	function convertUUID(item) {
 		return item.substr(0,8) + '-' + item.substr(8,4) + '-' + item.substr(12,4) + '-' + item.substr(16,4)  + '-' + item.substr(20,12)
 	}
@@ -294,6 +293,58 @@ function BLOCK_edit(idPKs) {
 	}
 	else {
 		forms.WEB_0F_page__browser_1F_block__editor.ACTION_hide()
+	}
+}
+
+/**
+ * @param {String} idPKs Details about scope and block sutra-block-data-UUIDforSCOPE-UUIDforBLOCK
+ *
+ * @properties={typeid:24,uuid:"03F482F7-8B1C-4FBB-899A-488DBD994F1E"}
+ * @AllowToRunInFind
+ */
+function BLOCK_delete(idPKs) {
+	function convertUUID(item) {
+		return item.substr(0,8) + '-' + item.substr(8,4) + '-' + item.substr(12,4) + '-' + item.substr(16,4)  + '-' + item.substr(20,12)
+	}
+	
+	var unmangle = idPKs.split("-")
+	var blockID = convertUUID(unmangle[unmangle.length - 1])
+	var scopeID = convertUUID(unmangle[unmangle.length - 2])
+	
+	/** @type {JSFoundSet<db:/sutra_cms/web_scope>} */
+	var fsScope = databaseManager.getFoundSet(controller.getServerName(),"web_scope")
+	fsScope.loadRecords(application.getUUID(scopeID))
+	
+	//something to delete, prompt
+	if (utils.hasRecords(fsScope)) {
+		var delRec = globals.DIALOGS.showWarningDialog(
+				'Delete record',
+				'Do you really want to delete this block?',
+				'Yes',
+				'No'
+			)
+		
+		if (delRec == 'Yes') {
+			//get record to delete
+			var recDelete = fsScope.getSelectedRecord()
+			
+			//find all records in this area
+			fsScope.find()
+			fsScope.id_area = recDelete.id_area
+			fsScope.search()
+			
+			//reset ordering
+			for (var i = 1; i <= fsScope.getSize(); i++) {
+				var record = fsScope.getRecord(i)
+				
+				if (record.row_order > recDelete.row_order) {
+					record.row_order--
+				}
+			}
+			
+			fsScope.deleteRecord(recDelete)
+			URL_update(true)
+		}
 	}
 }
 
@@ -383,6 +434,7 @@ function FORM_on_load(event) {
 /**
  *
  * @properties={typeid:24,uuid:"FE79BE16-34CC-4556-8485-B6F9211A87D2"}
+ * @AllowToRunInFind
  */
 function BLOCK_new(areaID) {
 	
@@ -391,7 +443,15 @@ function BLOCK_new(areaID) {
 	
 	//add editor to the screen if new block not cancelled
 	if (newBlock) {
-		BLOCK_edit('sutra-block-data-' + utils.stringReplace(newBlock.id_block.toString(),'-',''))
+		/** @type {JSFoundSet<db:/sutra_cms/web_scope>} */
+		var fsScope = databaseManager.getFoundSet('db:/sutra_cms/web_scope')
+		fsScope.find()
+		fsScope.id_block = newBlock.id_block
+		var results = fsScope.search()
+		
+		if (results) {
+			BLOCK_edit('sutra-block-data-' + utils.stringReplace(fsScope.id_scope.toString(),'-','') + '-' + utils.stringReplace(newBlock.id_block.toString(),'-',''))
+		}
 	}
 	//resume edit mode
 	else {
