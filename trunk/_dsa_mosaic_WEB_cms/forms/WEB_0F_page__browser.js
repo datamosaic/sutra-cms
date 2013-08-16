@@ -262,21 +262,25 @@ function EDIT_off() {
 }
 
 /**
- *
+ * @param {String} idPKs Details about scope and block sutra-block-data-UUIDforSCOPE-UUIDforBLOCK
+ * 
  * @properties={typeid:24,uuid:"AE8C14E7-851C-475B-A830-A03AF6B7BFE3"}
  */
-function BLOCK_edit(idBlock) {
+function BLOCK_edit(idPKs) {
 	
 	function convertUUID(item) {
 		return item.substr(0,8) + '-' + item.substr(8,4) + '-' + item.substr(12,4) + '-' + item.substr(16,4)  + '-' + item.substr(20,12)
 	}
 	
-	var blockID = idBlock.split("-")
+	var unmangle = idPKs.split("-")
+	var blockID = convertUUID(unmangle[unmangle.length - 1])
+	var scopeID = convertUUID(unmangle[unmangle.length - 2])
 	
-	forms.WEB_0F_page__browser_1F_block__editor._dataID = convertUUID(blockID[blockID.length - 1])
+	forms.WEB_0F_page__browser_1F_block__editor._dataID = blockID
+	forms.WEB_0F_page__browser_1F_block__editor._scopeID = scopeID
 	
 	var content = databaseManager.getFoundSet(controller.getServerName(),"web_block")
-	content.loadRecords(application.getUUID(forms.WEB_0F_page__browser_1F_block__editor._dataID))
+	content.loadRecords(application.getUUID(blockID))
 	
 	//load correct record
 	forms.WEB_0F_page__browser_1F_block__editor.foundset.loadRecords(content)
@@ -380,10 +384,10 @@ function FORM_on_load(event) {
  *
  * @properties={typeid:24,uuid:"FE79BE16-34CC-4556-8485-B6F9211A87D2"}
  */
-function BLOCK_new(rowID) {
+function BLOCK_new(areaID) {
 	
 	//show picker for type of block and create
-	var newBlock = forms.WEB_0F_page__design_1F_version_2L_scope.BLOCK_new(rowID)
+	var newBlock = forms.WEB_0F_page__design_1F_version_2L_scope.BLOCK_new(areaID)
 	
 	//add editor to the screen if new block not cancelled
 	if (newBlock) {
@@ -396,35 +400,6 @@ function BLOCK_new(rowID) {
 	
 	//MEMO: page will be redrawn if block saved after edit mode
 }
-
-/**
-*
-* @properties={typeid:24,uuid:"51A4B8C4-3F16-4A4B-B925-86740065C0CB"}
-*/
-function ROW_new(areaID) {
-	
-	//show picker for type of row and create
-//	var newRow = forms.WEB_0F_page__design_1F_version_2L_scope.BLOCK_new(areaID)
-	
-	//add editor to the screen if new block not cancelled
-	if (newRow) {
-		ROW_edit('sutra-row-' + utils.stringReplace(newBlock.id_block.toString(),'-',''))
-	}
-	//resume edit mode
-	else {
-		forms.WEB_0F_page__browser_1F_block__editor.ACTION_hide()
-	}
-	
-	//MEMO: page will be redrawn if block saved after edit mode
-}
-
-/**
- * @properties={typeid:24,uuid:"2B41A7FC-9242-4E39-901B-83534198C62A"}
- */
-function ROW_edit(idRow) {
-	globals.DIALOGS.showInfoDialog('Edit','Editing a row....')
-}
-
 
 /**
  * Handle hide window.
