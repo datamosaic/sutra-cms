@@ -99,7 +99,7 @@ function BLOCK_action_list() {
 }
 
 /**
- *
+ * @return {JSRecord<db:/sutra_cms/web_block>}
  * @properties={typeid:24,uuid:"32ED93D4-CD10-47EF-B396-71C65FC962E7"}
  */
 function BLOCK_new(input) {
@@ -111,7 +111,7 @@ function BLOCK_new(input) {
 		
 		//notify which area we're adding to when in real mode
 		forms.WEB_P__block__new._calledFrom = 'Live'
-		forms.WEB_P__block__new._rowID = convertUUID(input)
+		forms.WEB_P__block__new._areaID = convertUUID(input)
 	}
 	else {
 		forms.WEB_P__block__new._calledFrom = 'GUI'
@@ -149,42 +149,110 @@ function BLOCK_new(input) {
 }
 
 /**
+ * Determine how many things get moved with the selected scope
+ * 
+ * @param {Number} index
+ * 
+ * @properties={typeid:24,uuid:"554F190B-3C16-4982-B09D-1D088AEF2405"}
+ */
+function DIR_layout(index) {
+	var record = foundset.getRecord(index)
+	var blocks = 0
+	
+	//this is a layout record, return number of children
+	if (DIR_layout_check(record)) {
+		//how many children this layout has
+		var children = utils.stringToNumber(record.web_scope_to_block.web_block_to_block_display.method_name.match(/\d{1,2}$/)[0])
+		
+		//check all children to see if other layouts in here
+		for (var i = 1; i <= children && i <= foundset.getSize(); i++) {
+			blocks += DIR_layout(index + i)
+		}
+	}
+	
+	blocks += 1
+	
+	return blocks
+}
+
+/**
+ * Is this a layout record?
+ * 
+ * @param {JSRecord<db:/sutra_cms/web_scope>} record
+ * 
+ * @properties={typeid:24,uuid:"F4FB1C84-44C9-4AF6-B444-8897195137BD"}
+ */
+function DIR_layout_check(record) {
+	//this is a layout record, return number of children
+	if (utils.hasRecords(record,'web_scope_to_block.web_block_to_block_type') && 
+		utils.hasRecords(record,'web_scope_to_block.web_block_to_block_display') &&
+		record.web_scope_to_block.web_block_to_block_type.block_category == scopes.CMS._constant.blockCategory.LAYOUT &&
+		record.web_scope_to_block.web_block_to_block_display.method_name) {
+		
+		return true
+	}
+}
+
+/**
  *
  * @properties={typeid:24,uuid:"08244641-DE34-4206-8FD6-CD1C1332B408"}
  */
 function DIR_down() {
-	 //if max index, exit
-	 if (foundset.getSelectedIndex() == foundset.getSize()) {
-		 return
-	 }
-	 
-	 foundset.sort('row_order asc')
+	//if max index, exit
+	if (foundset.getSelectedIndex() == foundset.getSize()) {
+		return
+	}
+	
+	foundset.sort('row_order asc')
 
-	 //if index = 1, set flag to avoid glitch recSelected
-	 //TODO: find issue
-	 if (foundset.getSelectedIndex() == 1) {
-		 var recOne = true
-	 }
-	 else {
-		 var recOne = false
-	 }
+	//if index = 1, set flag to avoid glitch recSelected
+	//TODO: find issue
+	if (foundset.getSelectedIndex() == 1) {
+		var recOne = true
+	}
+	else {
+		var recOne = false
+	}
+	
+	//get current and next record and check to see if layout records
+		// iterators make sure to account for non-layout record
+	var recordCurr = foundset.getRecord(foundset.getSelectedIndex())
+	var layoutCurr = DIR_layout_check(recordCurr) ? DIR_layout(foundset.getSelectedIndex()) : 0
+	var iteratorCurr = layoutCurr ? 0 : 1
+	var recordNext = foundset.getRecord(foundset.getSelectedIndex() + (layoutCurr || iteratorCurr))
+	var layoutNext = DIR_layout_check(recordNext) ? DIR_layout(foundset.getSelectedIndex() + layoutCurr + iteratorCurr) : 0
+	var iteratorNext = layoutNext ? 0 : 1
+	
+	//if max index, exit
+	if (foundset.getSelectedIndex() + (iteratorCurr && iteratorNext ? 1 : (layoutCurr + layoutNext - 1)) > foundset.getSize()) {
+		return
+	}
+	
+	//group(s) moving
+	if (layoutCurr || layoutNext) {
+		//loop over all records in top group
+		for (var i = foundset.getSelectedIndex(); i < foundset.getSelectedIndex() + (layoutCurr || iteratorCurr); i++) {
+			foundset.getRecord(i).row_order += layoutNext || iteratorNext
+		}
+		
+		//loop over all records in bottom group
+		for (i = foundset.getSelectedIndex() + (layoutCurr || iteratorCurr); i < foundset.getSelectedIndex() + (layoutCurr || iteratorCurr) + (layoutNext || iteratorNext); i++) {
+			foundset.getRecord(i).row_order -= layoutCurr || iteratorCurr
+		}
+		
+	}
+	//swap with next record
+	else {
+		recordCurr.row_order = recordNext.row_order
+		recordNext.row_order --
+	}
+	
+	foundset.sort('row_order asc')
 
-	 //get current record
-	 var recordCurr = foundset.getRecord(foundset.getSelectedIndex())
-
-	 //get next record
-	 var recordNext = foundset.getRecord(foundset.getSelectedIndex() + 1)
-
-	 //swap with next record
-	 recordCurr.row_order = recordNext.row_order
-	 recordNext.row_order --
-
-	 foundset.sort('row_order asc')
-
-	 //TODO: find issue
-	 if (recOne) {
-		 controller.setSelectedIndex(2)
-	 }
+	//TODO: find issue
+	if (recOne) {
+		controller.setSelectedIndex(2)
+	}
 }
 
 /**
@@ -192,24 +260,54 @@ function DIR_down() {
  * @properties={typeid:24,uuid:"54708E3B-2B4E-4871-B2B6-D36A7FFFB9DC"}
  */
 function DIR_up() {
-	 //if index = 1, exit
-	 if (foundset.getSelectedIndex() == 1) {
-		 return
-	 }
+	//if index = 1, exit
+	if (foundset.getSelectedIndex() == 1) {
+		return
+	}
 
-	 foundset.sort('row_order asc')
-	 
-	 //get current record
-	 var recordCurr = foundset.getRecord(foundset.getSelectedIndex())
+	foundset.sort('row_order asc')
+	
+	//get current record
+	var recordCurr = foundset.getRecord(foundset.getSelectedIndex())
 
-	 //get previous record
-	 var recordPrev = foundset.getRecord(foundset.getSelectedIndex() - 1)
+	//get previous record
+	var recordPrev = foundset.getRecord(foundset.getSelectedIndex() - 1)
 
-	 //swap with previous record
-	 recordCurr.row_order = recordPrev.row_order
-	 recordPrev.row_order ++
+	//swap with previous record
+	recordCurr.row_order = recordPrev.row_order
+	recordPrev.row_order ++
 
-	 foundset.sort('row_order asc')
+	foundset.sort('row_order asc')
+	
+	
+	
+	
+//	//get current and next record and check to see if layout records
+//		// iterators make sure to account for non-layout record
+//	var recordCurr = foundset.getRecord(foundset.getSelectedIndex())
+//	var layoutCurr = DIR_layout_check(recordCurr) ? DIR_layout(foundset.getSelectedIndex()) : 0
+//	var iteratorCurr = layoutCurr ? 0 : 1
+//	var recordPrev = foundset.getRecord(foundset.getSelectedIndex() - (layoutCurr || iteratorCurr))
+//	var layoutPrev = DIR_layout_check(recordPrev) ? DIR_layout(foundset.getSelectedIndex() + layoutCurr + iteratorCurr) : 0
+//	var iteratorPrev = layoutPrev ? 0 : 1
+//	
+//	//group(s) moving
+//	if (layoutCurr || layoutPrev) {
+//		//loop over all records in top group
+//		for (var i = foundset.getSelectedIndex(); i < foundset.getSelectedIndex() + (layoutCurr || iteratorCurr); i++) {
+//			foundset.getRecord(i).row_order += layoutPrev || iteratorPrev
+//		}
+//		
+//		//loop over all records in bottom group
+//		for (i = foundset.getSelectedIndex() + (layoutCurr || iteratorCurr); i < foundset.getSelectedIndex() + (layoutCurr || iteratorCurr) + (layoutPrev || iteratorPrev); i++) {
+//			foundset.getRecord(i).row_order -= layoutCurr || iteratorCurr
+//		}
+//	}
+//	//swap with next record
+//	else {
+//		recordCurr.row_order = recordPrev.row_order
+//		recordPrev.row_order --
+//	}
 }
 
 /**
@@ -481,7 +579,7 @@ function ACTION_gui_mode_load(fireSelect) {
 			if (utils.hasRecords(foundset)) {
 				tabPanel.addTab(forms.WEB_0F_page__design_1F_version_2F_block__gui_3F__error)
 				tabPanel.tabIndex = tabPanel.getMaxTabIndex()
-				forms[contextForm].foundset.loadRecords(web_scope_to_block)
+				forms[contextForm].elements.lbl_banner.text = 'Block'
 			}
 			else {
 				defaultForms()
