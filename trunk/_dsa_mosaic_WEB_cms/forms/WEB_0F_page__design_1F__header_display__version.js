@@ -451,7 +451,7 @@ function ADD_version(event) {
 /**
  * @param {JSRecord<db:/sutra_cms/web_editable>} editable
  * @param {JSRecord<db:/sutra_cms/web_version>} destVersion
- * @param {Integer} rowOrder
+ * @param {Number} rowOrder
  * 
  * @properties={typeid:24,uuid:"A0FF2F3C-AAFA-41B6-B113-B460680B15E4"}
  */
@@ -527,7 +527,7 @@ function AREA_new(editable,destVersion,rowOrder) {
 /**
  * @param {JSRecord<db:/sutra_cms/web_area>} srcArea
  * @param {JSRecord<db:/sutra_cms/web_version>} destVersion
- * @param {Integer} rowOrder
+ * @param {Number} rowOrder
  * 
  * @properties={typeid:24,uuid:"231F2D51-281C-4503-9471-BC562D3E91B3"}
  */
