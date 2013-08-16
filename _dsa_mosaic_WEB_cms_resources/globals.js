@@ -29,7 +29,7 @@ var WEB_block_on_select = true;
  */
 var CMS = {
 		cookie : new Object(),
-		//see forms.WEB_0__controller.CONTROLLER_setup() for how this data point is constructed
+		/** @type {scopes.CMS._constant.objData} */ 
 		data : new Object(),
 		markup : {
 				getAsset : function(/**String*/ assetInstanceID) {
@@ -608,9 +608,9 @@ function WEBc_block_getDisplay(formName) {
 /**
  * Saves data submitted by web forms into block response data points.
  * 
- * @param	{Object}	obj Object used to drive headless client.
+ * @param	{scopes.CMS._constant.objData}	obj Object used to drive headless client.
  * 
- * @returns	{Boolean}	minimal error checking  
+ * @returns	{UUID|Boolean}	minimal error checking  
  * 
  * @properties={typeid:24,uuid:"69A38608-4A48-4654-8309-810AEDEFDC5E"}
  */
@@ -618,11 +618,11 @@ function WEBc_markup_block_saveResponse(obj) {
 	
 	// tag block response rows with a UUID for this submission
 	var instanceUUID = application.getUUID()
-		
+	
 	// save submitted data
 	for ( var i in obj.block_response ) {
 		var blockVersionRec = obj.block.version
-		responseRecord = blockVersionRec.web_block_version_to_block_data_response.getRecord(blockVersionRec.web_block_version_to_block_data_response.newRecord(false, true))
+		var responseRecord = blockVersionRec.web_block_version_to_block_data_response.getRecord(blockVersionRec.web_block_version_to_block_data_response.newRecord(false, true))
 
 		// save specific data points
 		responseRecord.data_key 	= i
@@ -641,7 +641,7 @@ function WEBc_markup_block_saveResponse(obj) {
 	
 	if (i) {
 		// save UUID to block response data
-		CMS.data.block_response.UUID = instanceUUID
+		obj.block_response.UUID = instanceUUID
 		return instanceUUID
 	}
 	else {
@@ -1140,7 +1140,7 @@ function WEBc_markup_link_resources(pageID, siteURL, linkType) {
  * @param {String}	[siteURL] Domain name request came in on.
  * @param {String}	[linkType] Style of URLs (index, folder, pretty).
  * @param {String}	[areaID] The ID of the areas markup we're working with.
- * @param {Object}	[obj] Object used to drive headless client.
+ * @param {scopes.CMS._constant.objData}	[obj] Object used to drive headless client.
  * 
  * @return {String} URL for a page.
  * 
@@ -1244,7 +1244,7 @@ function WEBc_markup_link_internal(markup,siteURL,linkType,areaID,obj) {
  * @param {String}	[siteURL] Domain name request came in on.
  * @param {String}	[linkType] Style of URLs (index, folder, pretty).
  * @param {String}	[webMode] Editing the page in Live Mode (only an option from the admin interface).
- * @param {Object}	[obj] Object used to drive headless client.
+ * @param {scopes.CMS._constant.objData}	[obj] Object used to drive headless client.
  * 
  * @return {String} URL for a page.
  * 
@@ -2017,7 +2017,7 @@ function WEBc_page_new(pageName,pageType,parentID,themeID,layoutID) {
 /**
  * Return array of parent page records in order from current page to top level page
  * 
- * @param {Object}		obj Sutra CMS controller obj.
+ * @param {scopes.CMS._constant.objData}		obj Sutra CMS controller obj.
  * @param {String} 		[order="asc"] Order in which pages are sorted. "asc" puts current page first, "desc" puts current page last.
  * @param {JSRecord<db:/sutra_cms/web_page>}	[pageRec=obj.page.record] Page record to lookup (overrides whatever page is in obj).
  * @param {JSRecord<db:/sutra_cms/web_path>}	[pathRec] Specify path (language) to use.
@@ -2074,7 +2074,7 @@ function WEBc_markup_pages_up(obj, order, pageRec, pathRec) {
 /**
  * Return array of site language records
  * 
- * @param {Object}		obj Sutra CMS controller obj.
+ * @param {scopes.CMS._constant.objData}		obj Sutra CMS controller obj.
  * 
  * @returns {JSRecord<db:/sutra_cms/web_page>[]}	Array of language records for current site
  * 
@@ -2092,7 +2092,7 @@ function WEBc_markup_site_languages(obj) {
 /**
  * Return array of published child pages beginning with current page
  * 
- * @param {Object}		obj Sutra CMS controller obj.
+ * @param {scopes.CMS._constant.objData}		obj Sutra CMS controller obj.
  * @param {JSRecord<db:/sutra_cms/web_page>}	[pageRec=obj.page.record] Page record to lookup (overrides whatever page is in obj).
  * @param {JSRecord<db:/sutra_cms/web_path>}	[pathRec] Specify path (language) to use.
  * 
@@ -2161,7 +2161,7 @@ function WEBc_install_getRewrite() {
 /**
  * Return array of published child pages beginning with current page
  * 
- * @param {Object}	obj Sutra CMS controller obj.
+ * @param {scopes.CMS._constant.objData}	obj Sutra CMS controller obj.
  * @param {String}	[siteID=obj.site.record] Specify the site.
  * 
  * @returns {JSRecord<db:/sutra_cms/web_page>[]}	Array of parent records from given record
@@ -2326,10 +2326,10 @@ function WEBc_sutra_trigger(method,arguments) {
 /**
  * Return all pages for current site that contain given attribute or 0 if no pages found
  *
- * @param {Object} obj CMS object
+ * @param {scopes.CMS._constant.objData} obj CMS object
  * @param {String} att Look for pages that have this attribute
  *
- * @returns {JSFoundset|Integer} Foundset of pages that have attribute
+ * @returns {JSFoundSet<db:/sutra_cms/web_page>|Number} Foundset of pages that have attribute
  * 
  * @properties={typeid:24,uuid:"66B67CD6-DBF9-4EF4-B330-EC7562A8E415"}
  * @AllowToRunInFind
@@ -2353,7 +2353,7 @@ function WEBc_markup_pages_attribute(obj, att) {
 /**
  * @AllowToRunInFind
  * 
- * @param {JSRecord} pageRec
+ * @param {JSRecord<db:/sutra_cms/web_page>} pageRec
  * 
  * @returns {Object} key/value pair for each attribute row 
  *
@@ -2383,7 +2383,7 @@ function WEBc_markup_page_attributes(pageRec) {
  * @param {UUID|String|Object} [pageID] The page requested.
  * @param {String}	[siteURL] Domain name request came in on.
  * @param {String}	[linkType] Style of URLs (index, folder, pretty).
- * @param {Object}	[obj] Object used to drive headless client.
+ * @param {scopes.CMS._constant.objData}	[obj] Object used to drive headless client.
  * 
  * @return {String} URL for a page.
  * 
@@ -2493,7 +2493,7 @@ function WEBc_log_create(logType,message,siteID,pkTable,pkID,pk2Table,pk2ID) {
  * @param {String}	[siteURL] Domain name request came in on.
  * @param {String}	[linkType] Style of URLs (index, folder, pretty).
  * @param {String}	[webMode] Editing the page in Live Mode (only an option from the admin interface).
- * @param {Object}	[obj] Object used to drive headless client.
+ * @param {scopes.CMS._constant.objData}	[obj] Object used to drive headless client.
  * 
  * @return {String} URL for a page.
  * 
