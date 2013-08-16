@@ -518,6 +518,6 @@ function ACTION_upgrade_cms1() {
 /**
  * @properties={typeid:24,uuid:"A3744249-5C4B-4075-A1FD-1E58204E1827"}
  */
-function ACTION_upgrade_rows() {
-	globals.WEB_convert__row(foundset.getSelectedRecord())
+function ACTION_upgrade_block() {
+	globals.WEB_convert__category(foundset.getSelectedRecord())
 }

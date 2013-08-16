@@ -1326,3 +1326,29 @@ function WEB_block_builder__data_change(oldValue, newValue, event) {
 	eval(location)[point] = newValue
 	forms[formName].column_value = JSON.stringify(value,null,'\t')
 }
+
+/**
+ * @param {JSRecord<db:/sutra_cms/web_site>} siteRec
+ * @properties={typeid:24,uuid:"51E6CE76-C75F-49AC-90B4-831ABDDEFA32"}
+ * @AllowToRunInFind
+ */
+function WEB_convert__category(siteRec) {
+	var input = globals.DIALOGS.showQuestionDialog('Upgrade blocks?', 'Upgrade selected site\'s blocks?', 'Yes', 'No')
+
+	if (input == 'Yes') {
+		var updated = 0
+		if (utils.hasRecords(siteRec, 'web_site_to_block_type')) {
+			for (var i = 1; i <= siteRec.web_site_to_block_type.getSize(); i++) {
+				var blockRec = siteRec.web_site_to_block_type.getRecord(i)
+
+				if (typeof blockRec.block_category != 'number') {
+					blockRec.block_category = 0
+					updated++
+					databaseManager.saveData(blockRec)
+				}
+			}
+		}
+
+		globals.DIALOGS.showInfoDialog('Conversion complete', updated + ' blocks categorized')
+	}
+}

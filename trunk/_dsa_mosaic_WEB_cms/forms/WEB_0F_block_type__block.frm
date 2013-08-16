@@ -339,7 +339,6 @@ uuid:"BA250D6E-4E2D-44E8-9078-A51E74C00198"
 {
 anchors:11,
 dataProviderID:"block_category",
-displayType:2,
 editable:false,
 formIndex:10500,
 location:"125,102",
@@ -354,7 +353,6 @@ valuelistID:"C395D293-B026-4721-90ED-61446E21D35A"
 {
 anchors:11,
 dataProviderID:"block_type",
-displayType:2,
 editable:false,
 formIndex:10500,
 location:"125,125",
