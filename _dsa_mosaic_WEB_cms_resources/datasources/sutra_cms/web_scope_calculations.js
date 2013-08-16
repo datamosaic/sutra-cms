@@ -55,12 +55,13 @@ function display_flag_active() {
  */
 function row_background(index, selected, elementType, dataProviderID, edited) {
 	var scrapbook = utils.hasRecords(web_scope_to_block) && web_scope_to_block.scope_type
+	var layout = utils.hasRecords(web_scope_to_block.web_block_to_block_type) && web_scope_to_block.web_block_to_block_type.block_category == scopes.CMS._constant.blockCategory.LAYOUT
 	
  	//white/tan with medium blue highlighter and green if a scrapbook
 	if (selected) {
-		//block builder sub blocks
-		if (false) {//parent_id_scope) {
-			return '#EAEAEA'
+		//layout formatter
+		if (layout) {
+			return '#E5C2BD'
 		}
 		//there are blocks and they aren't unique
 		else if (scrapbook) {
@@ -71,9 +72,9 @@ function row_background(index, selected, elementType, dataProviderID, edited) {
 		}
 	}
 	else {
-		//block builder sub blocks
-		if (false) {//parent_id_scope) {
-			return '#EFEFEF'
+		//layout formatter
+		if (layout) {
+			return '#F1D3CE'
 		}
 		//scrapbook
 		else if (scrapbook) {
@@ -82,7 +83,7 @@ function row_background(index, selected, elementType, dataProviderID, edited) {
 		//normal row alternation
 		else {
 			if (index % 2 == 0) {
-				return '#F7F8EF'
+				return '#FBFBFB'
 			}
 			else {
 				return '#FFFFFF'
