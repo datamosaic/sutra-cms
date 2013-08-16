@@ -152,8 +152,8 @@ function CONTROLLER_builder(results) {
 		
 		// the selected scope is !( published on the web or we're showing all blocks)
 		if (!(scopeRec.flag_active || obj.allblocks)) {
-			//continue processing
 			j++
+			return markupData
 		}
 		else {
 			// BLOCK(S)
@@ -164,19 +164,19 @@ function CONTROLLER_builder(results) {
 				// if no block, skip it
 				if (!block) {
 					if (obj.type == 'Edit') {
-						areaMarkup += 'Error with block configuration\n<br />\n'
+						markupData += 'Error with block configuration\n<br />\n'
 					}
 					j++
-					return
+					return markupData
 				}
 				// if no active version for this block, skip it
 				else if (!utils.hasRecords(block,'web_block_to_block_version')) {
 					if (obj.type == 'Edit') {
 						var prettyBlock = block.block_name ? (' for "' + block.block_name + '" block') : ''
-						areaMarkup += 'Error: No active block version' + prettyBlock + '\n<br />\n'
+						markupData += 'Error: No active block version' + prettyBlock + '\n<br />\n'
 					}
 					j++
-					return
+					return markupData
 				}
 				
 				// obj: block
@@ -188,6 +188,7 @@ function CONTROLLER_builder(results) {
 				// BLOCK TYPE
 				var type = obj.block.record.web_block_to_block_type
 				databaseManager.refreshRecordFromDatabase(type,0)
+				var layout = type && type.block_category == scopes.CMS._constant.blockCategory.LAYOUT
 				
 				// BLOCK DATA
 				var blockData = obj.block.version.web_block_version_to_block_data
@@ -258,9 +259,16 @@ function CONTROLLER_builder(results) {
 					}
 					//this block is editable (not a scrapbook)
 					else {
-						markupData = '<div id="sutra-block-data-' + utils.stringReplace(block.id_block.toString(),'-','') + '">\n' + 
-											markupData + '\n' + 
-										"</div>"
+						var blockString = utils.stringReplace(scopeRec.id_scope.toString(),'-','') + '-' + utils.stringReplace(block.id_block.toString(),'-','')
+							
+						//wrap as a layout
+						if (layout) {
+							markupData = '<div id="sutra-block-data-' + blockString + '" layout="true"><span class="layoutDescription">' + display.display_name + '</span><a href="javascript:blockDelete(\'' + blockString + '\')" title="Delete layout" class="blockDelete"></a>' + markupData + '\n</div>'
+						}
+						//wrap as a block
+						else {
+							markupData = '<div id="sutra-block-data-' + blockString + '"><a href="javascript:blockDelete(\'' + blockString + '\')" title="Delete block" class="blockDelete"></a>\n' + markupData + '\n</div>'
+						}
 					}
 	
 				}
@@ -274,8 +282,8 @@ function CONTROLLER_builder(results) {
 					}
 				}
 				
-				// if layout block (category: 4 [LAYOUT]) return markup and merge with 'children'
-				if (type && type.block_category == 2) {
+				// if layout block return markup and merge with 'children'
+				if (layout) {
 					//get number of iterations for this layout block
 					var loopSize = utils.stringToNumber(display.method_name.match(/\d{1,2}$/)[0])
 					var blocks = new Array()
@@ -287,9 +295,43 @@ function CONTROLLER_builder(results) {
 					for (var m = 0; j <= fsScope.getSize() && m < loopSize; m++) {
 						scopeRec = fsScope.getRecord(j)
 						
-						var markup = getMarkup(scopeRec)
-						
-						blocks.push(markup)
+						//block is active
+						if (scopeRec.flag_active) {
+							var markup = getMarkup(scopeRec)
+							blocks.push(markup)
+						}
+						else {
+							j++
+							m--
+						}
+					}
+					
+					//fill remaining slots in this block formatter
+					var areaString = utils.stringReplace(areaRec.id_area.toString(),'-','')
+					var firstSlot = true
+					for (; m < loopSize; m++) {
+						//fill empty blocks with new button
+						if ( obj.type == "Edit" ) {
+							if (firstSlot) {
+								var newBlock = '<!-- add new block -->'
+								var breadcrumb = 'Add block to ' + display.display_name
+								newBlock += '<div id="sutra-block-add-' + areaString + '" class="block_new" style="min-width:' + (100/loopSize - 2) + '%">\n'
+								newBlock += '<a href="javascript:blockNew(\'' + areaString + '\')" title="' + breadcrumb + '">New block</a>'
+								newBlock += '</div>\n'
+								firstSlot = false
+							}
+							else {
+								var newBlock = '<!-- add new block -->'
+								newBlock += '<div id="sutra-block-add-' + areaString + '" class="block_new" style="min-width:' + (100/loopSize - 2) + '%">\n'
+								newBlock += '<a href="javascript:blockNew(\'' + areaString + '\')" title="' + breadcrumb + '" class="noClick">Block placeholder</a>'
+								newBlock += '</div>\n'
+							}
+							blocks.push(newBlock)
+						}
+						//non-null value
+						else {
+							blocks.push('')
+						}
 					}
 					
 					//fill in the slots
@@ -317,6 +359,11 @@ function CONTROLLER_builder(results) {
 				obj.block_configure = {}
 				obj.block_response = {}
 				
+				return markupData
+			}
+			//scope disconnected from block, skip and keep on going
+			else {
+				j++
 				return markupData
 			}
 		}
@@ -353,14 +400,14 @@ function CONTROLLER_builder(results) {
 			}
 		}
 		
-		//tack on add new row button if editable
+		//tack on add new block button if editable
 		//this is linked up to a theme editable and set to allow records to be created
 		if (obj.type == 'Edit' && utils.hasRecords(areaRec.web_area_to_editable) && areaRec.web_area_to_editable.flag_new_block) {
 			var areaString = utils.stringReplace(areaRec.id_area.toString(),'-','')
 			
-			var newBlock = '<!-- add new row -->'
+			var newBlock = '<!-- add new block -->'
 			var breadcrumb = 'Add block to ' + globals.CODE_text_initial_caps(areaRec.area_name)
-			newBlock += '<div id="sutra-row-add-' + areaString + '" class="row_new">\n'
+			newBlock += '<div id="sutra-block-add-' + areaString + '" class="block_new">\n'
 			newBlock += '<a href="javascript:blockNew(\'' + areaString + '\')" title="' + breadcrumb + '">New block</a>'
 			newBlock += '</div>\n'
 			
