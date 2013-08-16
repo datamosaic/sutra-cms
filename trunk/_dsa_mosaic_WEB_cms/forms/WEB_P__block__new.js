@@ -448,10 +448,12 @@ function ACTION_cancel() {
 }
 
 /**
+ * @param {Boolean} firstShow form is shown first time after load
+ * @param {JSEvent} event the event that triggered the action
  *
  * @properties={typeid:24,uuid:"66AE2E3A-567C-4B68-BA0F-CDBF20F6EA04"}
  */
-function FORM_on_show() {
+function FORM_on_show(firstShow,event) {
 	globals.CODE_hide_form = 0
 	
 	_success = false
@@ -459,8 +461,19 @@ function FORM_on_show() {
 	
 	var fsBlockType = forms.WEB_P__block__new_1L_block_type.foundset
 	
+	if (firstShow) {
+		fsBlockType.loadAllRecords()
+		for (var i = 1; i <= fsBlockType.getSize(); i++) {
+			var record = fsBlockType.getRecord(i)
+			
+			//prefill default view for each block type
+			record.client_id_block_display = record.web_block_type_to_block_display__default.id_block_display
+		}
+	}
+	
 	//reset to block types and select content
 	globals.WEB_block_scope__new = 0
+	globals.WEB_block_category__new = 0
 	_search = null
 	var results = ACTION_search()
 	
