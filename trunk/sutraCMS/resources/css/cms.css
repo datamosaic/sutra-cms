@@ -1,6 +1,6 @@
 div#cmsOverlay {
 	position: fixed;
-	z-index:99;
+	z-index:100;
 	top: 0px;
 	left: 0px;
 	background-color:#000;
@@ -22,39 +22,81 @@ div#cmsBlockHilite {
 	display: none;
 }
 
-div.row_editable * {
-	cursor: pointer !important;
-}
-
 div#cmsBlockHilite {
 	background-image: url(../images/bg_trans.png);
 	opacity: 0.5;
 	background-color: transparent;
-	z-index: 5;
 }
 
-div.row_editable, 
-p.row_editable,
+.layoutDescription {
+	display: none;
+	
+	background-color: #004E98;
+	border-radius: 5px;
+	padding: 2px 8px 1px;
+	margin-left: 3px;
+	margin-top: 3px;
+	color: white;
+	opacity: 0.8;
+	-moz-box-shadow: inset 0px 3px 5px rgba(0, 0, 0, 0.4);
+	-webkit-box-shadow: inset 0px 3px 5px rgba(0, 0, 0, 0.4);
+	-o-box-shadow: inset 0px 3px 5px rgba(0, 0, 0, 0.4);
+	box-shadow: inset 0px 3px 5px rgba(0, 0, 0, 0.4);
+	-moz-box-shadow: inset 0px 3px 5px rgba(0, 0, 0, 0.3);
+	-webkit-box-shadow: inset 0px 3px 5px rgba(0, 0, 0, 0.3);
+	-o-box-shadow: inset 0px 3px 5px rgba(0, 0, 0, 0.3);
+	box-shadow: inset 0px 3px 5px rgba(0, 0, 0, 0.3);
+}
+.layout_editable > .layoutDescription {
+	display: inline;
+}
+
+.blockDelete {
+	display: none;
+	background: url(/servoy-webclient/resources/application/images/delete.gif) no-repeat right top;
+	float: right;
+	width: 15px;
+	height: 16px;
+	margin: 0px 2px;
+	z-index: 5;
+}
+.layout_editable > .blockDelete,
+.block_editable > .blockDelete  {
+	display: inline;
+}
+.layout_editable > .blockDelete {
+}
+
+div.layout_editable, 
+p.layout_editable,
 div.block_editable, 
 p.block_editable {
-	margin: 0px;
+	margin: 4px 3px;
 	border: 1px dashed #004E98;
 	padding: 2px;
-	margin-bottom: 4px;
-	margin-right: 6px;
 	overflow: hidden;
+	cursor: pointer !important;
+}
+
+div.layout_editable, 
+p.layout_editable {
+	padding-top: 5px;
 }
 
 div.block_editable, 
 p.block_editable {
 	border-color: #AE0345;
-	margin: 3px;
 }
 
-div.row_new,
+div.block_editable *, 
+p.block_editable * {
+	cursor: pointer !important;
+}
+
+div.layout_new,
 div.block_new {
 	margin: 0px;
-	border: 1px dashed #004E98;
+	border: 1px dashed #7E8286;
 	margin-bottom: 4px;
 	margin-right: 2px;
 	text-align: center;
@@ -62,13 +104,14 @@ div.block_new {
 	display: none;
 }
 
-div.row_new {
+div.layout_new {
+	border-color: #004E98;
 	padding: 0px;
 	margin-right: 6px;
 }
 
 div.block_new {
-	border-color: #AE0345;
+/*	border-color: #AE0345;*/
 	margin: 4px 3px 3px;
 }
 
@@ -77,10 +120,10 @@ div.block_new a,
 div.block_new a:visited, 
 div.block_new a:active,
 div.block_new a:hover,
-div.row_new a, 
-div.row_new a:visited, 
-div.row_new a:active,
-div.row_new a:hover {
+div.layout_new a, 
+div.layout_new a:visited, 
+div.layout_new a:active,
+div.layout_new a:hover {
 	background-color: #ECECEC;
 	color: #7E8286;
 	text-decoration: none;
@@ -88,16 +131,28 @@ div.row_new a:hover {
 	padding: 2px;
 }
 
-div.row_new a,
-div.row_new a:visited, 
-div.row_new a:active,
-div.row_new a:hover {
+div.block_new a.noClick, 
+div.layout_new a.noClick {
+	cursor: default;
+	color: #A2A9AF;
+	background-color: #F5F5F5;
+}
+
+div.layout_new a,
+div.layout_new a:visited, 
+div.layout_new a:active,
+div.layout_new a:hover {
 	
 }
 
-div.block_new a:hover,
-div.row_new a:hover {
+div.block_new a:not([class="noClick"]):hover,
+div.layout_new a:not([class="noClick"]):hover {
 	background-color: #7E8286;
 	color: #FFFFFF;
 	font-weight: bold;
+}
+
+.row .block_editable,
+.row .block_new {
+	float: left;
 }
