@@ -49,7 +49,7 @@ function row_background(index, selected, elementType, dataProviderID, edited) {
 		}
 		else {
 			if (index % 2 == 0) {
-				return '#F7F8EF'
+				return '#FBFBFB'
 			}
 			else {
 				return '#FFFFFF'
