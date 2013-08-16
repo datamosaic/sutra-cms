@@ -6,7 +6,7 @@ location:"0,20",
 mediaOptions:14,
 size:"300,60",
 tabSeq:-1,
-text:"Block for various column layouts",
+text:"This block is a formatter for the following blocks.",
 transparent:true,
 typeid:7,
 uuid:"EE54190A-CC2A-4CC8-8811-96757A34FAF6"
