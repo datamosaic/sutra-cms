@@ -297,6 +297,15 @@ function CONTROLLER_builder(results) {
 						
 						//block is active
 						if (scopeRec.flag_active) {
+							// obj: block...CLEAR
+							obj.block.record	= null
+							obj.block.id 		= null
+							
+							// obj: data...CLEAR
+							obj.block_data = {}
+							obj.block_configure = {}
+							obj.block_response = {}
+							
 							var markup = getMarkup(scopeRec)
 							blocks.push(markup)
 						}
@@ -348,16 +357,16 @@ function CONTROLLER_builder(results) {
 					j++
 					
 					markupData += '\n'
+						
+					// obj: block...CLEAR
+					obj.block.record	= null
+					obj.block.id 		= null
+					
+					// obj: data...CLEAR
+					obj.block_data = {}
+					obj.block_configure = {}
+					obj.block_response = {}
 				}
-				
-				// obj: block...CLEAR
-				obj.block.record	= null
-				obj.block.id 		= null
-				
-				// obj: data...CLEAR
-				obj.block_data = {}
-				obj.block_configure = {}
-				obj.block_response = {}
 				
 				return markupData
 			}
