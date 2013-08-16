@@ -151,6 +151,7 @@ function REC_new(flagRefresh,formName,fs) {
 			if ( forms[formName] ) {
 				//form not loaded yet, get solution model to check for method existence
 				if (solutionModel.getForm(formName).getFormMethod('INIT_block')) {
+					/** @type {scopes.CMS._constant.blockInit} */
 					var objBlock = forms[formName].INIT_block()
 				}
 				else {
@@ -187,8 +188,9 @@ function REC_new(flagRefresh,formName,fs) {
 			
 			block.block_name = name
 			block.block_description = blockDescription || objBlock.record.block_description
+			block.block_category = objBlock.record.block_category
 			block.form_name = objBlock.record.form_name
-			block.form_name_display = objBlock.record.form_name_display	
+			block.form_name_display = objBlock.record.form_name_display
 			
 			//dealing with a builder...bob, perhaps?
 			if (blockType) {
