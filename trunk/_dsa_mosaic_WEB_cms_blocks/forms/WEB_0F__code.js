@@ -303,9 +303,9 @@ function ACTION_insert_asset(event,blah1,blah2,blah3,blah4,assetType) {
  * Build a data object that defines this block. Called when creating a new block.
  * Used to create all meta data associated with this block (register a block in the CMS)
  * 
- * @returns {Object} Data object that is used to register a block
+ * @returns {scopes.CMS._constant.blockInit} Data object that is used to register a block
  * 
- * @author Data Mosaic (C)
+ * @author &copy; Data Mosaic
  * 
  * @properties={typeid:24,uuid:"1868BC35-03F4-499E-9CED-EEED7BE41434"}
  */
@@ -317,7 +317,8 @@ function INIT_block() {
 	// block record data
 	block.record = {
 			block_name			: 'Code',
-			block_description	: 'Code snippets to be displayed as code on a web site',		
+			block_description	: 'Code snippets to be displayed as code on a web site',
+			block_category		: scopes.CMS._constant.blockCategory.CONTENT,
 			form_name			: 'WEB_0F__code'
 		}
 	

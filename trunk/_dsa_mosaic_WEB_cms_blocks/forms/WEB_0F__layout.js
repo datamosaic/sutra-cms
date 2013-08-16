@@ -13,7 +13,9 @@ var _license_dsa_mosaic_WEB_cms_blocks = 'Module: _dsa_mosaic_WEB_cms_blocks \
  * Build a data object that defines this block. Called when creating a new block.
  * Used to create all meta data associated with this block (register a block in the CMS)
  * 
- * @returns {Object} Data object that is used to register a block
+ * @returns {scopes.CMS._constant.blockInit} Data object that is used to register a block
+ * 
+ * @author &copy; Data Mosaic
  * 
  * @properties={typeid:24,uuid:"4B2D0EA2-959A-4E97-A51F-1F9F250FE489"}
  */
@@ -26,7 +28,7 @@ function INIT_block() {
 	block.record = {
 	        block_name			: 'Layouts',
 			block_description	: 'Various views to divide a row up into columns',
-			block_type			: 'ROW', // see valuelist WEB_block_category for values
+			block_category		: scopes.CMS._constant.blockCategory.LAYOUT,
 			form_name			: controller.getName()//,
 //			form_name_display	: 'WEB_0F___boiler_plate'	//this line only required when form_name_display different than form_name
 		}
@@ -68,13 +70,13 @@ function VIEW_columns_1(obj) {
 }
 
 /**
- * 2 column formatter
+ * 3 column formatter
  * 
  * @returns {String}	markup for this block
  * 
  * @properties={typeid:24,uuid:"660314E7-1A80-4ADD-AF84-FB5DA54242E2"}
  */
-function VIEW_columns_2(obj) {
+function VIEW_columns_3(obj) {
 	
 	return '<div class="row feature_wrapper">\n\
 	<div class="features_op1_row">\n\
@@ -101,7 +103,5 @@ function VIEW_columns_2(obj) {
 		// column parent\n\
 	</div>\n\
 </div>'
+	
 }
-
-
-

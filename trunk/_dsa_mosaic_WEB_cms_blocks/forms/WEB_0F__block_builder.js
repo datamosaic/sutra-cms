@@ -99,7 +99,9 @@ function VIEW_default() {
  * Build a data object that defines this block. Called when creating a new block.
  * Used to create all meta data associated with this block (register a block in the CMS)
  * 
- * @returns {Object} Data object that is used to register a block
+ * @returns {scopes.CMS._constant.blockInit} Data object that is used to register a block
+ * 
+ * @author &copy; Data Mosaic
  * 
  * @properties={typeid:24,uuid:"F1E25A12-9BF5-4C13-B2F6-0E14144AFFBD"}
  */
@@ -111,7 +113,8 @@ function INIT_block() {
 	// block record data
 	block.record = {
 	        block_name			: 'Block builder',
-			block_description	: 'Your custom block',		
+			block_description	: 'Your custom block',
+			block_category		: scopes.CMS._constant.blockCategory.COLLECTION,
 			form_name			: controller.getName(),
 			form_name_display	: 'WEB_0F__block_builder_view'
 		}

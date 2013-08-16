@@ -281,6 +281,13 @@ function TOGGLE_buttons(event) {
 }
 
 /**
+ * Build a data object that defines this block. Called when creating a new block.
+ * Used to create all meta data associated with this block (register a block in the CMS)
+ * 
+ * @returns {scopes.CMS._constant.blockInit} Data object that is used to register a block
+ * 
+ * @author &copy; Data Mosaic
+ * 
  * @properties={typeid:24,uuid:"5896D844-D8AA-4C31-84B2-D77EAE012F1D"}
  */
 function INIT_block() {
@@ -291,7 +298,8 @@ function INIT_block() {
 	// block record data
 	block.record = {
 			block_name			: 'Image',
-			block_description	: 'Images resource library',		
+			block_description	: 'Images resource library',
+			block_category		: scopes.CMS._constant.blockCategory.CONTENT,
 			form_name			: 'WEB_0F__image'
 		}
 	

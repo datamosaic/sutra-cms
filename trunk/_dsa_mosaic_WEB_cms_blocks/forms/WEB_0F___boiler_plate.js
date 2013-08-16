@@ -36,7 +36,9 @@ function BLOCK_sample_method() {
  * Build a data object that defines this block. Called when creating a new block.
  * Used to create all meta data associated with this block (register a block in the CMS)
  * 
- * @returns {Object} Data object that is used to register a block
+ * @returns {scopes.CMS._constant.blockInit} Data object that is used to register a block
+ * 
+ * @author &copy; Data Mosaic
  * 
  * @properties={typeid:24,uuid:"B1A1F180-3F8A-47FE-8D44-F3FFC0CBEE9A"}
  */
@@ -48,7 +50,8 @@ function INIT_block() {
 	// block record data
 	block.record = {
 	        block_name			: 'Starter block',
-			block_description	: 'Boiler template for creating a custom block',		
+			block_description	: 'Boiler template for creating a custom block',
+			block_category		: scopes.CMS._constant.blockCategory.CONTENT,
 			form_name			: controller.getName()//,
 //			form_name_display	: 'WEB_0F___boiler_plate'	//this line only required when form_name_display different than form_name
 		}
