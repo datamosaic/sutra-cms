@@ -65,8 +65,69 @@ function INIT_block() {
  * @properties={typeid:24,uuid:"3A0CF7E8-3114-423E-AD43-D5D622F8ACA5"}
  */
 function VIEW_columns_1(obj) {
-	
-	return ''
+	return '\
+	<div class="row">\n\
+		<div class="span12">\n\
+			<<BLOCK>>\n\
+		</div>\n\
+	</div>\n'
+}
+
+/**
+ * 2 column formatter
+ * 
+ * @returns {String}	markup for this block
+ * 
+ * @properties={typeid:24,uuid:"140A8A1E-AA81-4DEF-9269-9E88B169CCC3"}
+ */
+function VIEW_columns_2(obj) {
+	return '\
+	<div class="row">\n\
+		<div class="span6">\n\
+			<<BLOCK>>\n\
+		</div>\n\
+		<div class="span6">\n\
+			<<BLOCK>>\n\
+		</div>\n\
+	</div>\n'
+}
+
+/**
+ * 2 column formatter
+ * 
+ * @returns {String}	markup for this block
+ * 
+ * @properties={typeid:24,uuid:"61AE4C35-CABB-4AB6-9BDD-EFAC35C53816"}
+ */
+function VIEW_columns_left_2(obj) {
+	return '\
+	<div class="row">\n\
+		<div class="span4">\n\
+			<<BLOCK>>\n\
+		</div>\n\
+		<div class="span8">\n\
+			<<BLOCK>>\n\
+		</div>\n\
+	</div>\n'
+}
+
+/**
+ * 2 column formatter
+ * 
+ * @returns {String}	markup for this block
+ * 
+ * @properties={typeid:24,uuid:"EBDD7489-9FC3-4E26-BD17-8B26C1EBCB88"}
+ */
+function VIEW_columns_right_2(obj) {
+	return '\
+	<div class="row">\n\
+		<div class="span8">\n\
+			<<BLOCK>>\n\
+		</div>\n\
+		<div class="span4">\n\
+			<<BLOCK>>\n\
+		</div>\n\
+	</div>\n'
 }
 
 /**
@@ -77,31 +138,41 @@ function VIEW_columns_1(obj) {
  * @properties={typeid:24,uuid:"660314E7-1A80-4ADD-AF84-FB5DA54242E2"}
  */
 function VIEW_columns_3(obj) {
-	
-	return '<div class="row feature_wrapper">\n\
-	<div class="features_op1_row">\n\
-		\n\
-	    // column 1\n\
-	    <div class="span4 feature first">\n\
-			// BLOCK\n\
+	return '\
+	<div class="row">\n\
+		<div class="span4">\n\
 			<<BLOCK>>\n\
-			\n\
-	    </div>\n\
-		\n\
-	    // column 2\n\
-	    <div class="span4 feature">\n\
-			// BLOCK\n\
-			<<BLOCK>>\n\\n\
-	    </div>\n\
-		\n\
-	    // column 3\n\
-	    <div class="span4 feature last">\n\
-			// BLOCK\n\
-			<<BLOCK>>\n\\n\
-	    </div>\n\
-		\n\
-		// column parent\n\
-	</div>\n\
-</div>'
-	
+		</div>\n\
+		<div class="span4">\n\
+			<<BLOCK>>\n\
+		</div>\n\
+		<div class="span4">\n\
+			<<BLOCK>>\n\
+		</div>\n\
+	</div>\n'
+}
+
+/**
+ * 3 column formatter
+ * 
+ * @returns {String}	markup for this block
+ * 
+ * @properties={typeid:24,uuid:"51795C36-D611-44D7-8B06-D7DC49CEC57A"}
+ */
+function VIEW_columns_4(obj) {
+	return '\
+	<div class="row">\n\
+		<div class="span3">\n\
+			<<BLOCK>>\n\
+		</div>\n\
+		<div class="span3">\n\
+			<<BLOCK>>\n\
+		</div>\n\
+		<div class="span3">\n\
+			<<BLOCK>>\n\
+		</div>\n\
+		<div class="span3">\n\
+			<<BLOCK>>\n\
+		</div>\n\
+	</div>\n'
 }
