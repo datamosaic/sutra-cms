@@ -127,9 +127,8 @@ function CONTROLLER_session() {
  */
 function CONTROLLER_builder(results) {
 	// assign main CMS object for easier reference
+	/** @type {scopes.CMS._constant.objData} */ 
 	var obj = globals.CMS.data
-	
-	var markup = ''
 	
 	// AREA(S)	
 	// refresh all areas from database
@@ -141,168 +140,226 @@ function CONTROLLER_builder(results) {
 		return
 	}
 	
-	// 1. check for layout block (category: 4 [LAYOUT])
-	// 2. if layout block, return markup from view method
-	// 		2.1. get loop number from method name
-	// 		2.2. loop through markup x times, goto #1
-	// 3. else go to next block
-	// 		3.1. run block markup
+	/**
+	 * Get markup for requested block.
+	 * 
+	 * @param {JSRecord<db:/sutra_cms/web_scope>} scopeRec
+	 * 
+	 * @return {String|undefined}
+	 */
+	function getMarkup(scopeRec) {
+		var markupData = ''
+		
+		// the selected scope is !( published on the web or we're showing all blocks)
+		if (!(scopeRec.flag_active || obj.allblocks)) {
+			//continue processing
+			j++
+		}
+		else {
+			// BLOCK(S)
+			if (utils.hasRecords(scopeRec.web_scope_to_block)) {
+				databaseManager.refreshRecordFromDatabase(scopeRec.web_scope_to_block, 0)
+				var block = scopeRec.web_scope_to_block.getSelectedRecord()
+				
+				// if no block, skip it
+				if (!block) {
+					if (obj.type == 'Edit') {
+						areaMarkup += 'Error with block configuration\n<br />\n'
+					}
+					j++
+					return
+				}
+				// if no active version for this block, skip it
+				else if (!utils.hasRecords(block,'web_block_to_block_version')) {
+					if (obj.type == 'Edit') {
+						var prettyBlock = block.block_name ? (' for "' + block.block_name + '" block') : ''
+						areaMarkup += 'Error: No active block version' + prettyBlock + '\n<br />\n'
+					}
+					j++
+					return
+				}
+				
+				// obj: block
+				databaseManager.refreshRecordFromDatabase(block.web_block_to_block_version__all,-1)
+				obj.block.record	= block
+				obj.block.version	= block.web_block_to_block_version.getSelectedRecord()
+				obj.block.id 		= block.id_block
+				
+				// BLOCK TYPE
+				var type = obj.block.record.web_block_to_block_type
+				databaseManager.refreshRecordFromDatabase(type,0)
+				
+				// BLOCK DATA
+				var blockData = obj.block.version.web_block_version_to_block_data
+				databaseManager.refreshRecordFromDatabase(blockData,-1)
+				
+				// obj: data
+				if ( utils.hasRecords(blockData) ) {
+					for (var k = 1; k <= blockData.getSize(); k++) {
+						var point = blockData.getRecord(k)
+						obj.block_data[point.data_key] = point.data_value
+					}
+				}
+				
+				// BLOCK CONFIGURATION
+				var configureData = obj.block.version.web_block_version_to_block_data_configure
+				databaseManager.refreshRecordFromDatabase(configureData,-1)
+				
+				// obj: configuration
+				if ( utils.hasRecords(configureData) ) {
+					for (k = 1; k <= configureData.getSize(); k++) {
+						point = configureData.getRecord(k)
+						obj.block_configure[point.data_key] = point.data_value
+					}
+				}
+				
+				// BLOCK RESPONSE
+				var responseData = obj.block.record.web_block_to_block_type.web_block_type_to_block_response
+				databaseManager.refreshRecordFromDatabase(responseData,-1)
+				
+				// obj: response
+				if ( utils.hasRecords(responseData) ) {
+					for (k = 1; k <= responseData.getSize(); k++) {
+						point = responseData.getRecord(k)
+						// get data based on request type
+						var data = ''
+						if ( obj.form.get[point.column_name] ) {
+							data = obj.form.get[point.column_name]
+						}
+						else if ( obj.form.post[point.column_name] ) {
+							data = obj.form.post[point.column_name]
+						}
+						else if ( obj.form.multipart.field[point.column_name] ) {
+							data = obj.form.multipart.field[point.column_name]
+						}							
+						// assign data to response slot
+						obj.block_response[point.column_name] = data
+					}
+				}
+										
+				// BLOCK DISPLAY
+				var display = obj.block.version.web_block_version_to_block_display
+				databaseManager.refreshRecordFromDatabase(display,0)
+				
+				// MARKUP CALL
+				// edit mode (needs div wrappers)
+				if ( obj.type == "Edit" ) {
+					if (FX_method_exists(display.method_name,type.form_name)) {
+						/** @type {String} */
+						markupData = forms[type.form_name][display.method_name](obj, results) || "<br>"
+					}
+					else {
+						markupData = 'Error with block configuration'
+					}
+					
+					//this block is not editable (it's a scrapbook)
+					if (block.scope_type) {
+						
+					}
+					//this block is editable (not a scrapbook)
+					else {
+						markupData = '<div id="sutra-block-data-' + utils.stringReplace(block.id_block.toString(),'-','') + '">\n' + 
+											markupData + '\n' + 
+										"</div>"
+					}
+	
+				}
+				// deployed (no divs)
+				else {
+					if (FX_method_exists(display.method_name,type.form_name)) {
+						markupData += forms[type.form_name][display.method_name](obj, results)
+					}
+					else {
+						markupData += 'Error with block configuration'
+					}
+				}
+				
+				// if layout block (category: 4 [LAYOUT]) return markup and merge with 'children'
+				if (type && type.block_category == 2) {
+					//get number of iterations for this layout block
+					var loopSize = utils.stringToNumber(display.method_name.match(/\d{1,2}$/)[0])
+					var blocks = new Array()
+					
+					//go to next block
+					j++
+					
+					//j is incremented inside getMarkup
+					for (var m = 0; j <= fsScope.getSize() && m < loopSize; m++) {
+						scopeRec = fsScope.getRecord(j)
+						
+						var markup = getMarkup(scopeRec)
+						
+						blocks.push(markup)
+					}
+					
+					//fill in the slots
+					var regex= /<<BLOCK>>/g
+					var matches
+					m = 0
+					while (matches = regex.exec(markupData)) {
+						markupData = utils.stringIndexReplace(markupData,matches.index,10,blocks[m++]) 
+					}
+				}
+				// return and continue
+				else {
+					//go to next block
+					j++
+					
+					markupData += '\n'
+				}
+				
+				// obj: block...CLEAR
+				obj.block.record	= null
+				obj.block.id 		= null
+				
+				// obj: data...CLEAR
+				obj.block_data = {}
+				obj.block_configure = {}
+				obj.block_response = {}
+				
+				return markupData
+			}
+		}
+	}
 	
 	// PROCESS: AREA
 	for (var i = 1; i <= obj.version.record.web_version_to_area.getSize(); i++) {
 		
 		var areaMarkup = ""
 		
-		var area = obj.version.record.web_version_to_area.getRecord(i)
+		var areaRec = obj.version.record.web_version_to_area.getRecord(i)
 		
 		// obj: area
-		obj.area.record	= area
-		obj.area.id		= area.id_area
-		obj.area.name	= area.area_name
+		obj.area.record	= areaRec
+		obj.area.id		= areaRec.id_area
+		obj.area.name	= areaRec.area_name
 		
 		// SCOPE(S)
-		var scopes = area.web_area_to_scope
-		databaseManager.refreshRecordFromDatabase(scopes, -1)
+		var fsScope = areaRec.web_area_to_scope
+		databaseManager.refreshRecordFromDatabase(fsScope, -1)
 		
 		// PROCESS: SCOPE
-		for (var j = 1; j <= scopes.getSize(); j++) {
-			var scope = scopes.getRecord(j)
+		var j = 1
+		while (j <= fsScope.getSize()) {
+//		for (var j = 1; j <= fsScope.getSize(); j++) {
+			var scopeRec = fsScope.getRecord(j)
 			
-			// the selected scope is published on the web or we're showing all blocks
-			if (scope.flag_active || obj.allblocks) {
-				
-				// BLOCK(S)
-				if (utils.hasRecords(scope.web_scope_to_block)) {
-					databaseManager.refreshRecordFromDatabase(scope.web_scope_to_block, 0)
-					var block = scope.web_scope_to_block.getSelectedRecord()
-					
-					// if no block, skip it
-					if (!block) {
-						if (obj.type == 'Edit') {
-							areaMarkup += 'Error with block configuration\n<br />\n'
-						}
-						continue
-					}
-					// if no active version for this block, skip it
-					else if (!utils.hasRecords(block,'web_block_to_block_version')) {
-						if (obj.type == 'Edit') {
-							var prettyBlock = block.block_name ? (' for "' + block.block_name + '" block') : ''
-							areaMarkup += 'Error: No active block version' + prettyBlock + '\n<br />\n'
-						}
-						continue
-					}
-					
-					// obj: block
-					databaseManager.refreshRecordFromDatabase(block.web_block_to_block_version__all,-1)
-					obj.block.record	= block
-					obj.block.version	= block.web_block_to_block_version.getSelectedRecord()
-					obj.block.id 		= block.id_block
-					
-					// BLOCK TYPE
-					var type = obj.block.version.web_block_to_block_type
-					databaseManager.refreshRecordFromDatabase(type,0)
-					
-					// BLOCK DATA
-					var data = obj.block.version.web_block_version_to_block_data
-					databaseManager.refreshRecordFromDatabase(data,-1)
-					
-					// obj: data
-					if ( utils.hasRecords(data) ) {
-						for (var k = 1; k <= data.getSize(); k++) {
-							var point = data.getRecord(k)
-							obj.block_data[point.data_key] = point.data_value
-						}
-					}
-					
-					// BLOCK CONFIGURATION
-					var configureData = obj.block.version.web_block_version_to_block_data_configure
-					databaseManager.refreshRecordFromDatabase(configureData,-1)
-					
-					// obj: configuration
-					if ( utils.hasRecords(configureData) ) {
-						for (var k = 1; k <= configureData.getSize(); k++) {
-							var point = configureData.getRecord(k)
-							obj.block_configure[point.data_key] = point.data_value
-						}
-					}
-					
-					// BLOCK RESPONSE
-					var responseData = obj.block.record.web_block_to_block_type.web_block_type_to_block_response
-					databaseManager.refreshRecordFromDatabase(responseData,-1)
-					
-					// obj: response
-					if ( utils.hasRecords(responseData) ) {
-						for (var k = 1; k <= responseData.getSize(); k++) {
-							var point = responseData.getRecord(k)
-							// get data based on request type
-							var data = ''
-							if ( obj.form.get[point.column_name] ) {
-								data = obj.form.get[point.column_name]
-							}
-							else if ( obj.form.post[point.column_name] ) {
-								data = obj.form.post[point.column_name]
-							}
-							else if ( obj.form.multipart.field[point.column_name] ) {
-								data = obj.form.multipart.field[point.column_name]
-							}							
-							// assign data to response slot
-							obj.block_response[point.column_name] = data
-						}
-					}
-											
-					// BLOCK DISPLAY
-					var display = obj.block.version.web_block_to_block_display
-					databaseManager.refreshRecordFromDatabase(display,0)
-					
-					// MARKUP CALL
-					// edit mode (needs div wrappers)
-					if ( obj.type == "Edit" ) {
-						if (FX_method_exists(display.method_name,type.form_name)) {
-							var markupedData = forms[type.form_name][display.method_name](obj, results) || "<br>"
-						}
-						else {
-							var markupedData = 'Error with block configuration'
-						}
-						
-						//this block is not editable (it's a scrapbook)
-						if (block.scope_type) {
-							areaMarkup += markupedData + '\n'
-						}
-						//this block is editable (not a scrapbook)
-						else {
-							areaMarkup += '<div id="sutra-block-data-' + utils.stringReplace(block.id_block.toString(),'-','') + '">\n'
-							areaMarkup += markupedData + '\n'
-							areaMarkup += "</div>\n"
-						}
-		
-					}
-					// deployed (no divs)
-					else {
-						if (FX_method_exists(display.method_name,type.form_name)) {
-							areaMarkup += forms[type.form_name][display.method_name](obj, results) + '\n'
-						}
-						else {
-							areaMarkup += 'Error with block configuration\n'
-						}
-					}	
-					
-					// obj: block...CLEAR
-					obj.block.record	= ''
-					obj.block.id 		= ''
-					
-					// obj: data...CLEAR
-					obj.block_data = {}
-				}
+			//kick in the first time
+			var markup = getMarkup(scopeRec)
+			
+			//only add this markup if something is there
+			if (markup) {
+				areaMarkup += markup
 			}
 		}
 		
 		//tack on add new row button if editable
 		//this is linked up to a theme editable and set to allow records to be created
-		if (obj.type == 'Edit' && utils.hasRecords(area.web_area_to_editable) && area.web_area_to_editable.flag_new_block) {
-			var areaString = utils.stringReplace(area.id_area.toString(),'-','')
+		if (obj.type == 'Edit' && utils.hasRecords(areaRec.web_area_to_editable) && areaRec.web_area_to_editable.flag_new_block) {
+			var areaString = utils.stringReplace(areaRec.id_area.toString(),'-','')
 			
 			var newBlock = '<!-- add new row -->'
-			breadcrumb = 'Add block to ' + globals.CODE_text_initial_caps(area.area_name)
+			var breadcrumb = 'Add block to ' + globals.CODE_text_initial_caps(areaRec.area_name)
 			newBlock += '<div id="sutra-row-add-' + areaString + '" class="row_new">\n'
 			newBlock += '<a href="javascript:blockNew(\'' + areaString + '\')" title="' + breadcrumb + '">New block</a>'
 			newBlock += '</div>\n'
@@ -311,10 +368,10 @@ function CONTROLLER_builder(results) {
 		}
 		
 		// replace out place holders (DS_* links)
-		areaMarkup = globals.WEBc_markup_link_internal(areaMarkup,obj.request.server,obj.type,area.id_area,obj)
+		areaMarkup = globals.WEBc_markup_link_internal(areaMarkup,obj.request.server,obj.type,areaRec.id_area,obj)
 		
 		// add area to the results object
-		results.addRow([area.area_name, areaMarkup])
+		results.addRow([areaRec.area_name, areaMarkup])
 		
 		// obj: area...CLEAR
 		obj.area.record = ''
@@ -377,7 +434,8 @@ function CONTROLLER_setup(results, app, session, request, response, mode, cmsVer
 	       		    response : { record : response },
 	       		    app		: { record : app },
 	       		    error	: { code : '', message : ''},
-	       		    cmsVersion : cmsVersion
+	       		    cmsVersion : cmsVersion,
+					type	: ''
 			}
 	
 	// directly expose some data points used in this method
