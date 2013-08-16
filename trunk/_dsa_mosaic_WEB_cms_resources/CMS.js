@@ -61,7 +61,68 @@ var _constant = {
 	/** @type {{iso:String,url:String}} */
 	url : {},
 	/** @type {{iso:String,content:String}} */
-	cache : {}
+	cache : {},
+	/** 
+	 * globals.CMS.data object that is passed around in the building of blocks to display on a page.
+	 * @type {{
+	 * site : {[record] : JSRecord<db:/sutra_cms/web_site>, [path]: String, [id]: UUID, [name]: String, [tracking]: String},
+	 * page : {[record] : JSRecord<db:/sutra_cms/web_page>, [id]: UUID, [name]: String, [parent]: String, [attribute]: Object},
+	 * platform : {[record] : JSRecord<db:/sutra_cms/web_platform>, [id]: UUID},
+	 * language : {[record] : JSRecord<db:/sutra_cms/web_language>, [id]: UUID},
+	 * group : {[record] : JSRecord<db:/sutra_cms/web_group>, [id]: UUID},
+	 * version : {[record] : JSRecord<db:/sutra_cms/web_version>, [id]: UUID},
+	 * home : {[record] : JSRecord<db:/sutra_cms/web_page>},
+	 * theme : {[directory]: String, [markup]: {link: String}},
+	 * area : {[record] : JSRecord<db:/sutra_cms/web_area>, [id]: UUID, [name]: String},
+	 * block: {[record] : JSRecord<db:/sutra_cms/web_block>, [id]: UUID, [version]: JSRecord<db:/sutra_cms/web_block_version>},
+	 * block_data: Object,
+	 * block_configure: Object,
+	 * block_response: {[UUID]: UUID},
+	 * form: {[get]: Object, [post]: Object, [validate]: {[error]: Number}, [multipart]: {[field]: Object, [file]: Object}},
+	 * request: {[record]: javax.servlet.http.httpservletrequest, [server]: String, [URI]: String, [query]: String},
+	 * session_server: {[record]: JSRecord<db:/sutra_cms/web_session>},
+	 * session_web: {[record]: javax.servlet.http.httpsession},
+	 * cookies: javax.servlet.http.Cookie[],
+	 * response: {[record]: javax.servlet.http.httpservletresponse|org.tuckey.web.filters.urlrewrite},
+	 * app: {[record]: javax.servlet.http.ServletContext},
+	 * error: {[code]: String, [message]: String},
+	 * cmsVersion: String,
+	 * [type]: String
+	 * }}
+	 */
+	objData : {},
+	/** Types of block categories */
+	blockCategory : {
+		/** 
+		 * Constant for block type <strong>content</strong> 
+		 * @protected 
+		 * @type {Number}
+		 */
+		CONTENT:0,
+		/** 
+		 * Constant for block type <strong>collection</strong> 
+		 * @protected 
+		 * @type {Number}
+		 */
+		COLLECTION:1,
+		/** 
+		 * Constant for block type <strong>layout</strong> 
+		 * @protected 
+		 * @type {Number}
+		 */
+		LAYOUT:2,
+		/** 
+		 * Constant for block type <strong>app</strong> 
+		 * @protected 
+		 * @type {Number}
+		 */
+		APP:3
+	},
+	/** @type 
+	 * {{record: {block_name: String, [block_description]: String, [block_category]: Number, form_name: String, [form_name_display]: String},
+	 * views: Object, clientActionsBlock: Object, clientActionsPage: Object, webActions: Object, data: Object, [blockConfigure]: Object, [blockResponse]: Object}}
+	 */
+	blockInit: {}
 }
 
 /**
