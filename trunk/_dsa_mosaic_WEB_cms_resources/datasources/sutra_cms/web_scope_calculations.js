@@ -1,4 +1,13 @@
 /**
+ * @properties={type:12,typeid:36,uuid:"C090C911-1E5A-4F8C-B185-5D351FB9478B"}
+ */
+function display_block_type() {
+	if (utils.hasRecords(web_scope_to_block) && utils.hasRecords(web_scope_to_block.web_block_to_block_version) && utils.hasRecords(web_scope_to_block.web_block_to_block_version.web_block_version_to_block_type)) {
+		return web_scope_to_block.web_block_to_block_version.web_block_version_to_block_type.block_name
+	}
+}
+
+/**
  * @properties={type:12,typeid:36,uuid:"15E543A9-8DE6-4070-B6D5-DD6DE283909C"}
  */
 function display_delete() {

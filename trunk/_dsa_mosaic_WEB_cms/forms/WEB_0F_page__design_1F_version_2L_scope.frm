@@ -189,7 +189,7 @@ verticalAlignment:0
 {
 anchors:11,
 borderType:"SpecialMatteBorder,0.0,0.0,1.0,0.0,#000000,#000000,#999999,#000000,0.0,1.0",
-dataProviderID:"web_scope_to_block.web_block_to_block_version.id_block_type",
+dataProviderID:"display_block_type",
 displaysTags:true,
 editable:false,
 formIndex:10200,
@@ -200,8 +200,7 @@ styleClass:"tableview",
 text:"Block type",
 toolTipText:"%%web_scope_to_block.display_scope_type%%",
 typeid:4,
-uuid:"8DB00765-D157-43C1-AE7A-E158128B5E69",
-valuelistID:"6171777B-FECD-4072-8E13-5CF251FCD891"
+uuid:"8DB00765-D157-43C1-AE7A-E158128B5E69"
 },
 {
 borderType:"SpecialMatteBorder,0.0,0.0,1.0,0.0,#000000,#000000,#999999,#000000,0.0,1.0",
