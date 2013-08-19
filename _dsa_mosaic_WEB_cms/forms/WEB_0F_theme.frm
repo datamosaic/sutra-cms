@@ -31,7 +31,7 @@ uuid:"12ECD7CB-523F-463A-A6D5-26EE3A8586A1"
 {
 anchors:13,
 background:"#d1d7e2",
-borderType:"MatteBorder,0,1,0,0,#A1B0CF",
+borderType:"MatteBorder,0,1,0,1,#a1b0cf",
 formIndex:10502,
 items:[
 {
