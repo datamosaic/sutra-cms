@@ -336,3 +336,21 @@ function RESIZE_beans(event) {
 		forms.WEB_0F_page__design_1F_version.elements.tab_block.setBorder('MatteBorder,1,1,0,0,#808080')		
 	}
 }
+
+/**
+ * Handle record selected.
+ *
+ * @param {JSEvent} event the event that triggered the action
+ *
+ * @properties={typeid:24,uuid:"C2B25248-577E-4241-B14F-323A1090B425"}
+ */
+function REC_on_select(event) {
+	function sortScope(a, b) {
+		
+	}
+	
+	//sort all child records
+	if (utils.hasRecords(foundset) && utils.hasRecords(web_area_to_scope)) {
+		web_area_to_scope.sort(sortScope)
+	}
+}

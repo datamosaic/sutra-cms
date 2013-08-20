@@ -124,6 +124,7 @@ function CONTROLLER_session() {
  * @param {JSDataSet}	results Dataset that will be returned to the jsp.
  *   
  * @properties={typeid:24,uuid:"AFD23FBD-CE21-4C2C-BDA2-75C68969ACDB"}
+ * @AllowToRunInFind
  */
 function CONTROLLER_builder(results) {
 	// assign main CMS object for easier reference
@@ -152,7 +153,6 @@ function CONTROLLER_builder(results) {
 		
 		// the selected scope is !( published on the web or we're showing all blocks)
 		if (!(scopeRec.flag_active || obj.allblocks)) {
-			j++
 			return markupData
 		}
 		else {
@@ -166,7 +166,6 @@ function CONTROLLER_builder(results) {
 					if (obj.type == 'Edit') {
 						markupData += 'Error with block configuration\n<br />\n'
 					}
-					j++
 					return markupData
 				}
 				// if no active version for this block, skip it
@@ -175,7 +174,6 @@ function CONTROLLER_builder(results) {
 						var prettyBlock = block.block_name ? (' for "' + block.block_name + '" block') : ''
 						markupData += 'Error: No active block version' + prettyBlock + '\n<br />\n'
 					}
-					j++
 					return markupData
 				}
 				
@@ -288,12 +286,10 @@ function CONTROLLER_builder(results) {
 					var loopSize = utils.stringToNumber(display.method_name.match(/\d{1,2}$/)[0])
 					var blocks = new Array()
 					
-					//go to next block
-					j++
-					
-					//j is incremented inside getMarkup
-					for (var m = 0; j <= fsScope.getSize() && m < loopSize; m++) {
-						scopeRec = fsScope.getRecord(j)
+					//loop through all child scopes
+					var parentScope = scopeRec
+					for (var m = 1; m <= parentScope.web_scope_to_scope__child.getSize(); m++) {
+						scopeRec = parentScope.web_scope_to_scope__child.getRecord(m)
 						
 						//block is active
 						if (scopeRec.flag_active) {
@@ -309,30 +305,27 @@ function CONTROLLER_builder(results) {
 							var markup = getMarkup(scopeRec)
 							blocks.push(markup)
 						}
-						else {
-							j++
-							m--
-						}
 					}
 					
 					//fill remaining slots in this block formatter
-					var areaString = utils.stringReplace(areaRec.id_area.toString(),'-','')
 					var firstSlot = true
-					for (; m < loopSize; m++) {
+					for (; m <= loopSize; m++) {
 						//fill empty blocks with new button
 						if ( obj.type == "Edit" ) {
+							var areaScope = utils.stringReplace(areaRec.id_area.toString(),'-','') + '-' + utils.stringReplace(parentScope.id_scope.toString(),'-','')
+							
 							if (firstSlot) {
 								var newBlock = '<!-- add new block -->'
 								var breadcrumb = 'Add block to ' + display.display_name
-								newBlock += '<div id="sutra-block-add-' + areaString + '" class="block_new" style="min-width:' + (100/loopSize - 2) + '%">\n'
-								newBlock += '<a href="javascript:blockNew(\'' + areaString + '\')" title="' + breadcrumb + '">New block</a>'
+								newBlock += '<div id="sutra-block-add-' + areaScope + '" class="block_new" style="min-width:' + (100/loopSize - 2) + '%">\n'
+								newBlock += '<a href="javascript:blockNew(\'' + areaScope + '\')" title="' + breadcrumb + '">New block</a>'
 								newBlock += '</div>\n'
 								firstSlot = false
 							}
 							else {
 								var newBlock = '<!-- add new block -->'
-								newBlock += '<div id="sutra-block-add-' + areaString + '" class="block_new" style="min-width:' + (100/loopSize - 2) + '%">\n'
-								newBlock += '<a href="javascript:blockNew(\'' + areaString + '\')" title="' + breadcrumb + '" class="noClick">Block placeholder</a>'
+								newBlock += '<div id="sutra-block-add-' + areaScope + '" class="block_new" style="min-width:' + (100/loopSize - 2) + '%">\n'
+								newBlock += '<a href="javascript:blockNew(\'' + areaScope + '\')" title="' + breadcrumb + '" class="noClick">New block</a>'
 								newBlock += '</div>\n'
 							}
 							blocks.push(newBlock)
@@ -353,9 +346,6 @@ function CONTROLLER_builder(results) {
 				}
 				// return and continue
 				else {
-					//go to next block
-					j++
-					
 					markupData += '\n'
 						
 					// obj: block...CLEAR
@@ -372,7 +362,6 @@ function CONTROLLER_builder(results) {
 			}
 			//scope disconnected from block, skip and keep on going
 			else {
-				j++
 				return markupData
 			}
 		}
@@ -390,14 +379,20 @@ function CONTROLLER_builder(results) {
 		obj.area.id		= areaRec.id_area
 		obj.area.name	= areaRec.area_name
 		
-		// SCOPE(S)
-		var fsScope = areaRec.web_area_to_scope
+		// SCOPE(S) only parent scopes
+		/** @type {JSFoundSet<db:/sutra_cms/web_scope>} */
+		var fsScope = databaseManager.getFoundSet('db:/sutra_cms/web_scope')
+		fsScope.find()
+		fsScope.id_area = areaRec.id_area
+		fsScope.parent_id_scope = '^='
+		fsScope.search()
 		databaseManager.refreshRecordFromDatabase(fsScope, -1)
+		fsScope.sort('row_order asc')
 		
 		// PROCESS: SCOPE
-		var j = 1
-		while (j <= fsScope.getSize()) {
-//		for (var j = 1; j <= fsScope.getSize(); j++) {
+//		var j = 1
+//		while (j <= fsScope.getSize()) {
+		for (var j = 1; j <= fsScope.getSize(); j++) {
 			var scopeRec = fsScope.getRecord(j)
 			
 			//kick in the first time

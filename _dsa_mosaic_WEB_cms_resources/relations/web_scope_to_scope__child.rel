@@ -1,0 +1,12 @@
+allowCreationRelatedRecords:true,
+deleteRelatedRecords:true,
+foreignDataSource:"db:/sutra_cms/web_scope",
+initialSort:"row_order asc",
+items:[
+{foreignColumnName:"parent_id_scope",primaryDataProviderID:"id_scope",typeid:23,uuid:"8B054457-CBFF-45AD-BDAF-F9E729F042DF"}
+],
+joinType:1,
+name:"web_scope_to_scope__child",
+primaryDataSource:"db:/sutra_cms/web_scope",
+typeid:22,
+uuid:"E9BE4A0F-4056-47CF-984A-95527CB7605F"

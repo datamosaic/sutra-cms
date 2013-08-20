@@ -520,4 +520,5 @@ function ACTION_upgrade_cms1() {
  */
 function ACTION_upgrade_block() {
 	globals.WEB_convert__category(foundset.getSelectedRecord())
+	globals.WEB_convert__scope(foundset.getSelectedRecord())
 }

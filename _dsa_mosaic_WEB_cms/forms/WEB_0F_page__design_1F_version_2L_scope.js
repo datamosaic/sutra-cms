@@ -8,9 +8,16 @@ var _license_dsa_mosaic_WEB_cms = 'Module: _dsa_mosaic_WEB_cms \
 									MIT Licensed';
 
 /**
+ * @type {Array}
  * @properties={typeid:35,uuid:"176CC8B4-859B-4633-B39F-0B72FFF9EABE",variableType:-4}
  */
-var _newBlocks = null;
+var _newBlocks = new Array();
+
+/**
+ * @type {Array}
+ * @properties={typeid:35,uuid:"C1AEFA8A-41BF-45E5-9F88-1B1EC41F24E0",variableType:-4}
+ */
+var _deletedBlocks = new Array();
 
 /**
  *
@@ -99,6 +106,7 @@ function BLOCK_action_list() {
 }
 
 /**
+ * @type {JSEvent|String} input
  * @return {JSRecord<db:/sutra_cms/web_block>}
  * @properties={typeid:24,uuid:"32ED93D4-CD10-47EF-B396-71C65FC962E7"}
  */
@@ -106,12 +114,19 @@ function BLOCK_new(input) {
 	//method called not from a click on plus button; from web edit mode
 	if (!(input instanceof JSEvent)) {
 		function convertUUID(item) {
-			return item.substr(0,8) + '-' + item.substr(8,4) + '-' + item.substr(12,4) + '-' + item.substr(16,4)  + '-' + item.substr(20,12)
+			if (item) {
+				return item.substr(0,8) + '-' + item.substr(8,4) + '-' + item.substr(12,4) + '-' + item.substr(16,4)  + '-' + item.substr(20,12)
+			}
 		}
+		
+		var unmangle = input.split("-")
+		var scopeID = convertUUID(unmangle[1])
+		var areaID = convertUUID(unmangle[0])
 		
 		//notify which area we're adding to when in real mode
 		forms.WEB_P__block__new._calledFrom = 'Live'
-		forms.WEB_P__block__new._areaID = convertUUID(input)
+		forms.WEB_P__block__new._areaID = areaID
+		forms.WEB_P__block__new._scopeID = scopeID ? scopeID : null
 	}
 	else {
 		forms.WEB_P__block__new._calledFrom = 'GUI'
@@ -149,211 +164,80 @@ function BLOCK_new(input) {
 }
 
 /**
- * Determine how many things get moved with the selected scope
- * 
- * @param {Number} index
- * 
- * @properties={typeid:24,uuid:"554F190B-3C16-4982-B09D-1D088AEF2405"}
- */
-function DIR_layout(index) {
-	var record = foundset.getRecord(index)
-	var blocks = 0
-	
-	//this is a layout record, return number of children
-	if (DIR_layout_check(record)) {
-		//how many children this layout has
-		var children = utils.stringToNumber(record.web_scope_to_block.web_block_to_block_display.method_name.match(/\d{1,2}$/)[0])
-		
-		//check all children to see if other layouts in here
-		for (var i = 1; i <= children && i <= foundset.getSize(); i++) {
-			blocks += DIR_layout(index + i)
-		}
-	}
-	
-	blocks += 1
-	
-	return blocks
-}
-
-/**
- * Is this a layout record?
- * 
- * @param {JSRecord<db:/sutra_cms/web_scope>} record
- * 
- * @properties={typeid:24,uuid:"F4FB1C84-44C9-4AF6-B444-8897195137BD"}
- */
-function DIR_layout_check(record) {
-	//this is a layout record, return number of children
-	if (utils.hasRecords(record,'web_scope_to_block.web_block_to_block_type') && 
-		utils.hasRecords(record,'web_scope_to_block.web_block_to_block_display') &&
-		record.web_scope_to_block.web_block_to_block_type.block_category == scopes.CMS._constant.blockCategory.LAYOUT &&
-		record.web_scope_to_block.web_block_to_block_display.method_name) {
-		
-		return true
-	}
-}
-
-/**
- *
- * @properties={typeid:24,uuid:"08244641-DE34-4206-8FD6-CD1C1332B408"}
- */
-function DIR_down() {
-	//if max index, exit
-	if (foundset.getSelectedIndex() == foundset.getSize()) {
-		return
-	}
-	
-	foundset.sort('row_order asc')
-
-	//if index = 1, set flag to avoid glitch recSelected
-	//TODO: find issue
-	if (foundset.getSelectedIndex() == 1) {
-		var recOne = true
-	}
-	else {
-		var recOne = false
-	}
-	
-	//get current and next record and check to see if layout records
-		// iterators make sure to account for non-layout record
-	var recordCurr = foundset.getRecord(foundset.getSelectedIndex())
-	var layoutCurr = DIR_layout_check(recordCurr) ? DIR_layout(foundset.getSelectedIndex()) : 0
-	var iteratorCurr = layoutCurr ? 0 : 1
-	var recordNext = foundset.getRecord(foundset.getSelectedIndex() + (layoutCurr || iteratorCurr))
-	var layoutNext = DIR_layout_check(recordNext) ? DIR_layout(foundset.getSelectedIndex() + layoutCurr + iteratorCurr) : 0
-	var iteratorNext = layoutNext ? 0 : 1
-	
-	//if max index, exit
-	if (foundset.getSelectedIndex() + (iteratorCurr && iteratorNext ? 1 : (layoutCurr + layoutNext - 1)) > foundset.getSize()) {
-		return
-	}
-	
-	//group(s) moving
-	if (layoutCurr || layoutNext) {
-		//loop over all records in top group
-		for (var i = foundset.getSelectedIndex(); i < foundset.getSelectedIndex() + (layoutCurr || iteratorCurr); i++) {
-			foundset.getRecord(i).row_order += layoutNext || iteratorNext
-		}
-		
-		//loop over all records in bottom group
-		for (i = foundset.getSelectedIndex() + (layoutCurr || iteratorCurr); i < foundset.getSelectedIndex() + (layoutCurr || iteratorCurr) + (layoutNext || iteratorNext); i++) {
-			foundset.getRecord(i).row_order -= layoutCurr || iteratorCurr
-		}
-		
-	}
-	//swap with next record
-	else {
-		recordCurr.row_order = recordNext.row_order
-		recordNext.row_order --
-	}
-	
-	foundset.sort('row_order asc')
-
-	//TODO: find issue
-	if (recOne) {
-		controller.setSelectedIndex(2)
-	}
-}
-
-/**
- *
- * @properties={typeid:24,uuid:"54708E3B-2B4E-4871-B2B6-D36A7FFFB9DC"}
- */
-function DIR_up() {
-	//if index = 1, exit
-	if (foundset.getSelectedIndex() == 1) {
-		return
-	}
-
-	foundset.sort('row_order asc')
-	
-	//get current record
-	var recordCurr = foundset.getRecord(foundset.getSelectedIndex())
-
-	//get previous record
-	var recordPrev = foundset.getRecord(foundset.getSelectedIndex() - 1)
-
-	//swap with previous record
-	recordCurr.row_order = recordPrev.row_order
-	recordPrev.row_order ++
-
-	foundset.sort('row_order asc')
-	
-	
-	
-	
-//	//get current and next record and check to see if layout records
-//		// iterators make sure to account for non-layout record
-//	var recordCurr = foundset.getRecord(foundset.getSelectedIndex())
-//	var layoutCurr = DIR_layout_check(recordCurr) ? DIR_layout(foundset.getSelectedIndex()) : 0
-//	var iteratorCurr = layoutCurr ? 0 : 1
-//	var recordPrev = foundset.getRecord(foundset.getSelectedIndex() - (layoutCurr || iteratorCurr))
-//	var layoutPrev = DIR_layout_check(recordPrev) ? DIR_layout(foundset.getSelectedIndex() + layoutCurr + iteratorCurr) : 0
-//	var iteratorPrev = layoutPrev ? 0 : 1
-//	
-//	//group(s) moving
-//	if (layoutCurr || layoutPrev) {
-//		//loop over all records in top group
-//		for (var i = foundset.getSelectedIndex(); i < foundset.getSelectedIndex() + (layoutCurr || iteratorCurr); i++) {
-//			foundset.getRecord(i).row_order += layoutPrev || iteratorPrev
-//		}
-//		
-//		//loop over all records in bottom group
-//		for (i = foundset.getSelectedIndex() + (layoutCurr || iteratorCurr); i < foundset.getSelectedIndex() + (layoutCurr || iteratorCurr) + (layoutPrev || iteratorPrev); i++) {
-//			foundset.getRecord(i).row_order -= layoutCurr || iteratorCurr
-//		}
-//	}
-//	//swap with next record
-//	else {
-//		recordCurr.row_order = recordPrev.row_order
-//		recordPrev.row_order --
-//	}
-}
-
-/**
  *
  * @properties={typeid:24,uuid:"64E10B1C-C632-4B7D-92C5-F94DBA4C18BD"}
  */
 function FORM_on_load() {
 	elements.fld_id_block_display__field.visible = false
 	elements.fld_id_block_display__combo.visible = true
-	
-	elements.btn_up.enabled = false
-	elements.btn_down.enabled = false
 }
 
 /**
  *
  * @properties={typeid:24,uuid:"7E59BE92-3022-4690-94E5-0AC5FD663ABA"}
+ * @AllowToRunInFind
  */
-function REC_delete() {
+function REC_delete(recDelete) {
+	//find all records in this area
+	if (recDelete instanceof JSRecord) {
+		/** @type {JSFoundSet<db:/sutra_cms/web_scope>} */
+		var fsScope = databaseManager.getFoundSet(controller.getServerName(),"web_scope")
+		fsScope.find()
+		fsScope.id_area = recDelete.id_area
+		fsScope.search()
+	}
+	//get record to delete and foundset
+	else {
+		fsScope = foundset
+		recDelete = fsScope.getSelectedRecord()
+	}
+	var message = 'Do you really want to delete this block?'
+	if (utils.hasRecords(recDelete,'web_scope_to_scope__child')) {
+		message = 'Do you really want to delete this block and all its children?'
+	}
+	
+	/**
+	 * @param {JSRecord<db:/sutra_cms/web_scope>} record
+	 */
+	function whichRecords(record) {
+		if (utils.hasRecords(record.web_scope_to_scope__child)) {
+			for (var i = 1; i <= record.web_scope_to_scope__child.getSize(); i++) {
+				whichRecords(record.web_scope_to_scope__child.getRecord(i))
+			}
+		}
+		_deletedBlocks.push(record)
+	}
 	
 	var delRec = globals.DIALOGS.showWarningDialog(
 						'Delete record',
-						'Do you really want to delete this record?',
+						message,
 						'Yes',
 						'No'
 					)
 	
 	if (delRec == 'Yes') {
-		//get record to delete
-		var recDelete = foundset.getSelectedRecord()
-		
-		for (var i = 1; i <= foundset.getSize(); i++) {
-			var record = foundset.getRecord(i)
+		for (var i = 1; i <= fsScope.getSize(); i++) {
+			var record = fsScope.getRecord(i)
 			
-			if (record.row_order > recDelete.row_order) {
+			if (recDelete.parent_id_scope == record.parent_id_scope && record.row_order > recDelete.row_order) {
 				record.row_order--
 			}
 		}
 		
-		//TODO: disable/enable rec on select on the block type forms when deleting?
-		foundset.deleteRecord(recDelete)
+		//store all these records to be deleted so can undo if edits cancelled
+		whichRecords(recDelete)
 		
-		if (!utils.hasRecords(foundset)) {
+		fsScope.deleteRecord(recDelete)
+		
+		//live mode
+		if (arguments[0]) {
+			SCOPE_sort(recDelete.id_area)
+			forms.WEB_0F_page__browser.URL_update(true)
+		}
+		//gui mode with no records left
+		else if (!utils.hasRecords(foundset)) {
 			REC_on_select()
 		}
-		
 	}
 }
 
@@ -615,6 +499,11 @@ function TOGGLE_elements(editAllow) {
 	elements.fld_flag_active.enabled = status
 	elements.fld_id_block_display__combo.visible = status
 	elements.fld_id_block_display__field.visible = !status
+	
+	elements.fld_id_scope.visible = false
+	elements.fld_parent_id_scope.visible = false
+	elements.fld_row_order.visible = false
+	elements.fld_sort_order.visible = false
 }
 
 /**
@@ -650,9 +539,24 @@ function FLD_flag_active__data_change(oldValue, newValue, event) {
 
 /**
  * @properties={typeid:24,uuid:"17894357-47F0-4E05-A87C-4B3D15F3DA51"}
+ * @AllowToRunInFind
  */
 function BLOCK_duplicate() {
-	var blockRec = web_scope_to_block.getSelectedRecord()
+	
+	var oldScope = foundset.getSelectedRecord()
+	//find current syblings
+	/** @type {JSFoundSet<db:/sutra_cms/web_scope>} */
+	var fsPeers = databaseManager.getFoundSet('sutra_cms','web_scope')
+	fsPeers.find()
+	fsPeers.parent_id_scope = (oldScope.parent_id_scope) ? oldScope.parent_id_scope : '^='
+	fsPeers.id_area = oldScope.id_area
+	var results = fsPeers.search()
+	
+	if (results) {
+		fsPeers.sort('row_order asc')
+	}
+	
+	var blockRec = oldScope.web_scope_to_block.getSelectedRecord()
 	
 	//create new block record
 	var fsBlock = databaseManager.getFoundSet('sutra_cms','web_block')
@@ -688,12 +592,12 @@ function BLOCK_duplicate() {
 	//turn off rec on select
 	_skipSelect = true
 	
-	//disale/enable rec on select on the block type forms when creating scope
+	//disable/enable rec on select on the block type forms when creating scope
 	globals.WEB_block_on_select = false
 	
 	var scopeRec = foundset.getRecord(foundset.newRecord(false,true))
 	
-	scopeRec.row_order = foundset.getSize()
+	scopeRec.row_order = fsPeers.getRecord(fsPeers.getSize()).row_order + 1
 	scopeRec.id_block = destBlock.id_block
 	databaseManager.saveData()
 	
@@ -856,5 +760,251 @@ function BLOCK_scope(scope,copy,promote) {
 			blockRec.id_page = null
 			blockRec.id_site = null
 		}
+	}
+}
+
+/**
+ * @param {JSRecord<db:/sutra_cms/web_scope>} scope
+ * @param {JSRecord<db:/sutra_cms/web_scope>} scopeParent
+ * 
+ * @properties={typeid:24,uuid:"8D0EF1CA-26AC-4D34-B793-6E9147C79DC9"}
+ */
+function BLOCK_layout(scope,scopeParent) {
+	//re-order everything below scope
+	
+	//tack on scope to bottom of scope parent
+	
+	scope.parent_id_scope = scopeParent.id_scope
+}
+
+/**
+ *
+ * @properties={typeid:24,uuid:"189B8FFD-54F0-40A6-AD81-5008C88B27AC"}
+ */
+function MOVE_down() {
+	
+	MOVE_generic('down')
+	
+}
+
+/**
+ * Re-order blocks.  Only layout blocks can have children
+ * 
+ * @properties={typeid:24,uuid:"837FB023-249B-4465-9C44-8600A3A75AEF"}
+ * @AllowToRunInFind
+ */
+function MOVE_generic(input) {
+	var recMove = foundset.getSelectedRecord()
+	
+	//find current syblings
+	/** @type {JSFoundSet<db:/sutra_cms/web_scope>} */
+	var fsPeers = databaseManager.getFoundSet('sutra_cms','web_scope')
+	fsPeers.find()
+	fsPeers.parent_id_scope = (recMove.parent_id_scope) ? recMove.parent_id_scope : '^='
+	fsPeers.id_area = recMove.id_area
+	var results = fsPeers.search()
+	
+	if (results) {
+		fsPeers.sort('row_order asc')
+		fsPeers.selectRecord(recMove.id_scope)
+	}
+	
+	switch (input) {
+		case 'up':
+			//only move up if there are records above selected one
+			if (fsPeers.getSelectedIndex() != 1) {
+				//get previous record
+				var recordPrev = fsPeers.getRecord(fsPeers.getSelectedIndex() - 1)
+				
+				//swap ordering
+				var tempOrder = recordPrev.row_order
+				recordPrev.row_order = recMove.row_order
+				recMove.row_order = tempOrder
+			}
+			else {
+				return
+			}
+			break
+		case 'down':
+			//only move down if there are records below selected one
+			if (fsPeers.getSelectedIndex() != databaseManager.getFoundSetCount(fsPeers)) {
+				//get next record
+				var recordNext = fsPeers.getRecord(fsPeers.getSelectedIndex() + 1)
+				
+				//swap ordering
+				tempOrder = recordNext.row_order
+				recordNext.row_order = recMove.row_order
+				recMove.row_order = tempOrder
+			}
+			else {
+				return
+			}
+			break
+		case 'in':
+			//only move in if this record isn't the first in the group AND there are siblings AND new parent is a layout block
+			if (fsPeers.getSelectedIndex() != 1 && fsPeers.getSize() > 1 && utils.hasRecords(fsPeers.getRecord(fsPeers.getSelectedIndex() - 1),'web_scope_to_block.web_block_to_block_type') && fsPeers.getRecord(fsPeers.getSelectedIndex() - 1).web_scope_to_block.web_block_to_block_type.block_category == scopes.CMS._constant.blockCategory.LAYOUT) {
+				//find new parent
+				fsPeers.setSelectedIndex(fsPeers.getSelectedIndex() - 1)
+				var idParent = fsPeers.id_scope
+				
+				//find new syblings
+				var fsPeersNew = databaseManager.getFoundSet('sutra_cms','web_scope')
+				fsPeersNew.find()
+				fsPeersNew.parent_id_scope = (idParent) ? idParent : '^='
+				fsPeersNew.id_area = recMove.id_area
+				var results = fsPeersNew.search()
+		
+				if (results) {
+					fsPeersNew.sort('row_order asc')
+				}
+				
+				//re-order everybody below current record in old foundset
+				for (var i = recMove.row_order + 1; i <= fsPeers.getSize(); i++) {
+					var recReorder = fsPeers.getRecord(i)
+					
+					recReorder.row_order --
+				}
+				
+				//add recMove to bottom of new foundset
+				recMove.row_order = (utils.hasRecords(fsPeersNew)) ? fsPeersNew.getSize() + 1 : 1
+				recMove.parent_id_scope = idParent
+			}
+			else {
+				return
+			}
+			break
+		case 'out':
+			//only move out if node level not 0
+			if (recMove.parent_id_scope) {
+				var fsPeersNew = databaseManager.getFoundSet(controller.getServerName(),controller.getTableName())
+				fsPeersNew.find()
+				fsPeersNew.id_scope = recMove.parent_id_scope
+				fsPeersNew.search()
+				
+				//find new parent
+				var parentRec = fsPeersNew.getSelectedRecord()
+				var idParent = parentRec ? parentRec.parent_id_scope : null
+				
+				//find new syblings
+				fsPeersNew.find()
+				fsPeersNew.parent_id_scope = (idParent) ? idParent : '^='
+				fsPeersNew.id_area = recMove.id_area
+				var results = fsPeersNew.search()
+		
+				if (results) {
+					fsPeersNew.sort('row_order asc')
+				}
+				
+				//re-order everybody below current record in old foundset
+				for (var i = recMove.row_order + 1; i <= fsPeers.getSize(); i++) {
+					var recReorder = fsPeers.getRecord(i)
+					
+					recReorder.row_order --
+				}
+				
+				//re-order everybody below current record in new foundset
+				for (var i = recMove.web_scope_to_scope__parent.row_order + 1; i <= fsPeersNew.getSize(); i++) {
+					var recReorder = fsPeersNew.getRecord(i)
+					
+					recReorder.row_order ++
+				}
+				
+				//insert recMove directly below former parent in new foundset
+				recMove.row_order = parentRec ?  parentRec.row_order + 1 : 1
+				recMove.parent_id_scope = idParent
+			}
+			else {
+				return
+			}		
+			break
+	}
+	databaseManager.saveData()
+	
+	//some moving happened, update the display sort order as well
+	SCOPE_sort()
+	
+	//reselect same record
+	foundset.selectRecord(recMove.id_scope)
+}
+
+/**
+ *
+ * @properties={typeid:24,uuid:"5F9D68F9-C105-4905-A209-1F8EDE453A08"}
+ */
+function MOVE_in() {
+	
+	MOVE_generic('in')
+	
+}
+
+/**
+ *
+ * @properties={typeid:24,uuid:"B4FC919F-A2DC-4CE3-928B-60C6809CBAA8"}
+ */
+function MOVE_out() {
+	
+	MOVE_generic('out')
+	
+}
+
+/**
+ *
+ * @properties={typeid:24,uuid:"67319AC7-CFE4-4EAC-A4B3-3B95ACFDE8DC"}
+ */
+function MOVE_up() {
+	
+	MOVE_generic('up')
+	
+}
+
+/**
+ * Punch in a sort value so that GUI mode can be sorted by parent-childness
+ * 
+ * @param {UUID} [idArea]
+ * 
+ * @properties={typeid:24,uuid:"006A6F60-2336-424C-BCF5-A3E349DAB413"}
+ * @AllowToRunInFind
+ */
+function SCOPE_sort(idArea) {
+	if (!(idArea instanceof UUID)) {
+		idArea = id_area
+		var localUpdate = true
+	}
+	
+	/** @type {JSFoundSet<db:/sutra_cms/web_scope>} */
+	var fsScope = databaseManager.getFoundSet('db:/sutra_cms/web_scope')
+	fsScope.find()
+	fsScope.id_area = idArea
+	fsScope.parent_id_scope = '^='
+	fsScope.search()
+	fsScope.sort('row_order asc')
+	
+	/**
+	 * @param {JSRecord<db:/sutra_cms/web_scope>} record
+	 */
+	function doRecord(record) {
+		//set order of this record
+		record.sort_order = orderHelper++
+		
+		//go through children
+		if (utils.hasRecords(record,'web_scope_to_scope__child')) {
+			record.web_scope_to_scope__child.sort('row_order asc')
+			for (var i = 1; i <= record.web_scope_to_scope__child.getSize(); i++) {
+				doRecord(record.web_scope_to_scope__child.getRecord(i))
+			}
+		}
+	}
+	
+	var orderHelper = 1
+	for (var j = 1; j <= fsScope.getSize(); j++) {
+		doRecord(fsScope.getRecord(j))
+	}
+	
+	if (localUpdate) {
+		databaseManager.saveData(foundset)
+		//double sort because it thinks that already asc, so doesn't do anything
+		foundset.sort('sort_order desc')
+		foundset.sort('sort_order asc')
+//		forms.WEB_0F_page__design_1F_version_2L_area.web_area_to_scope.sort('sort_order asc')
 	}
 }

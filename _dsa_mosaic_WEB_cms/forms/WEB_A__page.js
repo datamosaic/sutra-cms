@@ -122,6 +122,7 @@ function TOGGLE_edit_mode(editMode,saveData) {
 		
 		//set up storage place for all newly created blocks
 		forms.WEB_0F_page__design_1F_version_2L_scope._newBlocks = new Array()
+		forms.WEB_0F_page__design_1F_version_2L_scope._deletedBlocks = new Array()
 	}
 	//exiting edit mode
 	else if (currentState) {
@@ -160,6 +161,11 @@ function TOGGLE_edit_mode(editMode,saveData) {
 			forms.WEB_0F_page__design.SET_versions(true)
 			
 			databaseManager.saveData()
+			
+			//only need to sort scopes when a record has been deleted
+			if (forms.WEB_0F_page__design_1F_version_2L_scope._deletedBlocks.length) {
+				forms.WEB_0F_page__design_1F_version_2L_scope.SCOPE_sort()
+			}
 		}
 		//rollback the data if we were in edit mode
 		else if (!databaseManager.getAutoSave()) {
@@ -171,6 +177,17 @@ function TOGGLE_edit_mode(editMode,saveData) {
 					var record = forms.WEB_0F_page__design_1F_version_2L_scope._newBlocks.pop()
 					record.foundset.deleteRecord(record)
 				}
+			}
+			
+			//re-create all deleted scope records
+			if (forms.WEB_0F_page__design_1F_version_2L_scope._deletedBlocks instanceof Array) {
+				while (forms.WEB_0F_page__design_1F_version_2L_scope._deletedBlocks.length) {
+					var record = forms.WEB_0F_page__design_1F_version_2L_scope._deletedBlocks.pop()
+					
+					var resurectRec = record.foundset.getRecord(record.foundset.newRecord(false,true))
+					databaseManager.copyMatchingFields(record,resurectRec,true)
+				}
+				forms.WEB_0F_page__design_1F_version_2L_scope.SCOPE_sort()
 			}
 			
 			//update version valuelist (if version activated, need to undo)
@@ -255,6 +272,14 @@ function ACTION_reorder(event) {
 			
 			//toggle elements
 			TOGGLE_buttons()
+			
+			//when double-clicked, show extra columns
+			if (event.getType() == JSEvent.DOUBLECLICK) {
+				forms.WEB_0F_page__design_1F_version_2L_scope.elements.fld_id_scope.visible = true
+				forms.WEB_0F_page__design_1F_version_2L_scope.elements.fld_parent_id_scope.visible = true
+				forms.WEB_0F_page__design_1F_version_2L_scope.elements.fld_row_order.visible = true
+				forms.WEB_0F_page__design_1F_version_2L_scope.elements.fld_sort_order.visible = true
+			}
 		}
 		//exiting reorder
 		else {
@@ -285,11 +310,16 @@ function ACTION_reorder(event) {
 			
 			//toggle elements
 			TOGGLE_buttons()
+			
+			//re-sort
+			forms.WEB_0F_page__design_1F_version_2L_area.web_area_to_scope.sort('sort_order asc')
 		}
 		
 		//dis/enable ordering
 		forms.WEB_0F_page__design_1F_version_2L_scope.elements.btn_down.enabled = _reorderMode
 		forms.WEB_0F_page__design_1F_version_2L_scope.elements.btn_up.enabled = _reorderMode
+		forms.WEB_0F_page__design_1F_version_2L_scope.elements.btn_in.enabled = _reorderMode
+		forms.WEB_0F_page__design_1F_version_2L_scope.elements.btn_out.enabled = _reorderMode
 		
 		//refresh block
 //		forms.WEB_0F_page__design_1F_version_2L_scope.ACTION_gui_mode_load()
