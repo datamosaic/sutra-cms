@@ -1,0 +1,9 @@
+foreignDataSource:"db:/sutra_cms/web_scope",
+items:[
+{foreignColumnName:"id_scope",primaryDataProviderID:"id_scope",typeid:23,uuid:"DEF95D2D-0F19-429B-AE33-758D0518850E"}
+],
+joinType:1,
+name:"web_scope_to_scope",
+primaryDataSource:"db:/sutra_cms/web_scope",
+typeid:22,
+uuid:"B1481870-38AF-4386-BB32-ADD2EF4FCBDC"

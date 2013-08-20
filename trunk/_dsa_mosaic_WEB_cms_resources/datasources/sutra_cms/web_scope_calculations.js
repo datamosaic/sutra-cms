@@ -2,9 +2,33 @@
  * @properties={type:12,typeid:36,uuid:"C090C911-1E5A-4F8C-B185-5D351FB9478B"}
  */
 function display_block_type() {
+	var blockType = ''
 	if (utils.hasRecords(web_scope_to_block) && utils.hasRecords(web_scope_to_block.web_block_to_block_version) && utils.hasRecords(web_scope_to_block.web_block_to_block_version.web_block_version_to_block_type)) {
-		return web_scope_to_block.web_block_to_block_version.web_block_version_to_block_type.block_name
+		blockType = web_scope_to_block.web_block_to_block_version.web_block_version_to_block_type.block_name
 	}
+	
+	/**
+	 * @param {JSRecord<db:/sutra_cms/web_scope>} record
+	 * @return {Number} How many levels this scope is buried
+	 */
+	function findDepth(record) {
+		if (utils.hasRecords(record.web_scope_to_scope__parent)) {
+			var depth = findDepth(record.web_scope_to_scope__parent.getSelectedRecord()) + 1
+		}
+		else {
+			depth = 0
+		}
+		
+		return depth
+	}
+	
+	var levels = findDepth(web_scope_to_scope.getSelectedRecord())
+	
+	for (var i = 1; i <= levels; i++) {
+		blockType = '  ' + blockType
+	}
+	
+	return blockType
 }
 
 /**
@@ -64,7 +88,7 @@ function display_flag_active() {
  */
 function row_background(index, selected, elementType, dataProviderID, edited) {
 	var scrapbook = utils.hasRecords(web_scope_to_block) && web_scope_to_block.scope_type
-	var layout = utils.hasRecords(web_scope_to_block.web_block_to_block_type) && web_scope_to_block.web_block_to_block_type.block_category == scopes.CMS._constant.blockCategory.LAYOUT
+	var layout = utils.hasRecords(web_scope_to_block) && utils.hasRecords(web_scope_to_block.web_block_to_block_type) && web_scope_to_block.web_block_to_block_type.block_category == scopes.CMS._constant.blockCategory.LAYOUT
 	
  	//white/tan with medium blue highlighter and green if a scrapbook
 	if (selected) {

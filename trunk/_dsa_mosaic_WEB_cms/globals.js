@@ -1352,3 +1352,55 @@ function WEB_convert__category(siteRec) {
 		globals.DIALOGS.showInfoDialog('Conversion complete', updated + ' blocks categorized')
 	}
 }
+
+/**
+ * Update ordering on scope
+ * 
+ * @param {JSRecord<db:/sutra_cms/web_site>} siteRec
+ * @properties={typeid:24,uuid:"47810354-4E0C-4510-A3B3-85814334239A"}
+ * @AllowToRunInFind
+ */
+function WEB_convert__scope(siteRec) {
+	var input = globals.DIALOGS.showQuestionDialog(
+			'Upgrade blocks?',
+			'Upgrade selected site so scopes can be nested?',
+			'Yes',
+			'No'
+		)
+	
+	if (input == 'Yes') {
+		var updatedAreas = 0
+		
+		if (utils.hasRecords(siteRec,'web_site_to_page')) {
+			for (var i = 1; i <= siteRec.web_site_to_page.getSize(); i++) {
+				var pageRec = siteRec.web_site_to_page.getRecord(i)
+				
+				/** @type {JSFoundSet<db:/sutra_cms/web_version>} */
+				var fsVersion = databaseManager.getFoundSet('db:/sutra_cms/web_version')
+				fsVersion.find()
+				fsVersion.web_version_to_language.id_page = pageRec.id_page
+				var results = fsVersion.search()
+				
+				if (results) {
+					for (var j = 1; j <= fsVersion.getSize(); j++) {
+						var versionRec = fsVersion.getRecord(j)
+						
+						for (var k = 1; k <= versionRec.web_version_to_area.getSize(); k++) {
+							var areaRec = versionRec.web_version_to_area.getRecord(k)
+							updatedAreas++
+							
+							forms.WEB_0F_page__design_1F_version_2L_scope.SCOPE_sort(areaRec.id_area)
+						}
+					}
+				}
+				
+				databaseManager.saveData()
+			}
+		}
+		
+		globals.DIALOGS.showInfoDialog(
+				'Conversion complete',
+				updatedAreas + ' areas updated'
+			)
+	}
+}

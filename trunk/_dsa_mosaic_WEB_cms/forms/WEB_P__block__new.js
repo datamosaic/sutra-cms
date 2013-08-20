@@ -22,11 +22,11 @@ var _search = null;
 var _success = false;
 
 /**
- * @type {Number}
+ * @type {String}
  *
- * @properties={typeid:35,uuid:"FC3CD649-29A4-47F3-ABE1-DECC13F777FE",variableType:4}
+ * @properties={typeid:35,uuid:"FC3CD649-29A4-47F3-ABE1-DECC13F777FE"}
  */
-var _scope = null;
+var _scopeID = null;
 
 /**
  * @type {String}
@@ -56,6 +56,43 @@ var _calledFrom = false;
  * @AllowToRunInFind
  */
 function ACTION_ok(event) {
+	/**
+	 * @param {JSRecord<db:/sutra_cms/web_scope>} scopeRec
+	 * @param {JSRecord<db:/sutra_cms/web_scope>|String} parentScope
+	 */
+	function setSort(scopeRec, parentScope) {
+		databaseManager.saveData()
+		
+		//determine which stack to throw this record at the bottom of
+		var rowOrder = 1
+		if (parentScope) {
+			var fsScope = databaseManager.getFoundSet('sutra_cms','web_scope')
+			
+			//passed uuid, grab record
+			if (application.getUUID(parentScope) instanceof UUID) {
+				fsScope.find()
+				fsScope.parent_id_scope = parentScope
+				fsScope.search()
+				parentScope = fsScope.getSelectedRecord()
+				
+			}
+			
+			//this is a child, get size of sibling foundset
+			if (utils.hasRecords(parentScope,'web_scope_to_scope__child')) {
+				rowOrder = parentScope.web_scope_to_scope__child.getSize()
+			}
+			//find all top-level scopes for this area
+			else {
+				fsScope.find()
+				fsScope.id_area = parentScope.id_area
+				fsScope.parent_id_scope = '^='
+				rowOrder = fsScope.search()
+			}
+		}
+		
+		scopeRec.row_order = rowOrder
+	}
+	
 	//set flag to copy scrapbook instead of connecting it
 	if (event && event.getElementName() == 'btn_copy') {
 		var copyScrapbook = true
@@ -143,6 +180,7 @@ function ACTION_ok(event) {
 							
 							//create scope record in real mode
 							if (_calledFrom == 'Live') {
+								/** @type {JSFoundSet<db:/sutra_cms/web_scope>} */
 								var fsScope = databaseManager.getFoundSet('sutra_cms','web_scope')
 								var scopeRec = fsScope.getRecord(fsScope.newRecord(false,true))
 								
@@ -151,15 +189,26 @@ function ACTION_ok(event) {
 								fsScope.search()
 								
 								scopeRec.id_area = _areaID
-								scopeRec.row_order = fsScope.getSize() + 1
+								scopeRec.parent_id_scope = _scopeID
+								scopeRec.sort_order = fsScope.getSize() + 1
+								
+								//determine which stack to throw this record at the bottom of
+								setSort(scopeRec, _scopeID)								
+								
 								databaseManager.saveData(scopeRec)
 							}
 							//create scope record in gui mode
 							else if (_calledFrom == 'GUI') {
-								var fsScope = forms.WEB_0F_page__design_1F_version_2L_scope.foundset
-								var scopeRec = fsScope.getRecord(fsScope.newRecord(false,true))
+								fsScope = forms.WEB_0F_page__design_1F_version_2L_scope.foundset
+								var selectedScope = fsScope.getSelectedRecord()
 								
-								scopeRec.row_order = fsScope.getSize()
+								var scopeRec = fsScope.getRecord(fsScope.newRecord(false,true))
+								scopeRec.parent_id_scope = selectedScope ? selectedScope.parent_id_scope : null
+								scopeRec.sort_order = fsScope.getSize()
+								
+								//determine which stack to throw this record at the bottom of
+								setSort(scopeRec, selectedScope)
+								
 								databaseManager.saveData(scopeRec)
 							}
 							
@@ -238,6 +287,7 @@ function ACTION_ok(event) {
 						
 						//create scope record in real mode
 						if (_calledFrom == 'Live') {
+							/** @type {JSFoundSet<db:/sutra_cms/web_scope>} */
 							var fsScope = databaseManager.getFoundSet('sutra_cms','web_scope')
 							var scopeRec = fsScope.getRecord(fsScope.newRecord(false,true))
 							
@@ -246,15 +296,26 @@ function ACTION_ok(event) {
 							fsScope.search()
 							
 							scopeRec.id_area = _areaID
-							scopeRec.row_order = fsScope.getSize() + 1
+							scopeRec.parent_id_scope = _scopeID
+							scopeRec.sort_order = fsScope.getSize() + 1
+							
+							//determine which stack to throw this record at the bottom of
+							setSort(scopeRec, _scopeID)								
+							
 							databaseManager.saveData(scopeRec)
 						}
 						//create scope record in gui mode
 						else if (_calledFrom == 'GUI') {
 							var fsScope = forms.WEB_0F_page__design_1F_version_2L_scope.foundset
-							var scopeRec = fsScope.getRecord(fsScope.newRecord(false,true))
+							var selectedScope = fsScope.getSelectedRecord()
 							
-							scopeRec.row_order = fsScope.getSize()
+							var scopeRec = fsScope.getRecord(fsScope.newRecord(false,true))
+							scopeRec.parent_id_scope = selectedScope ? selectedScope.parent_id_scope : null
+							scopeRec.sort_order = fsScope.getSize()
+							
+							//determine which stack to throw this record at the bottom of
+							setSort(scopeRec, selectedScope)
+							
 							databaseManager.saveData(scopeRec)
 						}
 						
@@ -332,6 +393,7 @@ function ACTION_ok(event) {
 						
 						//create scope record in real mode
 						if (_calledFrom == 'Live') {
+							/** @type {JSFoundSet<db:/sutra_cms/web_scope>} */
 							var fsScope = databaseManager.getFoundSet('sutra_cms','web_scope')
 							var scopeRec = fsScope.getRecord(fsScope.newRecord(false,true))
 							
@@ -340,15 +402,26 @@ function ACTION_ok(event) {
 							fsScope.search()
 							
 							scopeRec.id_area = _areaID
-							scopeRec.row_order = fsScope.getSize() + 1
+							scopeRec.parent_id_scope = _scopeID
+							scopeRec.sort_order = fsScope.getSize() + 1
+							
+							//determine which stack to throw this record at the bottom of
+							setSort(scopeRec, _scopeID)								
+							
 							databaseManager.saveData(scopeRec)
 						}
 						//create scope record in gui mode
 						else if (_calledFrom == 'GUI') {
 							var fsScope = forms.WEB_0F_page__design_1F_version_2L_scope.foundset
-							var scopeRec = fsScope.getRecord(fsScope.newRecord(false,true))
+							var selectedScope = fsScope.getSelectedRecord()
 							
-							scopeRec.row_order = fsScope.getSize()
+							var scopeRec = fsScope.getRecord(fsScope.newRecord(false,true))
+							scopeRec.parent_id_scope = selectedScope ? selectedScope.parent_id_scope : null
+							scopeRec.sort_order = fsScope.getSize()
+							
+							//determine which stack to throw this record at the bottom of
+							setSort(scopeRec, selectedScope)
+							
 							databaseManager.saveData(scopeRec)
 						}
 						

@@ -317,34 +317,7 @@ function BLOCK_delete(idPKs) {
 	
 	//something to delete, prompt
 	if (utils.hasRecords(fsScope)) {
-		var delRec = globals.DIALOGS.showWarningDialog(
-				'Delete record',
-				'Do you really want to delete this block?',
-				'Yes',
-				'No'
-			)
-		
-		if (delRec == 'Yes') {
-			//get record to delete
-			var recDelete = fsScope.getSelectedRecord()
-			
-			//find all records in this area
-			fsScope.find()
-			fsScope.id_area = recDelete.id_area
-			fsScope.search()
-			
-			//reset ordering
-			for (var i = 1; i <= fsScope.getSize(); i++) {
-				var record = fsScope.getRecord(i)
-				
-				if (record.row_order > recDelete.row_order) {
-					record.row_order--
-				}
-			}
-			
-			fsScope.deleteRecord(recDelete)
-			URL_update(true)
-		}
+		forms.WEB_0F_page__design_1F_version_2L_scope.REC_delete(fsScope.getSelectedRecord())
 	}
 }
 
@@ -432,14 +405,14 @@ function FORM_on_load(event) {
 }
 
 /**
+ * @param {String} areaScope UUIDs for area and optionally scope munged together
  *
  * @properties={typeid:24,uuid:"FE79BE16-34CC-4556-8485-B6F9211A87D2"}
  * @AllowToRunInFind
  */
-function BLOCK_new(areaID) {
-	
+function BLOCK_new(areaScope) {
 	//show picker for type of block and create
-	var newBlock = forms.WEB_0F_page__design_1F_version_2L_scope.BLOCK_new(areaID)
+	var newBlock = forms.WEB_0F_page__design_1F_version_2L_scope.BLOCK_new(areaScope)
 	
 	//add editor to the screen if new block not cancelled
 	if (newBlock) {
@@ -450,7 +423,14 @@ function BLOCK_new(areaID) {
 		var results = fsScope.search()
 		
 		if (results) {
-			BLOCK_edit('sutra-block-data-' + utils.stringReplace(fsScope.id_scope.toString(),'-','') + '-' + utils.stringReplace(newBlock.id_block.toString(),'-',''))
+			//this is a layout, just refresh the screen
+			if (utils.hasRecords(fsScope.getSelectedRecord(),'web_scope_to_block.web_block_to_block_type') && fsScope.web_scope_to_block.web_block_to_block_type.block_category == scopes.CMS._constant.blockCategory.LAYOUT) {
+				URL_update(true)
+			}
+			//open for edits
+			else {
+				BLOCK_edit('sutra-block-data-' + utils.stringReplace(fsScope.id_scope.toString(),'-','') + '-' + utils.stringReplace(newBlock.id_block.toString(),'-',''))
+			}
 		}
 	}
 	//resume edit mode
