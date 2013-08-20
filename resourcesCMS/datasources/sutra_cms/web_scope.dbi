@@ -43,6 +43,14 @@ name:"organization_id"
 },
 {
 allowNull:true,
+creationOrderIndex:8,
+dataType:12,
+flags:4,
+length:50,
+name:"parent_id_scope"
+},
+{
+allowNull:true,
 autoEnterSubType:8,
 autoEnterType:1,
 creationOrderIndex:1,
@@ -62,6 +70,12 @@ allowNull:true,
 creationOrderIndex:6,
 dataType:4,
 name:"row_order"
+},
+{
+allowNull:true,
+creationOrderIndex:9,
+dataType:4,
+name:"sort_order"
 }
 ],
 name:"web_scope",
