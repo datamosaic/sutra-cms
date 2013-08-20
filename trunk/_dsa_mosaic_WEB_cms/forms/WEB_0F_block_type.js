@@ -256,9 +256,13 @@ function REC_new(flagRefresh,formName,fs) {
 			
 			//if anything left in delete array, whack it 
 			for (var i = 0; i < displayDelete.length; i++) {
-				displayDelete[i].fs.deleteRecord(displayDelete[i])
+				displayDelete[i].foundset.deleteRecord(displayDelete[i])
 			}
-
+			
+			//no default and only one record, flag as default
+			if (block.web_block_type_to_block_display.getSize() == 1) {
+				block.web_block_type_to_block_display.flag_default = 1
+			}
 			
 			// block client actions - "Block"
 			for (var i in objBlock.clientActionsBlock) {
