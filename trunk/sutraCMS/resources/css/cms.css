@@ -71,6 +71,7 @@ div.layout_editable,
 p.layout_editable,
 div.block_editable, 
 p.block_editable {
+	min-width: 40px;
 	margin: 4px 3px;
 	border: 1px dashed #004E98;
 	padding: 2px;
