@@ -227,6 +227,11 @@ function REC_on_select(event) {
 		// load correct form up 
 		var tabForm = 'WEB_0F_block_type__builder'
 		
+		//before loading up data, try to save outstanding edits
+		if (databaseManager.hasRecordChanges(foundset)) {
+			databaseManager.saveData(foundset)
+		}
+		
 		//this is a block builder and we have data
 		if (utils.hasRecords(foundset) && column_value) {
 			//grab data for selected record
