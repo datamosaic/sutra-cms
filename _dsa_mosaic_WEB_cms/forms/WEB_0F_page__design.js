@@ -167,7 +167,7 @@ function REC_on_select(event,skipLoad,verIndex,fireSelect,areaName,blockIndex) {
 		_skipSelect = true
 	
 		//when newly added page, skip this
-		if (!forms.WEB_0T_page._addRecord) {
+		if (!forms[scopes.CMS.util.getTreeForm()]._addRecord) {
 			//halt additional on select firing
 			forms.WEB_0F_page__design_1F_version_2L_scope._skipSelect = true
 			
@@ -410,7 +410,7 @@ function FORM_on_load(event) {
  * @properties={typeid:24,uuid:"D5C2AE5A-0CE4-42D3-AAF1-B277E73B748A"}
  */
 function PAGE_type_display(pageType) {
-	if (!forms.WEB_0T_page._addRecord) {
+	if (!forms[scopes.CMS.util.getTreeForm()]._addRecord) {
 		forms.WEB_0F_page__design_1F__header_edit.TOGGLE_fields(pageType || page_type)
 	}
 }

@@ -8,6 +8,13 @@ var _license_dsa_mosaic_WEB_cms = 'Module: _dsa_mosaic_WEB_cms \
 									MIT Licensed';
 
 /**
+ * @type {String}
+ *
+ * @properties={typeid:35,uuid:"7A1D15B5-ED63-436E-BF37-0F7B761D275A"}
+ */
+var _liveForm = null;
+
+/**
  * Perform the element default action.
  *
  * @param {JSEvent} event the event that triggered the action
@@ -49,7 +56,7 @@ function ACTION_edit(event) {
 	}
 	
 	// turn on jquery edit stuff
-	forms.WEB_0F_page__browser.EDIT_on()
+	forms[_liveForm].EDIT_on()
 }
 
 /**
@@ -100,7 +107,7 @@ function ACTION_group(input) {
 		TOGGLE_edit()		
 		
 		//regenerate html
-		forms.WEB_0F_page__browser.URL_update()
+		forms[_liveForm].URL_update()
 	}
 }
 
@@ -278,7 +285,7 @@ function ACTION_version(input) {
 		TOGGLE_edit()
 		
 		//regenerate html
-		forms.WEB_0F_page__browser.URL_update()
+		forms[_liveForm].URL_update()
 		
 //		//compare value in global with valuelist
 //		var dataset = application.getValueListItems('WEB_page_version')
@@ -304,7 +311,7 @@ function ACTION_version(input) {
 		forms.WEB_0F_page__design_1F_version.foundset.selectRecord(globals.WEB_page_version)
 		
 		//update display and reload version valuelist; don't reload versions foundset
-		forms.WEB_0F_page__browser.REC_on_select(null,null,true)
+		forms[_liveForm].REC_on_select(null,null,true)
 	}
 }
 
@@ -374,13 +381,13 @@ function ACTION_version_actions(event) {
 		TOGGLE_edit()
 		
 		//regenerate html
-		forms.WEB_0F_page__browser.URL_update()
+		forms[_liveForm].URL_update()
 		
 		//assumption here is that foundset is in sync with this valuelist (convert version to reverse ordered record list)
 		forms.WEB_0F_page__design_1F_version.foundset.selectRecord(globals.WEB_page_version)
 		
 		//update display and reload version valuelist; don't reload versions foundset
-		forms.WEB_0F_page__browser.REC_on_select(null,null,true)
+		forms[_liveForm].REC_on_select(null,null,true)
 	}
 }
 
@@ -574,6 +581,21 @@ function ACTION_mode(event) {
 				
 				break
 			case 'lbl_mode_gui':
+				//when in web client, don't go here
+				if (solutionPrefs.config.webClient) {
+					globals.DIALOGS.showInfoDialog('No GUI','GUI mode is disabled in WebClient for now')
+					globals.WEB_page_mode = 2
+					var mapping = {
+							1 : 'data',
+							2 : 'gui',
+							3 : 'live'
+						}
+					ACTION_mode({getElementName: function() {
+									return 'lbl_mode_' + mapping[currentMode]
+								}})
+					return
+				}
+			
 				//go to non-real mode if not there already
 				if (currentMode == 3) {
 					//go to non-real mode
@@ -677,7 +699,7 @@ function ACTION_save(event) {
 	
 	elements.highlighter.visible = false
 	
-	forms.WEB_0F_page__browser.EDIT_off()
+	forms[_liveForm].EDIT_off()
 }
 
 /**
@@ -712,6 +734,15 @@ function FORM_on_load() {
 	//hide highlighter
 	elements.highlighter.visible = false
 //	elements.highlighter_dash.visible = false
+
+	//form name
+	_liveForm ='WEB_0F_page__browser'
+		
+	if (solutionPrefs.config.webClient) {
+		//form name
+		_liveForm = 'WEB_0F_page__live__web'
+		elements.lbl_mode_gui.enabled = false
+	}
 }
 
 /**
@@ -765,15 +796,16 @@ function MODE_set(mode) {
 			forms.WEB_0F_page__design.REC_on_select(null,true)
 			
 			//clear out browser bean
-			forms.WEB_0F_page__browser.elements.bn_browser.html = '<html><body></body></html>'
-			
+			if (!solutionPrefs.config.webClient) {
+				forms.WEB_0F_page__browser.elements.bn_browser.html = '<html><body></body></html>'
+			}
 			break;
-		case "Live":	
-			//following line only needed when returning to web mode after not being in it fulltime
-			forms.WEB_0F_page__browser.REC_on_select(null,null,true)
-			
-			forms.WEB_0F_page.elements.tab_main.addTab( forms.WEB_0F_page__browser )
+		case "Live":
+			forms.WEB_0F_page.elements.tab_main.addTab( forms[_liveForm] )
 			forms.WEB_0F_page.elements.tab_main.tabIndex = 2
+			
+			//following line only needed when returning to web mode after not being in it fulltime
+			forms[_liveForm].REC_on_select(null,null,true)
 			break;
 	}
 }
@@ -857,7 +889,7 @@ function ACTION_visit(event,returnURL,toClippy) {
 		}
 		//go to page
 		else {
-			globals.CODE_url_handler(urlString)
+			globals.CODE_url_handler(urlString,(solutionPrefs.config.webClient ? '_blank' : null))
 		}
 	}
 	else if (!returnURL) {

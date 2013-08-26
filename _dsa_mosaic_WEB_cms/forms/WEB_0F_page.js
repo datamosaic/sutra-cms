@@ -31,12 +31,6 @@ function FORM_on_show(firstShow, event) {
 		//don't run if in a preload
 		!(application.__parent__.solutionPrefs && solutionPrefs.config.prefs.formPreloading)) {
 		
-		//first time go to sitemap view (do at end so everything loaded already)
-			//TODO: this causes webclient to get an internal error...must be something not set up correctly
-		if (firstShow && !solutionPrefs.config.webClient) {
-			globals.WEBc_sutra_trigger('TRIGGER_ul_tab_list',['WEB_0T_page','Sitemap',0])
-		}
-		
 		//save down currently selected toolbar
 		if (application.__parent__.solutionPrefs && !solutionPrefs.config.lockStatus) {
 			//when progressbar is active, take from previous toolbar
@@ -48,14 +42,20 @@ function FORM_on_show(firstShow, event) {
 				_lastToolbar = forms[solutionPrefs.config.formNameBase + '__header__toolbar'].elements.tab_toolbar.tabIndex
 			}
 			
-			//make sure on page toolbar
 			globals.WEBc_sutra_trigger('TRIGGER_toolbar_toggle',['Web Edit',true])
-			globals.WEBc_sutra_trigger('TRIGGER_toolbar_set',['Web Edit'])
+			//make sure on page toolbar...disabled in wc for now
+			if (!solutionPrefs.config.webClient) {
+				globals.WEBc_sutra_trigger('TRIGGER_toolbar_set',['Web Edit'])
+			}
 		}
 		
+		//first time go to sitemap view (do at end so everything loaded already)
+		if (firstShow) {
+			globals.WEBc_sutra_trigger('TRIGGER_ul_tab_list',[scopes.CMS.util.getTreeForm(),'Sitemap',0])
+		}
 		
-		//in workflow maximized view
-		if (firstShow && application.__parent__.solutionPrefs && (solutionPrefs.config.activeSpace == 'list' || solutionPrefs.config.activeSpace == 'workflow')) {
+		//in workflow maximized view or in webclient
+		if (solutionPrefs.config.webClient || firstShow && application.__parent__.solutionPrefs && (solutionPrefs.config.activeSpace == 'list' || solutionPrefs.config.activeSpace == 'workflow')) {
 			//switch modes
 			var guiEvent = new Object()
 			guiEvent.getElementName = function() {
@@ -76,7 +76,7 @@ function FORM_on_show(firstShow, event) {
 			forms.WEB_0F_page__design.REC_on_select()
 			
 			//update tree
-			forms.WEB_0T_page.TREE_refresh()
+			forms[scopes.CMS.util.getTreeForm()].TREE_refresh()
 			
 			//no records, dim out
 			globals.WEB_lock_workflow(true)
@@ -91,7 +91,7 @@ function FORM_on_show(firstShow, event) {
 			globals.WEB_block_on_select = true
 			
 			//need to reload the tree
-			if (forms.WEB_0T_page._refresh || firstShow) {
+			if (forms[scopes.CMS.util.getTreeForm()]._refresh || firstShow) {
 				_loadFilters = true
 			}
 		}
@@ -122,7 +122,9 @@ function FORM_on_hide(event) {
 		//restore last selected toolbar
 		if (application.__parent__.solutionPrefs && !solutionPrefs.config.lockStatus) {
 			//disable web edit toolbar
-			globals.WEBc_sutra_trigger('TRIGGER_toolbar_toggle',['Web Edit',false])
+			if (!solutionPrefs.config.webClient) {
+				globals.WEBc_sutra_trigger('TRIGGER_toolbar_toggle',['Web Edit',false])
+			}
 			
 			//make sure on whatever last toolbar was
 			solutionPrefs.config.lastSelectedToolbar = _lastToolbar
@@ -150,19 +152,20 @@ function FIND_post_process(count) {
 	
 	//which tab is this UL on
 	var ulTab = (navigationPrefs.byNavItemID[solutionPrefs.config.currentFormID].listData.withButtons) ? 2 : 3
-	
+	var listTabForm = (solutionPrefs.config.webClient) ? forms.DATASUTRA_WEB_0F__list__universal : forms.DATASUTRA_0F_solution
+			
 	//only change tabs when we're not already in the right place
-	if (forms[baseForm].elements.tab_content_B.tabIndex != ulTab) {
+	if (listTabForm.elements.tab_content_B.tabIndex != ulTab) {
 		//something found as a result of this find, show flat view
 		if (count) {
-			forms[baseForm].elements.tab_content_B.tabIndex = ulTab
+			listTabForm.elements.tab_content_B.tabIndex = ulTab
 		}
 		//show tree view when currently on it
 		else {
-			forms[baseForm].elements.tab_content_B.tabIndex = navigationPrefs.byNavSetName.configPanes.itemsByName['Custom tab ' + solutionPrefs.config.currentFormID + ': WEB_0T_page'].listData.tabNumber
+			listTabForm.elements.tab_content_B.tabIndex = navigationPrefs.byNavSetName.configPanes.itemsByName['Custom tab ' + solutionPrefs.config.currentFormID + ': WEB_0T_page'].listData.tabNumber
 			
 			//force to select correct record
-			forms.WEB_0T_page.elements.bean_tree.selectionPath = forms.WEB_0T_page.FIND_path(foundset.getSelectedRecord())
+			forms[scopes.CMS.util.getTreeForm()].elements.bean_tree.selectionPath = forms[scopes.CMS.util.getTreeForm()].FIND_path(foundset.getSelectedRecord())
 		}
 	}
 }

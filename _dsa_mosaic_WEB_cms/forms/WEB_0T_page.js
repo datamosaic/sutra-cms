@@ -381,6 +381,19 @@ function FIND_path(input) {
  * @properties={typeid:24,uuid:"7B82294C-C760-4E00-8CC6-071A0F16138C"}
  */
 function FORM_on_load(event) {
+	//supposed to be on a different form for webclient; adjust
+		//MEMO: this works because site record sets a flag on this page
+	if (solutionPrefs.config.webClient && controller.getName() != 'WEB_0T_page__web' &&
+		navigationPrefs.byNavSetName['Sutra CMS'] &&
+		navigationPrefs.byNavSetName['Sutra CMS'].itemsByName &&
+		navigationPrefs.byNavSetName['Sutra CMS'].itemsByName['Pages'] &&
+		navigationPrefs.byNavSetName['Sutra CMS'].itemsByName['Pages'].buttons &&
+		navigationPrefs.byNavSetName['Sutra CMS'].itemsByName['Pages'].buttons.tabs) {
+			
+		navigationPrefs.byNavSetName['Sutra CMS'].itemsByName['Pages'].buttons.tabs[0].formToLoad = 'WEB_0T_page__web'
+		return
+	}
+	
 	//this will get rid of the connecting lines on windows/linux
 //	elements.bean_tree.putClientProperty("JTree.lineStyle", "None")
 	
@@ -1187,6 +1200,8 @@ function REC_on_select(selectedRecord) {
 			}
 		}
 	}
+	
+	globals.NAV_universal_list_select()
 }
 
 /**

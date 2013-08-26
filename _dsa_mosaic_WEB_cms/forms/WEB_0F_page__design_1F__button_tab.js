@@ -155,7 +155,7 @@ function ACTION_edit(event) {
 	
 	//allowed to roll-down header area?
 		//MEMO: this global method only used on pages screen; so modifcations ok
-	if (!forms.WEB_0T_page._addRecord && forms.WEB_0F_page.page_type == 0 && !utils.hasRecords(forms.WEB_0F_page__design_1F_version.foundset)) {
+	if (!forms[scopes.CMS.util.getTreeForm()]._addRecord && forms.WEB_0F_page.page_type == 0 && !utils.hasRecords(forms.WEB_0F_page__design_1F_version.foundset)) {
 		globals.DIALOGS.showQuestionDialog(
 					'Error',
 					'No version selected'
