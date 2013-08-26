@@ -122,11 +122,13 @@ function BLOCK_new(input) {
 		var unmangle = input.split("-")
 		var scopeID = convertUUID(unmangle[1])
 		var areaID = convertUUID(unmangle[0])
+		var slot = unmangle[2]
 		
 		//notify which area we're adding to when in real mode
 		forms.WEB_P__block__new._calledFrom = 'Live'
 		forms.WEB_P__block__new._areaID = areaID
 		forms.WEB_P__block__new._scopeID = scopeID ? scopeID : null
+		forms.WEB_P__block__new._scopeOrder = slot ? slot : null
 	}
 	else {
 		forms.WEB_P__block__new._calledFrom = 'GUI'
@@ -157,6 +159,9 @@ function BLOCK_new(input) {
 		}
 		// or real mode
 		else if (globals.WEB_page_mode == 3) {
+			//update ordering for the things
+			forms.WEB_0F_page__design_1F_version_2L_scope.SCOPE_sort(areaID)
+			
 			//_success holds the actual block record created
 			return forms.WEB_P__block__new._success
 		}
@@ -185,12 +190,15 @@ function REC_delete(recDelete) {
 		fsScope.find()
 		fsScope.id_area = recDelete.id_area
 		fsScope.search()
+		
+		fsScope.selectRecord(recDelete.id_scope)
 	}
 	//get record to delete and foundset
 	else {
 		fsScope = foundset
-		recDelete = fsScope.getSelectedRecord()
 	}
+	recDelete = fsScope.getSelectedRecord()
+	
 	var message = 'Do you really want to delete this block?'
 	if (utils.hasRecords(recDelete,'web_scope_to_scope__child')) {
 		message = 'Do you really want to delete this block and all its children?'
@@ -219,7 +227,8 @@ function REC_delete(recDelete) {
 		for (var i = 1; i <= fsScope.getSize(); i++) {
 			var record = fsScope.getRecord(i)
 			
-			if (recDelete.parent_id_scope == record.parent_id_scope && record.row_order > recDelete.row_order) {
+			//only re-order things at the top-level; leave holes down stream
+			if (!recDelete.parent_id_scope && recDelete.parent_id_scope == record.parent_id_scope && record.row_order > recDelete.row_order) {
 				record.row_order--
 			}
 		}

@@ -328,5 +328,14 @@ var util = {
 		databaseManager.saveData(cacheRec)
 		
 		return true
+	},
+	
+	/**
+	 * Form used to display tree (different for smart/web client)
+	 * 
+	 * @return {String} Form name of the tree view
+	 */
+	getTreeForm : function() {
+		return solutionPrefs.config.webClient ? 'WEB_0T_page__web' : 'WEB_0T_page'
 	}
 }

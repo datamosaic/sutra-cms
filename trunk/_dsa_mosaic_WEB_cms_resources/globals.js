@@ -1983,7 +1983,7 @@ function WEBc_page_new(pageName,pageType,parentID,themeID,layoutID) {
 		databaseManager.saveData()
 		
 		//set flag that need to update tree view on next load
-		forms.WEB_0T_page._refresh = true
+		forms[scopes.CMS.util.getTreeForm()]._refresh = true
 		
 		//turn off feedback indicator if on
 		if (WEBc_sutra_trigger('TRIGGER_progressbar_get') instanceof Array) {

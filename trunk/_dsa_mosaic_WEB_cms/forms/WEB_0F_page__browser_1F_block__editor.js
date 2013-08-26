@@ -44,7 +44,7 @@ var _scopeID = null;
  * @properties={typeid:24,uuid:"4763A94A-B219-4DB9-95AF-311329BA5A23"}
  */
 function FORM_on_show(firstShow, event) {
-	var contextForm = 'WEB_0F_page__browser_1F_block__editor'
+	var contextForm = controller.getName()
 	var tabPanel = forms[contextForm].elements.tab_edit
 	
 	var recBlock = foundset.getSelectedRecord()

@@ -35,7 +35,7 @@ function REC_on_select(event) {
 	}
 	
 	//set flag for page tree to be refreshed
-	forms.WEB_0T_page._refresh = true
+	forms[scopes.CMS.util.getTreeForm()]._refresh = true
 }
 
 /**

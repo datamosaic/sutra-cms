@@ -149,7 +149,7 @@ function FORM_on_show(firstShow, event) {
 	TOGGLE_fields(page_type)
 	
 	//if we're not adding a record, make sure that the correct things are showing
-	if (!forms.WEB_0T_page._addRecord) {
+	if (!forms[scopes.CMS.util.getTreeForm()]._addRecord) {
 		//hook up related records to form variables
 		var fsPlatform = databaseManager.getFoundSet('sutra_cms','web_platform')
 		fsPlatform.find()
@@ -265,16 +265,16 @@ function ACTION_cancel() {
 	REC_new()
 	
 	//MEMO: check WEB_P_page method too
-	if (forms.WEB_0T_page._addRecord) {
-		var oldRec = forms.WEB_0T_page._oldRecord
+	if (forms[scopes.CMS.util.getTreeForm()]._addRecord) {
+		var oldRec = forms[scopes.CMS.util.getTreeForm()]._oldRecord
 		
 		delete _siteDefaults
 		_idSitePlatform = null
 		_idSiteLanguage = null
 		_idSiteGroup = null
 		
-		forms.WEB_0T_page._addRecord = null
-		forms.WEB_0T_page._oldRecord = null
+		forms[scopes.CMS.util.getTreeForm()]._addRecord = null
+		forms[scopes.CMS.util.getTreeForm()]._oldRecord = null
 		
 		//no page records, turn off ability to add a page
 		if (!utils.hasRecords(forms.WEB_0F_site.web_site_to_page)) {
@@ -307,7 +307,7 @@ function ACTION_cancel() {
  */
 function ACTION_save() {
 	//see forms.WEB_P_page.ACTION_ok
-	var newRec = forms.WEB_0T_page._addRecord
+	var newRec = forms[scopes.CMS.util.getTreeForm()]._addRecord
 	
 	//check for enough data
 	if (!_pageName) {
@@ -349,7 +349,7 @@ function ACTION_save() {
 		}
 		
 		//page was just created
-		if (forms.WEB_0T_page._addRecord) {
+		if (forms[scopes.CMS.util.getTreeForm()]._addRecord) {
 			var pageRec = foundset.getSelectedRecord()
 			
 			//unfreeze screen when in frameworks
@@ -361,11 +361,11 @@ function ACTION_save() {
 			globals.WEBc_sutra_trigger('TRIGGER_progressbar_start',[null,'Creating new page...'])
 			
 			//put this page in the correct place; there were other records
-			if (forms.WEB_0T_page._oldRecord) {
+			if (forms[scopes.CMS.util.getTreeForm()]._oldRecord) {
 				
 				//find current syblings
 				var fsPeers = databaseManager.getFoundSet('sutra_cms','web_page')
-				fsPeers.loadRecords(forms.WEB_0T_page._oldRecord)
+				fsPeers.loadRecords(forms[scopes.CMS.util.getTreeForm()]._oldRecord)
 				
 				var oldRecord = fsPeers.getSelectedRecord()
 				
@@ -474,24 +474,24 @@ function ACTION_save() {
 			
 			//a full reload required
 			if (treeReload) {
-				forms.WEB_0T_page.TREE_refresh()
+				forms[scopes.CMS.util.getTreeForm()].TREE_refresh()
 			}
 			
 			//select this new record
-			forms.WEB_0T_page.elements.bean_tree.refresh()
+			forms[scopes.CMS.util.getTreeForm()].elements.bean_tree.refresh()
 			application.updateUI()
 			//same level as before
 			if (true) {
-				forms.WEB_0T_page.elements.bean_tree.selectionPath = forms.WEB_0T_page.FIND_path(pageRec)
+				forms[scopes.CMS.util.getTreeForm()].elements.bean_tree.selectionPath = forms[scopes.CMS.util.getTreeForm()].FIND_path(pageRec)
 			}
 			//different level
 			else {
-				forms.WEB_0T_page.REC_on_select(pageRec.id_page)
+				forms[scopes.CMS.util.getTreeForm()].REC_on_select(pageRec.id_page)
 			}
 			
 			//reset flags
 			var addedRecord = true
-			forms.WEB_0T_page._addRecord = null
+			forms[scopes.CMS.util.getTreeForm()]._addRecord = null
 			delete _siteDefaults
 			
 			//update 3 globals used to control everything (done on new page creation so that what you just created is visible)
@@ -686,7 +686,7 @@ function ACTION_save() {
  */
 function FLD_data_change__pageName(oldValue, newValue, event) {
 	//if this is a newly created record, no need to save anything
-	if (!forms.WEB_0T_page._addRecord) {
+	if (!forms[scopes.CMS.util.getTreeForm()]._addRecord) {
 		_recLanguage.page_name = newValue
 	}
 	
@@ -790,8 +790,8 @@ function TOGGLE_fields(pageType) {
 	
 	if ( utils.hasRecords(foundset) ) {
 		//show new page fields when adding a new record
-		var newPage = (forms.WEB_0T_page._addRecord && page) ? true : false
-		var newCancel = (forms.WEB_0T_page._addRecord) ? true : false
+		var newPage = (forms[scopes.CMS.util.getTreeForm()]._addRecord && page) ? true : false
+		var newCancel = (forms[scopes.CMS.util.getTreeForm()]._addRecord) ? true : false
 		
 		elements.lbl_platform.visible = newPage
 		elements.var_idSitePlatform.visible = newPage
@@ -819,7 +819,7 @@ function TOGGLE_fields(pageType) {
 	//when on content tab, switch as needed
 	if (forms.WEB_0F_page__design_1F__button_tab.elements.tab_button.tabIndex == 1) {
 		//folder or link type of page or just creating a new record
-		if (!page || forms.WEB_0T_page._addRecord || pageHide) {
+		if (!page || forms[scopes.CMS.util.getTreeForm()]._addRecord || pageHide) {
 			forms.WEB_0F_page__design.elements.tab_main.tabIndex = 6
 		}
 		//normal type of page
@@ -844,7 +844,7 @@ function REC_new() {
 	if (forms[formName].elements.tab_header_detail.tabIndex != 2) {
 		//allowed to roll-down header area?
 			//MEMO: this global method only used on pages screen; so modifcations ok
-		if (!forms.WEB_0T_page._addRecord && forms.WEB_0F_page.page_type == 0 && !utils.hasRecords(forms.WEB_0F_page__design_1F_version.foundset)) {
+		if (!forms[scopes.CMS.util.getTreeForm()]._addRecord && forms.WEB_0F_page.page_type == 0 && !utils.hasRecords(forms.WEB_0F_page__design_1F_version.foundset)) {
 			globals.DIALOGS.showQuestionDialog(
 						'Error',
 						'No version selected'
@@ -953,7 +953,7 @@ function PAGE_picker(event) {
  */
 function FLD_data_change__idLayout(oldValue, newValue, event) {
 	//if this is a newly created record, no need to save anything
-	if (!forms.WEB_0T_page._addRecord) {
+	if (!forms[scopes.CMS.util.getTreeForm()]._addRecord) {
 		//different value than before and old value existed (not selecting for first time)
 		if (forms.WEB_0F_page__design_1F_version.id_layout != newValue) {
 			_themeSet = 1
@@ -982,7 +982,7 @@ function FLD_data_change__idLayout(oldValue, newValue, event) {
  */
 function FLD_data_change__idSitePlatform(oldValue, newValue, event) {
 	// this is a newly created record
-	if (forms.WEB_0T_page._addRecord) {
+	if (forms[scopes.CMS.util.getTreeForm()]._addRecord) {
 		var fsPlatform = databaseManager.getFoundSet('sutra_cms','web_site_platform')
 		fsPlatform.find()
 		fsPlatform.id_site_platform = newValue

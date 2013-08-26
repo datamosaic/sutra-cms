@@ -84,14 +84,14 @@ function ACTION_cancel() {
 		databaseManager.setAutoSave(true)
 		
 		//MEMO: check WEB_0F_page__design__header_edit method too
-		if (forms.WEB_0T_page._addRecord) {
+		if (forms[scopes.CMS.util.getTreeForm()]._addRecord) {
 			delete _siteDefaults
 			_idSitePlatform = null
 			_idSiteLanguage = null
 			_idSiteGroup = null
 			
-			forms.WEB_0T_page._addRecord = null
-			forms.WEB_0T_page._oldRecord = null
+			forms[scopes.CMS.util.getTreeForm()]._addRecord = null
+			forms[scopes.CMS.util.getTreeForm()]._oldRecord = null
 		}
 		
 		_themeSet = null
@@ -149,7 +149,7 @@ function ACTION_ok() {
 		globals.CODE_cursor_busy(true)
 		
 		//page was just created
-		if (forms.WEB_0T_page._addRecord) {
+		if (forms[scopes.CMS.util.getTreeForm()]._addRecord) {
 			var pageRec = foundset.getSelectedRecord()
 			
 			//unfreeze screen when in frameworks
@@ -161,11 +161,11 @@ function ACTION_ok() {
 			globals.WEBc_sutra_trigger('TRIGGER_progressbar_start',[null,'Creating new page...'])
 			
 			//put this page in the correct place; there were other records
-			if (forms.WEB_0T_page._oldRecord) {
+			if (forms[scopes.CMS.util.getTreeForm()]._oldRecord) {
 				
 				//find current syblings
 				var fsPeers = databaseManager.getFoundSet('sutra_cms','web_page')
-				fsPeers.loadRecords(forms.WEB_0T_page._oldRecord)
+				fsPeers.loadRecords(forms[scopes.CMS.util.getTreeForm()]._oldRecord)
 				
 				var oldRecord = fsPeers.getSelectedRecord()
 				
@@ -278,16 +278,16 @@ function ACTION_ok() {
 			
 			//a full reload required
 			if (treeReload) {
-				forms.WEB_0T_page.TREE_refresh()
+				forms[scopes.CMS.util.getTreeForm()].TREE_refresh()
 			}
 			
-			forms.WEB_0T_page.elements.bean_tree.refresh()
-			forms.WEB_0T_page.REC_on_select(pageRec.id_page)
-			forms.WEB_0T_page.elements.bean_tree.selectionPath = forms.WEB_0T_page.FIND_path(pageRec)
+			forms[scopes.CMS.util.getTreeForm()].elements.bean_tree.refresh()
+			forms[scopes.CMS.util.getTreeForm()].REC_on_select(pageRec.id_page)
+			forms[scopes.CMS.util.getTreeForm()].elements.bean_tree.selectionPath = forms[scopes.CMS.util.getTreeForm()].FIND_path(pageRec)
 			
 			//reset flags
 			var addedRecord = true
-			forms.WEB_0T_page._addRecord = null
+			forms[scopes.CMS.util.getTreeForm()]._addRecord = null
 			delete _siteDefaults
 			
 			//update 3 globals used to control everything (done on new page creation so that what you just created is visible)
@@ -454,7 +454,7 @@ function FORM_on_show(firstShow, event) {
 	TOGGLE_fields(page_type)
 	
 	//if we're not adding a record, make sure that the correct things are showing
-	if (!forms.WEB_0T_page._addRecord) {
+	if (!forms[scopes.CMS.util.getTreeForm()]._addRecord) {
 		TOGGLE_fields(page_type)
 		
 		//hook up related records to form variables
@@ -565,7 +565,7 @@ function TOGGLE_fields(pageType) {
 	
 	if ( utils.hasRecords(foundset) ) {
 		//show new page fields when adding a new record
-		var newPage = (forms.WEB_0T_page._addRecord && page) ? true : false
+		var newPage = (forms[scopes.CMS.util.getTreeForm()]._addRecord && page) ? true : false
 		
 		elements.lbl_platform.visible = newPage
 		elements.var_idSitePlatform.visible = newPage

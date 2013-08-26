@@ -10,7 +10,7 @@ function client_version_selected() {
  */
 function display_page_name() {
 	//creating a page
-	if (forms.WEB_0T_page._addRecord) {
+	if (forms[scopes.CMS.util.getTreeForm()]._addRecord) {
 		var pageName = 'Newly created '
 		
 		switch (page_type) {
@@ -49,7 +49,7 @@ function display_page_name() {
 	}
 	
 	
-	if (page_type && !forms.WEB_0T_page._addRecord) {
+	if (page_type && !forms[scopes.CMS.util.getTreeForm()]._addRecord) {
 		//this is a folder
 		if (page_type == 1) {
 			return 'Folder: ' + pageName
@@ -71,6 +71,7 @@ function display_page_name() {
 
 /**
  * @properties={type:12,typeid:36,uuid:"0CEAE8B0-E697-4E2F-B5CE-F8721B48352E"}
+ * @AllowToRunInFind
  */
 function id_language__default() {
 	//take default language from site level
@@ -116,7 +117,7 @@ function page_name() {
 //	//no default language, go hunting
 //	else {
 //		//new record mode
-//		if (forms.WEB_0T_page._addRecord) {
+//		if (forms[scopes.CMS.util.getTreeForm()]._addRecord) {
 //			return "Newly created page"
 //		}
 //		
