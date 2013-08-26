@@ -62,7 +62,10 @@ function VIEW_default() {
 	var instance = new Array()
 	for (var i in globals.CMS.data.block_data) {
 		// get object of data from database
-		var fieldData = JSON.parse(globals.CMS.data.block_data[i])
+		var fieldData = {}
+		if (globals.CMS.data.block_data[i]) {
+			fieldData = JSON.parse(globals.CMS.data.block_data[i])
+		}
 		
 		var order = fieldData.order
 		var type = fieldData.type
