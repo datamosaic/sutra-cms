@@ -164,12 +164,15 @@ function BLOCK_save(event) {
 			globals.CMS.ui.setData(event,_blockList[i].key,JSON.stringify(_blockList[i].record,null,'\t'))
 		}
 	}
+	globals.CMS.ui.blockSave()
 }
 
 /**
  * @properties={typeid:24,uuid:"94FE1530-BF1F-4846-980A-ECB166477D91"}
  */
 function BLOCK_cancel() {
+	globals.CMS.ui.blockCancel()
+	
 	//refresh the data
 	INIT_data()
 }

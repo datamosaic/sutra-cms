@@ -184,6 +184,7 @@ function TINYMCE_init(mode) {
  */
 function BLOCK_save(event) {
 	globals.CMS.ui.setData(event,'Content',elements.bn_tinymce.html)
+	globals.CMS.ui.blockSave()
 	
 	elements.bn_tinymce.clearDirtyState()
 	
@@ -258,6 +259,8 @@ function INIT_data() {
  * @properties={typeid:24,uuid:"8DA68D80-88B6-47F7-857C-6CE05373251D"}
  */
 function BLOCK_cancel(event) {
+	globals.CMS.ui.blockCancel()
+	
 	elements.bn_tinymce.html = globals.CMS.ui.getData(controller.getName()).Content
 	TOGGLE_buttons(false)
 }
