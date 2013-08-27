@@ -53,6 +53,7 @@ function BLOCK_save(event) {
 	//only run in edit mode
 	if (globals.CMS.ui.getEdit()) {
 		globals.CMS.ui.setData(event,'code',_dataValue)
+		globals.CMS.ui.blockSave()
 		
 		ACTION_colorize()
 	}
@@ -112,6 +113,8 @@ function INIT_data() {
  * @properties={typeid:24,uuid:"8F3FE07B-111D-4858-ABD2-3373302B5FBE"}
  */
 function BLOCK_cancel(event) {
+	globals.CMS.ui.blockCancel()
+	
 	//only run in edit mode
 	if (globals.CMS.ui.getEdit()) {
 		//reset codeType var

@@ -112,6 +112,20 @@ var CMS = {
 					}
 			},
 		ui : {
+				/**
+				 * Generic save method to attach to blocks
+				 * 
+				 * @return {Object}
+				 */
+				blockSave : function() {
+						return WEBc_block_save()
+					},
+				blockCancel : function() {
+						return WEBc_block_cancel()
+					},
+				runHook : function(/** JSRecord */ siteRec) {
+						return WEBc_hook_run(siteRec)
+					},
 				getData : function(/**JSForm*/ formName) {
 						return WEBc_block_getData(formName)
 					},
@@ -664,6 +678,44 @@ function WEBc_block_save() {
 //		//toggle upstream _editMode, but don't retrigger a save
 //		forms[formName].ACTION_save(null,true)
 //	}
+
+	//when in real mode
+	if (WEB_page_mode == 3) {
+		//save data
+		
+		
+		//set auto save on
+		
+		
+		//hide the editor
+		forms.WEB_0F_page__browser_1F_block__editor.ACTION_hide()
+		
+		//run all registered hooks
+		globals.CMS.ui.runHook()
+	}
+}
+
+/**
+ * @param {JSRecord<db:/sutra_cms/web_site>} [siteRec]
+ * @properties={typeid:24,uuid:"ECDE620A-1A34-4DAC-A312-24003A9D0600"}
+ */
+function WEBc_hook_run(siteRec) {
+	if (!(siteRec instanceof JSRecord)) {
+		siteRec = forms.WEB_0F_site.foundset.getSelectedRecord()
+	}
+	
+	for (var i = 1; i <= siteRec.web_site_to_site_hook.getSize(); i++) {
+		var record = siteRec.web_site_to_site_hook.getRecord(i)
+		
+		if (CODE_servoy_object_exists(record.hook_method,record.hook_form)) {
+			if (record.hook_form) {
+				forms[record.hook_form][record.hook_method](record.hook_argument)
+			}
+			else {
+				globals[record.hook_method](record.hook_argument)
+			}
+		}
+	}
 }
 
 /**
@@ -715,6 +767,18 @@ function WEBc_block_cancel() {
 //		//toggle upstream _editMode, but don't retrigger a save
 //		forms[formName].ACTION_cancel(null,true)
 //	}
+
+	//when in real mode
+	if (WEB_page_mode == 3) {
+		//rollback data
+		
+		
+		//set auto save on
+		
+		
+		//hide the editor
+		forms.WEB_0F_page__browser_1F_block__editor.ACTION_hide()
+	}
 }
 
 /**

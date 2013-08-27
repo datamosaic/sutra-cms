@@ -44,6 +44,7 @@ function FORM_on_load() {
  */
 function BLOCK_save(event) {
 	globals.CMS.ui.setData(event,'HTML',_dataValue)
+	globals.CMS.ui.blockSave()
 	
 	ACTION_colorize()
 }
@@ -101,6 +102,8 @@ function INIT_data() {
  * @properties={typeid:24,uuid:"B4B7C59C-32DB-46C6-BD6B-E9C42C12DE4E"}
  */
 function BLOCK_cancel(event) {
+	globals.CMS.ui.blockCancel()
+	
 	//refresh the colored version
 	if (globals.WEB_page_mode == 2) {
 		ACTION_colorize()
