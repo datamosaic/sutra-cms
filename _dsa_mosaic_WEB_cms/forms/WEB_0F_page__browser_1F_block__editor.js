@@ -77,6 +77,20 @@ function FORM_on_show(firstShow, event) {
 			
 			//the form exists and it isn't in the currently selected tab
 			if (formName && forms[formName] && formName != tabPanel.getTabFormNameAt(tabPanel.tabIndex)) {
+				//check this form to see if even anything to edit
+				var smForm = solutionModel.getForm(formName)
+				var allElems = smForm.getComponents()
+				var hasFields = false
+				allElems.forEach(function(item) {
+					if (item.displayType) {
+						hasFields = true
+					}
+				})
+				
+				if (!hasFields) {
+					return false
+				}
+				
 				//load tab panel
 				tabPanel.addTab(forms[formName])
 				tabPanel.tabIndex = tabPanel.getMaxTabIndex()
