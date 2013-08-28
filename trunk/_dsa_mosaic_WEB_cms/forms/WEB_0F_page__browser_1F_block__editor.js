@@ -78,17 +78,20 @@ function FORM_on_show(firstShow, event) {
 			//the form exists and it isn't in the currently selected tab
 			if (formName && forms[formName] && formName != tabPanel.getTabFormNameAt(tabPanel.tabIndex)) {
 				//check this form to see if even anything to edit
-				var smForm = solutionModel.getForm(formName)
-				var allElems = smForm.getComponents()
-				var hasFields = false
-				allElems.forEach(function(item) {
-					if (item.displayType) {
-						hasFields = true
+				if (recBlockType.form_name != 'WEB_0F__block_builder') {
+					var smForm = solutionModel.getForm(formName)
+					var allElems = smForm.getComponents()
+					var hasFields = false
+					allElems.forEach(function(item) {
+						if (typeof item.displayType == 'number') {
+							hasFields = true
+						}
+					})
+					
+					//when nothing editable, don't show editor
+					if (!hasFields) {
+						return false
 					}
-				})
-				
-				if (!hasFields) {
-					return false
 				}
 				
 				//load tab panel
