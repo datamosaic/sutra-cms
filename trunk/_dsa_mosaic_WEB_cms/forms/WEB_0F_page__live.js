@@ -366,7 +366,7 @@ function BLOCK_new(areaScope) {
 			}
 			//open for edits
 			else {
-				BLOCK_edit('sutra-block-data-' + utils.stringReplace(fsScope.id_scope.toString(),'-','') + '-' + utils.stringReplace(newBlock.id_block.toString(),'-',''))
+				BLOCK_edit(utils.stringReplace(fsScope.id_scope.toString(),'-','') + '-' + utils.stringReplace(newBlock.id_block.toString(),'-',''))
 			}
 		}
 	}
