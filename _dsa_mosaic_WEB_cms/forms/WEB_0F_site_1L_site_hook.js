@@ -128,7 +128,7 @@ function FORM_on_load(event) {
 	var moduleNames = new Array()
 	
 	//running in serclipse using a workspace
-	if (solutionPrefs.clientInfo.typeServoy == 'developer' && utils.stringToNumber(solutionPrefs.clientInfo.verServoy) >= 4) {
+	if (application.isInDeveloper() && utils.stringToNumber(solutionPrefs.clientInfo.verServoy) >= 4) {
 		//limit to included modules
 		repositoryPrefs = null
 		globals.CODE_workspace_module(['_dsa_mosaic_WEB_cms'])
@@ -136,7 +136,7 @@ function FORM_on_load(event) {
 	}
 	//only get methods from repository in <= 3.5.x or >= 4.x client
 	else if (!solutionPrefs.repository.api) {
-		globals.NAV_meta_module_names(['_dsa_mosaic_WEB_cms'])
+		globals.NAV_meta_module_names('_dsa_mosaic_WEB_cms')
 		
 		for (var i in repositoryPrefs.allModules) {
 			moduleNames.push(i)

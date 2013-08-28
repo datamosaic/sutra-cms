@@ -1,6 +1,6 @@
 addEmptyValue:1,
-customValues:"Block save
-Block cancel",
+customValues:"Page save
+Page cancel",
 name:"WEB_site_hook_category",
 returnDataProviders:1,
 showDataProviders:1,
