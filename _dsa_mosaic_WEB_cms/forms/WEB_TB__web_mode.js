@@ -50,6 +50,12 @@ function ACTION_edit(event) {
 	elements.highlighter.setLocation(elements.btn_edit.getLocationX() - 5,0)
 	elements.highlighter.visible = true
 	
+	// when shift key held, make sure to do a bean refresh
+	if (globals.CODE_key_pressed('shift') && _liveForm == 'WEB_0F_page__browser') {
+		forms.WEB_0F_page__browser.elements.bn_browser.reload()
+		application.sleep(500)
+	}
+	
 	// toggle to browser if not there already
 	if (globals.WEB_page_mode != 3) {
 		MODE_set("Live")
