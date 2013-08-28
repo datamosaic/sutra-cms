@@ -91,32 +91,53 @@ var _constant = {
 	 * }}
 	 */
 	objData : {},
-	/** Types of block categories */
+	/** Block categories */
 	blockCategory : {
 		/** 
-		 * Constant for block type <strong>content</strong> 
+		 * Constant for block category <strong>content</strong> 
 		 * @protected 
 		 * @type {Number}
 		 */
 		CONTENT:0,
 		/** 
-		 * Constant for block type <strong>collection</strong> 
+		 * Constant for block category <strong>collection</strong> 
 		 * @protected 
 		 * @type {Number}
 		 */
 		COLLECTION:1,
 		/** 
-		 * Constant for block type <strong>layout</strong> 
+		 * Constant for block category <strong>layout</strong> 
 		 * @protected 
 		 * @type {Number}
 		 */
 		LAYOUT:2,
 		/** 
-		 * Constant for block type <strong>app</strong> 
+		 * Constant for block category <strong>app</strong> 
 		 * @protected 
 		 * @type {Number}
 		 */
 		APP:3
+	},
+	/** Block types */
+	blockType : {
+		/** 
+		 * Constant for block type <strong>Design time</strong> 
+		 * @protected 
+		 * @type {Number}
+		 */
+		DESIGNTIME:0,
+		/** 
+		 * Constant for block type <strong>Block builder</strong> 
+		 * @protected 
+		 * @type {Number}
+		 */
+		BLOCKBUILDER:1,
+		/** 
+		 * Constant for block type <strong>Form builder</strong> 
+		 * @protected 
+		 * @type {Number}
+		 */
+		FORMBUILDER:2
 	},
 	/** @type 
 	 * {{record: {block_name: String, [block_description]: String, [block_category]: Number, form_name: String, [form_name_display]: String},
@@ -132,7 +153,7 @@ var _constant = {
  * @protected 
  * @properties={typeid:35,uuid:"DBE7242D-E0BA-4D80-A66B-F47C0D7E02BD",variableType:-4}
  */
-var _error = { 
+var _error = {
 		code : null, 
 		message : null,
 		/** 
@@ -337,5 +358,40 @@ var util = {
 	 */
 	getTreeForm : function() {
 		return solutionPrefs.config.webClient ? 'WEB_0T_page__web' : 'WEB_0T_page'
+	},
+	
+	/**
+	 * @param {String} category Which hooks to run
+	 * @param {JSRecord<db:/sutra_cms/web_site>} [siteRec]
+	 * 
+	 * @properties={typeid:24,uuid:"ECDE620A-1A34-4DAC-A312-24003A9D0600"}
+	 */
+	runHook : function(category,siteRec) {
+		//something to run
+		if (category) {
+			//no site record passed in, get from context
+			if (!(siteRec instanceof JSRecord)) {
+				siteRec = forms.WEB_0F_site.foundset.getSelectedRecord()
+			}
+			
+			if (utils.hasRecords(siteRec,'web_site_to_site_hook')) {
+				siteRec.web_site_to_site_hook.sort('order_by asc')
+				
+				//loop over all site hooks
+				for (var i = 1; i <= siteRec.web_site_to_site_hook.getSize(); i++) {
+					var record = siteRec.web_site_to_site_hook.getRecord(i)
+					
+					//is correct type of hook and exists, run
+					if (record.hook_category == category && globals.CODE_servoy_object_exists(record.hook_method,record.hook_form)) {
+						if (record.hook_form) {
+							forms[record.hook_form][record.hook_method](record.hook_argument)
+						}
+						else {
+							globals[record.hook_method](record.hook_argument)
+						}
+					}
+				}
+			}
+		}
 	}
 }

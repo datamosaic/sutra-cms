@@ -52,6 +52,7 @@ function INIT_block() {
 	        block_name			: 'Starter block',
 			block_description	: 'Boiler template for creating a custom block',
 			block_category		: scopes.CMS._constant.blockCategory.CONTENT,
+			block_type			: scopes.CMS._constant.blockType.DESIGNTIME,
 			form_name			: controller.getName()//,
 //			form_name_display	: 'WEB_0F___boiler_plate'	//this line only required when form_name_display different than form_name
 		}

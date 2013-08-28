@@ -44,7 +44,7 @@ function FORM_on_load() {
  */
 function BLOCK_save(event) {
 	globals.CMS.ui.setData(event,'HTML',_dataValue)
-	globals.CMS.ui.blockSave()
+	globals.CMS.ui.save()
 	
 	ACTION_colorize()
 }
@@ -102,7 +102,7 @@ function INIT_data() {
  * @properties={typeid:24,uuid:"B4B7C59C-32DB-46C6-BD6B-E9C42C12DE4E"}
  */
 function BLOCK_cancel(event) {
-	globals.CMS.ui.blockCancel()
+	globals.CMS.ui.cancel()
 	
 	//refresh the colored version
 	if (globals.WEB_page_mode == 2) {
@@ -305,6 +305,7 @@ function INIT_block() {
 			block_name			: 'HTML',
 			block_description	: 'Generic freeform content. HTML/CSS for structure and formatting.\n\nPlain Jane HTML editing by default.',
 			block_category		: scopes.CMS._constant.blockCategory.CONTENT,
+			block_type			: scopes.CMS._constant.blockType.DESIGNTIME,
 			form_name			: 'WEB_0F__html'
 		}
 	

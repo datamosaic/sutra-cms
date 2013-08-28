@@ -184,7 +184,7 @@ function TINYMCE_init(mode) {
  */
 function BLOCK_save(event) {
 	globals.CMS.ui.setData(event,'Content',elements.bn_tinymce.html)
-	globals.CMS.ui.blockSave()
+	globals.CMS.ui.save()
 	
 	elements.bn_tinymce.clearDirtyState()
 	
@@ -259,7 +259,7 @@ function INIT_data() {
  * @properties={typeid:24,uuid:"8DA68D80-88B6-47F7-857C-6CE05373251D"}
  */
 function BLOCK_cancel(event) {
-	globals.CMS.ui.blockCancel()
+	globals.CMS.ui.cancel()
 	
 	elements.bn_tinymce.html = globals.CMS.ui.getData(controller.getName()).Content
 	TOGGLE_buttons(false)
@@ -461,6 +461,7 @@ function INIT_block() {
 			block_name			: 'Content',
 			block_description	: 'Generic freeform content. HTML/CSS for structure and formatting.\n\nUses TinyMCE to edit content.',
 			block_category		: scopes.CMS._constant.blockCategory.CONTENT,
+			block_type			: scopes.CMS._constant.blockType.DESIGNTIME,
 			form_name			: 'WEB_0F__content',
 			form_name_display	: 'WEB_0F__content_view'
 		}

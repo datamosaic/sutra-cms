@@ -219,6 +219,7 @@ function INIT_block() {
 	        block_name			: 'Servoy Web Client',
 			block_description	: "Integrates Servoy's web client",
 			block_category		: scopes.CMS._constant.blockCategory.APP,
+			block_type			: scopes.CMS._constant.blockType.DESIGNTIME,
 			form_name			: 'WEB_0F__servoy_webclient'
 		}
 	

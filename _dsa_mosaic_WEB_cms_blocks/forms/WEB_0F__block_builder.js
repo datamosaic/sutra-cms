@@ -118,6 +118,7 @@ function INIT_block() {
 	        block_name			: 'Block builder',
 			block_description	: 'Your custom block',
 			block_category		: scopes.CMS._constant.blockCategory.CONTENT,
+			block_type			: scopes.CMS._constant.blockType.BLOCKBUILDER,
 			form_name			: controller.getName(),
 			form_name_display	: 'WEB_0F__block_builder_view'
 		}
@@ -164,14 +165,14 @@ function BLOCK_save(event) {
 			globals.CMS.ui.setData(event,_blockList[i].key,JSON.stringify(_blockList[i].record,null,'\t'))
 		}
 	}
-	globals.CMS.ui.blockSave()
+	globals.CMS.ui.save()
 }
 
 /**
  * @properties={typeid:24,uuid:"94FE1530-BF1F-4846-980A-ECB166477D91"}
  */
 function BLOCK_cancel() {
-	globals.CMS.ui.blockCancel()
+	globals.CMS.ui.cancel()
 	
 	//refresh the data
 	INIT_data()
