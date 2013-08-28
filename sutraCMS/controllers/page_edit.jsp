@@ -20,6 +20,9 @@
 			Map.Entry pairs = (Map.Entry)it.next();
 
 			String keyName = (String)pairs.getKey();
+			//this is for debugging to see what we actually have
+			// out.print("<h3>" + keyName + "</h3> " + (String)pairs.getValue() + "<br /><br /><br />");
+			
 			//remove the "cms" prefix and make the remaining string lowercase
 				//this will leave all "seoKeywords" in tact
 			if (keyName.substring(0,3).equals("cms")) {
