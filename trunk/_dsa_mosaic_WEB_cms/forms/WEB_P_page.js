@@ -419,6 +419,10 @@ function ACTION_ok() {
 //		forms.WEB_0F_page__browser.REC_on_select(null,true,true,1)	//this puts us into edit mode on the old record, not the new one
 //		forms.WEB_0F_page__browser.REC_on_select(null,null,true,1)	//this puts us into edit mode, then leaves edit mode, but leaves button depressed
 		forms.WEB_0F_page__browser.REC_on_select()
+		
+		//enter edit mode
+		application.sleep(500)
+		forms.WEB_TB__web_mode.ACTION_edit()
 	}
 
 }
