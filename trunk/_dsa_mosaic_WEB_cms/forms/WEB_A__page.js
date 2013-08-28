@@ -56,6 +56,9 @@ function ACTION_cancel(event) {
 	//leave edit mode without saving
 	TOGGLE_edit_mode()
 	
+	//fire generic cancel mechanism
+	globals.CMS.ui.cancel()
+	
 	globals.WEBc_log_create('page','page edit canceled',forms.WEB_0F_page.id_site,'web_page',forms.WEB_0F_page.id_page)
 }
 
@@ -69,6 +72,9 @@ function ACTION_cancel(event) {
 function ACTION_save(event) {
 	//leave edit mode and save
 	TOGGLE_edit_mode(null,true)
+	
+	//fire generic save mechanism
+	globals.CMS.ui.save()
 	
 	globals.WEBc_log_create('page','page edit save',forms.WEB_0F_page.id_site,'web_page',forms.WEB_0F_page.id_page)
 }
