@@ -58,9 +58,14 @@ function CMS_call(method,arg) {
 		var formName = method.pop()
 		
 		if (formName) {
-			//call with this context, not browser bean
-			if (formName == 'WEB_0F_page__browser') {
-				formName = controller.getName()
+			//call with correct context
+			switch (formName) {
+				case 'WEB_0F_page__browser':
+					formName = controller.getName()
+					break
+				case 'WEB_0T_page':
+					formName = 'WEB_0T_page__web'
+					break
 			}
 			
 			forms[formName][methodName](arg)
@@ -98,9 +103,10 @@ function URL_update(webMode) {
 	//set source of iframe to this url
 	else {
 		plugins.WebClientUtils.executeClientSideJS(
-				'setTimeout(function(){$("#' + id + '").replaceWith("<iframe id=\'' + id + '\' src=\'' + globals.WEB_preview_url + '\' width=\'100%\' height=\'100%\' scrolling=\'yes\' frameborder=\'0\'></iframe>");\
-				$("#' + id + '").fadeIn("slow");\
-				bigIndicator(false,500);},1000);'
+				'$("#' + id + '").fadeOut("medium");\
+				setTimeout(function(){$("#' + id + '").replaceWith("<iframe id=\'' + id + '\' src=\'' + globals.WEB_preview_url + '\' width=\'100%\' height=\'100%\' scrolling=\'yes\' frameborder=\'0\' style=\'display:none;\'></iframe>");\
+				setTimeout(function(){$("#' + id + '").fadeIn("slow")},750);\
+				bigIndicator(false,500);},750);'
 			)
 	}
 	

@@ -2,6 +2,12 @@ dataSource:"db:/sutra_cms/web_page",
 extendsID:"BA10ECBB-1976-4594-90C4-BEE54C45632A",
 items:[
 {
+height:200,
+partType:5,
+typeid:19,
+uuid:"4332BFF6-7CBC-4109-B07D-4CB20C3B5A58"
+},
+{
 anchors:15,
 beanClassName:"javax.swing.JSplitPane",
 beanXML:"<?xml version=\"1.0\" encoding=\"UTF-8\"?> 
@@ -63,18 +69,20 @@ uuid:"5E882224-D2BC-4419-AA52-396421B76558"
 {
 beanClassName:"net.stuff.servoy.browser.beans.ServoyBrowser",
 beanXML:"<?xml version=\"1.0\" encoding=\"UTF-8\"?> 
-<java version=\"1.5.0_19\" class=\"java.beans.XMLDecoder\"> 
+<java version=\"1.6.0_45\" class=\"java.beans.XMLDecoder\"> 
  <object class=\"net.stuff.servoy.browser.beans.ServoyBrowser\"> 
   <void property=\"allowDownloads\"> 
    <boolean>false<\/boolean> 
   <\/void> 
   <void property=\"borderType\"> 
    <object class=\"javax.swing.border.EmptyBorder\"> 
+    <object class=\"java.awt.Insets\"> 
      <int>0<\/int> 
      <int>0<\/int> 
      <int>0<\/int> 
      <int>0<\/int> 
     <\/object> 
+   <\/object> 
   <\/void> 
   <void property=\"buttonBarVisible\"> 
    <boolean>false<\/boolean> 
@@ -110,13 +118,8 @@ typeid:12,
 uuid:"7A7156BF-E155-4461-97CF-47841285C444"
 },
 {
-extendsID:"2873230D-E47A-466D-BEE8-AF849A309A42",
-height:200,
-typeid:19,
-uuid:"8343E886-CE67-4BFC-8BC8-70D872783B77"
-},
-{
 anchors:15,
+borderType:"SpecialMatteBorder,1.0,0.0,0.0,0.0,#a1b0cf,#000000,#000000,#000000,0.0,",
 items:[
 {
 containsFormID:"5870F778-8D64-4E47-9C13-748A0B07ACB7",
@@ -138,7 +141,8 @@ visible:false
 }
 ],
 name:"WEB_0F_page__browser",
-styleClass:"workarea1",
+size:"300,200",
+styleClass:"workarea2",
 styleName:"_DATASUTRA_",
 typeid:3,
 uuid:"27FBA512-3757-403B-B650-D3C723D18BEF"

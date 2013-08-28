@@ -251,24 +251,26 @@ function CONTROLLER_builder(results) {
 						markupData = 'Error with block configuration'
 					}
 					
-					//this block is not editable (it's a scrapbook)
+					var blockString = utils.stringReplace(scopeRec.id_scope.toString(),'-','') + '-' + utils.stringReplace(block.id_block.toString(),'-','')
+					
+					//wrap as a scrapbook
 					if (block.scope_type) {
-						
-					}
-					//this block is editable (not a scrapbook)
-					else {
-						var blockString = utils.stringReplace(scopeRec.id_scope.toString(),'-','') + '-' + utils.stringReplace(block.id_block.toString(),'-','')
-							
-						//wrap as a layout
+						var description = '<span class="scopeDescription">' + application.getValueListDisplayValue('WEB_scope_type',block.scope_type) + ' scrapbook' + (block.block_name ? ': <strong>' + block.block_name + '</strong>' : '') + '</span>'
+						//technically a layout can be a scrapbook
 						if (layout) {
-							markupData = '<div id="sutra-block-data-' + blockString + '" layout="true"><span class="layoutDescription">' + display.display_name + '</span><a href="javascript:blockDelete(\'' + blockString + '\')" title="Delete layout" class="blockDelete"></a>' + markupData + '\n</div>'
+							description = '<span class="layoutDescription">' + display.display_name + '</span>' + description
 						}
-						//wrap as a block
-						else {
-							markupData = '<div id="sutra-block-data-' + blockString + '"><a href="javascript:blockDelete(\'' + blockString + '\')" title="Delete block" class="blockDelete"></a>\n' + markupData + '\n</div>'
-						}
+						blockString = utils.stringReplace(scopeRec.id_scope.toString(),'-','')
+						markupData = '<div id="sutra-block-data-' + blockString + '" scrapbook="true">' + description + '<a href="javascript:blockDelete(\'' + blockString + '\')" title="Delete layout" class="blockDelete"></a>' + markupData + '\n</div>'
 					}
-	
+					//wrap as a layout
+					else if (layout) {
+						markupData = '<div id="sutra-block-data-' + blockString + '" layout="true"><span class="layoutDescription">' + display.display_name + '</span><a href="javascript:blockDelete(\'' + blockString + '\')" title="Delete layout" class="blockDelete"></a>' + markupData + '\n</div>'
+					}
+					//wrap as a block
+					else {
+						markupData = '<div id="sutra-block-data-' + blockString + '"><a href="javascript:blockDelete(\'' + blockString + '\')" title="Delete block" class="blockDelete"></a>\n' + markupData + '\n</div>'
+					}
 				}
 				// deployed (no divs)
 				else {
@@ -303,36 +305,32 @@ function CONTROLLER_builder(results) {
 							obj.block_response = {}
 							
 							var markup = getMarkup(scopeRec)
-							blocks.push(markup)
+							
+							//which slot does this go into?
+							blocks[scopeRec.row_order - 1] = markup
 						}
 					}
 					
-					//fill remaining slots in this block formatter
-					var firstSlot = true
-					for (; m <= loopSize; m++) {
+					//fill empty slots in this block formatter
+					for (m = 0; m < loopSize; m++) {
 						//fill empty blocks with new button
 						if ( obj.type == "Edit" ) {
-							var areaScope = utils.stringReplace(areaRec.id_area.toString(),'-','') + '-' + utils.stringReplace(parentScope.id_scope.toString(),'-','')
+							var areaScope = utils.stringReplace(areaRec.id_area.toString(),'-','') + '-' + utils.stringReplace(parentScope.id_scope.toString(),'-','') + '-' + (m + 1)
 							
-							if (firstSlot) {
-								var newBlock = '<!-- add new block -->'
-								var breadcrumb = 'Add block to ' + display.display_name
-								newBlock += '<div id="sutra-block-add-' + areaScope + '" class="block_new" style="min-width:' + (100/loopSize - 2) + '%">\n'
-								newBlock += '<a href="javascript:blockNew(\'' + areaScope + '\')" title="' + breadcrumb + '">New block</a>'
-								newBlock += '</div>\n'
-								firstSlot = false
-							}
-							else {
-								var newBlock = '<!-- add new block -->'
-								newBlock += '<div id="sutra-block-add-' + areaScope + '" class="block_new" style="min-width:' + (100/loopSize - 2) + '%">\n'
-								newBlock += '<a href="javascript:blockNew(\'' + areaScope + '\')" title="' + breadcrumb + '" class="noClick">New block</a>'
-								newBlock += '</div>\n'
-							}
-							blocks.push(newBlock)
+							var newBlock = '<!-- add new block -->'
+							var breadcrumb = 'Add block to ' + display.display_name
+							newBlock += '<div id="sutra-block-add-' + areaScope + '" class="block_new" style="min-width:' + (100/loopSize - 2) + '%">\n'
+							newBlock += '<a href="javascript:blockNew(\'' + areaScope + '\')" title="' + breadcrumb + '">New block</a>'
+							newBlock += '</div>\n'
 						}
 						//non-null value
 						else {
-							blocks.push('')
+							newBlock = ''
+						}
+						
+						//there isn't anything in this slot, put in a new block button
+						if (blocks[m] == null) {
+							blocks[m] = newBlock
 						}
 					}
 					
@@ -1444,6 +1442,16 @@ function CONTROLLER_setup(results, app, session, request, response, mode, cmsVer
 		}
 	}
 	
+	// flag the data sutra install location for cross-domain communication
+		// order: 1) data sutra webclient 2) site swc block 3) instal swc block
+	var fsSutra = databaseManager.getFoundSet('sutra','sutra_solution')
+	fsSutra.loadAllRecords()
+	databaseManager.refreshRecordFromDatabase(fsSutra,0)
+	var fsInstall = databaseManager.getFoundSet('sutra_cms','web_install')
+	fsInstall.loadAllRecords()
+	databaseManager.refreshRecordFromDatabase(fsInstall,0)
+	results.addRow(["dsDomain", fsSutra.webclient_url || page.web_page_to_site.url_servlet || fsInstall.url_install])
+	
 	//TODO: only set this if character encoding not specified in the header
 	// set connection to use utf
 	response.characterEncoding = "UTF-8"
@@ -1539,6 +1547,8 @@ function WEB_log_page()
 }
 
 /**
+ * @type {String} methodName
+ * @type {String} [formName]
  * @properties={typeid:24,uuid:"41B5EBF3-8C67-40D3-9D33-F59D421623F0"}
  */
 function FX_method_exists(methodName, formName) {

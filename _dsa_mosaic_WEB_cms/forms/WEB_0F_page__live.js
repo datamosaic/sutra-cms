@@ -234,24 +234,32 @@ function URL_update(webMode) {
  */
 function BLOCK_edit(idPKs) {
 	function convertUUID(item) {
-		return item.substr(0,8) + '-' + item.substr(8,4) + '-' + item.substr(12,4) + '-' + item.substr(16,4)  + '-' + item.substr(20,12)
+		if (item) {
+			return item.substr(0,8) + '-' + item.substr(8,4) + '-' + item.substr(12,4) + '-' + item.substr(16,4)  + '-' + item.substr(20,12)
+		}
 	}
 	
 	var unmangle = idPKs.split("-")
-	var blockID = convertUUID(unmangle[unmangle.length - 1])
-	var scopeID = convertUUID(unmangle[unmangle.length - 2])
+	var blockID = convertUUID(unmangle[1])
+	var scopeID = convertUUID(unmangle[0])
 	
-	forms.WEB_0F_page__browser_1F_block__editor._dataID = blockID
-	forms.WEB_0F_page__browser_1F_block__editor._scopeID = scopeID
-	
-	var content = databaseManager.getFoundSet(controller.getServerName(),"web_block")
-	content.loadRecords(application.getUUID(blockID))
-	
-	//load correct record
-	forms.WEB_0F_page__browser_1F_block__editor.foundset.loadRecords(content)
-	
-	//load in correct forms
-	var statusBlock = forms.WEB_0F_page__browser_1F_block__editor.FORM_on_show()
+	//only allow editing when scope (context) is known
+	if (blockID && scopeID) {
+		forms.WEB_0F_page__browser_1F_block__editor._dataID = blockID
+		forms.WEB_0F_page__browser_1F_block__editor._scopeID = scopeID
+		
+		var content = databaseManager.getFoundSet(controller.getServerName(),"web_block")
+		content.loadRecords(application.getUUID(blockID))
+		
+		//load correct record
+		forms.WEB_0F_page__browser_1F_block__editor.foundset.loadRecords(content)
+		
+		//load in correct forms
+		var statusBlock = forms.WEB_0F_page__browser_1F_block__editor.FORM_on_show()
+	}
+	else if (scopeID) {
+		globals.DIALOGS.showWarningDialog('Scrapbook alert','Scrapbooks cannot be edited inline')
+	}
 	
 	//only show block edit if something successfully loaded in
 	if (statusBlock) {
@@ -270,12 +278,14 @@ function BLOCK_edit(idPKs) {
  */
 function BLOCK_delete(idPKs) {
 	function convertUUID(item) {
-		return item.substr(0,8) + '-' + item.substr(8,4) + '-' + item.substr(12,4) + '-' + item.substr(16,4)  + '-' + item.substr(20,12)
+		if (item) {
+			return item.substr(0,8) + '-' + item.substr(8,4) + '-' + item.substr(12,4) + '-' + item.substr(16,4)  + '-' + item.substr(20,12)
+		}
 	}
 	
 	var unmangle = idPKs.split("-")
-	var blockID = convertUUID(unmangle[unmangle.length - 1])
-	var scopeID = convertUUID(unmangle[unmangle.length - 2])
+	var blockID = convertUUID(unmangle[1])
+	var scopeID = convertUUID(unmangle[0])
 	
 	/** @type {JSFoundSet<db:/sutra_cms/web_scope>} */
 	var fsScope = databaseManager.getFoundSet(controller.getServerName(),"web_scope")
@@ -362,6 +372,7 @@ function BLOCK_new(areaScope) {
 	}
 	//resume edit mode
 	else {
+		//this is for smart-client only
 		forms.WEB_0F_page__browser_1F_block__editor.ACTION_hide()
 	}
 	

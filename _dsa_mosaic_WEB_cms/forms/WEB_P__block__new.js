@@ -29,6 +29,13 @@ var _success = false;
 var _scopeID = null;
 
 /**
+ * @type {Number}
+ *
+ * @properties={typeid:35,uuid:"656D4AFF-8496-419B-A4D3-037F73699B21",variableType:8}
+ */
+var _scopeOrder = null;
+
+/**
  * @type {String}
  *
  * @properties={typeid:35,uuid:"B2836A0B-B9E9-4B7F-A4BF-4B815CCC5E94"}
@@ -186,14 +193,18 @@ function ACTION_ok(event) {
 								
 								fsScope.find()
 								fsScope.id_area = _areaID
+								fsScope.parent_id_scope = _scopeID || '^='
 								fsScope.search()
+								fsScope.sort('row_order desc')
 								
 								scopeRec.id_area = _areaID
 								scopeRec.parent_id_scope = _scopeID
-								scopeRec.sort_order = fsScope.getSize() + 1
+								//when order specified (specific slot of layout) use it otherwise put at end of concestor's tail 
+								scopeRec.row_order = _scopeOrder || (utils.hasRecords(fsScope) ? (fsScope.getRecord(1).row_order + 1) : 1)
+//								scopeRec.sort_order = fsScope.getSize() + 1
 								
 								//determine which stack to throw this record at the bottom of
-								setSort(scopeRec, _scopeID)								
+//								setSort(scopeRec, _scopeID)
 								
 								databaseManager.saveData(scopeRec)
 							}
@@ -293,14 +304,14 @@ function ACTION_ok(event) {
 							
 							fsScope.find()
 							fsScope.id_area = _areaID
+							fsScope.parent_id_scope = _scopeID || '^='
 							fsScope.search()
+							fsScope.sort('row_order desc')
 							
 							scopeRec.id_area = _areaID
 							scopeRec.parent_id_scope = _scopeID
-							scopeRec.sort_order = fsScope.getSize() + 1
-							
-							//determine which stack to throw this record at the bottom of
-							setSort(scopeRec, _scopeID)								
+							//when order specified (specific slot of layout) use it otherwise put at end of concestor's tail 
+							scopeRec.row_order = _scopeOrder || (utils.hasRecords(fsScope) ? (fsScope.getRecord(1).row_order + 1) : 1)
 							
 							databaseManager.saveData(scopeRec)
 						}
@@ -399,14 +410,14 @@ function ACTION_ok(event) {
 							
 							fsScope.find()
 							fsScope.id_area = _areaID
+							fsScope.parent_id_scope = _scopeID || '^='
 							fsScope.search()
+							fsScope.sort('row_order desc')
 							
 							scopeRec.id_area = _areaID
 							scopeRec.parent_id_scope = _scopeID
-							scopeRec.sort_order = fsScope.getSize() + 1
-							
-							//determine which stack to throw this record at the bottom of
-							setSort(scopeRec, _scopeID)								
+							//when order specified (specific slot of layout) use it otherwise put at end of concestor's tail 
+							scopeRec.row_order = _scopeOrder || (utils.hasRecords(fsScope) ? (fsScope.getRecord(1).row_order + 1) : 1)
 							
 							databaseManager.saveData(scopeRec)
 						}
@@ -546,7 +557,6 @@ function FORM_on_show(firstShow,event) {
 	
 	//reset to block types and select content
 	globals.WEB_block_scope__new = 0
-	globals.WEB_block_category__new = 0
 	_search = null
 	var results = ACTION_search()
 	
