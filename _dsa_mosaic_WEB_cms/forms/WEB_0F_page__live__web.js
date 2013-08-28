@@ -123,6 +123,8 @@ function EDIT_on() {
 	plugins.WebClientUtils.executeClientSideJS(
 			'setTimeout(function(){if ($("iframe#' + id + '").length) {' + 
 				'window.frames["' + id + '"].postMessage({method:"editOn"},"*");' + 
+				//just to make sure that indicator not stuck on
+				'bigIndicator(false,500);' +
 			'}},1000);'
 		)
 }
@@ -136,6 +138,8 @@ function EDIT_off() {
 	plugins.WebClientUtils.executeClientSideJS(
 			'setTimeout(function(){if ($("iframe#' + id + '").length) {' + 
 				'window.frames["' + id + '"].postMessage({method:"editOff"},"*");' + 
+				//just to make sure that indicator not stuck on
+				'bigIndicator(false,500);' +
 			'}},1000);'
 		)
 }
