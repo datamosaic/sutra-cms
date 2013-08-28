@@ -53,7 +53,7 @@ function BLOCK_save(event) {
 	//only run in edit mode
 	if (globals.CMS.ui.getEdit()) {
 		globals.CMS.ui.setData(event,'code',_dataValue)
-		globals.CMS.ui.blockSave()
+		globals.CMS.ui.save()
 		
 		ACTION_colorize()
 	}
@@ -113,11 +113,12 @@ function INIT_data() {
  * @properties={typeid:24,uuid:"8F3FE07B-111D-4858-ABD2-3373302B5FBE"}
  */
 function BLOCK_cancel(event) {
-	globals.CMS.ui.blockCancel()
+	globals.CMS.ui.cancel()
 	
 	//only run in edit mode
 	if (globals.CMS.ui.getEdit()) {
-		//reset codeType var
+		//reset variables
+		_dataValue = globals.CMS.ui.getData(controller.getName()).code
 		_codeType = globals.CMS.ui.getConfig(controller.getName()).code_type
 		
 		//refresh the colored version
@@ -322,6 +323,7 @@ function INIT_block() {
 			block_name			: 'Code',
 			block_description	: 'Code snippets to be displayed as code on a web site',
 			block_category		: scopes.CMS._constant.blockCategory.CONTENT,
+			block_type			: scopes.CMS._constant.blockType.DESIGNTIME,
 			form_name			: 'WEB_0F__code'
 		}
 	

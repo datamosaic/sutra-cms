@@ -181,6 +181,7 @@ function INIT_block() {
 	        block_name			: 'File',
 			block_description	: 'Downloadable file block',
 			block_category		: scopes.CMS._constant.blockCategory.CONTENT,
+			block_type			: scopes.CMS._constant.blockType.DESIGNTIME,
 			form_name			: controller.getName()
 		}
 	

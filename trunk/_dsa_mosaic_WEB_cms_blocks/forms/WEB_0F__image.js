@@ -300,6 +300,7 @@ function INIT_block() {
 			block_name			: 'Image',
 			block_description	: 'Images resource library',
 			block_category		: scopes.CMS._constant.blockCategory.CONTENT,
+			block_type			: scopes.CMS._constant.blockType.DESIGNTIME,
 			form_name			: 'WEB_0F__image'
 		}
 	

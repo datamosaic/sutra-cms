@@ -53,7 +53,7 @@ function FORM_on_load() {
  */
 function BLOCK_save(event) {
 	globals.CMS.ui.setData(event,'markdown',_dataValue)
-	globals.CMS.ui.blockSave()
+	globals.CMS.ui.save()
 	
 	ACTION_preview()
 }
@@ -111,7 +111,7 @@ function INIT_data() {
  * @properties={typeid:24,uuid:"2BC3C618-8169-40B6-8884-92979E8872FE"}
  */
 function BLOCK_cancel(event) {
-	globals.CMS.ui.blockCancel()
+	globals.CMS.ui.cancel()
 	
 	//refresh the colored version
 	if (globals.WEB_page_mode == 2) {
@@ -326,6 +326,7 @@ function INIT_block() {
 			block_name			: 'Markdown',
 			block_description	: 'Write using an easy-to-read, easy-to-write plain text format, then convert it to structurally valid XHTML (or HTML)',
 			block_category		: scopes.CMS._constant.blockCategory.CONTENT,
+			block_type			: scopes.CMS._constant.blockType.DESIGNTIME,
 			form_name			: 'WEB_0F__markdown'
 		}
 	
