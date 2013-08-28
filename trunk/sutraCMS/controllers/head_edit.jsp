@@ -35,13 +35,8 @@
 				var hiliteTwo = $("#cmsOverlay");
 				hiliteTwo.css("display", "block");
 				
-				//tell servoy which block we want to edit
-				if (type == 'row') {
-					sendNSCommand("WEB_0F_page__browser.ROW_edit",domID);
-				}
-				else {
-					sendNSCommand("WEB_0F_page__browser.BLOCK_edit",domID);
-				}
+				//tell servoy which block we want to edit (get rid of sutra-block-data and just return ids interested in)
+				callServoy("WEB_0F_page__browser.BLOCK_edit",domID.split('-').slice(3).join('-'));
 			}
 		);
 		
@@ -59,14 +54,14 @@
 
 	function editOn() {
 		//make all block editable areas clickable and show rollover highlightion
-		$("div[id^='sutra-block-data-'],p[id^='sutra-block-data-']").mouseover(function(e) {
+		$("div[id^='sutra-block-data-']:not([scrapbook]),p[id^='sutra-block-data-']:not([scrapbook])").mouseover(function(e) {
 			//don't bubble up
 			e.stopPropagation();
 			
 			//show highlighter here
 			show_highlighter('#' + this.id,'block');
 		});
-		$("div[id^='sutra-block-data-'],p[id^='sutra-block-data-']").mouseout(function(e) {
+		$("div[id^='sutra-block-data-']:not([scrapbook]),p[id^='sutra-block-data-']:not([scrapbook])").mouseout(function(e) {
 			//don't bubble up
 			e.stopPropagation();
 			
@@ -107,15 +102,50 @@
 		hiliteTwo.css("display", "block");
 		
 		//tell servoy which area is getting a new block appended
-		sendNSCommand("WEB_0F_page__browser.BLOCK_new",areaID);
+		callServoy("WEB_0F_page__browser.BLOCK_new",areaID);
 	}
 	
 	function blockDelete(blockID) {
 		//tell servoy which block to delete
-		sendNSCommand("WEB_0F_page__browser.BLOCK_delete",blockID);
+		callServoy("WEB_0F_page__browser.BLOCK_delete",blockID);
 	}
 	
+	function callServoy(method, arg) {
+		//running in webclient or smart client (browsa-bean)
+		if (window.parent == window) {
+			// alert('smart client');
+			sendNSCommand(method,arg);
+		}
+		else {
+			// alert('web client in an iframe');
+			// alert('Method: ' + method + '\nArg: ' + arg);
+			// parent.postMessage(method,'*');
+			parent.postMessage({
+				method: method,
+				arg: arg
+			},'*');
+		}
+	}
+	
+	// var windowProxy;
 	$(function() {
+		// windowProxy = new Porthole.WindowProxy('http://<%=pageData.get("dsDomain")%>/external/proxy.html');
+		// 
+		// windowProxy.addEventListener(function(event) { 
+		// 	// handle event
+		// });
+		
+		var portholeMethodOn = window.addEventListener ? "addEventListener" : "attachEvent";
+		var portholeMethodOff = window.addEventListener ? "removeEventListener" : "detachEvent";
+		var portholeEvent = portholeMethodOn == "attachEvent" ? "onmessage" : "message";
+	
+		function portholeSetup(e) {
+			if (e.data.method && window[e.data.method]) {
+				window[e.data.method](e.data.arg);
+			}
+		}
+		window[portholeMethodOn](portholeEvent,portholeSetup,false);
+		
 		//on load method that attaches callback to every index_edit link
 		$("a[href*='index_edit.jsp']").click(function(event){
 			
@@ -133,7 +163,7 @@
 			}
 			
 			//set page in Servoy, triggering refresh, etc
-			sendNSCommand("WEB_0T_page.SET_page",pageID);
+			callServoy("WEB_0T_page.SET_page",pageID);
 		});
 		
 		//allow delete block a link to work insdie of clickable div

@@ -28,7 +28,8 @@ div#cmsBlockHilite {
 	background-color: transparent;
 }
 
-.layoutDescription {
+.layoutDescription,
+.scopeDescription {
 	display: none;
 	
 	background-color: #004E98;
@@ -47,8 +48,16 @@ div#cmsBlockHilite {
 	-o-box-shadow: inset 0px 3px 5px rgba(0, 0, 0, 0.3);
 	box-shadow: inset 0px 3px 5px rgba(0, 0, 0, 0.3);
 }
-.layout_editable > .layoutDescription {
+.layout_editable > .layoutDescription,
+.block_editable > .layoutDescription,
+.block_editable > .scopeDescription {
 	display: inline;
+}
+.scopeDescription {
+	background-color: #7E8286;
+}
+.layoutDescription + .scopeDescription {
+	margin-left: 5px;
 }
 
 .blockDelete {
@@ -80,7 +89,9 @@ p.block_editable {
 }
 
 div.layout_editable, 
-p.layout_editable {
+p.layout_editable,
+div.block_editable[scrapbook], 
+p.block_editable[scrapbook] {
 	padding-top: 5px;
 }
 
@@ -91,6 +102,18 @@ p.block_editable {
 
 div.block_editable *, 
 p.block_editable * {
+	cursor: pointer !important;
+}
+
+div.block_editable[scrapbook], 
+p.block_editable[scrapbook],
+div.block_editable[scrapbook] *, 
+p.block_editable[scrapbook] * {
+	cursor: default !important;
+}
+
+div.block_editable[scrapbook] a, 
+p.block_editable[scrapbook] a {
 	cursor: pointer !important;
 }
 
