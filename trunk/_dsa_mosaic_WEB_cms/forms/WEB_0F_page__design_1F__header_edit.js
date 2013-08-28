@@ -280,9 +280,6 @@ function ACTION_cancel() {
 		if (!utils.hasRecords(forms.WEB_0F_site.web_site_to_page)) {
 			globals.WEB_lock_workflow(true)
 			forms.WEB_TB__web_mode.controller.enabled = false
-			forms.WEB_TB__web_mode.elements.gfx_tool_left.enabled = true
-			forms.WEB_TB__web_mode.elements.gfx_tool_center.enabled = true
-			forms.WEB_TB__web_mode.elements.gfx_tool_right.enabled = true
 		}
 	}
 	
