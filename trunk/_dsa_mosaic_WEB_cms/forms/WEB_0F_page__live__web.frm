@@ -15,6 +15,12 @@ uuid:"3AC446E5-C69D-4C92-AC4B-916F27573E0F",
 visible:false
 },
 {
+height:100,
+partType:5,
+typeid:19,
+uuid:"44750D80-074D-4B0A-857A-31EF4C6B9665"
+},
+{
 anchors:15,
 location:"0,0",
 name:"lbl_page",
@@ -24,12 +30,6 @@ size:"100,100",
 transparent:true,
 typeid:7,
 uuid:"6243E652-3A09-457C-975F-0FD7D2A0F2A5"
-},
-{
-extendsID:"2873230D-E47A-466D-BEE8-AF849A309A42",
-height:100,
-typeid:19,
-uuid:"FAAEAA94-6D85-43E7-BAE0-C70609359980"
 }
 ],
 name:"WEB_0F_page__live__web",

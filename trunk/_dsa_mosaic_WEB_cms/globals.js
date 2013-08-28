@@ -381,6 +381,9 @@ function WEB_startup() {
 			forms.WEB_0__startup.controller.show()
 		}
 	}
+	else if (application.getApplicationType() == APPLICATION_TYPES.WEB_CLIENT) {
+		
+	}
 	
 	//register user manager plugin
 	if (plugins.UserManager) {
