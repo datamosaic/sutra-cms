@@ -35,6 +35,7 @@ typeid:7,
 uuid:"0D670486-8381-4ABA-B779-EDB77C422FB1"
 },
 {
+anchors:11,
 borderType:"SpecialMatteBorder,0.0,0.0,1.0,0.0,#000000,#000000,#999999,#000000,0.0,1.0",
 dataProviderID:"hook_module",
 displayType:2,
@@ -62,6 +63,7 @@ typeid:19,
 uuid:"613A7538-3D0F-4545-9F1D-FCAD10689AB4"
 },
 {
+anchors:11,
 borderType:"SpecialMatteBorder,0.0,0.0,1.0,0.0,#000000,#000000,#999999,#000000,0.0,1.0",
 dataProviderID:"hook_form",
 displayType:2,
@@ -80,7 +82,6 @@ valuelistID:"6D578773-EA6D-4488-AB6F-A48E0E60A126"
 anchors:11,
 borderType:"SpecialMatteBorder,0.0,0.0,1.0,0.0,#000000,#000000,#999999,#000000,0.0,1.0",
 dataProviderID:"hook_argument",
-editable:false,
 formIndex:10200,
 location:"660,30",
 selectOnEnter:true,
@@ -104,7 +105,6 @@ typeid:7,
 uuid:"A538F4FD-0731-4594-9D63-A77D401D1759"
 },
 {
-anchors:11,
 borderType:"SpecialMatteBorder,0.0,0.0,1.0,0.0,#000000,#000000,#999999,#000000,0.0,1.0",
 dataProviderID:"order_by",
 editable:false,
@@ -119,6 +119,7 @@ typeid:4,
 uuid:"ADF288E0-F123-4D8A-B938-58FF7A1D014C"
 },
 {
+anchors:11,
 borderType:"SpecialMatteBorder,0.0,0.0,1.0,0.0,#000000,#000000,#999999,#000000,0.0,1.0",
 dataProviderID:"hook_method",
 displayType:2,
