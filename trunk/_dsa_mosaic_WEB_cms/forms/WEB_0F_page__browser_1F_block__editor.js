@@ -171,30 +171,26 @@ function ACTION_hide(event) {
 /**
  * Perform the element default action.
  *
- * @param {JSEvent} event the event that triggered the action
+ * @param {String} elem Name of calling element
  *
  * @properties={typeid:24,uuid:"68ED3839-F777-4C5A-9092-B58E93601221"}
  */
-function ACTION_location(event) {
-	switch (event.getElementName()) {
+function ACTION_location(elem) {
+	switch (elem) {
 		//in bottom mode, flip to side
 		case 'btn_orient_bottom':
-			elements.btn_orient_bottom.visible = false
-			elements.btn_orient_side.visible = true
-			
+			elements.tab_toolbar.tabIndex = 2
 			_editLocation = 1
-			
+			var border = 'SpecialMatteBorder,0.0,0.0,0.0,1.0,#000000,#000000,#000000,#a1b0cf,0.0'
 			break
 		//in side mode, flip to bottom
 		case 'btn_orient_side':
-			elements.btn_orient_bottom.visible = true
-			elements.btn_orient_side.visible = false
-			
+			elements.tab_toolbar.tabIndex = 1
 			_editLocation = 0
-			
+			border = 'SpecialMatteBorder,1.0,0.0,0.0,0.0,#a1b0cf,#000000,#000000,#000000,0.0'
 			break			
 	}
-	
+	forms.WEB_0F_page__browser.elements.tab_editor.border = border
 	forms.WEB_0F_page__browser.SPLIT_set(true)
 }
 
@@ -206,7 +202,7 @@ function ACTION_location(event) {
  * @properties={typeid:24,uuid:"4E166179-724D-4F8A-9C28-DC8E646D8CC1"}
  */
 function FORM_on_load(event) {
-	elements.btn_orient_side.visible = false
+
 }
 
 /**
