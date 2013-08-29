@@ -553,9 +553,12 @@ function FORM_on_show(firstShow,event) {
 			//prefill default view for each block type
 			record.client_id_block_display = record.web_block_type_to_block_display__default.id_block_display
 		}
+		
+		//select content as default category
+		globals.WEB_block_category__new = 0
 	}
 	
-	//reset to block types and select content
+	//reset to block types
 	globals.WEB_block_scope__new = 0
 	_search = null
 	var results = ACTION_search()
