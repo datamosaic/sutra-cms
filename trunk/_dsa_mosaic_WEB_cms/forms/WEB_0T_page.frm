@@ -268,7 +268,7 @@ showClick:false,
 showFocus:false,
 size:"20,20",
 tabSeq:-2,
-toolTipText:"New record",
+toolTipText:"New record (shift-click for new child)",
 transparent:true,
 typeid:7,
 uuid:"E1055A45-635F-46A0-9836-83B13CD7A50F"
