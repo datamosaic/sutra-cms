@@ -117,11 +117,11 @@ var CMS = {
 				 * 
 				 * @return {Object}
 				 */
-				save : function() {
-						return WEBc_block_save()
+				save : function(/**Boolean*/ guiEditSave) {
+						return WEBc_block_save(guiEditSave)
 					},
-				cancel : function() {
-						return WEBc_block_cancel()
+				cancel : function(/**Boolean*/ guiEditCancel) {
+						return WEBc_block_cancel(guiEditCancel)
 					},
 				getData : function(/**JSForm*/ formName) {
 						return WEBc_block_getData(formName)
@@ -661,9 +661,10 @@ function WEBc_markup_block_saveResponse(obj) {
 }
 
 /**
+ * @param {Boolean} [saveTransaction]
  * @properties={typeid:24,uuid:"B82E9E1D-9201-47C8-8FF7-D606643DCD6A"}
  */
-function WEBc_block_save() {
+function WEBc_block_save(saveTransaction) {
 //	//don't run when in real mode
 //	if (WEB_page_mode != 3) {
 //		var formName = 'WEB_A__scrapbook'
@@ -686,10 +687,57 @@ function WEBc_block_save() {
 		
 		//hide the editor
 		forms.WEB_0F_page__browser_1F_block__editor.ACTION_hide()
+		
+		//run all registered hooks
+		scopes.CMS.util.runHook('Page save')
+		
+		globals.WEBc_log_create('page','page edit save',forms.WEB_0F_page.id_site,'web_page',forms.WEB_0F_page.id_page)
 	}
-	
-	//run all registered hooks
-	scopes.CMS.util.runHook('Page save')
+	else if (saveTransaction) {
+		//run all registered hooks
+		scopes.CMS.util.runHook('Page save')
+		
+		globals.WEBc_log_create('page','page edit save',forms.WEB_0F_page.id_site,'web_page',forms.WEB_0F_page.id_page)
+	}
+}
+
+/**
+ * @param {Boolean} [cancelTransaction]
+ * @properties={typeid:24,uuid:"44816F74-9845-4672-BE53-3D9C070DB6BC"}
+ */
+function WEBc_block_cancel(cancelTransaction) {
+//	//don't run when in real mode
+//	if (WEB_page_mode != 3) {
+//		var formName = 'WEB_A__scrapbook'
+//		//on page gui detail
+//		if (WEB_block_scope == 1 && WEB_page_mode == 2 && forms.WEB_0F_page__design.elements.tab_main.tabIndex == 1) {
+//			formName = 'WEB_A__page'
+//		}
+//		
+//		//toggle upstream _editMode, but don't retrigger a save
+//		forms[formName].ACTION_cancel(null,true)
+//	}
+
+	//when in real mode
+	if (WEB_page_mode == 3) {
+		//rollback data
+		
+		
+		//set auto save on
+		
+		
+		//hide the editor
+		forms.WEB_0F_page__browser_1F_block__editor.ACTION_hide()
+		
+		//run all registered hooks
+		scopes.CMS.util.runHook('Page cancel')
+	}
+	else if (cancelTransaction) {
+		//run all registered hooks
+		scopes.CMS.util.runHook('Page cancel')
+		
+		globals.WEBc_log_create('page','page edit canceled',forms.WEB_0F_page.id_site,'web_page',forms.WEB_0F_page.id_page)
+	}
 }
 
 /**
@@ -724,38 +772,6 @@ function WEBc_block_fld_data_change__config(oldValue, newValue, event) {
 	var key = event.getSource().getDataProviderID().substr(1)
 	
 	WEBc_block_setConfig(event,key,newValue)
-}
-
-/**
- * @properties={typeid:24,uuid:"44816F74-9845-4672-BE53-3D9C070DB6BC"}
- */
-function WEBc_block_cancel() {
-//	//don't run when in real mode
-//	if (WEB_page_mode != 3) {
-//		var formName = 'WEB_A__scrapbook'
-//		//on page gui detail
-//		if (WEB_block_scope == 1 && WEB_page_mode == 2 && forms.WEB_0F_page__design.elements.tab_main.tabIndex == 1) {
-//			formName = 'WEB_A__page'
-//		}
-//		
-//		//toggle upstream _editMode, but don't retrigger a save
-//		forms[formName].ACTION_cancel(null,true)
-//	}
-
-	//when in real mode
-	if (WEB_page_mode == 3) {
-		//rollback data
-		
-		
-		//set auto save on
-		
-		
-		//hide the editor
-		forms.WEB_0F_page__browser_1F_block__editor.ACTION_hide()
-	}
-	
-	//run all registered hooks
-	scopes.CMS.util.runHook('Page cancel')
 }
 
 /**

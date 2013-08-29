@@ -140,8 +140,8 @@ var _constant = {
 		FORMBUILDER:2
 	},
 	/** @type 
-	 * {{record: {block_name: String, [block_description]: String, [block_category]: Number, form_name: String, [form_name_display]: String},
-	 * views: Object, clientActionsBlock: Object, clientActionsPage: Object, webActions: Object, data: Object, [blockConfigure]: Object, [blockResponse]: Object}}
+	 * {{record: {block_name: String, [block_description]: String, [block_category]: Number, [block_type]: Number, form_name: String, [form_name_display]: String},
+	 * views: Object, [defaultView]: String, clientActionsBlock: Object, clientActionsPage: Object, webActions: Object, data: Object, [blockConfigure]: Object, [blockResponse]: Object}}
 	 */
 	blockInit: {}
 }

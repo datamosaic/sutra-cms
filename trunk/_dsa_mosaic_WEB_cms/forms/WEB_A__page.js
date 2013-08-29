@@ -29,7 +29,6 @@ var _reorderMode = false;
  * @properties={typeid:24,uuid:"C1C07757-6C1F-4833-BC03-73B4F3E725FC"}
  */
 function ACTION_edit(event) {
-	
 	//locked version
 	if (!utils.hasRecords(forms.WEB_0F_page__design_1F_version.foundset) || forms.WEB_0F_page__design_1F_version.flag_lock) {
 		globals.DIALOGS.showErrorDialog(
@@ -57,9 +56,7 @@ function ACTION_cancel(event) {
 	TOGGLE_edit_mode()
 	
 	//fire generic cancel mechanism
-	globals.CMS.ui.cancel()
-	
-	globals.WEBc_log_create('page','page edit canceled',forms.WEB_0F_page.id_site,'web_page',forms.WEB_0F_page.id_page)
+	globals.CMS.ui.cancel(true)
 }
 
 /**
@@ -74,9 +71,7 @@ function ACTION_save(event) {
 	TOGGLE_edit_mode(null,true)
 	
 	//fire generic save mechanism
-	globals.CMS.ui.save()
-	
-	globals.WEBc_log_create('page','page edit save',forms.WEB_0F_page.id_site,'web_page',forms.WEB_0F_page.id_page)
+	globals.CMS.ui.save(true)
 }
 
 /**

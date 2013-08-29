@@ -280,25 +280,3 @@ function VIEW_breadcrumb(obj) {
 	return markup
 	
 }
-
-/**
- * @properties={typeid:24,uuid:"ACC99D07-6E4D-4DDE-98BC-75DC42E2EA5B"}
- */
-function asdf() {
-	plugins.dialogs.showErrorDialog(
-	'Hiya',
-	'Text',
-	'Button1'
-)
-}
-
-/**
- * @properties={typeid:24,uuid:"4B401CFC-C44B-41AA-8327-CF73B0D7FBD8"}
- */
-function ddd() {
-	plugins.dialogs.showInfoDialog(
-	'Yoyo',
-	'Text',
-	arguments[0]
-)
-}
