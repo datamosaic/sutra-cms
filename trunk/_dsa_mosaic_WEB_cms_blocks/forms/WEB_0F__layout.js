@@ -34,6 +34,7 @@ function INIT_block() {
 	
 	// block views
 	block.views = globals.CMS.ui.getMethods(controller.getName(), "VIEW")
+	block.defaultView = 'VIEW_columns_3'
 	
 	// block client actions - Block
 	block.clientActionsBlock = globals.CMS.ui.getMethods(controller.getName(), "BLOCK")

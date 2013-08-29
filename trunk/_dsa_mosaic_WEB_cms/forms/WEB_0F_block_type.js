@@ -160,11 +160,6 @@ function REC_new(flagRefresh,formName,fs) {
 				}
 			}
 			
-			//set flag for type
-			if (objBlock.record.form_name == 'WEB_0F__block_builder') {
-				var blockType = 1
-			}
-			
 			//turn on notification when called directly from block type workflow form
 			if (nonBatch) {
 				globals.WEBc_sutra_trigger('TRIGGER_progressbar_start',[null,(flagRefresh ? 'Refreshing' : 'Registering') + ' block: ' + objBlock.record.block_name + '.  Please wait...'])
@@ -186,17 +181,19 @@ function REC_new(flagRefresh,formName,fs) {
 				}
 			}
 			
+			if (objBlock.defaultView) {
+				
+			}
+			
 			block.block_name = name
 			block.block_description = blockDescription || objBlock.record.block_description
 			block.block_category = objBlock.record.block_category
+			block.block_type = objBlock.record.block_type
 			block.form_name = objBlock.record.form_name
 			block.form_name_display = objBlock.record.form_name_display
 			
 			//dealing with a builder...bob, perhaps?
-			if (blockType) {
-				//set flag that this is a block builder form
-				block.block_type = blockType
-				
+			if (objBlock.record.form_name == 'WEB_0F__block_builder') {
 				//mark as inactive until published
 				block.flag_unavailable = 1
 			}
@@ -240,18 +237,11 @@ function REC_new(flagRefresh,formName,fs) {
 				
 				//display doesn't exist
 				var view = block.web_block_type_to_block_display.getRecord(block.web_block_type_to_block_display.newRecord())
-				var name = i.split("_")
-				for (var j = 0; j < name.length; j++) {
-					if ( j == 0 ) {
-						view.display_name = utils.stringInitCap(name[j])
-					}
-					else {
-						view.display_name += " " + utils.stringInitCap(name[j])
-					}	
-				}
+				var name = i.split("_").join(' ')
+				view.display_name = globals.CODE_text_initial_caps(name)
 				view.method_name = objBlock.views[i]
 				//flag default method as default
-				view.flag_default = ( objBlock.views[i] == "VIEW_default" || objBlock.views[i] == "CONTROLLER_default") ? 1 : null
+				view.flag_default = objBlock.defaultView ? (objBlock.views[i] == objBlock.defaultView) : ( objBlock.views[i] == "VIEW_default" || objBlock.views[i] == "CONTROLLER_default") ? 1 : null
 			}
 			
 			//if anything left in delete array, whack it 
@@ -381,7 +371,7 @@ function REC_new(flagRefresh,formName,fs) {
 				REC_on_select()
 				
 				//go to configure tab for either of the builders
-				if (blockType) {
+				if (block.block_type) {
 					//go to correct tab
 					TAB_change(null,blockType + 1)
 				}
