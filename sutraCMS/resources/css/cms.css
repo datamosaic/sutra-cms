@@ -109,12 +109,12 @@ div.block_editable[scrapbook],
 p.block_editable[scrapbook],
 div.block_editable[scrapbook] *, 
 p.block_editable[scrapbook] * {
-	cursor: default !important;
+/*	cursor: default !important;*/
 }
 
 div.block_editable[scrapbook] a, 
 p.block_editable[scrapbook] a {
-	cursor: pointer !important;
+/*	cursor: pointer !important;*/
 }
 
 div.layout_new,

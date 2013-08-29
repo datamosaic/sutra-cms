@@ -1,10 +1,10 @@
 <%@ page import = "java.util.*" %>
 <% HashMap pageData = (HashMap)request.getAttribute("pageData");%>
-	<title><%=pageData.get("title")%></title>
+	<title><%=request.getAttribute("title")%></title>
 	<meta name="generator" content="<%=request.getAttribute("version")%>" />
 
 <!-- site resources -->
-<script src="resources/js/jquery-1.4.min.js" language="JavaScript" type="text/javascript"></script>
+<script src="resources/js/jquery-1.10.2.min.js" language="JavaScript" type="text/javascript"></script>
 <link href="resources/css/cms.css" rel="StyleSheet" type="text/css">
 
 <!-- editable browser stuff -->
@@ -31,6 +31,9 @@
 		hilite.unbind('click');
 		hilite.click(
 			function(e) {
+				//don't bubble up
+				e.stopPropagation();
+				
 				//put secondary hover craft over the whole mothership
 				var hiliteTwo = $("#cmsOverlay");
 				hiliteTwo.css("display", "block");
@@ -54,19 +57,22 @@
 
 	function editOn() {
 		//make all block editable areas clickable and show rollover highlightion
-		$("div[id^='sutra-block-data-']:not([scrapbook]),p[id^='sutra-block-data-']:not([scrapbook])").mouseover(function(e) {
+		$("div[id^='sutra-block-data-'],p[id^='sutra-block-data-']").mouseover(function(e) {
 			//don't bubble up
 			e.stopPropagation();
 			
 			//show highlighter here
 			show_highlighter('#' + this.id,'block');
 		});
-		$("div[id^='sutra-block-data-']:not([scrapbook]),p[id^='sutra-block-data-']:not([scrapbook])").mouseout(function(e) {
+		$("div[id^='sutra-block-data-'],p[id^='sutra-block-data-']").mouseout(function(e) {
 			//don't bubble up
 			e.stopPropagation();
 			
 			//unbind click from this div
 			$('#' + this.id).unbind('click');
+			
+			//hide highlighter
+			hide_highlighter();
 		});
 		$("div[id^='sutra-block-data-']:not([layout]),p[id^='sutra-block-data-']:not([layout])").addClass("block_editable");
 		$("div[id^='sutra-block-data-'][layout],p[id^='sutra-block-data-'][layout]").addClass("layout_editable");
@@ -113,13 +119,9 @@
 	function callServoy(method, arg) {
 		//running in webclient or smart client (browsa-bean)
 		if (window.parent == window) {
-			// alert('smart client');
 			sendNSCommand(method,arg);
 		}
 		else {
-			// alert('web client in an iframe');
-			// alert('Method: ' + method + '\nArg: ' + arg);
-			// parent.postMessage(method,'*');
 			parent.postMessage({
 				method: method,
 				arg: arg
@@ -146,8 +148,15 @@
 		}
 		window[portholeMethodOn](portholeEvent,portholeSetup,false);
 		
+		//on load method that disables all links when in edit mode
+		$("a:not([href*='index_edit.jsp'],[href*='javascript'],.blockDelete)").click(function(event) {
+			if ($("#cmsBlockHilite:visible").length) {
+				event.preventDefault();
+			}
+		});
+		
 		//on load method that attaches callback to every index_edit link
-		$("a[href*='index_edit.jsp']").click(function(event){
+		$("a[href*='index_edit.jsp']").click(function(event) {
 			
 			//stop default browser behaviour
 			event.preventDefault();
