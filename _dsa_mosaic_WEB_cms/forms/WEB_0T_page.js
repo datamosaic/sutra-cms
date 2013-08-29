@@ -36,6 +36,13 @@ var _scopeLanguage = null;
 var _refresh = false;
 
 /**
+ * @type {Boolean}
+ *
+ * @properties={typeid:35,uuid:"D6BD3A09-EFAD-4416-B33F-C98C61CE2231",variableType:-4}
+ */
+var _makeChild = false;
+
+/**
  *
  * @properties={typeid:24,uuid:"F33F8765-2F83-4103-8FF0-D067E37DC3FD"}
  */
@@ -1074,6 +1081,7 @@ function REC_new() {
 	
 	//default values for selected site
 	var siteDefaults = forms.WEB_0F_site.ACTION_get_defaults()
+	_makeChild = false
 	
 	//TODO: prompt to modify defaults (for example, logged in as spanish, only allowed to create spanish)
 	
@@ -1090,6 +1098,11 @@ function REC_new() {
 		//get current location in the stack
 		if (utils.hasRecords(forms.WEB_0F_page.foundset)) {
 			_oldRecord = forms.WEB_0F_page.id_page
+			
+			//shift-key; create as child of selected
+			if (globals.CODE_key_pressed('shift')) {
+				_makeChild = true
+			}
 		}
 		//no records created yet
 		else {

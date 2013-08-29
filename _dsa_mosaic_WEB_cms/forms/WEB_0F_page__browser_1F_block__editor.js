@@ -50,17 +50,6 @@ function FORM_on_show(firstShow, event) {
 	var recBlock = foundset.getSelectedRecord()
 			
 	if (recBlock) {
-		//TODO: remove!
-		//is this a scrapbook
-		if (recBlock.scope_type) {
-			globals.DIALOGS.showWarningDialog(
-						'Warning',
-						'Scrapbooks cannot be edited when in real mode.'
-					)
-			
-			return false
-		}
-		
 		if (recBlock && utils.hasRecords(recBlock.web_block_to_block_type)) {
 			var recBlockType = recBlock.web_block_to_block_type.getRecord(1)
 		}
@@ -93,6 +82,9 @@ function FORM_on_show(firstShow, event) {
 						return false
 					}
 				}
+				
+				//when on a scrapbook, show in header; otherwise not
+				elements.lbl_scope.visible = recBlock.scope_type
 				
 				//load tab panel
 				tabPanel.addTab(forms[formName])

@@ -178,7 +178,7 @@ function FORM_on_load() {
 }
 
 /**
- *
+ * @return {Boolean} true if record deleted
  * @properties={typeid:24,uuid:"7E59BE92-3022-4690-94E5-0AC5FD663ABA"}
  * @AllowToRunInFind
  */
@@ -236,7 +236,7 @@ function REC_delete(recDelete) {
 		//store all these records to be deleted so can undo if edits cancelled
 		whichRecords(recDelete)
 		
-		fsScope.deleteRecord(recDelete)
+		var success = fsScope.deleteRecord(recDelete)
 		
 		//live mode
 		if (arguments[0]) {
@@ -247,6 +247,8 @@ function REC_delete(recDelete) {
 		else if (!utils.hasRecords(foundset)) {
 			REC_on_select()
 		}
+		
+		return success
 	}
 }
 

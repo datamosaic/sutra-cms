@@ -170,7 +170,7 @@ function ACTION_ok() {
 				var oldRecord = fsPeers.getSelectedRecord()
 				
 				fsPeers.find()
-				fsPeers.parent_id_page = (oldRecord.parent_id_page) ? oldRecord.parent_id_page : '^='
+				fsPeers.parent_id_page = forms[scopes.CMS.util.getTreeForm()]._makeChild ? oldRecord.id_page : (oldRecord.parent_id_page) ? oldRecord.parent_id_page : '^='
 				fsPeers.id_site = oldRecord.id_site
 				var results = fsPeers.search()
 				
@@ -187,9 +187,9 @@ function ACTION_ok() {
 				}
 				
 				//non-top level record
-				if (oldRecord.parent_id_page) {
-					pageRec.parent_id_page = oldRecord.parent_id_page
-					pageRec.order_by = oldRecord.order_by + 1
+				if (forms[scopes.CMS.util.getTreeForm()]._makeChild || oldRecord.parent_id_page) {
+					pageRec.parent_id_page = forms[scopes.CMS.util.getTreeForm()]._makeChild ? oldRecord.id_page : (oldRecord.parent_id_page)
+							pageRec.order_by = fsPeers.getSize() + 1
 				}
 				//top level record
 				else {

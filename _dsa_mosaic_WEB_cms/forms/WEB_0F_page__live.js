@@ -293,7 +293,7 @@ function BLOCK_delete(idPKs) {
 	
 	//something to delete, prompt
 	if (utils.hasRecords(fsScope)) {
-		forms.WEB_0F_page__design_1F_version_2L_scope.REC_delete(fsScope.getSelectedRecord())
+		return forms.WEB_0F_page__design_1F_version_2L_scope.REC_delete(fsScope.getSelectedRecord())
 	}
 }
 
