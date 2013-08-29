@@ -52,7 +52,7 @@ function FORM_on_load() {
  * @properties={typeid:24,uuid:"3BE6D873-FF4E-4FE2-AA82-C6228EA2B319"}
  */
 function BLOCK_save(event) {
-	globals.CMS.ui.setData(event,'markdown',_dataValue)
+	globals.CMS.ui.setData(event,'markdown',_dataValue,controller.getName())
 	globals.CMS.ui.save()
 	
 	ACTION_preview()
@@ -299,7 +299,7 @@ function ACTION_insert_asset(event,blah1,blah2,blah3,blah4,assetType) {
 		
 		elem.replaceSelectedText(html)
 		
-		var dataSave = globals.CMS.ui.setData(event,'markdown',_dataValue)
+		var dataSave = globals.CMS.ui.setData(event,'markdown',_dataValue,controller.getName())
 		
 		elem.caretPosition = cursor + offset
 		elem.requestFocus()

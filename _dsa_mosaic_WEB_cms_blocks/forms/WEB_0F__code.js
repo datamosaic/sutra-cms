@@ -52,7 +52,7 @@ function FORM_on_load() {
 function BLOCK_save(event) {
 	//only run in edit mode
 	if (globals.CMS.ui.getEdit()) {
-		globals.CMS.ui.setData(event,'code',_dataValue)
+		globals.CMS.ui.setData(event,'code',_dataValue,controller.getName())
 		globals.CMS.ui.save()
 		
 		ACTION_colorize()

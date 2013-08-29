@@ -183,7 +183,7 @@ function TINYMCE_init(mode) {
  * @properties={typeid:24,uuid:"553CBBDB-2269-49ED-BEC5-A585CBC2011A"}
  */
 function BLOCK_save(event) {
-	globals.CMS.ui.setData(event,'Content',elements.bn_tinymce.html)
+	globals.CMS.ui.setData(event,'Content',elements.bn_tinymce.html,controller.getName())
 	globals.CMS.ui.save()
 	
 	elements.bn_tinymce.clearDirtyState()

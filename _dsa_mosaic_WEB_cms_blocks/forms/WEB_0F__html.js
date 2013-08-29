@@ -43,7 +43,7 @@ function FORM_on_load() {
  * @properties={typeid:24,uuid:"B886B030-6E8A-4206-B8FC-7DF67F7362F0"}
  */
 function BLOCK_save(event) {
-	globals.CMS.ui.setData(event,'HTML',_dataValue)
+	globals.CMS.ui.setData(event,'HTML',_dataValue,controller.getName())
 	globals.CMS.ui.save()
 	
 	ACTION_colorize()
@@ -278,7 +278,7 @@ function ACTION_insert_asset(event,blah1,blah2,blah3,blah4,assetType) {
 		
 		elem.replaceSelectedText(html)
 		
-		var dataSave = globals.CMS.ui.setData(event,'HTML',_dataValue)
+		var dataSave = globals.CMS.ui.setData(event,'HTML',_dataValue,controller.getName())
 		
 		elem.caretPosition = cursor + offset
 		elem.requestFocus()
