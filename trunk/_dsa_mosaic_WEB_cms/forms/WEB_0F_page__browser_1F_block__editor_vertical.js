@@ -72,9 +72,13 @@ function EDIT_delete() {
 		var parentForm = formStack.getValue(formStack.getMaxRowIndex()-1,2)
 	}
 	
-	forms.WEB_0F_page__browser.BLOCK_delete(utils.stringReplace(forms[parentForm]._scopeID,'-',''))
-	
-	forms.WEB_0F_page__browser_1F_block__editor.ACTION_hide()
+	//record successfully deleted, hide 
+	if (forms.WEB_0F_page__browser.BLOCK_delete(utils.stringReplace(forms[parentForm]._scopeID,'-',''))) {
+		forms.WEB_0F_page__browser_1F_block__editor.ACTION_hide()
+	}
+	else {
+		EDIT_cancel()
+	}
 }
 /**
  * Perform the element default action.

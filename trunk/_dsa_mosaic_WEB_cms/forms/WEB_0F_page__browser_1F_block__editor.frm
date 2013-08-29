@@ -2,7 +2,6 @@ dataSource:"db:/sutra_cms/web_block",
 items:[
 {
 anchors:11,
-formIndex:-1,
 location:"0,0",
 mediaOptions:14,
 name:"lbl_banner",
@@ -72,19 +71,25 @@ uuid:"6DECFA33-1E34-4479-878C-8BF2682D9771"
 {
 anchors:11,
 displaysTags:true,
-formIndex:-2,
+foreground:"#b00d00",
+formIndex:1,
 location:"40,0",
 mediaOptions:14,
 name:"lbl_scope",
 showClick:false,
 showFocus:false,
-size:"109,17",
-styleClass:"grid_sec_tab_select",
+size:"109,15",
+styleClass:"grid_pri_tab_unselect",
 tabSeq:-1,
-text:"%%display_scope_type%%",
+text:"%%display_scrapbook%%",
+toolTipText:"<html>
+<b>Warning!<\/b><br/>
+This is a scrapbook.<br/>
+Edits may affect other pages.",
 transparent:true,
 typeid:7,
-uuid:"F56CDD5D-2796-4715-B426-CED7EE1B9D76"
+uuid:"F56CDD5D-2796-4715-B426-CED7EE1B9D76",
+verticalAlignment:3
 }
 ],
 name:"WEB_0F_page__browser_1F_block__editor",

@@ -255,12 +255,12 @@ function CONTROLLER_builder(results) {
 					
 					//wrap as a scrapbook
 					if (block.scope_type) {
-						var description = '<span class="scopeDescription">' + application.getValueListDisplayValue('WEB_scope_type',block.scope_type) + ' scrapbook' + (block.block_name ? ': <strong>' + block.block_name + '</strong>' : '') + '</span>'
+						var description = '<span class="scopeDescription" title="' + application.getValueListDisplayValue('WEB_scope_type',block.scope_type) + ' scrapbook' + '">' + (block.block_name ? block.block_name : 'Scrapbook') + '</span>'
 						//technically a layout can be a scrapbook
 						if (layout) {
 							description = '<span class="layoutDescription">' + display.display_name + '</span>' + description
 						}
-						blockString = utils.stringReplace(scopeRec.id_scope.toString(),'-','')
+//						blockString = utils.stringReplace(scopeRec.id_scope.toString(),'-','')
 						markupData = '<div id="sutra-block-data-' + blockString + '" scrapbook="true">' + description + '<a href="javascript:blockDelete(\'' + blockString + '\')" title="Delete layout" class="blockDelete"></a>' + markupData + '\n</div>'
 					}
 					//wrap as a layout
