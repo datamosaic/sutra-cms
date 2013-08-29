@@ -61,6 +61,8 @@ function ACTION_edit(event) {
 		MODE_set("Live")
 	}
 	
+	globals.WEBc_log_create('page','page edit begin',forms.WEB_0F_page.id_site,'web_page',forms.WEB_0F_page.id_page)
+	
 	// turn on jquery edit stuff
 	forms[_liveForm].EDIT_on()
 }
@@ -589,7 +591,7 @@ function ACTION_mode(event) {
 			case 'lbl_mode_gui':
 				//when in web client, don't go here
 				if (solutionPrefs.config.webClient) {
-					globals.DIALOGS.showInfoDialog('No GUI','GUI mode is disabled in WebClient for now')
+					globals.DIALOGS.showInfoDialog('GUI disabled','GUI mode is disabled in WebClient for now')
 					globals.WEB_page_mode = 2
 					var mapping = {
 							1 : 'data',
@@ -606,6 +608,17 @@ function ACTION_mode(event) {
 				if (currentMode == 3) {
 					//go to non-real mode
 					MODE_set("Design")
+					
+					var fsArea = forms.WEB_0F_page__design_1F_version_2L_area.foundset
+					//update sort order for all blocks
+					for (var i = 1; i <= fsArea.getSize(); i++) {
+						var areaRec = fsArea.getRecord(i)
+						
+						if (utils.hasRecords(areaRec.web_area_to_scope)) {
+							areaRec.web_area_to_scope.sort('sort_order desc')
+							areaRec.web_area_to_scope.sort('sort_order asc')
+						}
+					}
 					
 					//refire toggle (may fire too frequently)
 //					forms.WEB_0F_page__design_1F_version_2L_scope.ACTION_gui_mode_load(true)
