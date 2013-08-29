@@ -162,7 +162,7 @@ function BLOCK_save(event) {
 		var blockItem = _blockList[i]
 		
 		if (blockItem) {
-			globals.CMS.ui.setData(event,_blockList[i].key,JSON.stringify(_blockList[i].record,null,'\t'))
+			globals.CMS.ui.setData(event,_blockList[i].key,JSON.stringify(_blockList[i].record,null,'\t'),controller.getName())
 		}
 	}
 	globals.CMS.ui.save()
