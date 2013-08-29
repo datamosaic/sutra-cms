@@ -22,17 +22,19 @@ function VIEW_default(obj) {
 	// template
 	var markup = obj.block_data.markdown	
 	
-	//if library available, actually do markdown conversion
-	if (typeof org.pegdown.PegDownProcessor == 'function') {
-		markup = new org.pegdown.PegDownProcessor().markdownToHtml(markup)
-	}
-	//show line breaks
-	else {
-		markup = utils.stringReplace(markup,'\n','<br />')
+	if (markup) {
+		//if library available, actually do markdown conversion
+		if (typeof org.pegdown.PegDownProcessor == 'function') {
+			markup = new org.pegdown.PegDownProcessor().markdownToHtml(markup)
+		}
+		//show line breaks
+		else {
+			markup = utils.stringReplace(markup,'\n','<br />')
+		}
 	}
 	
 	// return
-	return markup
+	return markup || ''
 }
 
 /**
