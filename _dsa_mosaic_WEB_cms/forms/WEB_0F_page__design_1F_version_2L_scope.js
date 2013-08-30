@@ -178,11 +178,13 @@ function FORM_on_load() {
 }
 
 /**
+ * @param {JSRecord} recDelete
+ * @param {Boolean} [silent=false]
  * @return {Boolean} true if record deleted
  * @properties={typeid:24,uuid:"7E59BE92-3022-4690-94E5-0AC5FD663ABA"}
  * @AllowToRunInFind
  */
-function REC_delete(recDelete) {
+function REC_delete(recDelete,silent) {
 	//find all records in this area
 	if (recDelete instanceof JSRecord) {
 		/** @type {JSFoundSet<db:/sutra_cms/web_scope>} */
@@ -216,14 +218,16 @@ function REC_delete(recDelete) {
 		_deletedBlocks.push(record)
 	}
 	
-	var delRec = globals.DIALOGS.showWarningDialog(
+	if (!silent) {
+		var delRec = globals.DIALOGS.showWarningDialog(
 						'Delete record',
 						message,
 						'Yes',
 						'No'
 					)
+	}
 	
-	if (delRec == 'Yes') {
+	if (silent || delRec == 'Yes') {
 		for (var i = 1; i <= fsScope.getSize(); i++) {
 			var record = fsScope.getRecord(i)
 			
@@ -241,7 +245,10 @@ function REC_delete(recDelete) {
 		//live mode
 		if (arguments[0]) {
 			SCOPE_sort(recDelete.id_area)
-			forms.WEB_0F_page__browser.URL_update(true)
+			//when silently deleting (create cancelled), url is updated upstream
+			if (!silent) {
+				forms.WEB_0F_page__browser.URL_update(true)
+			}
 		}
 		//gui mode with no records left
 		else if (!utils.hasRecords(foundset)) {

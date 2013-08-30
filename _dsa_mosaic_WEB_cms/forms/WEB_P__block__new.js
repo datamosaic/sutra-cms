@@ -201,10 +201,6 @@ function ACTION_ok(event) {
 								scopeRec.parent_id_scope = _scopeID
 								//when order specified (specific slot of layout) use it otherwise put at end of concestor's tail 
 								scopeRec.row_order = _scopeOrder || (utils.hasRecords(fsScope) ? (fsScope.getRecord(1).row_order + 1) : 1)
-//								scopeRec.sort_order = fsScope.getSize() + 1
-								
-								//determine which stack to throw this record at the bottom of
-//								setSort(scopeRec, _scopeID)
 								
 								databaseManager.saveData(scopeRec)
 							}
