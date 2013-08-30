@@ -28,6 +28,7 @@ function display_asset_info()	{
 		var metaRows = new Object()
 		for (var i = 1; i <= web_asset_to_asset_instance__initial.web_asset_instance_to_asset_instance_meta.getSize(); i++) {
 			var record = web_asset_to_asset_instance__initial.web_asset_instance_to_asset_instance_meta.getRecord(i)
+			//TODO: this is probably where the big formance hit comes in with large images
 			metaRows[record.data_key] = record
 		}
 		

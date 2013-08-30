@@ -104,12 +104,15 @@ function REC_on_select(event) {
 				d.id_group = a.id_group AND \
 				g.id_site_group = d.id_site_group AND \
 				i.id_page = ?"
-	var dataset = databaseManager.getDataSetByQuery(
+	
+	if (forms.WEB_0F_block__scrapbook.id_block && forms.WEB_0F_page.id_page.id_page) {
+		var dataset = databaseManager.getDataSetByQuery(
 				'sutra_cms',
 				query,
-				[forms.WEB_0F_block__scrapbook.id_block.toString(),forms.WEB_0F_block__scrapbook.id_block.toString(),id_page.toString()],
+				[forms.WEB_0F_block__scrapbook.id_block.toString(),forms.WEB_0F_block__scrapbook.id_block.toString(),forms.WEB_0F_page.id_page.toString()],
 				-1
 			)
+	}
 	
 	//htmlicize
 	var html = '<html><head>'
@@ -119,10 +122,12 @@ function REC_on_select(event) {
 	html += '--></style></head>'
 	html += '<body><table class="sutra">'
 	
-	for (var i = 1; i <= dataset.getMaxRowIndex(); i++) {
-		html += '<tr>'
-		html += '<td>' + dataset.getValue(i,1) + ' ' + dataset.getValue(i,2) + ' ' + dataset.getValue(i,3) + ': ' + dataset.getValue(i,4) + '</td>'
-		html += '</tr>'
+	if (dataset) {
+		for (var i = 1; i <= dataset.getMaxRowIndex(); i++) {
+			html += '<tr>'
+			html += '<td>' + dataset.getValue(i,1) + ' ' + dataset.getValue(i,2) + ' ' + dataset.getValue(i,3) + ': ' + dataset.getValue(i,4) + '</td>'
+			html += '</tr>'
+		}
 	}
 	
 	html += '</table></body></html>'

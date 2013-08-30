@@ -33,7 +33,8 @@ toolTipText:"Resize dividers",
 transparent:true,
 typeid:7,
 uuid:"7168F04A-6B05-4F5E-8E5C-5A3FD9D1FD5D",
-verticalAlignment:1
+verticalAlignment:1,
+visible:false
 },
 {
 anchors:11,
@@ -108,7 +109,7 @@ uuid:"D82CE12A-D297-407D-BCFD-345EB86B9405"
 }
 ],
 name:"WEB_0F_page__design_1F_version_2L_area",
-onLoadMethodID:"-1",
+onLoadMethodID:"1678EE5B-7731-4DCD-B756-5108FAFD99B5",
 onShowMethodID:"-1",
 paperPrintScale:100,
 rowBGColorCalculation:"globals.CODE_row_background",

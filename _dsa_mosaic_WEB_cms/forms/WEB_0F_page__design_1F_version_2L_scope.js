@@ -325,8 +325,8 @@ function REC_on_select(event,fireSelect) {
 	function buttonStatus(state) {
 		var editMode = forms.WEB_0F_page.ACTION_edit_get() && state
 		
-		//set position of scope label because actions are showing differently
-		if (forms.WEB_0F_page__design_1F_version_2F_block__gui.elements.btn_data_actions.visible != editMode) {
+		//set position of scope label because actions are showing differently in webclient
+		if (forms.WEB_0F_page__design_1F_version_2F_block__gui.elements.btn_data_actions.visible != editMode && application.getApplicationType() != APPLICATION_TYPES.WEB_CLIENT) {
 			//move left
 			if (editMode) {
 				forms.WEB_0F_page__design_1F_version_2F_block__data.elements.lbl_scope.setLocation(forms.WEB_0F_page__design_1F_version_2F_block__data.elements.lbl_scope.getLocationX() - 30,forms.WEB_0F_page__design_1F_version_2F_block__data.elements.lbl_scope.getLocationY())
@@ -463,8 +463,9 @@ function ACTION_gui_mode_load(fireSelect) {
 							forms[formName].INIT_data()
 						}
 					}
+					//clear out to blank form
 					else {
-						//clear out to blank form	//TODO: should probably be error message that form isn't included properly
+						//TODO: should probably be error message that form isn't included properly
 						tabPanel.tabIndex = 1
 					}
 				}
@@ -758,6 +759,7 @@ function BLOCK_scope(scope,copy,promote) {
 		
 		if (scope == 1) {
 			destBlock.id_page = forms.WEB_0F_page.id_page
+			forms.WEB_0F_page__design_1F__button_tab.elements.tab_b3.enabled = true
 		}
 		else if (scope == 2) {
 			destBlock.id_site = forms.WEB_0F_page.id_site
@@ -770,6 +772,7 @@ function BLOCK_scope(scope,copy,promote) {
 		
 		if (scope == 1) {
 			blockRec.id_page = forms.WEB_0F_page.id_page
+			forms.WEB_0F_page__design_1F__button_tab.elements.tab_b3.enabled = true
 		}
 		else if (scope == 2) {
 			blockRec.id_site = forms.WEB_0F_page.id_site

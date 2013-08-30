@@ -132,8 +132,6 @@ function TOGGLE_mode(event,mode) {
 		}
 		//go to data if not already there
 		else if (mode == 'data' && forms.WEB_0F_block__scrapbook.elements.tab_main.tabIndex != 2) {
-
-			
 			//if we're in edit mode, exit
 			if (forms.WEB_0F_block__scrapbook._editMode) {
 				//TODO: track down edit mode

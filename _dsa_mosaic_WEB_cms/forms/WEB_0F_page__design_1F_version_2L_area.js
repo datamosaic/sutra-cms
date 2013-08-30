@@ -354,3 +354,16 @@ function REC_on_select(event) {
 		web_area_to_scope.sort(sortScope)
 	}
 }
+
+/**
+ * Callback method when form is (re)loaded.
+ *
+ * @param {JSEvent} event the event that triggered the action
+ *
+ * @properties={typeid:24,uuid:"1678EE5B-7731-4DCD-B756-5108FAFD99B5"}
+ */
+function FORM_on_load(event) {
+	if (application.getApplicationType() != APPLICATION_TYPES.WEB_CLIENT) {
+		elements.btn_space_dividers.visible = true
+	}
+}

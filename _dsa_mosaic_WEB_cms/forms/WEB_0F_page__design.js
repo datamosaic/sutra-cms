@@ -265,6 +265,9 @@ function REC_on_select(event,skipLoad,verIndex,fireSelect,areaName,blockIndex) {
 			forms.WEB_0F_page__design_1F_version_2L_scope.ACTION_gui_mode_load(fireSelect)
 		}
 		
+		//when no page scrapbooks present, disable that tab controller
+		forms.WEB_0F_page__design_1F__button_tab.elements.tab_b3.enabled = utils.hasRecords(web_page_to_block__scope)
+		
 		//update log view
 		if (elements.tab_main.tabIndex == 5) {
 			forms.WEB_0F_page__design_1F__log.LOAD_records()
