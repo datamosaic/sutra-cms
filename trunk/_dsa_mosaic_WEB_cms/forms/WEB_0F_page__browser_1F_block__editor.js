@@ -8,6 +8,13 @@ var _license_dsa_mosaic_WEB_cms = 'Module: _dsa_mosaic_WEB_cms \
 									MIT Licensed';
 
 /**
+ * @type {Boolean}
+ * 
+ * @properties={typeid:35,uuid:"01DBE457-0665-4764-8CDB-D79E74C0A979",variableType:-4}
+ */
+var _newBlock = false;
+
+/**
  * @type {Number}
  *
  * @properties={typeid:35,uuid:"03CAC318-572E-4E23-BC3E-ECA968E7D7E7",variableType:4}
@@ -83,6 +90,10 @@ function FORM_on_show(firstShow, event) {
 					}
 				}
 				
+				//enter transaction
+				databaseManager.saveData()
+				databaseManager.setAutoSave(false)
+				
 				//when on a scrapbook, show in header; otherwise not
 				elements.lbl_scope.visible = recBlock.scope_type
 				
@@ -119,15 +130,11 @@ function FORM_on_show(firstShow, event) {
 			
 			return true
 		}
-		else {
-			//alert that form not loaded in correctly
-			return false
-		}
 	}
-	else {
-		//alert that form not loaded in correctly
-		return false
-	}
+	
+	//alert that form not loaded in correctly
+	_newBlock = false
+	return false
 }
 
 /**

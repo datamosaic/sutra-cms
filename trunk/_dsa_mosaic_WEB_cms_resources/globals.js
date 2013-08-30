@@ -680,10 +680,13 @@ function WEBc_block_save(saveTransaction) {
 	//when in real mode
 	if (WEB_page_mode == 3) {
 		//save data
-		
+		databaseManager.saveData()
 		
 		//set auto save on
+		databaseManager.setAutoSave(true)
 		
+		//make sure that not still flagged as a new block
+		forms.WEB_0F_page__browser_1F_block__editor._newBlock = false
 		
 		//hide the editor
 		forms.WEB_0F_page__browser_1F_block__editor.ACTION_hide()
@@ -721,10 +724,23 @@ function WEBc_block_cancel(cancelTransaction) {
 	//when in real mode
 	if (WEB_page_mode == 3) {
 		//rollback data
-		
+		databaseManager.revertEditedRecords()
 		
 		//set auto save on
+		databaseManager.setAutoSave(true)
 		
+		//newly created block, delete scope that ties it in
+		if (forms.WEB_0F_page__browser_1F_block__editor._newBlock) {
+			/** @type {JSFoundSet<db:/sutra_cms/web_scope>} */
+			var fsScope = databaseManager.getFoundSet('db:/sutra_cms/web_scope')
+			fsScope.loadRecords(application.getUUID(forms.WEB_0F_page__browser_1F_block__editor._scopeID))
+			forms.WEB_0F_page__browser_1F_block__editor._newBlock = false
+			
+			//something to delete, kill it
+			if (utils.hasRecords(fsScope)) {
+				forms.WEB_0F_page__design_1F_version_2L_scope.REC_delete(fsScope.getSelectedRecord(),true)
+			}
+		}
 		
 		//hide the editor
 		forms.WEB_0F_page__browser_1F_block__editor.ACTION_hide()

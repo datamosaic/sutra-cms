@@ -257,9 +257,6 @@ function BLOCK_edit(idPKs) {
 		//load in correct forms
 		var statusBlock = forms.WEB_0F_page__browser_1F_block__editor.FORM_on_show()
 	}
-	else if (scopeID) {
-		globals.DIALOGS.showWarningDialog('Scrapbook alert','Scrapbooks cannot be edited inline')
-	}
 	
 	//only show block edit if something successfully loaded in
 	if (statusBlock) {
@@ -366,6 +363,9 @@ function BLOCK_new(areaScope) {
 			}
 			//open for edits
 			else {
+				//flag that newly created
+				forms.WEB_0F_page__browser_1F_block__editor._newBlock = true
+				
 				BLOCK_edit(utils.stringReplace(fsScope.id_scope.toString(),'-','') + '-' + utils.stringReplace(newBlock.id_block.toString(),'-',''))
 			}
 		}
