@@ -224,6 +224,9 @@ function FORM_on_load(event) {
 		elements.split_details.bottomComponent	= elements.tab_detail_bottom
 		elements.split_details.bottomComponent	= null
 	}
+	else {
+		elements.tab_detail_bottom.visible = false
+	}
 }
 
 /**
@@ -234,23 +237,33 @@ function TAB_change(event) {
 	
 	//on language, show bottom
 	if (elements.tab_detail.tabIndex == 4) {
-		elements.split_details.bottomComponent	= elements.tab_detail_bottom
-		
-		if (_splitDivider + 10 >= elements.split_details.getHeight()) {
-			_splitDivider = 110
+		if (application.getApplicationType() != APPLICATION_TYPES.WEB_CLIENT) {
+			elements.split_details.bottomComponent	= elements.tab_detail_bottom
+			
+			if (_splitDivider + 10 >= elements.split_details.getHeight()) {
+				_splitDivider = 110
+			}
+			
+			elements.split_details.dividerLocation = _splitDivider
+			
+			//set tabpanel bordering to be thinner
+//			elements.tab_detail.setBorder('SpecialMatteBorder,1.0,1.0,1.0,1.0,#647B95,#A1B0CF,#A1B0CF,#A1B0CF,0.0,')
 		}
-		
-		elements.split_details.dividerLocation = _splitDivider
-		
-		//set tabpanel bordering to be thinner
-//		elements.tab_detail.setBorder('SpecialMatteBorder,1.0,1.0,1.0,1.0,#647B95,#A1B0CF,#A1B0CF,#A1B0CF,0.0,')
+		else {
+			elements.tab_detail_bottom.visible = true
+		}
 	}
 	//bottom tab panel was showing
 	else if (elements.split_details.bottomComponent) {
-		elements.split_details.bottomComponent	= null
-		
-		//restore tabpanel bordering
-//		elements.tab_detail.setBorder('SpecialMatteBorder,1.0,1.0,3.0,1.0,#647B95,#A1B0CF,#A1B0CF,#A1B0CF,0.0,')
+		if (application.getApplicationType() != APPLICATION_TYPES.WEB_CLIENT) {
+			elements.split_details.bottomComponent	= null
+			
+			//restore tabpanel bordering
+//			elements.tab_detail.setBorder('SpecialMatteBorder,1.0,1.0,3.0,1.0,#647B95,#A1B0CF,#A1B0CF,#A1B0CF,0.0,')
+		}
+		else {
+			elements.tab_detail_bottom.visible = false
+		}
 	}
 	
 //	elements.tab_detail_bottom.tabIndex = elements.tab_detail.tabIndex

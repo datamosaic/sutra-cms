@@ -67,6 +67,8 @@ function FORM_on_load(event) {
 	//set up split pane
 	SPLIT_set(false)
 	
+	elements.split.continuousLayout = true
+	
 	//MEMO: the list of blocks is shown/hidden from the page form tab controller
 }
 
@@ -269,7 +271,7 @@ function REC_on_select(event) {
 		forms.WEB_0F_block__scrapbook__header.TOGGLE_elements()
 		
 		//load correct gui form
-//		ACTION_gui_mode_load()
+		ACTION_gui_mode_load()
 	}
 }
 
@@ -348,67 +350,85 @@ function TAB_change(event,elemName) {
 }
 
 /**
+ * @type {Boolean}
+ *
+ * @properties={typeid:35,uuid:"EDE9AF18-8F05-4163-9E69-9FF8493B92D3",variableType:-4}
+ */
+var _guiLoading = false;
+
+/**
  * @properties={typeid:24,uuid:"F0920424-5B3E-405D-B476-A205F6536D03"}
  */
 function ACTION_gui_mode_load() {
-	//load in correct gui representation for this block type
-	var recScrapbook = foundset.getSelectedRecord()
-	var contextForm = 'WEB_0F_block__scrapbook_1F__gui'
-	var tabPanel = forms[contextForm].elements.tab_detail
-	
-	if (recScrapbook && utils.hasRecords(recScrapbook.web_block_to_block_type)) {
-		var recBlockType = recScrapbook.web_block_to_block_type.getRecord(1)
-	}
-	
-	//this block definition exists as does the form and we're in gui mode
-	if (recBlockType && forms[recBlockType.form_name] && elements.tab_main.tabIndex == 1) {
-		//edits allowed
-		if (ACTION_edit_get()) {
-			var formName = recBlockType.form_name
-		}
-		//no edits
-		else {
-			var formName = recBlockType.form_name_display || recBlockType.form_name
+	//only start up this method if not already running
+	if (!_guiLoading) {
+		//method is beginning
+		_guiLoading = true
+		
+		//load in correct gui representation for this block type
+		var recScrapbook = foundset.getSelectedRecord()
+		var contextForm = 'WEB_0F_block__scrapbook_1F__gui'
+		var tabPanel = forms[contextForm].elements.tab_detail
+		
+		if (recScrapbook && utils.hasRecords(recScrapbook.web_block_to_block_type)) {
+			var recBlockType = recScrapbook.web_block_to_block_type.getRecord(1)
 		}
 		
-		forms[contextForm].elements.lbl_banner.text = (recBlockType.block_name || 'Unnamed') + ' block'
-		
-		//the form exists
-		if (formName && solutionModel.getForm(formName)) {
-			//load tab panel (relation not needed because we're manually filling the foundset)
-			tabPanel.addTab(forms[formName])
-			tabPanel.tabIndex = tabPanel.getMaxTabIndex()
+		//this block definition exists as does the form and we're in gui mode
+		if (recBlockType && forms[recBlockType.form_name] && elements.tab_main.tabIndex == 1) {
+			//edits allowed
+			if (ACTION_edit_get()) {
+				var formName = recBlockType.form_name
+			}
+			//no edits
+			else {
+				var formName = recBlockType.form_name_display || recBlockType.form_name
+			}
 			
-			//force the gui to update
-			if (solutionModel.getForm(formName) && solutionModel.getForm(formName).getFormMethod('INIT_data')) {
-				if (forms[formName].foundset) {
-					forms[formName].foundset.loadRecords(foundset)
-				}
-				else {
-					var restart = globals.DIALOGS.showWarningDialog(
-							'Warning',
-							'Changes made in developer have caused foundsets to become unhooked.\nRestart?',
-							'Yes',
-							'No'
-						)
-					
-					//restart
-					if (restart == 'Yes') {
-						application.exit()
-					}
-				}
+			//set heading for this tab panel
+			forms[contextForm].elements.lbl_banner.text = (recBlockType.block_name || 'Unnamed') + ' block'
+			
+			//the form exists
+			if (formName && solutionModel.getForm(formName)) {
+				//load tab panel (relation not needed because we're manually filling the foundset)
+				tabPanel.addTab(forms[formName])
+				tabPanel.tabIndex = tabPanel.getMaxTabIndex()
 				
-				forms[formName].INIT_data()
-			}			
+				//force the gui to update
+				if (solutionModel.getForm(formName) && solutionModel.getForm(formName).getFormMethod('INIT_data')) {
+					if (forms[formName].foundset) {
+						forms[formName].foundset.loadRecords(foundset)
+					}
+					else {
+						var restart = globals.DIALOGS.showWarningDialog(
+								'Warning',
+								'Changes made in developer have caused foundsets to become unhooked.\nRestart?',
+								'Yes',
+								'No'
+							)
+						
+						//restart
+						if (restart == 'Yes') {
+							application.exit()
+						}
+					}
+					
+					forms[formName].INIT_data()
+				}			
+			}
+			//clear out to blank form
+			else {
+				tabPanel.tabIndex = 1
+			}
+			
+			forms.WEB_0F_block__scrapbook__header.TOGGLE_mode(null,'gui')
 		}
 		else {
 			tabPanel.tabIndex = 1
 		}
 		
-		forms.WEB_0F_block__scrapbook__header.TOGGLE_mode(null,'gui')
-	}
-	else {
-		tabPanel.tabIndex = 1
+		//method is done
+		_guiLoading = false
 	}
 }
 

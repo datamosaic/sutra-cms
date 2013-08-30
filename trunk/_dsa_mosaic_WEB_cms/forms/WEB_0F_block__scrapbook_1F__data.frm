@@ -3,7 +3,7 @@ items:[
 {
 formIndex:11500,
 horizontalAlignment:4,
-location:"50,4",
+location:"50,6",
 mediaOptions:14,
 showClick:false,
 showFocus:false,
@@ -30,7 +30,8 @@ tabSeq:-1,
 text:"%%display_scope_type%%",
 transparent:true,
 typeid:7,
-uuid:"1CBDBA1D-107F-4F33-80B3-2F8D116529D9"
+uuid:"1CBDBA1D-107F-4F33-80B3-2F8D116529D9",
+verticalAlignment:0
 },
 {
 anchors:3,
@@ -51,8 +52,25 @@ typeid:7,
 uuid:"28E3C16E-85E5-4013-B752-7D0EE4EAA1C1"
 },
 {
+anchors:11,
+foreground:"#b00d00",
+horizontalAlignment:0,
+location:"0,2",
+mediaOptions:14,
+name:"lbl_scrapbook",
+showClick:false,
+showFocus:false,
+size:"300,16",
+styleClass:"grid_pri_tab_unselect",
+text:"Scrapbook is locked. Editing data is not allowed.",
+transparent:true,
+typeid:7,
+uuid:"B2F3EBC5-DAE5-435A-ACDF-08BB2999B850",
+visible:false
+},
+{
 formIndex:11400,
-location:"56,0",
+location:"56,2",
 mediaOptions:14,
 name:"tab_d2",
 onActionMethodID:"1d11e845-6036-42a2-8367-5c8d524edad3",
@@ -107,7 +125,7 @@ uuid:"C32C5DE9-2328-4566-B630-CD84B7F481BA"
 },
 {
 formIndex:11400,
-location:"121,0",
+location:"121,2",
 mediaOptions:14,
 name:"tab_d3",
 onActionMethodID:"1d11e845-6036-42a2-8367-5c8d524edad3",
@@ -130,7 +148,7 @@ uuid:"D28F3A19-CE50-4041-AB67-863BA6929F41"
 {
 formIndex:11500,
 horizontalAlignment:4,
-location:"115,4",
+location:"115,6",
 mediaOptions:14,
 showClick:false,
 showFocus:false,
@@ -143,7 +161,7 @@ uuid:"D6B23178-54F7-465E-BD0C-37A74DB0399B"
 },
 {
 formIndex:11600,
-location:"0,0",
+location:"0,2",
 mediaOptions:14,
 name:"tab_d1",
 onActionMethodID:"1d11e845-6036-42a2-8367-5c8d524edad3",

@@ -13,7 +13,7 @@ formIndex:11801,
 items:[
 {
 containsFormID:"5900044C-5DC9-4F9F-958C-9BB0E4396CC1",
-location:"41,30",
+location:"46,58",
 relationName:"web_block_to_block",
 text:"WEB_0F_block__scrapbook_2F__data",
 typeid:15,
@@ -21,7 +21,7 @@ uuid:"9EFE6A97-45EF-42A0-8EAB-028963F38CC2"
 },
 {
 containsFormID:"34A061E0-0D92-413A-827D-985565BA7BA6",
-location:"106,67",
+location:"25,26",
 relationName:"web_block_to_block",
 text:"WEB_0F_block__scrapbook_1F__gui",
 typeid:15,
@@ -59,7 +59,7 @@ uuid:"D3A101A7-E086-49AF-BA5B-313DB97C529B"
 location:"386,0",
 name:"split",
 printable:false,
-size:"204,195",
+size:"204,193",
 tabOrientation:-3,
 typeid:16,
 uuid:"BFA6EEE1-BC94-4102-B456-BC7AED5E5B84"

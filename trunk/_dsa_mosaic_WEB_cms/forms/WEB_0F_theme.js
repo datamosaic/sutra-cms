@@ -393,13 +393,18 @@ function FORM_on_show(firstShow, event) {
 	if (!solutionPrefs.config.prefs.formPreloading) {
 		if (firstShow) {
 			//set divider locations
-			var spacing = (application.__parent__.solutionPrefs) ? solutionPrefs.screenAttrib.spaces[solutionPrefs.config.activeSpace].currentHorizontal : 0
-			var aThird = (application.getWindowWidth() - spacing - 22) / 3
-	//		application.updateUI()
-			elements.bean_split_1.dividerLocation = aThird
-			elements.bean_split_2.dividerLocation = aThird
-			elements.bean_split_3.dividerLocation = aThird
-			elements.bean_split_4.dividerLocation = aThird
+//			var spacing = (application.__parent__.solutionPrefs) ? solutionPrefs.screenAttrib.spaces[solutionPrefs.config.activeSpace].currentHorizontal : 0
+//			var aThird = (application.getWindowWidth() - spacing - 22) / 3
+//	//		application.updateUI()
+//			elements.bean_split_1.dividerLocation = aThird
+//			elements.bean_split_2.dividerLocation = aThird
+//			elements.bean_split_3.dividerLocation = aThird
+//			elements.bean_split_4.dividerLocation = aThird
+
+			elements.bean_split_1.dividerLocation = 250
+			elements.bean_split_2.dividerLocation = 250
+			elements.bean_split_3.dividerLocation = 250
+			elements.bean_split_4.dividerLocation = 250
 		}
 		
 		//only do this when not running in data sutra
@@ -605,25 +610,27 @@ function ACTIONS_list(input) {
  * @properties={typeid:24,uuid:"18AE6366-B709-4281-A66D-257152B3377C"}
  */
 function TOGGLE_splits(event) {
-	var divSize = (elements.bean_split_1.dividerSize) ? 0 : 10
-	
-	if (elements.bean_split_1.dividerSize) {
-		elements.tab_layout.border = 'MatteBorder,0,1,0,0,#a1b0cf'
-		elements.tab_editable.border = 'MatteBorder,0,1,0,0,#a1b0cf'
-		elements.tab_editable_default.border = 'MatteBorder,0,0,0,0,#a1b0cf'		
-			
-		elements.bean_split_1.dividerSize = 0
-		elements.bean_split_2.dividerSize = 0
-		elements.bean_split_3.dividerLocation = elements.bean_split_1.dividerLocation
-		application.updateUI()
-		elements.bean_split_4.dividerLocation = elements.bean_split_2.dividerLocation
-	}
-	else {
-		elements.tab_layout.border = 'MatteBorder,0,1,0,0,#a1b0cf'
-		elements.tab_editable.border = 'MatteBorder,0,1,0,1,#a1b0cf'
-		elements.tab_editable_default.border = 'MatteBorder,0,0,0,1,#a1b0cf'		
-			
-		elements.bean_split_1.dividerSize = 8
-		elements.bean_split_2.dividerSize = 8
+	if (application.getApplicationType() != APPLICATION_TYPES.WEB_CLIENT) {
+		var divSize = (elements.bean_split_1.dividerSize) ? 0 : 10
+		
+		if (elements.bean_split_1.dividerSize) {
+			elements.tab_layout.border = 'MatteBorder,0,1,0,0,#a1b0cf'
+			elements.tab_editable.border = 'MatteBorder,0,1,0,0,#a1b0cf'
+			elements.tab_editable_default.border = 'MatteBorder,0,0,0,0,#a1b0cf'		
+				
+			elements.bean_split_1.dividerSize = 0
+			elements.bean_split_2.dividerSize = 0
+			elements.bean_split_3.dividerLocation = elements.bean_split_1.dividerLocation
+			application.updateUI()
+			elements.bean_split_4.dividerLocation = elements.bean_split_2.dividerLocation
+		}
+		else {
+			elements.tab_layout.border = 'MatteBorder,0,1,0,0,#a1b0cf'
+			elements.tab_editable.border = 'MatteBorder,0,1,0,1,#a1b0cf'
+			elements.tab_editable_default.border = 'MatteBorder,0,0,0,1,#a1b0cf'		
+				
+			elements.bean_split_1.dividerSize = 8
+			elements.bean_split_2.dividerSize = 8
+		}
 	}
 }

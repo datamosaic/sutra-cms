@@ -73,15 +73,17 @@ function TOGGLE_edit_mode(editMode,saveData) {
 			databaseManager.setAutoSave(false)
 		}
 		
+		var editAllow = forms.WEB_0F_block__scrapbook.ACTION_edit_get()
+		
 		//lock the screen
 		globals.WEBc_sutra_trigger('TRIGGER_interface_lock',[true])
 		
 		//show actions
-		forms.WEB_0F_block__scrapbook_1F__gui.elements.btn_data_actions.enabled = true
-		forms.WEB_0F_block__scrapbook_1F__data.elements.btn_data_actions.enabled = true
+		forms.WEB_0F_block__scrapbook_1F__gui.elements.btn_data_actions.enabled = editAllow
+		forms.WEB_0F_block__scrapbook_1F__data.elements.btn_data_actions.enabled = editAllow
 		
 		//enable raw data mode fields for editing
-		forms.WEB_0F_page__design_1F_version_2F_block__data.TOGGLE_elements(true)
+		forms.WEB_0F_page__design_1F_version_2F_block__data.TOGGLE_elements(editAllow)
 		
 		//allow to rename scrapbook
 		forms.WEB_0F_block__scrapbook__header.LBL_block_name__action()
@@ -90,6 +92,8 @@ function TOGGLE_edit_mode(editMode,saveData) {
 		elements.btn_cancel.visible = true
 		elements.btn_done.visible = true
 		elements.btn_edit.visible = false
+		forms.WEB_0F_block__scrapbook_1F__gui.elements.lbl_scrapbook.visible = !editAllow
+		forms.WEB_0F_block__scrapbook_1F__data.elements.lbl_scrapbook.visible = !editAllow
 		
 		//deleting
 		forms.WEB_0F_block__scrapbook_1F_page__blocks.elements.btn_add.visible = true
@@ -151,6 +155,8 @@ function TOGGLE_edit_mode(editMode,saveData) {
 		forms.WEB_A__scrapbook.elements.btn_cancel.visible = false
 		forms.WEB_A__scrapbook.elements.btn_done.visible = false
 		forms.WEB_A__scrapbook.elements.btn_edit.visible = true
+		forms.WEB_0F_block__scrapbook_1F__gui.elements.lbl_scrapbook.visible = false
+		forms.WEB_0F_block__scrapbook_1F__data.elements.lbl_scrapbook.visible = false
 		
 		//deleting
 		forms.WEB_0F_block__scrapbook_1F_page__blocks.elements.btn_add.visible = false
