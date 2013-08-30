@@ -138,7 +138,7 @@ typeid:4,
 uuid:"44522969-49D7-4EA6-B14E-0C868122FBDF"
 },
 {
-height:320,
+height:300,
 partType:5,
 typeid:19,
 uuid:"4ACD3AC5-E0DD-4E9D-9EE8-DF26F3D6D743"
@@ -396,7 +396,6 @@ namedFoundSet:"separate",
 navigatorID:"-1",
 onShowMethodID:"-1",
 paperPrintScale:100,
-scrollbars:36,
 size:"400,320",
 styleName:"_DATASUTRA_",
 typeid:3,

@@ -64,6 +64,29 @@ function BLOCK_save(event) {
  *
  * @param {JSEvent} event the event that triggered the action
  *
+ * @properties={typeid:24,uuid:"8F3FE07B-111D-4858-ABD2-3373302B5FBE"}
+ */
+function BLOCK_cancel(event) {
+	globals.CMS.ui.cancel()
+	
+	//only run in edit mode
+	if (globals.CMS.ui.getEdit()) {
+		//reset variables
+		_dataValue = globals.CMS.ui.getData(controller.getName()).code
+		_codeType = globals.CMS.ui.getConfig(controller.getName()).code_type
+		
+		//refresh the colored version
+		if (globals.WEB_page_mode == 2) {
+			ACTION_colorize()
+		}
+	}
+}
+
+/**
+ * Perform the element default action.
+ *
+ * @param {JSEvent} event the event that triggered the action
+ *
  * @properties={typeid:24,uuid:"FD3FDA15-9CCB-46E7-81A4-CD1D2F6C1193"}
  */
 function ACTION_edit(event) {
@@ -102,29 +125,6 @@ function INIT_data() {
 	else {
 		TOGGLE_buttons(false)
 		ACTION_colorize()
-	}
-}
-
-/**
- * Perform the element default action.
- *
- * @param {JSEvent} event the event that triggered the action
- *
- * @properties={typeid:24,uuid:"8F3FE07B-111D-4858-ABD2-3373302B5FBE"}
- */
-function BLOCK_cancel(event) {
-	globals.CMS.ui.cancel()
-	
-	//only run in edit mode
-	if (globals.CMS.ui.getEdit()) {
-		//reset variables
-		_dataValue = globals.CMS.ui.getData(controller.getName()).code
-		_codeType = globals.CMS.ui.getConfig(controller.getName()).code_type
-		
-		//refresh the colored version
-		if (globals.WEB_page_mode == 2) {
-			ACTION_colorize()
-		}
 	}
 }
 
