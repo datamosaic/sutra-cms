@@ -53,16 +53,16 @@ function REC_new() {
  * @AllowToRunInFind
  */
 function REC_on_select(event) {
-//	var fsPage = forms.WEB_0F_site_1L_page__languages.foundset
-//	
-//	if (utils.hasRecords(foundset)) {
-//		fsPage.find()
-//		fsPage.web_page_to_language.id_site_language = id_site_language
-//		var results = fsPage.search()
-//	}
-//	else {
-//		fsPage.clear()
-//	}
+	var fsPage = forms.WEB_0F_site_1L_page__languages.foundset
+	
+	if (utils.hasRecords(foundset)) {
+		fsPage.find()
+		fsPage.web_page_to_language.id_site_language = id_site_language
+		var results = fsPage.search()
+	}
+	else {
+		fsPage.clear()
+	}
 }
 
 /**
