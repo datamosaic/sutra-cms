@@ -1067,6 +1067,7 @@ function CONTROLLER_setup(results, app, session, request, response, mode, cmsVer
 
 	// obj: site
 	databaseManager.refreshRecordFromDatabase(page.web_page_to_site,0)
+	databaseManager.refreshRecordFromDatabase(page.web_page_to_site.web_site_to_site_language,-1)
 	obj.site.record = page.web_page_to_site.getSelectedRecord()
 	obj.site.id = page.id_site
 	obj.site.name = page.web_page_to_site.site_name
