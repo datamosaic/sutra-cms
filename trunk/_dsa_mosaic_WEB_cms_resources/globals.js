@@ -1343,6 +1343,7 @@ function WEBc_markup_link_page(pageID, siteURL, linkType, webMode, obj) {
 			var reference = pageID.split('_')
 			pageID = reference[0]
 			var languageID = reference[1]
+			var siteLanguageID = reference[2]
 		}
 		
 		/** @type {JSFoundSet<db:/sutra_cms/web_page>} */
@@ -1392,6 +1393,27 @@ function WEBc_markup_link_page(pageID, siteURL, linkType, webMode, obj) {
 		if (count) {
 			var pageLanguageRec = fsLanguage.getRecord(1)
 			var siteLanguageRec = pageLanguageRec.web_language_to_site_language.getRecord(1)
+		}
+	}
+	//specific site language specified for link (this language doesn't exist for requested page)
+	else if (siteLanguageID) {
+		var fsSiteLanguage = databaseManager.getFoundSet("sutra_cms","web_site_language")
+		fsSiteLanguage.find()
+		fsSiteLanguage.id_site_language = siteLanguageID
+		var count = fsSiteLanguage.search()
+		
+		if (count) {
+			var siteLanguageRec = fsSiteLanguage.getRecord(1)
+				
+			var fsLanguage = databaseManager.getFoundSet("sutra_cms","web_language")
+			fsLanguage.find()
+			fsLanguage.id_site_language = siteLanguageID
+			fsLanguage.id_page = pageRec.id_page
+			var count = fsLanguage.search()
+			
+			if (count) {
+				var pageLanguageRec = fsLanguage.getRecord(1)
+			}
 		}
 	}
 	else {
