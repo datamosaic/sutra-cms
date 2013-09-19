@@ -35,7 +35,6 @@ anchors:11,
 dataProviderID:"_display",
 displayType:2,
 editable:false,
-enabled:false,
 formIndex:10600,
 location:"115,175",
 name:"var_display",
@@ -45,7 +44,8 @@ size:"185,23",
 styleClass:"standard_table",
 transparent:true,
 typeid:4,
-uuid:"27A734E9-1D6D-42A7-9073-165CD740D622"
+uuid:"27A734E9-1D6D-42A7-9073-165CD740D622",
+valuelistID:"6259C35E-942C-462A-AB48-81880BE053D0"
 },
 {
 anchors:11,
