@@ -36,24 +36,39 @@ function INIT_data(data) {
 	if (!(data instanceof Array)) {
 		data = new Array(data)
 	}
-	
+
 	for (var i = 0; i < data.length; i++) {
 		var row = data[i]
-		
+
 		if (row) {
 			_text = row.data
 			elements.lbl_label.text = row.label || solutionModel.getForm(controller.getName()).getLabel('lbl_label').text
-			
+
+			elements.var_text__check.visible = false
+			elements.var_text__combo.visible = false
+			elements.var_text__radio.visible = false
+			switch (row.display) {
+				case 'check':
+					elements.var_text__check.visible = true
+					break
+				case 'combobox':
+					elements.var_text__combo.visible = true
+					break
+				case 'radio':
+					elements.var_text__radio.visible = true
+					break
+			}
+
 			//set valuelist (line break)
 			var vlMixed = row.values.split('\n')
 			var vlDisplay = new Array()
 			var vlReal = new Array()
-			
+
 			//every item has a different real value, two columns
 			if (vlMixed.filter(function(item){return utils.stringPatternCount(item,'|')}).length == vlMixed.length) {
 				for (var i = 0; i < vlMixed.length; i++) {
 					var vlRow = vlMixed[i].split('|')
-					
+
 					vlDisplay.push(vlRow[0])
 					vlReal.push(vlRow[1])
 				}
@@ -64,7 +79,7 @@ function INIT_data(data) {
 				vlReal =
 					vlMixed
 			}
-			
+
 			application.setValueListItems('WEB_block_valuelist',vlDisplay,vlReal)
 		}
 	}
