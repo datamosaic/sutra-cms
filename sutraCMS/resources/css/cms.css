@@ -62,7 +62,7 @@ div#cmsBlockHilite {
 
 .blockDelete {
 	display: none;
-	background: url(/servoy-webclient/resources/application/images/delete.gif) no-repeat right top;
+	background: url(../images/delete.gif) no-repeat right top;
 	float: right;
 	width: 15px;
 	height: 16px;
