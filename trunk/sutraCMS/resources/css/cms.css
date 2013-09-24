@@ -63,8 +63,9 @@ div#cmsBlockHilite {
 .blockDelete {
 	display: none;
 	background: url(../images/delete.gif) no-repeat right top;
+	border-radius: 2px;
 	float: right;
-	width: 15px;
+	width: 16px;
 	height: 16px;
 	margin: 0px 2px;
 	z-index: 5;
@@ -86,6 +87,27 @@ p.block_editable {
 	padding: 2px;
 	overflow: hidden;
 	cursor: pointer !important;
+}
+
+div.layout_editable:hover, 
+p.layout_editable:hover,
+div.block_editable:hover, 
+p.block_editable:hover {
+/*	background-image: url(../images/bg_trans.png);*/
+	background-color: rgba(0,0,0,0.3);
+}
+
+div.layout_editable:hover div.layout_editable:hover div.block_editable:hover, 
+p.layout_editable:hover p.layout_editable:hover div.block_editable:hover {
+/*	background-image: url(../images/bg_trans.png);*/
+	background-color: rgba(0,0,0,0.2);
+}
+
+div.layout_editable:hover .blockDelete, 
+p.layout_editable:hover .blockDelete,
+div.block_editable:hover .blockDelete, 
+p.block_editable:hover .blockDelete {
+	background-color: rgba(187,187,187,0.3) !important;
 }
 
 div.layout_editable, 
