@@ -103,6 +103,11 @@ p.layout_editable:hover p.layout_editable:hover div.block_editable:hover {
 	background-color: rgba(0,0,0,0.2);
 }
 
+div.block_editing, 
+p.block_editing {
+	background-color: rgba(0,0,0,0.2);
+}
+
 div.layout_editable:hover .blockDelete, 
 p.layout_editable:hover .blockDelete,
 div.block_editable:hover .blockDelete, 
