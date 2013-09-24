@@ -176,7 +176,6 @@ div.layout_new a:not([class="noClick"]):hover {
 	font-weight: bold;
 }
 
-.row .block_editable,
-.row .block_new {
+div[cmsWell] {
 	float: left;
 }
