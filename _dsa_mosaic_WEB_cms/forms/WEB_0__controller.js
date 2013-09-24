@@ -320,23 +320,26 @@ function CONTROLLER_builder(results) {
 
 					//fill empty slots in this block formatter
 					for (m = 0; m < loopSize; m++) {
-						//fill empty blocks with new button
+						var newBlock = ''
+						var wellOpen = ''
+						var wellClose = ''
+
+						//tack on new button to every well
 						if ( obj.type == "Edit" ) {
 							var areaScope = utils.stringReplace(areaRec.id_area.toString(),'-','') + '-' + utils.stringReplace(parentScope.id_scope.toString(),'-','') + '-' + (m + 1)
-
-							var newBlock = '<!-- add new block -->'
 							var breadcrumb = 'Add block to ' + display.display_name
+
+							newBlock = '<!-- add new block -->'
 							newBlock += '<div id="sutra-block-add-' + areaScope + '" class="block_new">\n'
 							newBlock += '<a href="javascript:blockNew(\'' + areaScope + '\')" title="' + breadcrumb + '">New block</a>'
 							newBlock += '</div>\n'
-						}
-						//non-null value
-						else {
-							newBlock = ''
+
+							wellOpen = '<div cmsWell="true" style="min-width:' + (loopSize > 1 ? Math.floor(100/loopSize - 2) : 100) + '%">'
+							wellClose = '</div>'
 						}
 
 						//there isn't anything in this slot, put in a new block button
-						blocks[m] = '<div cmsWell="true" style="min-width:' + (loopSize > 1 ? Math.floor(100/loopSize - 2) : 100) + '%">' + (blocks[m] ? blocks[m] : '') + newBlock + '</div>'
+						blocks[m] = wellOpen + (blocks[m] ? blocks[m] : '') + newBlock + wellClose
 					}
 
 					//fill in the slots
