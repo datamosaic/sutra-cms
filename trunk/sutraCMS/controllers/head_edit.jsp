@@ -11,28 +11,15 @@
 <script type="text/javascript">
 
 	show_highlighter = function(domID,type) {
-		if (type == 'row') {
-			var hilite = $("#cmsRowHilite");
-		}
-		else {
-			var hilite = $("#cmsBlockHilite");
-		}
 		var divObj = $(domID);
-
-		var offset = divObj.offset();
-
-		// put highlighter over item via dimensions plugin
-		hilite.css("width", divObj.outerWidth());
-		hilite.css("height", divObj.outerHeight());
-		hilite.css("top", offset.top);
-		hilite.css("left", offset.left);
-		hilite.css("display", "block");
-
-		hilite.unbind('click');
-		hilite.click(
+		
+		divObj.click(
 			function(e) {
 				//don't bubble up
 				e.stopPropagation();
+				
+				//make sure that this stays highlighted
+				divObj.addClass("block_editing");
 				
 				//put secondary hover craft over the whole mothership
 				var hiliteTwo = $("#cmsOverlay");
@@ -42,17 +29,12 @@
 				callServoy("WEB_0F_page__browser.BLOCK_edit",domID.split('-').slice(3).join('-'));
 			}
 		);
-		
-		//attach method to divObj (because highlighter is at bottom of stack)
-		divObj.click(function(e) {
-			hilite.click();
-		});
 	};
 
 	hide_highlighter = function() {
 		// $("#cmsRowHilite").css('display', 'none');
-		$("#cmsBlockHilite").css('display', 'none');
-		$("#cmsOverlay").css('display', 'none');
+		// $("#cmsBlockHilite").css('display', 'none');
+		// $("#cmsOverlay").css('display', 'none');
 	}
 
 	function editOn() {
@@ -86,6 +68,8 @@
 
 	function editOff() {
 		hide_highlighter();
+		
+		$(".block_editing").removeClass('block_editing');
 		
 		//existing rows/blocks
 		$("div[id^='sutra-row-'],p[id^='sutra-row-']").unbind("mouseover");
