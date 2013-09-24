@@ -73,6 +73,12 @@ name:"row_order"
 },
 {
 allowNull:true,
+creationOrderIndex:10,
+dataType:4,
+name:"row_order_order"
+},
+{
+allowNull:true,
 creationOrderIndex:9,
 dataType:4,
 name:"sort_order"
