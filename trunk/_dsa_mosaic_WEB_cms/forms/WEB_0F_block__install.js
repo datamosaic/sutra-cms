@@ -22,7 +22,7 @@ var _skipSelect = false;
  * @properties={typeid:24,uuid:"064EAE73-F4C1-4C3A-9A53-07F61AF2F316"}
  */
 function FORM_on_load(event) {
-	
+
 }
 
 /**
@@ -44,17 +44,17 @@ function FORM_on_show(firstShow, event) {
 	else {
 //		//don't run rec_on_select until we're done
 //		_skipSelect = true
-		
+
 		globals.WEBc_sutra_trigger('TRIGGER_navigation_filter_update',[true])
-		
+
 //		if (_selected) {
 //			foundset.selectRecord(application.getUUID(_selected))
 //		}
-//		
+//
 //		//ok to run rec_on_select
 //		_skipSelect = false
 	}
-	
+
 	//set global for site records
 	globals.WEB_block_scope = 3
 
@@ -64,10 +64,10 @@ function FORM_on_show(firstShow, event) {
 		if (solutionPrefs.config.activeSpace == 'workflow') {
 			solutionPrefs.config.activeSpace = 'standard'
 		}
-		
+
 		globals.WEB_lock_workflow(true)
 	}
-	
+
 	//refire rec on select
 	forms.WEB_0F_block__scrapbook.REC_on_select()
 }
@@ -81,9 +81,9 @@ function FORM_on_show(firstShow, event) {
  */
 function REC_on_select(event) {
 	//don't run too much at the beginning
-	if (!_skipSelect) {
+	if (utils.hasRecords(foundset) && !_skipSelect) {
 		_selected = id_block.toString()
-		
+
 		if (elements.tab_detail.tabIndex == 2) {
 			forms.WEB_0F_block__scrapbook__log.LOAD_records()
 		}
@@ -110,7 +110,7 @@ function FORM_on_hide(event) {
 	if (application.__parent__.solutionPrefs && solutionPrefs.design.statusLockWorkflow && !solutionPrefs.config.prefs.formPreloading) {
 		globals.WEB_lock_workflow(false)
 	}
-	
+
 	return true
 }
 
@@ -126,7 +126,7 @@ function REC_new() {
  */
 function REC_delete() {
 	forms.WEB_0F_block__scrapbook.REC_delete()
-	
+
 	if (!utils.hasRecords(foundset)) {
 		FORM_on_show()
 	}
