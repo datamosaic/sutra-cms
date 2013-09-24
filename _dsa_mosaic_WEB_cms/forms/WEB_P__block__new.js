@@ -58,7 +58,7 @@ var _calledFrom = false;
 
 /**
  * @param {JSEvent} event the event that triggered the action
- * 
+ *
  * @properties={typeid:24,uuid:"6B93DF03-DE1C-4104-A956-D2A4D99E1B59"}
  * @AllowToRunInFind
  */
@@ -69,21 +69,20 @@ function ACTION_ok(event) {
 	 */
 	function setSort(scopeRec, parentScope) {
 		databaseManager.saveData()
-		
+
 		//determine which stack to throw this record at the bottom of
 		var rowOrder = 1
 		if (parentScope) {
 			var fsScope = databaseManager.getFoundSet('sutra_cms','web_scope')
-			
+
 			//passed uuid, grab record
 			if (application.getUUID(parentScope) instanceof UUID) {
 				fsScope.find()
 				fsScope.parent_id_scope = parentScope
 				fsScope.search()
 				parentScope = fsScope.getSelectedRecord()
-				
 			}
-			
+
 			//this is a child, get size of sibling foundset
 			if (utils.hasRecords(parentScope,'web_scope_to_scope__child')) {
 				rowOrder = parentScope.web_scope_to_scope__child.getSize()
@@ -96,29 +95,103 @@ function ACTION_ok(event) {
 				rowOrder = fsScope.search()
 			}
 		}
-		
+
 		scopeRec.row_order = rowOrder
+		scopeRec.row_order_order = 1
 	}
-	
+
+	function closeFID() {
+		//enable closing the form
+		globals.CODE_hide_form = 1
+
+		//close it
+		globals.CODE_form_in_dialog_close('cmsBlockNew')
+	}
+
+	/**
+	 * Create scope record in appropriate slot
+	 */
+	function makeScope() {
+		//turn off rec on select
+		forms.WEB_0F_page__design_1F_version_2L_scope._skipSelect = true
+
+		//disale/enable rec on select on the block type forms when creating scope
+		globals.WEB_block_on_select = false
+
+		//create scope record in real mode
+		if (_calledFrom == 'Live') {
+			/** @type {JSFoundSet<db:/sutra_cms/web_scope>} */
+			var fsScope = databaseManager.getFoundSet('sutra_cms','web_scope')
+			var scopeRec = fsScope.getRecord(fsScope.newRecord(false,true))
+
+			fsScope.find()
+			fsScope.id_area = _areaID
+			fsScope.parent_id_scope = _scopeID || '^='
+			fsScope.search()
+
+			var lastExisting = null
+			var lastSubItem = null
+
+			if (utils.hasRecords(fsScope)) {
+				fsScope.sort('row_order desc')
+				lastExisting = fsScope.getRecord(1).row_order
+			}
+
+			//working with a particular well of a layout block
+			if (_scopeOrder && _scopeID) {
+				fsScope.find()
+				fsScope.id_area = _areaID
+				fsScope.parent_id_scope = _scopeID
+				fsScope.row_order = _scopeOrder
+				fsScope.search()
+
+				if (utils.hasRecords(fsScope)) {
+					fsScope.sort('row_order_order desc')
+					lastSubItem = fsScope.getRecord(1).row_order_order
+				}
+			}
+
+			scopeRec.id_area = _areaID
+			scopeRec.parent_id_scope = _scopeID
+			//when order specified (specific slot of layout) use it otherwise put at end of concestor's tail
+			scopeRec.row_order = _scopeOrder || (lastExisting ? (lastExisting + 1) : 1)
+			scopeRec.row_order_order = lastSubItem ? lastSubItem + 1 : 1
+
+			databaseManager.saveData(scopeRec)
+		}
+		//create scope record in gui mode
+		else if (_calledFrom == 'GUI') {
+			fsScope = forms.WEB_0F_page__design_1F_version_2L_scope.foundset
+			var selectedScope = fsScope.getSelectedRecord()
+
+			var scopeRec = fsScope.getRecord(fsScope.newRecord(false,true))
+			scopeRec.parent_id_scope = selectedScope ? selectedScope.parent_id_scope : null
+
+			//determine which stack to throw this record at the bottom of
+			setSort(scopeRec, selectedScope)
+
+			databaseManager.saveData(scopeRec)
+
+			fsScope.sort('row_order asc, row_order_order asc')
+		}
+
+		//disable/enable rec on select on the block type forms when creating scope
+		globals.WEB_block_on_select = true
+
+		return scopeRec
+	}
+
 	//set flag to copy scrapbook instead of connecting it
 	if (event && event.getElementName() == 'btn_copy') {
 		var copyScrapbook = true
 	}
-	
-	function closeFID() {
-		//enable closing the form
-		globals.CODE_hide_form = 1
-		
-		//close it
-		globals.CODE_form_in_dialog_close('cmsBlockNew')
-	}
-	
+
 	//not already ok to close, continue
 	if (!globals.CODE_hide_form) {
-		
+
 		//get parent form
 		var formStack = forms.WEB_0F_block__scrapbook.controller.getFormContext()
-		
+
 		//this form is included on some other form
 		if (formStack.getMaxRowIndex() > 1) {
 			var formParent = formStack.getValue(formStack.getMaxRowIndex()-1,2)
@@ -127,22 +200,22 @@ function ACTION_ok(event) {
 		if (!formParent || formParent == 'WEB_0F_page__design') {
 			var fsBlock = databaseManager.getFoundSet('sutra_cms','web_block')
 		}
-		
+
 		//get what is chosen (scrapbook)
 		if (globals.WEB_block_scope__new) {
-			
+
 			//something chosen
 			if (utils.hasRecords(forms.WEB_P__block__new_1L_block.foundset)) {
 				closeFID()
-				
+
 				var scrapbookRec = forms.WEB_P__block__new_1L_block.foundset.getSelectedRecord()
-				
+
 				//called from theme form, connect
 				if (_calledFrom == 'Theme') {
 					// create editable default record
 					var fsEditableDefault = forms.WEB_0F_theme_1L_editable_default.foundset
 					var record = fsEditableDefault.getRecord(fsEditableDefault.newRecord(false, true))
-					
+
 					record.id_block = scrapbookRec.id_block
 					record.id_block_type = scrapbookRec.id_block_type
 					record.id_block_display = scrapbookRec.id_block_display
@@ -153,21 +226,18 @@ function ACTION_ok(event) {
 				else {
 					// unhook the scrapbook and make a copy of the active version
 					if (copyScrapbook) {
-						
+
 						//create block record on scrapbook form
 						if (_calledFrom == 'Scrapbook') {
 							//turn off rec on select
 							forms.WEB_0F_block__scrapbook._skipSelect = true
 							forms.WEB_0F_block__scrapbook_1F__sidebar_2L_block_version._skipSelect = true
-							
-							//choose context where to create scrapbook
-//							var fsBlock = forms[formParent].foundset
-							
+
 							var blockRec = fsBlock.getRecord(fsBlock.newRecord(true,true))
 							blockRec.block_name = scrapbookRec.block_name + ' (copy)'
-							
+
 							_blockID = blockRec.id_block.toString()
-							
+
 							//fill in the scope
 							blockRec.scope_type = globals.WEB_block_scope
 							if (globals.WEB_block_scope == 1) {
@@ -179,55 +249,13 @@ function ACTION_ok(event) {
 						}
 						//create scope and block on page form
 						else {
-							//turn off rec on select
-							forms.WEB_0F_page__design_1F_version_2L_scope._skipSelect = true
-							
-							//disale/enable rec on select on the block type forms when creating scope
-							globals.WEB_block_on_select = false
-							
-							//create scope record in real mode
-							if (_calledFrom == 'Live') {
-								/** @type {JSFoundSet<db:/sutra_cms/web_scope>} */
-								var fsScope = databaseManager.getFoundSet('sutra_cms','web_scope')
-								var scopeRec = fsScope.getRecord(fsScope.newRecord(false,true))
-								
-								fsScope.find()
-								fsScope.id_area = _areaID
-								fsScope.parent_id_scope = _scopeID || '^='
-								fsScope.search()
-								fsScope.sort('row_order desc')
-								
-								scopeRec.id_area = _areaID
-								scopeRec.parent_id_scope = _scopeID
-								//when order specified (specific slot of layout) use it otherwise put at end of concestor's tail 
-								scopeRec.row_order = _scopeOrder || (utils.hasRecords(fsScope) ? (fsScope.getRecord(1).row_order + 1) : 1)
-								
-								databaseManager.saveData(scopeRec)
-							}
-							//create scope record in gui mode
-							else if (_calledFrom == 'GUI') {
-								fsScope = forms.WEB_0F_page__design_1F_version_2L_scope.foundset
-								var selectedScope = fsScope.getSelectedRecord()
-								
-								var scopeRec = fsScope.getRecord(fsScope.newRecord(false,true))
-								scopeRec.parent_id_scope = selectedScope ? selectedScope.parent_id_scope : null
-								scopeRec.sort_order = fsScope.getSize()
-								
-								//determine which stack to throw this record at the bottom of
-								setSort(scopeRec, selectedScope)
-								
-								databaseManager.saveData(scopeRec)
-							}
-							
-							//disale/enable rec on select on the block type forms when creating scope
-							globals.WEB_block_on_select = true
-							
-							var fsBlock = databaseManager.getFoundSet('sutra_cms','web_block')
+							var scopeRec = makeScope()
+
 							var blockRec = fsBlock.getRecord(fsBlock.newRecord(false,true))
-							
+
 							scopeRec.id_block = blockRec.id_block
 						}
-						
+
 						//create first block version record
 						var blockVersionRec = blockRec.web_block_to_block_version__all.getRecord(blockRec.web_block_to_block_version__all.newRecord(false,true))
 						blockVersionRec.flag_active = 1
@@ -239,39 +267,39 @@ function ACTION_ok(event) {
 						blockVersionRec.id_block_type = scrapbookRec.id_block_type
 						blockVersionRec.id_block_display = scrapbookRec.id_block_display
 						databaseManager.saveData(blockVersionRec)
-						
+
 						databaseManager.saveData(blockRec)
-						
+
 						// copy block data records
 						if (utils.hasRecords(scrapbookRec,'web_block_to_block_version.web_block_version_to_block_data')) {
 							for (var i = 1; i <= scrapbookRec.web_block_to_block_version.web_block_version_to_block_data.getSize(); i++) {
 								var scrapbookDataRec = scrapbookRec.web_block_to_block_version.web_block_version_to_block_data.getRecord(i)
-								
+
 								var blockDataRec = blockVersionRec.web_block_version_to_block_data.getRecord(blockVersionRec.web_block_version_to_block_data.newRecord(false, true))
 								blockDataRec.data_key = scrapbookDataRec.data_key
 								blockDataRec.data_value = scrapbookDataRec.data_value
-								
+
 								databaseManager.saveData(blockDataRec)
 							}
 						}
-						
+
 						// copy block data configure records
 						if (utils.hasRecords(scrapbookRec,'web_block_to_block_version.web_block_version_to_block_data_configure')) {
 							for (var i = 1; i <= scrapbookRec.web_block_to_block_version.web_block_version_to_block_data_configure.getSize(); i++) {
 								var scrapbookConfigaRec = scrapbookRec.web_block_to_block_version.web_block_version_to_block_data_configure.getRecord(i)
-								
+
 								var blockConfigRec = blockVersionRec.web_block_version_to_block_data_configure.getRecord(blockVersionRec.web_block_version_to_block_data_configure.newRecord(false, true))
 								blockConfigRec.data_key = scrapbookConfigaRec.data_key
 								blockConfigRec.data_value = scrapbookConfigaRec.data_value
-								
+
 								databaseManager.saveData(blockConfigRec)
 							}
 						}
-						
+
 						// finish up
 						blockVersionRec.web_block_version_to_block_data.setSelectedIndex(1)
 						blockVersionRec.web_block_version_to_block_data_configure.setSelectedIndex(1)
-						
+
 						//resume normal operations for scrapbook
 						if (_calledFrom == 'Scrapbook') {
 							forms.WEB_0F_block__scrapbook_1F__sidebar_2L_block_version._skipSelect = false
@@ -281,59 +309,18 @@ function ACTION_ok(event) {
 						else {
 							forms.WEB_0F_page__design_1F_version_2L_scope._skipSelect = false
 						}
-						
+
 						databaseManager.saveData()
 					}
 					// connect selected scrapbook
 					else {
-						//turn off rec on select
-						forms.WEB_0F_page__design_1F_version_2L_scope._skipSelect = true
-						
-						//disale/enable rec on select on the block type forms when creating scope
-						globals.WEB_block_on_select = false
-						
-						//create scope record in real mode
-						if (_calledFrom == 'Live') {
-							/** @type {JSFoundSet<db:/sutra_cms/web_scope>} */
-							var fsScope = databaseManager.getFoundSet('sutra_cms','web_scope')
-							var scopeRec = fsScope.getRecord(fsScope.newRecord(false,true))
-							
-							fsScope.find()
-							fsScope.id_area = _areaID
-							fsScope.parent_id_scope = _scopeID || '^='
-							fsScope.search()
-							fsScope.sort('row_order desc')
-							
-							scopeRec.id_area = _areaID
-							scopeRec.parent_id_scope = _scopeID
-							//when order specified (specific slot of layout) use it otherwise put at end of concestor's tail 
-							scopeRec.row_order = _scopeOrder || (utils.hasRecords(fsScope) ? (fsScope.getRecord(1).row_order + 1) : 1)
-							
-							databaseManager.saveData(scopeRec)
-						}
-						//create scope record in gui mode
-						else if (_calledFrom == 'GUI') {
-							var fsScope = forms.WEB_0F_page__design_1F_version_2L_scope.foundset
-							var selectedScope = fsScope.getSelectedRecord()
-							
-							var scopeRec = fsScope.getRecord(fsScope.newRecord(false,true))
-							scopeRec.parent_id_scope = selectedScope ? selectedScope.parent_id_scope : null
-							scopeRec.sort_order = fsScope.getSize()
-							
-							//determine which stack to throw this record at the bottom of
-							setSort(scopeRec, selectedScope)
-							
-							databaseManager.saveData(scopeRec)
-						}
-						
-						//disale/enable rec on select on the block type forms when creating scope
-						globals.WEB_block_on_select = true
-						
+						scopeRec = makeScope()
+
 						scopeRec.id_block = scrapbookRec.id_block
-						
+
 						//resume normal operations for page
 						forms.WEB_0F_page__design_1F_version_2L_scope._skipSelect = false
-						
+
 						databaseManager.saveData()
 					}
 				}
@@ -351,15 +338,16 @@ function ACTION_ok(event) {
 			//something chosen
 			if (utils.hasRecords(forms.WEB_P__block__new_1L_block_type.foundset)) {
 				closeFID()
-				
+
 				var blockTypeRec = forms.WEB_P__block__new_1L_block_type.foundset.getSelectedRecord()
 				var blockDisplayRec = utils.hasRecords(blockTypeRec.web_block_type_to_block_display__default) ? blockTypeRec.web_block_type_to_block_display__default.getSelectedRecord() : {}
-				
+
 				//called from theme form
 				if (_calledFrom == 'Theme') {
 					// create editable default record
 					var fsEditableDefault = forms.WEB_0F_theme_1L_editable_default.foundset
 					var record = fsEditableDefault.getRecord(fsEditableDefault.newRecord(false, true))
+
 					record.id_block_type = blockTypeRec.id_block_type
 					record.id_block_display = blockTypeRec.client_id_block_display
 					record.row_order = fsEditableDefault.getSize()
@@ -367,20 +355,17 @@ function ACTION_ok(event) {
 				}
 				//called from page form
 				else {
-					
+
 					//create block record on scrapbook form
 					if (_calledFrom == 'Scrapbook') {
 						//turn off rec on select
 						forms.WEB_0F_block__scrapbook._skipSelect = true
 						forms.WEB_0F_block__scrapbook_1F__sidebar_2L_block_version._skipSelect = true
-						
-						//choose context where to create scrapbook
-//						var fsBlock = forms[formParent].foundset
-						
+
 						var blockRec = fsBlock.getRecord(fsBlock.newRecord(true,true))
-						
+
 						_blockID = blockRec.id_block.toString()
-						
+
 						//fill in the scope
 						blockRec.scope_type = globals.WEB_block_scope
 						if (globals.WEB_block_scope == 1) {
@@ -392,55 +377,13 @@ function ACTION_ok(event) {
 					}
 					//create scope and block on page form
 					else {
-						//turn off rec on select
-						forms.WEB_0F_page__design_1F_version_2L_scope._skipSelect = true
-						
-						//disale/enable rec on select on the block type forms when creating scope
-						globals.WEB_block_on_select = false
-						
-						//create scope record in real mode
-						if (_calledFrom == 'Live') {
-							/** @type {JSFoundSet<db:/sutra_cms/web_scope>} */
-							var fsScope = databaseManager.getFoundSet('sutra_cms','web_scope')
-							var scopeRec = fsScope.getRecord(fsScope.newRecord(false,true))
-							
-							fsScope.find()
-							fsScope.id_area = _areaID
-							fsScope.parent_id_scope = _scopeID || '^='
-							fsScope.search()
-							fsScope.sort('row_order desc')
-							
-							scopeRec.id_area = _areaID
-							scopeRec.parent_id_scope = _scopeID
-							//when order specified (specific slot of layout) use it otherwise put at end of concestor's tail 
-							scopeRec.row_order = _scopeOrder || (utils.hasRecords(fsScope) ? (fsScope.getRecord(1).row_order + 1) : 1)
-							
-							databaseManager.saveData(scopeRec)
-						}
-						//create scope record in gui mode
-						else if (_calledFrom == 'GUI') {
-							var fsScope = forms.WEB_0F_page__design_1F_version_2L_scope.foundset
-							var selectedScope = fsScope.getSelectedRecord()
-							
-							var scopeRec = fsScope.getRecord(fsScope.newRecord(false,true))
-							scopeRec.parent_id_scope = selectedScope ? selectedScope.parent_id_scope : null
-							scopeRec.sort_order = fsScope.getSize()
-							
-							//determine which stack to throw this record at the bottom of
-							setSort(scopeRec, selectedScope)
-							
-							databaseManager.saveData(scopeRec)
-						}
-						
-						//disale/enable rec on select on the block type forms when creating scope
-						globals.WEB_block_on_select = true
-						
-						var fsBlock = databaseManager.getFoundSet('sutra_cms','web_block')
+						scopeRec = makeScope()
+
 						var blockRec = fsBlock.getRecord(fsBlock.newRecord(false,true))
-						
+
 						scopeRec.id_block = blockRec.id_block
 					}
-					
+
 					//create first block version record
 					var blockVersionRec = blockRec.web_block_to_block_version__all.getRecord(blockRec.web_block_to_block_version__all.newRecord(false,true))
 					blockVersionRec.flag_active = 1
@@ -449,40 +392,39 @@ function ACTION_ok(event) {
 					blockVersionRec.id_block_type = blockTypeRec.id_block_type
 					blockVersionRec.id_block_display = blockTypeRec.client_id_block_display
 					databaseManager.saveData(blockVersionRec)
-					
+
 					databaseManager.saveData(blockRec)
-					
+
 					// create a block data record for each data point
 					if (utils.hasRecords(blockRec,'web_block_to_block_type.web_block_type_to_block_input')) {
 						for (var i = 1; i <= blockRec.web_block_to_block_type.web_block_type_to_block_input.getSize(); i++) {
 							var blockInputRec = blockRec.web_block_to_block_type.web_block_type_to_block_input.getRecord(i)
-							
+
 							var blockDataRec = blockVersionRec.web_block_version_to_block_data.getRecord(blockVersionRec.web_block_version_to_block_data.newRecord(false, true))
 							blockDataRec.data_key = blockInputRec.column_name
 							blockDataRec.data_value = blockInputRec.column_value
-							
+
 							databaseManager.saveData(blockInputRec)
 						}
 					}
-					
+
 					// create a block data configure record for each data point
 					if (utils.hasRecords(blockRec,'web_block_to_block_type.web_block_type_to_block_configure')) {
 						for (var i = 1; i <= blockRec.web_block_to_block_type.web_block_type_to_block_configure.getSize(); i++) {
 							var configTemplate = blockVersionRec.web_block_to_block_type.web_block_type_to_block_configure.getRecord(i)
-							
+
 							var blockConfigRec = blockVersionRec.web_block_version_to_block_data_configure.getRecord(blockVersionRec.web_block_version_to_block_data_configure.newRecord(false, true))
 							blockConfigRec.data_key = configTemplate.column_name
 							blockConfigRec.data_value = configTemplate.column_value
-							
+
 							databaseManager.saveData(blockConfigRec)
 						}
 					}
-					
-					
+
 					// finish up
 					blockVersionRec.web_block_version_to_block_data.setSelectedIndex(1)
 					blockVersionRec.web_block_version_to_block_data_configure.setSelectedIndex(1)
-					
+
 					//resume normal operations for scrapbook
 					if (_calledFrom == 'Scrapbook') {
 						forms.WEB_0F_block__scrapbook_1F__sidebar_2L_block_version._skipSelect = false
@@ -492,7 +434,7 @@ function ACTION_ok(event) {
 					else {
 						forms.WEB_0F_page__design_1F_version_2L_scope._skipSelect = false
 					}
-					
+
 					databaseManager.saveData()
 				}
 			}
@@ -504,10 +446,10 @@ function ACTION_ok(event) {
 				return
 			}
 		}
-		
+
 		//save data
 		databaseManager.saveData()
-		
+
 		//a record was created
 		_success = blockRec
 	}
@@ -522,7 +464,7 @@ function ACTION_cancel() {
 	if (!globals.CODE_hide_form) {
 		//enaable closing the form
 		globals.CODE_hide_form = 1
-		
+
 		globals.CODE_form_in_dialog_close('cmsBlockNew')
 	}
 }
@@ -535,63 +477,63 @@ function ACTION_cancel() {
  */
 function FORM_on_show(firstShow,event) {
 	globals.CODE_hide_form = 0
-	
+
 	_success = false
 	_blockID = null
-	
+
 	var fsBlockType = forms.WEB_P__block__new_1L_block_type.foundset
-	
+
 	if (firstShow) {
 		fsBlockType.loadAllRecords()
 		for (var i = 1; i <= fsBlockType.getSize(); i++) {
 			var record = fsBlockType.getRecord(i)
-			
+
 			//prefill default view for each block type
 			record.client_id_block_display = record.web_block_type_to_block_display__default.id_block_display
 		}
-		
+
 		//select content as default category
 		globals.WEB_block_category__new = 0
 	}
-	
+
 	//reset to block types
 	globals.WEB_block_scope__new = 0
 	_search = null
 	var results = ACTION_search()
-	
+
 	if (results) {
 		//sort by block type
 		fsBlockType.sort('block_name asc')
-		
+
 		for (var i = 1; i <= fsBlockType.getSize(); i++) {
 			var record = fsBlockType.getRecord(i)
-			
+
 			//prefill default view for each block type
 			record.client_id_block_display = record.web_block_type_to_block_display__default.id_block_display
-			
+
 			//highlight content block
 			if (record.block_name == 'Markdown') {
 				fsBlockType.setSelectedIndex(i)
 			}
 		}
 	}
-	
+
 	elements.tab_detail.tabIndex = 1
-	
+
 	//show correct buttons
 	TOGGLE_buttons()
-	
+
 	//only show combobox when called from page or theme
 	if (_calledFrom == 'Live' || _calledFrom == 'GUI' || _calledFrom == 'Theme') {
 		elements.lbl_scope.visible = true
 		elements.fld_scope.visible = true
-		
+
 		//only move search box if not in correct place
 		if (elements.lbl_search.getLocationY() != 90) {
 			elements.lbl_search.setLocation(elements.lbl_search.getLocationX(), 90)
 			elements.var_search.setLocation(elements.var_search.getLocationX(), 90)
 		}
-		
+
 		//only move tabpanel if it's been moved before
 		if (elements.tab_detail.getLocationY() != 120) {
 			elements.tab_detail.setLocation(0, 120)
@@ -602,20 +544,20 @@ function FORM_on_show(firstShow,event) {
 	else {
 		elements.lbl_scope.visible = false
 		elements.fld_scope.visible = false
-		
+
 		//only move search box if not in correct place
 		if (elements.lbl_search.getLocationY() != 38) {
 			elements.lbl_search.setLocation(elements.lbl_search.getLocationX(), 38)
 			elements.var_search.setLocation(elements.var_search.getLocationX(), 38)
 		}
-		
+
 		//only move tabpanel if it's not here yet
 		if (elements.tab_detail.getLocationY() != 90) {
 			elements.tab_detail.setLocation(0, 90)
 			elements.tab_detail.setSize(elements.tab_detail.getWidth(),elements.tab_detail.getHeight() + 25)
 		}
 	}
-	
+
 	//page is not an option when on theme
 	if (_calledFrom == 'Theme') {
 		var vlDisplay = ['Unique','Site','Install']
@@ -626,9 +568,9 @@ function FORM_on_show(firstShow,event) {
 		var vlReal = [0,1,2,3]
 	}
 	application.setValueListItems('WEB_scope_type',vlDisplay,vlReal)
-	
+
 	elements.var_search.requestFocus(false)
-	
+
 	//somehow bind enter to accept whatever selection is chosen
 //	plugins.window.createShortcut('ENTER',forms.WEB_P__block__new.ACTION_ok,'WEB_P__block__new')
 }
@@ -639,11 +581,11 @@ function FORM_on_show(firstShow,event) {
 function TOGGLE_buttons() {
 	//when on scrapbook tabs, copy/connect; otherwise ok
 	var okShow = elements.tab_detail.tabIndex == 1 ? true : false
-	
+
 	elements.btn_ok.visible = okShow
 	elements.btn_connect.visible = !okShow
 	elements.btn_copy.visible = !okShow
-	
+
 	//when adding to scrapbook, hide connect and only show copy
 	if (!okShow) {
 		if (_calledFrom == 'Scrapbook') {
@@ -654,7 +596,7 @@ function TOGGLE_buttons() {
 			elements.btn_copy.setLocation(application.getWindowWidth('cmsBlockNew') - 150, elements.btn_copy.getLocationY())
 		}
 	}
-	
+
 	//called from theme form, copy not an option
 	if (_calledFrom == 'Theme') {
 		elements.btn_copy.visible = false
@@ -673,15 +615,15 @@ function ACTION_search(event) {
 	//finding on block types
 	if (globals.WEB_block_scope__new == 0) {
 		var fs = forms.WEB_P__block__new_1L_block_type.foundset
-		
+
 		//load up everything
 		fs.loadAllRecords()
-		
+
 		//restrict based on search criteria, site, and availability
 		fs.find()
 		fs.id_site = forms.WEB_0F_site.id_site
 		fs.flag_unavailable = '^='
-		fs.block_category = globals.WEB_block_category__new	
+		fs.block_category = globals.WEB_block_category__new
 		if (_search) {
 			fs.block_name = '%' + _search + '%'
 		}
@@ -692,7 +634,7 @@ function ACTION_search(event) {
 		var fs = forms.WEB_P__block__new_1L_block.foundset
 		//load up everything
 		fs.loadAllRecords()
-		
+
 		//restrict based on search criteria
 		fs.find()
 		fs.scope_type = globals.WEB_block_scope__new
@@ -711,7 +653,7 @@ function ACTION_search(event) {
 		}
 		var results = fs.search(false,true)
 	}
-	
+
 	//re-enter the search field
 	if (event instanceof java.awt.event.KeyEvent) {
 		elements.var_search.requestFocus(false)
@@ -764,18 +706,18 @@ function FLD_scope__data_change(oldValue, newValue, event) {
 	//show scrapbooks
 	if (utils.stringToNumber(newValue)) {
 		elements.tab_detail.tabIndex = 2
-		
+
 		TOGGLE_buttons()
 	}
 	//create new block
 	else if (elements.tab_detail.tabIndex != 1) {
 		elements.tab_detail.tabIndex = 1
-		
+
 		TOGGLE_buttons()
 	}
-	
+
 	ACTION_search()
-	
+
 	return true
 }
 
@@ -787,13 +729,13 @@ function FLD_scope__data_change(oldValue, newValue, event) {
  * @param {JSEvent} event the event that triggered the action
  *
  * @returns {Boolean}
- * 
+ *
  * @properties={typeid:24,uuid:"7B4397D4-09D5-481A-9550-131F188078CB"}
  * @AllowToRunInFind
  */
 function FLD_category__data_change(oldValue, newValue, event) {
-	
+
 	ACTION_search()
-	
+
 	return true
 }

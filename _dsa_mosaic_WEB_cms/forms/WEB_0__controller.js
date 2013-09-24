@@ -307,8 +307,14 @@ function CONTROLLER_builder(results) {
 
 							var markup = getMarkup(scopeRec)
 
-							//which slot does this go into?
-							blocks[scopeRec.row_order - 1] = markup
+							//add on to existing item(s) in requested well
+							if (blocks[scopeRec.row_order - 1]) {
+								blocks[scopeRec.row_order - 1] += markup
+							}
+							//first item in well, assign
+							else {
+								blocks[scopeRec.row_order - 1] = markup
+							}
 						}
 					}
 
@@ -320,7 +326,7 @@ function CONTROLLER_builder(results) {
 
 							var newBlock = '<!-- add new block -->'
 							var breadcrumb = 'Add block to ' + display.display_name
-							newBlock += '<div id="sutra-block-add-' + areaScope + '" class="block_new" style="min-width:' + (100/loopSize - 2) + '%">\n'
+							newBlock += '<div id="sutra-block-add-' + areaScope + '" class="block_new">\n'
 							newBlock += '<a href="javascript:blockNew(\'' + areaScope + '\')" title="' + breadcrumb + '">New block</a>'
 							newBlock += '</div>\n'
 						}
@@ -330,9 +336,7 @@ function CONTROLLER_builder(results) {
 						}
 
 						//there isn't anything in this slot, put in a new block button
-						if (blocks[m] == null) {
-							blocks[m] = newBlock
-						}
+						blocks[m] = '<div cmsWell="true" style="min-width:' + (loopSize > 1 ? Math.floor(100/loopSize - 2) : 100) + '%">' + (blocks[m] ? blocks[m] : '') + newBlock + '</div>'
 					}
 
 					//fill in the slots
