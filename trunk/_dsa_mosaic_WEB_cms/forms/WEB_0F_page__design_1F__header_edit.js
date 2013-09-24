@@ -664,6 +664,9 @@ function ACTION_save() {
 		if (solutionPrefs.config.currentFormName == 'WEB_0F_page') {
 			forms.WEB_A__page.TOGGLE_edit_mode(false)
 		}
+
+		//not in edit mode, so make sure to turn off header edit button
+		forms.WEB_0F_page__design_1F__button_tab.elements.btn_edit.visible = false
 	}
 
 	if (forms[parentForm] && forms[parentForm].elements.gfx_curtain) {
