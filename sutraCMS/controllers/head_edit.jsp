@@ -15,18 +15,20 @@
 		
 		divObj.click(
 			function(e) {
-				//don't bubble up
-				e.stopPropagation();
+				if (!e.toElement.href || e.toElement.href.indexOf('javascript') == -1) {
+					//don't bubble up
+					e.stopPropagation();
 				
-				//make sure that this stays highlighted
-				divObj.addClass("block_editing");
+					//make sure that this stays highlighted
+					divObj.addClass("block_editing");
 				
-				//put secondary hover craft over the whole mothership
-				var hiliteTwo = $("#cmsOverlay");
-				hiliteTwo.css("display", "block");
+					//put secondary hover craft over the whole mothership
+					var hiliteTwo = $("#cmsOverlay");
+					hiliteTwo.css("display", "block");
 				
-				//tell servoy which block we want to edit (get rid of sutra-block-data and just return ids interested in)
-				callServoy("WEB_0F_page__browser.BLOCK_edit",domID.split('-').slice(3).join('-'));
+					//tell servoy which block we want to edit (get rid of sutra-block-data and just return ids interested in)
+					callServoy("WEB_0F_page__browser.BLOCK_edit",domID.split('-').slice(3).join('-'));
+				}
 			}
 		);
 	};
