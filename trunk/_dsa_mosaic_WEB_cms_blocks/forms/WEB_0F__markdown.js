@@ -83,6 +83,9 @@ function FORM_on_show(firstShow, event) {
 //	if (!firstShow) {
 //		ACTION_colorize()
 //	}
+
+	elements.fld_data_value.caretPosition = 0
+	elements.fld_data_value.requestFocus()
 }
 
 /**
