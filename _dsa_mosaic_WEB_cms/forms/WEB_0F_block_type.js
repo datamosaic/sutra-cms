@@ -180,11 +180,7 @@ function REC_new(flagRefresh,formName,fs) {
 					incrementer ++
 				}
 			}
-
-			if (objBlock.defaultView) {
-
-			}
-
+			
 			block.block_name = name
 			block.block_description = blockDescription || objBlock.record.block_description
 			block.block_category = objBlock.record.block_category
@@ -385,6 +381,9 @@ function REC_new(flagRefresh,formName,fs) {
 					TAB_change(null,block.block_type + 1)
 				}
 			}
+			
+			//flag that blocks updated so new must refresh block default display
+			forms.WEB_P__block__new._refreshBlockDefault = true
 		}
 	}
 	else {

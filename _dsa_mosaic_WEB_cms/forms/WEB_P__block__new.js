@@ -57,6 +57,14 @@ var _blockID = null;
 var _calledFrom = false;
 
 /**
+ * Block types have been changed, refresh on showing
+ * @type {Boolean}
+ *
+ * @properties={typeid:35,uuid:"43C19BBA-77E9-43A2-A8B7-7E0EAD81600E",variableType:-4}
+ */
+var _refreshBlockDefault = true;
+
+/**
  * @param {JSEvent} event the event that triggered the action
  *
  * @properties={typeid:24,uuid:"6B93DF03-DE1C-4104-A956-D2A4D99E1B59"}
@@ -483,17 +491,22 @@ function FORM_on_show(firstShow,event) {
 
 	var fsBlockType = forms.WEB_P__block__new_1L_block_type.foundset
 
-	if (firstShow) {
+	if (_refreshBlockDefault) {
+		_refreshBlockDefault = false
+		
 		fsBlockType.loadAllRecords()
 		for (var i = 1; i <= fsBlockType.getSize(); i++) {
 			var record = fsBlockType.getRecord(i)
 
 			//prefill default view for each block type
 			record.client_id_block_display = record.web_block_type_to_block_display__default.id_block_display
+			application.output('yoyoy')
 		}
 
 		//select content as default category
-		globals.WEB_block_category__new = 0
+		if (firstShow) {
+			globals.WEB_block_category__new = 0
+		}
 	}
 
 	//reset to block types

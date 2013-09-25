@@ -8,7 +8,6 @@ var _license_dsa_mosaic_WEB_cms = 'Module: _dsa_mosaic_WEB_cms \
 									MIT Licensed';
 
 /**
- *
  * @properties={typeid:24,uuid:"29DE3DC1-9D88-4FE8-B600-1C846174AA37"}
  */
 function FLD_default()
@@ -27,52 +26,27 @@ function FLD_default()
 	
 	databaseManager.saveData()
 	
-	
+	//flag that blocks updated so new must refresh block default display
+	forms.WEB_P__block__new._refreshBlockDefault = true
 }
 
 /**
- *
  * @properties={typeid:24,uuid:"E01A4EC7-9399-49B4-81D7-547D5BADE4B9"}
  */
-function REC_delete()
-{
-
-/*
- *	TITLE    :	REC_delete
- *			  	
- *	MODULE   :	start_CRM_mosaic
- *			  	
- *	ABOUT    :	prompts to delete the currently selected record
- *			  	
- *	INPUT    :	
- *			  	
- *	OUTPUT   :	
- *			  	
- *	REQUIRES :	
- *			  	
- *	USAGE    :	REC_delete()
- *			  	
- *	MODIFIED :	July 31, 2008 -- Troy Elliott, Data Mosaic
- *			  	
- */
-
-var delRec = globals.DIALOGS.showWarningDialog(
-'Delete record',
-'Do you really want to delete this record?',
-'Yes',
-'No')
-
-if (delRec == 'Yes') {
-
-controller.deleteRecord()
-
-
-}
-
+function REC_delete() {
+	var delRec = globals.DIALOGS.showWarningDialog(
+			'Delete record',
+			'Do you really want to delete this record?',
+			'Yes',
+			'No'
+		)
+	
+	if (delRec == 'Yes') {
+		controller.deleteRecord()
+	}
 }
 
 /**
- *
  * @properties={typeid:24,uuid:"370B6D46-FA41-414E-95F8-B6ACF5432FDD"}
  */
 function REC_new() {
