@@ -69,11 +69,11 @@ function EDIT_delete() {
 	//which form are we on (smart/web)
 	var formStack = controller.getFormContext()
 	if (formStack.getMaxRowIndex() > 1) {
-		var parentForm = formStack.getValue(formStack.getMaxRowIndex()-1,2)
+		var parentForm = formStack.getValue(formStack.getMaxRowIndex()-2,2)
 	}
 	
 	//record successfully deleted, hide 
-	if (forms.WEB_0F_page__browser.BLOCK_delete(utils.stringReplace(forms[parentForm]._scopeID,'-',''))) {
+	if (forms[parentForm].BLOCK_delete(utils.stringReplace(forms.WEB_0F_page__browser_1F_block__editor._scopeID,'-',''))) {
 		forms.WEB_0F_page__browser_1F_block__editor.ACTION_hide()
 	}
 	else {
@@ -108,3 +108,4 @@ function ACTION_list(event) {
 		menu.show(elem)
 	}
 }
+
