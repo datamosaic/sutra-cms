@@ -10,14 +10,13 @@ var _license_dsa_mosaic_WEB_cms_blocks = 'Module: _dsa_mosaic_WEB_cms_blocks \
 /**
  * The objective of VIEW methods is to return markup back to the page request
  * 
- * @returns {String}	markup for this block
+ * @param {scopes.CMS._constant.objData} obj Data object passed to all markup methods
+ * 
+ * @return {String} markup for this block
  * 
  * @properties={typeid:24,uuid:"F20BDBF7-8CB2-4035-A50B-0785CE98FC00"}
  */
 function VIEW_default(obj) {
-	
-	// The main CMS page object globals.CMS.data is available for all VIEW methods
-
 	return 'Hello world!'
 }
 
@@ -45,6 +44,7 @@ function BLOCK_sample_method() {
 function INIT_block() {
 	
 	// main data object to build
+	/** @type {scopes.CMS._constant.blockInit} */
 	var block = {}
 	
 	// block record data

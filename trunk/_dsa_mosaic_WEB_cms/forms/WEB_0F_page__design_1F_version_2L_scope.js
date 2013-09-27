@@ -32,8 +32,8 @@ function BLOCK_action_list() {
 							'-',
 							'Copy to...',
 							'Promote to...'
-						)
-
+						)		
+		
 		//type lists
 		var vlDisplay = [
 				'Page',
@@ -41,33 +41,33 @@ function BLOCK_action_list() {
 				'Install'
 			]
 		var vlReal = [1,2,3]
-
+		
 		if (utils.hasRecords(web_scope_to_block) && web_scope_to_block.scope_type) {
 			var scrapScope = web_scope_to_block.scope_type
 		}
-
+		
 		//copy to... menu
 		var subMenu1 = new Array()
 		for ( var i = 0 ; i < vlDisplay.length ; i++ ) {
 			subMenu1[i] = plugins.popupmenu.createMenuItem(vlDisplay[i],BLOCK_scope)
-
+			
 			subMenu1[i].setMethodArguments(vlReal[i],true)
 		}
-
+		
 		//what level is this block? (only allow promote to move up the chain)
 		if (scrapScope) {
 			vlDisplay = vlDisplay.slice(web_scope_to_block.scope_type)
 			vlReal = vlReal.slice(web_scope_to_block.scope_type)
 		}
-
+		
 		//promote to... menu
 		var subMenu2 = new Array()
 		for ( var i = 0 ; i < vlDisplay.length ; i++ ) {
 			subMenu2[i] = plugins.popupmenu.createMenuItem(vlDisplay[i],BLOCK_scope)
-
+			
 			subMenu2[i].setMethodArguments(vlReal[i],null,true)
 		}
-
+		
 		var mainMenu = new Array()
 		mainMenu[0] = plugins.popupmenu.createMenuItem(valuelist[0],BLOCK_duplicate)
 //		mainMenu[0].setMethodArguments(null,null,null,true)
@@ -75,22 +75,22 @@ function BLOCK_action_list() {
 //		mainMenu[1].setMethodArguments(null,null,null,null,true)
 		mainMenu[2] = plugins.popupmenu.createMenuItem(valuelist[2],BLOCK_action_list)
 		mainMenu[3] = plugins.popupmenu.createMenuItem(valuelist[3],subMenu1)
-
+		
 		//don't show promote menu for install scrapbooks
 		if (vlDisplay.length) {
 			mainMenu[4] = plugins.popupmenu.createMenuItem(valuelist[4],subMenu2)
 		}
-
+		
 		//when on scrapbook, offer to jump to scrapbook form for editing
 			//TODO: make work for page-level scrapbook
 		if (scrapScope) {
 			var spacer = plugins.popupmenu.createMenuItem('-',BLOCK_action_list)
 			var scrapJump = plugins.popupmenu.createMenuItem('Go to this scrapbook',BLOCK_goto)
 			scrapJump.setMethodArguments(scrapScope)
-
+			
 			mainMenu.push(spacer,scrapJump)
 		}
-
+		
 		//popup
 		var elem = elements[application.getMethodTriggerElementName()]
 		if (elem != null && mainMenu.length) {
@@ -118,12 +118,12 @@ function BLOCK_new(input) {
 				return item.substr(0,8) + '-' + item.substr(8,4) + '-' + item.substr(12,4) + '-' + item.substr(16,4)  + '-' + item.substr(20,12)
 			}
 		}
-
+		
 		var unmangle = input.split("-")
 		var scopeID = convertUUID(unmangle[1])
 		var areaID = convertUUID(unmangle[0])
 		var slot = unmangle[2]
-
+		
 		//notify which area we're adding to when in real mode
 		forms.WEB_P__block__new._calledFrom = 'Live'
 		forms.WEB_P__block__new._areaID = areaID
@@ -133,7 +133,7 @@ function BLOCK_new(input) {
 	else {
 		forms.WEB_P__block__new._calledFrom = 'GUI'
 	}
-
+	
 	//show FiD for adding a new block
 	globals.CODE_form_in_dialog(
 				forms.WEB_P__block__new,
@@ -143,7 +143,10 @@ function BLOCK_new(input) {
 				false,
 				'cmsBlockNew'
 			)
-
+	
+	//start a continuation in wc
+	scopes.DS.continuation.start(null,'WEB_P__block__new')
+	
 	//created a new record
 	if (forms.WEB_P__block__new._success) {
 		//update ordering for the things
@@ -156,7 +159,7 @@ function BLOCK_new(input) {
 				_newBlocks = new Array()
 			}
 			_newBlocks.push(foundset.getSelectedRecord())
-
+			
 			//update display
 			forms.WEB_0F_page__design_1F_version_2L_scope.REC_on_select(null,true)
 		}
@@ -192,7 +195,7 @@ function REC_delete(recDelete,silent) {
 		fsScope.find()
 		fsScope.id_area = recDelete.id_area
 		fsScope.search()
-
+		
 		fsScope.selectRecord(recDelete.id_scope)
 	}
 	//get record to delete and foundset
@@ -200,12 +203,12 @@ function REC_delete(recDelete,silent) {
 		fsScope = foundset
 	}
 	recDelete = fsScope.getSelectedRecord()
-
+	
 	var message = 'Do you really want to delete this block?'
 	if (utils.hasRecords(recDelete,'web_scope_to_scope__child')) {
 		message = 'Do you really want to delete this block and all its children?'
 	}
-
+	
 	/**
 	 * @param {JSRecord<db:/sutra_cms/web_scope>} record
 	 */
@@ -217,7 +220,7 @@ function REC_delete(recDelete,silent) {
 		}
 		_deletedBlocks.push(record)
 	}
-
+	
 	if (!silent) {
 		var delRec = globals.DIALOGS.showWarningDialog(
 						'Delete record',
@@ -226,36 +229,44 @@ function REC_delete(recDelete,silent) {
 						'No'
 					)
 	}
-
+	
 	if (silent || delRec == 'Yes') {
 		for (var i = 1; i <= fsScope.getSize(); i++) {
 			var record = fsScope.getRecord(i)
-
+			
 			//only re-order things at the top-level; leave holes down stream
 			if (!recDelete.parent_id_scope && recDelete.parent_id_scope == record.parent_id_scope && record.row_order > recDelete.row_order) {
 				record.row_order--
 			}
 		}
-
+		
 		//store all these records to be deleted so can undo if edits cancelled
 		whichRecords(recDelete)
-
+		
 		var success = fsScope.deleteRecord(recDelete)
-
+		
 		//live mode
 		if (arguments[0]) {
 			SCOPE_sort(recDelete.id_area)
 			//when silently deleting (create cancelled), url is updated upstream
 			if (!silent) {
-				forms.WEB_0F_page__browser.URL_update(true)
+				var formName = application.getApplicationType() == APPLICATION_TYPES.WEB_CLIENT ? 'WEB_0F_page__live__web' : 'WEB_0F_page__browser'
+				
+				forms[formName].URL_update(true)
 			}
 		}
 		//gui mode with no records left
 		else if (!utils.hasRecords(foundset)) {
 			REC_on_select()
 		}
-
+		
 		return success
+	}
+	//live mode
+	else if (arguments[0]) {
+		plugins.WebClientUtils.executeClientSideJS(
+				'bigIndicator(false);'
+			)
 	}
 }
 
@@ -272,7 +283,7 @@ var _skipSelect = false;
 function REC_on_select(event,fireSelect) {
 	//we're not intentially skipping this method, run it
 	if (!_skipSelect) {
-
+		
 		//give the triple-level relation forms a little extra help (not really legal...)
 		try {
 			if (utils.hasRecords(foundset)) {
@@ -285,9 +296,9 @@ function REC_on_select(event,fireSelect) {
 			}
 		}
 		catch (e) {
-
+			
 		}
-
+		
 		if (utils.hasRecords(web_scope_to_block)) {
 //			//normal non-linked items
 //			if (!web_scope_to_block.scope_type) {
@@ -297,7 +308,7 @@ function REC_on_select(event,fireSelect) {
 				}
 				//no actions available
 				else {
-					buttonStatus(false)
+					buttonStatus(false)		
 				}
 //			}
 //			//this is a linked scrapbook
@@ -310,7 +321,7 @@ function REC_on_select(event,fireSelect) {
 			//no actions available
 			buttonStatus(false)
 		}
-
+		
 		//gui view
 		if (globals.WEB_page_mode == 2) {
 			//switch tabpanel based on type of form
@@ -318,13 +329,13 @@ function REC_on_select(event,fireSelect) {
 		}
 		//data view
 		else {
-
+			
 		}
 	}
-
+	
 	function buttonStatus(state) {
 		var editMode = forms.WEB_0F_page.ACTION_edit_get() && state
-
+		
 		//set position of scope label because actions are showing differently in webclient
 		if (forms.WEB_0F_page__design_1F_version_2F_block__gui.elements.btn_data_actions.visible != editMode && application.getApplicationType() != APPLICATION_TYPES.WEB_CLIENT) {
 			//move left
@@ -338,25 +349,25 @@ function REC_on_select(event,fireSelect) {
 				forms.WEB_0F_page__design_1F_version_2F_block__gui.elements.lbl_scope.setLocation(forms.WEB_0F_page__design_1F_version_2F_block__gui.elements.lbl_scope.getLocationX() + 30,forms.WEB_0F_page__design_1F_version_2F_block__gui.elements.lbl_scope.getLocationY())
 			}
 		}
-
+		
 		//actions available
 		forms.WEB_0F_page__design_1F_version_2F_block__data.elements.btn_data_actions.visible = editMode
 		forms.WEB_0F_page__design_1F_version_2F_block__gui.elements.btn_data_actions.visible = editMode
-
+		
 		//scrapbook warning labels
 		forms.WEB_0F_page__design_1F_version_2F_block__data.elements.lbl_scrapbook.visible = editMode && web_scope_to_block.scope_type
 		forms.WEB_0F_page__design_1F_version_2F_block__gui.elements.lbl_scrapbook.visible = editMode && web_scope_to_block.scope_type
-
+		
 		var editScrap = '<html><strong>Warning!</strong> This is a scrapbook. Edits may affect other pages.</html>'
 		var lockScrap = '<html>This scrapbook is locked. Editing not possible here.</html>'
-
+		
 		if (editMode && web_scope_to_block.web_block_to_block_version.flag_lock) {
 			var scrapText = lockScrap
 		}
 		else if (editMode) {
 			var scrapText = editScrap
 		}
-
+		
 		forms.WEB_0F_page__design_1F_version_2F_block__data.elements.lbl_scrapbook.text = scrapText
 		forms.WEB_0F_page__design_1F_version_2F_block__gui.elements.lbl_scrapbook.text = scrapText
 	}
@@ -392,31 +403,31 @@ function ACTION_gui_mode_load(fireSelect) {
 	if (!_guiLoading) {
 		//method is beginning
 		_guiLoading = true
-
+		
 //		if (!this.someVar) {
 //			this.someVar = 1
 //		}
 //		else {
 //			this.someVar ++
 //		}
-//
+//		
 //		//log how many times run and how
 //		application.output('WEB_0F_page__design_1F_version_2L_scope.ACTION_gui_mode_load(' + (utils.hasRecords(foundset) ? web_block_to_block_type.block_name : '') + ') #:' + this.someVar)
-
+		
 		var contextForm = 'WEB_0F_page__design_1F_version_2F_block__gui'
 		var tabPanel = forms[contextForm].elements.tab_detail
-
+		
 		if (utils.hasRecords(web_scope_to_block)) {
 			var recBlock = web_scope_to_block.getSelectedRecord()
-
+			
 			if (recBlock) {
 				if (recBlock && utils.hasRecords(recBlock.web_block_to_block_type)) {
 					var recBlockType = recBlock.web_block_to_block_type.getRecord(1)
 				}
-
+				
 				//check to make sure the active block version is editable
 				var flagEdit = forms.WEB_0F_page.ACTION_edit_get() && utils.hasRecords(recBlock,'web_block_to_block_version') && !recBlock.web_block_to_block_version.flag_lock
-
+				
 				//this block definition exists
 				if (recBlockType) {
 					//edits allowed
@@ -427,16 +438,21 @@ function ACTION_gui_mode_load(fireSelect) {
 					else {
 						var formName = recBlockType.form_name_display || recBlockType.form_name
 					}
-
+					
+					//check for webclient version of this block type
+					if (application.getApplicationType() == APPLICATION_TYPES.WEB_CLIENT && solutionModel.getForm(formName + 'w')) {
+						formName += 'w'
+					}
+					
 					//set heading for this tab panel
 					forms[contextForm].elements.lbl_banner.text = (recBlockType.block_name || 'Unnamed') + ' block'
-
+					
 					//the form exists
 					if (formName && solutionModel.getForm(formName)) {
 						//load tab panel (relation not needed because we're manually filling the foundset)
 						tabPanel.addTab(forms[formName])
 						tabPanel.tabIndex = tabPanel.getMaxTabIndex()
-
+						
 						//force the gui to update
 						if (solutionModel.getForm(formName) && solutionModel.getForm(formName).getFormMethod('INIT_data')) {
 							if (forms[formName].foundset) {
@@ -449,7 +465,7 @@ function ACTION_gui_mode_load(fireSelect) {
 										'Yes',
 										'No'
 									)
-
+								
 								//restart
 								if (restart == 'Yes') {
 									application.exit()
@@ -459,7 +475,7 @@ function ACTION_gui_mode_load(fireSelect) {
 //									_guiLoading = false
 //								}
 							}
-
+							
 							forms[formName].INIT_data()
 						}
 					}
@@ -488,18 +504,18 @@ function ACTION_gui_mode_load(fireSelect) {
 				defaultForms()
 			}
 		}
-
+		
 		//method is done
 		_guiLoading = false
 	}
-
+	
 	function defaultForms() {
 		try {
 			forms[contextForm].foundset.loadRecords(web_scope_to_block)
 		}
 		catch (e) {}
 		tabPanel.tabIndex = 1
-
+		
 		forms[contextForm].elements.lbl_banner.text = "Content"
 	}
 }
@@ -510,15 +526,15 @@ function ACTION_gui_mode_load(fireSelect) {
  */
 function TOGGLE_elements(editAllow) {
 	var status = globals.WEBc_block_getEdit() && editAllow
-
+	
 	elements.btn_actions.enabled = status
 	elements.btn_add.enabled = status
 	elements.btn_delete.visible = status
-
+	
 	elements.fld_flag_active.enabled = status
 	elements.fld_id_block_display__combo.visible = status
 	elements.fld_id_block_display__field.visible = !status
-
+	
 	elements.fld_id_scope.visible = false
 	elements.fld_parent_id_scope.visible = false
 	elements.fld_row_order.visible = false
@@ -553,7 +569,7 @@ function FLD_flag_active__data_change(oldValue, newValue, event) {
 	if (databaseManager.getAutoSave()) {
 		databaseManager.saveData()
 	}
-
+	
 	return true
 }
 
@@ -562,7 +578,7 @@ function FLD_flag_active__data_change(oldValue, newValue, event) {
  * @AllowToRunInFind
  */
 function BLOCK_duplicate() {
-
+	
 	var oldScope = foundset.getSelectedRecord()
 	//find current syblings
 	/** @type {JSFoundSet<db:/sutra_cms/web_scope>} */
@@ -571,65 +587,65 @@ function BLOCK_duplicate() {
 	fsPeers.parent_id_scope = (oldScope.parent_id_scope) ? oldScope.parent_id_scope : '^='
 	fsPeers.id_area = oldScope.id_area
 	var results = fsPeers.search()
-
+	
 	if (results) {
 		fsPeers.sort('row_order asc')
 	}
-
+	
 	var blockRec = oldScope.web_scope_to_block.getSelectedRecord()
-
+	
 	//create new block record
 	var fsBlock = databaseManager.getFoundSet('sutra_cms','web_block')
 	var destBlock = fsBlock.getRecord(fsBlock.newRecord(false,true))
-
+	
 	//get source block version
 	var srcBlockVer = blockRec.web_block_to_block_version.getRecord(1)
-
+	
 	//create destination block version record
 	var destBlockVer = globals.CODE_record_duplicate(srcBlockVer,[
 										"web_block_version_to_block_data",
 										"web_block_version_to_block_data_configure"
 									])
-
+	
 	//set datapoints on new block version
 	destBlockVer.id_block = destBlock.id_block
 	destBlockVer.flag_active = 1
 	destBlockVer.version_number = 1
 	destBlockVer.version_name = 'Initial version'
-	destBlockVer.version_description = 'Duplicated from: ' +
+	destBlockVer.version_description = 'Duplicated from: ' + 
 		'"' + blockRec.block_name + '", version ' + blockRec.web_block_to_block_version.version_number + '\n' +
 		'ID: ' + blockRec.id_block.toString()
-
+	
 	//assign scope to the newly copied record
 	destBlock.scope_type = blockRec.scope_type
 	destBlock.block_name = blockRec.block_name
-
+	
 	//punch in the current block type and display (so will show up on site scrapbook)
 	destBlock.id_block_type = blockRec.id_block_type
 	destBlock.id_block_display = blockRec.id_block_display
-
+	
 //create new scope record and hook together
 	//turn off rec on select
 	_skipSelect = true
-
+	
 	//disable/enable rec on select on the block type forms when creating scope
 	globals.WEB_block_on_select = false
-
+	
 	var scopeRec = foundset.getRecord(foundset.newRecord(false,true))
-
+	
 	scopeRec.row_order = fsPeers.getRecord(fsPeers.getSize()).row_order + 1
 	scopeRec.id_block = destBlock.id_block
 	databaseManager.saveData()
-
+	
 	//disale/enable rec on select on the block type forms when creating scope
 	globals.WEB_block_on_select = true
-
+	
 	//turn on rec on select
 	_skipSelect = false
-
+	
 	//refire rec_on_select to get us in the right spot
 	forms.WEB_0F_page__design_1F_version_2L_scope.REC_on_select(null,true)
-
+	
 //store this scope record into temp variable to delete if canceled
 	if (scopeRec) {
 		if (!_newBlocks instanceof Array) {
@@ -644,20 +660,20 @@ function BLOCK_duplicate() {
  */
 function BLOCK_goto(scope) {
 	var blockRec = web_scope_to_block.getSelectedRecord()
-
+	
 	var question = globals.DIALOGS.showQuestionDialog(
 				'Leave edit mode?',
 				'You must exit edit mode before viewing the scrapbook manager.\nAll changes will be saved.\nContinue?',
 				'Yes',
 				'No'
 		)
-
+	
 	if (question == 'Yes') {
 		var blockRec = web_scope_to_block.getSelectedRecord()
-
+		
 		//leave edit mode
 		forms.WEB_A__page.ACTION_save()
-
+		
 		if (scope == '1') {
 			var pageScrap = true
 			var navForm = 'WEB_0F_block__scrapbook_1F_page__blocks_2L_block'
@@ -670,24 +686,24 @@ function BLOCK_goto(scope) {
 			var navItem = 'CMS_scrapbook_install'
 			var navForm = 'WEB_0F_block__install'
 		}
-
+		
 		//site or install scrapbook
 		if (navItem) {
 			//not running in data sutra application framework, just show appropriate scrapbook form
 			if (globals.WEBc_sutra_trigger('TRIGGER_navigation_set',[navItem]) == 'noSutra') {
 				forms[navForm].controller.show()
 			}
-
+			
 			//select this scrapbook (happens because of shared foundset)
 //				application.updateUI(1000)
 			forms[navForm].foundset.selectRecord(blockRec.id_block)
-
+			
 			//enter edit mode?
 		}
 		else if (pageScrap) {
 			//go to scrapbook tab
 			forms.WEB_0F_page__design_1F__button_tab.TAB_change(null,'tab_b3')
-
+			
 			//select this scrapbook
 			forms[navForm].foundset.selectRecord(blockRec.id_block)
 		}
@@ -699,10 +715,10 @@ function BLOCK_goto(scope) {
  */
 function BLOCK_refresh() {
 	var blockRec = web_scope_to_block.getSelectedRecord()
-
+	
 	if (utils.hasRecords(foundset.getSelectedRecord(),'web_scope_to_block.web_block_to_block_version')) {
 		forms.WEB_0F_block__scrapbook.REC_refresh(web_scope_to_block.web_block_to_block_version__all,web_scope_to_block.web_block_to_block_version.getRecord(1))
-
+		
 		//refire rec_on_select to get us in the right spot
 		REC_on_select(null,true)
 	}
@@ -719,28 +735,28 @@ function BLOCK_refresh() {
  */
 function BLOCK_scope(scope,copy,promote) {
 	var blockRec = web_scope_to_block.getSelectedRecord()
-
+	
 	var input = globals.DIALOGS.showInputDialog(
 					'Name',
 					'Please (re)name the block you are working with',
 					blockRec.block_name || ''
 			)
-
+	
 	//make a copy of this block
 	if (copy) {
 		//create new block record
 		var fsBlock = databaseManager.getFoundSet('sutra_cms','web_block')
 		var destBlock = fsBlock.getRecord(fsBlock.newRecord(false,true))
-
+		
 		//get source block version
 		var srcBlockVer = blockRec.web_block_to_block_version.getRecord(1)
-
+		
 		//create destination block version record
 		var destBlockVer = globals.CODE_record_duplicate(srcBlockVer,[
 											"web_block_version_to_block_data",
 											"web_block_version_to_block_data_configure"
 										])
-
+		
 		//set datapoints on new block version
 		destBlockVer.id_block = destBlock.id_block
 		destBlockVer.flag_active = 1
@@ -749,15 +765,15 @@ function BLOCK_scope(scope,copy,promote) {
 		destBlockVer.version_description = 'Copied: ' + application.getValueListDisplayValue('WEB_scope_type',blockRec.scope_type) + ' content\n' +
 			'"' + blockRec.block_name + '", version ' + blockRec.web_block_to_block_version.version_number + '\n' +
 			'ID: ' + blockRec.id_block.toString()
-
+		
 		//assign scope to the newly copied record
 		destBlock.scope_type = scope
 		destBlock.block_name = input
-
+		
 		//punch in the current block type and display so will show up on site scrapbook
 		destBlock.id_block_type = blockRec.id_block_type
 		destBlock.id_block_display = blockRec.id_block_display
-
+		
 		if (scope == 1) {
 			destBlock.id_page = forms.WEB_0F_page.id_page
 			forms.WEB_0F_page__design_1F__button_tab.elements.tab_b3.enabled = true
@@ -770,7 +786,7 @@ function BLOCK_scope(scope,copy,promote) {
 	else if (promote) {
 		blockRec.scope_type = scope
 		blockRec.block_name = input
-
+		
 		if (scope == 1) {
 			blockRec.id_page = forms.WEB_0F_page.id_page
 			forms.WEB_0F_page__design_1F__button_tab.elements.tab_b3.enabled = true
@@ -788,14 +804,14 @@ function BLOCK_scope(scope,copy,promote) {
 /**
  * @param {JSRecord<db:/sutra_cms/web_scope>} scope
  * @param {JSRecord<db:/sutra_cms/web_scope>} scopeParent
- *
+ * 
  * @properties={typeid:24,uuid:"8D0EF1CA-26AC-4D34-B793-6E9147C79DC9"}
  */
 function BLOCK_layout(scope,scopeParent) {
 	//re-order everything below scope
-
+	
 	//tack on scope to bottom of scope parent
-
+	
 	scope.parent_id_scope = scopeParent.id_scope
 }
 
@@ -804,14 +820,14 @@ function BLOCK_layout(scope,scopeParent) {
  * @properties={typeid:24,uuid:"189B8FFD-54F0-40A6-AD81-5008C88B27AC"}
  */
 function MOVE_down() {
-
+	
 	MOVE_generic('down')
-
+	
 }
 
 /**
  * Re-order blocks.  Only layout blocks can have children
- *
+ * 
  * @properties={typeid:24,uuid:"837FB023-249B-4465-9C44-8600A3A75AEF"}
  * @AllowToRunInFind
  */
@@ -1017,9 +1033,9 @@ function MOVE_generic(input) {
  * @properties={typeid:24,uuid:"5F9D68F9-C105-4905-A209-1F8EDE453A08"}
  */
 function MOVE_in() {
-
+	
 	MOVE_generic('in')
-
+	
 }
 
 /**
@@ -1027,9 +1043,9 @@ function MOVE_in() {
  * @properties={typeid:24,uuid:"B4FC919F-A2DC-4CE3-928B-60C6809CBAA8"}
  */
 function MOVE_out() {
-
+	
 	MOVE_generic('out')
-
+	
 }
 
 /**
@@ -1037,16 +1053,16 @@ function MOVE_out() {
  * @properties={typeid:24,uuid:"67319AC7-CFE4-4EAC-A4B3-3B95ACFDE8DC"}
  */
 function MOVE_up() {
-
+	
 	MOVE_generic('up')
-
+	
 }
 
 /**
  * Punch in a sort value so that GUI mode can be sorted by parent-childness
- *
+ * 
  * @param {UUID} [idArea]
- *
+ * 
  * @properties={typeid:24,uuid:"006A6F60-2336-424C-BCF5-A3E349DAB413"}
  * @AllowToRunInFind
  */
@@ -1055,7 +1071,7 @@ function SCOPE_sort(idArea) {
 		idArea = id_area
 		var localUpdate = true
 	}
-
+	
 	/** @type {JSFoundSet<db:/sutra_cms/web_scope>} */
 	var fsScope = databaseManager.getFoundSet('db:/sutra_cms/web_scope')
 	fsScope.find()
@@ -1063,14 +1079,14 @@ function SCOPE_sort(idArea) {
 	fsScope.parent_id_scope = '^='
 	fsScope.search()
 	fsScope.sort('row_order asc')
-
+	
 	/**
 	 * @param {JSRecord<db:/sutra_cms/web_scope>} record
 	 */
 	function doRecord(record) {
 		//set order of this record
 		record.sort_order = orderHelper++
-
+		
 		//no sub order value, set to be 1
 		if (record.row_order_order == null) {
 			record.row_order_order = 1
@@ -1084,12 +1100,12 @@ function SCOPE_sort(idArea) {
 			}
 		}
 	}
-
+	
 	var orderHelper = 1
 	for (var j = 1; j <= fsScope.getSize(); j++) {
 		doRecord(fsScope.getRecord(j))
 	}
-
+	
 	if (localUpdate) {
 		databaseManager.saveData(foundset)
 		//double sort because it thinks that already asc, so doesn't do anything

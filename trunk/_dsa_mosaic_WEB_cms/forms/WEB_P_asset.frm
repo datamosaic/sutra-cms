@@ -71,7 +71,7 @@ editable:false,
 formIndex:10500,
 location:"20,60",
 size:"200,23",
-styleClass:"combobox",
+styleClass:"normal",
 typeid:4,
 uuid:"A0083124-E6D0-4EF8-8827-C1F0A3EE6BD7",
 valuelistID:"48A848FB-45E0-4D3C-978B-91C2C9C27CE7"

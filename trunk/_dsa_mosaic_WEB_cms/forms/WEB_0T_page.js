@@ -1143,8 +1143,10 @@ function REC_new() {
 			globals.CODE_cursor_busy(false)
 
 			//let sleep for a second so doesn't crash
-			application.sleep(1000)
-
+			if (application.getApplicationType() != APPLICATION_TYPES.WEB_CLIENT) {
+				application.sleep(1000)
+			}
+			
 			globals.CODE_form_in_dialog(
 						forms.WEB_P_page,
 						-1,-1,-1,-1,

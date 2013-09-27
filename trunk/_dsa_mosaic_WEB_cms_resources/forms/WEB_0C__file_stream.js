@@ -53,6 +53,11 @@ var _elementsSelected = [];
 var _file = {};
 
 /**
+ * @properties={typeid:35,uuid:"1FE8CFB2-2055-4B20-9B3F-E661AA39BA65",variableType:-4}
+ */
+var _webFile = null;
+
+/**
  * @type {Boolean}
  *
  * @properties={typeid:35,uuid:"3F0941BE-2D6B-42BA-A931-4910330A1CD8",variableType:-4}
@@ -721,6 +726,8 @@ function FUNCTION_streaming_check() {
 }
 
 /**
+ * @param {String} [directory="images"]
+ * @param {String} [uuid]
  * @properties={typeid:24,uuid:"21DA8183-8F34-4363-AC99-5AD696827909"}
  */
 function IMAGE_import(directory,uuid) {
@@ -734,6 +741,9 @@ function IMAGE_import(directory,uuid) {
 		uuid = application.getUUID().toString()
 	}
 	
+	//make sure a previous file doesn't get imported
+	_webFile = null
+	
 	// scope to unique directory for this asset instance
 	directory += "/" + uuid
 	_file.directory = directory
@@ -743,8 +753,13 @@ function IMAGE_import(directory,uuid) {
 						'/application_server/server/webapps/ROOT/sutraCMS/sites/' +
 						forms.WEB_0F_site.directory + '/'
 	
-	// prompt for input image
-	var file = plugins.file.showFileOpenDialog()
+	var file = plugins.file.showFileOpenDialog(null,null,false,null,WEB_callback,'Choose image to add to asset library')
+	
+	if (application.getApplicationType() == APPLICATION_TYPES.WEB_CLIENT) {
+		scopes.DS.continuation.start(null,controller.getName())
+		file = _webFile
+	}
+	
 	if (!file) {
 		return "No file selected"	
 	}
@@ -984,6 +999,8 @@ function ASSET_directory_tree(directory,autoCreate) {
 }
 
 /**
+ * @param {String} [directory="files"]
+ * @param {String} [uuid]
  * @properties={typeid:24,uuid:"11DA8183-8F34-4363-AC99-5AD696827909"}
  */
 function FILE_import(directory,uuid) {
@@ -997,6 +1014,9 @@ function FILE_import(directory,uuid) {
 		uuid = application.getUUID().toString()
 	}
 	
+	//make sure a previous file doesn't get imported
+	_webFile = null
+	
 	// scope to unique directory for this asset instance
 	directory += "/" + uuid
 	_file.directory = directory
@@ -1007,7 +1027,13 @@ function FILE_import(directory,uuid) {
 						forms.WEB_0F_site.directory + '/'
 	
 	// prompt for input file
-	var file = plugins.file.showFileOpenDialog()
+	var file = plugins.file.showFileOpenDialog(null,null,false,null,WEB_callback,'Choose file to add to asset library')
+	
+	if (application.getApplicationType() == APPLICATION_TYPES.WEB_CLIENT) {
+		scopes.DS.continuation.start(null,controller.getName())
+		file = _webFile
+	}
+	
 	if (!file) {
 		return "No file selected"	
 	}
@@ -1085,5 +1111,19 @@ function FILE_import_callback(result, e) {
 	//no records created yet and interface locked
 	if (application.__parent__.solutionPrefs && solutionPrefs.design.statusLockWorkflow) {
 		globals.WEB_lock_workflow(false)
+	}
+}
+
+/**
+ * @param {JSFile[]} files
+ * @properties={typeid:24,uuid:"D362513A-1EF7-4EC6-B7D9-55D34EAAA900"}
+ */
+function WEB_callback(files) {
+	//something chosen, (continuation exists for this location) continue method
+	if (files instanceof Array && files.length) {
+		_webFile = files[0]
+		
+		//resume continuation (will only be true in webclient)
+		scopes.DS.continuation.stop(null,controller.getName())
 	}
 }

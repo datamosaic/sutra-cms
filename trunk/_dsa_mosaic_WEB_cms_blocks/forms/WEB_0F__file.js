@@ -43,10 +43,12 @@ var _title = null;
 var _tooltip = null;
 
 /**
- * @param	{Object}	obj Data object passed to all markup methods
+ * @param {scopes.CMS._constant.objData} obj Data object passed to all markup methods
+ * 
+ * @return {String} markup for this block
  * @properties={typeid:24,uuid:"5E918192-4261-441C-87BD-AF0A513D9CBC"}
  */
-function VIEW_default(obj, results) {
+function VIEW_default(obj) {
 	
 	var data = obj.block_data
 	var dataConfig = obj.block_configure
@@ -107,19 +109,19 @@ function INIT_data() {
 	//set status of variables
 	var editMode = globals.CMS.ui.getEdit()
 	
-	elements.var_cssId.transparent = editMode
-	elements.var_cssId.editable = editMode
-	elements.var_cssClass.transparent = editMode
-	elements.var_cssClass.editable = editMode
-	elements.var_title.transparent = editMode
-	elements.var_title.editable = editMode
-	elements.var_tooltip.transparent = editMode
-	elements.var_tooltip.editable = editMode
+	globals.CMSb.propCheck(elements.var_cssId,'transparent',editMode)
+	globals.CMSb.propCheck(elements.var_cssId,'editable',editMode)
+	globals.CMSb.propCheck(elements.var_cssClass,'transparent',editMode)
+	globals.CMSb.propCheck(elements.var_cssClass,'editable',editMode)
+	globals.CMSb.propCheck(elements.var_title,'transparent',editMode)
+	globals.CMSb.propCheck(elements.var_title,'editable',editMode)
+	globals.CMSb.propCheck(elements.var_tooltip,'transparent',editMode)
+	globals.CMSb.propCheck(elements.var_tooltip,'editable',editMode)
 	
-	elements.btn_choose.enabled = editMode
-	elements.btn_import.enabled = editMode
-	elements.lbl_choose.enabled = editMode
-	elements.lbl_import.enabled = editMode
+	globals.CMSb.propCheck(elements.btn_choose,'enabled',editMode)
+	globals.CMSb.propCheck(elements.btn_import,'enabled',editMode)
+	globals.CMSb.propCheck(elements.lbl_choose,'enabled',editMode)
+	globals.CMSb.propCheck(elements.lbl_import,'enabled',editMode)
 	
 	//only allow to jump to related asset if one selected and not in edit mode
 	var fileFound = false
@@ -127,9 +129,9 @@ function INIT_data() {
 		var fsAssetInstance = databaseManager.getFoundSet('sutra_cms','web_asset_instance')
 		fsAssetInstance.find()
 		fsAssetInstance.id_asset_instance = data.id_asset_instance
-		var fileFound = fsAssetInstance.search()
+		fileFound = fsAssetInstance.search()
 	}
-	elements.btn_visit.visible = !editMode && fileFound
+	globals.CMSb.propCheck(elements.btn_visit,'visible',!editMode && fileFound)
 }
 
 /**
@@ -174,6 +176,7 @@ function GOTO_asset(event) {
 function INIT_block() {
 	
 	// main data object to build
+	/** @type {scopes.CMS._constant.blockInit} */
 	var block = {}
 	
 	// block record data
@@ -240,14 +243,17 @@ function BLOCK_choose(event) {
 						"CMS_assetChoose"
 					)
 		
+		//start a continuation in wc
+		scopes.DS.continuation.start(null,'WEB_P__asset')
+		
 		//something chosen, choose the image
 		if (forms.WEB_P__asset._assetChosen) {
 			var assetRec = forms.WEB_P__asset._assetChosen.asset
 			
 			if (assetRec) {
-				globals.CMS.ui.setData(null,'id_asset_instance',assetRec.id_asset_instance.toString(),'WEB_0F__file')
-				globals.CMS.ui.setData(null,'file_name',assetRec.asset_title,'WEB_0F__file')
-				globals.CMS.ui.setData(null,'directory',assetRec.asset_directory,'WEB_0F__file')
+				globals.CMS.ui.setData(null,'id_asset_instance',assetRec.id_asset_instance.toString(),controller.getName())
+				globals.CMS.ui.setData(null,'file_name',assetRec.asset_title,controller.getName())
+				globals.CMS.ui.setData(null,'directory',assetRec.asset_directory,controller.getName())
 				
 	//			databaseManager.saveData()
 				
@@ -277,8 +283,8 @@ function BLOCK_import(event) {
 function TOGGLE_buttons(event) {
 	var editStatus = globals.CMS.ui.getEdit()
 	
-	elements.btn_choose.enabled = editStatus
-	elements.btn_import.enabled = editStatus
-	elements.lbl_choose.enabled = editStatus
-	elements.lbl_import.enabled = editStatus
+	globals.CMSb.propCheck(elements.btn_choose,'enabled',editStatus)
+	globals.CMSb.propCheck(elements.btn_import,'enabled',editStatus)
+	globals.CMSb.propCheck(elements.lbl_choose,'enabled',editStatus)
+	globals.CMSb.propCheck(elements.lbl_import,'enabled',editStatus)
 }

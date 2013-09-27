@@ -72,6 +72,9 @@ function ACTION_ok(event) {
 	forms.WEB_0F_block_type__block._blockDescription = _blockDescription
 	
 	globals.CODE_form_in_dialog_close('cmsBlockTypeNew')
+	
+	//resume continuation (will only be true in webclient)
+	scopes.DS.continuation.stop(null,controller.getName())
 }
 
 /**
@@ -79,8 +82,15 @@ function ACTION_ok(event) {
  * @properties={typeid:24,uuid:"63FC4059-3825-4293-80EF-64B099DE9F60"}
  */
 function ACTION_cancel() {
-	globals.CODE_hide_form = 1
-	globals.CODE_form_in_dialog_close('cmsBlockTypeNew')
+	//not already ok to close, cancel
+	if (!globals.CODE_hide_form) {
+		globals.CODE_hide_form = 1
+		
+		globals.CODE_form_in_dialog_close('cmsBlockTypeNew')
+		
+		//resume continuation (will only be true in webclient)
+		scopes.DS.continuation.stop(null,controller.getName())
+	}
 }
 
 /**

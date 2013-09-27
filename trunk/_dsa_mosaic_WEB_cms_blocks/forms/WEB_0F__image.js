@@ -62,29 +62,32 @@ function BLOCK_choose(event) {
 						"CMS_assetChoose"
 					)
 		
+		//start a continuation in wc
+		scopes.DS.continuation.start(null,'WEB_P__asset')
+		
 		//something chosen, choose the image
 		if (forms.WEB_P__asset._assetChosen) {
 			var metaRows = forms.WEB_P__asset._assetChosen.meta
 			var assetRec = forms.WEB_P__asset._assetChosen.asset
 			
 			if (metaRows && assetRec) {
-				var data = globals.CMS.ui.getData('WEB_0F__image')
+				var data = globals.CMS.ui.getData(controller.getName())
 					
 				//see INIT_block for all keys
 				for (var i in data) {
 					switch (i) {
 						case 'height':
 						case 'width':
-							globals.CMS.ui.setData(null,i,metaRows[i],'WEB_0F__image')
+							globals.CMS.ui.setData(null,i,metaRows[i],controller.getName())
 							break
 						case 'image_name':
-							globals.CMS.ui.setData(null,i,assetRec.asset_title,'WEB_0F__image')
+							globals.CMS.ui.setData(null,i,assetRec.asset_title,controller.getName())
 							break
 						case 'directory':
-							globals.CMS.ui.setData(null,i,assetRec.asset_directory,'WEB_0F__image')
+							globals.CMS.ui.setData(null,i,assetRec.asset_directory,controller.getName())
 							break
 						default:
-							globals.CMS.ui.setData(null,i,assetRec[i],'WEB_0F__image')
+							globals.CMS.ui.setData(null,i,assetRec[i],controller.getName())
 					}
 				}
 				
@@ -105,10 +108,12 @@ function BLOCK_choose(event) {
 function BLOCK_scale(event) {
 	//only run in edit mode
 	if (globals.CMS.ui.getEdit()) {
+		/** @type {JSFoundSet<db:/sutra_cms/web_asset_instance>} */
 		var fsAssetInstance = databaseManager.getFoundSet('sutra_cms','web_asset_instance')
-		fsAssetInstance.loadRecords([application.getUUID(globals.CMS.ui.getData(controller.getName()).id_asset_instance)])
+		fsAssetInstance.loadRecords(application.getUUID(globals.CMS.ui.getData(controller.getName()).id_asset_instance))
 		var recAsset = fsAssetInstance.web_asset_instance_to_asset.getRecord(1)
 		
+		/** @type {JSRecord<db:/sutra_cms/web_asset_instance>} */
 		var newAsset = forms.WEB_0F_asset__image.ASSET_scale(recAsset,true)
 		
 		//there is something and it's different than what was there before
@@ -121,23 +126,23 @@ function BLOCK_scale(event) {
 			}
 			
 			//the data we're working with here
-			var data = globals.CMS.ui.getData('WEB_0F__image')
+			var data = globals.CMS.ui.getData(controller.getName())
 			
 			//see INIT_block for all keys
 			for (var i in data) {
 				switch (i) {
 					case 'height':
 					case 'width':
-						globals.CMS.ui.setData(null,i,metaRows[i],'WEB_0F__image')
+						globals.CMS.ui.setData(null,i,metaRows[i],controller.getName())
 						break
 					case 'image_name':
-						globals.CMS.ui.setData(null,i,newAsset.asset_title,'WEB_0F__image')
+						globals.CMS.ui.setData(null,i,newAsset.asset_title,controller.getName())
 						break
 					case 'directory':
-						globals.CMS.ui.setData(null,i,newAsset.asset_directory,'WEB_0F__image')
+						globals.CMS.ui.setData(null,i,newAsset.asset_directory,controller.getName())
 						break
 					default:
-						globals.CMS.ui.setData(null,i,newAsset[i],'WEB_0F__image')
+						globals.CMS.ui.setData(null,i,newAsset[i],controller.getName())
 				}
 			}
 			
@@ -160,7 +165,10 @@ function BLOCK_import(event) {
 }
 
 /**
- * param {} obj Data object passed to all markup methods
+ * @param {scopes.CMS._constant.objData} obj Data object passed to all markup methods
+ * 
+ * @return {String} markup for this block
+ * 
  * @properties={typeid:24,uuid:"5AABEBFD-5C92-42EA-9C3D-B0135AA33FC8"}
  */
 function VIEW_default(obj) {
@@ -243,7 +251,7 @@ function VIEW_lightbox() {
 }
 
 /**
- * @param {JSEvent} event the event that triggered the action
+ * @param {JSEvent} [event] the event that triggered the action
  * 
  * @properties={typeid:24,uuid:"581D1472-7339-4669-A110-353A1904B241"}
  * @AllowToRunInFind
@@ -253,21 +261,21 @@ function TOGGLE_buttons(event) {
 	var data = globals.CMS.ui.getData(controller.getName())
 	var hasData = data.id_asset_instance ? true : false
 	
-	elements.var_cssId.transparent = editStatus
-	elements.var_cssId.editable = editStatus
-	elements.var_cssClass.transparent = editStatus
-	elements.var_cssClass.editable = editStatus
-	elements.var_title.transparent = editStatus
-	elements.var_title.editable = editStatus
-	elements.var_alt.transparent = editStatus
-	elements.var_alt.editable = editStatus
+	globals.CMSb.propCheck(elements.var_cssId,'transparent',editStatus)
+	globals.CMSb.propCheck(elements.var_cssId,'editable',editStatus)
+	globals.CMSb.propCheck(elements.var_cssClass,'transparent',editStatus)
+	globals.CMSb.propCheck(elements.var_cssClass,'editable',editStatus)
+	globals.CMSb.propCheck(elements.var_title,'transparent',editStatus)
+	globals.CMSb.propCheck(elements.var_title,'editable',editStatus)
+	globals.CMSb.propCheck(elements.var_alt,'transparent',editStatus)
+	globals.CMSb.propCheck(elements.var_alt,'editable',editStatus)
 	
-	elements.btn_choose.enabled = editStatus
-	elements.btn_import.enabled = editStatus
-	elements.btn_scale.enabled = editStatus && hasData
-	elements.lbl_choose.enabled = editStatus
-	elements.lbl_import.enabled = editStatus
-	elements.lbl_scale.enabled = editStatus && hasData
+	globals.CMSb.propCheck(elements.btn_choose,'enabled',editStatus)
+	globals.CMSb.propCheck(elements.btn_import,'enabled',editStatus)
+	globals.CMSb.propCheck(elements.btn_scale,'enabled',editStatus && hasData)
+	globals.CMSb.propCheck(elements.lbl_choose,'enabled',editStatus)
+	globals.CMSb.propCheck(elements.lbl_import,'enabled',editStatus)
+	globals.CMSb.propCheck(elements.lbl_scale,'enabled',editStatus && hasData)
 	
 	//only allow to jump to related asset if one selected and not in edit mode
 	var fileFound = false
@@ -275,9 +283,9 @@ function TOGGLE_buttons(event) {
 		var fsAssetInstance = databaseManager.getFoundSet('sutra_cms','web_asset_instance')
 		fsAssetInstance.find()
 		fsAssetInstance.id_asset_instance = data.id_asset_instance
-		var fileFound = fsAssetInstance.search()
+		fileFound = fsAssetInstance.search()
 	}
-	elements.btn_visit.visible = !editStatus && fileFound
+	globals.CMSb.propCheck(elements.btn_visit,'visible',!editStatus && fileFound)
 }
 
 /**
@@ -293,6 +301,7 @@ function TOGGLE_buttons(event) {
 function INIT_block() {
 	
 	// main data object to build
+	/** @type {scopes.CMS._constant.blockInit} */
 	var block = {}
 	
 	// block record data
@@ -301,7 +310,7 @@ function INIT_block() {
 			block_description	: 'Images resource library',
 			block_category		: scopes.CMS._constant.blockCategory.CONTENT,
 			block_type			: scopes.CMS._constant.blockType.DESIGNTIME,
-			form_name			: 'WEB_0F__image'
+			form_name			: controller.getName()
 		}
 	
 	
@@ -377,7 +386,7 @@ function INIT_data() {
 		//both the base and resource url methods will return with "sutraCMS/"; need to remove from one so no doubling
 		var siteURL = utils.stringReplace(globals.WEBc_markup_link_base(forms.WEB_0F_page.id_page),'sutraCMS/','') + globals.WEBc_markup_link_resources(forms.WEB_0F_page.id_page)
 		
-		var html = 	'<html><head></head><body>' +
+		html = 	'<html><head></head><body>' +
 					'<img src="' + siteURL + 
 					data.directory + '/' + data.image_name + 
 					'" height="' + data.height + '" width="' + data.width +'"' + '>' +
@@ -399,7 +408,10 @@ function INIT_data() {
 		_file += data.image_name
 	}
 	
-	if (elements.bn_browser) {
+	if (application.getApplicationType() == APPLICATION_TYPES.WEB_CLIENT) {
+		globals.WEBb_block_preview(elements.lbl_view,html)
+	}
+	else if (elements.bn_browser) {
 		elements.bn_browser.html = html
 	}
 	else {

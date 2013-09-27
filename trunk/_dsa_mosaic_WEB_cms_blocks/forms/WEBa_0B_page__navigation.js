@@ -8,7 +8,9 @@ var _license_dsa_mosaic_WEB_cms_blocks = 'Module: _dsa_mosaic_WEB_cms_blocks \
 									MIT Licensed';
 
 /**
- * @param {Object} obj Data object passed to all markup methods
+ * @param {scopes.CMS._constant.objData} obj Data object passed to all markup methods
+ * 
+ * @return {String} markup for this block
  * 
  * @properties={typeid:24,uuid:"DD75748B-D0DF-4F21-A608-3182579FA18E"}
  * @AllowToRunInFind
@@ -85,7 +87,9 @@ function VIEW_main(obj) {
 }
 
 /**
- * @param {Object} obj Data object passed to all markup methods
+ * @param {scopes.CMS._constant.objData} obj Data object passed to all markup methods
+ * 
+ * @return {String} markup for this block
  * @properties={typeid:24,uuid:"6B0D3857-E472-4792-B226-C6E2BE405B45"}
  * @AllowToRunInFind
  */
@@ -133,7 +137,9 @@ function VIEW_head(obj) {
 }
 
 /**
- * @param {Object} obj Data object passed to all markup methods
+ * @param {scopes.CMS._constant.objData} obj Data object passed to all markup methods
+ * 
+ * @return {String} markup for this block
  * @properties={typeid:24,uuid:"6029C149-3FBA-4153-B39D-888D2B9C293A"}
  * @AllowToRunInFind
  */
@@ -187,7 +193,9 @@ function VIEW_footer(obj) {
 }
 
 /**
- * @param {Object} obj Data object passed to all markup methods
+ * @param {scopes.CMS._constant.objData} obj Data object passed to all markup methods
+ * 
+ * @return {String} markup for this block
  * @properties={typeid:24,uuid:"97840FD3-E36C-498D-B991-CAC69238B483"}
  * @AllowToRunInFind
  */
@@ -226,7 +234,9 @@ function VIEW_actions(obj) {
 }
 
 /**
- * @param {Object} obj Data object passed to all markup methods
+ * @param {scopes.CMS._constant.objData} obj Data object passed to all markup methods
+ * 
+ * @return {String} markup for this block
  * @properties={typeid:24,uuid:"2B0D739C-279B-4E6D-B8A0-E1F6E555391B"}
  */
 function VIEW_breadcrumb(obj) {

@@ -204,6 +204,7 @@ beanXML:"<?xml version=\"1.0\" encoding=\"UTF-8\"?>
  <\/object> 
 <\/java> 
 ",
+formIndex:1,
 location:"0,0",
 name:"bn_browser",
 printable:false,

@@ -92,6 +92,12 @@ function ACTION_cancel() {
 			
 			forms[scopes.CMS.util.getTreeForm()]._addRecord = null
 			forms[scopes.CMS.util.getTreeForm()]._oldRecord = null
+			
+			//no page records, turn off ability to add a page
+			if (!utils.hasRecords(forms.WEB_0F_site.web_site_to_page)) {
+				globals.WEB_lock_workflow(true)
+				forms.WEB_TB__web_mode.controller.enabled = false
+			}
 		}
 		
 		_themeSet = null
@@ -119,7 +125,7 @@ function ACTION_ok() {
 				)
 		return false
 	}
-	else if (page_type == 0  && !(_idTheme || _idLayout)) {
+	else if (page_type == 0 && !(_idTheme && _idLayout)) {
 		globals.DIALOGS.showErrorDialog(
 					"Error",
 					"Theme and layout are required"
@@ -189,7 +195,7 @@ function ACTION_ok() {
 				//non-top level record
 				if (forms[scopes.CMS.util.getTreeForm()]._makeChild || oldRecord.parent_id_page) {
 					pageRec.parent_id_page = forms[scopes.CMS.util.getTreeForm()]._makeChild ? oldRecord.id_page : (oldRecord.parent_id_page)
-							pageRec.order_by = fsPeers.getSize() + 1
+					pageRec.order_by = fsPeers.getSize() + 1
 				}
 				//top level record
 				else {
@@ -202,7 +208,7 @@ function ACTION_ok() {
 			else {
 				pageRec.order_by = 1
 				
-				var treeReload = true
+				treeReload = true
 			}
 			
 			//create platform record (theme and layout)
@@ -243,10 +249,14 @@ function ACTION_ok() {
 				//add in path for this page
 				var pathNameWanted = languageRec.page_name || 'untitled-page'
 				pathNameWanted = pathNameWanted.toLowerCase()
-				pathNameWanted = utils.stringReplace(pathNameWanted, ' ', '-')
+				pathNameWanted = pathNameWanted.replace(/[^\w-]/gi, '-')
 				//replace two consecutive dashes with one
 				while (utils.stringPatternCount(pathNameWanted,'--')) {
 					pathNameWanted = utils.stringReplace(pathNameWanted, '--', '-')
+				}
+				//special case to never finish with a '-'
+				if (pathNameWanted.indexOf('-',pathNameWanted.length - 1) != -1) {
+					pathNameWanted = utils.stringLeft(pathNameWanted,pathNameWanted.length-1)
 				}
 				
 				var pathName = pathNameWanted
@@ -299,7 +309,7 @@ function ACTION_ok() {
 			databaseManager.recalculate(pageRec)
 		}
 		
-		//MEMO: check WEB_P_page method too
+		//MEMO: check WEB_0F_page__design_1F__header_edit method too
 		if (_themeSet) {
 			//don't prompt if creating page
 			if (addedRecord) {

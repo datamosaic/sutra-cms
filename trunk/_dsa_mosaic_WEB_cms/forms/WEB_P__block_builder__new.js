@@ -62,6 +62,9 @@ function ACTION_ok(event) {
 		forms.WEB_0F_block_type__builder_1L_block_builder._fieldDescription = _fieldDescription
 		
 		globals.CODE_form_in_dialog_close('cmsBlockBuilderNew')
+		
+		//resume continuation (will only be true in webclient)
+		scopes.DS.continuation.stop(null,controller.getName())
 	}
 	else {
 		globals.DIALOGS.showErrorDialog('Error','Please select a type and provide a name')
@@ -73,8 +76,15 @@ function ACTION_ok(event) {
  * @properties={typeid:24,uuid:"FDE0DC48-8E56-4FF7-B2BE-DC922E32BD22"}
  */
 function ACTION_cancel() {
-	globals.CODE_hide_form = 1
-	globals.CODE_form_in_dialog_close('cmsBlockBuilderNew')
+	//not already ok to close, cancel
+	if (!globals.CODE_hide_form) {
+		globals.CODE_hide_form = 1
+		
+		globals.CODE_form_in_dialog_close('cmsBlockBuilderNew')
+		
+		//resume continuation (will only be true in webclient)
+		scopes.DS.continuation.stop(null,controller.getName())
+	}
 }
 
 /**

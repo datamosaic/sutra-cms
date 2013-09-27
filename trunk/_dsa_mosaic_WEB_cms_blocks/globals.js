@@ -8,6 +8,33 @@ var _license_dsa_mosaic_WEB_cms_blocks = 'Module: _dsa_mosaic_WEB_cms_blocks \
 									MIT Licensed';
 
 /**
+ * @properties={typeid:35,uuid:"F7F9D3DF-AFAE-4488-A574-25DF56C57DD0",variableType:-4}
+ */
+var CMSb = {
+	/**
+	 * Try to toggle specified elemental property
+	 * @param elem Form element
+	 * @param {String} property Name of element property
+	 * @param {Boolean} [toggle] Way to toggle property
+	 * 
+	 * @properties={typeid:24,uuid:"51A72755-473E-4D4A-914D-AFFD2960C6BD"}
+	 */
+	propCheck : function(elem,property,toggle) {
+			return WEBb_element_toggle(elem,property,toggle)
+		},
+	/**
+	 * Display preview of a given block
+	 * @param elem Form element
+	 * @param {String} html Code to be shoved into iframe
+	 * 
+	 * @properties={typeid:24,uuid:"1238003A-85E2-4993-8B43-2E8734CC1556"}
+	 */
+	preview : function(elem, html) {
+			return WEBb_block_preview(elem, html)
+		}
+}
+
+/**
  * Helper method that switches all page links around to be driven from the tree view sitemap
  * 
  * @param {UUID} [pageID]
@@ -60,4 +87,42 @@ function WEBb_index_edit(pageID) {
 	sanitize = utils.stringReplace(sanitize,match[0],match[1] + match[3] + '\n')
 	
 	return sanitize
+}
+
+/**
+ * Try to toggle specified elemental property
+ * @param elem Form element
+ * @param {String} property Name of element property
+ * @param {Boolean} [toggle] Way to toggle property
+ * 
+ * @properties={typeid:24,uuid:"51A72755-473E-4D4A-914D-AFFD2960C6BD"}
+ */
+function WEBb_element_toggle(elem,property,toggle) {
+	if (elem && property && !(typeof elem[property] == 'function' || (typeof elem[property] == 'object' && !elem[property]))) {
+		//specific state passed in for this property
+		if (typeof toggle == 'boolean' || toggle) {
+			elem[property] = toggle
+		}
+		//current value is a boolean, flip the state
+		else if (typeof elem[property] == 'boolean') {
+			elem[property] = !elem[property]
+		}
+	}
+}
+
+/**
+ * Display preview of a given block
+ * @param elem Form element
+ * @param {String} html Code to be shoved into iframe
+ * 
+ * @properties={typeid:24,uuid:"1238003A-85E2-4993-8B43-2E8734CC1556"}
+ */
+function WEBb_block_preview(elem, html) {
+	var id = plugins.WebClientUtils.getElementMarkupId(elem)
+	html = html.replace(/\'/g, '\\\'').replace(/\"/g, '\\"')
+	var iframe = '<iframe id="' + id + '" srcdoc="' + html + '" width="100%" height="100%" scrolling="yes" frameborder="0"></iframe>'
+	plugins.WebClientUtils.executeClientSideJS(
+			'setTimeout(function(){$("#' + id + '").replaceWith(\"' + iframe + '\");\
+			},750);'
+		)
 }

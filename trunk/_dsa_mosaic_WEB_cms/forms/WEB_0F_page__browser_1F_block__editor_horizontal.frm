@@ -124,6 +124,7 @@ uuid:"CD6FEAF4-E6A4-4D3F-A7D8-79A3DE4EE44B"
 }
 ],
 name:"WEB_0F_page__browser_1F_block__editor_horizontal",
+onShowMethodID:"9916E8EA-14B9-42AA-A074-AC23C1C41D10",
 size:"300,50",
 typeid:3,
 uuid:"E88A0A2B-AF0D-4801-A922-EBE81754E27E"

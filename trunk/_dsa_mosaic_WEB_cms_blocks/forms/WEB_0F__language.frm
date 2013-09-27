@@ -37,7 +37,8 @@ showFocus:false,
 size:"110,23",
 styleClass:"standard_table",
 text:"Page languages",
-toolTipText:"Only show enabled languages for this page",
+toolTipText:"<html>Only show enabled languages for this page<br/>
+Default is to show all languages for site<br/> (even if this page doesn't have it)",
 transparent:true,
 typeid:7,
 uuid:"D722F575-54D0-499E-A855-92CF662B4378"

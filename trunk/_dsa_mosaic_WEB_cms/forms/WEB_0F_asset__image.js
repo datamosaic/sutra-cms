@@ -80,6 +80,9 @@ function ASSET_scale(assetRecord,editMode) {
 			"CMS_imageScale"
 		)
 	
+	//start a continuation in wc
+	scopes.DS.continuation.start(null,fidForm)
+					
 	//FiD not cancelled, get values and create new instance
 	var success = false
 	var recs	= databaseManager.getFoundSetDataProviderAsArray(assetRecord.web_asset_to_asset_instance, 'id_asset_instance')

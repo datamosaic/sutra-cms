@@ -33,6 +33,9 @@ function BLOCK_new() {
 				false,
 				'cmsBlockNew'
 			)
+			
+	//start a continuation in wc (not really needed, but in other places it is)
+	scopes.DS.continuation.start(null,'WEB_P__block__new')
 }
 
 /**

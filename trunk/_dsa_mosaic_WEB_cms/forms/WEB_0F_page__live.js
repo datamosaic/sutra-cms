@@ -195,8 +195,12 @@ function URL_update(webMode) {
 			return
 		}
 		//show version for selected platform-language-group combo
-		else {
-			var urlString = globals.WEBc_markup_link_page(id_page.toString() + '_' + forms.WEB_0F_page__design_1F__header_display_2F_language._language.id_language.toString(),null,'Edit',webMode)
+		else if (utils.hasRecords(foundset)) {
+			var pageIDs = id_page.toString()
+			if (utils.hasRecords(forms.WEB_0F_page__design_1F__header_display_2F_language._language)) {
+				pageIDs += '_' + forms.WEB_0F_page__design_1F__header_display_2F_language._language.id_language.toString()
+			}
+			var urlString = globals.WEBc_markup_link_page(pageIDs,null,'Edit',webMode)
 			
 			if (utils.hasRecords(forms.WEB_0F_page__design_1F__header_display_2F_platform._platform)) {
 				urlString += "&platform=" + forms.WEB_0F_page__design_1F__header_display_2F_platform._platform.url_param
@@ -215,6 +219,10 @@ function URL_update(webMode) {
 			}
 			
 			globals.WEB_preview_url = urlString
+		}
+		//no records in the page foundset, replace out whatever is there with some placeholder text
+		else {
+			bodyText = 'Your page should be here, but it is not.  Talk with your therapist about how this makes you feel. ;)'
 		}
 		
 		forms.WEB_TB__web_mode.BREAD_update()
@@ -356,7 +364,7 @@ function BLOCK_new(areaScope) {
 		fsScope.id_block = newBlock.id_block
 		var results = fsScope.search()
 		
-		if (results) {
+		if (results == 1) {
 			//this is a layout, just refresh the screen
 			if (utils.hasRecords(fsScope.getSelectedRecord(),'web_scope_to_block.web_block_to_block_type') && fsScope.web_scope_to_block.web_block_to_block_type.block_category == scopes.CMS._constant.blockCategory.LAYOUT) {
 				URL_update(true)

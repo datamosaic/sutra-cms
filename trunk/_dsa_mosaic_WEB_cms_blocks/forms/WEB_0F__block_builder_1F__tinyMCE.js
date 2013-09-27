@@ -272,6 +272,9 @@ function ACTION_insert_asset(event,blah1,blah2,blah3,blah4,assetType) {
 				"CMS_assetChoose"
 			)
 	
+	//start a continuation in wc
+	scopes.DS.continuation.start(null,'WEB_P__asset')
+	
 	//something chosen, insert image link at cursor location
 	if (forms.WEB_P__asset._assetChosen) {
 		switch (assetType) {

@@ -66,11 +66,13 @@ var _refreshBlockDefault = true;
 
 /**
  * @param {JSEvent} event the event that triggered the action
- *
+ * 
  * @properties={typeid:24,uuid:"6B93DF03-DE1C-4104-A956-D2A4D99E1B59"}
  * @AllowToRunInFind
  */
 function ACTION_ok(event) {
+	var swc = application.getApplicationType() == APPLICATION_TYPES.WEB_CLIENT
+	
 	function closeFID() {
 		//enable closing the form
 		globals.CODE_hide_form = 1
@@ -184,7 +186,7 @@ function ACTION_ok(event) {
 	if (event && event.getElementName() == 'btn_copy') {
 		var copyScrapbook = true
 	}
-	
+
 	//not already ok to close, continue
 	if (!globals.CODE_hide_form) {
 		
@@ -203,11 +205,13 @@ function ACTION_ok(event) {
 		
 		//get what is chosen (scrapbook)
 		if (globals.WEB_block_scope__new) {
+			//smart client close fid first
+			if (!swc) {
+				closeFID()
+			}
 			
 			//something chosen
 			if (utils.hasRecords(forms.WEB_P__block__new_1L_block.foundset)) {
-				closeFID()
-				
 				var scrapbookRec = forms.WEB_P__block__new_1L_block.foundset.getSelectedRecord()
 				
 				//called from theme form, connect
@@ -226,6 +230,7 @@ function ACTION_ok(event) {
 				else {
 					// unhook the scrapbook and make a copy of the active version
 					if (copyScrapbook) {
+						
 						//create block record on scrapbook form
 						if (_calledFrom == 'Scrapbook') {
 							//turn off rec on select
@@ -336,7 +341,10 @@ function ACTION_ok(event) {
 		else {
 			//something chosen
 			if (utils.hasRecords(forms.WEB_P__block__new_1L_block_type.foundset)) {
-				closeFID()
+				//smart client close fid first
+				if (!swc) {
+					closeFID()
+				}
 				
 				var blockTypeRec = forms.WEB_P__block__new_1L_block_type.foundset.getSelectedRecord()
 //				var blockDisplayRec = utils.hasRecords(blockTypeRec.web_block_type_to_block_display__default) ? blockTypeRec.web_block_type_to_block_display__default.getSelectedRecord() : {}
@@ -449,6 +457,14 @@ function ACTION_ok(event) {
 		
 		//a record was created
 		_success = blockRec
+		
+		//web client close fid last
+		if (swc) {
+			closeFID()
+			
+			//resume continuation (will only be true in webclient)
+			scopes.DS.continuation.stop(null,controller.getName())
+		}
 	}
 }
 
@@ -463,6 +479,9 @@ function ACTION_cancel() {
 		globals.CODE_hide_form = 1
 		
 		globals.CODE_form_in_dialog_close('cmsBlockNew')
+		
+		//resume continuation (will only be true in webclient)
+		scopes.DS.continuation.stop(null,controller.getName())
 	}
 }
 
@@ -486,7 +505,7 @@ function FORM_on_show(firstShow,event) {
 		fsBlockType.loadAllRecords()
 		for (var i = 1; i <= fsBlockType.getSize(); i++) {
 			var record = fsBlockType.getRecord(i)
-
+			
 			//prefill default view for each block type
 			record.client_id_block_display = record.web_block_type_to_block_display__default.id_block_display
 		}
@@ -571,7 +590,7 @@ function FORM_on_show(firstShow,event) {
 	application.setValueListItems('WEB_scope_type',vlDisplay,vlReal)
 	
 	elements.var_search.requestFocus(false)
-
+	
 	//somehow bind enter to accept whatever selection is chosen
 //	plugins.window.createShortcut('ENTER',forms.WEB_P__block__new.ACTION_ok,'WEB_P__block__new')
 }
@@ -624,7 +643,7 @@ function ACTION_search(event) {
 		fs.find()
 		fs.id_site = forms.WEB_0F_site.id_site
 		fs.flag_unavailable = '^='
-		fs.block_category = globals.WEB_block_category__new
+		fs.block_category = globals.WEB_block_category__new	
 		if (_search) {
 			fs.block_name = '%' + _search + '%'
 		}
@@ -676,6 +695,14 @@ function FORM_on_load(event) {
 	if (plugins.keyListeners) {
 		plugins.keyListeners.addKeyListener(elements.var_search, ACTION_search, 'keyPressed')
 	}
+	
+	//resize comoboxen
+	if (application.getApplicationType() == APPLICATION_TYPES.SMART_CLIENT) {
+		elements.fld_scope.setLocation(elements.fld_scope.getLocationX() - 5,elements.fld_scope.getLocationY())
+		elements.fld_scope.setSize(elements.fld_scope.getWidth() + 10,elements.fld_scope.getHeight())
+		elements.fld_category.setLocation(elements.fld_category.getLocationX() - 5,elements.fld_category.getLocationY())
+		elements.fld_category.setSize(elements.fld_category.getWidth() + 10,elements.fld_category.getHeight())
+	}
 }
 
 /**
@@ -707,13 +734,13 @@ function FLD_scope__data_change(oldValue, newValue, event) {
 	//show scrapbooks
 	if (utils.stringToNumber(newValue)) {
 		elements.tab_detail.tabIndex = 2
-
+		
 		TOGGLE_buttons()
 	}
 	//create new block
 	else if (elements.tab_detail.tabIndex != 1) {
 		elements.tab_detail.tabIndex = 1
-
+		
 		TOGGLE_buttons()
 	}
 	
@@ -730,7 +757,7 @@ function FLD_scope__data_change(oldValue, newValue, event) {
  * @param {JSEvent} event the event that triggered the action
  *
  * @returns {Boolean}
- *
+ * 
  * @properties={typeid:24,uuid:"7B4397D4-09D5-481A-9550-131F188078CB"}
  * @AllowToRunInFind
  */

@@ -89,7 +89,9 @@ function COLLECTION_wrapper() {
 /**
  * Detail blog post
  * 
- * @returns {String}	markup for this block
+ * @param {scopes.CMS._constant.objData} obj Data object passed to all markup methods
+ * 
+ * @return {String} markup for this block
  * 
  * @properties={typeid:24,uuid:"E788541C-76DC-4CA5-9B1C-996E94315B46"}
  */
