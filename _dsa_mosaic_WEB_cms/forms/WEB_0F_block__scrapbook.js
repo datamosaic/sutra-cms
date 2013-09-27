@@ -105,7 +105,10 @@ function REC_new() {
 					false,
 					'cmsBlockNew'
 				)
-		
+
+		//start a continuation in wc
+		scopes.DS.continuation.start(null,'WEB_P__block__new')
+					
 		//created a new record
 		if (forms.WEB_P__block__new._success) {
 			

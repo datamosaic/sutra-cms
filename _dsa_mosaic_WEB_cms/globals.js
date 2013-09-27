@@ -1407,3 +1407,115 @@ function WEB_convert__scope(siteRec) {
 			)
 	}
 }
+
+/**
+ * Create sample data records for CMS
+ * 
+ * @param {JSRecord} [org] The organization under which all records are created
+ * 
+ * @properties={typeid:24,uuid:"5AAEC756-B282-4733-BFBB-3971B2D369A6"}
+ */
+function WEB_sample_site(org) {
+	//a specific organization requested
+	if (org && org.id_organization != AC_current_organization) {
+		var diffOrg = true
+		var oldOrg = AC_current_organization
+		AC_current_organization = org.id_organization
+	}
+	
+	//companies
+	/** @type {JSFoundSet<db:/sutra_example/companies>} */
+	var fsCompany = databaseManager.getFoundSet('sutra_example','companies')
+	
+	
+	var newCompany = fsCompany.getRecord(fsCompany.newRecord(false,true))
+	newCompany.company_category = 'Retail'
+	newCompany.company_description = 'Rentfield is a company that rents equipment online.'
+	newCompany.company_email = 'sales@rentfield.com'
+	newCompany.company_industry = 'Rental Equipment'
+	newCompany.company_name = 'Rentfield Enterprises'
+//	newCompany.company_notes = 
+	newCompany.company_type_id = 1
+	newCompany.company_url = 'http://www.rentfield.com'
+	newCompany.is_active = 1
+		
+		//addressess
+		var newAddress1 = newCompany.crm_companies_to_addresses.getRecord(newCompany.crm_companies_to_addresses.newRecord(false,true))
+		newAddress1.address_type_id = 3
+		newAddress1.city = 'Somewhere'
+		newAddress1.country = 'US'
+//		newAddress1.county = 
+//		newAddress1.email = 
+//		newAddress1.fax = 
+//		newAddress1.is_active = 
+		newAddress1.line_1 = '516 Andover Street'
+		newAddress1.line_2 = 'Suite 265'
+//		newAddress1.line_3 = 
+//		newAddress1.line_4 = 
+//		newAddress1.line_5 = 
+//		newAddress1.phone = 
+//		newAddress1.phone_format = 
+		newAddress1.select_address = '516 Andover Street - Somewhere, ME 10056'
+		newAddress1.state = 'ME'
+		newAddress1.zipcode = '10056'
+			
+		//contacts
+		var newContact1 = newCompany.crm_companies_to_contacts.getRecord(newCompany.crm_companies_to_contacts.newRecord(false,true))
+		newContact1.contact_notes = 'Notes on Darryl'
+		newContact1.contact_type_id = 9
+		newContact1.email = 'darryl.aestover@rentfield.com'
+		newContact1.fax_direct = '214-598-8548'
+		newContact1.is_active = 1
+		newContact1.job_title = 'CEO'
+		newContact1.mail_address_id = newAddress1.address_id
+		newContact1.mail_use_company = 0
+//		newContact1.mail_use_country = 
+		newContact1.name_first = 'Darryl'
+		newContact1.name_last = 'Notes on Darryl'
+		newContact1.name_prefix = 'Mr.'
+//		newContact1.name_suffix = 
+//		newContact1.phone_cell = 
+		newContact1.phone_direct = '214-555-2145'
+	
+		//orders
+		var newOrder = newCompany.crm_companies_to_orders.getRecord(newCompany.crm_companies_to_orders.newRecord(false,true))
+		newOrder.amt_discount = 0
+		newOrder.amt_shipping = 3.95
+		newOrder.amt_tax = 0
+		newOrder.bill_address_id = newAddress1.address_id
+		newOrder.contact_id = newContact3.contact_id
+		newOrder.is_active = 1
+//		newOrder.is_paid = 
+//		newOrder.notes = 
+		newOrder.order_date = new Date()
+		newOrder.order_month_year = 2106
+		newOrder.order_number = 1002
+		newOrder.order_subtotal = 21.95
+		newOrder.order_total = 25.95
+//		newOrder.paid_date = 
+//		newOrder.paid_number = 
+//		newOrder.pct_discount = 
+//		newOrder.pct_tax = 
+//		newOrder.po_number = 
+		newOrder.ship_address_id = newAddress1.address_id
+//		newOrder.ship_fob = 
+		newOrder.ship_via = 'Ground'
+		newOrder.terms = 'Due Upon Receipt'
+			
+			//order items
+			var newOrderItem = newOrder.crm_orders_to_order_items.getRecord(newOrder.crm_orders_to_order_items.newRecord(false,true))
+			newOrderItem.cost_each = 6.65
+			newOrderItem.description = 'Book - "Dynamic Living"'
+			newOrderItem.extended_price = 21.95
+			newOrderItem.price_each = 21.95
+			newOrderItem.product_id = newProduct2.product_id
+			newOrderItem.quantity = 1
+				
+			
+	databaseManager.saveData()
+	
+	//reset global SaaS to original value
+	if (diffOrg) {
+		AC_current_organization = oldOrg
+	}
+}

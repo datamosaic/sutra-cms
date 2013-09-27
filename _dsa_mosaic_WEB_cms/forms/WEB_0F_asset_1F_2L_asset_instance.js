@@ -151,6 +151,9 @@ function REC_new() {
 					"CMS_assetChoose"
 				)
 	
+	//start a continuation in wc
+	scopes.DS.continuation.start(null,'WEB_P__asset')
+					
 	//something chosen, duplicate asset here
 	if (forms.WEB_P__asset._assetChosen) {
 		var newAssetInstance = foundset.getRecord(foundset.newRecord(false,true))

@@ -49,6 +49,9 @@ function REC_new() {
 			'cmsBlockBuilderNew'
 		)	
 	
+	//start a continuation in wc
+	scopes.DS.continuation.start(null,'WEB_P__block_builder__new')
+		
 	//something chosen
 	if (_fieldType) {
 		//turn off record selection

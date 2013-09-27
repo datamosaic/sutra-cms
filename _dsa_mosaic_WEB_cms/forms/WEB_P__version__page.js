@@ -38,15 +38,20 @@ var _fidAccept = null;
  * @properties={typeid:24,uuid:"A7A0B29B-6185-4CC5-9EE9-B8DE9442FC9D"}
  */
 function ACTION_cancel() {
-	//null out all fields
-	_versionName = null
-	_versionDescription = null
+	//not already ok to close, cancel
+	if (!globals.CODE_hide_form) {
+		//null out all fields
+		_versionName = null
+		_versionDescription = null
+		
+		//enable closing the form
+		globals.CODE_hide_form = 1
+		
+		globals.CODE_form_in_dialog_close('cmsPageVersion')
 	
-	//enable closing the form
-	globals.CODE_hide_form = 1
-	
-	globals.CODE_form_in_dialog_close('cmsPageVersion')
-
+		//resume continuation (will only be true in webclient)
+		scopes.DS.continuation.stop(null,controller.getName())
+	}
 }
 
 /**
@@ -62,6 +67,9 @@ function ACTION_ok() {
 	_fidAccept = 1
 	
 	globals.CODE_form_in_dialog_close('cmsPageVersion')
+	
+	//resume continuation (will only be true in webclient)
+	scopes.DS.continuation.stop(null,controller.getName())	
 
 }
 

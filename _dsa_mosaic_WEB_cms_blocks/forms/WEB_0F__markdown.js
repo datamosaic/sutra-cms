@@ -15,7 +15,9 @@ var _license_dsa_mosaic_WEB_cms_blocks = 'Module: _dsa_mosaic_WEB_cms_blocks \
 var _dataValue = null;
 
 /**
- * param {} obj Data object passed to all markup methods
+ * @param {scopes.CMS._constant.objData} obj Data object passed to all markup methods
+ * 
+ * @return {String} markup for this block
  * @properties={typeid:24,uuid:"3728367F-767E-4872-B4F6-A62E1E5268AD"}
  */
 function VIEW_default(obj) {
@@ -41,11 +43,7 @@ function VIEW_default(obj) {
  * @properties={typeid:24,uuid:"B93799CC-28F6-4CF6-9771-4A6A46567C66"}
  */
 function FORM_on_load() {
-	//don't run in headless or web client (they use whatever solution is activated as context)
-	if (application.getApplicationType() == APPLICATION_TYPES.SMART_CLIENT || application.getApplicationType() == APPLICATION_TYPES.RUNTIME_CLIENT) {
-		//set combobox to be square on os x
-		globals.CODE_property_combobox(true)
-	}
+	
 }
 
 /**
@@ -58,6 +56,25 @@ function BLOCK_save(event) {
 	globals.CMS.ui.save()
 	
 	ACTION_preview()
+}
+
+/**
+ * Perform the element default action.
+ *
+ * @param {JSEvent} event the event that triggered the action
+ *
+ * @properties={typeid:24,uuid:"2BC3C618-8169-40B6-8884-92979E8872FE"}
+ */
+function BLOCK_cancel(event) {
+	globals.CMS.ui.cancel()
+	
+	//reset variables
+	_dataValue = globals.CMS.ui.getData(controller.getName()).markdown
+	
+	//refresh the colored version
+	if (globals.WEB_page_mode == 2) {
+		ACTION_preview()
+	}
 }
 
 /**
@@ -109,46 +126,30 @@ function INIT_data() {
 }
 
 /**
- * Perform the element default action.
- *
- * @param {JSEvent} event the event that triggered the action
- *
- * @properties={typeid:24,uuid:"2BC3C618-8169-40B6-8884-92979E8872FE"}
- */
-function BLOCK_cancel(event) {
-	globals.CMS.ui.cancel()
-	
-	//refresh the colored version
-	if (globals.WEB_page_mode == 2) {
-		ACTION_preview()
-	}
-}
-
-/**
  *
  * @properties={typeid:24,uuid:"B5F13526-AF4D-4132-9D1D-A0BD9B3BE3ED"}
  */
 function TOGGLE_buttons(state) {
 	if (!globals.CMS.ui.getEdit()) {
-		elements.btn_edit.visible = false
-		elements.lbl_edit.visible = false
+		globals.CMSb.propCheck(elements.btn_edit,'visible',false)
+		globals.CMSb.propCheck(elements.lbl_edit,'visible',false)
 	}
 	else {
-		elements.btn_edit.visible = !state
-		elements.lbl_edit.visible = !state
+		globals.CMSb.propCheck(elements.btn_edit,'visible',!state)
+		globals.CMSb.propCheck(elements.lbl_edit,'visible',!state)
 	}
 	
-	elements.btn_save.enabled = state
-	elements.lbl_save.enabled = state
-	elements.btn_cancel.enabled = state
-	elements.lbl_cancel.enabled = state
-	elements.btn_pages.enabled = state
-	elements.gfx_pages.enabled = state
-	elements.btn_graphic.enabled = state
-	elements.gfx_graphic.enabled = state
+	globals.CMSb.propCheck(elements.btn_save,'enabled',state)
+	globals.CMSb.propCheck(elements.lbl_save,'enabled',state)
+	globals.CMSb.propCheck(elements.btn_cancel,'enabled',state)
+	globals.CMSb.propCheck(elements.lbl_cancel,'enabled',state)
+	globals.CMSb.propCheck(elements.btn_pages,'enabled',state)
+	globals.CMSb.propCheck(elements.gfx_pages,'enabled',state)
+	globals.CMSb.propCheck(elements.btn_graphic,'enabled',state)
+	globals.CMSb.propCheck(elements.gfx_graphic,'enabled',state)
 	
-	elements.fld_data_value.visible = state
-	if (elements.bn_browser) {
+	globals.CMSb.propCheck(elements.fld_data_value,'visible',state)
+	if (elements.bn_browser && !solutionPrefs.config.webClient) {
 		elements.bn_browser.visible = !state
 	}
 	else {
@@ -157,8 +158,8 @@ function TOGGLE_buttons(state) {
 	
 	//cancel is always an option if in browser mode
 	if (globals.WEB_page_mode == 3) {
-		elements.btn_cancel.enabled = true
-		elements.lbl_cancel.enabled = true
+		globals.CMSb.propCheck(elements.btn_cancel,'enabled',true)
+		globals.CMSb.propCheck(elements.lbl_cancel,'enabled',true)
 	}
 	
 	if (state) {
@@ -183,6 +184,7 @@ function ACTION_internal_link(event) {
 
 /**
  * @param inputID page id to tokenize for internal link
+ * @param {JSRecord<db:/sutra_cms/web_page>} [pageRec]
  * @properties={typeid:24,uuid:"EC3DA0EE-A1FB-4C5E-97F0-CA241E42BE65"}
  */
 function ACTION_add_token(inputID,pageRec) {
@@ -201,17 +203,10 @@ function ACTION_add_token(inputID,pageRec) {
 	//length of tag
 	var offset = link.length
 	
-	//cut selected text so we can get the correct cursor position
-	elem.replaceSelectedText('')
-	
-	//get cursor location
-	var cursor = elem.caretPosition
-	
 	elem.replaceSelectedText(link)
 	
 	var dataSave = globals.CMS.ui.setData(null,'markdown',_dataValue,controller.getName())
 	
-	elem.caretPosition = cursor + offset
 	elem.requestFocus()
 	
 }
@@ -258,6 +253,9 @@ function ACTION_insert_asset(event,blah1,blah2,blah3,blah4,assetType) {
 				false,
 				"CMS_assetChoose"
 			)
+			
+	//start a continuation in wc
+	scopes.DS.continuation.start(null,'WEB_P__asset')
 	
 	//something chosen, insert image link at cursor location
 	if (forms.WEB_P__asset._assetChosen) {
@@ -281,14 +279,14 @@ function ACTION_insert_asset(event,blah1,blah2,blah3,blah4,assetType) {
 			case 2:	//file
 			case 3:	//group
 				var file = forms.WEB_P__asset._assetChosen
-				var asset = globals.CMS.token.getFile(file.asset)
+				asset = globals.CMS.token.getFile(file.asset)
 				
-				var template = '[{{text}}]({{url}})'
-				var data = {
+				template = '[{{text}}]({{url}})'
+				data = {
 						text : elem.getSelectedText() || asset.name || 'Link',
 						url : asset.link
 					}
-				var html = globals.CMS.markup.merge(template,data)
+				html = globals.CMS.markup.merge(template,data)
 				
 				break
 		}
@@ -324,6 +322,7 @@ function ACTION_insert_asset(event,blah1,blah2,blah3,blah4,assetType) {
 function INIT_block() {
 	
 	// main data object to build
+	/** @type {scopes.CMS._constant.blockInit} */
 	var block = {}
 	
 	// block record data
@@ -332,7 +331,7 @@ function INIT_block() {
 			block_description	: 'Write using an easy-to-read, easy-to-write plain text format, then convert it to structurally valid XHTML (or HTML)',
 			block_category		: scopes.CMS._constant.blockCategory.CONTENT,
 			block_type			: scopes.CMS._constant.blockType.DESIGNTIME,
-			form_name			: 'WEB_0F__markdown'
+			form_name			: controller.getName()
 		}
 	
 	// block views
@@ -428,8 +427,13 @@ function ACTION_preview() {
 		}
 	}
 	
-	if (elements.bn_browser) {
-		elements.bn_browser.html = globals.WEBc_markup_link_internal(html,null,'Edit')
+	html = globals.WEBc_markup_link_internal(html,null,'Edit')
+	
+	if (application.getApplicationType() == APPLICATION_TYPES.WEB_CLIENT) {
+		globals.WEBb_block_preview(elements.lbl_view,html)
+	}
+	else if (elements.bn_browser) {
+		elements.bn_browser.html = html
 	}
 	else {
 		globals.WEBc_browser_error()

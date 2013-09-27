@@ -315,7 +315,7 @@ function ACTION_save() {
 				)
 		return false
 	}
-	else if (page_type == 0  && !(_idTheme && _idLayout)) {
+	else if (page_type == 0 && !(_idTheme && _idLayout)) {
 		globals.DIALOGS.showErrorDialog(
 					"Error",
 					"Theme and layout are required"
@@ -400,7 +400,7 @@ function ACTION_save() {
 			else {
 				pageRec.order_by = 1
 
-				var treeReload = true
+				treeReload = true
 			}
 
 			//create platform record (theme and layout)
@@ -438,10 +438,14 @@ function ACTION_save() {
 			//add in path for this page
 			var pathNameWanted = languageRec.page_name || 'untitled-page'
 			pathNameWanted = pathNameWanted.toLowerCase()
-			pathNameWanted = utils.stringReplace(pathNameWanted, ' ', '-')
+			pathNameWanted = pathNameWanted.replace(/[^\w-]/gi, '-')
 			//replace two consecutive dashes with one
 			while (utils.stringPatternCount(pathNameWanted,'--')) {
 				pathNameWanted = utils.stringReplace(pathNameWanted, '--', '-')
+			}
+			//special case to never finish with a '-'
+			if (pathNameWanted.indexOf('-',pathNameWanted.length - 1) != -1) {
+				pathNameWanted = utils.stringLeft(pathNameWanted,pathNameWanted.length-1)
 			}
 
 			var pathName = pathNameWanted

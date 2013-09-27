@@ -15,7 +15,9 @@ var _license_dsa_mosaic_WEB_cms_blocks = 'Module: _dsa_mosaic_WEB_cms_blocks \
 var _dataValue = null;
 
 /**
- * param {} obj Data object passed to all markup methods
+ * @param {scopes.CMS._constant.objData} obj Data object passed to all markup methods
+ * 
+ * @return {String} markup for this block
  * @properties={typeid:24,uuid:"508D7857-762F-4C6F-9CAA-95EAB9C404F0"}
  */
 function VIEW_default(obj) {
@@ -116,25 +118,25 @@ function BLOCK_cancel(event) {
  */
 function TOGGLE_buttons(state) {
 	if (!globals.CMS.ui.getEdit()) {
-		elements.btn_edit.visible = false
-		elements.lbl_edit.visible = false
+		globals.CMSb.propCheck(elements.btn_edit,'visible',false)
+		globals.CMSb.propCheck(elements.lbl_edit,'visible',false)
 	}
 	else {
-		elements.btn_edit.visible = !state
-		elements.lbl_edit.visible = !state
+		globals.CMSb.propCheck(elements.btn_edit,'visible',!state)
+		globals.CMSb.propCheck(elements.lbl_edit,'visible',!state)
 	}
 	
-	elements.btn_save.enabled = state
-	elements.lbl_save.enabled = state
-	elements.btn_cancel.enabled = state
-	elements.lbl_cancel.enabled = state
-	elements.btn_pages.enabled = state
-	elements.gfx_pages.enabled = state
-	elements.btn_graphic.enabled = state
-	elements.gfx_graphic.enabled = state
+	globals.CMSb.propCheck(elements.btn_save,'enabled',state)
+	globals.CMSb.propCheck(elements.lbl_save,'enabled',state)
+	globals.CMSb.propCheck(elements.btn_cancel,'enabled',state)
+	globals.CMSb.propCheck(elements.lbl_cancel,'enabled',state)
+	globals.CMSb.propCheck(elements.btn_pages,'enabled',state)
+	globals.CMSb.propCheck(elements.gfx_pages,'enabled',state)
+	globals.CMSb.propCheck(elements.btn_graphic,'enabled',state)
+	globals.CMSb.propCheck(elements.gfx_graphic,'enabled',state)
 	
-	elements.fld_data_value.visible = state
-	if (elements.bn_browser) {
+	globals.CMSb.propCheck(elements.fld_data_value,'visible',state)
+	if (elements.bn_browser && !solutionPrefs.config.webClient) {
 		elements.bn_browser.visible = !state
 	}
 	else {
@@ -143,8 +145,8 @@ function TOGGLE_buttons(state) {
 	
 	//cancel is always an option if in browser mode
 	if (globals.WEB_page_mode == 3) {
-		elements.btn_cancel.enabled = true
-		elements.lbl_cancel.enabled = true
+		globals.CMSb.propCheck(elements.btn_cancel,'enabled',true)
+		globals.CMSb.propCheck(elements.lbl_cancel,'enabled',true)
 	}
 	
 	if (state) {
@@ -169,6 +171,7 @@ function ACTION_internal_link(event) {
 
 /**
  * @param inputID page id to tokenize for internal link
+ * @param {JSRecord<db:/sutra_cms/web_page>} [pageRec]
  * @properties={typeid:24,uuid:"4432AB1D-AFD0-4AEC-8EDE-80BABA0450C4"}
  */
 function ACTION_add_token(inputID,pageRec) {
@@ -242,10 +245,13 @@ function ACTION_insert_asset(event,blah1,blah2,blah3,blah4,assetType) {
 				"CMS_assetChoose"
 			)
 	
+	//start a continuation in wc
+	scopes.DS.continuation.start(null,'WEB_P__asset')
+			
 	//something chosen, insert image link at cursor location
 	if (forms.WEB_P__asset._assetChosen) {
 		//wrap currently selected text with link
-		var elem = elements.fld_data_value
+		elem = elements.fld_data_value
 		
 		switch (assetType) {
 			case 1:	//image
@@ -259,10 +265,10 @@ function ACTION_insert_asset(event,blah1,blah2,blah3,blah4,assetType) {
 			case 2:	//file
 			case 3:	//group
 				var file = forms.WEB_P__asset._assetChosen
-				var asset = globals.CMS.token.getFile(file.asset)
+				asset = globals.CMS.token.getFile(file.asset)
 				
 				//insert image at current location
-				var html = '<a href="' + asset.link + '">' + (elem.getSelectedText() || asset.name || 'Link') + '</a>'
+				html = '<a href="' + asset.link + '">' + (elem.getSelectedText() || asset.name || 'Link') + '</a>'
 				
 				break
 		}
@@ -298,6 +304,7 @@ function ACTION_insert_asset(event,blah1,blah2,blah3,blah4,assetType) {
 function INIT_block() {
 	
 	// main data object to build
+	/** @type {scopes.CMS._constant.blockInit} */
 	var block = {}
 	
 	// block record data
@@ -306,7 +313,7 @@ function INIT_block() {
 			block_description	: 'Generic freeform content. HTML/CSS for structure and formatting.\n\nPlain Jane HTML editing by default.',
 			block_category		: scopes.CMS._constant.blockCategory.CONTENT,
 			block_type			: scopes.CMS._constant.blockType.DESIGNTIME,
-			form_name			: 'WEB_0F__html'
+			form_name			: controller.getName()
 		}
 	
 	// block views
@@ -341,11 +348,11 @@ function INIT_block() {
 }
 
 /**
- * @param {JSEvent} event Upstream event that gives context.
+ * @param {JSEvent} [event] Upstream event that gives context.
  * 
  * @properties={typeid:24,uuid:"FB804749-0B28-485A-A528-4F10DE113301"}
  */
-function ACTION_colorize() {
+function ACTION_colorize(event) {
 	var html = ''
 	var prefix = ''
 	
@@ -360,7 +367,7 @@ function ACTION_colorize() {
 		prefix = globals.WEBc_markup_link_base()
 		
 		//show html markup
-		var html = 
+		html = 
 '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">\n\
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">\n\
 	<head>\n\
@@ -385,7 +392,12 @@ function ACTION_colorize() {
 		
 	}
 	
-	if (elements.bn_browser) {
+	html = globals.WEBc_markup_link_internal(html,null,'Edit')
+	
+	if (application.getApplicationType() == APPLICATION_TYPES.WEB_CLIENT) {
+		globals.WEBb_block_preview(elements.lbl_view,html)
+	}
+	else if (elements.bn_browser) {
 		elements.bn_browser.html = html
 	}
 	else {

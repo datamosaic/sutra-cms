@@ -87,9 +87,9 @@ function TAG_add(event) {
 	}
 	else {
 		globals.DIALOGS.showErrorDialog(
-						'Error',
-						'There is no record to add tags to'
-					)
+					'Error',
+					'There is no record to add tags to'
+				)
 	}
 }
 
@@ -118,9 +118,9 @@ function TAG_delete(event) {
 	}
 	else {
 		globals.DIALOGS.showErrorDialog(
-						'Error',
-						'There is no record to remove tags from'
-					)
+					'Error',
+					'There is no record to remove tags from'
+				)
 	}
 
 }
@@ -133,9 +133,7 @@ function REC_new(assetType) {
 	var input = globals.DIALOGS.showSelectDialog( 
 					"Asset", 
 					"Select asset type", 
-					"Image",
-					"File",
-					"Group"
+					["Image","File","Group"]
 				)
 	
 	//something selected, do the right kind of import

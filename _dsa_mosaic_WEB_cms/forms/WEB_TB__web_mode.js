@@ -1,4 +1,11 @@
 /**
+ * @type {Number}
+ *
+ * @properties={typeid:35,uuid:"A2E9443D-D5F8-4C03-8558-EBC37B87A4CC",variableType:4}
+ */
+var _editMode = 0;
+
+/**
  * @type {String}
  *
  * @properties={typeid:35,uuid:"04fde543-69cc-4de9-af47-7f7c22221f65"}
@@ -590,19 +597,19 @@ function ACTION_mode(event) {
 				break
 			case 'lbl_mode_gui':
 				//when in web client, don't go here
-				if (solutionPrefs.config.webClient) {
-					globals.DIALOGS.showInfoDialog('GUI disabled','GUI mode is disabled in WebClient for now')
-					globals.WEB_page_mode = 2
-					var mapping = {
-							1 : 'data',
-							2 : 'gui',
-							3 : 'live'
-						}
-					ACTION_mode({getElementName: function() {
-									return 'lbl_mode_' + mapping[currentMode]
-								}})
-					return
-				}
+//				if (solutionPrefs.config.webClient) {
+//					globals.DIALOGS.showInfoDialog('GUI disabled','GUI mode is disabled in WebClient for now')
+//					globals.WEB_page_mode = 2
+//					var mapping = {
+//							1 : 'data',
+//							2 : 'gui',
+//							3 : 'live'
+//						}
+//					ACTION_mode({getElementName: function() {
+//									return 'lbl_mode_' + mapping[currentMode]
+//								}})
+//					return
+//				}
 			
 				//go to non-real mode if not there already
 				if (currentMode == 3) {
@@ -726,33 +733,22 @@ function ACTION_save(event) {
  * @properties={typeid:24,uuid:"DDB53BF6-144F-4AF7-8963-21FD2C801A99"}
  */
 function FORM_on_load() {
-//	elements.btn_groups.visible = false
-//	elements.lbl_groups.visible = false	
-//	elements.lbl_groups_tick.visible = false		
-	elements.btn_save.visible = false	
-//	elements.btn_versions.visible = false
-//	elements.lbl_versions.visible = false
-//	elements.lbl_versions_tick.visible = false	
-	elements.btn_edit.visible = false
-	elements.lbl_edit.visible = false
-	elements.btn_asset.visible = false
-	elements.lbl_asset.visible = false
 	TOGGLE_visit(false)
 	
-//	var modeToggle = globals.WEBc_sutra_trigger('TRIGGER_registered_action_authenticate',['cms page mode toggle'])
-//	elements.btn_dashboard.visible = modeToggle
-//	elements.lbl_dashboard.visible = modeToggle
-//	elements.btn_sitemap.visible = !modeToggle
-//	elements.lbl_sitemap.visible = !modeToggle
-//	elements.lbl_detail.visible = !modeToggle
-	
-	elements.gfx_switch_1.visible = false
-	elements.gfx_switch_2.visible = true
-	elements.gfx_switch_3.visible = false
+	//defaults to live mode in web or smart with a/c set
+	if (application.getApplicationType() == APPLICATION_TYPES.WEB_CLIENT || false) {
+		elements.gfx_switch_1.visible = false
+		elements.gfx_switch_2.visible = false
+		elements.gfx_switch_3.visible = true
+	}
+	//default to gui mode
+	else {
+		elements.gfx_switch_1.visible = false
+		elements.gfx_switch_2.visible = true
+		elements.gfx_switch_3.visible = false
+	}
 	
 	//hide highlighter
-	elements.highlighter.visible = false
-//	elements.highlighter_dash.visible = false
 
 	//form name
 	_liveForm ='WEB_0F_page__browser'
@@ -760,7 +756,12 @@ function FORM_on_load() {
 	if (solutionPrefs.config.webClient) {
 		//form name
 		_liveForm = 'WEB_0F_page__live__web'
-		elements.lbl_mode_gui.enabled = false
+//		elements.lbl_mode_gui.enabled = false
+	}
+	//assume smart client starts with gui
+	else {
+		elements.gfx_switch_2.visible = true
+		elements.gfx_switch_3.visible = false
 	}
 }
 
@@ -838,9 +839,9 @@ function MODE_set(mode) {
  * @properties={typeid:24,uuid:"4917AF30-667D-4A3E-BAE1-0A82F2A8CA25"}
  */
 function FORM_on_show(firstShow, event) {
-	//don't know why my edit button is showing...turn it off
+	//don't know why my edit button is showing...toggle it appropriately
 	if (firstShow) {
-		TOGGLE_edit(false)
+		TOGGLE_edit()
 	}
 }
 
@@ -930,3 +931,25 @@ function ACTION_import(event) {
 	forms.WEB_0C__file_stream.IMAGE_import("images")
 }
 
+
+/**
+ * Handle changed data.
+ *
+ * @param {Number} oldValue old value
+ * @param {Number} newValue new value
+ * @param {JSEvent} event the event that triggered the action
+ *
+ * @returns {Boolean}
+ *
+ * @properties={typeid:24,uuid:"417AC42E-AA50-4B84-8585-456E183B263B"}
+ */
+function DUMMY_onDataChange(oldValue, newValue, event) {
+	if (newValue) {
+		// turn on jquery edit stuff
+		forms[_liveForm].EDIT_on()
+	}
+	else {
+		// turn on jquery edit stuff
+		forms[_liveForm].EDIT_off()
+	}
+}

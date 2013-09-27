@@ -31,6 +31,9 @@ function ACTION_cancel()
 		globals.CODE_hide_form = 1
 		
 		globals.CODE_form_in_dialog_close('CMS_assetChoose')
+		
+		//resume continuation (will only be true in webclient)
+		scopes.DS.continuation.stop(null,controller.getName())
 	}
 }
 
@@ -61,6 +64,9 @@ function ACTION_ok() {
 		
 		//close the form
 		globals.CODE_form_in_dialog_close('CMS_assetChoose')
+		
+		//resume continuation (will only be true in webclient)
+		scopes.DS.continuation.stop(null,controller.getName())
 	}
 	//nothing selected
 	else {

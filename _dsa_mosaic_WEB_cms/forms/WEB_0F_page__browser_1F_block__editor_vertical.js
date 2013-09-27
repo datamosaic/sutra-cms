@@ -38,6 +38,10 @@ function EDIT_save() {
 	else {
 		globals.CMS.ui.save()
 	}
+	
+	if (application.getApplicationType() == APPLICATION_TYPES.WEB_CLIENT) {
+		forms.WEB_0F_page__live__web.SPLIT_set(false, true)
+	}
 }
 
 /**
@@ -109,3 +113,25 @@ function ACTION_list(event) {
 	}
 }
 
+/**
+ * Callback method for when form is shown.
+ *
+ * @param {Boolean} firstShow form is shown first time after load
+ * @param {JSEvent} event the event that triggered the action
+ *
+ * @properties={typeid:24,uuid:"9916E8EA-14B9-42AA-A074-AC23C1C41D10"}
+ */
+function FORM_on_show(firstShow, event) {
+	
+	
+	//attach fadeout for main form to client side (hack to make sure doesn't fire twice
+	if (FORM_on_show.now instanceof Date && FORM_on_show.now.getTime() + 10 > new Date().getTime() ) {
+		var id = plugins.WebClientUtils.getElementMarkupId(controller.getName() == 'WEB_0F_page__browser_1F_block__editor_vertical' ? elements.btn_orient_side : elements.btn_orient_bottom)
+		var pageID = plugins.WebClientUtils.getElementMarkupId(forms.WEB_0F_page__live__web__view.elements.lbl_page)
+		
+		plugins.WebClientUtils.executeClientSideJS("setTimeout(function() {$('#" + id + "').click(function(){$('#" + pageID + "').fadeOut({duration:'100',complete: function(){$('#" + pageID + "').css('display','none')}});})},500)")
+	}
+	
+	//keep track of when run
+	FORM_on_show.now = new Date()
+}

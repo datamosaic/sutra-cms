@@ -22,7 +22,9 @@ var _codeType = null;
 var _dataValue = null;
 
 /**
- * param {} obj Data object passed to all markup methods
+ * @param {scopes.CMS._constant.objData} obj Data object passed to all markup methods
+ * 
+ * @return {String} markup for this block
  * @properties={typeid:24,uuid:"DD29544C-9226-46F3-88AB-2ECA299910DF"}
  */
 function VIEW_default(obj) {
@@ -57,6 +59,10 @@ function BLOCK_save(event) {
 		
 		ACTION_colorize()
 	}
+//	//in real mode and web client
+//	else if (globals.WEB_page_mode == 3 && application.getApplicationType() == APPLICATION_TYPES.WEB_CLIENT) {
+//		globals.CMS.ui.cancel()
+//	}
 }
 
 /**
@@ -132,37 +138,39 @@ function INIT_data() {
  * @properties={typeid:24,uuid:"1DD58AA1-41B8-44A1-BDAE-FE0ADBF7F314"}
  */
 function TOGGLE_buttons(state) {
+	
 	if (!globals.CMS.ui.getEdit()) {
-		elements.btn_edit.visible = false
-		elements.lbl_edit.visible = false
+		globals.CMSb.propCheck(elements.btn_edit,'visible',false)
+		globals.CMSb.propCheck(elements.lbl_edit,'visible',false)
 	}
 	else {
-		elements.btn_edit.visible = !state
-		elements.lbl_edit.visible = !state
+		globals.CMSb.propCheck(elements.btn_edit,'visible',!state)
+		globals.CMSb.propCheck(elements.lbl_edit,'visible',!state)
 	}
 	
-	elements.btn_save.enabled = state
-	elements.lbl_save.enabled = state
-	elements.btn_cancel.enabled = state
-	elements.lbl_cancel.enabled = state
-	elements.btn_pages.enabled = state
-	elements.gfx_pages.enabled = state
-	elements.btn_graphic.enabled = state
-	elements.gfx_graphic.enabled = state
+	globals.CMSb.propCheck(elements.btn_save,'enabled',state)
+	globals.CMSb.propCheck(elements.lbl_save,'enabled',state)
+	globals.CMSb.propCheck(elements.btn_cancel,'enabled',state)
+	globals.CMSb.propCheck(elements.lbl_cancel,'enabled',state)
+	globals.CMSb.propCheck(elements.btn_pages,'enabled',state)
+	globals.CMSb.propCheck(elements.gfx_pages,'enabled',state)
+	globals.CMSb.propCheck(elements.btn_graphic,'enabled',state)
+	globals.CMSb.propCheck(elements.gfx_graphic,'enabled',state)
 	
-	elements.fld_data_value.visible = state
-	if (elements.bn_browser) {
+	globals.CMSb.propCheck(elements.fld_data_value,'visible',state)
+	globals.CMSb.propCheck(elements.lbl_view,'visible',!state)
+	if (elements.bn_browser && !solutionPrefs.config.webClient) {
 		elements.bn_browser.visible = !state
 	}
 	else {
 		globals.WEBc_browser_error()
 	}
-	elements.var_codeType.enabled = state
+	globals.CMSb.propCheck(elements.var_codeType,'enabled',state)
 	
 	//cancel is always an option if in browser mode
 	if (globals.WEB_page_mode == 3) {
-		elements.btn_cancel.enabled = true
-		elements.lbl_cancel.enabled = true
+		globals.CMSb.propCheck(elements.btn_cancel,'enabled',true)
+		globals.CMSb.propCheck(elements.lbl_cancel,'enabled',true)
 	}
 	
 	if (state) {
@@ -187,6 +195,7 @@ function ACTION_internal_link(event) {
 
 /**
  * @param inputID page id to tokenize for internal link
+ * @param {JSRecord<db:/sutra_cms/web_page>} [pageRec]
  * @properties={typeid:24,uuid:"60C5247A-7183-48A9-8E0D-463E7401E8BB"}
  */
 function ACTION_add_token(inputID,pageRec) {
@@ -194,27 +203,16 @@ function ACTION_add_token(inputID,pageRec) {
 	
 	//wrap currently selected text with link
 	var elem = elements.fld_data_value
-	
 	var linkStart = '<a href="' + token + '">'
 	var linkPage = elem.getSelectedText() || pageRec.page_name
 	var linkEnd = '</a>'
 	
-	//length of tag
-	var offset = (linkStart + linkPage + linkEnd).length
-	
-	//cut selected text so we can get the correct cursor position
-	elem.replaceSelectedText('')
-	
-	//get cursor location
-	var cursor = elem.caretPosition
-	
 	elem.replaceSelectedText(linkStart + linkPage + linkEnd)
-	
 	var dataSave = globals.CMS.ui.setData(null,'code',_dataValue,controller.getName())
 	
-	elem.caretPosition = cursor + offset
 	elem.requestFocus()
 	
+//	application.output(elem.getSelectedText())
 }
 
 /**
@@ -259,11 +257,13 @@ function ACTION_insert_asset(event,blah1,blah2,blah3,blah4,assetType) {
 				false,
 				"CMS_assetChoose"
 			)
+	//start a continuation in wc
+	scopes.DS.continuation.start(null,'WEB_P__asset')
 	
 	//something chosen, insert image link at cursor location
 	if (forms.WEB_P__asset._assetChosen) {
 		//wrap currently selected text with link
-		var elem = elements.fld_data_value
+		elem = elements.fld_data_value
 		
 		switch (assetType) {
 			case 1:	//image
@@ -277,10 +277,10 @@ function ACTION_insert_asset(event,blah1,blah2,blah3,blah4,assetType) {
 			case 2:	//file
 			case 3:	//group
 				var file = forms.WEB_P__asset._assetChosen
-				var asset = globals.CMS.token.getFile(file.asset)
+				asset = globals.CMS.token.getFile(file.asset)
 				
 				//insert image at current location
-				var html = '<a href="' + asset.link + '">' + (elem.getSelectedText() || asset.name || 'Link') + '</a>'
+				html = '<a href="' + asset.link + '">' + (elem.getSelectedText() || asset.name || 'Link') + '</a>'
 				
 				break
 		}
@@ -316,6 +316,7 @@ function ACTION_insert_asset(event,blah1,blah2,blah3,blah4,assetType) {
 function INIT_block() {
 	
 	// main data object to build
+	/** @type {scopes.CMS._constant.blockInit} */
 	var block = {}
 	
 	// block record data
@@ -324,7 +325,7 @@ function INIT_block() {
 			block_description	: 'Code snippets to be displayed as code on a web site',
 			block_category		: scopes.CMS._constant.blockCategory.CONTENT,
 			block_type			: scopes.CMS._constant.blockType.DESIGNTIME,
-			form_name			: 'WEB_0F__code'
+			form_name			: controller.getName()
 		}
 	
 	// block views
@@ -359,7 +360,7 @@ function INIT_block() {
 }
 
 /**
- * @param {JSEvent} event Upstream event that gives context.
+ * @param {JSEvent} [event] Upstream event that gives context.
  * 
  * @properties={typeid:24,uuid:"145AE1D1-D199-44AE-9F61-9F1AD0DF7097"}
  */
@@ -377,6 +378,7 @@ function ACTION_colorize(event) {
 	var html = ''
 	var prefix = ''
 	
+	/** @type {String} */
 	var codeData = globals.CMS.ui.getData(controller.getName()).code
 	
 	//if there's data, color it
@@ -391,7 +393,7 @@ function ACTION_colorize(event) {
 		prefix = globals.WEBc_markup_link_base()
 		
 		//show html markup
-		var html = 
+		html = 
 '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">\n\
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">\n\
 	<head>\n\
@@ -416,7 +418,10 @@ function ACTION_colorize(event) {
 		
 	}
 	
-	if (elements.bn_browser) {
+	if (application.getApplicationType() == APPLICATION_TYPES.WEB_CLIENT) {
+		globals.WEBb_block_preview(elements.lbl_view,html)
+	}
+	else if (elements.bn_browser) {
 		elements.bn_browser.html = html
 	}
 	else {

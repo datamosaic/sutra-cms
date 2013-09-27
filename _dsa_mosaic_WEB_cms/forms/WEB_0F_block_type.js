@@ -81,9 +81,13 @@ function REC_new(flagRefresh,formName,fs) {
 										false,
 										'cmsBlockTypeNew'
 									)
-
+					
+					//start a continuation in wc
+					scopes.DS.continuation.start(null,'WEB_P__block_type__new')
+					
 					//this should be forms.WEB_P__block_type__new._formName...some scoping issue (fid cancel hack...)
 					if ( forms.WEB_0F_block_type__block._formName == undefined ) {
+						application.output('canceled block type')
 						return "Action cancelled"
 					}
 
@@ -159,12 +163,26 @@ function REC_new(flagRefresh,formName,fs) {
 					return
 				}
 			}
-
+			
+			//dealing with a builder...bob, perhaps?
+			if (objBlock.record.form_name == 'WEB_0F__block_builder') {
+				//prompt for category
+				if (nonBatch) {
+//					WEB_block_category is valuelist name where we're getting these values from
+					var category = globals.DIALOGS.showSelectDialog('Category','Specify what category this block builder is',['Content','Layout'])
+					
+					//dialog canceled, do not create block
+					if (!category) {
+						return
+					}
+				}
+			}
+			
 			//turn on notification when called directly from block type workflow form
 			if (nonBatch) {
 				globals.WEBc_sutra_trigger('TRIGGER_progressbar_start',[null,(flagRefresh ? 'Refreshing' : 'Registering') + ' block: ' + objBlock.record.block_name + '.  Please wait...'])
 			}
-
+			
 			// 3) create block and related data from data object
 			var block = (!flagRefresh) ? fs.getRecord(fs.newRecord()) : fs.getSelectedRecord()
 			block.id_site = forms.WEB_0F_site.id_site
@@ -192,14 +210,9 @@ function REC_new(flagRefresh,formName,fs) {
 			if (objBlock.record.form_name == 'WEB_0F__block_builder') {
 				//mark as inactive until published
 				block.flag_unavailable = 1
-
-				//prompt for category
-				if (nonBatch) {
-//					WEB_block_category is valuelist name where we're getting these values from
-					var category = globals.DIALOGS.showSelectDialog('Category','Specify what category this block builder is',['Content','Layout'])
-					if (category) {
-						block.block_category = scopes.CMS._constant.blockCategory[category.toUpperCase()]
-					}
+				
+				if (category) {
+					block.block_category = scopes.CMS._constant.blockCategory[category.toUpperCase()]
 				}
 			}
 
@@ -406,8 +419,8 @@ function FIND_forms() {
 	//find all forms with INIT_block method
 	for (var i = 0; i < formNames.length; i++) {
 		var formName = formNames[i]
-
-		if (!solutionModel.getForm(formName).getFormMethod('INIT_block') || formName == 'WEB_0F___boiler_plate' || formName == 'WEB_0F__block_builder') {
+		
+		if (solutionModel.getForm(formName).getMethods().map(function(item){return item.getName()}).indexOf('INIT_block') == -1 || formName == 'WEB_0F___boiler_plate' || formName == 'WEB_0F__block_builder') {
 			formNames.splice(i,1)
 			i--
 		}

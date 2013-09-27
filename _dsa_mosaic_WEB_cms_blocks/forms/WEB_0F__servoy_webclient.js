@@ -78,7 +78,10 @@ var _cssClass = null;
 var _cssId = null;
 
 /**
- * @param	{Object}	obj Data object passed to all markup methods
+ * @param {scopes.CMS._constant.objData} obj Data object passed to all markup methods
+ * @param {JSDataSet} [results] Dataset returned to the jsp
+ * 
+ * @return {String} markup for this block
  * 
  * @properties={typeid:24,uuid:"399C16F5-0026-4B84-A2B5-01231434CB1A"}
  */
@@ -178,11 +181,11 @@ function SET_forms() {
 		else if (solutionPrefs.repository.workspace) {
 			var moduleForms = solutionPrefs.repository.workspace[_module]
 		
-			var formNames = new Array()
-			var j = 0
+			formNames = new Array()
+			j = 0
 			
 			if (moduleForms) { //check to make sure module_filter has a loaded value (they chose something)
-				for (var i in moduleForms) {
+				for (i in moduleForms) {
 					formNames[j++] = i
 				}
 			}
@@ -190,7 +193,7 @@ function SET_forms() {
 	}
 	//when in reporting module, show forms anyway
 	else {
-		var formNames = forms.allnames
+		formNames = forms.allnames
 	}
 	
 	formNames = formNames.sort()
@@ -212,6 +215,7 @@ function SET_forms() {
 function INIT_block() {
 	
 	// main data object to build
+	/** @type {scopes.CMS._constant.blockInit} */
 	var block = {}
 	
 	// block record data
@@ -268,8 +272,6 @@ function INIT_block() {
  * @param {Object} newValue new value
  * @param {JSEvent} event the event that triggered the action
  *
- * @returns {Boolean}
- *
  * @properties={typeid:24,uuid:"EAF1F56A-8C93-4502-BDA4-BB78E2FFB658"}
  */
 function FLD_module__data_change(oldValue, newValue, event) {
@@ -281,11 +283,16 @@ function FLD_module__data_change(oldValue, newValue, event) {
 }
 
 /**
+ * @param {scopes.CMS._constant.objData} obj Data object passed to all markup methods
+ * @param {JSDataSet} [results] Dataset returned to the jsp
+ * @param {Object} [login] Login object
+ * 
+ * @return {String} markup for this block
  * @properties={typeid:24,uuid:"18FF2C5F-9F17-4AE7-BBF8-C6DD844A92C7"}
  */
 function _VIEW_swc(obj, results, login) {
 
-		//get solution model form
+	//get solution model form
 	var smForm = solutionModel.getForm(obj.block_data.form)
 	//for width
 	var defaultWidth = (smForm) ? smForm.width : 0
@@ -334,6 +341,8 @@ template +=	'	>\n\
 }
 
 /**
+ * @param {String} pageID
+ * @return {String} markup for this block
  * @properties={typeid:24,uuid:"1EF67102-5F99-4C5A-A20D-1A98EABC3A8C"}
  */
 function _VIEW_no_login(pageID) {
@@ -348,7 +357,9 @@ function _VIEW_no_login(pageID) {
 /**
  * Perform the element default action.
  *
- * @param {JSEvent} event the event that triggered the action
+ * @param {JSEvent|undefined} [input] the event that triggered the action
+ * @param {JSRecord<db:/sutra_cms/web_page>} [pageRec]
+ * @param {JSEvent} [event]
  *
  * @properties={typeid:24,uuid:"B206DA14-241E-41A0-946A-FCB31366D1DE"}
  */

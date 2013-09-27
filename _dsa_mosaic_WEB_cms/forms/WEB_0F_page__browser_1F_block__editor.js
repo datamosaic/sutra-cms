@@ -45,8 +45,8 @@ var _scopeID = null;
 /**
  * Callback method for when form is shown.
  *
- * @param {Boolean} firstShow form is shown first time after load
- * @param {JSEvent} event the event that triggered the action
+ * @param {Boolean} [firstShow] form is shown first time after load
+ * @param {JSEvent} [event] the event that triggered the action
  *
  * @properties={typeid:24,uuid:"4763A94A-B219-4DB9-95AF-311329BA5A23"}
  */
@@ -74,9 +74,14 @@ function FORM_on_show(firstShow, event) {
 			//the form exists and it isn't in the currently selected tab
 			if (formName && forms[formName] && formName != tabPanel.getTabFormNameAt(tabPanel.tabIndex)) {
 				//check this form to see if even anything to edit
-				if (recBlockType.form_name != 'WEB_0F__block_builder') {
+				if (formName != 'WEB_0F__block_builder') {
+					//check for webclient version of this block type
+					if (application.getApplicationType() == APPLICATION_TYPES.WEB_CLIENT && solutionModel.getForm(formName + 'w')) {
+						formName += 'w'
+					}
+					
 					var smForm = solutionModel.getForm(formName)
-					var allElems = smForm.getComponents()
+					var allElems = smForm.getComponents(true)
 					var hasFields = false
 					allElems.forEach(function(item) {
 						if (typeof item.displayType == 'number') {
@@ -147,22 +152,28 @@ function FORM_on_show(firstShow, event) {
  * @properties={typeid:24,uuid:"863A9ABA-9B3F-496A-BAFF-D9CC605DEE47"}
  */
 function ACTION_hide(event) {
+	var swc = application.getApplicationType() == APPLICATION_TYPES.WEB_CLIENT
+	var parentForm = swc ? 'WEB_0F_page__live__web' : 'WEB_0F_page__browser'
 	
-	globals.CODE_cursor_busy(true)
+	if (!swc) {
+		globals.CODE_cursor_busy(true)
+	}
 	
 	//split pane in main window
-	forms.WEB_0F_page__browser.SPLIT_set(false)
+	forms[parentForm].SPLIT_set(false,true)
 	elements.tab_edit.removeAllTabs()
 	
-	//refresh the browser bean
-	forms.WEB_0F_page__browser.URL_update(true)
-	
-	//wiggle window by 1px to force refresh
-	var mainWindow = application.getWindow()
-	mainWindow.setSize(mainWindow.getWidth(), mainWindow.getHeight() - 1)
-	mainWindow.setSize(mainWindow.getWidth(), mainWindow.getHeight() + 1)
-	
-	globals.CODE_cursor_busy(false)
+	if (!swc) {
+		//refresh the browser bean (happens as part of split set in web-client)
+		forms[parentForm].URL_update(true)
+		
+		//wiggle window by 1px to force refresh
+		var mainWindow = application.getWindow()
+		mainWindow.setSize(mainWindow.getWidth(), mainWindow.getHeight() - 1)
+		mainWindow.setSize(mainWindow.getWidth(), mainWindow.getHeight() + 1)
+		
+		globals.CODE_cursor_busy(false)
+	}
 	
 	return true
 }
@@ -189,8 +200,14 @@ function ACTION_location(elem) {
 			border = 'SpecialMatteBorder,1.0,0.0,0.0,0.0,#a1b0cf,#000000,#000000,#000000,0.0'
 			break			
 	}
-	forms.WEB_0F_page__browser.elements.tab_editor.border = border
-	forms.WEB_0F_page__browser.SPLIT_set(true)
+	
+	if (application.getApplicationType() == APPLICATION_TYPES.WEB_CLIENT) {
+		forms.WEB_0F_page__live__web.SPLIT_set(true,true)
+	}
+	else {
+		forms.WEB_0F_page__browser.elements.tab_editor.border = border
+		forms.WEB_0F_page__browser.SPLIT_set(true)
+	}
 }
 
 /**

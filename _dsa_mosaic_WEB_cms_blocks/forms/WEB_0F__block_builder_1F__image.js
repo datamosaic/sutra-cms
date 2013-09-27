@@ -136,6 +136,9 @@ function BLOCK_choose(event) {
 						"CMS_assetChoose"
 					)
 		
+		//start a continuation in wc
+		scopes.DS.continuation.start(null,'WEB_P__asset')
+		
 		//something chosen, choose the image
 		if (forms.WEB_P__asset._assetChosen) {
 			var assetRec = forms.WEB_P__asset._assetChosen.asset

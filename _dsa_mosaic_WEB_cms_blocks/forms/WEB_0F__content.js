@@ -20,7 +20,9 @@ var _firstShown = false;
 var _toolbarMode = 0;
 
 /**
- * param {} obj Data object passed to all markup methods
+ * @param {scopes.CMS._constant.objData} obj Data object passed to all markup methods
+ * 
+ * @return {String} markup for this block
  * @properties={typeid:24,uuid:"9F686D38-C923-456D-AA26-356F9D67BA5F"}
  */
 function VIEW_default(obj) {
@@ -69,12 +71,12 @@ function TINYMCE_init(mode) {
 		//set spellchecker
 //		js.spellchecker_rpc_url = 
 	
-		//styles for tinymce
-		var cssFile = globals.WEBc_markup_link_base()
-		
-		//rewrite mode
-		var rewriteMode = globals.WEBc_install_getRewrite()
-		
+//		//styles for tinymce
+//		var cssFile = globals.WEBc_markup_link_base()
+//		
+//		//rewrite mode
+//		var rewriteMode = globals.WEBc_install_getRewrite()
+//		
 //		//no pages, no css
 //		if (utils.hasRecords(forms.WEB_0F_page.foundset)) {
 //			//rewrites are disabled, spell out all the way to the site directory
@@ -254,7 +256,7 @@ function INIT_data() {
 /**
  * Perform the element default action.
  *
- * @param {JSEvent} event the event that triggered the action
+ * @param {JSEvent} [event] the event that triggered the action
  *
  * @properties={typeid:24,uuid:"8DA68D80-88B6-47F7-857C-6CE05373251D"}
  */
@@ -340,6 +342,7 @@ function ACTION_internal_link(event) {
 
 /**
  * @param inputID page id to tokenize for internal link
+ * @param {JSRecord<db:/sutra_cms/web_page>} [pageRec]
  * @properties={typeid:24,uuid:"AC4E3BFF-07E7-4A72-A3C1-24F4D8E8C2C0"}
  */
 function ACTION_add_token(inputID,pageRec) {
@@ -410,6 +413,9 @@ function ACTION_insert_asset(event,blah1,blah2,blah3,blah4,assetType) {
 				false,
 				"CMS_assetChoose"
 			)
+			
+	//start a continuation in wc
+	scopes.DS.continuation.start(null,'WEB_P__asset')
 	
 	//something chosen, insert image link at cursor location
 	if (forms.WEB_P__asset._assetChosen) {
@@ -426,9 +432,9 @@ function ACTION_insert_asset(event,blah1,blah2,blah3,blah4,assetType) {
 			case 2:	//file
 			case 3:	//group
 				var file = forms.WEB_P__asset._assetChosen
-				var token = globals.CMS.token.getFile(file.asset).link
+				token = globals.CMS.token.getFile(file.asset).link
 				
-				var js = "tinyMCE.execCommand('mceInsertLink', false, '" + token + "');"
+				js = "tinyMCE.execCommand('mceInsertLink', false, '" + token + "');"
 				
 //				var html = '<a href="' + token + '" name="' + file.asset.asset_title +'">'
 //				var js = "tinyMCE.execCommand('mceInsertContent', false, '" + html + "');"
@@ -454,6 +460,7 @@ function ACTION_insert_asset(event,blah1,blah2,blah3,blah4,assetType) {
 function INIT_block() {
 	
 	// main data object to build
+	/** @type {scopes.CMS._constant.blockInit} */
 	var block = {}
 	
 	// block record data

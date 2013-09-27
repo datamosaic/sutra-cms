@@ -133,7 +133,7 @@ function VIEW_ul(obj) {
 	}
 	
 	//attach to our markup
-	var markup = '<ul name="langSwitcher">'
+	var markup = '<ul class="langSwitcher">'
 	lang.forEach(function(item) {markup += item})
 	markup += '</ul>'
 	
@@ -154,6 +154,7 @@ function VIEW_ul(obj) {
 function INIT_block() {
 	
 	// main data object to build
+	/** @type {scopes.CMS._constant.blockInit} */
 	var block = {}
 	
 	// block record data

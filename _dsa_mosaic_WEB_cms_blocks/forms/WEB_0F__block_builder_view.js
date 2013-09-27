@@ -66,11 +66,28 @@ function INIT_data() {
 		//replace out <<block>>
 		html = utils.stringReplace(html,'<<BLOCK>>','<em>&lt;&lt;BLOCK>><em>')
 	}
-
-	if (elements.bn_browser) {
+	
+	if (application.getApplicationType() == APPLICATION_TYPES.WEB_CLIENT) {
+		globals.WEBb_block_preview(elements.lbl_view,html)
+	}
+	else if (elements.bn_browser) {
 		elements.bn_browser.html = html
 	}
 	else {
 		globals.WEBc_browser_error()
+	}
+}
+
+/**
+ * Callback method when form is (re)loaded.
+ *
+ * @param {JSEvent} event the event that triggered the action
+ *
+ * @properties={typeid:24,uuid:"B8051344-A907-4814-85B1-0702729F8961"}
+ */
+function FORM_on_load(event) {
+	//when not web client, enable browser bean
+	if (application.getApplicationType() != APPLICATION_TYPES.WEB_CLIENT) {
+		elements.bn_browser.visible = true
 	}
 }

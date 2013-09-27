@@ -212,6 +212,9 @@ function ADD_version(event) {
 						'cmsPageVersion'
 					)
 		
+		//start a continuation in wc
+		scopes.DS.continuation.start(null,'WEB_P__version__page')
+					
 		if (forms.WEB_P__version__page._fidAccept) {
 			//turn on feedback indicators
 			var progressText = 'Creating new version...'
@@ -228,6 +231,9 @@ function ADD_version(event) {
 								false,
 								'cmsVersionNew'
 							)		
+				
+				//start a continuation in wc
+				scopes.DS.continuation.start(null,'WEB_P_page__version')
 				
 				if (forms.WEB_P_page__version._fidAccept) {
 					//turn on feedback indicators

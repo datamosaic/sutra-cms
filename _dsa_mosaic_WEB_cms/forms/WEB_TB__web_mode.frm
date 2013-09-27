@@ -84,7 +84,8 @@ size:"110,17",
 text:"",
 transparent:true,
 typeid:7,
-uuid:"1B4EB4B9-3AB4-4E97-9379-33CA88F26AFF"
+uuid:"1B4EB4B9-3AB4-4E97-9379-33CA88F26AFF",
+visible:false
 },
 {
 formIndex:12302,
@@ -173,7 +174,8 @@ styleClass:"button",
 text:"Edit",
 transparent:true,
 typeid:7,
-uuid:"55BE81D3-5577-45D6-BF21-3AFAB291BE95"
+uuid:"55BE81D3-5577-45D6-BF21-3AFAB291BE95",
+visible:false
 },
 {
 anchors:13,
@@ -189,7 +191,8 @@ tabSeq:-1,
 transparent:true,
 typeid:7,
 uuid:"5787996B-FDD5-4F54-9C4B-3B04376B757A",
-verticalAlignment:3
+verticalAlignment:3,
+visible:false
 },
 {
 fontType:"Verdana,0,9",
@@ -206,7 +209,8 @@ styleClass:"button",
 text:"Import",
 transparent:true,
 typeid:7,
-uuid:"621FE110-495E-49A6-8C0B-D70BDB375E79"
+uuid:"621FE110-495E-49A6-8C0B-D70BDB375E79",
+visible:false
 },
 {
 formIndex:12302,
@@ -338,7 +342,8 @@ tabSeq:-1,
 transparent:true,
 typeid:7,
 uuid:"AC4AA4AE-BD51-44A0-939E-95212E32EDC3",
-verticalAlignment:3
+verticalAlignment:3,
+visible:false
 },
 {
 formIndex:12302,
@@ -356,7 +361,8 @@ toolTipText:"Edit...",
 transparent:true,
 typeid:7,
 uuid:"C02C275F-B814-485E-926F-9951E58AAAD6",
-verticalAlignment:1
+verticalAlignment:1,
+visible:false
 },
 {
 formIndex:12302,
@@ -374,7 +380,8 @@ toolTipText:"Save",
 transparent:true,
 typeid:7,
 uuid:"C2C49F1A-2C2A-4DCC-BF3A-D1B56850B8F5",
-verticalAlignment:1
+verticalAlignment:1,
+visible:false
 },
 {
 formIndex:12304,
@@ -390,7 +397,8 @@ showFocus:false,
 size:"110,17",
 transparent:true,
 typeid:7,
-uuid:"C601CDA2-0A18-4B65-BCB6-CC33098894D2"
+uuid:"C601CDA2-0A18-4B65-BCB6-CC33098894D2",
+visible:false
 },
 {
 height:36,
@@ -452,7 +460,8 @@ size:"40,26",
 toolTipText:"Import asset",
 transparent:true,
 typeid:7,
-uuid:"E01B44C8-255B-40C4-950A-C2F20ABC5225"
+uuid:"E01B44C8-255B-40C4-950A-C2F20ABC5225",
+visible:false
 },
 {
 fontType:"Verdana,0,9",

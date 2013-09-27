@@ -355,7 +355,9 @@ function WEBc_block_setData(event, key, value, formName) {
 	function realSave(record) {
 		if (WEB_page_mode == 3) {
 			databaseManager.saveData(record)
-			forms.WEB_0F_page__browser.URL_update(true)
+			
+			var viewForm = application.getApplicationType() == APPLICATION_TYPES.WEB_CLIENT ? 'WEB_0F_page__live__web' : 'WEB_0F_page__browser'
+			forms[viewForm].URL_update(true)
 		}
 	}
 	
@@ -1051,7 +1053,7 @@ function WEBc_cookie_getValue(request, name) {
 /**
  * Return the domain for a page
  * 
- * @param {UUID|String|Object} pageID The page requested.
+ * @param {UUID|String|Object} [pageID] The page requested.
  * @param {String}	[siteURL] Domain name request came in on.
  * @param {JSRecord<db:/sutra_cms/web_site_language>}	[siteLanguageRec] Specify a particular language (will default to the default site language).
  * 

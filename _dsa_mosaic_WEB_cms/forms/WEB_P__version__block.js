@@ -31,15 +31,20 @@ var _versionName = null;
  * @properties={typeid:24,uuid:"B3C7BD86-8EC9-4F33-94B2-19608DA7293D"}
  */
 function ACTION_cancel() {
-	//null out all fields
-	_versionName = null
-	_versionDescription = null
-	
-	//enable closing the form
-	globals.CODE_hide_form = 1
-	
-	globals.CODE_form_in_dialog_close('cmsBlockVersion')
-
+	//not already ok to close, cancel
+	if (!globals.CODE_hide_form) {
+		//null out all fields
+		_versionName = null
+		_versionDescription = null
+		
+		//enable closing the form
+		globals.CODE_hide_form = 1
+		
+		globals.CODE_form_in_dialog_close('cmsBlockVersion')
+		
+		//resume continuation (will only be true in webclient)
+		scopes.DS.continuation.stop(null,controller.getName())
+	}
 }
 
 /**
@@ -47,7 +52,6 @@ function ACTION_cancel() {
  * @properties={typeid:24,uuid:"C4E1BC60-4302-4F88-A0D3-37FFC24C0436"}
  */
 function ACTION_ok() {
-
 	//enaable closing the form
 	globals.CODE_hide_form = 1
 	
@@ -56,6 +60,8 @@ function ACTION_ok() {
 	
 	globals.CODE_form_in_dialog_close('cmsBlockVersion')
 
+	//resume continuation (will only be true in webclient)
+	scopes.DS.continuation.stop(null,controller.getName())
 }
 
 /**

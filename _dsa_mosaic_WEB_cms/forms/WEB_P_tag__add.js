@@ -8,6 +8,13 @@ var _license_dsa_mosaic_WEB_cms = 'Module: _dsa_mosaic_WEB_cms \
 									MIT Licensed';
 
 /**
+ * @type {String}
+ *
+ * @properties={typeid:35,uuid:"3524A3FA-5283-405A-99B0-7C4A6FC3F838"}
+ */
+var _callingForm = null;
+
+/**
  *
  * @properties={typeid:24,uuid:"ab29c47e-17cd-478a-b8e1-d82c2de4c57d"}
  */
