@@ -760,9 +760,12 @@ function IMAGE_import(directory,uuid) {
 		file = _webFile
 	}
 
-	if (!file) {
-		return "No file selected"
+	if (!file || file.length == 0) {
+		return "Nothing selected"
 	}
+
+	//TODO: implement loop for all files selected
+	file = file[0]
 
 	// error check for images only
 	if ( file.getContentType() != null ) {
@@ -1040,9 +1043,12 @@ function FILE_import(directory,uuid) {
 		file = _webFile
 	}
 
-	if (!file) {
-		return "No file selected"
+	if (!file || file.length == 0) {
+		return "Nothing selected"
 	}
+
+	//TODO: implement loop for all files selected
+	file = file[0]
 
 	// setup upload file
 	var uploadFile = baseDirectory + directory + "/" + file.getName().replace(/ /g, "_")
@@ -1127,7 +1133,7 @@ function FILE_import_callback(result, e) {
 function WEB_callback(files) {
 	//something chosen, (continuation exists for this location) continue method
 	if (files instanceof Array && files.length) {
-		_webFile = files[0]
+		_webFile = files
 
 		//resume continuation (will only be true in webclient)
 		scopes.DS.continuation.stop(null,controller.getName())
