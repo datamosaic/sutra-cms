@@ -122,32 +122,32 @@ var _themesSelected = [];
  * Since file streaming can be a real PITA to keep track of all the parts (form variables,
  * callbacks, updaters, multiple threads, etc), put all CMS file streaming here in one place
  * even if methods are hard-coded to a specific scope or situation.
- * 
+ *
  * Prefix hard-coded methods with scope for now and call from a method at the scope location.
- * 
+ *
  * Hopefully some patterns will emerge eventually that will allow us to abstract and condense
  * things a bit. At that point we won't have to go track down all the file streaming pieces
  * scattered everywhere.
- * 
+ *
  * @properties={typeid:24,uuid:"82C07EDB-1566-40FE-A0D3-ACA385AECBD6"}
  */
 function _INFO() {}
 
 /**
  * File streaming for CMS all in one place. One of these figure out generic file streaming functions.
- * 
- * 
+ *
+ *
  * @param {Number} progress : used by streaming file callbacks to pass control back to this method
- * 
+ *
  * @properties={typeid:24,uuid:"63BDBFCB-609A-4735-A981-CF0DEE9C5BFC"}
  * @AllowToRunInFind
  */
 function THEME_new(progress) {
 	var fsTheme = forms.WEB_0F_theme.foundset
-	
+
 	// *** STAGE #1: get available themes *** //
-	if ( !progress ) { 
-		
+	if ( !progress ) {
+
 		// streaming file upload directory check
 		if ( !FUNCTION_streaming_check() ) {
 			globals.DIALOGS.showErrorDialog( "Error", 'File streaming default folder needs to be set to operating system root ("/" or "C:\")')
@@ -155,34 +155,34 @@ function THEME_new(progress) {
 		}
 
 		// build directory to current site's theme folder
-		var install = forms.WEB_0F_install.FUNCTION_getInstallDirectory() 
+		var install = forms.WEB_0F_install.FUNCTION_getInstallDirectory()
 		var theme = FUNCTION_theme_directory()
-		
+
 		//error out
 		if (theme == "No theme site directory specified") {
 			return
 		}
-		
+
 		var directory = install + "/application_server/server/webapps/ROOT/sutraCMS/sites/" + theme + "/themes/"
 		directory = utils.stringReplace(directory,"\\", "/")	// windows backslashes to js standard forward slashes
-		
+
 		// get theme directories and descriptor files
 		var themesArray = plugins.file.getRemoteFolderContents(directory, null, 2)
 		if (!themesArray || (themesArray instanceof Array && !themesArray.length)) {
-			globals.DIALOGS.showErrorDialog( 
-							"Error", 
+			globals.DIALOGS.showErrorDialog(
+							"Error",
 							'The directory specified does not exist\nCheck the installation and site directories.'
 						)
 			return 'The directory specified does not exist\nCheck the installation and site directories.'
 		}
-		
+
 		// form variables needed to keep track of state and data while streaming
 		_themes = {}					// main storage object
 		_themesPaths = []				// track full path to theme
 		_themesPathsIncrementer = 0		// increments each callback
 		_themesDone = 0					// to determine last callback
 		_themesProgressTotal = 0		// max bytes to transfer for progress monitor
-		
+
 		// build data needed for streaming: file arrays, state variables
 		var incrementer = 0
 		var tempArray = []
@@ -191,17 +191,17 @@ function THEME_new(progress) {
 			if ( themesArray[i].getName().charAt(0) != "." ) { // skip hidden directories
 				// build list of description.txt files to stream
 				if ( plugins.file.convertToRemoteJSFile(directory + themesArray[i].getName() + "/description.txt").exists() ) {  // description.txt file may not be present
-					_themesPaths[incrementer] = directory + themesArray[i].getName()	
+					_themesPaths[incrementer] = directory + themesArray[i].getName()
 					sourceArray[incrementer] = directory + themesArray[i].getName() + "/description.txt"
 					tempArray[incrementer] = plugins.file.createTempFile("description",".txt")
 					_themesProgressTotal += plugins.file.convertToRemoteJSFile(_themesPaths[incrementer] + "/description.txt").size()
 					incrementer ++
-				}				
+				}
 			}
 		}
 		// set total number of themes so last callback can return control
 		_themesDone = incrementer
-		
+
 		if ( incrementer > 0 ) { // only stream if themes are present
 			// if in Data Sutra: stream files with progress bar for monitor
 			if ( application.__parent__.solutionPrefs ) {
@@ -210,7 +210,7 @@ function THEME_new(progress) {
 				var monitor = plugins.file.streamFilesFromServer( tempArray, sourceArray, THEME_callback_theme )
 				if (monitor) {
 					// progress monitor
-					monitor.setProgressCallBack( THEME_progress, 1, (application.isInDeveloper() ? 100 : 0) )	
+					monitor.setProgressCallBack( THEME_progress, 1, (application.isInDeveloper() ? 100 : 0) )
 				}
 			}
 			else { // not in Data Sutra: stream files without monitor
@@ -222,15 +222,15 @@ function THEME_new(progress) {
 			return "No themes available"
 		}
 	}
-	
+
 	// *** STAGE #2: // get jsp files and build data object *** //
-	else if ( progress == 2 ) { 
-	
+	else if ( progress == 2 ) {
+
 		var themes = []  // array for select dialog
 		for (var i in _themes ) {
 			themes.push(_themes[i].name)
 		}
-	
+
 		// choose theme
 		if ( !_flagRefresh ) {  // user choose theme
 			var input =	globals.DIALOGS.showSelectDialog("Themes", "Choose a theme to register", themes)
@@ -250,7 +250,7 @@ function THEME_new(progress) {
 		}
 		else { // refresh current theme record
 			if( themes.indexOf(fsTheme.theme_name) > -1 ) {
-				var input = fsTheme.theme_name				
+				var input = fsTheme.theme_name
 			}
 			else {
 				globals.DIALOGS.showErrorDialog( "Error", "No matching theme found")
@@ -260,13 +260,13 @@ function THEME_new(progress) {
 		}
 		// get jsp files
 		var jspArray = plugins.file.getRemoteFolderContents(_themes[input].path, null, 1)
-		
+
 		_themesDone = 0					// to determine last callback
 		_themesPathsIncrementer = 0		// increments each callback
 		_themesProgressTotal = 0		// max bytes to transfer for progress monitor
 		_themesSelected = input			// tracks selected theme
 		_themesLayoutSelected = []		// tracks current jsp name being processed for callback
-		
+
 		// build data needed for streaming: file arrays, state variables
 		var incrementer = 0
 		var tempArray = []
@@ -277,12 +277,12 @@ function THEME_new(progress) {
 				sourceArray[incrementer] = jspArray[i].getPath()
 				tempArray[incrementer] = plugins.file.createTempFile(jspArray[i].getName(),".txt")
 				_themesProgressTotal += jspArray[i].size()
-				incrementer ++				
+				incrementer ++
 			}
 		}
 		// set total number of themes so last callback can return control
 		_themesDone = incrementer
-		
+
 		if ( incrementer > 0 ) {
 			// if in Data Sutra: stream files with progress bar for monitor
 			if ( application.__parent__.solutionPrefs ) {
@@ -291,45 +291,45 @@ function THEME_new(progress) {
 				var monitor = plugins.file.streamFilesFromServer( tempArray, sourceArray, THEME_callback_jsp )
 				if (monitor) {
 					// progress monitor
-					monitor.setProgressCallBack( THEME_progress, 1, (application.isInDeveloper() ? 100 : 0) )	
+					monitor.setProgressCallBack( THEME_progress, 1, (application.isInDeveloper() ? 100 : 0) )
 				}
 			}
 			else { // not in Data Sutra: stream files without monitor
 				var monitor = plugins.file.streamFilesFromServer( tempArray, sourceArray, THEME_callback_jsp )
-			}	
+			}
 		}
 		else {
 			//jump to stage 3
 			THEME_new(3)
-			
+
 //			globals.DIALOGS.showErrorDialog( "Error", "No theme files defined in selected theme")
 //			globals.WEBc_sutra_trigger('TRIGGER_progressbar_stop')
 //			return "No theme files defined in selected theme"
 		}
 	}
-	
-	
+
+
 	// *** STAGE #3: // get jsp files from elements directory and build data object *** //
-	
+
 	else if ( progress == 3 ) {
-		
+
 		var jspArray = []
-		
+
 		//TODO: check if elements directory
 		if ( plugins.file.convertToRemoteJSFile(_themes[_themesSelected].path + "/elements").exists() ) {
-			var jspArray = plugins.file.getRemoteFolderContents(_themes[_themesSelected].path + "/elements", null, 1)	
+			var jspArray = plugins.file.getRemoteFolderContents(_themes[_themesSelected].path + "/elements", null, 1)
 		}
 		else {
 			application.output("no elements directory")   // keep processing main method though
 		}
-		
+
 		_elements = {}						// reset elements object
 		_elementsDone = 0					// to determine last callback
 		_elementsPathsIncrementer = 0		// increments each callback
 		_elementsProgressTotal = 0			// max bytes to transfer for progress monitor
 		_elementsSelected = _themesSelected			// tracks selected element file
 		_elementsLayoutSelected = []		// tracks current jsp name being processed for callback
-		
+
 		// build data needed for streaming: file arrays, state variables
 		var incrementer = 0
 		var tempArray = []
@@ -340,12 +340,12 @@ function THEME_new(progress) {
 				sourceArray[incrementer] = jspArray[i].getPath()
 				tempArray[incrementer] = plugins.file.createTempFile(jspArray[i].getName(),".txt")
 				_elementsProgressTotal += jspArray[i].size()
-				incrementer ++				
+				incrementer ++
 			}
 		}
 		// set total number of themes so last callback can return control
 		_elementsDone = incrementer
-		
+
 		if ( incrementer > 0 ) {
 			// if in Data Sutra: stream files with progress bar for monitor
 			if ( application.__parent__.solutionPrefs ) {
@@ -354,28 +354,28 @@ function THEME_new(progress) {
 				var monitor = plugins.file.streamFilesFromServer( tempArray, sourceArray, THEME_callback_element )
 				if (monitor) {
 					// progress monitor
-					monitor.setProgressCallBack( THEME_progress, 1, (application.isInDeveloper() ? 100 : 0) )	
+					monitor.setProgressCallBack( THEME_progress, 1, (application.isInDeveloper() ? 100 : 0) )
 				}
 			}
 			else { // not in Data Sutra: stream files without monitor
 				var monitor = plugins.file.streamFilesFromServer( tempArray, sourceArray, THEME_callback_element )
-			}	
+			}
 		}
 		else {
 			//jump to stage 4
 			THEME_new(4)
-		}		
-	}	
-	
-	
+		}
+	}
+
+
 	// *** STAGE #4: create theme, layouts and editable areas *** //
 	else if ( progress == 4 ) {
 		//no records created yet and interface locked
 		if (application.__parent__.solutionPrefs && solutionPrefs.design.statusLockWorkflow) {
 			globals.WEB_lock_workflow(false)
 		}
-		
-		// 1 get theme record 
+
+		// 1 get theme record
 		var themeDirectory = _themes[_themesSelected].path.split("/")
 		if ( !_flagRefresh ) {
 			var theme = fsTheme.getRecord(fsTheme.newRecord())
@@ -395,21 +395,21 @@ function THEME_new(progress) {
 			var size = 0, key;
 			for (key in _themes[_themesSelected].editables) {
 				if (_themes[_themesSelected].editables.hasOwnProperty(key)) size++;
-			}	
+			}
 			application.sleep(500) // needed to clear other file streaming method threads that have progress bars
 			globals.WEBc_sutra_trigger('TRIGGER_progressbar_start',[0, "Creating records...", null, 0, size])
-		}		
-		
+		}
+
 		var layoutList = []
 		var counter = 0
-		for (var i in  _themes[_themesSelected].editables ) {			
+		for (var i in  _themes[_themesSelected].editables ) {
 			// update progress monitor
 			if ( application.__parent__.solutionPrefs ) {
 				globals.WEBc_sutra_trigger('TRIGGER_progressbar_set',[counter ++])
 			}
 			// 2 create layout record
 			if ( !_flagRefresh ) {
-				var layout = theme.web_theme_to_layout.getRecord(theme.web_theme_to_layout.newRecord())				
+				var layout = theme.web_theme_to_layout.getRecord(theme.web_theme_to_layout.newRecord())
 			}
 			else {
 				// see if layout with current path
@@ -417,7 +417,7 @@ function THEME_new(progress) {
 				theme.web_theme_to_layout.layout_path = i
 				var count = theme.web_theme_to_layout.search()
 				if ( count == 1 ) {
-					var layout = theme.web_theme_to_layout.getRecord(1)	
+					var layout = theme.web_theme_to_layout.getRecord(1)
 					theme.web_theme_to_layout.loadAllRecords()
 				}
 				else {
@@ -425,7 +425,7 @@ function THEME_new(progress) {
 				}
 			}
 			layout.layout_path = i
-			
+
 			var name = i.split(".")[0].split("_")
 			for (var j = 0; j < name.length; j++) {
 				if ( j == 0 ) {
@@ -433,14 +433,14 @@ function THEME_new(progress) {
 				}
 				else {
 					layout.layout_name += " " + utils.stringInitCap(name[j])
-				}	
+				}
 			}
-						
-			if (i == "default.jsp") layout.flag_default = 1                                  
+
+			if (i == "default.jsp") layout.flag_default = 1
 			databaseManager.saveData(layout)
 			layoutList.push(layout.layout_name)
-			
-			// 3 create editable area record			
+
+			// 3 create editable area record
 			var editablesList = []
 			var order = 1
 			for (var j in _themes[_themesSelected].editables[i] ) {
@@ -465,10 +465,10 @@ function THEME_new(progress) {
 					}
 					layout.web_layout_to_editable.loadAllRecords()
 				}
-				databaseManager.saveData(editable) 
+				databaseManager.saveData(editable)
 				editablesList.push(_themes[_themesSelected].editables[i][j])
 			}
-			
+
 			var order = layout.web_layout_to_editable.getSize() + 1
 			for ( k in _themes[_themesSelected].includes[i] ) {
 				// 4 create editable area record for all include files
@@ -486,8 +486,8 @@ function THEME_new(progress) {
 						if ( count == 1 ) {
 							var editable = layout.web_layout_to_editable.getRecord(1)
 							editable.editable_name = _elements[_themesSelected].editables[_themes[_themesSelected].includes[i][k] + ".jspf"][m]
-							
-							
+
+
 						}
 						else {
 							var editable = layout.web_layout_to_editable.getRecord(layout.web_layout_to_editable.newRecord())
@@ -497,12 +497,12 @@ function THEME_new(progress) {
 						layout.web_layout_to_editable.loadAllRecords()
 						editablesList.push(_elements[_themesSelected].editables[_themes[_themesSelected].includes[i][k] + ".jspf"][m])
 					}
-					databaseManager.saveData(editable) 
+					databaseManager.saveData(editable)
 				}
 			}
 			// remove editables no longer appearing in theme when refreshing
 			if ( _flagRefresh ) {
-				
+
 				// remove editables
 				for (var l = 0; l < layout.web_layout_to_editable.getSize(); l++) {
 					var tempEditable = layout.web_layout_to_editable.getRecord(l + 1)
@@ -510,19 +510,19 @@ function THEME_new(progress) {
 						tempEditable.foundset.deleteRecord(l + 1)
 						var loop = l + 1
 						while (loop <= layout.web_layout_to_editable.getSize()) {
-							var nextRec = layout.web_layout_to_editable.getRecord(loop)				
+							var nextRec = layout.web_layout_to_editable.getRecord(loop)
 							nextRec.row_order--
 							loop++
-						}						
+						}
 						l--
 					}
-				}			
+				}
 			}
-			
+
 			// sort editables by row_order
 			forms.WEB_0F_theme_1L_layout.web_layout_to_editable.sort( "row_order asc" )
 		}
-		
+
 		// remove editables no longer appearing in theme when refreshing
 		if ( _flagRefresh ) {
 			for (var l = 0; l < theme.web_theme_to_layout.getSize(); l++) {
@@ -531,24 +531,24 @@ function THEME_new(progress) {
 					tempLayout.foundset.deleteRecord(l + 1)
 					l--
 				}
-			}		
+			}
 		}
-		
+
 		//just reloop over editables and reset the order
 		for (var m = 1; m <= theme.web_theme_to_layout.getSize(); m++) {
 			layout = theme.web_theme_to_layout.getRecord(m)
-			
+
 			for (var n = 1; n <= layout.web_layout_to_editable.getSize(); n++) {
 				var layoutRec = layout.web_layout_to_editable.getRecord(n)
 				layoutRec.row_order = n
-				
+
 				databaseManager.saveData(layoutRec)
 			}
 		}
-		
+
 		// stop progress bar
-		if ( application.__parent__.solutionPrefs ) {	
-			globals.WEBc_sutra_trigger('TRIGGER_progressbar_stop')	
+		if ( application.__parent__.solutionPrefs ) {
+			globals.WEBc_sutra_trigger('TRIGGER_progressbar_stop')
 		}
 		// reset flag
 		_flagRefresh = false
@@ -557,7 +557,7 @@ function THEME_new(progress) {
 
 /**
  * Checks that site theme directory is configured correctly on the site form.
- * 
+ *
  * @properties={typeid:24,uuid:"BB2409B5-CAF7-4773-9A20-972511821E49"}
  */
 function FUNCTION_theme_directory() {
@@ -568,32 +568,32 @@ function FUNCTION_theme_directory() {
 	else {
 		error = "No theme site directory specified. Please check your site record."
 	}
-	
+
 	if ( error ) {
 		globals.DIALOGS.showErrorDialog( "Error", error )
 		return error
 	}
-	
+
 }
 
 /**
  * Reads the description.txt file in the theme directory for meta information.
- * 
+ *
  * @properties={typeid:24,uuid:"C66AFE31-3D3F-4E7A-A39D-874A1C9A634F"}
  * @AllowToRunInFind
  */
 function THEME_callback_theme(result, e) {
 	if (e) {
 		//TODO: how to handle potential streaming error?
-	} else {			
+	} else {
 		// file stream done
 		var fileData = plugins.file.readTXTFile( result )
 		if (fileData) { // if description.txt exists read it and store
 			var fileName = fileData.split("\n")[0]
-			var description = fileData.slice(fileData.search(/\n/) + 1, 100000)   
+			var description = fileData.slice(fileData.search(/\n/) + 1, 100000)
 			_themes[fileName] = { "name" : fileName,
 			                      "description" : description,
-			                      "path" : _themesPaths[_themesPathsIncrementer]} 
+			                      "path" : _themesPaths[_themesPathsIncrementer]}
 			_themesPathsIncrementer ++
 		}
 		else {
@@ -603,56 +603,56 @@ function THEME_callback_theme(result, e) {
 		if ( _themesPathsIncrementer == _themesDone ) {
 			THEME_new( 2 )  // return to main method stage #2
 		}
-	}	
+	}
 }
 
 /**
  * Reads jsp files from theme directory and pulls out editable regions.
- * 
+ *
  * @properties={typeid:24,uuid:"A2FDED2C-31EB-49D6-8360-FCBB015B76D3"}
  */
 function THEME_callback_jsp(result, e) {
 	if (e) {
 		//TODO: how to handle potential streaming error?
-	} else {			
+	} else {
 		// file stream done
 		var fileData = plugins.file.readTXTFile( result )
-		if (fileData) { 
-			
-			// #1 find and store editable regions			                        		
+		if (fileData) {
+
+			// #1 find and store editable regions
 			var regexp = /pageData\.get\(\"(.*)\"/gi   // match: <%=pageData.get("Sidebar")%>, any combination of letters, numbers, spaces and undersores
 			var occurrence = null;
 			var editables = []
-			while (occurrence = regexp.exec( fileData )){	
+			while (occurrence = regexp.exec( fileData )){
 				editables.push(occurrence[1])
 			}
-			
+
 			if ( !_themes[_themesSelected].editables ) {
 				_themes[_themesSelected].editables = {}
 			}
-			_themes[_themesSelected].editables[_themesLayoutSelected[_themesPathsIncrementer]] = editables	
-			
-			// #2 find and store includes			                        		
+			_themes[_themesSelected].editables[_themesLayoutSelected[_themesPathsIncrementer]] = editables
+
+			// #2 find and store includes
 			var regexp = /include file\=\"elements\/(.*)\.jspf/gi   // match: <%@ include file="elements/header_home.jspf" %>, any combination of letters, numbers, spaces and undersores
 			var occurrence = null;
 			var includes = []
-			while (occurrence = regexp.exec( fileData )){	
+			while (occurrence = regexp.exec( fileData )){
 				includes.push(occurrence[1])
 			}
-						
+
 			if ( !_themes[_themesSelected].includes ) {
 				_themes[_themesSelected].includes = {}
 			}
-			_themes[_themesSelected].includes[_themesLayoutSelected[_themesPathsIncrementer]] = includes				
-			
-			
+			_themes[_themesSelected].includes[_themesLayoutSelected[_themesPathsIncrementer]] = includes
+
+
 		}
 		_themesPathsIncrementer ++
 		// last callback: return control to orignator method
 		if ( _themesPathsIncrementer == _themesDone ) {
 			THEME_new( 3 )  // return to main method stage #3
 		}
-	}	
+	}
 }
 
 /**
@@ -664,33 +664,33 @@ function THEME_progress(monitor) {
 
 /**
  * Reads jspf files from theme > elements directory and pulls out editable regions.
- * 
+ *
  * @properties={typeid:24,uuid:"C8E09221-BF8E-405F-8F7E-69A08854162C"}
  */
 function THEME_callback_element(result, e) {
 	if (e) {
 		//TODO: how to handle potential streaming error?
-	} else {			
+	} else {
 		// file stream done
 		var fileData = plugins.file.readTXTFile( result )
-		if (fileData) { 
-			
-			// #1 find and store editable regions			                        		
+		if (fileData) {
+
+			// #1 find and store editable regions
 			var regexp = /pageData\.get\(\"(.[^"]*)\"/gi   // match: <%=pageData.get("Sidebar")%>, any combination of letters, numbers, spaces and undersores
 			var occurrence = null;
 			var editables = []
-			while (occurrence = regexp.exec( fileData )){	
+			while (occurrence = regexp.exec( fileData )){
 				editables.push(occurrence[1])
 			}
-			
+
 			if ( !_elements[_elementsSelected] ) {
 				_elements[_elementsSelected] = {}
 				if ( !_elements[_elementsSelected].editables ) {
 					_elements[_elementsSelected].editables = {}
-				}				
+				}
 			}
-			_elements[_elementsSelected].editables[_elementsLayoutSelected[_elementsPathsIncrementer]] = editables	
-			
+			_elements[_elementsSelected].editables[_elementsLayoutSelected[_elementsPathsIncrementer]] = editables
+
 		}
 		_elementsPathsIncrementer ++
 		// last callback: return control to orignator method
@@ -702,7 +702,7 @@ function THEME_callback_element(result, e) {
 
 /**
  * Updates theme to current state of the jsp files.
- * 
+ *
  * @properties={typeid:24,uuid:"3A84F0ED-C00C-4359-87A6-24910130E8E3"}
  */
 function THEME_refresh() {
@@ -712,7 +712,7 @@ function THEME_refresh() {
 
 /**
  * Checks to make sure the file streaming plugin is setup properly in the server plugins page.
- * 
+ *
  * @properties={typeid:24,uuid:"4BC9593E-CD40-41C0-A28F-0B2F865F76C5"}
  */
 function FUNCTION_streaming_check() {
@@ -735,54 +735,54 @@ function IMAGE_import(directory,uuid) {
 	if (!directory) {
 		directory = 'images'
 	}
-	
+
 	// no uuid for asset group, make one up
 	if (!uuid) {
 		uuid = application.getUUID().toString()
 	}
-	
+
 	//make sure a previous file doesn't get imported
 	_webFile = null
-	
+
 	// scope to unique directory for this asset instance
 	directory += "/" + uuid
 	_file.directory = directory
-	
+
 	// root directory for this site
 	var baseDirectory = forms.WEB_0F_install.ACTION_get_install() +
 						'/application_server/server/webapps/ROOT/sutraCMS/sites/' +
 						forms.WEB_0F_site.directory + '/'
-	
+
 	var file = plugins.file.showFileOpenDialog(null,null,false,null,WEB_callback,'Choose image to add to asset library')
-	
+
 	if (application.getApplicationType() == APPLICATION_TYPES.WEB_CLIENT) {
 		scopes.DS.continuation.start(null,controller.getName())
 		file = _webFile
 	}
-	
+
 	if (!file) {
-		return "No file selected"	
+		return "No file selected"
 	}
-	
+
 	// error check for images only
 	if ( file.getContentType() != null ) {
 		if ( file.getContentType().split("/")[0] != "image" ) {
-			globals.DIALOGS.showErrorDialog( "Error",  
+			globals.DIALOGS.showErrorDialog( "Error",
 				"Only image file types can be imported")
 			IMAGE_import()
 			return "Incorrect file type selected"
 		}
 	}
 	else {
-		globals.DIALOGS.showErrorDialog( "Error",  
+		globals.DIALOGS.showErrorDialog( "Error",
 				"Only image file types can be imported")
 			IMAGE_import()
 			return "Incorrect file type selected"
 	}
-	
+
 	// setup upload image
 	var uploadFile = baseDirectory + directory + "/" + file.getName().replace(/ /g, "_")
-	
+
 	// grab file stats
 	_file.size = file.size()
 	var imageTemp =  plugins.images.getImage(file.getBytes())
@@ -794,12 +794,12 @@ function IMAGE_import(directory,uuid) {
 	}
 	_file.width = imageTemp.getWidth()
 	_file.height = imageTemp.getHeight()
-	
+
 	// stream to server
 	if ( application.__parent__.solutionPrefs ) {
 		globals.WEBc_sutra_trigger('TRIGGER_progressbar_start',[null, "Streaming file to server..."])
-	}	
-	
+	}
+
 	//file streaming plugin creates directories as needed
 	var monitor = plugins.file.streamFilesToServer(file, uploadFile, IMAGE_import_callback)
 }
@@ -809,29 +809,29 @@ function IMAGE_import(directory,uuid) {
  * @AllowToRunInFind
  */
 function IMAGE_import_callback(result, e) {
-	
+
 	if (e) {
 		globals.DIALOGS.showErrorDialog("Error", "Error with image upload to server")
 		globals.WEBc_sutra_trigger('TRIGGER_progressbar_stop')
 		return "Error with image upload to server"
 	}
-	
+
 	// create asset record
 	var fsAsset = forms.WEB_0F_asset.foundset
 	//disable on select method
 	forms.WEB_0F_asset._skipSelect = true
-	
+
 	var assetRec = fsAsset.getRecord(fsAsset.newRecord(true,true))
 	assetRec.id_site = forms.WEB_0F_site.id_site
 	assetRec.asset_type = 1
-	
+
 	//enable on select method
 	forms.WEB_0F_asset._skipSelect = false
 	forms.WEB_0F_asset.REC_on_select()
-	
+
 	//create asset instance record
 	var assetInstanceRec = assetRec.web_asset_to_asset_instance.getRecord(assetRec.web_asset_to_asset_instance.newRecord(false,true))
-	
+
 	//get template for this type of asset
 	var template = forms.WEB_0F_asset.MAP_asset(assetRec.asset_type)
 
@@ -850,25 +850,25 @@ function IMAGE_import_callback(result, e) {
 		}
 		databaseManager.saveData(metaRec)
 	}
-	
+
 	assetRec.asset_file_type = result.getContentType()
 	assetRec.asset_extension = (result.getName().search(/./) != -1) ? result.getName().split('.')[result.getName().split('.').length - 1].toLowerCase() : null
-	assetRec.asset_name = result.getName().replace(/ /g, "_")	
+	assetRec.asset_name = result.getName().replace(/ /g, "_")
 	assetRec.thumbnail		= _file.thumbnail
 	assetInstanceRec.asset_title = result.getName().replace(/ /g, "_")
 	assetInstanceRec.asset_size = _file.size
 	assetInstanceRec.asset_directory = _file.directory
-	assetInstanceRec.flag_initial = 1	
-	
+	assetInstanceRec.flag_initial = 1
+
 	databaseManager.saveData()
-	
+
 	// stream to server
 	if ( application.__parent__.solutionPrefs ) {
 		globals.WEBc_sutra_trigger('TRIGGER_progressbar_stop')
 	}
-	
+
 	globals.DIALOGS.showInfoDialog("Image",  "Image uploaded")
-	
+
 	//no records created yet and interface locked
 	if (application.__parent__.solutionPrefs && solutionPrefs.design.statusLockWorkflow) {
 		globals.WEB_lock_workflow(false)
@@ -880,34 +880,40 @@ function IMAGE_import_callback(result, e) {
  */
 function ASSET_delete(filePathObj) {
 	if (filePathObj && filePathObj.file) {
-		if (plugins.file.deleteFile(filePathObj.file)) {
-			return true
+		if (application.getApplicationType() == APPLICATION_TYPES.WEB_CLIENT) {
+			var jsFile = plugins.file.convertToRemoteJSFile(filePathObj.file)
+
+			if (jsFile.deleteFile()) {
+				return true
+			}
 		}
-		else {
-			return false
+		else if (plugins.file.deleteFile(filePathObj.file)) {
+			return true
 		}
 	}
 	else if (filePathObj && filePathObj.directory) {
-		if (plugins.file.deleteFolder(filePathObj.directory,false)) {
+		if (application.getApplicationType() == APPLICATION_TYPES.WEB_CLIENT) {
+			var jsFile = plugins.file.convertToRemoteJSFile(filePathObj.directory)
+
+			if (jsFile.isDirectory() && jsFile.deleteFile()) {
+				return true
+			}
+		}
+		else if (plugins.file.deleteFolder(filePathObj.directory,false)) {
 			return true
 		}
-		else {
-			return false
-		}
 	}
-	else {
-		return false
-	}
+	return false
 }
 
 /**
  * Make sure directory tree requested is valid.
- * 
+ *
  * @param {String}	directory The path to verify
  * @param {Boolean}	[autoCreate=true] Create path if non-existent
- * 
+ *
  * @returns {Boolean} valid path
- * 
+ *
  * @properties={typeid:24,uuid:"60603A08-569D-4217-99CD-F2ED6BE69FCE"}
  */
 function ASSET_directory_tree(directory,autoCreate) {
@@ -915,16 +921,16 @@ function ASSET_directory_tree(directory,autoCreate) {
 	if (!(typeof autoCreate == 'boolean')) {
 		autoCreate = true
 	}
-	
+
 	//developer
 	if (application.isInDeveloper()) {
 		// root directory for this site
 		var baseDirectory = forms.WEB_0F_install.ACTION_get_install() +
 							'/application_server/server/webapps/ROOT/sutraCMS/sites/' +
 							forms.WEB_0F_site.directory + '/' + directory
-		
+
 		var jsFile = plugins.file.convertToJSFile(baseDirectory)
-		
+
 		if (jsFile.exists()) {
 			return true
 		}
@@ -933,26 +939,26 @@ function ASSET_directory_tree(directory,autoCreate) {
 			var tree = baseDirectory.split('/')
 			//remove first empty element
 			tree.splice(0,1)
-			
+
 			for (var i = 0; i < tree.length; i++) {
 				var path = '/' + tree.slice(0,i+1).join('/')
-				
+
 				var jsFile = plugins.file.convertToJSFile(path)
-				
+
 				if (!jsFile.exists()) {
 					var success = plugins.file.createFolder(path)
-					
+
 					//could not create this directory, something didn't work right
 					if (!success) {
 						return false
 					}
 				}
 			}
-			
+
 			//completed loop, directory is now available
 			return true
 		}
-		
+
 		//directory not found
 		return false
 	}
@@ -961,9 +967,9 @@ function ASSET_directory_tree(directory,autoCreate) {
 		// root directory for this site
 		var baseDirectory = '/application_server/server/webapps/ROOT/sutraCMS/sites/' +
 							forms.WEB_0F_site.directory + '/' + directory
-		
+
 		var jsFile = plugins.file.convertToRemoteJSFile(baseDirectory)
-		
+
 		if (jsFile.exists()) {
 			return true
 		}
@@ -972,27 +978,27 @@ function ASSET_directory_tree(directory,autoCreate) {
 			var tree = baseDirectory.split('/')
 			//remove first empty element
 			tree.splice(0,1)
-			
+
 			for (var i = 0; i < tree.length; i++) {
 				//probably don't want to prefix with /
 				var path = '/' + tree.slice(0,i+1).join('/')
-				
+
 				var jsFile = plugins.file.convertToRemoteJSFile(path)
-				
+
 				if (!jsFile.exists()) {
 					var success = plugins.file.createFolder(path)
-					
+
 					//could not create this directory, something didn't work right
 					if (!success) {
 						return false
 					}
 				}
 			}
-			
+
 			//completed loop, directory is now available
 			return true
 		}
-		
+
 		//directory not found
 		return false
 	}
@@ -1008,49 +1014,49 @@ function FILE_import(directory,uuid) {
 	if (!directory) {
 		directory = 'files'
 	}
-	
+
 	// no uuid for asset group, make one up
 	if (!uuid) {
 		uuid = application.getUUID().toString()
 	}
-	
+
 	//make sure a previous file doesn't get imported
 	_webFile = null
-	
+
 	// scope to unique directory for this asset instance
 	directory += "/" + uuid
 	_file.directory = directory
-	
+
 	// root directory for this site
 	var baseDirectory = forms.WEB_0F_install.ACTION_get_install() +
 						'/application_server/server/webapps/ROOT/sutraCMS/sites/' +
 						forms.WEB_0F_site.directory + '/'
-	
+
 	// prompt for input file
 	var file = plugins.file.showFileOpenDialog(null,null,false,null,WEB_callback,'Choose file to add to asset library')
-	
+
 	if (application.getApplicationType() == APPLICATION_TYPES.WEB_CLIENT) {
 		scopes.DS.continuation.start(null,controller.getName())
 		file = _webFile
 	}
-	
+
 	if (!file) {
-		return "No file selected"	
+		return "No file selected"
 	}
-	
+
 	// setup upload file
 	var uploadFile = baseDirectory + directory + "/" + file.getName().replace(/ /g, "_")
-	
+
 	// grab file stats
 	_file.size = file.size()
-	
+
 	// stream to server
 	if ( application.__parent__.solutionPrefs ) {
 		globals.WEBc_sutra_trigger('TRIGGER_progressbar_start',[null, "Streaming file to server..."])
 	}
-	
+
 	//file streaming plugin creates directories as needed
-	var monitor = plugins.file.streamFilesToServer(file, uploadFile, FILE_import_callback)	
+	var monitor = plugins.file.streamFilesToServer(file, uploadFile, FILE_import_callback)
 }
 
 /**
@@ -1058,22 +1064,22 @@ function FILE_import(directory,uuid) {
  * @AllowToRunInFind
  */
 function FILE_import_callback(result, e) {
-	
+
 	if (e) {
 		globals.DIALOGS.showErrorDialog("Error", "Error with file upload to server")
 		globals.WEBc_sutra_trigger('TRIGGER_progressbar_stop')
 		return "Error with file upload to server"
 	}
-	
+
 	// create asset record
 	var fsAsset = forms.WEB_0F_asset.foundset
 	//disable on select method
 	forms.WEB_0F_asset._skipSelect = true
-	
+
 	var assetRec = fsAsset.getRecord(fsAsset.newRecord(true,true))
 	assetRec.id_site = forms.WEB_0F_site.id_site
 	assetRec.asset_type = 2
-	
+
 	//enable on select method
 	forms.WEB_0F_asset._skipSelect = false
 
@@ -1090,24 +1096,24 @@ function FILE_import_callback(result, e) {
 		metaRec.data_type = template.meta[i]
 		databaseManager.saveData(metaRec)
 	}
-	
+
 	assetRec.asset_file_type = result.getContentType()
 	assetRec.asset_extension = (result.getName().search(/./) != -1) ? result.getName().split('.')[1].toLowerCase() : null
-	assetRec.asset_name = result.getName().replace(/ /g, "_")	
+	assetRec.asset_name = result.getName().replace(/ /g, "_")
 	assetInstanceRec.asset_title = result.getName().replace(/ /g, "_")
 	assetInstanceRec.asset_size = _file.size
 	assetInstanceRec.asset_directory = _file.directory
-	assetInstanceRec.flag_initial = 1	
-	
+	assetInstanceRec.flag_initial = 1
+
 	databaseManager.saveData()
-	
+
 	// stream to server
 	if ( application.__parent__.solutionPrefs ) {
 		globals.WEBc_sutra_trigger('TRIGGER_progressbar_stop')
 	}
-	
+
 	globals.DIALOGS.showInfoDialog("File",  "File uploaded")
-	
+
 	//no records created yet and interface locked
 	if (application.__parent__.solutionPrefs && solutionPrefs.design.statusLockWorkflow) {
 		globals.WEB_lock_workflow(false)
@@ -1122,7 +1128,7 @@ function WEB_callback(files) {
 	//something chosen, (continuation exists for this location) continue method
 	if (files instanceof Array && files.length) {
 		_webFile = files[0]
-		
+
 		//resume continuation (will only be true in webclient)
 		scopes.DS.continuation.stop(null,controller.getName())
 	}

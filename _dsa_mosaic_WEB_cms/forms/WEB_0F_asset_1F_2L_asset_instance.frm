@@ -61,7 +61,7 @@ onActionMethodID:"F2373AA4-4FB7-4DF7-8809-A0277D3CFCBC",
 rolloverCursor:12,
 showClick:false,
 showFocus:false,
-size:"20,22",
+size:"20,23",
 toolTipText:"Edit the details for this line item",
 typeid:7,
 uuid:"C7103E22-B566-4825-928C-E3F1F4C490CF"
