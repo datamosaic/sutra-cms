@@ -43,19 +43,31 @@ function FORM_on_show(firstShow, event) {
 			}
 
 			globals.WEBc_sutra_trigger('TRIGGER_toolbar_toggle',['Web Edit',true])
-			//make sure on page toolbar...disabled in wc for now
-			if (!solutionPrefs.config.webClient) {
-				globals.WEBc_sutra_trigger('TRIGGER_toolbar_set',['Web Edit'])
-			}
+			//make sure on page toolbar
+			globals.WEBc_sutra_trigger('TRIGGER_toolbar_set',['Web Edit'])
 		}
 
 		//first time go to sitemap view (do at end so everything loaded already)
 		if (firstShow) {
-			globals.WEBc_sutra_trigger('TRIGGER_ul_tab_list',[scopes.CMS.util.getTreeForm(),'Sitemap',0])
+			//supposed to be on a different form for webclient; adjust (also WEB_0T_page.FORM_on_load)
+			if (solutionPrefs.config.webClient &&
+				navigationPrefs.byNavSetName['Sutra CMS'] &&
+				navigationPrefs.byNavSetName['Sutra CMS'].itemsByName &&
+				navigationPrefs.byNavSetName['Sutra CMS'].itemsByName['Pages'] &&
+				navigationPrefs.byNavSetName['Sutra CMS'].itemsByName['Pages'].buttons &&
+				navigationPrefs.byNavSetName['Sutra CMS'].itemsByName['Pages'].buttons.tabs) {
+
+				navigationPrefs.byNavSetName['Sutra CMS'].itemsByName['Pages'].buttons.tabs[0].formToLoad = 'WEB_0T_page__web'
+			}
+
+			//disabled in wc for now
+			if (!solutionPrefs.config.webClient) {
+				globals.WEBc_sutra_trigger('TRIGGER_ul_tab_list',[scopes.CMS.util.getTreeForm(),'Sitemap',0])
+			}
 		}
 
 		//in workflow maximized view or in webclient
-		if (solutionPrefs.config.webClient || firstShow && application.__parent__.solutionPrefs && (solutionPrefs.config.activeSpace == 'list' || solutionPrefs.config.activeSpace == 'workflow')) {
+		if ((firstShow && solutionPrefs.config.webClient) || firstShow && application.__parent__.solutionPrefs && (solutionPrefs.config.activeSpace == 'list' || solutionPrefs.config.activeSpace == 'workflow')) {
 			//switch modes
 			var guiEvent = new Object()
 			guiEvent.getElementName = function() {
@@ -122,12 +134,16 @@ function FORM_on_hide(event) {
 		//restore last selected toolbar
 		if (application.__parent__.solutionPrefs && !solutionPrefs.config.lockStatus) {
 			//disable web edit toolbar
-			if (!solutionPrefs.config.webClient) {
-				globals.WEBc_sutra_trigger('TRIGGER_toolbar_toggle',['Web Edit',false])
-			}
+			globals.WEBc_sutra_trigger('TRIGGER_toolbar_toggle',['Web Edit',false])
 
-			//make sure on whatever last toolbar was
-			solutionPrefs.config.lastSelectedToolbar = _lastToolbar
+			//progress bar showing, have updated later
+			if (globals.TRIGGER_progressbar_get() instanceof Array) {
+				solutionPrefs.config.lastSelectedToolbar = _lastToolbar
+			}
+			//directly flip back to last known toolbar
+			else {
+				forms[solutionPrefs.config.formNameBase + '__header__toolbar'].elements.tab_toolbar.tabIndex = _lastToolbar
+			}
 
 			_lastToolbar = null
 		}
