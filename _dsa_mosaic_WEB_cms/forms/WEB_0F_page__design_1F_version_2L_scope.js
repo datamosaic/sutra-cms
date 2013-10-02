@@ -1114,3 +1114,20 @@ function SCOPE_sort(idArea) {
 //		forms.WEB_0F_page__design_1F_version_2L_area.web_area_to_scope.sort('sort_order asc')
 	}
 }
+/**
+ * Perform sort.
+ *
+ * @param {String} dataProviderID element data provider
+ * @param {Boolean} asc sort ascending [true] or descending [false]
+ * @param {JSEvent} event the event that triggered the action
+ *
+ * @properties={typeid:24,uuid:"CEC04198-198A-4D7A-8383-705C8D08141E"}
+ */
+function SORT(dataProviderID, asc, event) {
+	if (dataProviderID == 'web_scope_to_block.web_block_to_block_version.id_block_display' || dataProviderID == 'display_block_type') {
+		controller.sort('sort_order' + (asc ? ' asc' : ' desc'), false)
+	}
+	else {
+		controller.sort(dataProviderID + (asc ? ' asc' : ' desc'), false)
+	}
+}
