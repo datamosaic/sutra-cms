@@ -47,28 +47,28 @@ function REC_new() {
 			true,
 			false,
 			'cmsBlockBuilderNew'
-		)	
-	
+		)
+
 	//start a continuation in wc
 	scopes.DS.continuation.start(null,'WEB_P__block_builder__new')
-		
+
 	//something chosen
 	if (_fieldType) {
 		//turn off record selection
 		_skipSelect = true
-		
+
 		var record = foundset.getRecord(foundset.newRecord(false,true))
 		var template = globals.CODE_copy_object(forms.WEB_0F__block_builder.BUILDER[_fieldType])
-		
+
 		record.row_order = foundset.getSize()
 		template.order = record.row_order
 		record.column_type = _fieldType
 		record.column_name = _fieldName
 		record.description = _fieldDescription
 		record.column_value = JSON.stringify(template,null,'\t')
-		                                                          
+
 		databaseManager.saveData(record)
-		
+
 		//enable record selection again
 		_skipSelect = false
 		REC_on_select()
@@ -85,21 +85,21 @@ function REC_delete() {
 						'Yes',
 						'No'
 					)
-	
+
 	if (delRec == 'Yes') {
 		//get record to delete
 		var recDelete = foundset.getSelectedRecord()
-		
+
 		for (var i = 1; i <= foundset.getSize(); i++) {
 			var record = foundset.getRecord(i)
-			
+
 			if (record.row_order > recDelete.row_order) {
 				record.row_order--
 			}
 		}
-		
+
 		foundset.deleteRecord(recDelete)
-		
+
 		//last field removed, don't show any configuration options
 		if (!utils.hasRecords(foundset)) {
 			forms.WEB_0F_block_type__builder.ACTION_manage_view()
@@ -118,7 +118,7 @@ function TOGGLE_builder_object(event) {
 	if (elements.lbl_heading.text == 'Description') {
 		solutionModel.getForm(controller.getName()).getPart(JSPart.FOOTER).height = solutionModel.getForm(controller.getName()).getPart(JSPart.FOOTER).height + 100
 		controller.recreateUI()
-		
+
 		elements.fld_description.visible = false
 		elements.lbl_heading.text = 'Field config'
 		elements.btn_down.setLocation(elements.btn_down.getLocationX(),elements.btn_down.getLocationY() + 100)
@@ -127,15 +127,15 @@ function TOGGLE_builder_object(event) {
 	else {
 		solutionModel.getForm(controller.getName()).getPart(JSPart.FOOTER).height = solutionModel.getForm(controller.getName()).getPart(JSPart.FOOTER).height - 100
 		controller.recreateUI()
-		
+
 		elements.fld_column_value.visible = false
-		
+
 		//wiggle screen to make description show up
 		var mainWindow = application.getWindow()
 		mainWindow.setSize(mainWindow.getWidth(), mainWindow.getHeight() - 1)
 		mainWindow.setSize(mainWindow.getWidth(), mainWindow.getHeight() + 1)
 	}
-	
+
 	//reload foundset
 	foundset.loadAllRecords()
 }
@@ -149,7 +149,7 @@ function DIR_down() {
 	if (foundset.getSelectedIndex() == foundset.getSize()) {
 		return
 	}
-	
+
 	foundset.sort('row_order asc')
 
 	//if index = 1, set flag to avoid glitch recSelected
@@ -170,7 +170,7 @@ function DIR_down() {
 	//swap with next record
 	recordCurr.row_order = recordNext.row_order
 	recordNext.row_order --
-	
+
 	var valueOne = JSON.parse(recordCurr.column_value)
 	valueOne.order = recordCurr.row_order
 	recordCurr.column_value = JSON.stringify(valueOne,null,'\t')
@@ -197,7 +197,7 @@ function DIR_up() {
 	}
 
 	foundset.sort('row_order asc')
-	
+
 	//get current record
 	var recordCurr = foundset.getRecord(foundset.getSelectedIndex())
 
@@ -207,7 +207,7 @@ function DIR_up() {
 	//swap with previous record
 	recordCurr.row_order = recordPrev.row_order
 	recordPrev.row_order ++
-	
+
 	var valueOne = JSON.parse(recordCurr.column_value)
 	valueOne.order = recordCurr.row_order
 	recordCurr.column_value = JSON.stringify(valueOne,null,'\t')
@@ -227,24 +227,24 @@ function DIR_up() {
  */
 function REC_on_select(event) {
 	if (!_skipSelect) {
-		// load correct form up 
+		// load correct form up
 		var tabForm = 'WEB_0F_block_type__builder'
-		
+
 		//before loading up data, try to save outstanding edits
 		if (databaseManager.hasRecordChanges(foundset)) {
 			databaseManager.saveData(foundset)
 		}
-		
+
 		//this is a block builder and we have data
 		if (utils.hasRecords(foundset) && column_value) {
 			//grab data for selected record
 			var fieldData = JSON.parse(column_value)
-			
+
 			var formName = tabForm + '_1F_block_builder__' + fieldData.type
-			
+
 			//load selected block type
 			forms.WEB_0F_block_type__builder.ACTION_manage_view(formName,column_name,application.getValueListDisplayValue('WEB_block_builder_field_type',column_type))
-			
+
 			//punch data in
 			if (forms[formName]) {
 				forms[formName].INIT_data(fieldData)

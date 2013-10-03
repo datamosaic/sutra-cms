@@ -19,16 +19,21 @@ function REC_on_select(event) {
 	if (utils.hasRecords(foundset)) {
 		//save index down to some place where it is accessible
 		forms.WEB_0F__block_builder._blockSelected = row_order
-		
+
 		//grab data for selected record
 		var fieldData = forms.WEB_0F__block_builder._blockList[row_order]
-		
+
 		var formName = 'WEB_0F__block_builder' + '_1F__' + fieldData.type
-		
+
+		//check for webclient version of this block type
+		if (application.getApplicationType() == APPLICATION_TYPES.WEB_CLIENT && solutionModel.getForm(formName + 'w')) {
+			formName += 'w'
+		}
+
 		//load selected block type
 		forms.WEB_0F__block_builder.elements.tab_detail.removeAllTabs()
 		forms.WEB_0F__block_builder.elements.tab_detail.addTab(forms[formName])
-		
+
 		//punch data in
 		if (forms[formName]) {
 			forms[formName].INIT_data(fieldData.record)

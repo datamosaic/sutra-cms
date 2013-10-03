@@ -35,35 +35,38 @@ function INIT_data(data,html) {
 	if (!(data instanceof Array)) {
 		data = new Array(data)
 	}
-	
+
 	for (var i = 0; i < data.length; i++) {
 		var row = data[i]
-		
+
 		if (row) {
 			var fileFound = false
-		    
+
 		    if (row.image.data) {
 				var fsAssetInstance = databaseManager.getFoundSet('sutra_cms','web_asset_instance')
 				fsAssetInstance.find()
 				fsAssetInstance.id_asset_instance = row.image.data
 				var fileFound = fsAssetInstance.search()
 			}
-		    
+
 		    _file = (fileFound) ? fsAssetInstance.asset_title : ''
 		    _directory = (fileFound) ? fsAssetInstance.asset_directory : ''
-		    
+
 		    elements.lbl_link.text = row.link.label || solutionModel.getForm(controller.getName()).getLabel('lbl_link').text
 			elements.lbl_image.text = row.image.label || solutionModel.getForm(controller.getName()).getLabel('lbl_image').text
 		}
 	}
-	
+
 	if (!html) {
 		html = IMAGE_preview()
 	}
-	
+
 	TOGGLE_buttons()
-	
-	if (elements.bn_browser) {
+
+	if (application.getApplicationType() == APPLICATION_TYPES.WEB_CLIENT) {
+		globals.WEBb_block_preview(elements.lbl_view,html)
+	}
+	else if (elements.bn_browser) {
 		elements.bn_browser.html = html
 	}
 	else {
@@ -86,7 +89,7 @@ function onDataChange(oldValue, newValue, event) {
 	var elemName = event.getElementName().split('_')
 	var varName = elemName[1]
 	var posn = elemName[2]
-	
+
 	var data = forms.WEB_0F__block_builder._blockList[forms.WEB_0F__block_builder._blockSelected]
 	data.record[varName].data = newValue
 }
@@ -105,14 +108,14 @@ function IMAGE_preview() {
 	else {
 		//both the base and resource url methods will return with "sutraCMS/"; need to remove from one so no doubling
 		var siteURL = utils.stringReplace(globals.WEBc_markup_link_base(forms.WEB_0F_page.id_page),'sutraCMS/','') + globals.WEBc_markup_link_resources(forms.WEB_0F_page.id_page)
-		
+
 		var html = 	'<html><head></head><body>' +
-					'<img src="' + siteURL + 
-					_directory + '/' + _file + 
+					'<img src="' + siteURL +
+					_directory + '/' + _file +
 					'">' +
 					'</body></html>'
 	}
-	
+
 	return html
 }
 
@@ -125,7 +128,7 @@ function BLOCK_choose(event) {
 	//only run in edit mode
 	if (true || globals.CMS.ui.getEdit()) {
 		forms.WEB_P__asset.LOAD_data(1)
-		
+
 		//show image chooser
 		globals.CODE_form_in_dialog(
 						forms.WEB_P__asset,
@@ -135,22 +138,22 @@ function BLOCK_choose(event) {
 						false,
 						"CMS_assetChoose"
 					)
-		
+
 		//start a continuation in wc
 		scopes.DS.continuation.start(null,'WEB_P__asset')
-		
+
 		//something chosen, choose the image
 		if (forms.WEB_P__asset._assetChosen) {
 			var assetRec = forms.WEB_P__asset._assetChosen.asset
-		
+
 			if (assetRec) {
 				application.updateUI()
 				forms.WEB_0F__block_builder._blockList[forms.WEB_0F__block_builder._blockSelected].record.image.data = assetRec.id_asset_instance.toString()
 				_file = assetRec.asset_title
 				_directory = assetRec.asset_directory
-				 
+
 				var html = IMAGE_preview()
-				
+
 				INIT_data(null,html)
 			}
 		}
@@ -162,7 +165,7 @@ function BLOCK_choose(event) {
  */
 function TOGGLE_buttons(state) {
 	var editStatus = globals.CMS.ui.getEdit()
-	
+
 //	elements.btn_choose.enabled = editStatus
 //	elements.lbl_choose.enabled = editStatus
 }
