@@ -20,7 +20,7 @@ typeid:7,
 uuid:"0C172840-3841-4061-8555-DDFC96836C54"
 },
 {
-anchors:5,
+anchors:7,
 borderType:"MatteBorder,0,0,0,1,#808080",
 formIndex:9998,
 location:"250,0",

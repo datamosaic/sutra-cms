@@ -20,13 +20,13 @@ var _license_dsa_mosaic_WEB_cms = 'Module: _dsa_mosaic_WEB_cms \
  * @AllowToRunInFind
  */
 function FLD_data_change__block_name(oldValue, newValue, event) {
-	
+
 	var fsBlockType = databaseManager.getFoundSet(controller.getServerName(),controller.getTableName())
 	fsBlockType.find()
 	fsBlockType.id_site = forms.WEB_0F_site.id_site
 	fsBlockType.block_name = newValue
 	var results = fsBlockType.search()
-	
+
 	if (results > 1) {
 		globals.DIALOGS.showErrorDialog(
 					'Error',
@@ -38,7 +38,7 @@ function FLD_data_change__block_name(oldValue, newValue, event) {
 	else {
 		return true
 	}
-	
+
 	return true
 }
 
@@ -68,7 +68,7 @@ function ACTION_publish(event) {
 				'Yes',
 				'No'
 			)
-		
+
 		if (input == 'Yes') {
 			web_block_type_to_block_input.deleteAllRecords()
 		}
@@ -76,11 +76,11 @@ function ACTION_publish(event) {
 			return
 		}
 	}
-	
+
 	// create block inputs from block builder
 	for (var i = 1; i <= web_block_type_to_block_builder.getSize(); i++) {
 		var record = web_block_type_to_block_builder.getRecord(i)
-		
+
 		var data = web_block_type_to_block_input.getRecord(web_block_type_to_block_input.newRecord(false,true))
 		data.id_block_builder = record.id_block_builder
 		data.column_name = record.column_name
@@ -96,17 +96,17 @@ function ACTION_publish(event) {
 //			}
 		data.column_value = record.column_value
 	}
-	
+
 	//mark as published and switch to tab 1
 	flag_unavailable = null
 	forms.WEB_0F_block_type.TAB_change(null,1)
-	
+
 	databaseManager.saveData()
-	
+
 	web_block_type_to_block_input.setSelectedIndex(1)
-	
+
 	REC_on_select()
-	
+
 	globals.DIALOGS.showInfoDialog(
 					'Done',
 					'Block builder published'
@@ -130,22 +130,22 @@ function REC_on_select(event) {
  * @param {String}	formName
  * @param {String}	fieldName
  * @param {String}	fieldType
- * 
+ *
  * @properties={typeid:24,uuid:"1E324CC8-BAF2-44E1-8F15-6DFF84EA0CC6"}
  */
 function ACTION_manage_view(formName,fieldName,fieldType) {
 	var labelLeft = 'Setup'
 	var labelRight = ''
-		
+
 	//set up tab panel
 	if (elements.tab_detail.getTabFormNameAt(elements.tab_detail.tabIndex) != formName) {
 		elements.tab_detail.removeAllTabs()
-		
+
 		if (formName) {
 			elements.tab_detail.addTab(forms[formName],null,null,null,null,null,null,web_block_type_to_block_builder)
 		}
 	}
-	
+
 	//set up labels
 	if (fieldName) {
 		labelLeft += ': ' + fieldName
@@ -155,4 +155,20 @@ function ACTION_manage_view(formName,fieldName,fieldType) {
 		labelRight = fieldType
 	}
 	elements.lbl_field_type.text = labelRight
+}
+
+/**
+ * Callback method when form is (re)loaded.
+ *
+ * @param {JSEvent} event the event that triggered the action
+ *
+ * @properties={typeid:24,uuid:"64B40BF2-E359-470E-B75E-F46DFCAD1B23"}
+ */
+function FORM_on_load(event) {
+	//show a button that is clickable on the web
+	if (application.getApplicationType() == APPLICATION_TYPES.WEB_CLIENT) {
+		elements.btn_publish_web.visible = true
+		elements.btn_publish.visible = false
+		elements.lbl_publish.visible = false
+	}
 }

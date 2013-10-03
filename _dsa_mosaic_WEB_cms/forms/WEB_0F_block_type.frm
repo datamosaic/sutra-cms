@@ -23,7 +23,7 @@ uuid:"D49A7441-F1B1-40BB-ADC7-5A7609C296F9"
 location:"10,25",
 name:"tab_detail",
 printable:false,
-size:"580,296",
+size:"580,295",
 tabOrientation:-1,
 typeid:16,
 uuid:"148E0B93-A94E-4DFA-8753-37DF8761B512"
