@@ -79,32 +79,32 @@ function ACTION_cancel() {
 	if (!globals.CODE_hide_form) {
 		//rollback edited records
 		databaseManager.rollbackEditedRecords()
-		
+
 		//turn autosave back on
 		databaseManager.setAutoSave(true)
-		
+
 		//MEMO: check WEB_0F_page__design__header_edit method too
 		if (forms[scopes.CMS.util.getTreeForm()]._addRecord) {
 			delete _siteDefaults
 			_idSitePlatform = null
 			_idSiteLanguage = null
 			_idSiteGroup = null
-			
+
 			forms[scopes.CMS.util.getTreeForm()]._addRecord = null
 			forms[scopes.CMS.util.getTreeForm()]._oldRecord = null
-			
+
 			//no page records, turn off ability to add a page
 			if (!utils.hasRecords(forms.WEB_0F_site.web_site_to_page)) {
 				globals.WEB_lock_workflow(true)
 				forms.WEB_TB__web_mode.controller.enabled = false
 			}
 		}
-		
+
 		_themeSet = null
-		
+
 		//enable closing the form
 		globals.CODE_hide_form = 1
-		
+
 		globals.CODE_form_in_dialog_close('cmsNewPage')
 	}
 }
@@ -116,7 +116,7 @@ function ACTION_cancel() {
  */
 function ACTION_ok() {
 	//see forms.WEB_0F_page__design_1F__header_edit.ACTION_save
-	
+
 	//check for enough data
 	if (!_pageName) {
 		globals.DIALOGS.showErrorDialog(
@@ -151,47 +151,47 @@ function ACTION_ok() {
 		//enable closing the form
 		globals.CODE_hide_form = 1
 		globals.CODE_form_in_dialog_close('cmsNewPage')
-		
+
 		globals.CODE_cursor_busy(true)
-		
+
 		//page was just created
 		if (forms[scopes.CMS.util.getTreeForm()]._addRecord) {
 			var pageRec = foundset.getSelectedRecord()
-			
+
 			//unfreeze screen when in frameworks
 			if (application.__parent__.solutionPrefs && solutionPrefs.config.lockStatus) {
 				globals.WEBc_sutra_trigger('TRIGGER_interface_lock',[false])
 			}
-			
+
 			//turn on feedback indicator
 			globals.WEBc_sutra_trigger('TRIGGER_progressbar_start',[null,'Creating new page...'])
-			
+
 			//put this page in the correct place; there were other records
 			if (forms[scopes.CMS.util.getTreeForm()]._oldRecord) {
-				
+
 				//find current syblings
 				var fsPeers = databaseManager.getFoundSet('sutra_cms','web_page')
 				fsPeers.loadRecords(forms[scopes.CMS.util.getTreeForm()]._oldRecord)
-				
+
 				var oldRecord = fsPeers.getSelectedRecord()
-				
+
 				fsPeers.find()
 				fsPeers.parent_id_page = forms[scopes.CMS.util.getTreeForm()]._makeChild ? oldRecord.id_page : (oldRecord.parent_id_page) ? oldRecord.parent_id_page : '^='
 				fsPeers.id_site = oldRecord.id_site
 				var results = fsPeers.search()
-				
+
 				if (results) {
 					fsPeers.sort('order_by asc')
 					fsPeers.selectRecord(oldRecord.id_page)
 				}
-				
+
 				//re-order everybody below current record in old foundset
 				for (var i = oldRecord.order_by + 1; i <= fsPeers.getSize(); i++) {
 					var recReorder = fsPeers.getRecord(i)
-					
+
 					recReorder.order_by ++
 				}
-				
+
 				//non-top level record
 				if (forms[scopes.CMS.util.getTreeForm()]._makeChild || oldRecord.parent_id_page) {
 					pageRec.parent_id_page = forms[scopes.CMS.util.getTreeForm()]._makeChild ? oldRecord.id_page : (oldRecord.parent_id_page)
@@ -200,32 +200,32 @@ function ACTION_ok() {
 				//top level record
 				else {
 					pageRec.order_by = oldRecord.order_by + 1
-					
+
 					var treeReload = true
 				}
 			}
 			//this is the first record
 			else {
 				pageRec.order_by = 1
-				
+
 				treeReload = true
 			}
-			
+
 			//create platform record (theme and layout)
 			var platformRec = pageRec.web_page_to_platform.getRecord(pageRec.web_page_to_platform.newRecord(false,true))
 			platformRec.id_site_platform = _idSitePlatform
 			platformRec.id_theme = _idTheme
 			platformRec.id_layout = _idLayout
-			
+
 			//create language record (page name and seo)
 			var languageRec = pageRec.web_page_to_language.getRecord(pageRec.web_page_to_language.newRecord(false,true))
 			languageRec.id_site_language = _idSiteLanguage
 			languageRec.page_name = _pageName
-			
+
 			//create group record (nothing now)
 			var groupRec = pageRec.web_page_to_group.getRecord(pageRec.web_page_to_group.newRecord(false,true))
 			groupRec.id_site_group = _idSiteGroup
-			
+
 			//create 1st version for this triumvirate
 			var fsVersion = forms.WEB_0F_page__design_1F_version.foundset
 			fsVersion.clear()
@@ -237,15 +237,15 @@ function ACTION_ok() {
 			newVersion.flag_active = 1
 			newVersion.version_name = 'Initial version'
 			globals.WEB_page_version = newVersion.id_version
-			
+
 			var fsPath = languageRec.web_language_to_path
-			
+
 			//no path manually created, create
 			if (!utils.hasRecords(fsPath)) {
 				fsPath = databaseManager.getFoundSet('sutra_cms','web_path')
-				
+
 				var siteID = id_site
-				
+
 				//add in path for this page
 				var pathNameWanted = languageRec.page_name || 'untitled-page'
 				pathNameWanted = pathNameWanted.toLowerCase()
@@ -258,57 +258,57 @@ function ACTION_ok() {
 				if (pathNameWanted.indexOf('-',pathNameWanted.length - 1) != -1) {
 					pathNameWanted = utils.stringLeft(pathNameWanted,pathNameWanted.length-1)
 				}
-				
+
 				var pathName = pathNameWanted
-				var cnt = 1	
-				
+				var cnt = 1
+
 				//we need to get into the loop
 				results = null
-				
+
 				while (results != 0) {
 					fsPath.find()
 					fsPath.id_site = siteID
 					fsPath.path = pathName
 					var results = fsPath.search()
-					
+
 					if (results) {
 						pathName = pathNameWanted + cnt++
 					}
 				}
-				
+
 				var recPath = languageRec.web_language_to_path.getRecord(languageRec.web_language_to_path.newRecord(false,true))
 				recPath.flag_default = 1
 				recPath.path = pathName
 				recPath.id_site = siteID
 				recPath.id_page = pageRec.id_page
 			}
-			
+
 			databaseManager.saveData()
 			databaseManager.setAutoSave(true)
-			
+
 			//a full reload required
 			if (treeReload) {
 				forms[scopes.CMS.util.getTreeForm()].TREE_refresh()
 			}
-			
+
 			forms[scopes.CMS.util.getTreeForm()].elements.bean_tree.refresh()
 			forms[scopes.CMS.util.getTreeForm()].REC_on_select(pageRec.id_page)
 			forms[scopes.CMS.util.getTreeForm()].elements.bean_tree.selectionPath = forms[scopes.CMS.util.getTreeForm()].FIND_path(pageRec)
-			
+
 			//reset flags
 			var addedRecord = true
 			forms[scopes.CMS.util.getTreeForm()]._addRecord = null
 			delete _siteDefaults
-			
+
 			//update 3 globals used to control everything (done on new page creation so that what you just created is visible)
 			globals.WEB_page_platform = _idSitePlatform
 			globals.WEB_page_language = _idSiteLanguage
 			globals.WEB_page_group = _idSiteGroup
-			
+
 			//refresh this newly created record if it is the first one (some issue with the calcs getting fired)
 			databaseManager.recalculate(pageRec)
 		}
-		
+
 		//MEMO: check WEB_0F_page__design_1F__header_edit method too
 		if (_themeSet) {
 			//don't prompt if creating page
@@ -320,35 +320,35 @@ function ACTION_ok() {
 				globals.CODE_cursor_busy(false)
 				var input = globals.DIALOGS.showWarningDialog(
 								"Warning",
-								"New theme layout selected. All area records that\ndo not exist in the new theme will be deleted.\nContinue?", 
-								"Yes", 
+								"New theme layout selected. All area records that\ndo not exist in the new theme will be deleted.\nContinue?",
+								"Yes",
 								"No"
 							)
 				globals.CODE_cursor_busy(true)
-				
+
 			}
-	
+
 			if ( input != "Yes") {
 				globals.CODE_cursor_busy(false)
 				return false
 			}
-			
+
 			//theme changes for non-newly created record
 			if (!addedRecord) {
 				//get most recent and selected versions
 				var fsVersion = forms.WEB_0F_page__design_1F_version.foundset
 				var latestVersion = fsVersion.getRecord(1)
 				var selectedVersion = fsVersion.getSelectedRecord()
-				
+
 				var descriptor ='Theme/layout change.\n' +
 								'From: ' + application.getValueListDisplayValue('WEB_themes',selectedVersion.web_version_to_platform.id_theme) + '/' + application.getValueListDisplayValue('WEB_layouts',selectedVersion.web_version_to_platform.id_layout) + '\n' +
 								'To: ' + application.getValueListDisplayValue('WEB_themes',_idTheme) + '/' + application.getValueListDisplayValue('WEB_layouts',_idLayout) + '\n'
-				
+
 				var platformRec = _recPlatform
-				
+
 				//halt additional on select firing
 				forms.WEB_0F_page__design_1F_version_2L_scope._skipSelect = true
-				
+
 				//create new version
 				var newVersion = fsVersion.getRecord(fsVersion.newRecord(1,true))
 				newVersion.id_platform = selectedVersion.id_platform
@@ -357,37 +357,37 @@ function ACTION_ok() {
 				newVersion.version_number = latestVersion.version_number + 1
 				newVersion.version_description = descriptor
 				globals.WEB_page_version = newVersion.id_version
-				
+
 				//punch down theme change data
 				newVersion.id_theme = _idTheme
-				newVersion.id_layout = _idLayout				
-				
+				newVersion.id_layout = _idLayout
+
 				//allow additional on select firing
 				forms.WEB_0F_page__design_1F_version_2L_scope._skipSelect = false
 			}
-			
+
 			// get editable regions based on layout selected
 			if (!utils.hasRecords(newVersion,'web_version_to_layout.web_layout_to_editable')) {
 				globals.CODE_cursor_busy(false)
 				return 'No editables for selected layout'
 			}
-			
+
 			var layout = newVersion.web_version_to_layout.getSelectedRecord()
-			
+
 			if (selectedVersion) {
 				var oldAreas = databaseManager.getFoundSetDataProviderAsArray(selectedVersion.web_version_to_area,'area_name')
 			}
 			else {
 				var oldAreas = new Array()
 			}
-			
+
 			//create all areas for this layout, copying over existing content based on area name
 			for (var i = 1; i <= layout.web_layout_to_editable.getSize(); i++) {
 				//new area to create
 				var editable =  layout.web_layout_to_editable.getRecord(i)
 				//this area existed in the theme we were copying from
 				var oldAreaSameName = oldAreas.indexOf(editable.editable_name)
-				
+
 				//create from defaults for area
 				if (oldAreaSameName == -1) {
 					var newArea = forms.WEB_0F_page__design_1F__header_display__version.AREA_new(editable,newVersion,i)
@@ -396,40 +396,40 @@ function ACTION_ok() {
 				else {
 					var newArea = forms.WEB_0F_page__design_1F__header_display__version.AREA_copy(selectedVersion.web_version_to_area.getRecord(oldAreaSameName + 1),newVersion,i)
 				}
-				
+
 				//make sure that selected index doesn't move around so much
 				newArea.web_area_to_scope.setSelectedIndex(1)
 			}
-			
+
 			if (newVersion) {
 				newVersion.web_version_to_area.setSelectedIndex(1)
 			}
-			
+
 			//theme has been successfully set
 			_themeSet = null
 		}
-		
+
 		// finish up
 		databaseManager.saveData()
-		
+
 		//turn autosave back on
 		databaseManager.setAutoSave(true)
-		
+
 		//turn off feedback indicator if on
 		if (globals.WEBc_sutra_trigger('TRIGGER_progressbar_get') instanceof Array) {
 			if (globals.WEBc_sutra_trigger('TRIGGER_progressbar_get')[1] == 'Creating new page...') {
 				globals.WEBc_sutra_trigger('TRIGGER_progressbar_stop')
 			}
 		}
-		
+
 		//turn off hourglass
 		globals.CODE_cursor_busy(false)
-		
+
 		//refresh browser bean with new content
 //		forms.WEB_0F_page__browser.REC_on_select(null,true,true,1)	//this puts us into edit mode on the old record, not the new one
 //		forms.WEB_0F_page__browser.REC_on_select(null,null,true,1)	//this puts us into edit mode, then leaves edit mode, but leaves button depressed
 		forms.WEB_0F_page__browser.REC_on_select()
-		
+
 		//enter edit mode
 		application.sleep(500)
 		forms.WEB_TB__web_mode.ACTION_edit()
@@ -449,28 +449,12 @@ function ACTION_ok() {
 function FORM_on_show(firstShow, event) {
 	//disable closing the form
 	globals.CODE_hide_form = 0
-	
-	if (firstShow) {
-		//turn off elements for non-page pages
-		elements.fld_page_link_internal.visible = false
-		elements.btn_page_link_internal.visible = false
-		
-		//turn off elements for new pages
-		elements.lbl_platform.visible = false
-		elements.var_idSitePlatform.visible = false
-		elements.lbl_language.visible = false
-		elements.var_idSiteLanguage.visible = false
-		elements.lbl_group.visible = false
-		elements.var_idSiteGroup.visible = false
-	}
-	
+
 	//show correct fields for page type
 	TOGGLE_fields(page_type)
-	
+
 	//if we're not adding a record, make sure that the correct things are showing
 	if (!forms[scopes.CMS.util.getTreeForm()]._addRecord) {
-		TOGGLE_fields(page_type)
-		
 		//hook up related records to form variables
 		var fsPlatform = databaseManager.getFoundSet('sutra_cms','web_platform')
 		fsPlatform.find()
@@ -484,12 +468,12 @@ function FORM_on_show(firstShow, event) {
 		fsLanguage.id_page = id_page
 		fsLanguage.search()
 		_recLanguage = fsLanguage.getSelectedRecord()
-		
+
 		//punch in current values to other form variables
 		_idLayout = _recPlatform.id_layout
 		_idTheme = _recPlatform.id_theme
 		_pageName = _recLanguage.page_name
-		
+
 		//if there is a theme set, populate layout valuelist
 		SET_valuelist_layout()
 	}
@@ -499,30 +483,30 @@ function FORM_on_show(firstShow, event) {
 		_idLayout = null
 		_idTheme = null
 		_pageName = null
-		
+
 		//fill in platform defaults (default themes)
 		_idSitePlatform = _siteDefaults.platform.id_site_platform
 		if (utils.hasRecords(_siteDefaults.platform.web_site_platform_to_theme)) {
 			//set theme
 			_idTheme = _siteDefaults.platform.id_theme
-			
+
 			//set layout
 			if (utils.hasRecords(_siteDefaults.platform.web_site_platform_to_layout)) {
 				_idLayout = _siteDefaults.platform.id_layout
 			}
-			
+
 			//set flag that theme has been set and all areas should be blown in
 			_themeSet = 1
 		}
 		//set valuelist for default layout (null out if no theme selected)
-		SET_valuelist_layout()		
-		
+		SET_valuelist_layout()
+
 		//fill in language defaults (page name and seo)
 		_idSiteLanguage = _siteDefaults.language.id_site_language
-		
+
 		//fill in group defaults (nothing now)
 		_idSiteGroup = _siteDefaults.group.id_site_group
-		
+
 		//request focus in the page name field
 		elements.var_pageName.requestFocus(false)
 	}
@@ -532,6 +516,12 @@ function FORM_on_show(firstShow, event) {
  * @properties={typeid:24,uuid:"2578B455-94FF-4DEB-9067-82C0AB61178D"}
  */
 function TOGGLE_fields(pageType) {
+	//turn off elements for non-page pages
+	elements.fld_page_link_internal.visible = false
+	elements.btn_page_link_internal.visible = false
+	elements.lbl_flag_folder_children.visible = false
+	elements.fld_flag_folder_children.visible = false
+
 	//turn off elements for new pages
 	elements.lbl_platform.visible = false
 	elements.var_idSitePlatform.visible = false
@@ -539,18 +529,16 @@ function TOGGLE_fields(pageType) {
 	elements.var_idSiteLanguage.visible = false
 	elements.lbl_group.visible = false
 	elements.var_idSiteGroup.visible = false
-	elements.lbl_flag_folder_children.visible = false
-	elements.fld_flag_folder_children.visible = false
-	
+
 	//passed a number, grab word
 	if (utils.stringToNumber(pageType) == pageType) {
 		pageType = application.getValueListDisplayValue('WEB_page_type',pageType)
 	}
-	
+
 	var page = false
 	var link = false
 	var linkInternal = false
-	
+
 	switch (pageType) {
 		//we've got a page
 		case 'Page':
@@ -576,25 +564,25 @@ function TOGGLE_fields(pageType) {
 			var pageHide = true
 			break
 	}
-	
+
 	if ( utils.hasRecords(foundset) ) {
 		//show new page fields when adding a new record
 		var newPage = (forms[scopes.CMS.util.getTreeForm()]._addRecord && page) ? true : false
-		
+
 		elements.lbl_platform.visible = newPage
 		elements.var_idSitePlatform.visible = newPage
 		elements.lbl_language.visible = newPage
 		elements.var_idSiteLanguage.visible = newPage
 		elements.lbl_group.visible = newPage
 		elements.var_idSiteGroup.visible = newPage
-		
+
 		elements.lbl_idTheme.visible = page
 		elements.var_idTheme.visible = page
 		elements.lbl_idLayout.visible = page
 		elements.var_idLayout.visible = page
 		elements.lbl_page_link.visible = link || linkInternal
 		elements.fld_page_link.visible = link
-		
+
 		elements.fld_page_link_internal.visible = linkInternal
 		elements.btn_page_link_internal.visible = linkInternal
 	}
@@ -614,7 +602,7 @@ function TOGGLE_fields(pageType) {
 function FLD_data_change__page_type(oldValue, newValue, event) {
 	//turn things off/on
 	TOGGLE_fields(newValue)
-	
+
 	return true
 }
 
@@ -643,21 +631,21 @@ function FLD_data_change__id_theme_layout(oldValue, newValue, event) {
 function SET_valuelist_layout() {
 	var layoutNames = new Array()
 	var layoutIDs = new Array()
-	
+
 	if (_idTheme) {
 		//grab the layouts for this platform
 		var fsLayout = databaseManager.getFoundSet('sutra_cms','web_layout')
 		fsLayout.find()
 		fsLayout.id_theme = _idTheme
 		var results = fsLayout.search()
-		
+
 		if (results) {
 			fsLayout.sort('layout_name asc')
 			layoutNames = databaseManager.getFoundSetDataProviderAsArray(fsLayout,'layout_name')
 			layoutIDs = databaseManager.getFoundSetDataProviderAsArray(fsLayout,'id_layout')
 		}
 	}
-	
+
 	//populate layout valuelist
 	application.setValueListItems('WEB_layouts__by_theme_by_page',layoutNames,layoutIDs)
 }
