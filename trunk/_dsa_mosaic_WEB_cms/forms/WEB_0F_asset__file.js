@@ -11,19 +11,19 @@ var _license_dsa_mosaic_WEB_cms = 'Module: _dsa_mosaic_WEB_cms \
  * @properties={typeid:24,uuid:"4C05C95F-1431-4C01-9912-26708524802D"}
  */
 function INIT_asset() {
-	
+
 	// main data object to build
 	var asset = new Object()
-	
+
 	// form with info about this asset
 	asset.formName = controller.getName()
-	
+
 	// meta rows
 	asset.meta = {
 //		height : 'INTEGER',
 //		width : 'INTEGER'
 	}
-	
+
 	return asset
 }
 
@@ -35,17 +35,17 @@ function ASSET_actions(input,assetRecord) {
 	var valuelist = new Array(
 					'Copy link'
 				)
-	
+
 	//called to depress menu
 	if (input instanceof JSEvent) {
 		//set up menu with arguments
 		var menu = new Array()
-		
+
 		for ( var i = 0 ; i < valuelist.length ; i++ ) {
 			menu[i] = plugins.popupmenu.createMenuItem(valuelist[i],ASSET_actions)
-			
+
 			menu[i].setMethodArguments(i,assetRecord)
-			
+
 			if (menu[i].text == '----') {
 				menu[i].setEnabled(false)
 			}
@@ -70,31 +70,31 @@ function ASSET_actions(input,assetRecord) {
 /**
  * @param	{JSRecord}	[assetRecord] Record that we are working with
  * @param	{Boolean}	[editMode] Save data or leave in pseudo-transaction
- * 
+ *
  * @properties={typeid:24,uuid:"C37CDF64-0B6B-4908-9DD2-52593E9A0F1D"}
  */
 function ASSET_copy_link(assetRecord,editMode) {
-	
+
 	if (!assetRecord instanceof JSRecord) {
 		assetRecord = foundset.getSelectedRecord()
 	}
-	
+
 	if (editMode) {
 		_editMode = true
 	}
 	else {
 		_editMode = false
 	}
-	
+
 	//save outstanding data and turn autosave off
 	if (!_editMode) {
 		databaseManager.saveData()
 		databaseManager.setAutoSave(false)
 	}
-	
+
 	//get default asset instance
 	var srcAsset = assetRecord.web_asset_to_asset_instance__initial.getRecord(1)
-	
-	application.setClipboardContent(globals.CMS.token.getFile(srcAsset).link)
+
+	globals.CODE_clipboard_set((globals.CMS.token.getFile(srcAsset).link))
 }
 
