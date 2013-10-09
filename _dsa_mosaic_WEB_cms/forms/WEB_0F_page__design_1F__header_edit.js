@@ -1006,3 +1006,26 @@ function FLD_data_change__idSitePlatform(oldValue, newValue, event) {
 
 	return true
 }
+
+/**
+ * Callback method when form is (re)loaded.
+ *
+ * @param {JSEvent} event the event that triggered the action
+ *
+ * @properties={typeid:24,uuid:"58D20BFD-5CC0-44E6-8EE5-8AC127C69DD4"}
+ */
+function FORM_on_load(event) {
+	if (application.getApplicationType() != APPLICATION_TYPES.WEB_CLIENT) {
+		elements.btn_cancel.setSize(elements.btn_cancel.getWidth(),elements.btn_cancel.getHeight() - 2)
+		elements.btn_cancel.imageURL = 'media:///btn_standard.png'
+		elements.btn_cancel.rolloverImageURL = 'media:///btn_standard_dark.png'
+		elements.btn_cancel.text = null
+		elements.lbl_cancel.visible = true
+
+		elements.btn_ok.setSize(elements.btn_ok.getWidth(),elements.btn_ok.getHeight() - 2)
+		elements.btn_ok.imageURL = 'media:///btn_standard.png'
+		elements.btn_ok.rolloverImageURL = 'media:///btn_standard_dark.png'
+		elements.btn_ok.text = null
+		elements.lbl_ok.visible = true
+	}
+}
