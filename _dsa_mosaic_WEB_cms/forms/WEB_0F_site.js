@@ -21,19 +21,19 @@ function REC_on_select(event) {
 		forms.WEB_0F_block__scrapbook.FORM_on_load()
 		forms.WEB_0F_theme.FORM_on_load()
 	}
-	
+
 	//set global with site info
 	globals.WEB_site_display = 'Site: ' + site_name
-	
+
 	//null out used-on page foundset if selected tab doesn't have any records
 	if ((elements.tab_detail.tabIndex == 1 && !utils.hasRecords(web_site_to_site_platform)) ||
 		(elements.tab_detail.tabIndex == 2 && !utils.hasRecords(web_site_to_site_language)) ||
 		(elements.tab_detail.tabIndex == 3 && !utils.hasRecords(web_site_to_site_group)) ||
 		(elements.tab_detail.tabIndex == 4 && !utils.hasRecords(web_site_to_site_attribute))) {
-		
+
 		forms.WEB_0F_site_1L_page__groups.foundset.clear()
 	}
-	
+
 	//set flag for page tree to be refreshed
 	forms[scopes.CMS.util.getTreeForm()]._refresh = true
 }
@@ -52,17 +52,19 @@ function REC_delete() {
 
 	if (delRec == 'Yes') {
 		globals.WEBc_sutra_trigger('TRIGGER_progressbar_start',[null,'Deleting site: ' + site_name + '.  Please wait...'])
-		
+
 		globals.WEB_site_display = null
+
+		scopes.SLICK.deleteRow()
 		
 		//TODO: not deleteing versions and below....need to fix this
 		controller.deleteRecord()
-		
+
 		//dim out the lights
 		if (!utils.hasRecords(foundset)) {
 			FORM_on_show()
 		}
-		
+
 		globals.WEBc_sutra_trigger('TRIGGER_progressbar_stop')
 	}
 }
@@ -80,7 +82,7 @@ function FORM_on_hide(event) {
 	if (application.__parent__.solutionPrefs && solutionPrefs.design.statusLockWorkflow && !solutionPrefs.config.prefs.formPreloading) {
 		globals.WEB_lock_workflow(false)
 	}
-	
+
 	return true
 }
 
@@ -93,34 +95,34 @@ function REC_new() {
 	if (application.__parent__.solutionPrefs && solutionPrefs.design.statusLockWorkflow) {
 		globals.WEB_lock_workflow(false)
 	}
-	
+
 	controller.newRecord(false)
-	
+
 	//create a group
 	var allGroup = web_site_to_site_group.getRecord(web_site_to_site_group.newRecord(false,true))
 	allGroup.group_name = 'Everybody'
 	allGroup.flag_default = 1
-	
+
 	//create a language
 	var enLanguage = web_site_to_site_language.getRecord(web_site_to_site_language.newRecord(false,true))
 	enLanguage.language_name = 'English'
 	enLanguage.language_code = 'en'
 	enLanguage.flag_default = 1
-	
+
 	//create a platform
 	var platform = web_site_to_site_platform.getRecord(web_site_to_site_platform.newRecord(false,true))
 	platform.platform_name = application.getValueListItems('WEB_platform').getValue(1,1)
 	platform.flag_default = 1
-	
+
 	//save
 	databaseManager.saveData()
-	
+
 	//blow in default block types
-	forms.WEB_0F_block_type.BATCH_create(web_site_to_block_type)	
-	
+	forms.WEB_0F_block_type.BATCH_create(web_site_to_block_type)
+
 	//refire on select
 	REC_on_select()
-	
+
 	//bring focus back to this window
 	application.updateUI()
 	elements.fld_site_name.requestFocus()
@@ -139,18 +141,18 @@ function ACTION_blow_in_missing_areas_to_all_pagesz() {
 						'Yes',
 						'No'
 				)
-		
+
 		if (input == 'Yes') {
 			//get foundset of pages
-			
+
 			//loop over pages
-			
+
 				//get platform/language/groups and loop all combinations
-				
-				
+
+
 					//loop version stack and pass in to add missing areas
-				
-			
+
+
 						//run area diff method
 						forms.WEB_0F_page__design_1F_version_2L_area.AREA_add_missing(fsVersion,latestVersion,activeVersion)
 		}
@@ -172,53 +174,53 @@ function ACTION_path_generate(event) {
 					'Yes',
 					'No'
 			)
-	
+
 	if (input == 'Yes') {
 		var fsPath = databaseManager.getFoundSet('sutra_cms','web_path')
 		var fsPages = web_site_to_page
 		var relnPath = 'web_page_to_path'
-		
+
 		var siteID = id_site
-		
+
 		//loop over all pages
 		for (var i = 1; i <= fsPages.getSize(); i++) {
 			var pageRec = fsPages.getRecord(i)
-			
+
 			//no paths, create
 			if (!utils.hasRecords(pageRec[relnPath])) {
 				var pathNameWanted = pageRec.page_name
-				
+
 				pathNameWanted = (pathNameWanted) ? pathNameWanted.toLowerCase() : 'blank'
 				pathNameWanted = utils.stringReplace(pathNameWanted, ' ', '-')
 				//replace two consecutive dashes with one
 				while (utils.stringPatternCount(pathNameWanted,'--')) {
 					pathNameWanted = utils.stringReplace(pathNameWanted, '--', '-')
 				}
-				
+
 				var pathName = pathNameWanted
 				var cnt = 1
 				var results = null
-				
+
 				while (results != 0) {
 					fsPath.find()
 					fsPath.id_site = siteID
 					fsPath.path = pathName
 					var results = fsPath.search()
-					
+
 					if (results) {
 						pathName = pathNameWanted + cnt++
 					}
 				}
-				
+
 				var recPath = pageRec[relnPath].getRecord(pageRec[relnPath].newRecord(false,true))
 				recPath.flag_default = 1
 				recPath.path = pathName
 				recPath.id_site = siteID
-				
+
 				databaseManager.saveData()
 			}
 		}
-		
+
 		globals.DIALOGS.showInfoDialog(
 					'Completed',
 					'All pages for this site now have pretty urls'
@@ -282,35 +284,35 @@ function ACTION_attribute_update() {
 				'Yes',
 				'No'
 		)
-	
+
 	if (input == 'Yes') {
 		var fsAttribute = web_site_to_site_attribute
 		var fsPages = web_site_to_page
-		
+
 		//build mapping of all attributes
 		var mapAttrib = new Object()
 		for (var i = 1; i <= fsAttribute.getSize(); i++) {
 			var siteAttribRec = fsAttribute.getRecord(i)
-			
+
 			if (siteAttribRec.attribute_key) {
 				mapAttrib[siteAttribRec.attribute_key] = siteAttribRec.id_site_attribute
 			}
 		}
-		
+
 		//loop over all pages
 		for (var i = 1; i <= fsPages.getSize(); i++) {
 			var pageRec = fsPages.getRecord(i)
-			
+
 			for (var j = 1; j <= pageRec.web_page_to_attribute.getSize(); j++) {
 				var attribRec = pageRec.web_page_to_attribute.getRecord(j)
-				
+
 				if (attribRec.attribute_key && mapAttrib[attribRec.attribute_key]) {
 					attribRec.id_site_attribute = mapAttrib[attribRec.attribute_key]
 					databaseManager.saveData(attribRec)
 				}
 			}
 		}
-		
+
 		globals.DIALOGS.showInfoDialog(
 					'Completed',
 					'All page attributes on this site are now linked'
@@ -327,9 +329,9 @@ function ACTION_attribute_update() {
  */
 function TAB_change(event) {
 	globals.TAB_change_grid()
-	
+
 	elements.tab_used_on.tabIndex = elements.tab_detail.tabIndex
-	
+
 	//only show plus button for related page tab when on attributes
 	if (elements.tab_used_on.tabIndex == 4) {
 		elements.btn_add_page_attrib.visible = true
@@ -337,7 +339,7 @@ function TAB_change(event) {
 	else {
 		elements.btn_add_page_attrib.visible = false
 	}
-	
+
 	forms[elements.tab_detail.getTabFormNameAt(elements.tab_detail.tabIndex)].REC_on_select()
 }
 
@@ -384,7 +386,7 @@ function FIELD_directory_onLost(event) {
 	// don't allow trailing "\\"
 	if ( event.getElementName() == "fld_directory_windows" &&
 		 this[provider] && this[provider].search(/\/*$/) > 0 ) {
-		
+
 		this[provider] = this[provider].replace(/\\*$/, "")
 		databaseManager.saveData()
 	}
@@ -410,7 +412,7 @@ function FORM_on_show(firstShow, event) {
 		elements.fld_url_servlet.enabled = false
 		elements.fld_url_servlet.transparent = false
 	}
-	
+
 	//disable multisite if there aren't any
 	if (utils.hasRecords(forms.WEB_0F_install__multisite.foundset)) {
 		elements.fld_multisite_key.enabled = true
@@ -418,14 +420,14 @@ function FORM_on_show(firstShow, event) {
 	else {
 		elements.fld_multisite_key.enabled = false
 	}
-	
+
 	//disable form if no records
 	if (!utils.hasRecords(foundset) && !solutionPrefs.config.prefs.formPreloading) {
 		//make sure that doesn't lock us out of left-side lists
 		if (solutionPrefs.config.activeSpace == 'workflow') {
 			solutionPrefs.config.activeSpace = 'standard'
 		}
-		
+
 		globals.WEB_lock_workflow(true)
 	}
 }
@@ -451,10 +453,10 @@ function FIELD_publish() {
 }
 
 /**
- * @param	{JSRecord}	[siteRec] Site record to retrieve defaults for; if left blank will use selected record. 
- * 
+ * @param	{JSRecord}	[siteRec] Site record to retrieve defaults for; if left blank will use selected record.
+ *
  * @returns	{Object}	thisSite Object containing default platform, language, and group records for a site.
- * 
+ *
  * @properties={typeid:24,uuid:"739BF19F-5BF7-433F-9CAB-408DE15D2205"}
  */
 function ACTION_get_defaults(siteRec) {
@@ -462,45 +464,45 @@ function ACTION_get_defaults(siteRec) {
 	if (!siteRec) {
 		siteRec = foundset.getSelectedRecord()
 	}
-	
+
 	//we have a site to work with
 	if (siteRec) {
 		var thisSite = new Object()
 		thisSite.record = siteRec
-		
+
 		//loop over all platforms
 		for (var i = 1; i <= siteRec.web_site_to_site_platform.getSize(); i++) {
 			var record = siteRec.web_site_to_site_platform.getRecord(i)
-			
+
 			//grab default platform
 			if (record.flag_default) {
 				thisSite.platform = record
 				break
 			}
 		}
-		
+
 		//loop over all languages
 		for (var i = 1; i <= siteRec.web_site_to_site_language.getSize(); i++) {
 			var record = siteRec.web_site_to_site_language.getRecord(i)
-			
+
 			//grab default platform
 			if (record.flag_default) {
 				thisSite.language = record
 				break
 			}
 		}
-		
+
 		//loop over all groups
 		for (var i = 1; i <= siteRec.web_site_to_site_group.getSize(); i++) {
 			var record = siteRec.web_site_to_site_group.getRecord(i)
-			
+
 			//grab default platform
 			if (record.flag_default) {
 				thisSite.group = record
 				break
 			}
 		}
-		
+
 		//only return if there are defaults specified for all
 		if (thisSite && thisSite.platform && thisSite.language && thisSite.group) {
 			return thisSite

@@ -47,6 +47,8 @@ function REC_delete() {
 			fsUpdater.performUpdate()
 		}
 		
+		scopes.SLICK.deleteRow()
+		
 		controller.deleteRecord()
 		
 		//dim out the lights

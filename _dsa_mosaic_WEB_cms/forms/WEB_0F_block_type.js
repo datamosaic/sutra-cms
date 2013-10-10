@@ -393,6 +393,8 @@ function REC_new(flagRefresh,formName,fs) {
 					//go to correct tab
 					TAB_change(null,block.block_type + 1)
 				}
+				
+				scopes.SLICK.update(navigationPrefs.byNavItemID[solutionPrefs.config.currentFormID].listData.tabFormInstance)
 			}
 			
 			//flag that blocks updated so new must refresh block default display
@@ -526,12 +528,14 @@ function FIND_forms() {
 function REC_delete() {
 
 	var delRec = globals.DIALOGS.showWarningDialog(
-		'Delete record',
-		'Do you really want to delete this record?',
-		'Yes',
-		'No'
+			'Delete record',
+			'Do you really want to delete this record?',
+			'Yes',
+			'No'
 		)
+	
 	if (delRec == 'Yes') {
+		scopes.SLICK.deleteRow()
 		controller.deleteRecord()
 
 		//dim out the lights

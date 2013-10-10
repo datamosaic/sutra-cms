@@ -35,10 +35,8 @@ function FLD_data_change__block_name(oldValue, newValue, event) {
 		block_name = oldValue
 		return false
 	}
-	else {
-		return true
-	}
 	
+	scopes.SLICK.updateUL(oldValue,newValue,event)
 	return true
 }
 

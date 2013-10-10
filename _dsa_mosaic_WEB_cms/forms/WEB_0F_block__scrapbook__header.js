@@ -159,7 +159,7 @@ function TOGGLE_mode(event,mode) {
  * @properties={typeid:24,uuid:"49F53A53-FD82-4D47-BAD0-0D08C7593803"}
  */
 function FLD_version__data_change(oldValue, newValue, event) {
-	//trigger on selet
+	//trigger on select
 	forms.WEB_0F_block__scrapbook_1F__sidebar_2L_block_version.foundset.selectRecord(application.getUUID(newValue))
 	
 	return true
