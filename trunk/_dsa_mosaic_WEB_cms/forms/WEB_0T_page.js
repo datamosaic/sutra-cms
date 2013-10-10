@@ -905,6 +905,7 @@ function REC_delete(record) {
 //			fsVersions.deleteAllRecords()
 
 			//delete it
+			scopes.SLICK.deleteRow()
 			record.foundset.deleteRecord(record)
 
 			//find current siblings

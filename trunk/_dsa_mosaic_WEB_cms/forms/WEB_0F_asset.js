@@ -53,6 +53,7 @@ function REC_delete() {
 			}
 		}
 		
+		scopes.SLICK.deleteRow()
 		controller.deleteRecord()
 		
 		//dim out the lights

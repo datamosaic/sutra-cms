@@ -189,6 +189,7 @@ function REC_delete() {
 			)
 	
 	if (delRec == 'Yes') {
+		scopes.SLICK.deleteRow()
 		controller.deleteRecord()
 		
 		//dim out the lights

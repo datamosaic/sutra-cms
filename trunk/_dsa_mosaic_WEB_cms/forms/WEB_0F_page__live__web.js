@@ -22,15 +22,15 @@ var _dividerHoriz = 300;
  */
 function FORM_on_show(firstShow, event) {
 	_super.FORM_on_show(firstShow, event)
-	
+
 //	SETUP_porthole()
 	//this shows page; right now disabled to aide with debugging
-	
+
 	URL_update()
 }
 
 /**
- * 
+ *
  * @param {Boolean} toggle Turn on edit mode
  * @param {Boolean} storeLoc Remember the location of the divider being hidden
  *
@@ -39,11 +39,11 @@ function FORM_on_show(firstShow, event) {
  */
 function SPLIT_set(toggle,storeLoc) {
 	var editLocation = forms.WEB_0F_page__browser_1F_block__editor._editLocation
-	
+
 	if (typeof toggle != 'boolean') {
 		toggle = false
 	}
-	
+
 	if (true) {
 		//remember where we are
 		if (storeLoc && !elements.tab_view.visible) {
@@ -54,9 +54,9 @@ function SPLIT_set(toggle,storeLoc) {
 				_dividerHoriz = elements.tab_horizontal.getWidth() - elements.tab_horizontal.dividerLocation
 			}
 		}
-		
+
 		RESET_tabs()
-		
+
 		//show vertical/horizontal splitty
 		if (toggle) {
 			SPLIT_toggle(editLocation)
@@ -65,7 +65,7 @@ function SPLIT_set(toggle,storeLoc) {
 			elements.tab_view.addTab(forms.WEB_0F_page__live__web__view)
 			elements.tab_view.visible = true
 		}
-		
+
 		URL_update(forms.WEB_TB__web_mode.elements.highlighter.visible)
 	}
 }
@@ -79,14 +79,14 @@ function SPLIT_set(toggle,storeLoc) {
 function FORM_on_load(event) {
 	//create blanks to slot in on each split location
 	var formNames = 'WEB_0F_page__live__web__horiz1 WEB_0F_page__live__web__horiz2 WEB_0F_page__live__web__vert1 WEB_0F_page__live__web__vert2'.split(' ')
-	
+
 	for (var i = 0; i < formNames.length; i++) {
 		solutionModel.cloneForm(formNames[i],solutionModel.getForm('CODE__blank'))
 	}
-	
-	RESET_tabs()
+
+//	RESET_tabs()
 	SPLIT_set(false)
-	
+
 //	return _super.FORM_on_load(event)
 }
 
@@ -97,12 +97,12 @@ function RESET_tabs() {
 	elements.tab_horizontal.visible = false
 	elements.tab_vertical.visible = false
 	elements.tab_view.visible = false
-	
+
 	forms.WEB_0F_page__browser_1F_block__editor.elements.lbl_split_side.visible = false
 	forms.WEB_0F_page__browser_1F_block__editor.elements.lbl_split_top.visible = false
 	forms.WEB_0F_page__live__web__view.elements.lbl_split_side.visible = false
 	forms.WEB_0F_page__live__web__view.elements.lbl_split_top.visible = false
-	
+
 	elements.tab_horizontal.setLeftForm(forms.WEB_0F_page__live__web__horiz1)
 	elements.tab_horizontal.setRightForm(forms.WEB_0F_page__live__web__horiz2)
 	elements.tab_vertical.setLeftForm(forms.WEB_0F_page__live__web__vert1)
@@ -118,32 +118,32 @@ function SPLIT_toggle(leftRight) {
 	if (elements.tab_horizontal.getLeftForm().controller.getName() == 'WEB_0F_page__live__web__view' || elements.tab_vertical.getLeftForm().controller.getName() == 'WEB_0F_page__live__web__view') {
 		RESET_tabs()
 	}
-	
+
 	if (leftRight) {
 		elements.tab_horizontal.setLeftForm(forms.WEB_0F_page__live__web__view)
 		elements.tab_horizontal.setRightForm(forms.WEB_0F_page__browser_1F_block__editor)
-		
+
 		elements.tab_horizontal.dividerSize = 4
 		elements.tab_horizontal.dividerLocation = forms.DATASUTRA_WEB_0F__workflow.elements.tab_workflow.getWidth() - _dividerHoriz + 4
 		elements.tab_horizontal.continuousLayout = true
 		elements.tab_horizontal.resizeWeight = 1
-		
+
 		elements.tab_horizontal.visible = true
-		
+
 		forms.WEB_0F_page__browser_1F_block__editor.elements.lbl_split_side.visible = true
 		forms.WEB_0F_page__live__web__view.elements.lbl_split_side.visible = true
 	}
 	else {
 		elements.tab_vertical.setLeftForm(forms.WEB_0F_page__live__web__view)
 		elements.tab_vertical.setRightForm(forms.WEB_0F_page__browser_1F_block__editor)
-		
+
 		elements.tab_vertical.continuousLayout = true
 		elements.tab_vertical.dividerLocation = forms.DATASUTRA_WEB_0F__main.elements.tab_main.getHeight() - _dividerVert + 4
 		elements.tab_vertical.dividerSize = 4
 		elements.tab_vertical.resizeWeight = 1
-		
+
 		elements.tab_vertical.visible = true
-		
+
 		forms.WEB_0F_page__browser_1F_block__editor.elements.lbl_split_top.visible = true
 		forms.WEB_0F_page__live__web__view.elements.lbl_split_top.visible = true
 	}
@@ -152,7 +152,7 @@ function SPLIT_toggle(leftRight) {
 /**
  * Set up porthole on the data sutra application platform to the CMS page
  * This method moved into data sutra core; possible should bring it back sometime
- * 
+ *
  * @properties={typeid:24,uuid:"64FB15B3-40DA-4D65-941F-FF8280BD4D65"}
  */
 function SETUP_porthole() {
@@ -173,10 +173,10 @@ function SETUP_porthole() {
 
 /**
  * Set up porthole on the data sutra application platform to the CMS page
- * 
+ *
  * @param {String} [method]
  * @param {String} [arg]
- * 
+ *
  * @properties={typeid:24,uuid:"5C649393-88D2-4213-8E24-71868DE9AC84"}
  */
 function CMS_call(method,arg) {
@@ -191,7 +191,7 @@ function CMS_call(method,arg) {
 		method = method.split('.')
 		var methodName = method.pop()
 		var formName = method.pop()
-		
+
 		if (formName) {
 			//call with correct context
 			switch (formName) {
@@ -202,13 +202,13 @@ function CMS_call(method,arg) {
 					formName = 'WEB_0T_page__web'
 					break
 			}
-			
+
 			forms[formName][methodName](arg)
 		}
 		else {
 			globals[methodName](arg)
 		}
-		
+
 		//reset listener everytime (don't really need to do, but if the page was refreshed, we need to make sure that there is a porthole)
 //		SETUP_porthole()
 	}
@@ -223,9 +223,9 @@ function CMS_call(method,arg) {
 function URL_update(webMode) {
 	//build up what we are going to show
 	var placeholder = _super.URL_update(webMode)
-	
+
 	var id = plugins.WebClientUtils.getElementMarkupId(forms.WEB_0F_page__live__web__view.elements.lbl_page)
-	
+
 	//replace with placeholder html
 	if (placeholder) {
 		var regex = new RegExp(/<body\b[^>]*>(.*?)<\/body>/)
@@ -236,7 +236,7 @@ function URL_update(webMode) {
 		else {
 			results = placeholder
 		}
-			
+
 		plugins.WebClientUtils.executeClientSideJS(
 				'setTimeout(function(){$("#' + id + '").replaceWith("<div id=\'' + id + '\'>' + results + '</div>");bigIndicator(false,50);},500);'
 			)
@@ -246,11 +246,12 @@ function URL_update(webMode) {
 		plugins.WebClientUtils.executeClientSideJS(
 				'$("#' + id + '").fadeOut("medium");\
 				setTimeout(function(){$("#' + id + '").replaceWith("<iframe id=\'' + id + '\' src=\'' + globals.WEB_preview_url + '\' width=\'100%\' height=\'100%\' scrolling=\'yes\' frameborder=\'0\' style=\'display:none;\'></iframe>");\
-				setTimeout(function(){$("#' + id + '").fadeIn("slow")},750);\
-				bigIndicator(false,500);},750);'
+					setTimeout(function(){$("#' + id + '").fadeIn("slow")},750);\
+					bigIndicator(false,500);}\
+				,750);'
 			)
 	}
-	
+
 	//make sure that the callback is available for this page
 	CMS_call()
 }
@@ -260,10 +261,10 @@ function URL_update(webMode) {
  */
 function EDIT_on() {
 	var id = plugins.WebClientUtils.getElementMarkupId(forms.WEB_0F_page__live__web__view.elements.lbl_page)
-	
+
 	plugins.WebClientUtils.executeClientSideJS(
-			'setTimeout(function(){if ($("iframe#' + id + '").length) {' + 
-				'window.frames["' + id + '"].postMessage({method:"editOn"},"*");' + 
+			'setTimeout(function(){if ($("iframe#' + id + '").length) {' +
+				'window.frames["' + id + '"].postMessage({method:"editOn"},"*");' +
 				//just to make sure that indicator not stuck on
 				'bigIndicator(false,500);' +
 			'}' +
@@ -279,7 +280,7 @@ function EDIT_on() {
  */
 function EDIT_off() {
 	var id = plugins.WebClientUtils.getElementMarkupId(forms.WEB_0F_page__live__web__view.elements.lbl_page)
-	
+
 	//editor still showing, hide it
 	if (!elements.tab_view.visible) {
 		SPLIT_set(false)
@@ -287,8 +288,8 @@ function EDIT_off() {
 	//just toggle edit mode on the page
 	else {
 		plugins.WebClientUtils.executeClientSideJS(
-			'setTimeout(function(){if ($("iframe#' + id + '").length) {' + 
-				'window.frames["' + id + '"].postMessage({method:"editOff"},"*");' + 
+			'setTimeout(function(){if ($("iframe#' + id + '").length) {' +
+				'window.frames["' + id + '"].postMessage({method:"editOff"},"*");' +
 				//just to make sure that indicator not stuck on
 				'bigIndicator(false,500);' +
 			'}' +
