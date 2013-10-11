@@ -27,7 +27,7 @@ function INIT_block() {
 	block.record = {
 	        block_name			: 'Layouts',
 			block_description	: 'Various views to divide a row up into columns',
-			block_category		: scopes.CMS._constant.blockCategory.LAYOUT,
+			block_category		: scopes.CMS._constant.blockCategory.CONTENT,
 			block_type			: scopes.CMS._constant.blockType.DESIGNTIME,
 			form_name			: controller.getName()
 		}
@@ -66,7 +66,7 @@ function VIEW_columns_1(obj) {
 	return '\
 	<div class="cmsRow">\n\
 		<div class="span12">\n\
-			<<BLOCK>>\n\
+			{{BLOCK}}\n\
 		</div>\n\
 	</div>\n'
 }
@@ -84,10 +84,10 @@ function VIEW_columns_2(obj) {
 	return '\
 	<div class="cmsRow">\n\
 		<div class="span6">\n\
-			<<BLOCK>>\n\
+			{{BLOCK}}\n\
 		</div>\n\
 		<div class="span6">\n\
-			<<BLOCK>>\n\
+			{{BLOCK}}\n\
 		</div>\n\
 	</div>\n'
 }
@@ -105,10 +105,10 @@ function VIEW_columns_left_2(obj) {
 	return '\
 	<div class="cmsRow">\n\
 		<div class="span4">\n\
-			<<BLOCK>>\n\
+			{{BLOCK}}\n\
 		</div>\n\
 		<div class="span8">\n\
-			<<BLOCK>>\n\
+			{{BLOCK}}\n\
 		</div>\n\
 	</div>\n'
 }
@@ -126,10 +126,10 @@ function VIEW_columns_right_2(obj) {
 	return '\
 	<div class="cmsRow">\n\
 		<div class="span8">\n\
-			<<BLOCK>>\n\
+			{{BLOCK}}\n\
 		</div>\n\
 		<div class="span4">\n\
-			<<BLOCK>>\n\
+			{{BLOCK}}\n\
 		</div>\n\
 	</div>\n'
 }
@@ -147,13 +147,13 @@ function VIEW_columns_3(obj) {
 	return '\
 	<div class="cmsRow">\n\
 		<div class="span4">\n\
-			<<BLOCK>>\n\
+			{{BLOCK}}\n\
 		</div>\n\
 		<div class="span4">\n\
-			<<BLOCK>>\n\
+			{{BLOCK}}\n\
 		</div>\n\
 		<div class="span4">\n\
-			<<BLOCK>>\n\
+			{{BLOCK}}\n\
 		</div>\n\
 	</div>\n'
 }
@@ -171,16 +171,16 @@ function VIEW_columns_4(obj) {
 	return '\
 	<div class="cmsRow">\n\
 		<div class="span3">\n\
-			<<BLOCK>>\n\
+			{{BLOCK}}\n\
 		</div>\n\
 		<div class="span3">\n\
-			<<BLOCK>>\n\
+			{{BLOCK}}\n\
 		</div>\n\
 		<div class="span3">\n\
-			<<BLOCK>>\n\
+			{{BLOCK}}\n\
 		</div>\n\
 		<div class="span3">\n\
-			<<BLOCK>>\n\
+			{{BLOCK}}\n\
 		</div>\n\
 	</div>\n'
 }

@@ -174,7 +174,7 @@ function BLOCK_import(event) {
 function VIEW_default(obj) {
 	
 	var data = obj.block_data
-	var dataConfig = obj.block_configure	
+	var dataConfig = obj.block_configure
 	
 	// template					
 	var markup = 	'<img '

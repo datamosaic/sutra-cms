@@ -907,7 +907,7 @@ function MOVE_generic(input) {
 			break
 		case 'in':
 			//only move in if this record isn't the first in the group AND there are siblings AND new parent is a layout block
-			if (fsPeers.getSelectedIndex() != 1 && fsPeers.getSize() > 1 && utils.hasRecords(fsPeers.getRecord(fsPeers.getSelectedIndex() - 1),'web_scope_to_block.web_block_to_block_type') && fsPeers.getRecord(fsPeers.getSelectedIndex() - 1).web_scope_to_block.web_block_to_block_type.block_category == scopes.CMS._constant.blockCategory.LAYOUT) {
+			if (fsPeers.getSelectedIndex() != 1 && fsPeers.getSize() > 1 && utils.hasRecords(fsPeers.getRecord(fsPeers.getSelectedIndex() - 1),'web_scope_to_block.web_block_to_block_display') && fsPeers.getRecord(fsPeers.getSelectedIndex() - 1).web_scope_to_block.web_block_to_block_display.flag_layout) {
 				//find new parent
 				fsPeers.setSelectedIndex(fsPeers.getSelectedIndex() - 1)
 				var idParent = fsPeers.id_scope

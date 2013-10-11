@@ -107,7 +107,8 @@ var _constant = {
 		COLLECTION:1,
 		/** 
 		 * Constant for block category <strong>layout</strong> 
-		 * @protected 
+		 * @protected
+		 * @deprecated
 		 * @type {Number}
 		 */
 		LAYOUT:2,

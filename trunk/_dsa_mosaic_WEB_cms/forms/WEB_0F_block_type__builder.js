@@ -76,7 +76,10 @@ function ACTION_publish(event) {
 			return
 		}
 	}
-
+	
+	//pseudo-way to check for layout-ness
+	var sampleMarkup = ''
+	
 	// create block inputs from block builder
 	for (var i = 1; i <= web_block_type_to_block_builder.getSize(); i++) {
 		var record = web_block_type_to_block_builder.getRecord(i)
@@ -95,8 +98,12 @@ function ACTION_publish(event) {
 //				blockList[order].data = fieldData
 //			}
 		data.column_value = record.column_value
+		sampleMarkup += record.column_value
 	}
-
+	
+	//update layout flag
+	web_block_type_to_block_display__default.flag_layout = sampleMarkup.indexOf('{{BLOCK}}') == -1 ? 0 : 1
+	
 	//mark as published and switch to tab 1
 	flag_unavailable = null
 	forms.WEB_0F_block_type.TAB_change(null,1)
