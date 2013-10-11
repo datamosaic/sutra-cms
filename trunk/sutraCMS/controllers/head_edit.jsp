@@ -60,6 +60,7 @@
 		});
 		$("div[id^='sutra-block-data-']:not([layout]),p[id^='sutra-block-data-']:not([layout])").addClass("block_editable");
 		$("div[id^='sutra-block-data-'][layout],p[id^='sutra-block-data-'][layout]").addClass("layout_editable");
+		$("div[id^='sutra-area-data-']").addClass("area_container");
 		
 		//show new block buttons
 		$("div[id^='sutra-block-add-']").css("display","block");
@@ -79,6 +80,8 @@
 		
 		$("div[id^='sutra-block-data-'],p[id^='sutra-block-data-']").unbind("mouseover");
 		$("div[id^='sutra-block-data-'],p[id^='sutra-block-data-']").removeClass("block_editable layout_editable");
+		
+		$("div[id^='sutra-area-data-']").removeClass("area_container");
 		
 		//hide new row/block buttons
 		$("div[id^='sutra-row-add-']").css("display","none");
