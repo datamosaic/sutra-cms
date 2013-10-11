@@ -366,7 +366,7 @@ function BLOCK_new(areaScope) {
 
 		if (results == 1) {
 			//this is a layout, just refresh the screen
-			if (utils.hasRecords(fsScope.getSelectedRecord(),'web_scope_to_block.web_block_to_block_type') && fsScope.web_scope_to_block.web_block_to_block_type.block_category == scopes.CMS._constant.blockCategory.LAYOUT) {
+			if (utils.hasRecords(fsScope.getSelectedRecord(),'web_scope_to_block.web_block_to_block_display') && fsScope.web_scope_to_block.web_block_to_block_display.flag_layout) {
 				URL_update(true)
 			}
 			//open for edits

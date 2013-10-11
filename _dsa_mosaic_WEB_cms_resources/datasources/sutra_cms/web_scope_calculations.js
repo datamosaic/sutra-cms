@@ -88,7 +88,7 @@ function display_flag_active() {
  */
 function row_background(index, selected, elementType, dataProviderID, edited) {
 	var scrapbook = utils.hasRecords(web_scope_to_block) && web_scope_to_block.scope_type
-	var layout = utils.hasRecords(web_scope_to_block) && utils.hasRecords(web_scope_to_block.web_block_to_block_type) && web_scope_to_block.web_block_to_block_type.block_category == scopes.CMS._constant.blockCategory.LAYOUT
+	var layout = utils.hasRecords(web_scope_to_block) && utils.hasRecords(web_scope_to_block.web_block_to_block_display) && web_scope_to_block.web_block_to_block_display.flag_layout
 	
  	//white/tan with medium blue highlighter and green if a scrapbook
 	if (selected) {

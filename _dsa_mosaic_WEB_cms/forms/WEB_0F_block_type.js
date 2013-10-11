@@ -164,20 +164,6 @@ function REC_new(flagRefresh,formName,fs) {
 				}
 			}
 			
-			//dealing with a builder...bob, perhaps?
-			if (objBlock.record.form_name == 'WEB_0F__block_builder') {
-				//prompt for category
-				if (nonBatch) {
-//					WEB_block_category is valuelist name where we're getting these values from
-					var category = globals.DIALOGS.showSelectDialog('Category','Specify what category this block builder is',['Content','Layout'])
-					
-					//dialog canceled, do not create block
-					if (!category) {
-						return
-					}
-				}
-			}
-			
 			//turn on notification when called directly from block type workflow form
 			if (nonBatch) {
 				globals.WEBc_sutra_trigger('TRIGGER_progressbar_start',[null,(flagRefresh ? 'Refreshing' : 'Registering') + ' block: ' + objBlock.record.block_name + '.  Please wait...'])
@@ -246,10 +232,31 @@ function REC_new(flagRefresh,formName,fs) {
 
 			// block displays
 			for (var i in objBlock.views) {
+				var sampleMarkup = null
+				try {
+					var formMethods = solutionModel.getForm(block.form_name).getMethods(true).map(function(item){return item.getName()})
+					//controller
+					if (formMethods.indexOf('CONTROLLER_' + i) != -1) {
+						var methodName = 'CONTROLLER_'
+					}
+					//standard view
+					else if (formMethods.indexOf('VIEW_' + i) != -1) {
+						methodName = 'VIEW_'
+					}
+					methodName += i
+					/** @type {String} */
+					sampleMarkup = forms[block.form_name][methodName]()
+				}
+				catch (e) {}
+				
 				//this display already exists, continue
 				if (displayCurrent[i]) {
 					//remove from delete array
 					displayDelete.splice(displayDelete.indexOf(displayCurrent[i]),1)
+					
+					//update layout flag
+					view.flag_layout = typeof sampleMarkup == 'string' ? (sampleMarkup.indexOf('{{BLOCK}}') == -1 ? 0 : 1) : 0
+					
 					continue
 				}
 
@@ -260,6 +267,7 @@ function REC_new(flagRefresh,formName,fs) {
 				view.method_name = objBlock.views[i]
 				//flag default method as default
 				view.flag_default = objBlock.defaultView ? (objBlock.views[i] == objBlock.defaultView) : ( objBlock.views[i] == "VIEW_default" || objBlock.views[i] == "CONTROLLER_default") ? 1 : null
+				view.flag_layout = typeof sampleMarkup == 'string' ? (sampleMarkup.indexOf('{{BLOCK}}') == -1 ? 0 : 1) : 0
 			}
 
 			//if anything left in delete array, whack it

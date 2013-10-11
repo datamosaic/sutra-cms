@@ -41,7 +41,7 @@ function INIT_data() {
 	var allStatic = blockList.every(function(item){return item.type == 'staticHTML'})
 
 	//if this is a layout block, use static
-	if (web_block_to_block_type.block_category == scopes.CMS._constant.blockCategory.LAYOUT) {// && allStatic) {
+	if (web_block_to_block_type.block_category == web_block_to_block_display.flag_layout) {// && allStatic) {
 		var html = '<html>'
 		html += globals.WEBb_index_edit() + '<body>'
 		html += '<h2>Layout block</h2><p>This block is a formatter for the following blocks.</p>'
@@ -63,8 +63,8 @@ function INIT_data() {
 		}
 		html += '</body></html>'
 
-		//replace out <<block>>
-		html = utils.stringReplace(html,'<<BLOCK>>','<em>&lt;&lt;BLOCK>><em>')
+		//replace out {{BLOCK}}
+		html = utils.stringReplace(html,'{{BLOCK}}','<em>&lt;&lt;BLOCK>><em>')
 	}
 	
 	if (application.getApplicationType() == APPLICATION_TYPES.WEB_CLIENT) {

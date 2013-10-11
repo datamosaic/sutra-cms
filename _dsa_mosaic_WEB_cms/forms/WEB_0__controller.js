@@ -24,17 +24,17 @@ var _license_dsa_mosaic_WEB_cms = 'Module: _dsa_mosaic_WEB_cms \
 function CONTROLLER(app, session, request, response, mode) {
 	// initialize CMS variable (would be nice if this worked correctly)
 //	globals.CMS = eval(solutionModel.getGlobalVariable('CMS').defaultValue)
-
+	
 	// CMS Version
 	var cmsVersion = "4.0b1"
-
+	
 	// initialize good dataset to return to jsp
 	var results = databaseManager.createEmptyDataSet(0,["key","value"])
 	results.addRow(["cmsVersion", "Sutra CMS - " + cmsVersion])
-
+	
 	// STEP 1: Setup
 	CONTROLLER_setup(results, app, session, request, response, mode, cmsVersion)
-
+	
 	// STEP 2: Session control
 	if ( !globals.CMS.data.error.code ) {
 		CONTROLLER_session()
@@ -42,7 +42,7 @@ function CONTROLLER(app, session, request, response, mode) {
 	else {
 		return CONTROLLER_error()
 	}
-
+	
 	// STEP 3: Page builder
 	if ( !globals.CMS.data.error.code ) {
 		CONTROLLER_builder(results)
@@ -50,12 +50,12 @@ function CONTROLLER(app, session, request, response, mode) {
 	else {
 		return CONTROLLER_error()
 	}
-
+	
 	// send results back to headless client
 	if ( !globals.CMS.data.error.code ) {
 		// clear out obj
 		delete globals.CMS.data
-
+		
 		return results
 	}
 	else {
@@ -73,9 +73,9 @@ function CONTROLLER(app, session, request, response, mode) {
 function CONTROLLER_session() {
 	// assign main CMS object for easier reference
 	var obj = globals.CMS.data
-
+	
 	// PROCESS: session management
-
+	
 	// if logging turned on, record session and page access
 	if ( obj.site.record.flag_session ) {
 
@@ -186,7 +186,6 @@ function CONTROLLER_builder(results) {
 				// BLOCK TYPE
 				var type = obj.block.record.web_block_to_block_type
 				databaseManager.refreshRecordFromDatabase(type,0)
-				var layout = type && type.block_category == scopes.CMS._constant.blockCategory.LAYOUT
 				var builder = type && type.block_type == scopes.CMS._constant.blockType.BLOCKBUILDER
 
 				// BLOCK DATA
@@ -236,11 +235,12 @@ function CONTROLLER_builder(results) {
 						obj.block_response[point.column_name] = data
 					}
 				}
-
+				
 				// BLOCK DISPLAY
 				var display = obj.block.version.web_block_version_to_block_display
 				databaseManager.refreshRecordFromDatabase(display,0)
-
+				var layout = display.flag_layout
+				
 				// MARKUP CALL
 				// edit mode (needs div wrappers)
 				if ( obj.type == "Edit" ) {
@@ -286,7 +286,7 @@ function CONTROLLER_builder(results) {
 				// if layout block return markup and merge with 'children'
 				if (layout) {
 					//get number of iterations for this layout block
-					var loopSize = utils.stringPatternCount(markupData,'<<BLOCK>>')
+					var loopSize = utils.stringPatternCount(markupData,'{{BLOCK}}')
 					var blocks = new Array()
 
 					//loop through all child scopes
@@ -343,7 +343,7 @@ function CONTROLLER_builder(results) {
 					}
 
 					//fill in the slots
-					var regex= /<<BLOCK>>/g
+					var regex= /{{BLOCK}}/g
 					var matches
 					m = 0
 					while (matches = regex.exec(markupData)) {
@@ -384,7 +384,14 @@ function CONTROLLER_builder(results) {
 		obj.area.record	= areaRec
 		obj.area.id		= areaRec.id_area
 		obj.area.name	= areaRec.area_name
-
+		
+		//area wrapper open
+		if (obj.type == 'Edit') {
+			var areaString = utils.stringReplace(areaRec.id_area.toString(),'-','')
+			
+			areaMarkup += '<div id="sutra-area-data-' + areaString + '"><span class="areaDescription" title="AREA  ::  ' + areaRec.area_name + '">' + areaRec.area_name + '</span>\n'
+		}
+		
 		// SCOPE(S) only parent scopes
 		/** @type {JSFoundSet<db:/sutra_cms/web_scope>} */
 		var fsScope = databaseManager.getFoundSet('db:/sutra_cms/web_scope')
@@ -410,18 +417,21 @@ function CONTROLLER_builder(results) {
 			}
 		}
 
-		//tack on add new block button if editable
-		//this is linked up to a theme editable and set to allow records to be created
-		if (obj.type == 'Edit' && utils.hasRecords(areaRec.web_area_to_editable) && areaRec.web_area_to_editable.flag_new_block) {
-			var areaString = utils.stringReplace(areaRec.id_area.toString(),'-','')
-
-			var newBlock = '<!-- add new block -->'
-			var breadcrumb = 'Add block to ' + globals.CODE_text_initial_caps(areaRec.area_name)
-			newBlock += '<div id="sutra-block-add-' + areaString + '" class="block_new">\n'
-			newBlock += '<a href="javascript:blockNew(\'' + areaString + '\')" title="' + breadcrumb + '">New block</a>'
-			newBlock += '</div>\n'
-
-			areaMarkup += newBlock
+		//area wrapper close
+		if (obj.type == 'Edit') {
+			//tack on add new block button if editable
+			//this is linked up to a theme editable and set to allow records to be created
+			if (utils.hasRecords(areaRec.web_area_to_editable) && areaRec.web_area_to_editable.flag_new_block) {
+				var newBlock = '<!-- add new block -->'
+				var breadcrumb = 'Add block to ' + globals.CODE_text_initial_caps(areaRec.area_name)
+				newBlock += '<div id="sutra-block-add-' + areaString + '" class="block_new">\n'
+				newBlock += '<a href="javascript:blockNew(\'' + areaString + '\')" title="' + breadcrumb + '">New block</a>'
+				newBlock += '</div>'
+	
+				areaMarkup += newBlock
+			}
+			
+			areaMarkup += '\n</div>\n'
 		}
 
 		// replace out place holders (DS_* links)
