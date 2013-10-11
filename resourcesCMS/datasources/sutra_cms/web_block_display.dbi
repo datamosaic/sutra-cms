@@ -31,6 +31,12 @@ name:"flag_default"
 },
 {
 allowNull:true,
+creationOrderIndex:10,
+dataType:4,
+name:"flag_layout"
+},
+{
+allowNull:true,
 creationOrderIndex:9,
 dataType:12,
 length:255,

@@ -28,13 +28,14 @@ div#cmsBlockHilite {
 	background-color: transparent;
 }
 
+.areaDescription,
 .layoutDescription,
 .scopeDescription {
 	display: none;
 	
-	background-color: #004E98;
+	background-color: #262626;
 	border-radius: 5px;
-	padding: 2px 8px 1px;
+	padding: 1px 8px;
 	margin-left: 3px;
 	margin-top: 3px;
 	color: white;
@@ -48,10 +49,18 @@ div#cmsBlockHilite {
 	-o-box-shadow: inset 0px 3px 5px rgba(0, 0, 0, 0.3);
 	box-shadow: inset 0px 3px 5px rgba(0, 0, 0, 0.3);
 }
+.area_container > .areaDescription,
 .layout_editable > .layoutDescription,
 .block_editable > .layoutDescription,
 .block_editable > .scopeDescription {
 	display: inline;
+}
+.areaDescription {
+	border: 1px solid rgba(255, 255, 255, 0.2);
+	padding-top: 0px;
+}
+.layoutDescription {
+	background-color: #004E98;
 }
 .scopeDescription {
 	background-color: #7E8286;
@@ -77,15 +86,21 @@ div#cmsBlockHilite {
 .layout_editable > .blockDelete {
 }
 
+div.area_container, 
 div.layout_editable, 
 p.layout_editable,
 div.block_editable, 
 p.block_editable {
 	min-width: 40px;
 	margin: 4px 3px;
-	border: 1px dashed #004E98;
+	border: 1px dashed rgba(0,0,0,0.9);
 	padding: 2px;
 	overflow: hidden;
+}
+div.layout_editable, 
+p.layout_editable,
+div.block_editable, 
+p.block_editable {
 	cursor: pointer !important;
 }
 
@@ -115,11 +130,17 @@ p.block_editable:hover .blockDelete {
 	background-color: rgba(187,187,187,0.3) !important;
 }
 
+div.area_container,
 div.layout_editable, 
 p.layout_editable,
 div.block_editable[scrapbook], 
 p.block_editable[scrapbook] {
 	padding-top: 5px;
+}
+
+div.layout_editable, 
+p.layout_editable {
+	border-color: #004E98;
 }
 
 div.block_editable, 
