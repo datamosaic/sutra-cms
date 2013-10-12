@@ -141,6 +141,7 @@ valuelistID:"4f6370be-de55-4992-a24f-57a43c0b25c3"
 anchors:11,
 borderType:"SpecialMatteBorder,0.0,0.0,1.0,0.0,#000000,#000000,#999999,#000000,0.0,1.0",
 dataProviderID:"layout_name",
+editable:false,
 formIndex:10700,
 location:"15,31",
 name:"fld_layout_name",
