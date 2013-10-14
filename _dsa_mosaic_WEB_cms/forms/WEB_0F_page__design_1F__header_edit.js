@@ -806,7 +806,9 @@ function TOGGLE_fields(pageType) {
 		elements.var_idSiteGroup.visible = newPage
 
 		//only allow to cancel for new page
-		elements.lbl_cancel.visible = newCancel
+		if (application.getApplicationType() != APPLICATION_TYPES.WEB_CLIENT) {
+			elements.lbl_cancel.visible = newCancel
+		}
 		elements.btn_cancel.visible = newCancel
 
 		elements.lbl_idTheme.visible = page
