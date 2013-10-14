@@ -196,10 +196,6 @@ function REC_new(flagRefresh,formName,fs) {
 			if (objBlock.record.form_name == 'WEB_0F__block_builder') {
 				//mark as inactive until published
 				block.flag_unavailable = 1
-				
-				if (category) {
-					block.block_category = scopes.CMS._constant.blockCategory[category.toUpperCase()]
-				}
 			}
 
 			// remove related block records
