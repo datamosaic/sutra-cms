@@ -213,7 +213,7 @@ function ACTIONS_list() {
 	}
 
 	//pop up the popup menu
-	var elem = elements[application.getMethodTriggerElementName()]
+	var elem = forms[application.getMethodTriggerFormName()].elements[application.getMethodTriggerElementName()]
 	if (elem != null) {
 	    plugins.popupmenu.showPopupMenu(elem, menu)
 	}
