@@ -568,3 +568,10 @@ function CACHE_flush() {
 function CACHE_page() {
 	forms[scopes.CMS.util.getTreeForm()].ACTIONS_list_control(11)
 }
+
+/**
+ * @properties={typeid:24,uuid:"1ACB94CC-F4B7-466F-865E-C133A3B93664"}
+ */
+function OV_ACTIONS_list() {
+	forms[scopes.CMS.util.getTreeForm()].ACTIONS_list()
+}
