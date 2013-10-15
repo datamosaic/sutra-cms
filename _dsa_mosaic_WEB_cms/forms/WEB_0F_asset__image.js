@@ -148,7 +148,8 @@ function INIT_asset() {
 function ASSET_actions(input,assetRecord) {
 	//menu items
 	var valuelist = new Array(
-					'Scale image'
+					'Scale image',
+					'View image'
 				)
 	
 	//called to depress menu
@@ -174,8 +175,11 @@ function ASSET_actions(input,assetRecord) {
 	//menu shown and item chosen
 	else {
 		switch( input ) {
-			case 0:	//
+			case 0:	//scale
 				ASSET_scale(assetRecord)
+				break
+			case 1:	//view
+				ASSET_preview(assetRecord)
 				break
 		}
 	}
@@ -270,4 +274,28 @@ function IMAGE_resize_callback(callback) {
 	//select last record
 	forms.WEB_0F_asset_1F_2L_asset_instance.foundset.selectRecord(callback.data)
 	globals.DIALOGS.showInfoDialog("Image",  "Image resized")
+}
+
+/**
+ * @param {JSRecord<db:/sutra_cms/web_asset>} assetRecord
+ * 
+ * @properties={typeid:24,uuid:"61878049-82F3-401E-8DA2-9F12E9E2CEAB"}
+ */
+function ASSET_preview(assetRecord) {
+	if (application.getApplicationType() == APPLICATION_TYPES.WEB_CLIENT) {
+		if (!(assetRecord instanceof JSRecord)) {
+			assetRecord = forms.WEB_0F_asset.foundset.getSelectedRecord()
+		}
+		
+		//both the base and resource url methods will return with "sutraCMS/"; need to remove from one so no doubling
+		var siteURL = utils.stringReplace(globals.WEBc_markup_link_base(forms.WEB_0F_page.id_page),'sutraCMS/','') + globals.WEBc_markup_link_resources(forms.WEB_0F_page.id_page)
+		
+		globals.CODE_url_handler(siteURL + assetRecord.web_asset_to_asset_instance.asset_directory + '/' + assetRecord.web_asset_to_asset_instance.asset_title,null,true)
+	}
+	else {
+		plugins.dialogs.showErrorDialog(
+				'Error',
+				'WC-only'
+			)
+	}
 }

@@ -32,7 +32,8 @@ size:"6,15",
 tabSeq:-1,
 transparent:true,
 typeid:7,
-uuid:"38185E7F-76F3-41AA-A20A-539211E960DD"
+uuid:"38185E7F-76F3-41AA-A20A-539211E960DD",
+visible:false
 },
 {
 height:18,

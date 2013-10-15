@@ -482,15 +482,15 @@ function ACTION_action(event) {
 		var item
 		
 		var subMenu = menu.addMenu('Visit...')
-		item = subMenu.addMenuItem(application.getApplicationType() == APPLICATION_TYPES.WEB_CLIENT ? 'Open in new tab' : 'Open default browser')
+		item = subMenu.addMenuItem(application.getApplicationType() == APPLICATION_TYPES.WEB_CLIENT ? 'Open web page' : 'Open default browser')
 		item.setMethod(ACTION_action)
 		item.methodArguments = ['Visit']
-		item = subMenu.addMenuItem('Copy to clipboard')
+		item = subMenu.addMenuItem('Copy URL to clipboard')
 		item.setMethod(ACTION_action)
 		item.methodArguments = ['Copy to clipboard']
 		
 		if (globals.WEB_page_mode == 3) {
-			item = menu.addMenuItem("Hard refresh display")
+			item = menu.addMenuItem("Hard refresh page")
 			item.setMethod(ACTION_action)
 			item.methodArguments = ['Hard refresh']
 		}
@@ -645,11 +645,11 @@ function ACTION_mode(event) {
 		}
 		
 		function siteMap() {
-			//in wc try to get to sitemap
-			if (solutionPrefs.config.webClient && !forms.WEB_0F_page._siteMap) {
-				globals.WEBc_sutra_trigger('TRIGGER_ul_tab_list',[scopes.CMS.util.getTreeForm(),'Sitemap',0])
-				forms.WEB_0F_page._siteMap = true
-			}
+//			//in wc try to get to sitemap
+//			if (solutionPrefs.config.webClient && !forms.WEB_0F_page._siteMap) {
+//				globals.WEBc_sutra_trigger('TRIGGER_ul_tab_list',[scopes.CMS.util.getTreeForm(),'Sitemap',0])
+//				forms.WEB_0F_page._siteMap = true
+//			}
 		}
 
 		switch (mode) {
