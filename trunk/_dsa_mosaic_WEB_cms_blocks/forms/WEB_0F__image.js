@@ -374,22 +374,24 @@ function FORM_on_show(firstShow, event) {
 function INIT_data() {
 	var data = globals.CMS.ui.getData(controller.getName())
 	var dataConfig = globals.CMS.ui.getConfig(controller.getName())
-	
+	var htmlData = ''
+		
 	//no image set yet
-	if (!data.image_name){
+	if (!data.image_name) {
+		htmlData = 'No image chosen yet'
 		var html = 	'<html><head></head><body>' +
-					'No image chosen yet' +
+					htmlData +
 					'</body></html>'
 	}
 	// image is set
 	else {
 		//both the base and resource url methods will return with "sutraCMS/"; need to remove from one so no doubling
 		var siteURL = utils.stringReplace(globals.WEBc_markup_link_base(forms.WEB_0F_page.id_page),'sutraCMS/','') + globals.WEBc_markup_link_resources(forms.WEB_0F_page.id_page)
-		
-		html = 	'<html><head></head><body>' +
-					'<img src="' + siteURL + 
+		htmlData = '<img src="' + siteURL + 
 					data.directory + '/' + data.image_name + 
-					'" height="' + data.height + '" width="' + data.width +'"' + '>' +
+					'" height="' + data.height + '" width="' + data.width +'"' + '>'
+		html = 	'<html><head></head><body>' +
+					 + htmlData +
 					'</body></html>'
 	}
 	
@@ -409,7 +411,7 @@ function INIT_data() {
 	}
 	
 	if (application.getApplicationType() == APPLICATION_TYPES.WEB_CLIENT) {
-		globals.WEBb_block_preview(elements.lbl_view,html)
+		globals.WEBb_block_preview(elements.lbl_view,htmlData)
 	}
 	else if (elements.bn_browser) {
 		elements.bn_browser.html = html

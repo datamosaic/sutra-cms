@@ -119,10 +119,10 @@ function WEBb_element_toggle(elem,property,toggle) {
  */
 function WEBb_block_preview(elem, html) {
 	var id = plugins.WebClientUtils.getElementMarkupId(elem)
-	html = html.replace(/\'/g, '\\\'').replace(/\"/g, '\\"')
-	var iframe = '<iframe id="' + id + '" srcdoc="' + html + '" width="100%" height="100%" scrolling="yes" frameborder="0"></iframe>'
+	html = (typeof html == 'string') ? html.replace(/\'/g, '\\\'') : ''
+	var iframe = '<iframe id="' + id + '" srcdoc=\\\'' + html + '\\\' width="100%" height="100%" scrolling="yes" frameborder="0" seamless sandbox></iframe>'
 	plugins.WebClientUtils.executeClientSideJS(
-			'setTimeout(function(){$("#' + id + '").replaceWith(\"' + iframe + '\");\
+			'setTimeout(function(){$("#' + id + '").replaceWith(\'' + iframe + '\');\
 			},750);'
 		)
 }

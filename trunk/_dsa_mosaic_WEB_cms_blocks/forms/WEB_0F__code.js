@@ -419,7 +419,7 @@ function ACTION_colorize(event) {
 	}
 	
 	if (application.getApplicationType() == APPLICATION_TYPES.WEB_CLIENT) {
-		globals.WEBb_block_preview(elements.lbl_view,html)
+		globals.WEBb_block_preview(elements.lbl_view,codeData)
 	}
 	else if (elements.bn_browser) {
 		elements.bn_browser.html = html
