@@ -116,13 +116,6 @@ uuid:"90D86235-5E64-46D1-9EF0-D19848723CAC"
 anchors:11,
 items:[
 {
-containsFormID:"41112AAD-A4BA-47FC-9E0F-33AEF7CC816A",
-location:"498,0",
-text:"Permissions",
-typeid:15,
-uuid:"16743F79-4833-4BB3-8AC1-AC5B14030288"
-},
-{
 containsFormID:"95CADD4B-258B-40CA-8DF0-E9AC7965E11C",
 location:"366,0",
 text:"Properties",
