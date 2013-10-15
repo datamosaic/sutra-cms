@@ -90,7 +90,7 @@ function ACTIONS_list() {
 			'Expand nodes',
 			'Collapse nodes',
 			'-',
-			'Scope',
+			'Tree filters',
 			'-',
 			'Delete record',
 			'-',

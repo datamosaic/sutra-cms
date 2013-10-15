@@ -67,7 +67,7 @@ uuid:"1AEB74DE-DABA-4616-8AEE-7F0608FA9B95"
 anchors:15,
 background:"#323a4b",
 formIndex:12001,
-location:"240,0",
+location:"10,0",
 mediaOptions:4,
 name:"gfx_curtain",
 onActionMethodID:"CBA4256A-1CF7-42E4-A265-237E6AB08408",
@@ -118,13 +118,6 @@ location:"83,182",
 text:"Blank",
 typeid:15,
 uuid:"69B44A6B-EE46-4C23-BE24-D5886642FEDC"
-},
-{
-containsFormID:"9B12B90D-4A8D-4FA4-AFAB-21F32C288976",
-location:"66,149",
-text:"Permissions",
-typeid:15,
-uuid:"B5A89549-5CF4-4D0C-8624-E56545E392C4"
 },
 {
 containsFormID:"859221B7-EE3A-4309-88A3-4B2ACB4F18BD",

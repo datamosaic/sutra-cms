@@ -234,7 +234,7 @@ function FORM_on_hide(event) {
 }
 
 /**
- * @param	{Integer}	assetType What type of asset are we working with
+ * @param	{Number}	assetType What type of asset are we working with
  * 
  * @properties={typeid:24,uuid:"69916907-339D-4989-A21B-A53DD115E194"}
  */
@@ -325,4 +325,15 @@ function REC_on_select(event) {
 			fsPages.clear()
 		}
 	}
+}
+
+/**
+ * Perform the element default action.
+ *
+ * @param {JSEvent} event the event that triggered the action
+ *
+ * @properties={typeid:24,uuid:"2395AFBF-A96C-46AC-95BB-8055740BA1CD"}
+ */
+function ACTION_preview(event) {
+	forms.WEB_0F_asset__image.ASSET_preview()
 }

@@ -30,8 +30,8 @@ function TAB_change(formName,elemName) {
 	forms.WEB_0F_page__design_1F_version.elements.tab_content.tabIndex = elements.tab_button.tabIndex
 
 	//toggle display to show nothing for page when no valid version stack
-	if (forms.WEB_0F_page__design.elements.tab_main.tabIndex == 6 && !utils.hasRecords(forms.WEB_0F_page__design_1F_version.foundset)) {
-		forms.WEB_0F_page__design.elements.tab_main.tabIndex = 5
+	if (forms.WEB_0F_page__design.elements.tab_main.tabIndex == 5 && !utils.hasRecords(forms.WEB_0F_page__design_1F_version.foundset)) {
+		forms.WEB_0F_page__design.elements.tab_main.tabIndex = 4
 	}
 
 	//standard header (if coming from scrapbook)
