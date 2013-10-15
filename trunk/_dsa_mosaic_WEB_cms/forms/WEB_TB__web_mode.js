@@ -731,7 +731,7 @@ function ACTION_mode(event) {
 				
 				//tabs
 				forms.WEB_0F_page__design.elements.tab_header_button.tabIndex = 2
-				forms.WEB_0F_page__design.elements.tab_main.tabIndex = 6
+				forms.WEB_0F_page__design.elements.tab_main.tabIndex = 5
 
 				break
 			case 'lbl_mode_edit':	//real mode (browser bean)
