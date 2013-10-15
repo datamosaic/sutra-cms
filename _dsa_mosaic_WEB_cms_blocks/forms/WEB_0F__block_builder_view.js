@@ -19,6 +19,7 @@ function INIT_data() {
 	var allFields = globals.CMS.ui.getData(controller.getName())
 
 	var blockList = new Array()
+	var htmlData = ''
 
 	//build object for list to operate from
 	for (var i in allFields) {
@@ -42,9 +43,10 @@ function INIT_data() {
 
 	//if this is a layout block, use static
 	if (web_block_to_block_type.block_category == web_block_to_block_display.flag_layout) {// && allStatic) {
+		htmlData = '<h2>Layout block</h2><p>This block is a formatter for the following blocks.</p>'
 		var html = '<html>'
 		html += globals.WEBb_index_edit() + '<body>'
-		html += '<h2>Layout block</h2><p>This block is a formatter for the following blocks.</p>'
+		html += htmlData
 		html += '</body></html>'
 	}
 	else {
@@ -57,18 +59,20 @@ function INIT_data() {
 
 				// this method exists
 				if (solutionModel.getForm(formName).getFormMethod(method)) {
-					html += globals.WEBc_markup_link_internal(forms[formName][method](blockItem.record),null,'Edit') + '\n'
+					htmlData += globals.WEBc_markup_link_internal(forms[formName][method](blockItem.record),null,'Edit') + '\n'
 				}
 			}
 		}
-		html += '</body></html>'
-
+		
 		//replace out {{BLOCK}}
-		html = utils.stringReplace(html,'{{BLOCK}}','<em>&lt;&lt;BLOCK>><em>')
+		htmlData = utils.stringReplace(htmlData,'{{BLOCK}}','<em>{{BLOCK}}<em>')
+		
+		//close down
+		html += htmlData + '</body></html>'
 	}
 	
 	if (application.getApplicationType() == APPLICATION_TYPES.WEB_CLIENT) {
-		globals.WEBb_block_preview(elements.lbl_view,html)
+		globals.WEBb_block_preview(elements.lbl_view,htmlData)
 	}
 	else if (elements.bn_browser) {
 		elements.bn_browser.html = html

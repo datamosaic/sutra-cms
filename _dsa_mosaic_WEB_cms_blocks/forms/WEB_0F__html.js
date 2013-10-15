@@ -395,7 +395,7 @@ function ACTION_colorize(event) {
 	html = globals.WEBc_markup_link_internal(html,null,'Edit')
 	
 	if (application.getApplicationType() == APPLICATION_TYPES.WEB_CLIENT) {
-		globals.WEBb_block_preview(elements.lbl_view,html)
+		globals.WEBb_block_preview(elements.lbl_view,htmlData)
 	}
 	else if (elements.bn_browser) {
 		elements.bn_browser.html = html

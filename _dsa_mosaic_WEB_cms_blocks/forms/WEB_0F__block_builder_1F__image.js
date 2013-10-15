@@ -35,7 +35,7 @@ function INIT_data(data,html) {
 	if (!(data instanceof Array)) {
 		data = new Array(data)
 	}
-
+	
 	for (var i = 0; i < data.length; i++) {
 		var row = data[i]
 
@@ -58,7 +58,7 @@ function INIT_data(data,html) {
 	}
 
 	if (!html) {
-		html = IMAGE_preview()
+		html = IMAGE_preview(application.getApplicationType() == APPLICATION_TYPES.WEB_CLIENT)
 	}
 
 	TOGGLE_buttons()
@@ -95,28 +95,38 @@ function onDataChange(oldValue, newValue, event) {
 }
 
 /**
+ * @param {Boolean} [imageOnly] Don't wrap as a full html page
+ * 
  * @properties={typeid:24,uuid:"1EBC2AB3-AF73-4611-B65C-E8E832FFCD36"}
  */
-function IMAGE_preview() {
+function IMAGE_preview(imageOnly) {
+	var htmlData = ''
 	//no image set yet
 	if (!_file){
+		htmlData = 'No image chosen yet'
 		var html = 	'<html><head></head><body>' +
-					'No image chosen yet' +
+					htmlData +
 					'</body></html>'
 	}
 	// image is set
 	else {
 		//both the base and resource url methods will return with "sutraCMS/"; need to remove from one so no doubling
 		var siteURL = utils.stringReplace(globals.WEBc_markup_link_base(forms.WEB_0F_page.id_page),'sutraCMS/','') + globals.WEBc_markup_link_resources(forms.WEB_0F_page.id_page)
-
-		var html = 	'<html><head></head><body>' +
-					'<img src="' + siteURL +
+		
+		htmlData = '<img src="' + siteURL +
 					_directory + '/' + _file +
-					'">' +
+					'">'
+		var html = 	'<html><head></head><body>' +
+					htmlData +
 					'</body></html>'
 	}
 
-	return html
+	if (imageOnly) {
+		return htmlData
+	}
+	else {
+		return html
+	}
 }
 
 /**
