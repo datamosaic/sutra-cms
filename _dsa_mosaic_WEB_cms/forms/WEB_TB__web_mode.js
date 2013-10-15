@@ -1,11 +1,4 @@
 /**
- * @type {Number}
- *
- * @properties={typeid:35,uuid:"A2E9443D-D5F8-4C03-8558-EBC37B87A4CC",variableType:4}
- */
-var _editMode = 0;
-
-/**
  * @type {String}
  *
  * @properties={typeid:35,uuid:"04fde543-69cc-4de9-af47-7f7c22221f65"}
@@ -13,6 +6,20 @@ var _editMode = 0;
 var _license_dsa_mosaic_WEB_cms = 'Module: _dsa_mosaic_WEB_cms \
 									Copyright (C) 2011-2013 Data Mosaic \
 									MIT Licensed';
+
+/**
+ * @type {Number}
+ *
+ * @properties={typeid:35,uuid:"EA0C65CB-5F3E-4242-89BE-2DB1D762D828",variableType:4}
+ */
+var _pageTab = 1;
+
+/**
+ * @type {Number}
+ *
+ * @properties={typeid:35,uuid:"A2E9443D-D5F8-4C03-8558-EBC37B87A4CC",variableType:4}
+ */
+var _editMode = 0;
 
 /**
  * @type {String}
@@ -35,7 +42,7 @@ function ACTION_add(event) {
 /**
  * Perform the element default action.
  *
- * @param {JSEvent} event the event that triggered the action
+ * @param {JSEvent} [event] the event that triggered the action
  *
  * @properties={typeid:24,uuid:"B65C434D-3CCF-4DD9-9A78-3D45859DC0A0"}
  */
@@ -63,10 +70,11 @@ function ACTION_edit(event) {
 		application.sleep(500)
 	}
 
-	// toggle to browser if not there already
-	if (globals.WEB_page_mode != 3) {
-		MODE_set("Live")
-	}
+//	shouldn't be possible to press this button when not in real mode	
+//	// toggle to browser if not there already
+//	if (globals.WEB_page_mode != 3) {
+//		MODE_set("Live")
+//	}
 
 	globals.WEBc_log_create('page','page edit begin',forms.WEB_0F_page.id_site,'web_page',forms.WEB_0F_page.id_page)
 
@@ -145,18 +153,19 @@ function TOGGLE_group(showGroups) {
 /**
  * @properties={typeid:24,uuid:"30E954F0-D7BF-414B-943A-CEBBB16148BB"}
  */
-function TOGGLE_visit(shown) {
-
+function TOGGLE_resize(shown) {
 	if (typeof shown != 'boolean') {
 		shown = false
 	}
 
-	elements.btn_visit.visible = shown
-	elements.lbl_visit.visible = shown
+	elements.btn_resize.visible = shown
+	elements.lbl_resize.visible = shown
+	elements.lbl_resize_tick.visible = shown
 }
 
 /**
- *
+ * @param {Boolean} [showVersion]
+ * 
  * @properties={typeid:24,uuid:"530CE94C-E1F2-47D0-9BF9-C4FF4FD027DF"}
  */
 function TOGGLE_version(showVersion) {
@@ -263,7 +272,7 @@ function ACTION_version(input) {
 		}
 
 		//popdown
-		var elem = elements[application.getMethodTriggerElementName()]
+		var elem = elements.lbl_versions
 		if (elem != null && menu.length > 1) {
 			plugins.popupmenu.showPopupMenu(elem, menu)
 		}
@@ -334,7 +343,7 @@ function ACTION_version(input) {
 /**
  * Perform the element right-click action.
  *
- * @param {JSEvent} event the event that triggered the action
+ * @param {JSEvent} [event] the event that triggered the action
  *
  * @properties={typeid:24,uuid:"E8F05192-65E5-4A40-9EB5-B423B34F8371"}
  */
@@ -407,6 +416,141 @@ function ACTION_version_actions(event) {
 }
 
 /**
+ * @param {JSEvent} event the event that triggered the action
+ *
+ * @properties={typeid:24,uuid:"2EFD8325-BF6F-40CC-8188-C445DAB04ECC"}
+ */
+function ACTION_resize(event) {
+	//when right clicked, give a moment to grab focus elsewhere
+	if (event instanceof JSEvent) {
+		var menu = plugins.window.createPopupMenu()
+		var item
+		
+		item = menu.addMenuItem("Phone small (320 x 480)")
+		item.setMethod(ACTION_action)
+		item.methodArguments = ['']
+		item = menu.addMenuItem("Phone phablet (1920 x 1080)")
+		item.setMethod(ACTION_action)
+		item.methodArguments = ['']
+		
+		menu.addSeparator()
+
+		item = menu.addMenuItem("Tablet 7\" (1024 x 600)")
+		item.setMethod(ACTION_action)
+		item.methodArguments = ['']
+		item = menu.addMenuItem("iPad non-retina (1024 x 768)")
+		item.setMethod(ACTION_action)
+		item.methodArguments = ['']
+		item = menu.addMenuItem("iPad retina (2048 x 1536)")
+		item.setMethod(ACTION_action)
+		item.methodArguments = ['']
+		item = menu.addMenuItem("Tablet 4K (3840 x 2560)")
+		item.setMethod(ACTION_action)
+		item.methodArguments = ['']
+		
+		menu.addSeparator()
+
+		item = menu.addMenuItem("Old computer (1024 x 768)")
+		item.setMethod(ACTION_action)
+		item.methodArguments = ['']
+		item = menu.addMenuItem("Not that old computer (1280 x 1024)")
+		item.setMethod(ACTION_action)
+		item.methodArguments = ['']
+		item = menu.addMenuItem("Current computer (1680 x 1050)")
+		item.setMethod(ACTION_action)
+		item.methodArguments = ['']
+		item = menu.addMenuItem("Full HD (1920 x 1080)")
+		item.setMethod(ACTION_action)
+		item.methodArguments = ['']
+
+		menu.show(elements.lbl_resize)
+	}
+	else {
+		
+	}
+}
+
+/**
+ * @param {JSEvent} event the event that triggered the action
+ *
+ * @properties={typeid:24,uuid:"FD3DEF73-7E36-42F6-AAA2-6F99837D21DE"}
+ */
+function ACTION_action(event) {
+	//when right clicked, give a moment to grab focus elsewhere
+	if (event instanceof JSEvent) {
+		var menu = plugins.window.createPopupMenu()
+		var item
+		
+		var subMenu = menu.addMenu('Visit...')
+		item = subMenu.addMenuItem(application.getApplicationType() == APPLICATION_TYPES.WEB_CLIENT ? 'Open in new tab' : 'Open default browser')
+		item.setMethod(ACTION_action)
+		item.methodArguments = ['Visit']
+		item = subMenu.addMenuItem('Copy to clipboard')
+		item.setMethod(ACTION_action)
+		item.methodArguments = ['Copy to clipboard']
+		
+		if (globals.WEB_page_mode == 3) {
+			item = menu.addMenuItem("Hard refresh display")
+			item.setMethod(ACTION_action)
+			item.methodArguments = ['Hard refresh']
+		}
+		
+		menu.addSeparator()
+		
+		item = menu.addMenuItem("Refresh theme")
+		item.setMethod(ACTION_action)
+		item.methodArguments = ['Refresh theme']
+		
+		menu.addSeparator()
+
+		subMenu = menu.addMenu('Import...')
+		item = subMenu.addMenuItem("Image")
+		item.setMethod(ACTION_action)
+		item.methodArguments = ['Import image']
+		item = subMenu.addMenuItem("File")
+		item.setMethod(ACTION_action)
+		item.methodArguments = ['Import file']
+
+		menu.show(elements.lbl_action)
+	}
+	else {
+		switch (arguments[5]) {
+			case 'Visit':
+				ACTION_visit()
+				break
+			case 'Copy to clipboard':
+				ACTION_visit(null,null,true)
+				break
+			case 'Hard refresh':
+				if (_liveForm == 'WEB_0F_page__browser') {
+					forms.WEB_0F_page__browser.elements.bn_browser.reload()
+					application.sleep(500)
+				}
+				else {
+					forms.WEB_0F_page__live__web.URL_update(elements.highlighter.visible)
+				}
+				break
+			case 'Refresh theme':
+				forms.WEB_0F_page.THEME_refresh()
+				break
+			case 'Import image':
+				forms.WEB_0C__file_stream.IMAGE_import("images")
+				break
+			case 'Import file':
+				forms.WEB_0C__file_stream.FILE_import("files")
+				break
+			case 'Activate':
+				pseudoEvent.getElementName = function() {return 'btn_check_off'}
+				forms.WEB_0F_page__design_1F__header_display__version.ACTIVATE_version(pseudoEvent)
+				break
+		}
+		
+		//regenerate html
+//		forms[_liveForm].URL_update()
+	}
+}
+
+/**
  *
  * @properties={typeid:24,uuid:"37CB81D0-259B-445E-9FDC-C15B3328574D"}
  */
@@ -458,90 +602,13 @@ function BREAD_url_clipboard(event) {
  *
  * @param {JSEvent} event the event that triggered the action
  *
- * @properties={typeid:24,uuid:"95133A53-BDB0-4591-8709-20EAEC851693"}
- */
-function ACTION_dashboard(event) {
-//	//don't enter if workflow form locked for some reason or not enough access
-//	if (application.__parent__.solutionPrefs && !solutionPrefs.design.statusLockWorkflow && globals.WEBc_sutra_trigger('TRIGGER_registered_action_authenticate',['cms page mode toggle'])) {
-//
-//		//in edit mode with unsaved changes
-//		if (elements.btn_save.visible && forms.WEB_0F_page__browser_1F_block__editor.GET_modify()) {
-//			var input = globals.DIALOGS.showWarningDialog(
-//						'Unsaved changes',
-//						'There are unsaved changes.  Continue without saving?',
-//						'Yes',
-//						'No'
-//				)
-//
-//			if (input != 'Yes') {
-//				return
-//			}
-//		}
-//
-//		if (globals.WEB_page_mode == 3) {
-//			MODE_set("Design")
-//
-//			elements.lbl_edit.visible = false
-//			elements.btn_edit.visible = false
-//			elements.btn_save.visible = false
-//
-//			elements.highlighter_dash.visible = false
-//			elements.highlighter.visible = false
-//			elements.lbl_detail.visible = false
-//
-//			TOGGLE_group(false)
-//			TOGGLE_version(false)
-//
-//			//refire toggle
-//			forms.WEB_0F_page__design_1F__header_display.FLD_data_change__version_selected()
-//		}
-//		else {
-//			elements.highlighter_dash.visible = true
-//			elements.lbl_detail.visible = true
-//
-////			forms.WEB_0F_page__browser.elements.bn_browser.reload()
-//			MODE_set("Live")
-//
-//			//toggle edit, groups, versions
-//			TOGGLE_edit()
-//			TOGGLE_group()
-//			TOGGLE_version()
-//		}
-//	}
-}
-
-/**
- * Perform the element default action.
- *
- * @param {JSEvent} event the event that triggered the action
- *
  * @properties={typeid:24,uuid:"A164DFE9-D04B-454E-B5B7-194AC642627F"}
  */
 function ACTION_mode(event) {
 	//don't enter if workflow form locked for some reason, in toolbar configurator, or not enough access
 	if (application.__parent__.solutionPrefs && solutionPrefs.config.currentFormName != 'MGR_0F_toolbar' && !solutionPrefs.design.statusLockWorkflow && globals.WEBc_sutra_trigger('TRIGGER_registered_action_authenticate',['cms page mode toggle'])) {
-
 		//what is the current mode
 		var currentMode = globals.WEB_page_mode
-
-//		//in real mode with unsaved changes OR
-//		if ((currentMode == 'BROWSER' && elements.btn_save.visible && forms.WEB_0F_page__browser_1F_block__editor.GET_modify()) ||
-//		//in gui mode with unsaved changes (//TODO: abstract to work with all content types)
-//			(currentMode == 'DESIGN' && forms.WEB_0F_page__design_1F_version_2F_block__gui.elements.tab_detail.getTabFormNameAt(2) == 'WEB_0F__content' &&
-//			forms.WEB_0F__content.elements.btn_save.enabled)) {
-//
-//			var input = globals.DIALOGS.showWarningDialog(
-//						'Unsaved changes',
-//						'There are unsaved changes.  Continue without saving?',
-//						'Yes',
-//						'No'
-//				)
-//
-//			//they want to keep their changes, abort
-//			if (input != 'Yes') {
-//				return
-//			}
-//		}
 
 		//turn off everything
 		elements.lbl_edit.visible = false
@@ -549,11 +616,12 @@ function ACTION_mode(event) {
 		elements.btn_save.visible = false
 		elements.highlighter.visible = false
 		elements.lbl_detail.visible = false
-		elements.lbl_asset.visible = false
-		elements.btn_asset.visible = false
+//		elements.lbl_action.visible = false
+//		elements.lbl_action_tick.visible = false		
+//		elements.btn_action.visible = false
 //		TOGGLE_group(false)
 		TOGGLE_version(false)
-		TOGGLE_visit(false)
+		TOGGLE_resize(false)
 
 		//turn off all switches
 		elements.gfx_switch_1.visible = false
@@ -566,104 +634,142 @@ function ACTION_mode(event) {
 		if (utils.stringPatternCount(mode,'gfx')) {
 			var whereClick = event.getX()
 			if (whereClick > 73) {
-				mode = 'lbl_mode_live'
+				mode = 'lbl_mode_dev'
 			}
 			else if (whereClick < 37) {
-				mode = 'lbl_mode_data'
+				mode = 'lbl_mode_page'
 			}
 			else {
-				mode = 'lbl_mode_gui'
+				mode = 'lbl_mode_edit'
+			}
+		}
+		
+		function siteMap() {
+			//in wc try to get to sitemap
+			if (solutionPrefs.config.webClient && !forms.WEB_0F_page._siteMap) {
+				globals.WEBc_sutra_trigger('TRIGGER_ul_tab_list',[scopes.CMS.util.getTreeForm(),'Sitemap',0])
+				forms.WEB_0F_page._siteMap = true
 			}
 		}
 
 		switch (mode) {
-			case 'lbl_mode_data':
+			case 'lbl_mode_page':	//overview
 				//go to non-real mode if not there already
 				if (currentMode == 3) {
 					//go to non-real mode
-					MODE_set("Design")
+					forms.WEB_0F_page.elements.tab_main.removeTabAt(2)
+					forms.WEB_0F_page.elements.tab_main.tabIndex = 1
 
-					//refire toggle
-					forms.WEB_0F_page__design_1F__header_display__version.FLD_version__data_change()
-				}
+					//reset enabled/disabled, etc.
+					forms.WEB_0F_page__design.REC_on_select(null,true)
 
-				//set mode
-				globals.WEB_page_mode = 1
-				elements.gfx_switch_1.visible = true
-
-				//show data
-				forms.WEB_0F_page__design_1F_version.elements.tab_content.tabIndex = 2
-
-				break
-			case 'lbl_mode_gui':
-				//when in web client, don't go here
-//				if (solutionPrefs.config.webClient) {
-//					globals.DIALOGS.showInfoDialog('GUI disabled','GUI mode is disabled in WebClient for now')
-//					globals.WEB_page_mode = 2
-//					var mapping = {
-//							1 : 'data',
-//							2 : 'gui',
-//							3 : 'live'
-//						}
-//					ACTION_mode({getElementName: function() {
-//									return 'lbl_mode_' + mapping[currentMode]
-//								}})
-//					return
-//				}
-
-				//go to non-real mode if not there already
-				if (currentMode == 3) {
-					//go to non-real mode
-					MODE_set("Design")
-
-					var fsArea = forms.WEB_0F_page__design_1F_version_2L_area.foundset
-					//update sort order for all blocks
-					for (var i = 1; i <= fsArea.getSize(); i++) {
-						var areaRec = fsArea.getRecord(i)
-
-						if (utils.hasRecords(areaRec.web_area_to_scope)) {
-							areaRec.web_area_to_scope.sort('sort_order desc')
-							areaRec.web_area_to_scope.sort('sort_order asc')
-						}
+					//clear out browser bean
+					if (!solutionPrefs.config.webClient) {
+						forms.WEB_0F_page__browser.elements.bn_browser.html = '<html><body></body></html>'
 					}
-
-					//refire toggle (may fire too frequently)
-//					forms.WEB_0F_page__design_1F_version_2L_scope.ACTION_gui_mode_load(true)
+					
+					//default to gui/data
+					globals.WEB_page_mode = 2
 				}
 
 				//set mode
-				globals.WEB_page_mode = 2
-				elements.gfx_switch_2.visible = true
-
-				//reset pretty form (//TODO: make work for all block types)
-//				if (forms.WEB_0F_page__design_1F_version_2F_block__gui.elements.tab_detail.getTabFormNameAt(forms.WEB_0F_page__design_1F_version_2F_block__gui.elements.tab_detail.tabIndex) == 'WEB_0F__content') {
-//					forms.WEB_0F__content.BLOCK_cancel(event)
-//				}
-
-				//show gui
-				forms.WEB_0F_page__design_1F_version.elements.tab_content.tabIndex = 1
+				elements.gfx_switch_1.visible = true
+				
+				//tabs
+				forms.WEB_0F_page__design.elements.tab_header_button.tabIndex = 1
+				forms.WEB_0F_page__design.elements.tab_main.tabIndex = _pageTab
 
 				break
-			case 'lbl_mode_live':
+			case 'lbl_mode_dev':	//gui and data
+				siteMap()
+				
+				//go to non-real mode if not there already
+				if (currentMode == 3) {
+					forms.WEB_0F_page.elements.tab_main.removeTabAt(2)
+					forms.WEB_0F_page.elements.tab_main.tabIndex = 1
+
+					//reset enabled/disabled, etc.
+					forms.WEB_0F_page__design.REC_on_select(null,true)
+
+					//clear out browser bean
+					if (!solutionPrefs.config.webClient) {
+						forms.WEB_0F_page__browser.elements.bn_browser.html = '<html><body></body></html>'
+					}
+					
+					//data
+					if (forms.WEB_0F_page__design_1F_version.elements.tab_content.tabIndex == 2) {
+						//refire toggle
+						forms.WEB_0F_page__design_1F__header_display__version.FLD_version__data_change()
+						
+						globals.WEB_page_mode = 1
+					}
+					//gui
+					else {
+						var fsArea = forms.WEB_0F_page__design_1F_version_2L_area.foundset
+						//update sort order for all blocks
+						for (var i = 1; i <= fsArea.getSize(); i++) {
+							var areaRec = fsArea.getRecord(i)
+	
+							if (utils.hasRecords(areaRec.web_area_to_scope)) {
+								areaRec.web_area_to_scope.sort('sort_order desc')
+								areaRec.web_area_to_scope.sort('sort_order asc')
+							}
+						}
+	
+						//refire toggle (may fire too frequently)
+//						forms.WEB_0F_page__design_1F_version_2L_scope.ACTION_gui_mode_load(true)
+						globals.WEB_page_mode = 2					
+					}
+				}
+				//save page mode location
+				else if (forms.WEB_0F_page__design.elements.tab_header_button.tabIndex == 1 && forms.WEB_0F_page__design.elements.tab_main.tabIndex <= 4) {
+					_pageTab = forms.WEB_0F_page__design.elements.tab_main.tabIndex
+				}
+
+				//set mode
+				elements.gfx_switch_3.visible = true
+				
+				//tabs
+				forms.WEB_0F_page__design.elements.tab_header_button.tabIndex = 2
+				forms.WEB_0F_page__design.elements.tab_main.tabIndex = 6
+
+				break
+			case 'lbl_mode_edit':	//real mode (browser bean)
+				siteMap()
+				
 				//go to real mode if not there already
 				if (currentMode != 3) {
+					//save page mode location
+					if (forms.WEB_0F_page__design.elements.tab_header_button.tabIndex == 1 && forms.WEB_0F_page__design.elements.tab_main.tabIndex <= 4) {
+						_pageTab = forms.WEB_0F_page__design.elements.tab_main.tabIndex
+					}
+					
 					//set mode
 					globals.WEB_page_mode = 3
-					elements.gfx_switch_3.visible = true
-					MODE_set("Live")
+					
+					//flip tab panels
+					forms.WEB_0F_page.elements.tab_main.addTab( forms[_liveForm] )
+					forms.WEB_0F_page.elements.tab_main.tabIndex = 2
 
-					//show breadcrumb url info
-					elements.lbl_detail.visible = true
-
-					//toggle edit, groups, versions
-					TOGGLE_edit()
-//					TOGGLE_group()
-					TOGGLE_version()
-					TOGGLE_visit(true)
-
-					elements.lbl_asset.visible = true
-					elements.btn_asset.visible = true
+					//following line only needed when returning to web mode after not being in it full-time
+					forms[_liveForm].REC_on_select(null,null,true)
 				}
+				
+				//set mode
+				elements.gfx_switch_2.visible = true
+				
+				//show breadcrumb url info
+				elements.lbl_detail.visible = true
+
+				//toggle edit, groups, versions
+				TOGGLE_edit()
+//				TOGGLE_group()
+				TOGGLE_version()
+				TOGGLE_resize(true)
+				
+//				elements.lbl_action.visible = true
+//				elements.lbl_action_tick.visible = true
+//				elements.btn_action.visible = true
 
 				break
 		}
@@ -671,7 +777,8 @@ function ACTION_mode(event) {
 }
 
 /**
- *
+ * @param {Boolean} [editMode]
+ * 
  * @properties={typeid:24,uuid:"0E2D3D14-9796-4F16-880A-22F672A2E6A4"}
  */
 function TOGGLE_edit(editMode) {
@@ -694,7 +801,7 @@ function TOGGLE_edit(editMode) {
 /**
  * Perform the element default action.
  *
- * @param {JSEvent} event the event that triggered the action
+ * @param {JSEvent} [event] the event that triggered the action
  *
  * @properties={typeid:24,uuid:"41EB5461-ACE2-4C29-B980-E6488AEFE199"}
  */
@@ -733,7 +840,7 @@ function ACTION_save(event) {
  * @properties={typeid:24,uuid:"DDB53BF6-144F-4AF7-8963-21FD2C801A99"}
  */
 function FORM_on_load() {
-	TOGGLE_visit(false)
+	TOGGLE_resize(false)
 
 	//form name
 	_liveForm ='WEB_0F_page__browser'
@@ -742,83 +849,6 @@ function FORM_on_load() {
 	if (application.getApplicationType() == APPLICATION_TYPES.WEB_CLIENT || false) {
 		//form name
 		_liveForm = 'WEB_0F_page__live__web'
-
-		elements.gfx_switch_1.visible = false
-		elements.gfx_switch_2.visible = false
-		elements.gfx_switch_3.visible = true
-
-		elements.btn_visit.toolTipText = 'Open in new tab'
-	}
-	//default to gui mode
-	else {
-		elements.gfx_switch_1.visible = false
-		elements.gfx_switch_2.visible = true
-		elements.gfx_switch_3.visible = false
-	}
-}
-
-/**
- * Perform the element default action.
- *
- * @param {JSEvent} event the event that triggered the action
- *
- * @properties={typeid:24,uuid:"CA41B609-7116-4C2E-8C07-56BD3D16EADD"}
- */
-function ACTION_sitemap(event) {
-//	//don't enter if workflow form locked for some reason or not enough access
-//	if (application.__parent__.solutionPrefs && !solutionPrefs.design.statusLockWorkflow) {// && globals.WEBc_sutra_trigger('TRIGGER_registered_action_authenticate',['cms page sitemap'])) {
-//
-//		//in edit mode with unsaved changes
-//		if (elements.btn_save.visible && forms.WEB_0F_page__browser_1F_block__editor.GET_modify()) {
-//			var input = globals.DIALOGS.showWarningDialog(
-//						'Unsaved changes',
-//						'There are unsaved changes.  Continue without saving?',
-//						'Yes',
-//						'No'
-//				)
-//
-//			if (input != 'Yes') {
-//				return
-//			}
-//		}
-//
-//		//switch space to sitemap
-//		if (!elements.highlighter_dash.visible) {
-//			globals.WEBc_sutra_trigger('TRIGGER_spaces_set',['list'])
-//			elements.highlighter_dash.visible = true
-//		}
-//		//switch space to browser only
-//		else {
-//			globals.WEBc_sutra_trigger('TRIGGER_spaces_set',['workflow'])
-//			elements.highlighter_dash.visible = false
-//		}
-//	}
-}
-
-/**
- * @properties={typeid:24,uuid:"8BF29838-56DB-4911-B5B0-D9A24C8231B8"}
- */
-function MODE_set(mode) {
-	switch (mode) {
-		case "Design":
-			forms.WEB_0F_page.elements.tab_main.removeTabAt(2)
-			forms.WEB_0F_page.elements.tab_main.tabIndex = 1
-
-			//reset enabled/disabled, etc.
-			forms.WEB_0F_page__design.REC_on_select(null,true)
-
-			//clear out browser bean
-			if (!solutionPrefs.config.webClient) {
-				forms.WEB_0F_page__browser.elements.bn_browser.html = '<html><body></body></html>'
-			}
-			break;
-		case "Live":
-			forms.WEB_0F_page.elements.tab_main.addTab( forms[_liveForm] )
-			forms.WEB_0F_page.elements.tab_main.tabIndex = 2
-
-			//following line only needed when returning to web mode after not being in it fulltime
-			forms[_liveForm].REC_on_select(null,null,true)
-			break;
 	}
 }
 
@@ -831,16 +861,20 @@ function MODE_set(mode) {
  * @properties={typeid:24,uuid:"4917AF30-667D-4A3E-BAE1-0A82F2A8CA25"}
  */
 function FORM_on_show(firstShow, event) {
-	//don't know why my edit button is showing...toggle it appropriately
+	//don't know we need this....
 	if (firstShow) {
-		TOGGLE_edit()
+		elements.gfx_switch_1.visible = true
+		elements.gfx_switch_2.visible = false
+		elements.gfx_switch_3.visible = false
 	}
 }
 
 /**
  * Perform the element default action.
  *
- * @param {JSEvent} event the event that triggered the action
+ * @param {JSEvent} [event] the event that triggered the action
+ * @param {Boolean} [returnURL] return the url instead of navigating
+ * @param {Boolean} [toClippy] copy directly to clipboard
  *
  * @properties={typeid:24,uuid:"E30919EF-E82C-47A2-AAF8-CA1C8C015D64"}
  */
@@ -921,27 +955,4 @@ function ACTION_visit(event,returnURL,toClippy) {
  */
 function ACTION_import(event) {
 	forms.WEB_0C__file_stream.IMAGE_import("images")
-}
-
-
-/**
- * Handle changed data.
- *
- * @param {Number} oldValue old value
- * @param {Number} newValue new value
- * @param {JSEvent} event the event that triggered the action
- *
- * @returns {Boolean}
- *
- * @properties={typeid:24,uuid:"417AC42E-AA50-4B84-8585-456E183B263B"}
- */
-function DUMMY_onDataChange(oldValue, newValue, event) {
-	if (newValue) {
-		// turn on jquery edit stuff
-		forms[_liveForm].EDIT_on()
-	}
-	else {
-		// turn on jquery edit stuff
-		forms[_liveForm].EDIT_off()
-	}
 }

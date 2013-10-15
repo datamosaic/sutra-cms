@@ -117,6 +117,8 @@ function ACTION_cancel() {
 function ACTION_ok() {
 	//see forms.WEB_0F_page__design_1F__header_edit.ACTION_save
 
+	var parentForm = application.getApplicationType() == APPLICATION_TYPES.WEB_CLIENT ? 'WEB_0F_page__live__web' : 'WEB_0F_page__browser'
+	
 	//check for enough data
 	if (!_pageName) {
 		globals.DIALOGS.showErrorDialog(
@@ -428,7 +430,7 @@ function ACTION_ok() {
 		//refresh browser bean with new content
 //		forms.WEB_0F_page__browser.REC_on_select(null,true,true,1)	//this puts us into edit mode on the old record, not the new one
 //		forms.WEB_0F_page__browser.REC_on_select(null,null,true,1)	//this puts us into edit mode, then leaves edit mode, but leaves button depressed
-		forms.WEB_0F_page__browser.REC_on_select()
+		forms[parentForm].REC_on_select()
 
 		//enter edit mode
 		application.sleep(500)

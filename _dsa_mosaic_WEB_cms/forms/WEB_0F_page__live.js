@@ -109,7 +109,7 @@ function REC_on_select(event,webMode,skipLoad,verIndex,fireSelect) {
 				//MEMO: probably don't want to force a save here...just need edit/save button reset to normal
 			forms.WEB_TB__web_mode.ACTION_save()
 			forms.WEB_TB__web_mode.TOGGLE_edit()
-			forms.WEB_TB__web_mode.TOGGLE_visit(true)
+			forms.WEB_TB__web_mode.TOGGLE_resize(true)
 
 			//only show versions and groups if there is more than one defined
 			forms.WEB_TB__web_mode.TOGGLE_group()
