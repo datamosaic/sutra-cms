@@ -4,6 +4,14 @@ height:170,
 partType:5,
 typeid:19,
 uuid:"4DA9ACFD-CDC8-4416-A613-F8489BCC0BE1"
+},
+{
+location:"53,39",
+size:"200,20",
+text:"All your base are belong to us",
+transparent:true,
+typeid:7,
+uuid:"F8DC223B-26EE-477E-AB0A-E383BA8636DB"
 }
 ],
 name:"WEB_0F_page__design_1F__permissions",

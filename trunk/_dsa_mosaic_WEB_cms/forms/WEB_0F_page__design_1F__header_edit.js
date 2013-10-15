@@ -824,15 +824,15 @@ function TOGGLE_fields(pageType) {
 
 
 	//when on content tab, switch as needed
-	if (forms.WEB_0F_page__design_1F__button_tab.elements.tab_button.tabIndex == 1) {
+	if (forms.WEB_0F_page__design_1F__button_tab.elements.tab_button.tabIndex == 6) {
 		//folder or link type of page or just creating a new record
 		if (!page || forms[scopes.CMS.util.getTreeForm()]._addRecord || pageHide) {
-			forms.WEB_0F_page__design.elements.tab_main.tabIndex = 6
+			forms.WEB_0F_page__design.elements.tab_main.tabIndex = 5
 		}
-		//normal type of page
-		else {
-			forms.WEB_0F_page__design_1F__button_tab.TAB_change('WEB_0F_page__design_1F__button_tab','tab_b1')
-		}
+//		//normal type of page
+//		else {
+//			forms.WEB_0F_page__design_1F__button_tab.TAB_change('WEB_0F_page__design_1F__button_tab','tab_b1')
+//		}
 	}
 }
 

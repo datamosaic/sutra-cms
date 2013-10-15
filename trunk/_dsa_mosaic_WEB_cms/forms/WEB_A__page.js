@@ -222,12 +222,12 @@ function TOGGLE_buttons() {
 	elements.btn_save.visible = _editMode
 	elements.btn_done.visible = _reorderMode
 	elements.btn_edit.visible = !(_editMode || _reorderMode)
-	elements.btn_reorder.visible = !(_editMode || _reorderMode)
+	if (elements.btn_reorder) {elements.btn_reorder.visible = !(_editMode || _reorderMode)}
 
 	//gui stuff
-	elements.lbl_curve_two.visible = !(_editMode || _reorderMode)
-	elements.lbl_curve_one.visible = _editMode || _reorderMode
-	elements.lbl_reorder.visible = !(_editMode || _reorderMode)
+	if (elements.btn_reorder) {elements.lbl_curve_two.visible = !(_editMode || _reorderMode)}
+	elements.lbl_curve_one.visible = _editMode || _reorderMode || !elements.btn_reorder
+	if (elements.btn_reorder) {elements.lbl_reorder.visible = !(_editMode || _reorderMode)}
 
 	//edit button up in header (should be someplace else, but i don't remember where)
 	forms.WEB_0F_page__design_1F__button_tab.elements.btn_edit.visible = _editMode

@@ -293,7 +293,9 @@ function TOGGLE_elements(editAllow) {
 	elements.fld_flag_ssl.enabled = editAllow
 	elements.fld_flag_folder_skip.enabled = editAllow
 	elements.fld_title_override.editable = editAllow
+	elements.fld_title_override.transparent = editAllow
 	elements.fld_description.editable = editAllow
+	elements.fld_description.transparent = !editAllow
 	elements.btn_add.enabled = editAllow
 	elements.lbl_edit.visible = editAllow
 	

@@ -22,6 +22,14 @@ var _loadFilters = true;
 var _lastToolbar = null;
 
 /**
+ * Status of showing sitemap
+ * @type {Boolean}
+ * 
+ * @properties={typeid:35,uuid:"E626D680-751F-4BF0-86E4-7467B3D1AA37",variableType:-4}
+ */
+var _siteMap = null;
+
+/**
  * @properties={typeid:24,uuid:"10F5E463-15E2-4C0B-858D-F62E76FEDFBF"}
  */
 function FORM_on_show(firstShow, event) {
@@ -63,6 +71,7 @@ function FORM_on_show(firstShow, event) {
 			//disabled in wc for now
 			if (!solutionPrefs.config.webClient) {
 				globals.WEBc_sutra_trigger('TRIGGER_ul_tab_list',[scopes.CMS.util.getTreeForm(),'Sitemap',0])
+				_siteMap = true
 			}
 		}
 

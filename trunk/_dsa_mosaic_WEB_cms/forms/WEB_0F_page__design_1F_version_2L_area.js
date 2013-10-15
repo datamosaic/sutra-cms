@@ -144,8 +144,13 @@ function AREA_add_missing(versionStack, recLatest, recSelected, autoActivate) {
 
 	//reload this page when not called from a batch
 	if (!batchUpdate) {
-		forms.WEB_0F_page__design.REC_on_select(true,true,1)
-
+		if (globals.WEB_page_mode == 3) {
+			forms.WEB_TB__web_mode.ACTION_version_actions()
+		}
+		else {
+			forms.WEB_0F_page__design.REC_on_select(true,true,1)
+		}
+		
 		//warn when newly created version not activated
 		if (!autoActivate) {
 			globals.DIALOGS.showInfoDialog(
@@ -278,7 +283,12 @@ function AREA_reset(versionStack, recLatest, recSelected, autoActivate) {
 
 	//reload this page when not called from a batch
 	if (!batchUpdate) {
-		forms.WEB_0F_page__design.REC_on_select(true,true,1)
+		if (globals.WEB_page_mode == 3) {
+			forms.WEB_TB__web_mode.ACTION_version_actions()
+		}
+		else {
+			forms.WEB_0F_page__design.REC_on_select(true,true,1)
+		}
 		globals.DIALOGS.showInfoDialog(
 					'Success',
 					'The theme has been updated.\nYou must activate this version to publish your changes.'
