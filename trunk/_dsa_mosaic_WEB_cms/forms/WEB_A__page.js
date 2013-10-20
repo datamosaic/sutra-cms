@@ -22,6 +22,13 @@ var _editMode = false;
 var _reorderMode = false;
 
 /**
+ * @properties={typeid:24,uuid:"1FC4C7D6-7BEE-4723-AE32-095148A40122"}
+ */
+function getScope() {
+	return forms.WEB_A__page
+}
+
+/**
  * Perform the element default action.
  *
  * @param {JSEvent} event the event that triggered the action
@@ -89,26 +96,27 @@ function FORM_on_load(event) {
  * @properties={typeid:24,uuid:"6DD30A2F-C575-426F-9017-EFABA1087533"}
  */
 function TOGGLE_edit_mode(editMode,saveData) {
-	var currentState = _editMode
+	var scope = getScope()
+	var currentState = scope._editMode
 
 	if (typeof editMode == 'boolean') {
-		_editMode = editMode
+		scope._editMode = editMode
 	}
 	else {
 		//disable edits if edit flag not set
 		if (!utils.hasRecords(forms.WEB_0F_page__design_1F_version.foundset) || forms.WEB_0F_page__design_1F_version.flag_lock) {
 				//disable edits for active or non-latest versions
 				//utils.hasRecords(fsVersions) && fsVersions.version_number != fsVersions.getSize() || fsVersions.flag_active) {
-			_editMode = false
+			scope._editMode = false
 		}
 		//toggle edits
 		else {
-			_editMode = !_editMode
+			scope._editMode = !scope._editMode
 		}
 	}
 
 	//entering edit mode
-	if (_editMode) {
+	if (scope._editMode) {
 		//enter pseudo-transaction if not already in one
 		if (databaseManager.getAutoSave()) {
 			databaseManager.saveData()
@@ -206,31 +214,33 @@ function TOGGLE_edit_mode(editMode,saveData) {
 
 	//set elements appropriately
 	forms.WEB_0F_page__design_1F__header_display__version.TOGGLE_elements()
-	forms.WEB_0F_page__design_1F_version_2L_scope.TOGGLE_elements(_editMode)
+	forms.WEB_0F_page__design_1F_version_2L_scope.TOGGLE_elements(scope._editMode)
 	forms.WEB_0F_page__design_1F_version_2F_block__data.REC_on_select()
-	forms.WEB_0F_page__design_1F__properties.TOGGLE_elements(_editMode)
+	forms.WEB_0F_page__design_1F__properties.TOGGLE_elements(scope._editMode)
 	forms.WEB_0F_page__design_1F_version_2L_scope.REC_on_select(null,true)	//on load of form this will cause to load block in twice
-	forms.WEB_0F_page__design_1F__properties_2F_language.TOGGLE_elements()
+	forms.WEB_0F_page__design_1F__properties_2F_language.TOGGLE_elements(scope._editMode)
 }
 
 /**
  * @properties={typeid:24,uuid:"51FF71D7-7529-4E39-B9D4-747AB1B9A7D0"}
  */
 function TOGGLE_buttons() {
+	var scope = getScope()
+	
 	//actions
-	elements.btn_cancel.visible = _editMode
-	elements.btn_save.visible = _editMode
-	elements.btn_done.visible = _reorderMode
-	elements.btn_edit.visible = !(_editMode || _reorderMode)
-	if (elements.btn_reorder) {elements.btn_reorder.visible = !(_editMode || _reorderMode)}
+	elements.btn_cancel.visible = scope._editMode
+	elements.btn_save.visible = scope._editMode
+	elements.btn_done.visible = scope._reorderMode
+	elements.btn_edit.visible = !(scope._editMode || scope._reorderMode)
+	if (elements.btn_reorder) {elements.btn_reorder.visible = !(scope._editMode || scope._reorderMode)}
 
 	//gui stuff
-	if (elements.btn_reorder) {elements.lbl_curve_two.visible = !(_editMode || _reorderMode)}
-	elements.lbl_curve_one.visible = _editMode || _reorderMode || !elements.btn_reorder
-	if (elements.btn_reorder) {elements.lbl_reorder.visible = !(_editMode || _reorderMode)}
+	if (elements.btn_reorder) {elements.lbl_curve_two.visible = !(scope._editMode || scope._reorderMode)}
+	elements.lbl_curve_one.visible = scope._editMode || scope._reorderMode || !elements.btn_reorder
+	if (elements.btn_reorder) {elements.lbl_reorder.visible = !(scope._editMode || scope._reorderMode)}
 
 	//edit button up in header (should be someplace else, but i don't remember where)
-	forms.WEB_0F_page__design_1F__button_tab.elements.btn_edit.visible = _editMode
+	forms.WEB_0F_page__design_1F__button_tab.elements.btn_edit.visible = scope._editMode
 }
 
 /**
@@ -305,9 +315,9 @@ function ACTION_reorder(event) {
 
 			//set elements appropriately
 			forms.WEB_0F_page__design_1F__header_display__version.TOGGLE_elements()
-			forms.WEB_0F_page__design_1F_version_2L_scope.TOGGLE_elements(_editMode)
-			forms.WEB_0F_page__design_1F_version_2F_block__data.TOGGLE_elements(_editMode)
-			forms.WEB_0F_page__design_1F__properties.TOGGLE_elements(_editMode)
+			forms.WEB_0F_page__design_1F_version_2L_scope.TOGGLE_elements(scope._editMode)
+			forms.WEB_0F_page__design_1F_version_2F_block__data.TOGGLE_elements(scope._editMode)
+			forms.WEB_0F_page__design_1F__properties.TOGGLE_elements(scope._editMode)
 			forms.WEB_0F_page__design_1F_version_2L_scope.REC_on_select(null,true)	//on load of form this will cause to load block in twice
 
 			//toggle elements
