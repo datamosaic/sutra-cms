@@ -15,8 +15,13 @@ var _license_dsa_mosaic_WEB_cms = 'Module: _dsa_mosaic_WEB_cms \
  * @properties={typeid:24,uuid:"AC60CFEB-E487-4A8F-983D-6A9043552BAA"}
  */
 function FORM_on_load(event) {
-	elements.bean_drag.cursor = Packages.java.awt.Cursor.getPredefinedCursor(Packages.java.awt.Cursor.N_RESIZE_CURSOR)
-	elements.bean_drag.addMouseMotionListener(new Packages.java.awt.event.MouseMotionAdapter({mouseDragged:dragDivider}))
+	if (application.getApplicationType() != APPLICATION_TYPES.WEB_CLIENT) {
+		elements.bean_drag.visible = true
+		elements.gfx_tabpanel_close.visible = false
+		
+		elements.bean_drag.cursor = Packages.java.awt.Cursor.getPredefinedCursor(Packages.java.awt.Cursor.N_RESIZE_CURSOR)
+		elements.bean_drag.addMouseMotionListener(new Packages.java.awt.event.MouseMotionAdapter({mouseDragged:dragDivider}))
+	}
 }
 
 /**
@@ -44,8 +49,9 @@ function TAB_change(event) {
 }
 
 /**
+ * @param {Boolean} editAllow Force button on
  * @properties={typeid:24,uuid:"AD2432E0-96A2-494D-89AD-BEE5A4920CD2"}
  */
-function TOGGLE_elements() {
-	elements.btn_add.visible = forms.WEB_A__page._editMode
+function TOGGLE_elements(editAllow) {
+	elements.btn_add.visible = editAllow || forms.WEB_A__page._editMode
 }

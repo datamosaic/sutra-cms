@@ -254,14 +254,14 @@ function TAB_change(event) {
 		}
 	}
 	//bottom tab panel was showing
-	else if (elements.split_details.bottomComponent) {
-		if (application.getApplicationType() != APPLICATION_TYPES.WEB_CLIENT) {
+	else {
+		if (elements.split_details.bottomComponent && application.getApplicationType() != APPLICATION_TYPES.WEB_CLIENT) {
 			elements.split_details.bottomComponent	= null
 			
 			//restore tabpanel bordering
 //			elements.tab_detail.setBorder('SpecialMatteBorder,1.0,1.0,3.0,1.0,#647B95,#A1B0CF,#A1B0CF,#A1B0CF,0.0,')
 		}
-		else {
+		else if (elements.tab_detail_bottom.visible) {
 			elements.tab_detail_bottom.visible = false
 		}
 	}
