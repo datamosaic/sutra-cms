@@ -162,7 +162,7 @@ function ADD_version(event) {
 					newVersion.version_name = 'Initial version'
 					newVersion.flag_active = forms.WEB_0F_site.flag_auto_publish
 					
-					globals.WEBc_log_create('page','page version add',forms.WEB_0F_page.id_site,'web_page',forms.WEB_0F_page.id_page)
+					globals.WEBc_log_create('page','page version add',forms.WEB_0F_page.id_site,'web_page',forms.WEB_0F_page.id_page,'web_version',newVersion.id_version)
 					
 					//create all areas for this layout, copying over existing content based on area name
 					for (var i = 1; i <= layout.web_layout_to_editable.getSize(); i++) {
@@ -297,7 +297,7 @@ function ADD_version(event) {
 							destVersion.web_version_to_area.web_area_to_scope.setSelectedIndex(1)
 						}
 						
-						globals.WEBc_log_create('page','page version add',forms.WEB_0F_page.id_site,'web_page',forms.WEB_0F_page.id_page)
+						globals.WEBc_log_create('page','page version add',forms.WEB_0F_page.id_site,'web_page',forms.WEB_0F_page.id_page,'web_version',destVersion.id_version)
 							
 						//version stack exists
 						if (hasVersions) {
@@ -387,7 +387,7 @@ function ADD_version(event) {
 				newVersion.id_theme = latestVersion.id_theme
 				newVersion.id_layout = latestVersion.id_layout
 				
-				globals.WEBc_log_create('page','page version add',forms.WEB_0F_page.id_site,'web_page',forms.WEB_0F_page.id_page)
+				globals.WEBc_log_create('page','page version add',forms.WEB_0F_page.id_site,'web_page',forms.WEB_0F_page.id_page,'web_version',newVersion.id_version)
 				
 				//load version foundset onto properties tab
 				forms.WEB_0F_page__design_1F__properties_2L_version.foundset.loadRecords(fsVersion)
@@ -607,6 +607,9 @@ function LOCK_version(event) {
 		if (!version.flag_lock) {
 			version.flag_lock = 1
 			
+			//create log record when lock status changed
+			globals.WEBc_log_create('page','page version locked',forms.WEB_0F_site.id_site,'web_page',forms.WEB_0F_page.id_page,'web_version',version.id_version)
+			
 			//save data when not in edit mode
 			if (!forms.WEB_A__page._editMode) {
 				databaseManager.saveData(version)
@@ -632,6 +635,9 @@ function LOCK_version(event) {
 				}
 				
 				version.flag_lock = 0
+				
+				//create log record when lock status changed
+				globals.WEBc_log_create('page','page version unlocked',forms.WEB_0F_site.id_site,'web_page',forms.WEB_0F_page.id_page,'web_version',version.id_version)
 				
 				//save data when not in edit mode
 				if (!forms.WEB_A__page._editMode) {
@@ -714,7 +720,7 @@ function ACTIVATE_version(event) {
 					}
 					
 					//create log record when version set as active
-					globals.WEBc_log_create('page','page version activated',forms.WEB_0F_site.id_site,'web_version',selectedVersion.id_version)
+					globals.WEBc_log_create('page','page version activated',forms.WEB_0F_site.id_site,'web_page',forms.WEB_0F_page.id_page,'web_version',selectedVersion.id_version)
 					
 					//redo version valuelist without touching the foundset
 					forms.WEB_0F_page__design.SET_versions(true)

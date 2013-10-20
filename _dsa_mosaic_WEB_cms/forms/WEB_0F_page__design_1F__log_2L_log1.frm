@@ -1,0 +1,14 @@
+dataSource:"db:/sutra_cms/web_log",
+extendsID:"0DBB65C7-52DD-414B-8CFB-A00D55555DB7",
+items:[
+{
+extendsID:"CAE6A6D4-34C6-42C7-B434-0B7553398411",
+typeid:4,
+uuid:"0076248C-7BF2-4144-8215-478212377067",
+visible:false
+}
+],
+name:"WEB_0F_page__design_1F__log_2L_log1",
+navigatorID:"-1",
+typeid:3,
+uuid:"41F73C5E-856D-4B53-B559-826A9CA9DF0C"

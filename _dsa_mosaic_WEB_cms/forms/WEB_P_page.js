@@ -239,6 +239,8 @@ function ACTION_ok() {
 			newVersion.flag_active = 1
 			newVersion.version_name = 'Initial version'
 			globals.WEB_page_version = newVersion.id_version
+			
+			globals.WEBc_log_create('page','page add',id_site,'web_page',id_page)
 
 			var fsPath = languageRec.web_language_to_path
 

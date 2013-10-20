@@ -22,22 +22,25 @@ function TAB_change(event) {
  * @AllowToRunInFind
  */
 function LOAD_records() {
-	var fsLog = forms.WEB_0F_page__design_1F__log_2L_log.foundset
+	var fsLog = forms[elements.tab_detail.getTabFormNameAt(elements.tab_detail.tabIndex)].foundset
 	fsLog.find()
 	fsLog.log_type = 'page'
 	fsLog.record_id = id_page
 	switch (elements.tab_detail.tabIndex) {
-		case 1: //all
-			
+		case 1: //served
+			fsLog.log_message = 'page serve%'
 			break
 		case 2: //edit
-			fsLog.log_message = 'page edit%'
+			fsLog.log_message = 'page edit%||page add'
 			break
-		case 3: //reorder
+		case 3: //versions
+			fsLog.log_message = 'page version%'
+			break			
+		case 4: //reorder
 			fsLog.log_message = 'page reorder%'
 			break
-		case 4: //versions
-			fsLog.log_message = 'page version%'
+		case 5: //all
+			
 			break
 	}
 	var results = fsLog.search()
