@@ -39,7 +39,7 @@ uuid:"79DD488C-5D4B-4AD8-944E-52CE4562F620"
 {
 anchors:11,
 borderType:"SpecialMatteBorder,0.0,0.0,1.0,0.0,#000000,#000000,#999999,#000000,0.0,1.0",
-dataProviderID:"id_user",
+dataProviderID:"display_user",
 editable:false,
 formIndex:10700,
 location:"250,30",
@@ -48,8 +48,7 @@ size:"100,23",
 styleClass:"tableview",
 text:"User",
 typeid:4,
-uuid:"CAE6A6D4-34C6-42C7-B434-0B7553398411",
-valuelistID:"C69136AB-B1BE-40C1-9F25-684C2AEA60ED"
+uuid:"CAE6A6D4-34C6-42C7-B434-0B7553398411"
 },
 {
 borderType:"SpecialMatteBorder,0.0,0.0,1.0,0.0,#000000,#000000,#999999,#000000,0.0,1.0",

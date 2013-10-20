@@ -44,7 +44,7 @@ if (utils.hasRecords(foundset)) {
 	if (delRec == 'Yes') {
 		controller.deleteRecord()
 		
-		globals.WEBc_log_create('page','page version deleted',forms.WEB_0F_page.id_site,'web_page',forms.WEB_0F_page.id_page)
+		globals.WEBc_log_create('page','page version deleted',forms.WEB_0F_page.id_site,'web_page',forms.WEB_0F_page.id_page,'web_version',globals.WEB_page_version)
 		
 		//refresh version valuelist
 		forms.WEB_0F_page__design.SET_versions(true)

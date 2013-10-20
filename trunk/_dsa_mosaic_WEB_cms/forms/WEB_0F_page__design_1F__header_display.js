@@ -233,7 +233,7 @@ function SET_active(event) {
 			databaseManager.saveData()
 
 			//create log record when snapshot set as active
-			globals.WEBc_log_create('page','page version activated',forms.WEB_0F_site.id_site,'web_version',fsVersion.id_version)
+			globals.WEBc_log_create('page','page version activated',forms.WEB_0F_site.id_site,'web_page',forms.WEB_0F_page.id_page,'web_version',fsVersion.id_version)
 
 			//update valuelist stating which is active
 			forms.WEB_0F_page__design.REC_on_select()

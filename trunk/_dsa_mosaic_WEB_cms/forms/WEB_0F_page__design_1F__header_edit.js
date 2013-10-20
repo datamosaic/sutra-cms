@@ -558,7 +558,7 @@ function ACTION_save() {
 				newVersion.id_theme = _idTheme
 				newVersion.id_layout = _idLayout
 
-				globals.WEBc_log_create('page','page version add',forms.WEB_0F_page.id_site,'web_page',forms.WEB_0F_page.id_page)
+				globals.WEBc_log_create('page','page version add',forms.WEB_0F_page.id_site,'web_page',forms.WEB_0F_page.id_page,'web_version',newVersion.id_version)
 
 				//load version foundset onto properties tab
 				forms.WEB_0F_page__design_1F__properties_2L_version.foundset.loadRecords(fsVersion)

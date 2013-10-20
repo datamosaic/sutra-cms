@@ -2553,13 +2553,14 @@ function WEBc_markup_link_asset(assetInstanceID, pageID, siteURL, linkType, obj)
  *
  * @param {String}	logType Type of event being logged.
  * @param {String}	message Description of event.
- * @param {String}	[siteID] What site is this affecting.
+ * @param {String|UUID}	[siteID] What site is this affecting.
  * @param {String}	[pkTable] What table is this affecting.
- * @param {String}	[pkID] The primary key of the affected table.
+ * @param {String|UUID}	[pkID] The primary key of the affected table.
  * @param {String}	[pk2Table] What table is this affecting.
- * @param {String}	[pk2ID] The primary key of the affected table.
+ * @param {String|UUID}	[pk2ID] The primary key of the affected table.
  *
  * @properties={typeid:24,uuid:"928202F6-F074-4A6D-BD74-4C1A8324801B"}
+ * @AllowToRunInFind
  */
 function WEBc_log_create(logType,message,siteID,pkTable,pkID,pk2Table,pk2ID) {
 	if (logType) {
@@ -2573,6 +2574,19 @@ function WEBc_log_create(logType,message,siteID,pkTable,pkID,pk2Table,pk2ID) {
 		logRec.record_id = pkID
 		logRec.record_2_table = pk2Table
 		logRec.record_2_id = pk2ID
+		
+		//a web hit; try to divine organization id from site record
+		if (!logRec.organization_id) {
+			/** @type {JSFoundSet<db:/sutra_cms/web_site>} */
+			var fsSite = databaseManager.getFoundSet('db:/sutra_cms/web_site')
+			fsSite.find()
+			fsSite.id_site = siteID
+			var results = fsSite.search()
+			
+			if (results == 1) {
+				logRec.organization_id = fsSite.organization_id
+			}
+		}
 
 		databaseManager.saveData(logRec)
 	}
