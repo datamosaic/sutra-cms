@@ -645,11 +645,11 @@ function ACTION_mode(event) {
 		}
 		
 		function siteMap() {
-//			//in wc try to get to sitemap
-//			if (solutionPrefs.config.webClient && !forms.WEB_0F_page._siteMap) {
-//				globals.WEBc_sutra_trigger('TRIGGER_ul_tab_list',[scopes.CMS.util.getTreeForm(),'Sitemap',0])
-//				forms.WEB_0F_page._siteMap = true
-//			}
+			//in wc try to get to sitemap
+			if (solutionPrefs.config.webClient && !forms.WEB_0F_page._siteMap) {
+				globals.WEBc_sutra_trigger('TRIGGER_ul_tab_list',[scopes.CMS.util.getTreeForm(),'Sitemap',0])
+				forms.WEB_0F_page._siteMap = true
+			}
 		}
 
 		switch (mode) {
