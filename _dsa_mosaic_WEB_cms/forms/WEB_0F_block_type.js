@@ -251,7 +251,7 @@ function REC_new(flagRefresh,formName,fs) {
 					displayDelete.splice(displayDelete.indexOf(displayCurrent[i]),1)
 					
 					//update layout flag
-					view.flag_layout = typeof sampleMarkup == 'string' ? (sampleMarkup.indexOf('{{BLOCK}}') == -1 ? 0 : 1) : 0
+					displayCurrent[i].flag_layout = typeof sampleMarkup == 'string' ? (sampleMarkup.indexOf('{{BLOCK}}') == -1 ? 0 : 1) : 0
 					
 					continue
 				}
