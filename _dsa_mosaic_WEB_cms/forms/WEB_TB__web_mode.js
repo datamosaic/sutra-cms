@@ -275,10 +275,13 @@ function ACTION_version(input) {
 		var elem = elements.lbl_versions
 		if (elem != null && menu.length > 1) {
 			plugins.popupmenu.showPopupMenu(elem, menu)
+			TOGGLE_block_popup(true)
 		}
 	}
 	//menu shown and item chosen
 	else {
+		TOGGLE_block_popup(false)
+		
 		//switch version
 		if (input instanceof UUID) {
 			//update selected version
@@ -464,9 +467,11 @@ function ACTION_resize(event) {
 		item.methodArguments = ['']
 
 		menu.show(elements.lbl_resize)
+		
+		TOGGLE_block_popup(true)
 	}
 	else {
-		
+		TOGGLE_block_popup(false)
 	}
 }
 
@@ -512,8 +517,12 @@ function ACTION_action(event) {
 		item.methodArguments = ['Import file']
 
 		menu.show(elements.lbl_action)
+		
+		TOGGLE_block_popup(true)
 	}
 	else {
+		TOGGLE_block_popup(false)
+		
 		switch (arguments[5]) {
 			case 'Visit':
 				ACTION_visit()
@@ -955,4 +964,16 @@ function ACTION_visit(event,returnURL,toClippy) {
  */
 function ACTION_import(event) {
 	forms.WEB_0C__file_stream.IMAGE_import("images")
+}
+/**
+ * @param {Boolean} [toggle] Flip state of clicker
+ * 
+ * @properties={typeid:24,uuid:"EE6DA7CD-A38C-4B63-9380-D71211065750"}
+ */
+function TOGGLE_block_popup(toggle) {
+	if (globals.WEB_page_mode != 3 || typeof toggle != 'boolean') {
+		toggle = false
+	}
+	
+	forms.WEB_0F_page.elements.lbl_blocker.visible = toggle
 }
