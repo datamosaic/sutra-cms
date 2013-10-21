@@ -2,11 +2,12 @@
  * @properties={type:12,typeid:36,uuid:"BDF8D031-80A6-4ACE-BFA2-9E88BFB20F28"}
  */
 function display_block_status() {
+	//see valuelist WEB_block_type
 	var status = ''
 	switch (block_type) {
 		default:
 		case 0:
-			status += 'Code block'
+			status += 'Design Time'
 			break
 		case 1:
 			status += 'Block builder'
