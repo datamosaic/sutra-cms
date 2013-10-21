@@ -131,7 +131,8 @@ name:"split_picker_1",
 size:"580,19",
 typeid:12,
 usesUI:true,
-uuid:"5D6BFBFD-56F5-4BE1-913D-309D0888434B"
+uuid:"5D6BFBFD-56F5-4BE1-913D-309D0888434B",
+visible:false
 },
 {
 formIndex:7,
@@ -229,7 +230,8 @@ name:"split_picker_3",
 size:"150,19",
 typeid:12,
 usesUI:true,
-uuid:"8DE481AD-16A6-4166-9D2E-0D4909C41019"
+uuid:"8DE481AD-16A6-4166-9D2E-0D4909C41019",
+visible:false
 },
 {
 formIndex:6,
@@ -344,7 +346,8 @@ name:"split_picker_2",
 size:"150,19",
 typeid:12,
 usesUI:true,
-uuid:"CF82B8EC-A961-4E5C-A5FD-4D89FC7A7D20"
+uuid:"CF82B8EC-A961-4E5C-A5FD-4D89FC7A7D20",
+visible:false
 },
 {
 anchors:15,
