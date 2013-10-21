@@ -54,7 +54,9 @@ function CONTROLLER(app, session, request, response, mode) {
 	// send results back to headless client
 	if ( !globals.CMS.data.error.code ) {
 		//log successful page request
-		globals.WEBc_log_create('page','page serve success',globals.CMS.data.site.id,'web_page',globals.CMS.data.page.id,'web_version',globals.CMS.data.version.id)
+		if (mode != 'Cache' && mode != 'Edit') {
+			globals.WEBc_log_create('page','page serve success',globals.CMS.data.site.id,'web_page',globals.CMS.data.page.id,'web_version',globals.CMS.data.version.id)
+		}
 		
 		// clear out obj
 		delete globals.CMS.data
