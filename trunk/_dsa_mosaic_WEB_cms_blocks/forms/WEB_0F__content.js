@@ -8,6 +8,8 @@ var _license_dsa_mosaic_WEB_cms_blocks = 'Module: _dsa_mosaic_WEB_cms_blocks \
 									MIT Licensed';
 
 /**
+ * @type {Boolean}
+ * 
  * @properties={typeid:35,uuid:"C8D17B02-9CFF-45FD-8C4A-27EFFC339E13",variableType:-4}
  */
 var _firstShown = false;
@@ -18,6 +20,21 @@ var _firstShown = false;
  * @properties={typeid:35,uuid:"A5E7C6DE-46F3-4090-AECA-E3CA22A9EB84",variableType:4}
  */
 var _toolbarMode = 0;
+
+/**
+ * Only used in web client (where TinyMCE still not implemented)
+ * @type {String}
+ *
+ * @properties={typeid:35,uuid:"0C5D1D34-CB62-44ED-B1B9-619439CE121F"}
+ */
+var _dataValue = null;
+
+/**
+ * @type {Boolean}
+ *
+ * @properties={typeid:35,uuid:"47D1F2EB-5BD2-4516-AF34-73BE1D561D24",variableType:-4}
+ */
+var _webClient = controller.getName() != 'WEB_0F__content'
 
 /**
  * @param {scopes.CMS._constant.objData} obj Data object passed to all markup methods
@@ -185,10 +202,16 @@ function TINYMCE_init(mode) {
  * @properties={typeid:24,uuid:"553CBBDB-2269-49ED-BEC5-A585CBC2011A"}
  */
 function BLOCK_save(event) {
-	globals.CMS.ui.setData(event,'Content',elements.bn_tinymce.html,controller.getName())
+	if (globals.WEB_page_mode != 1) {
+		if (_webClient) {
+			globals.CMS.ui.setData(event,'Content',_dataValue,controller.getName())
+		}
+		else {
+			globals.CMS.ui.setData(event,'Content',elements.bn_tinymce.html,controller.getName())
+			elements.bn_tinymce.clearDirtyState()
+		}
+	}
 	globals.CMS.ui.save()
-	
-	elements.bn_tinymce.clearDirtyState()
 	
 	TOGGLE_buttons(false)
 }
@@ -213,7 +236,7 @@ function ACTION_data_change() {
 function FORM_on_show(firstShow, event) {
 	TOGGLE_buttons(false)
 	
-	if (firstShow) {
+	if (firstShow && !_webClient) {
 		//load up easy tinymce
 		elements.bn_tinymce.setCustomConfiguration(TINYMCE_init("simple"))
 		
@@ -241,15 +264,15 @@ function INIT_data() {
 	
 	TOGGLE_buttons(false)
 	
-	if (elements.bn_tinymce) {
+	if (_webClient) {
+		_dataValue = data.Content
+	}
+	else if (elements.bn_tinymce) {
 		elements.bn_tinymce.clearHtml()
+		elements.bn_tinymce.html = data.Content || ''
 	}
 	else {
 		globals.WEBc_browser_error()
-	}
-	
-	if (data.Content) {
-		elements.bn_tinymce.html = data.Content
 	}
 }
 
@@ -263,7 +286,13 @@ function INIT_data() {
 function BLOCK_cancel(event) {
 	globals.CMS.ui.cancel()
 	
-	elements.bn_tinymce.html = globals.CMS.ui.getData(controller.getName()).Content
+	if (_webClient) {
+		_dataValue = globals.CMS.ui.getData(controller.getName()).Content
+	}
+	else {
+		elements.bn_tinymce.html = globals.CMS.ui.getData(controller.getName()).Content
+	}
+	
 	TOGGLE_buttons(false)
 }
 
@@ -272,15 +301,15 @@ function BLOCK_cancel(event) {
  * @properties={typeid:24,uuid:"BD8DAFE8-C240-44D4-BDD7-F10DF758D039"}
  */
 function TOGGLE_buttons(state) {
-	elements.btn_save.enabled = state
-	elements.lbl_save.enabled = state
-	elements.btn_cancel.enabled = state
-	elements.lbl_cancel.enabled = state
+	globals.CMSb.propCheck(elements.btn_save,'enabled',state)
+	globals.CMSb.propCheck(elements.lbl_save,'enabled',state)
+	globals.CMSb.propCheck(elements.btn_cancel,'enabled',state)
+	globals.CMSb.propCheck(elements.lbl_cancel,'enabled',state)
 	
-	//cancel is always an option if in browser mode
+	//cancel is always an option if in page mode
 	if (globals.WEB_page_mode == 3) {
-		elements.btn_cancel.enabled = true
-		elements.lbl_cancel.enabled = true
+		globals.CMSb.propCheck(elements.btn_cancel,'enabled',true)
+		globals.CMSb.propCheck(elements.lbl_cancel,'enabled',true)
 	}
 }
 
@@ -298,7 +327,7 @@ function TOGGLE_mode(event) {
 			break
 		case 1:
 			elements.bn_tinymce.setCustomConfiguration(TINYMCE_init("advanced"))
-			break			
+			break
 	}
 }
 
@@ -350,8 +379,22 @@ function ACTION_add_token(inputID,pageRec) {
 	
 	//set clipboard content if shift-key held
 	if (globals.CODE_key_pressed('shift')) {
-		application.setClipboardContent(token)
+		globals.CODE_clipboard_set(token)
 	}
+	//webclient
+	else if (_webClient) {
+		//wrap currently selected text with link
+		var elem = elements.fld_data_value
+		var linkStart = '<a href="' + token + '">'
+		var linkPage = elem.getSelectedText() || pageRec.page_name
+		var linkEnd = '</a>'
+		
+		elem.replaceSelectedText(linkStart + linkPage + linkEnd)
+		var dataSave = globals.CMS.ui.setData(null,'Content',_dataValue,controller.getName())
+		
+		elem.requestFocus()
+	}
+	//TinyMCE
 	else {
 		var js = "tinyMCE.execCommand('mceInsertLink', false, '" + token + "');"
 		elements.bn_tinymce.executeJavaScript(js)
@@ -422,26 +465,45 @@ function ACTION_insert_asset(event,blah1,blah2,blah3,blah4,assetType) {
 		switch (assetType) {
 			case 1:	//image
 				var image = forms.WEB_P__asset._assetChosen
-				var token = globals.CMS.token.getImage(image.asset).link
+				var asset = globals.CMS.token.getImage(image.asset)
 				
-				var html = '<img src="' + token + '" width="' + image.meta.width + '" height="' + image.meta.height + '" alt="' + image.asset.asset_title +'">'
+				var html = '<img src="' + asset.link + '" width="' + image.meta.width + '" height="' + image.meta.height + '" alt="' + asset.name +'">'
 				
-				var js = "tinyMCE.execCommand('mceInsertContent', false, '" + html + "');"
-				elements.bn_tinymce.executeJavaScript(js)
+				if (_webClient) {
+					//replace selected with image
+					var elem = elements.fld_data_value
+					
+					elem.replaceSelectedText(html)
+					var dataSave = globals.CMS.ui.setData(null,'Content',_dataValue,controller.getName())
+					
+					elem.requestFocus()
+				}
+				else {
+					var js = "tinyMCE.execCommand('mceInsertContent', false, '" + html + "');"
+					elements.bn_tinymce.executeJavaScript(js)
+				}
 				break
 			case 2:	//file
 			case 3:	//group
 				var file = forms.WEB_P__asset._assetChosen
-				token = globals.CMS.token.getFile(file.asset).link
+				asset = globals.CMS.token.getFile(file.asset)
 				
-				js = "tinyMCE.execCommand('mceInsertLink', false, '" + token + "');"
-				
-//				var html = '<a href="' + token + '" name="' + file.asset.asset_title +'">'
-//				var js = "tinyMCE.execCommand('mceInsertContent', false, '" + html + "');"
-//				application.output(elements.bn_tinymce.executeJavaScriptWithResult(js))
-
-				elements.bn_tinymce.executeJavaScript(js)
-
+				if (_webClient) {
+					//wrap currently selected text with link
+					var elem = elements.fld_data_value
+					var linkStart = '<a href="' + asset.link + '">'
+					var linkFile = elem.getSelectedText() || asset.name
+					var linkEnd = '</a>'
+					
+					elem.replaceSelectedText(linkStart + linkFile + linkEnd)
+					var dataSave = globals.CMS.ui.setData(null,'Content',_dataValue,controller.getName())
+					
+					elem.requestFocus()
+				}
+				else {
+					js = "tinyMCE.execCommand('mceInsertLink', false, '" + asset.link + "');"
+					elements.bn_tinymce.executeJavaScript(js)
+				}
 				break
 		}
 	}

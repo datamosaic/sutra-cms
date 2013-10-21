@@ -16,6 +16,7 @@ function INIT_data() {
 	var data = globals.CMS.ui.getData(controller.getName())
 	
 	var html = '<html>'
+	
 	html += globals.WEBb_index_edit() + '<body>'
 	if (data.Content) {
 		// replace out place holders (DS_* links)
@@ -25,10 +26,33 @@ function INIT_data() {
 	}
 	html += '</body></html>'
 	
-	if (elements.bn_browser && !solutionPrefs.config.webClient) {
+	if (application.getApplicationType() == APPLICATION_TYPES.WEB_CLIENT) {
+		globals.WEBb_block_preview(elements.lbl_view,markup)
+	}
+	else if (elements.bn_browser) {
 		elements.bn_browser.html = html
 	}
 	else {
 		globals.WEBc_browser_error()
+	}
+}
+
+/**
+ * Callback method when form is (re)loaded.
+ *
+ * @param {JSEvent} event the event that triggered the action
+ *
+ * @properties={typeid:24,uuid:"E3F58390-86B7-4669-92AE-558B662FF672"}
+ */
+function FORM_on_load(event) {
+	//when not web client, enable browser bean
+	if (application.getApplicationType() != APPLICATION_TYPES.WEB_CLIENT) {
+		if (elements.bn_browser) {
+			elements.bn_browser.visible = true
+			elements.lbl_view.visible = false
+		}
+		else {
+			globals.WEBc_browser_error()
+		}
 	}
 }
