@@ -28,7 +28,22 @@ function TAB_change(formName,elemName) {
 
 	//set main tab appropriately
 	forms.WEB_0F_page__design_1F_version.elements.tab_content.tabIndex = elements.tab_button.tabIndex
-
+	
+	//update global used for different page modes
+	switch (elements.tab_button.tabIndex) {
+		case 1:
+			globals.WEB_page_mode = 2
+			
+			if (utils.hasRecords(forms.WEB_0F_page__design_1F_version.web_version_to_area.web_area_to_scope)) {
+				forms.WEB_0F_page__design_1F_version_2L_scope.REC_on_select()
+			}
+			
+			break
+		case 2:
+			globals.WEB_page_mode = 1
+			break
+	}
+	
 	//toggle display to show nothing for page when no valid version stack
 	if (forms.WEB_0F_page__design.elements.tab_main.tabIndex == 5 && !utils.hasRecords(forms.WEB_0F_page__design_1F_version.foundset)) {
 		forms.WEB_0F_page__design.elements.tab_main.tabIndex = 4
