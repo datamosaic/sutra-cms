@@ -301,13 +301,22 @@ function ASSET_preview(assetRecord) {
 			}
 		}
 		
-		//both the base and resource url methods will return with "sutraCMS/"; need to remove from one so no doubling
-		var siteURL = utils.stringReplace(globals.WEBc_markup_link_base(forms.WEB_0F_page.id_page),'sutraCMS/','') + globals.WEBc_markup_link_resources(forms.WEB_0F_page.id_page)
-		var imgLink = siteURL + assetRecord.web_asset_to_asset_instance.asset_directory + '/' + assetRecord.web_asset_to_asset_instance.asset_title
-		var imgInfo = assetRecord.web_asset_to_asset_instance.asset_title + ' (' + assetRecord.web_asset_to_asset_instance.display_asset_size + ')'
-		var preview = '<html style="height: 100%; font-family: Verdana,\'Helvetica Neue\', Arial, Helvetica, sans-serif; font-size: 11px;"><body style="height: 100%; margin: 0px;"><div style="background:url(' + imgLink + ') no-repeat center center; min-height: ' + height + 'px; min-width: ' + width + 'px; height: 100%;"></div><div style="position: fixed; bottom: 5px; right: 7px; background-color: #262626; border-radius: 5px; padding: 2px 6px 3px; color: white; opacity: 0.8; -moz-box-shadow: inset 0px 3px 5px rgba(0, 0, 0, 0.4); -webkit-box-shadow: inset 0px 3px 5px rgba(0, 0, 0, 0.4); -o-box-shadow: inset 0px 3px 5px rgba(0, 0, 0, 0.4); box-shadow: inset 0px 3px 5px rgba(0, 0, 0, 0.4); -moz-box-shadow: inset 0px 3px 5px rgba(0, 0, 0, 0.3); -webkit-box-shadow: inset 0px 3px 5px rgba(0, 0, 0, 0.3); -o-box-shadow: inset 0px 3px 5px rgba(0, 0, 0, 0.3); box-shadow: inset 0px 3px 5px rgba(0, 0, 0, 0.3);"><a href="' + imgLink + '" title="Image link" style="text-decoration: none; color: white;" target="_blank">' + imgInfo + '</a></div></body></html>'
-		
-		globals.CODE_url_handler(preview,null,true)
+		//get a page in this site
+		if (utils.hasRecords(forms.WEB_0F_site.web_site_to_page)) {
+			//both the base and resource url methods will return with "sutraCMS/"; need to remove from one so no doubling
+			var siteURL = utils.stringReplace(globals.WEBc_markup_link_base(forms.WEB_0F_site.web_site_to_page.id_page),'sutraCMS/','') + globals.WEBc_markup_link_resources(forms.WEB_0F_site.web_site_to_page.id_page)
+			var imgLink = siteURL + assetRecord.web_asset_to_asset_instance.asset_directory + '/' + assetRecord.web_asset_to_asset_instance.asset_title
+			var imgInfo = assetRecord.web_asset_to_asset_instance.asset_title + ' (' + assetRecord.web_asset_to_asset_instance.display_asset_size + ')'
+			var preview = '<html style="height: 100%; font-family: Verdana,\'Helvetica Neue\', Arial, Helvetica, sans-serif; font-size: 11px;"><body style="height: 100%; margin: 0px;"><div style="background:url(' + imgLink + ') no-repeat center center; min-height: ' + height + 'px; min-width: ' + width + 'px; height: 100%;"></div><div style="position: fixed; bottom: 5px; right: 7px; background-color: #262626; border-radius: 5px; padding: 2px 6px 3px; color: white; opacity: 0.8; -moz-box-shadow: inset 0px 3px 5px rgba(0, 0, 0, 0.4); -webkit-box-shadow: inset 0px 3px 5px rgba(0, 0, 0, 0.4); -o-box-shadow: inset 0px 3px 5px rgba(0, 0, 0, 0.4); box-shadow: inset 0px 3px 5px rgba(0, 0, 0, 0.4); -moz-box-shadow: inset 0px 3px 5px rgba(0, 0, 0, 0.3); -webkit-box-shadow: inset 0px 3px 5px rgba(0, 0, 0, 0.3); -o-box-shadow: inset 0px 3px 5px rgba(0, 0, 0, 0.3); box-shadow: inset 0px 3px 5px rgba(0, 0, 0, 0.3);"><a href="' + imgLink + '" title="Image link" style="text-decoration: none; color: white;" target="_blank">' + imgInfo + '</a></div></body></html>'
+			
+			globals.CODE_url_handler(preview,null,true)
+		}
+		else {
+			globals.DIALOGS.showErrorDialog(
+					'Error',
+					'There are no pages in this site.\nImage preview not available.'
+				)
+		}
 	}
 	else {
 		plugins.dialogs.showErrorDialog(
