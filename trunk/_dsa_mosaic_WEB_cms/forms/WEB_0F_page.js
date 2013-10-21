@@ -584,3 +584,14 @@ function CACHE_page() {
 function OV_ACTIONS_list() {
 	forms[scopes.CMS.util.getTreeForm()].ACTIONS_list()
 }
+
+/**
+ * Disallow click through the element
+ *
+ * @param {JSEvent} event the event that triggered the action
+ *
+ * @properties={typeid:24,uuid:"F62A67E9-FAD5-4694-B03A-36A05E79809F"}
+ */
+function CURTAIN_action(event) {
+	elements.lbl_blocker.visible = false
+}
