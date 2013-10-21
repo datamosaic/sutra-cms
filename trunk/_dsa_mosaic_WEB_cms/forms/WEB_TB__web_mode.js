@@ -497,9 +497,9 @@ function ACTION_action(event) {
 		
 		menu.addSeparator()
 		
-		item = menu.addMenuItem("Refresh theme")
+		item = menu.addMenuItem("Update theme")
 		item.setMethod(ACTION_action)
-		item.methodArguments = ['Refresh theme']
+		item.methodArguments = ['Update theme']
 		
 		menu.addSeparator()
 
@@ -530,7 +530,7 @@ function ACTION_action(event) {
 					forms.WEB_0F_page__live__web.URL_update(elements.highlighter.visible)
 				}
 				break
-			case 'Refresh theme':
+			case 'Update theme':
 				forms.WEB_0F_page.THEME_refresh()
 				break
 			case 'Import image':
