@@ -262,6 +262,8 @@ function ACTION_done(event) {
  * @properties={typeid:24,uuid:"83323A47-B373-4788-A8D9-5010012E2715"}
  */
 function ACTION_reorder(event) {
+	var scope = getScope()
+	
 	//locked version
 	if (!_reorderMode && !utils.hasRecords(forms.WEB_0F_page__design_1F_version.foundset) || forms.WEB_0F_page__design_1F_version.flag_lock) {
 		globals.DIALOGS.showErrorDialog(
