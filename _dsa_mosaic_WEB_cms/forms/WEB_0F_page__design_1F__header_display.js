@@ -19,7 +19,7 @@ function FORM_on_load(event) {
 	elements.lbl_folder.visible = false
 
 	//set up beans
-	if (!solutionPrefs.config.webClient) {
+	if (application.getApplicationType() != APPLICATION_TYPES.WEB_CLIENT) {
 		elements.split_picker_2.leftComponent = elements.tab_platform
 		elements.split_picker_2.rightComponent = elements.split_picker_3
 
@@ -28,6 +28,10 @@ function FORM_on_load(event) {
 
 		elements.split_picker_1.leftComponent = elements.split_picker_2
 		elements.split_picker_1.rightComponent = elements.tab_version
+		
+		elements.split_picker_1.visible = true
+		elements.split_picker_2.visible = true
+		elements.split_picker_3.visible = true
 	}
 }
 
