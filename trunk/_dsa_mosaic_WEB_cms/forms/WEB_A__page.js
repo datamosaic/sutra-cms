@@ -147,11 +147,17 @@ function TOGGLE_edit_mode(editMode,saveData) {
 
 				//this block definition exists as does the form and it has a save method on it
 				if (recBlockType && forms[recBlockType.form_name] && solutionModel.getForm(recBlockType.form_name).getFormMethod('BLOCK_save')) {
+					var formName = recBlockType.form_name
+					//check for webclient version of this block type
+					if (application.getApplicationType() == APPLICATION_TYPES.WEB_CLIENT && solutionModel.getForm(formName + 'w')) {
+						formName += 'w'
+					}
+					
 					//pseudo-event comes from the scope of where this is fired
 					var pseudoEvent = new Object()
-					pseudoEvent.getFormName = function() {return recBlockType.form_name}
+					pseudoEvent.getFormName = function() {return formName}
 
-					forms[recBlockType.form_name].BLOCK_save(pseudoEvent)
+					forms[formName].BLOCK_save(pseudoEvent)
 				}
 			}
 
