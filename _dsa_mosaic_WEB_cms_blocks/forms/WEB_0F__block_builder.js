@@ -617,7 +617,7 @@ function MRKP__var_replace(value,fieldSet) {
 function FORM_on_load(event) {
 	//when not web client, enable browser bean
 	if (application.getApplicationType() != APPLICATION_TYPES.WEB_CLIENT) {
-		elements.btn_save.setSize(elements.btn_save.getWidth(),elements.btn_save.getHeight() - 2)
+//		elements.btn_save.setSize(elements.btn_save.getWidth(),elements.btn_save.getHeight() - 2)
 		elements.btn_save.imageURL = 'media:///btn_standard.png'
 		elements.btn_save.rolloverImageURL = 'media:///btn_standard_dark.png'
 		elements.btn_save.text = null
