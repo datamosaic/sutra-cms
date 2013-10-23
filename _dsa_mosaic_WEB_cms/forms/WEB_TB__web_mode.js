@@ -570,7 +570,7 @@ function ACTION_resize(event,menuParentIdx,menuSelected,menuParentTxt,menuTxt,na
 			var item
 			
 			//fluiditize
-			item = menu.addCheckBox('Fluid')
+			item = menu.addCheckBox('Fit to window')
 			item.setIcon("media:///ssstandard_move_small.png")
 			item.setMethod(ACTION_resize)
 			item.methodArguments = ['Fluid']
@@ -579,7 +579,7 @@ function ACTION_resize(event,menuParentIdx,menuSelected,menuParentTxt,menuTxt,na
 			}
 //			menu.addSeparator()
 			//orientate
-			item = menu.addMenuItem('Orientation')
+			item = menu.addMenuItem('Flip orientation')
 			item.setIcon("media:///ssstandard_rotate_small.png")
 			item.setMethod(ACTION_resize)
 			item.methodArguments = ['Orient']
