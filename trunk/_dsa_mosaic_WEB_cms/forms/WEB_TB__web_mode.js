@@ -29,6 +29,22 @@ var _editMode = 0;
 var _liveForm = null;
 
 /**
+ * Option to check in pop-down
+ * @type {String}
+ *
+ * @properties={typeid:35,uuid:"23F1E988-29C3-49EE-8007-3127AB984F98"}
+ */
+var _resizeSelected = 'Fluid'
+
+/**
+ * Orientation (portrait/landscape)
+ * @type {Number}
+ *
+ * @properties={typeid:35,uuid:"3583131D-A575-46F0-A8C0-0B9A685B0DAA",variableType:4}
+ */
+var _resizeOrient = 0
+
+/**
  * Perform the element default action.
  *
  * @param {JSEvent} event the event that triggered the action
@@ -419,59 +435,235 @@ function ACTION_version_actions(event) {
 }
 
 /**
- * @param {JSEvent} event the event that triggered the action
+ * @param {JSEvent|Number} [event] the event that triggered the action/item index
+ * @param {Number} [menuParentIdx]
+ * @param {Boolean} [menuSelected]
+ * @param {String} [menuParentTxt]
+ * @param {String} [menuTxt]
+ * @param {String} [name] Name of item selected
+ * @param {Number} [width]
+ * @param {Number} [height]
+ * @param {Boolean} [getDims] Return dimensions for selected option
+ * 
+ * @return {{width: Number, height:Number}|undefined}
  *
  * @properties={typeid:24,uuid:"2EFD8325-BF6F-40CC-8188-C445DAB04ECC"}
  */
-function ACTION_resize(event) {
-	//when right clicked, give a moment to grab focus elsewhere
-	if (event instanceof JSEvent) {
-		var menu = plugins.window.createPopupMenu()
-		var item
-		
-		item = menu.addMenuItem("Phone small (320 x 480)")
-		item.setMethod(ACTION_action)
-		item.methodArguments = ['']
-		item = menu.addMenuItem("Phone phablet (1920 x 1080)")
-		item.setMethod(ACTION_action)
-		item.methodArguments = ['']
-		
-		menu.addSeparator()
-
-		item = menu.addMenuItem("Tablet 7\" (1024 x 600)")
-		item.setMethod(ACTION_action)
-		item.methodArguments = ['']
-		item = menu.addMenuItem("iPad non-retina (1024 x 768)")
-		item.setMethod(ACTION_action)
-		item.methodArguments = ['']
-		item = menu.addMenuItem("iPad retina (2048 x 1536)")
-		item.setMethod(ACTION_action)
-		item.methodArguments = ['']
-		item = menu.addMenuItem("Tablet 4K (3840 x 2560)")
-		item.setMethod(ACTION_action)
-		item.methodArguments = ['']
-		
-		menu.addSeparator()
-
-		item = menu.addMenuItem("Old computer (1024 x 768)")
-		item.setMethod(ACTION_action)
-		item.methodArguments = ['']
-		item = menu.addMenuItem("Not that old computer (1280 x 1024)")
-		item.setMethod(ACTION_action)
-		item.methodArguments = ['']
-		item = menu.addMenuItem("Current computer (1680 x 1050)")
-		item.setMethod(ACTION_action)
-		item.methodArguments = ['']
-		item = menu.addMenuItem("Full HD (1920 x 1080)")
-		item.setMethod(ACTION_action)
-		item.methodArguments = ['']
-
-		menu.show(elements.lbl_resize)
-		
-		TOGGLE_block_popup(true)
+function ACTION_resize(event,menuParentIdx,menuSelected,menuParentTxt,menuTxt,name,width,height,getDims) {
+	/**
+	* @constructor 
+	* @param {String} name Display value of resolution
+	* @param {Number} big Largest side of resolution
+	* @param {Number} little Smallest side of resolution
+	*/
+	function Resolution(name, big, little) {
+		/** 
+		 * Display value of resolution
+		 * @type {String}
+		 */
+		this.name = name
+		/**
+		 * Largest side of resolution
+		 * @type {Number}
+		 */
+		this.big = big
+		/**
+		 * Smallest side of resolution
+		 * @type {Number}
+		 */
+		this.little = little
+		/**
+		 * Display "Name (horizontal x portrait)"
+		 * @return {String}
+		 */
+		this.getName = function() {
+			return name + ' (' + this.getDimHoriz() + ' x ' + this.getDimVert() +')'
+		}
+		/**
+		 * Returns horizontal dimension
+		 * @return {Number}
+		 */
+		this.getDimHoriz = function() {
+			return _resizeOrient ? little : big
+		}
+		/**
+		 * Returns vertical dimension
+		 * @return {Number}
+		 */
+		this.getDimVert = function() {
+			return !_resizeOrient ? little : big
+		}
+	}
+	
+	if (application.getApplicationType() != APPLICATION_TYPES.WEB_CLIENT) {
+		plugins.dialogs.showErrorDialog(
+				'Error',
+				'Resize works only in the web'
+			)
 	}
 	else {
-		TOGGLE_block_popup(false)
+		var map = {
+				phone: [
+					new Resolution('Normal',480,320),
+					new Resolution('iPhone 5+',568,320),
+					new Resolution('nHD',640,360)
+				],
+				tablet: [
+					new Resolution('iPad',1024,768),
+					new Resolution('7-inch',1024,600),
+					new Resolution('Large',640,480),
+					new Resolution('Ginormous',960,720)
+				],
+				desktop: [
+					new Resolution('Most common',1366,768), //as of 2013 Oct
+					new Resolution('Square',1280,1024),
+					new Resolution('20-incher',1680,1050),
+					new Resolution('24-incher',1920,1200)
+				],
+				tv: [
+					new Resolution('720p HD',1280,720),
+					new Resolution('1080p Full HD',1920,1080),
+					new Resolution('4K Ultra HD',3840,2160)
+				]
+			}
+		map.phone.icon = 'media:///ssstandard_mobile_small.png'
+		map.tablet.icon = 'media:///ssstandard_tablet_small.png'
+		map.desktop.icon = 'media:///ssstandard_desktop_small.png'
+		map.tv.icon = 'media:///ssstandard_landscape_small.png'
+		
+		/**
+		 * @param {String} type
+		 */
+		function mapLoop(type) {
+			var displayName = type == 'tv' ? 'TV' : utils.stringInitCap(type)
+			
+			//divider with name and icon
+			if (map[type].icon) {
+				item = menu.addMenuItem(displayName)
+				if (solutionModel.getMedia(utils.stringReplace(map[type].icon,'media:///',''))) {
+					item.setIcon(map[type].icon)
+				}
+				item.enabled = false
+			}
+			
+			for (var i = 0; i < map[type].length; i++) {
+				/** @type {Resolution} */
+				var res = map[type][i]
+				if (res instanceof Resolution) {
+					if (res.name == _resizeSelected) {
+						item = menu.addCheckBox(res.getName())
+						item.selected = true
+					}
+					else {
+						item = menu.addMenuItem(res.getName())
+					}
+					
+					item.setMethod(ACTION_resize)
+					item.methodArguments = [res.name,res.getDimHoriz(),res.getDimVert()]
+				}
+			}
+		}
+		
+		//when right clicked, give a moment to grab focus elsewhere
+		if (event instanceof JSEvent) {
+			var menu = plugins.window.createPopupMenu()
+			var item
+			
+			item = menu.addCheckBox('Fluid')
+			item.setIcon("media:///ssstandard_move_small.png")
+			item.setMethod(ACTION_resize)
+			item.methodArguments = ['Fluid']
+			if (_resizeSelected == 'Fluid') {
+				item.selected = true
+			}
+			menu.addSeparator()
+			
+			mapLoop('phone')
+			mapLoop('tablet')
+			mapLoop('desktop')
+			mapLoop('tv')
+			
+			menu.addSeparator()
+			item = menu.addMenuItem('Toggle orientation')
+			item.setIcon("media:///ssstandard_rotate_small.png")
+			item.setMethod(ACTION_resize)
+			item.methodArguments = ['Orient']
+			
+			menu.show(elements.lbl_resize)
+			
+			TOGGLE_block_popup(true)
+		}
+		else {
+			TOGGLE_block_popup(false)
+			
+			var id = plugins.WebClientUtils.getElementMarkupId(forms.WEB_0F_page__live__web__view.elements.lbl_page)
+			
+			//grab default name if nothing passed in
+			if (!name) {
+				name = _resizeSelected
+				
+				outer:
+				for (var i in map) {
+					for (var j = 0; j < map[i].length; j++) {
+						if (map[i][j].name == name) {
+							width = map[i][j].getDimHoriz()
+							height = map[i][j].getDimVert()
+							break outer
+						}
+					}
+				}
+			}
+			
+			//return out selected dimensions
+			if (getDims) {
+				if (name != 'Fluid') {
+					return {
+						width: width,
+						height: height
+					}
+				}
+			}
+			else {
+				//orientation
+				if (name == 'Orient') {
+					//konami code (toggle orientation 3 times in a row)
+					ACTION_resize.konami = typeof ACTION_resize.konami == 'number' ? ACTION_resize.konami + 1 : 1
+					
+					//flip orientation
+					_resizeOrient = _resizeOrient ? 0 : 1
+					
+					//toggle orientation for selected resolution
+					if (_resizeSelected != 'Fluid') {
+						ACTION_resize()
+					}
+					return
+				}
+				//fluid
+				else if (name == 'Fluid') {
+					plugins.WebClientUtils.executeClientSideJS(
+						'$("#' + id + '_cms").animate({width:"100%",height:"100%"}).removeClass("drunk");'
+					)
+				}
+				//specific dimension
+				else {
+					//activate konami code
+					var konami = ''
+					if (event) {
+						ACTION_resize.konami = null
+					}
+					if (ACTION_resize.konami == 3) {
+						konami = '.addClass("drunk")'
+					}
+					
+					plugins.WebClientUtils.executeClientSideJS(
+						'$("#' + id + '_cms").animate({width:"' + width + 'px",height:"' + height + 'px"})' + konami + ';'
+					)
+				}
+				
+				//save down what resolution we're on
+				_resizeSelected = name
+			}
+		}
 	}
 }
 
@@ -576,8 +768,10 @@ function BREAD_update() {
 	if (forms.WEB_0F_page__design_1F_version.foundset.flag_lock) {
 		label += '<strong>LOCKED</strong><br />'
 	}
-
-	label += '' + application.getValueListDisplayValue('WEB_page_version',globals.WEB_page_version)
+	
+	if (globals.WEB_page_version) {
+		label += '' + application.getValueListDisplayValue('WEB_page_version',globals.WEB_page_version)
+	}
 
 //	if (!simple) {
 //		label += '<br>'
@@ -854,10 +1048,13 @@ function FORM_on_load() {
 	//form name
 	_liveForm ='WEB_0F_page__browser'
 
-	//defaults to live mode in web or smart with a/c set
+	//webclient
 	if (application.getApplicationType() == APPLICATION_TYPES.WEB_CLIENT || false) {
-		//form name
+		//defaults to live mode in web or smart with a/c set
 		_liveForm = 'WEB_0F_page__live__web'
+			
+		//remove tooltip to copy url
+		elements.lbl_detail.toolTipText = null
 	}
 }
 
