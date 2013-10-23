@@ -332,7 +332,7 @@ function CONTROLLER_builder(results) {
 						//tack on new button to every well
 						if ( obj.type == "Edit" ) {
 							var areaScope = utils.stringReplace(areaRec.id_area.toString(),'-','') + '-' + utils.stringReplace(parentScope.id_scope.toString(),'-','') + '-' + (m + 1)
-							var breadcrumb = 'Add block to ' + display.display_name
+							var breadcrumb = 'Add block to ' + (builder ? type.block_name : display.display_name)
 
 							newBlock = '<!-- add new block -->'
 							newBlock += '<div id="sutra-block-add-' + areaScope + '" class="block_new">\n'
