@@ -96,7 +96,6 @@ function ACTION_ok(event) {
 		if (_calledFrom == 'Live') {
 			/** @type {JSFoundSet<db:/sutra_cms/web_scope>} */
 			var fsScope = databaseManager.getFoundSet('sutra_cms','web_scope')
-			scopeRec = fsScope.getRecord(fsScope.newRecord(false,true))
 			
 			fsScope.find()
 			fsScope.id_area = _areaID
@@ -125,6 +124,7 @@ function ACTION_ok(event) {
 				}
 			}
 			
+			scopeRec = fsScope.getRecord(fsScope.newRecord(false,true))
 			scopeRec.id_area = _areaID
 			scopeRec.parent_id_scope = _scopeID
 			//when order specified (specific slot of layout) use it otherwise put at end of concestor's tail
