@@ -139,11 +139,15 @@ function WEB_lock_workflow(lockWorkflow,lockList) {
  */
 
 if (application.__parent__.solutionPrefs) {
+	
+	lockWorkflow = (typeof lockWorkflow == 'boolean') ? lockWorkflow : solutionPrefs.design.statusLockWorkflow
+	lockList = (typeof lockList == 'boolean') ? lockList : solutionPrefs.design.statusLockList
+	
+	if (solutionPrefs.config.webClient) {
+		TRIGGER_interface_lock(false,false,false,false,false,false,lockWorkflow)
+	}
 	//old version
-	if (solutionModel.getForm('DATASUTRA_0F_solution') && forms.DATASUTRA_0F_solution.elements.gfx_curtain_2) {
-		lockWorkflow = (typeof lockWorkflow == 'boolean') ? lockWorkflow : solutionPrefs.design.statusLockWorkflow
-		lockList = (typeof lockList == 'boolean') ? lockList : solutionPrefs.design.statusLockList
-		
+	else if (solutionModel.getForm('DATASUTRA_0F_solution') && forms.DATASUTRA_0F_solution.elements.gfx_curtain_2) {
 		var baseForm = solutionPrefs.config.formNameBase
 		
 		//lock the workflow

@@ -196,7 +196,7 @@ function FORM_on_show(firstShow, event) {
 		FILTER_records(event)
 	}
 	//don't run in headless or web client (they use whatever solution is activated as context)
-	else if ((application.getApplicationType() == APPLICATION_TYPES.SMART_CLIENT || application.getApplicationType() == APPLICATION_TYPES.RUNTIME_CLIENT) &&
+	else if ((application.getApplicationType() == APPLICATION_TYPES.SMART_CLIENT || application.getApplicationType() == APPLICATION_TYPES.WEB_CLIENT) &&
 		//don't run if in a preload
 		!(application.__parent__.solutionPrefs && solutionPrefs.config.prefs.formPreloading)) {
 	
