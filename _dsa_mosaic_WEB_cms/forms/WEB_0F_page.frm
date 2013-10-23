@@ -1,3 +1,6 @@
+customProperties:"design:{
+wcShow:\"'WC_on_show'\"
+}",
 dataSource:"db:/sutra_cms/web_page",
 initialSort:"",
 items:[
