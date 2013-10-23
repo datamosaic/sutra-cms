@@ -365,17 +365,11 @@ function BLOCK_new(areaScope) {
 		var results = fsScope.search()
 
 		if (results == 1) {
-			//this is a layout, just refresh the screen
-			if (utils.hasRecords(fsScope.getSelectedRecord(),'web_scope_to_block.web_block_to_block_display') && fsScope.web_scope_to_block.web_block_to_block_display.flag_layout) {
-				URL_update(true)
-			}
-			//open for edits
-			else {
-				//flag that newly created
-				forms.WEB_0F_page__browser_1F_block__editor._newBlock = true
-
-				BLOCK_edit(utils.stringReplace(fsScope.id_scope.toString(),'-','') + '-' + utils.stringReplace(newBlock.id_block.toString(),'-',''))
-			}
+			//flag that newly created
+			forms.WEB_0F_page__browser_1F_block__editor._newBlock = true
+			
+			//if nothing editable, then nothing shown
+			BLOCK_edit(utils.stringReplace(fsScope.id_scope.toString(),'-','') + '-' + utils.stringReplace(newBlock.id_block.toString(),'-',''))
 		}
 	}
 	//resume edit mode
