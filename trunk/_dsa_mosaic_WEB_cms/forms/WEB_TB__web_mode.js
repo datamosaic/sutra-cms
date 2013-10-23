@@ -569,6 +569,7 @@ function ACTION_resize(event,menuParentIdx,menuSelected,menuParentTxt,menuTxt,na
 			var menu = plugins.window.createPopupMenu()
 			var item
 			
+			//fluiditize
 			item = menu.addCheckBox('Fluid')
 			item.setIcon("media:///ssstandard_move_small.png")
 			item.setMethod(ACTION_resize)
@@ -576,6 +577,13 @@ function ACTION_resize(event,menuParentIdx,menuSelected,menuParentTxt,menuTxt,na
 			if (_resizeSelected == 'Fluid') {
 				item.selected = true
 			}
+//			menu.addSeparator()
+			//orientate
+			item = menu.addMenuItem('Orientation')
+			item.setIcon("media:///ssstandard_rotate_small.png")
+			item.setMethod(ACTION_resize)
+			item.methodArguments = ['Orient']
+			
 			menu.addSeparator()
 			
 			mapLoop('phone')
@@ -583,11 +591,6 @@ function ACTION_resize(event,menuParentIdx,menuSelected,menuParentTxt,menuTxt,na
 			mapLoop('desktop')
 			mapLoop('tv')
 			
-			menu.addSeparator()
-			item = menu.addMenuItem('Toggle orientation')
-			item.setIcon("media:///ssstandard_rotate_small.png")
-			item.setMethod(ACTION_resize)
-			item.methodArguments = ['Orient']
 			
 			menu.show(elements.lbl_resize)
 			
