@@ -238,7 +238,7 @@ function URL_update(webMode) {
 		}
 
 		plugins.WebClientUtils.executeClientSideJS(
-				'setTimeout(function(){$("#' + id + '").replaceWith("<div id=\'' + id + '\'>' + results + '</div>");bigIndicator(false,50);},500);'
+				'bigIndicator(true);setTimeout(function(){$("#' + id + '").replaceWith("<div id=\'' + id + '\'>' + results + '</div>");bigIndicator(false,50);},500);'
 			)
 	}
 	//set source of iframe to this url
@@ -253,8 +253,9 @@ function URL_update(webMode) {
 		}
 		
 		plugins.WebClientUtils.executeClientSideJS(
-				'$("#' + id + '").fadeOut("medium");\
-				setTimeout(function(){$("#' + id + '").replaceWith("<div id=\'' + id + '\' class=\'gfxGrunge\' style=\'display:none;\'><iframe id=\'' + id + '_cms\' src=\'' + globals.WEB_preview_url + '\' width=\'' + width +'\' height=\'' + height +'\' scrolling=\'yes\' frameborder=\'0\'></iframe></div>");\
+				'bigIndicator(true);\
+				$("#' + id + '").fadeOut("medium");\
+				setTimeout(function(){$("#' + id + '").replaceWith("<div id=\'' + id + '\' class=\'gfxGrunge\' style=\'display:none;\'><iframe id=\'' + id + '_cms\' src=\'' + globals.WEB_preview_url + '\' width=\'' + width +'\' height=\'' + height +'\' frameborder=\'0\' seamless=\'seamless\'></iframe></div>");\
 					setTimeout(function(){$("#' + id + '").fadeIn("slow")},750);\
 					bigIndicator(false,500);}\
 				,750);'
