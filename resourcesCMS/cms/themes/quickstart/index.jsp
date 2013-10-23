@@ -2,12 +2,7 @@
 <% HashMap pageData = (HashMap)request.getAttribute("pageData");%>
 <!DOCTYPE html>
 <html>
-	<head>
-		<!-- Description, Keywords and Author -->
-		<meta name="description" content="Your description">
-		<meta name="keywords" content="Your,Keywords">
-		<meta name="author" content="ResponsiveWebInc">
-		
+	<head>		
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 		<link href='http://fonts.googleapis.com/css?family=Open+Sans:400,600,700' rel='stylesheet' type='text/css'>
 		<link href='http://fonts.googleapis.com/css?family=Lobster+Two' rel='stylesheet' type='text/css'>
