@@ -88,9 +88,13 @@ var _cssId = null;
 function CONTROLLER_default(obj, results) {
 
 	var configuration = globals.CMS.data.block_configure
-
+	
+	// if running in web client (edit mode), don't preview
+	if (obj.type == 'Edit') {
+		return _VIEW_no_preview()
+	}
 	// check login
-	if ( configuration.loginRequired ) {
+	else if ( configuration.loginRequired ) {
 
 		//get login
 		var login = globals.WEBc_session_getData(obj.session_server.record.session_id, configuration.loginObjName)
@@ -163,8 +167,21 @@ function INIT_data() {
 function SET_forms() {
 	//only show forms from selected module when in top level form
 	if (application.__parent__.solutionPrefs && _module) {
+		//get from the workspace
+		if (solutionPrefs.repository.workspace) {
+			var moduleForms = solutionPrefs.repository.workspace[_module]
+		
+			formNames = new Array()
+			j = 0
+			
+			if (moduleForms) { //check to make sure module_filter has a loaded value (they chose something)
+				for (i in moduleForms) {
+					formNames[j++] = i
+				}
+			}
+		}
 		//get from repository via queries way
-		if (!solutionPrefs.repository.api) {
+		else if (!solutionPrefs.repository.api) {
 			//load formNames for report module
 			var moduleForms = solutionPrefs.repository.allForms[_module]
 			var formNames = new Array()
@@ -174,19 +191,6 @@ function SET_forms() {
 			if (moduleForms) {
 				for (var i in moduleForms) {
 					formNames[j++] = moduleForms[i].formName
-				}
-			}
-		}
-		//get from the workspace
-		else if (solutionPrefs.repository.workspace) {
-			var moduleForms = solutionPrefs.repository.workspace[_module]
-		
-			formNames = new Array()
-			j = 0
-			
-			if (moduleForms) { //check to make sure module_filter has a loaded value (they chose something)
-				for (i in moduleForms) {
-					formNames[j++] = i
 				}
 			}
 		}
@@ -352,6 +356,15 @@ function _VIEW_no_login(pageID) {
 	
 	// return markup to login page
 	return '<p>Your session has expired. Please <a href="'+  pageLink.link +'">login</a> again.</p>'
+}
+
+/**
+ * @return {String} markup for this block
+ * @properties={typeid:24,uuid:"B181EF4D-5C73-453D-9992-91ECEE6806E8"}
+ */
+function _VIEW_no_preview() {
+	// don't try and preview when editing in swc
+	return '<h3>SWC not previewable</h3>'
 }
 
 /**
