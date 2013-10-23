@@ -2,7 +2,7 @@ items:[
 {
 fontType:"Verdana,0,9",
 formIndex:12303,
-location:"315,21",
+location:"315,22",
 mediaOptions:14,
 name:"lbl_versions",
 onActionMethodID:"96F08190-4E9C-47EE-9FA2-638627C39748",
@@ -194,7 +194,7 @@ verticalAlignment:3
 {
 fontType:"Verdana,0,9",
 formIndex:12303,
-location:"260,21",
+location:"260,22",
 mediaOptions:14,
 name:"lbl_edit",
 onActionMethodID:"B65C434D-3CCF-4DD9-9A78-3D45859DC0A0",
@@ -248,7 +248,7 @@ uuid:"66353A5C-0EB9-4179-AA2F-B3C71A1DFC94"
 anchors:3,
 fontType:"Verdana,0,9",
 formIndex:12303,
-location:"426,21",
+location:"426,22",
 mediaOptions:14,
 name:"lbl_resize",
 onActionMethodID:"2EFD8325-BF6F-40CC-8188-C445DAB04ECC",
@@ -437,7 +437,7 @@ visible:false
 {
 fontType:"Verdana,0,9",
 formIndex:12303,
-location:"200,21",
+location:"200,22",
 mediaOptions:14,
 name:"lbl_action",
 onActionMethodID:"FD3DEF73-7E36-42F6-AAA2-6F99837D21DE",

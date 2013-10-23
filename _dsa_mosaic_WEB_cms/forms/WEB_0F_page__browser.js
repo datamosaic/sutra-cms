@@ -116,6 +116,7 @@ function URL_update(webMode) {
 		elements.bn_browser.html = placeholder
 	}
 	else {
+		//TODO: wrap in iframe so that can do resizing like in web client
 		elements.bn_browser.navigateTo(globals.WEB_preview_url)
 	}
 	

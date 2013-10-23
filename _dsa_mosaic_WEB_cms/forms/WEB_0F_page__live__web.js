@@ -243,9 +243,18 @@ function URL_update(webMode) {
 	}
 	//set source of iframe to this url
 	else {
+		var width = '100%'
+		var height = '100%'
+		//get dimensions of currently selected resolution
+		var resDims = forms.WEB_TB__web_mode.ACTION_resize(null,null,null,null,null,null,null,null,true)
+		if (resDims) {
+			width = resDims.width
+			height = resDims.height
+		}
+		
 		plugins.WebClientUtils.executeClientSideJS(
 				'$("#' + id + '").fadeOut("medium");\
-				setTimeout(function(){$("#' + id + '").replaceWith("<iframe id=\'' + id + '\' src=\'' + globals.WEB_preview_url + '\' width=\'100%\' height=\'100%\' scrolling=\'yes\' frameborder=\'0\' style=\'display:none;\'></iframe>");\
+				setTimeout(function(){$("#' + id + '").replaceWith("<div id=\'' + id + '\' class=\'gfxGrunge\' style=\'display:none;\'><iframe id=\'' + id + '_cms\' src=\'' + globals.WEB_preview_url + '\' width=\'' + width +'\' height=\'' + height +'\' scrolling=\'yes\' frameborder=\'0\'></iframe></div>");\
 					setTimeout(function(){$("#' + id + '").fadeIn("slow")},750);\
 					bigIndicator(false,500);}\
 				,750);'
@@ -263,8 +272,8 @@ function EDIT_on() {
 	var id = plugins.WebClientUtils.getElementMarkupId(forms.WEB_0F_page__live__web__view.elements.lbl_page)
 
 	plugins.WebClientUtils.executeClientSideJS(
-			'setTimeout(function(){if ($("iframe#' + id + '").length) {' +
-				'window.frames["' + id + '"].postMessage({method:"editOn"},"*");' +
+			'setTimeout(function(){if ($("iframe#' + id + '_cms").length) {' +
+				'window.frames["' + id + '_cms"].postMessage({method:"editOn"},"*");' +
 				//just to make sure that indicator not stuck on
 				'bigIndicator(false,500);' +
 			'}' +
@@ -288,8 +297,8 @@ function EDIT_off() {
 	//just toggle edit mode on the page
 	else {
 		plugins.WebClientUtils.executeClientSideJS(
-			'setTimeout(function(){if ($("iframe#' + id + '").length) {' +
-				'window.frames["' + id + '"].postMessage({method:"editOff"},"*");' +
+			'setTimeout(function(){if ($("iframe#' + id + '_cms").length) {' +
+				'window.frames["' + id + '_cms"].postMessage({method:"editOff"},"*");' +
 				//just to make sure that indicator not stuck on
 				'bigIndicator(false,500);' +
 			'}' +
