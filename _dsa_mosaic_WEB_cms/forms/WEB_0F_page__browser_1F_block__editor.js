@@ -72,9 +72,27 @@ function FORM_on_show(firstShow, event) {
 			forms[contextForm].elements.lbl_banner.text = (recBlockType.block_name || 'Unnamed') + ' block'
 			
 			//the form exists and it isn't in the currently selected tab
-			if (formName && forms[formName] && formName != tabPanel.getTabFormNameAt(tabPanel.tabIndex)) {
+			if (formName && forms[formName]) {
+				var onlyStatic = true
+				//when only static html, don't show Block Builder
+				if (formName == 'WEB_0F__block_builder') {
+					var allFields = globals.CMS.ui.getData(controller.getName())
+					
+					for (var i in allFields) {
+						var fieldData = JSON.parse(allFields[i])
+						
+						if (fieldData.type != 'staticHTML') {
+							onlyStatic = false
+							break
+						}
+					}
+					
+					if (onlyStatic) {
+						return false
+					}
+				}
 				//check this form to see if even anything to edit
-				if (formName != 'WEB_0F__block_builder') {
+				else {
 					//check for webclient version of this block type
 					if (application.getApplicationType() == APPLICATION_TYPES.WEB_CLIENT && solutionModel.getForm(formName + 'w')) {
 						formName += 'w'
@@ -95,37 +113,40 @@ function FORM_on_show(firstShow, event) {
 					}
 				}
 				
-				//enter transaction
-				databaseManager.saveData()
-				databaseManager.setAutoSave(false)
-				
-				//when on a scrapbook, show in header; otherwise not
-				elements.lbl_scope.visible = recBlock.scope_type
-				
-				//load tab panel
-				tabPanel.addTab(forms[formName])
-				tabPanel.tabIndex = tabPanel.getMaxTabIndex()
-				
-				//force the gui to update
-				if (solutionModel.getForm(formName) && solutionModel.getForm(formName).getFormMethod('INIT_data')) {
-					if (forms[formName].foundset) {
-						forms[formName].foundset.loadRecords(foundset)
-					}
-					else {
-						var restart = globals.DIALOGS.showWarningDialog(
-								'Warning',
-								'Changes made in developer have caused foundsets to become unhooked.\nRestart?',
-								'Yes',
-								'No'
-							)
-						
-						//restart
-						if (restart == 'Yes') {
-							application.exit()
-						}
-					}
+				//this form isn't in the currently selected tab
+				if (formName != tabPanel.getTabFormNameAt(tabPanel.tabIndex)) {
+					//enter transaction
+					databaseManager.saveData()
+					databaseManager.setAutoSave(false)
 					
-					forms[formName].INIT_data()
+					//when on a scrapbook, show in header; otherwise not
+					elements.lbl_scope.visible = recBlock.scope_type
+					
+					//load tab panel
+					tabPanel.addTab(forms[formName])
+					tabPanel.tabIndex = tabPanel.getMaxTabIndex()
+					
+					//force the gui to update
+					if (solutionModel.getForm(formName) && solutionModel.getForm(formName).getFormMethod('INIT_data')) {
+						if (forms[formName].foundset) {
+							forms[formName].foundset.loadRecords(foundset)
+						}
+						else {
+							var restart = globals.DIALOGS.showWarningDialog(
+									'Warning',
+									'Changes made in developer have caused foundsets to become unhooked.\nRestart?',
+									'Yes',
+									'No'
+								)
+							
+							//restart
+							if (restart == 'Yes') {
+								application.exit()
+							}
+						}
+						
+						forms[formName].INIT_data()
+					}
 				}
 			}
 			else {
