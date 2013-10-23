@@ -595,3 +595,15 @@ function OV_ACTIONS_list() {
 function CURTAIN_action(event) {
 	elements.lbl_blocker.visible = false
 }
+
+/**
+ * @properties={typeid:24,uuid:"310FF285-66A6-46F9-B5E4-648F48645117"}
+ */
+function WC_on_show() {
+	//this method fires to pull in iframe when whole SPA refreshed
+	
+	//browser showing, fire
+	if (elements.tab_main.tabIndex == 2) {
+		forms.WEB_0F_page__live__web.REC_on_select()
+	}
+}
