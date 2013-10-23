@@ -1,0 +1,2 @@
+Quickstart
+Get up and running fast with this clean and functional theme. Features bootstrap3 framework, five page types, and looks great on all mobile devices.
