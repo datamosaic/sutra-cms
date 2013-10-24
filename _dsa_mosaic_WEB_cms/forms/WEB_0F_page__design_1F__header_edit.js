@@ -671,6 +671,7 @@ function ACTION_save() {
 
 		//not in edit mode, so make sure to turn off header edit button
 		forms.WEB_0F_page__design_1F__button_tab.elements.btn_edit.visible = false
+		forms.WEB_0F_page__design_1F__button_tab__dev.elements.btn_edit.visible = false
 	}
 
 	if (forms[parentForm] && forms[parentForm].elements.gfx_curtain) {
@@ -721,16 +722,23 @@ function FLD_data_change__page_type(oldValue, newValue, event) {
  * @properties={typeid:24,uuid:"6AC3202B-F934-4E51-9AF4-866A7F3A5B6C"}
  */
 function TOGGLE_fields(pageType) {
+	//turn off elements for non-page pages
+	elements.fld_page_link_internal.visible = false
+	elements.btn_page_link_internal.visible = false
+	elements.lbl_flag_folder_children.visible = false
+	elements.fld_flag_folder_children.visible = false
+	
 	//turn off elements for new pages
 	elements.lbl_platform.visible = false
 	elements.var_idSitePlatform.visible = false
+	globals.CMSb.propCheck(elements.var_idSitePlatform__outline,'visible',false)
 	elements.lbl_language.visible = false
 	elements.var_idSiteLanguage.visible = false
+	globals.CMSb.propCheck(elements.var_idSiteLanguage__outline,'visible',false)
 	elements.lbl_group.visible = false
 	elements.var_idSiteGroup.visible = false
-	elements.lbl_flag_folder_children.visible = false
-	elements.fld_flag_folder_children.visible = false
-
+	globals.CMSb.propCheck(elements.var_idSiteGroup__outline,'visible',false)
+	
 	//passed a number, grab word
 	if (utils.stringToNumber(pageType) == pageType) {
 		pageType = application.getValueListDisplayValue('WEB_page_type',pageType)
@@ -804,6 +812,9 @@ function TOGGLE_fields(pageType) {
 		elements.var_idSiteLanguage.visible = newPage
 		elements.lbl_group.visible = newPage
 		elements.var_idSiteGroup.visible = newPage
+		globals.CMSb.propCheck(elements.var_idSitePlatform__outline,'visible',newPage)
+		globals.CMSb.propCheck(elements.var_idSiteLanguage__outline,'visible',newPage)
+		globals.CMSb.propCheck(elements.var_idSiteGroup__outline,'visible',newPage)
 
 		//only allow to cancel for new page
 		if (application.getApplicationType() != APPLICATION_TYPES.WEB_CLIENT) {
@@ -817,22 +828,24 @@ function TOGGLE_fields(pageType) {
 		elements.var_idLayout.visible = page
 		elements.lbl_page_link.visible = link || linkInternal
 		elements.fld_page_link.visible = link
-
+		globals.CMSb.propCheck(elements.var_idTheme__outline,'visible',page)
+		globals.CMSb.propCheck(elements.var_idLayout__outline,'visible',page)
+		
 		elements.fld_page_link_internal.visible = linkInternal
 		elements.btn_page_link_internal.visible = linkInternal
 	}
 
 
 	//when on content tab, switch as needed
-	if (forms.WEB_0F_page__design_1F__button_tab.elements.tab_button.tabIndex == 6) {
+	if (forms.WEB_0F_page__design.elements.tab_header_button.tabIndex == 2) {
 		//folder or link type of page or just creating a new record
 		if (!page || forms[scopes.CMS.util.getTreeForm()]._addRecord || pageHide) {
 			forms.WEB_0F_page__design.elements.tab_main.tabIndex = 4
 		}
-//		//normal type of page
-//		else {
-//			forms.WEB_0F_page__design_1F__button_tab.TAB_change('WEB_0F_page__design_1F__button_tab','tab_b1')
-//		}
+		//normal type of page
+		else {
+			forms.WEB_0F_page__design.elements.tab_main.tabIndex = 5
+		}
 	}
 }
 
@@ -874,7 +887,9 @@ function REC_new() {
 
 		//flip graphic
 		forms.WEB_0F_page__design_1F__button_tab.elements.btn_cancel.visible = true
+		forms.WEB_0F_page__design_1F__button_tab__dev.elements.btn_cancel.visible = true
 		forms.WEB_0F_page__design_1F__button_tab.elements.btn_edit.visible = false
+		forms.WEB_0F_page__design_1F__button_tab__dev.elements.btn_edit.visible = false
 
 		//freeze screen
 		globals.WEBc_sutra_trigger('TRIGGER_interface_lock',[true])
@@ -912,6 +927,7 @@ function REC_new() {
 
 			//flip graphic
 			forms.WEB_0F_page__design_1F__button_tab.elements.btn_cancel.visible = false
+			forms.WEB_0F_page__design_1F__button_tab__dev.elements.btn_cancel.visible = false
 //			forms.WEB_0F_page__design_1F__button_tab.elements.btn_edit.visible = true
 
 			//unfreeze screen

@@ -435,8 +435,10 @@ function ACTION_ok() {
 		forms[parentForm].REC_on_select()
 
 		//enter edit mode
-		application.sleep(500)
-		forms.WEB_TB__web_mode.ACTION_edit()
+		if (!page_type) {
+//			application.sleep(500)
+			forms.WEB_TB__web_mode.ACTION_edit()
+		}
 	}
 
 }
@@ -529,10 +531,13 @@ function TOGGLE_fields(pageType) {
 	//turn off elements for new pages
 	elements.lbl_platform.visible = false
 	elements.var_idSitePlatform.visible = false
+	globals.CMSb.propCheck(elements.var_idSitePlatform__outline,'visible',false)
 	elements.lbl_language.visible = false
 	elements.var_idSiteLanguage.visible = false
+	globals.CMSb.propCheck(elements.var_idSiteLanguage__outline,'visible',false)
 	elements.lbl_group.visible = false
 	elements.var_idSiteGroup.visible = false
+	globals.CMSb.propCheck(elements.var_idSiteGroup__outline,'visible',false)
 
 	//passed a number, grab word
 	if (utils.stringToNumber(pageType) == pageType) {
@@ -561,11 +566,9 @@ function TOGGLE_fields(pageType) {
 		case 'Folder':
 			var page = false
 			var link = false
+			
 			elements.lbl_flag_folder_children.visible = true
 			elements.fld_flag_folder_children.visible = true
-			break
-		case 'Page invalid':
-			var pageHide = true
 			break
 	}
 
@@ -579,6 +582,9 @@ function TOGGLE_fields(pageType) {
 		elements.var_idSiteLanguage.visible = newPage
 		elements.lbl_group.visible = newPage
 		elements.var_idSiteGroup.visible = newPage
+		globals.CMSb.propCheck(elements.var_idSitePlatform__outline,'visible',newPage)
+		globals.CMSb.propCheck(elements.var_idSiteLanguage__outline,'visible',newPage)
+		globals.CMSb.propCheck(elements.var_idSiteGroup__outline,'visible',newPage)
 
 		elements.lbl_idTheme.visible = page
 		elements.var_idTheme.visible = page
@@ -586,7 +592,9 @@ function TOGGLE_fields(pageType) {
 		elements.var_idLayout.visible = page
 		elements.lbl_page_link.visible = link || linkInternal
 		elements.fld_page_link.visible = link
-
+		globals.CMSb.propCheck(elements.var_idTheme__outline,'visible',page)
+		globals.CMSb.propCheck(elements.var_idLayout__outline,'visible',page)
+		
 		elements.fld_page_link_internal.visible = linkInternal
 		elements.btn_page_link_internal.visible = linkInternal
 	}
