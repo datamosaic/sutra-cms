@@ -186,13 +186,11 @@ function URL_update(webMode) {
 			var results = fsPage.search()
 
 			if (results) {
-				bodyText = '<html><body><h2>Internal link page</h2><p>Internal links cannot be edited in real mode.<br /> <a href="#" onclick="sendNSCommand(\'WEB_0T_page.SET_page\',' + fsPage.url_param + '); return false;">Click here</a> to visit and edit the "' + fsPage.page_name + '" page.</p></body></html>'
+				bodyText = '<html><body><h2>Internal link page</h2><p><a href=\'#\' onclick=\'sendNSCommand(\\"WEB_0T_page.SET_page\\",' + fsPage.url_param + '); return false;\'>Click here</a> to visit and edit the <strong>' + fsPage.page_name + '</strong> page.</p></body></html>'
 			}
 			else {
 				bodyText = '<html><body><h2>Internal link page</h2><p>The internal link this page references is not valid</p></body></html>'
 			}
-
-			return
 		}
 		//show version for selected platform-language-group combo
 		else if (utils.hasRecords(foundset)) {

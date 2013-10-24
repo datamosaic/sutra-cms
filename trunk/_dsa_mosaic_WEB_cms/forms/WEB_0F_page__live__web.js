@@ -238,7 +238,11 @@ function URL_update(webMode) {
 		}
 
 		plugins.WebClientUtils.executeClientSideJS(
-				'bigIndicator(true);setTimeout(function(){$("#' + id + '").replaceWith("<div id=\'' + id + '\'>' + results + '</div>");bigIndicator(false,50);},500);'
+				'bigIndicator(true);\
+				setTimeout(function(){\
+					$("#' + id + '").replaceWith("<div id=\'' + id + '\'>' + results + '</div>");\
+					bigIndicator(false,500);}\
+				,750);'
 			)
 	}
 	//set source of iframe to this url
