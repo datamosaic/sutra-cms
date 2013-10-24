@@ -264,10 +264,10 @@ valuelistID:"AFDB5F80-FD1E-49B6-B99B-8FE20EA6389F"
 },
 {
 anchors:11,
-dataProviderID:"web_page_to_page__internal_link.display_page_name",
+dataProviderID:"web_page_to_page__internal_link.web_page_to_language__default.page_name",
 editable:false,
 formIndex:9994,
-location:"170,198",
+location:"170,218",
 name:"fld_page_link_internal",
 onActionMethodID:"463EFBFD-6BAB-49A5-8C68-F4B70A20AF90",
 scrollbars:36,
@@ -387,7 +387,7 @@ typeid:4,
 uuid:"D5C4AB81-5050-4A89-A9BE-DA54AB784B4C"
 },
 {
-anchors:11,
+anchors:3,
 formIndex:9995,
 imageMediaID:"0177e2a3-d01c-44c0-b860-cbae1f590bce",
 location:"328,218",
