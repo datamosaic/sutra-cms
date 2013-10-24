@@ -222,7 +222,7 @@ function URL_update(webMode) {
 		}
 		//no records in the page foundset, replace out whatever is there with some placeholder text
 		else {
-			bodyText = 'Your page should be here, but it is not.  Talk with your therapist about how this makes you feel. ;)'
+			bodyText = 'No page created.'
 		}
 
 		forms.WEB_TB__web_mode.BREAD_update()
