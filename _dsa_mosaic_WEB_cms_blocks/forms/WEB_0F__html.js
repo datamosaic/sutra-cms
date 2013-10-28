@@ -175,31 +175,18 @@ function ACTION_internal_link(event) {
  * @properties={typeid:24,uuid:"4432AB1D-AFD0-4AEC-8EDE-80BABA0450C4"}
  */
 function ACTION_add_token(inputID,pageRec) {
-	var token = globals.CMS.token.getPage(pageRec).link
+var token = globals.CMS.token.getPage(pageRec).link
 	
 	//wrap currently selected text with link
 	var elem = elements.fld_data_value
-	
 	var linkStart = '<a href="' + token + '">'
 	var linkPage = elem.getSelectedText() || pageRec.page_name
 	var linkEnd = '</a>'
 	
-	//length of tag
-	var offset = (linkStart + linkPage + linkEnd).length
-	
-	//cut selected text so we can get the correct cursor position
-	elem.replaceSelectedText('')
-	
-	//get cursor location
-	var cursor = elem.caretPosition
-	
 	elem.replaceSelectedText(linkStart + linkPage + linkEnd)
-	
 	var dataSave = globals.CMS.ui.setData(null,'HTML',_dataValue,controller.getName())
 	
-	elem.caretPosition = cursor + offset
 	elem.requestFocus()
-	
 }
 
 /**
