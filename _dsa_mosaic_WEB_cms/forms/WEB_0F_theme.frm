@@ -138,7 +138,8 @@ name:"bean_split_2",
 size:"170,90",
 typeid:12,
 usesUI:true,
-uuid:"388951F2-E6E0-4B12-8FFC-FE0BD2C20127"
+uuid:"388951F2-E6E0-4B12-8FFC-FE0BD2C20127",
+visible:false
 },
 {
 anchors:11,
@@ -368,7 +369,8 @@ name:"bean_split_4",
 size:"170,18",
 typeid:12,
 usesUI:true,
-uuid:"A91DF0DA-9758-4733-B1B2-3D7A2FACC88C"
+uuid:"A91DF0DA-9758-4733-B1B2-3D7A2FACC88C",
+visible:false
 },
 {
 anchors:11,
@@ -487,7 +489,8 @@ name:"bean_split_1",
 size:"558,180",
 typeid:12,
 usesUI:true,
-uuid:"D7F05C88-0D98-4DEC-9187-8CDACFF23D43"
+uuid:"D7F05C88-0D98-4DEC-9187-8CDACFF23D43",
+visible:false
 },
 {
 anchors:11,
@@ -615,7 +618,8 @@ name:"bean_split_3",
 size:"558,18",
 typeid:12,
 usesUI:true,
-uuid:"E7BC986A-E386-4565-9CB8-4C4E50688C33"
+uuid:"E7BC986A-E386-4565-9CB8-4C4E50688C33",
+visible:false
 },
 {
 anchors:13,

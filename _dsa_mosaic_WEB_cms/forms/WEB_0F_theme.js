@@ -155,25 +155,32 @@ function ACTION_set_path()
  * @properties={typeid:24,uuid:"7EC1827E-0F69-47EB-B222-2971B81C2728"}
  */
 function FORM_on_load(event) {
-	// set split 2
-	elements.bean_split_2.leftComponent = elements.tab_editable
-	elements.bean_split_2.rightComponent = elements.tab_editable_default
-	elements.bean_split_2.dividerLocation = 200	
-	
-	// set split 1
-	elements.bean_split_1.leftComponent = elements.tab_layout
-	elements.bean_split_1.rightComponent = elements.bean_split_2
-	elements.bean_split_1.dividerLocation = 300
-	
-	// set split 4
-	elements.bean_split_4.leftComponent = elements.lbl_slide_2
-	elements.bean_split_4.rightComponent = elements.lbl_slide_3
-	elements.bean_split_4.dividerLocation = 200	
-	
-	// set split 3
-	elements.bean_split_3.leftComponent = elements.lbl_slide_1
-	elements.bean_split_3.rightComponent = elements.bean_split_4
-	elements.bean_split_3.dividerLocation = 300
+	if (application.getApplicationType() != APPLICATION_TYPES.WEB_CLIENT) {
+		// set split 2
+		elements.bean_split_2.leftComponent = elements.tab_editable
+		elements.bean_split_2.rightComponent = elements.tab_editable_default
+		elements.bean_split_2.dividerLocation = 200	
+		
+		// set split 1
+		elements.bean_split_1.leftComponent = elements.tab_layout
+		elements.bean_split_1.rightComponent = elements.bean_split_2
+		elements.bean_split_1.dividerLocation = 300
+		
+		// set split 4
+		elements.bean_split_4.leftComponent = elements.lbl_slide_2
+		elements.bean_split_4.rightComponent = elements.lbl_slide_3
+		elements.bean_split_4.dividerLocation = 200	
+		
+		// set split 3
+		elements.bean_split_3.leftComponent = elements.lbl_slide_1
+		elements.bean_split_3.rightComponent = elements.bean_split_4
+		elements.bean_split_3.dividerLocation = 300
+		
+		elements.bean_split_1.visible = true
+		elements.bean_split_2.visible = true
+		elements.bean_split_3.visible = true
+		elements.bean_split_4.visible = true
+	}
 }
 
 /**

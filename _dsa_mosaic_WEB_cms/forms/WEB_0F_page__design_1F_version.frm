@@ -98,7 +98,8 @@ name:"bean_split_1",
 size:"580,300",
 typeid:12,
 usesUI:true,
-uuid:"2453A9A8-E153-4DF0-B691-517DA4F6EC0E"
+uuid:"2453A9A8-E153-4DF0-B691-517DA4F6EC0E",
+visible:false
 },
 {
 background:"#d1d7e2",
@@ -209,7 +210,8 @@ name:"bean_split_2",
 size:"170,90",
 typeid:12,
 usesUI:true,
-uuid:"A9715309-41BC-4F71-8025-9264F9526155"
+uuid:"A9715309-41BC-4F71-8025-9264F9526155",
+visible:false
 },
 {
 height:300,
