@@ -390,6 +390,11 @@ function ACTION_gui_mode_load() {
 				var formName = recBlockType.form_name_display || recBlockType.form_name
 			}
 			
+			//check for webclient version of this block type
+			if (application.getApplicationType() == APPLICATION_TYPES.WEB_CLIENT && solutionModel.getForm(formName + 'w')) {
+				formName += 'w'
+			}
+			
 			//set heading for this tab panel
 			forms[contextForm].elements.lbl_banner.text = (recBlockType.block_name || 'Unnamed') + ' block'
 			
