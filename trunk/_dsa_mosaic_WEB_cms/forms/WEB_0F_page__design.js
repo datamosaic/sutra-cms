@@ -267,6 +267,10 @@ function REC_on_select(event,skipLoad,verIndex,fireSelect,areaName,blockIndex) {
 		
 		//when no page scrapbooks present, disable that tab controller
 		forms.WEB_0F_page__design_1F__button_tab.elements.tab_b3.enabled = utils.hasRecords(web_page_to_block__scope)
+		//if on scrapbook tab and no scrapbooks, flip to overview
+		if (elements.tab_header_button.tabIndex == 1 && forms.WEB_0F_page__design_1F__button_tab.elements.tab_button.tabIndex == 3 && !utils.hasRecords(web_page_to_block__scope)) {
+			forms.WEB_0F_page__design_1F__button_tab.TAB_change(null,'tab_b1')
+		}
 		
 		//update log view
 		if (elements.tab_main.tabIndex == 1) {
