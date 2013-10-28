@@ -245,8 +245,9 @@ function TOGGLE_buttons() {
 	elements.lbl_curve_one.visible = scope._editMode || scope._reorderMode || !elements.btn_reorder
 	if (elements.btn_reorder) {elements.lbl_reorder.visible = !(scope._editMode || scope._reorderMode)}
 
-	//edit button up in header (should be someplace else, but i don't remember where)
+	//edit button up in header
 	forms.WEB_0F_page__design_1F__button_tab.elements.btn_edit.visible = scope._editMode
+	forms.WEB_0F_page__design_1F__button_tab__dev.elements.btn_edit.visible = scope._editMode
 }
 
 /**
