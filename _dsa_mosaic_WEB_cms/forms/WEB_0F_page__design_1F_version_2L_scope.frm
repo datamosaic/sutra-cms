@@ -305,7 +305,6 @@ visible:false
 borderType:"SpecialMatteBorder,0.0,0.0,1.0,0.0,#000000,#000000,#999999,#000000,0.0,1.0",
 dataProviderID:"flag_active",
 displayType:4,
-editable:false,
 formIndex:10700,
 location:"10,40",
 name:"fld_flag_active",
