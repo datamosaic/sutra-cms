@@ -352,7 +352,7 @@ function CONTROLLER_builder(results) {
 					var matches
 					m = 0
 					while (matches = regex.exec(markupData)) {
-						markupData = utils.stringIndexReplace(markupData,matches.index,10,blocks[m++])
+						markupData = utils.stringIndexReplace(markupData,matches.index+1,9,blocks[m++])
 					}
 				}
 				// return and continue
