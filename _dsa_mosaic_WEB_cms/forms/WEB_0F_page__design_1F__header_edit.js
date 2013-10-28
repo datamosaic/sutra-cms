@@ -649,7 +649,9 @@ function ACTION_save() {
 
 	//flip graphic
 	forms[parentForm + '_1F__button_tab'].elements.btn_cancel.visible = false
-	forms[parentForm + '_1F__button_tab'].elements.btn_edit.visible = true
+	forms[parentForm + '_1F__button_tab'].elements.btn_edit.visible = false
+	forms[parentForm + '_1F__button_tab__dev'].elements.btn_cancel.visible = false
+	forms[parentForm + '_1F__button_tab__dev'].elements.btn_edit.visible = false
 
 	//for new record, save and exit edit mode
 	if (newRec) {
@@ -668,10 +670,6 @@ function ACTION_save() {
 		if (solutionPrefs.config.currentFormName == 'WEB_0F_page') {
 			forms.WEB_A__page.TOGGLE_edit_mode(false)
 		}
-
-		//not in edit mode, so make sure to turn off header edit button
-		forms.WEB_0F_page__design_1F__button_tab.elements.btn_edit.visible = false
-		forms.WEB_0F_page__design_1F__button_tab__dev.elements.btn_edit.visible = false
 	}
 
 	if (forms[parentForm] && forms[parentForm].elements.gfx_curtain) {
