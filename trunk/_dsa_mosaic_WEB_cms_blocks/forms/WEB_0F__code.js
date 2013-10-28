@@ -296,7 +296,7 @@ function ACTION_insert_asset(event,blah1,blah2,blah3,blah4,assetType) {
 		
 		elem.replaceSelectedText(html)
 		
-		var dataSave = globals.CMS.ui.setData(event,'code',_dataValue)
+		var dataSave = globals.CMS.ui.setData(event,'code',_dataValue,controller.getName())
 		
 		elem.caretPosition = cursor + offset
 		elem.requestFocus()

@@ -77,20 +77,9 @@ function ACTION_add_token(inputID,pageRec) {
 		}
 	var link = globals.CMS.markup.merge(template,data)
 	
-	//length of tag
-	var offset = link.length
-	
-	//cut selected text so we can get the correct cursor position
-	elem.replaceSelectedText('')
-	
-	//get cursor location
-	var cursor = elem.caretPosition
-	
 	elem.replaceSelectedText(link)
 	
-	elem.caretPosition = cursor + offset
 	elem.requestFocus()
-	
 }
 
 /**
