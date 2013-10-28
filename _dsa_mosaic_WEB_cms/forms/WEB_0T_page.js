@@ -1159,6 +1159,10 @@ function REC_new() {
 		}
 		//design mode
 		else {
+			//make sure things visible
+			forms.WEB_0F_page__design.elements.tab_header_detail.visible = true
+			forms.WEB_0F_page__design.elements.tab_main.visible = true
+			
 			//hide everything except the bare necessities
 			forms.WEB_0F_page__design_1F__header_edit.TOGGLE_fields(0)
 
@@ -1483,6 +1487,10 @@ function TREE_refresh(firstLoad) {
 		//manage the sort of the top-level nodes
 		if (results) {
 			forms.WEB_0F_page.foundset.sort('order_by asc')
+		}
+		else {
+			forms.WEB_0F_page__design.elements.tab_header_detail.visible = false
+			forms.WEB_0F_page__design.elements.tab_main.visible = false
 		}
 
 		//load the foundset into the treeview

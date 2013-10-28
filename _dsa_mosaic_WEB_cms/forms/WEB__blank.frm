@@ -1,0 +1,16 @@
+items:[
+{
+height:170,
+partType:5,
+typeid:19,
+uuid:"2365EB01-A214-4D6B-943F-AF82AF7019C9"
+}
+],
+name:"WEB__blank",
+navigatorID:"-1",
+paperPrintScale:100,
+scrollbars:36,
+size:"640,170",
+styleName:"_DATASUTRA_",
+typeid:3,
+uuid:"6594EE8F-CA4A-4522-8686-5AE26F4A9744"

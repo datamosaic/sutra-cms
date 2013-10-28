@@ -48,6 +48,12 @@ function FORM_on_show(firstShow, event) {
 	else {
 //		forms.WEB_0F_page__design_1F_version_2L_scope.ACTION_gui_mode_load()
 	}
+	
+	//if on blank forms (because no records), show them
+	if (!(forms.WEB_0F_page__design.elements.tab_header_detail.visible || forms.WEB_0F_page__design.elements.tab_main.visible)) {
+		forms.WEB_0F_page__design.elements.tab_header_detail.visible = true
+		forms.WEB_0F_page__design.elements.tab_main.visible = true
+	}
 }
 
 /**

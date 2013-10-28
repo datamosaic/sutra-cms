@@ -6,6 +6,13 @@ anchors:11,
 formIndex:12002,
 items:[
 {
+containsFormID:"6594EE8F-CA4A-4522-8686-5AE26F4A9744",
+location:"334,31",
+text:"WEB__blank",
+typeid:15,
+uuid:"1AEE7B8A-313B-4960-A8CB-0387FBFF59D1"
+},
+{
 containsFormID:"AF305FBE-058C-4407-9B8E-A74CDA373875",
 location:"0,25",
 text:"WEB_0F_page__design_1F__header_display",
