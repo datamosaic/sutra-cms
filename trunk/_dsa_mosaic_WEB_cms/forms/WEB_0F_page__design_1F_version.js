@@ -11,8 +11,7 @@ var _license_dsa_mosaic_WEB_cms = 'Module: _dsa_mosaic_WEB_cms \
  *
  * @properties={typeid:24,uuid:"E4A1ABA3-14D7-48B6-895C-85F186CCB271"}
  */
-function FORM_on_load()
-{
+function FORM_on_load() {
 	if (!solutionPrefs.config.webClient) {
 		// set split 2
 		elements.bean_split_2.topComponent		= elements.tab_area
@@ -23,6 +22,9 @@ function FORM_on_load()
 		elements.bean_split_1.leftComponent	= elements.bean_split_2
 		elements.bean_split_1.rightComponent	= elements.tab_content
 		elements.bean_split_1.dividerLocation	= 300
+		
+		elements.bean_split_1.visible = true
+		elements.bean_split_2.visible = true
 	}
 }
 
