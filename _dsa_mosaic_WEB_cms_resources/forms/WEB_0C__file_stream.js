@@ -872,10 +872,10 @@ function IMAGE_import_callback(result, e) {
 		globals.WEBc_sutra_trigger('TRIGGER_progressbar_stop')
 	}
 
+	scopes.SLICK.update(navigationPrefs.byNavItemID[solutionPrefs.config.currentFormID].listData.tabFormInstance)
+	
 	globals.DIALOGS.showInfoDialog("Image",  "Image uploaded")
 	
-	scopes.SLICK.updateUL()
-
 	//no records created yet and interface locked
 	if (application.__parent__.solutionPrefs && solutionPrefs.design.statusLockWorkflow) {
 		globals.WEB_lock_workflow(false)
@@ -1122,6 +1122,8 @@ function FILE_import_callback(result, e) {
 		globals.WEBc_sutra_trigger('TRIGGER_progressbar_stop')
 	}
 
+	scopes.SLICK.update(navigationPrefs.byNavItemID[solutionPrefs.config.currentFormID].listData.tabFormInstance)
+	
 	globals.DIALOGS.showInfoDialog("File",  "File uploaded")
 
 	//no records created yet and interface locked
