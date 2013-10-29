@@ -8,6 +8,13 @@ var _license_dsa_mosaic_WEB_cms = 'Module: _dsa_mosaic_WEB_cms \
 									MIT Licensed';
 
 /**
+ * @type {Boolean}
+ * 
+ * @properties={typeid:35,uuid:"3ED906AC-81E1-4E50-94AB-069BEA4F3EC0",variableType:-4}
+ */
+var _skipSelect = false;
+
+/**
  *
  * @properties={typeid:24,uuid:"35FDA09F-74E0-45AF-9BC1-C682E4F0F549"}
  * @AllowToRunInFind
@@ -355,14 +362,10 @@ function RESIZE_beans(event) {
  * @properties={typeid:24,uuid:"C2B25248-577E-4241-B14F-323A1090B425"}
  */
 function REC_on_select(event) {
-//	function sortScope(a, b) {
-//
-//	}
-//
-//	//sort all child records
-//	if (utils.hasRecords(foundset) && utils.hasRecords(web_area_to_scope)) {
-////		web_area_to_scope.sort(sortScope)
-//	}
+	//need extra help keeping relations in sync
+	if (!_skipSelect && globals.WEB_page_mode == 1 && application.getApplicationType() == APPLICATION_TYPES.WEB_CLIENT && !utils.hasRecords(web_area_to_scope) && !forms.WEB_0F_page__design_1F_version.foundset.isInFind()) {
+		forms.WEB_0F_page__design_1F_version_2F_block__data.foundset.clear()
+	}
 }
 
 /**
