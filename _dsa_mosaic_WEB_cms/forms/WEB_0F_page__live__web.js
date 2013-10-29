@@ -269,7 +269,7 @@ function URL_update(webMode) {
 				ready: function() {\n\
 							setTimeout(function(){\
 								var sor = $('#xdomainCheck');\
-								if (sor.length) {\n\
+								if (sor.length && sor[0].src == $('#" + id + "_cms')[0].src) {\n\
 									try {\n\
 										sor.get(0).contentWindow.document;\n\
 									}\n\
@@ -285,7 +285,7 @@ function URL_update(webMode) {
 								}\n\
 							},3000)\n\
 						}\n\
-			}).appendTo('body');"
+			}).appendTo('body');\n"
 		}
 		
 		plugins.WebClientUtils.executeClientSideJS(xdomain +
