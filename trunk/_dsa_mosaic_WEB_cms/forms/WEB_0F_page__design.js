@@ -317,6 +317,9 @@ function SET_versions(skipLoad,pageInvalid) {
 	}
 	//get versions records loaded
 	else if (!skipLoad) {
+		//disable extra rec on selects
+		forms.WEB_0F_page__design_1F_version_2L_area._skipSelect = true
+		
 		fsVersions.find()
 		fsVersions.id_platform = forms.WEB_0F_page__design_1F__header_display_2F_platform._platform.id_platform.toString()
 		fsVersions.id_language = forms.WEB_0F_page__design_1F__header_display_2F_language._language.id_language.toString()
@@ -328,6 +331,9 @@ function SET_versions(skipLoad,pageInvalid) {
 		}
 		
 		forms.WEB_0F_page__design_1F__properties_2L_version.foundset.loadRecords(fsVersions)
+		
+		//enable extra rec on selects
+		forms.WEB_0F_page__design_1F_version_2L_area._skipSelect = false
 	}
 	
 	//we've got a version stack
