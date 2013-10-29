@@ -110,6 +110,7 @@ uuid:"D82CE12A-D297-407D-BCFD-345EB86B9405"
 ],
 name:"WEB_0F_page__design_1F_version_2L_area",
 onLoadMethodID:"1678EE5B-7731-4DCD-B756-5108FAFD99B5",
+onRecordSelectionMethodID:"C2B25248-577E-4241-B14F-323A1090B425",
 onShowMethodID:"-1",
 paperPrintScale:100,
 rowBGColorCalculation:"globals.CODE_row_background",
