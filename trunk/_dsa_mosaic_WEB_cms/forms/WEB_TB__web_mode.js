@@ -938,6 +938,9 @@ function ACTION_mode(event) {
 				//tabs
 				forms.WEB_0F_page__design.elements.tab_header_button.tabIndex = 2
 				forms.WEB_0F_page__design.elements.tab_main.tabIndex = 5
+				
+				//help with sorting
+				forms.WEB_0F_page__design_1F_version_2L_scope.foundset.sort('sort_order asc')
 
 				break
 			case 'lbl_mode_edit':	//real mode (browser bean)
