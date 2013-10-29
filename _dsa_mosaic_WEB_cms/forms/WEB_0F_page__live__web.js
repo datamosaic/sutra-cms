@@ -223,11 +223,12 @@ function CMS_call(method,arg) {
 function URL_update(webMode) {
 	//build up what we are going to show
 	var placeholder = _super.URL_update(webMode)
+	var checkXDomain = placeholder == 'CMSexternal'
 
 	var id = plugins.WebClientUtils.getElementMarkupId(forms.WEB_0F_page__live__web__view.elements.lbl_page)
 
 	//replace with placeholder html
-	if (placeholder) {
+	if (!checkXDomain && placeholder) {
 		var regex = new RegExp(/<body\b[^>]*>(.*?)<\/body>/)
 		var results = regex.exec(placeholder)
 		if (results && results.length) {
@@ -256,7 +257,38 @@ function URL_update(webMode) {
 			height = resDims.height
 		}
 		
-		plugins.WebClientUtils.executeClientSideJS(
+		//set up check to see if loads in ok
+		var xdomain = ''
+		if (checkXDomain) {
+			xdomain = "\n\
+				var iframe = $('<iframe />', {\n\
+				src: '" + globals.WEB_preview_url + "',\n\
+				name: 'xdomainCheck',\n\
+				id:   'xdomainCheck',\n\
+				sandbox: 'allow-same-origin allow-scripts allow-popups allow-forms',\n\
+				ready: function() {\n\
+							setTimeout(function(){\
+								var sor = $('#xdomainCheck');\
+								if (sor.length) {\n\
+									try {\n\
+										sor.get(0).contentWindow.document;\n\
+									}\n\
+									catch(e) {\n\
+										if(e.message.indexOf('frame at \"null\"') != -1){\n\
+											$('#" + id + "_cms').replaceWith('<iframe id=\"" + id + "_cms\" srcdoc=\"<p>This external link cannot be previewed.</p><p>Open <a href=\\'" + globals.WEB_preview_url + "\\' target=\\'_blank\\'>" + forms.WEB_0F_page.web_page_to_language__selected.page_name + "</a> in a new tab/window.</p>\" width=\"" + width +"\" height=\"" + height +"\" frameborder=\"0\" seamless=\"seamless\" style=\"display:none;\"></iframe>');\
+											setTimeout(function(){\n\
+												$('#" + id + "_cms').fadeIn('fast')\n\
+											},750);\n\
+										}\n\
+									}\n\
+									sor.remove();\n\
+								}\n\
+							},3000)\n\
+						}\n\
+			}).appendTo('body');"
+		}
+		
+		plugins.WebClientUtils.executeClientSideJS(xdomain +
 				'bigIndicator(true);\
 				$("#' + id + '").fadeOut("medium");\
 				setTimeout(function(){$("#' + id + '").replaceWith("<div id=\'' + id + '\' class=\'gfxGrunge\' style=\'display:none;\'><iframe id=\'' + id + '_cms\' src=\'' + globals.WEB_preview_url + '\' width=\'' + width +'\' height=\'' + height +'\' frameborder=\'0\' seamless=\'seamless\'></iframe></div>");\

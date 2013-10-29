@@ -163,14 +163,8 @@ function URL_update(webMode) {
 	else {
 		//this is an external link, navigate there
 		if (page_type == 2 && page_link) {
-//			//wc, show link
-//			if (solutionPrefs.config.webClient) {
-//				bodyText = '<html><body><h2>External link</h2><a href="' + page_link + '" target="_blank">' + page_link + '</a></body></html>'
-//			}
-//			//show actual page
-//			else {
-				globals.WEB_preview_url = page_link
-//			}
+			globals.WEB_preview_url = page_link
+			bodyText = 'CMSexternal'
 		}
 		//this is an internal link
 		else if (page_type == 3) {
