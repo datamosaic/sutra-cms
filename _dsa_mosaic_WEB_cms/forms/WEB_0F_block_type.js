@@ -81,10 +81,10 @@ function REC_new(flagRefresh,formName,fs) {
 										false,
 										'cmsBlockTypeNew'
 									)
-					
+
 					//start a continuation in wc
 					scopes.DS.continuation.start(null,'WEB_P__block_type__new')
-					
+
 					//this should be forms.WEB_P__block_type__new._formName...some scoping issue (fid cancel hack...)
 					if ( forms.WEB_0F_block_type__block._formName == undefined ) {
 						application.output('canceled block type')
@@ -163,12 +163,12 @@ function REC_new(flagRefresh,formName,fs) {
 					return
 				}
 			}
-			
+
 			//turn on notification when called directly from block type workflow form
 			if (nonBatch) {
 				globals.WEBc_sutra_trigger('TRIGGER_progressbar_start',[null,(flagRefresh ? 'Refreshing' : 'Registering') + ' block: ' + objBlock.record.block_name + '.  Please wait...'])
 			}
-			
+
 			// 3) create block and related data from data object
 			var block = (!flagRefresh) ? fs.getRecord(fs.newRecord()) : fs.getSelectedRecord()
 			block.id_site = forms.WEB_0F_site.id_site
@@ -184,7 +184,7 @@ function REC_new(flagRefresh,formName,fs) {
 					incrementer ++
 				}
 			}
-			
+
 			block.block_name = name
 			block.block_description = blockDescription || objBlock.record.block_description
 			block.block_category = objBlock.record.block_category
@@ -244,15 +244,15 @@ function REC_new(flagRefresh,formName,fs) {
 					sampleMarkup = forms[block.form_name][methodName]()
 				}
 				catch (e) {}
-				
+
 				//this display already exists, continue
 				if (displayCurrent[i]) {
 					//remove from delete array
 					displayDelete.splice(displayDelete.indexOf(displayCurrent[i]),1)
-					
+
 					//update layout flag
 					displayCurrent[i].flag_layout = typeof sampleMarkup == 'string' ? (sampleMarkup.indexOf('{{BLOCK}}') == -1 ? 0 : 1) : 0
-					
+
 					continue
 				}
 
@@ -397,10 +397,12 @@ function REC_new(flagRefresh,formName,fs) {
 					//go to correct tab
 					TAB_change(null,block.block_type + 1)
 				}
-				
-				scopes.SLICK.update(navigationPrefs.byNavItemID[solutionPrefs.config.currentFormID].listData.tabFormInstance)
+
+				if (scopes.SLICK && scopes.SLICK.CONST.enabled) {
+					scopes.SLICK.update(navigationPrefs.byNavItemID[solutionPrefs.config.currentFormID].listData.tabFormInstance)
+				}
 			}
-			
+
 			//flag that blocks updated so new must refresh block default display
 			forms.WEB_P__block__new._refreshBlockDefault = true
 		}
@@ -425,7 +427,7 @@ function FIND_forms() {
 	//find all forms with INIT_block method
 	for (var i = 0; i < formNames.length; i++) {
 		var formName = formNames[i]
-		
+
 		if (solutionModel.getForm(formName).getMethods().map(function(item){return item.getName()}).indexOf('INIT_block') == -1 || formName == 'WEB_0F___boiler_plate' || formName == 'WEB_0F__block_builder') {
 			formNames.splice(i,1)
 			i--
@@ -537,9 +539,11 @@ function REC_delete() {
 			'Yes',
 			'No'
 		)
-	
+
 	if (delRec == 'Yes') {
-		scopes.SLICK.deleteRow()
+		if (scopes.SLICK && scopes.SLICK.CONST.enabled) {
+			scopes.SLICK.deleteRow()
+		}
 		controller.deleteRecord()
 
 		//dim out the lights

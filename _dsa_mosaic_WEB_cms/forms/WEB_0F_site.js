@@ -55,8 +55,10 @@ function REC_delete() {
 
 		globals.WEB_site_display = null
 
-		scopes.SLICK.deleteRow()
-		
+		if (scopes.SLICK && scopes.SLICK.CONST.enabled) {
+			scopes.SLICK.deleteRow()
+		}
+
 		//TODO: not deleteing versions and below....need to fix this
 		controller.deleteRecord()
 
