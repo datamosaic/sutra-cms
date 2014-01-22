@@ -905,7 +905,9 @@ function REC_delete(record) {
 //			fsVersions.deleteAllRecords()
 
 			//delete it
-			scopes.SLICK.deleteRow()
+			if (scopes.SLICK && scopes.SLICK.CONST.enabled) {
+				scopes.SLICK.deleteRow()
+			}
 			record.foundset.deleteRecord(record)
 
 			//find current siblings
@@ -1147,7 +1149,7 @@ function REC_new() {
 			if (application.getApplicationType() != APPLICATION_TYPES.WEB_CLIENT) {
 				application.sleep(1000)
 			}
-			
+
 			globals.CODE_form_in_dialog(
 						forms.WEB_P_page,
 						-1,-1,-1,-1,
@@ -1162,7 +1164,7 @@ function REC_new() {
 			//make sure things visible
 			forms.WEB_0F_page__design.elements.tab_header_detail.visible = true
 			forms.WEB_0F_page__design.elements.tab_main.visible = true
-			
+
 			//hide everything except the bare necessities
 			forms.WEB_0F_page__design_1F__header_edit.TOGGLE_fields(0)
 

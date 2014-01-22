@@ -113,7 +113,7 @@ var _themes = {};
  * @properties={typeid:24,uuid:"8F31151F-873E-4BA0-A904-7533753AB256"}
  */
 function ACTION_new_layout()
-{	
+{
 	if (utils.hasRecords(foundset)) {
 		web_theme_to_layout.newRecord(false, true)
 		databaseManager.saveData()
@@ -129,7 +129,7 @@ function ACTION_new_layout()
 					'Error',
 					'No theme selected.'
 			)
-	}	
+	}
 }
 
 /**
@@ -159,23 +159,23 @@ function FORM_on_load(event) {
 		// set split 2
 		elements.bean_split_2.leftComponent = elements.tab_editable
 		elements.bean_split_2.rightComponent = elements.tab_editable_default
-		elements.bean_split_2.dividerLocation = 200	
-		
+		elements.bean_split_2.dividerLocation = 200
+
 		// set split 1
 		elements.bean_split_1.leftComponent = elements.tab_layout
 		elements.bean_split_1.rightComponent = elements.bean_split_2
 		elements.bean_split_1.dividerLocation = 300
-		
+
 		// set split 4
 		elements.bean_split_4.leftComponent = elements.lbl_slide_2
 		elements.bean_split_4.rightComponent = elements.lbl_slide_3
-		elements.bean_split_4.dividerLocation = 200	
-		
+		elements.bean_split_4.dividerLocation = 200
+
 		// set split 3
 		elements.bean_split_3.leftComponent = elements.lbl_slide_1
 		elements.bean_split_3.rightComponent = elements.bean_split_4
 		elements.bean_split_3.dividerLocation = 300
-		
+
 		elements.bean_split_1.visible = true
 		elements.bean_split_2.visible = true
 		elements.bean_split_3.visible = true
@@ -194,11 +194,13 @@ function REC_delete() {
 				'Yes',
 				'No'
 			)
-	
+
 	if (delRec == 'Yes') {
-		scopes.SLICK.deleteRow()
+		if (scopes.SLICK && scopes.SLICK.CONST.enabled) {
+			scopes.SLICK.deleteRow()
+		}
 		controller.deleteRecord()
-		
+
 		//dim out the lights
 		if (!utils.hasRecords(foundset)) {
 			FORM_on_show()
@@ -220,30 +222,30 @@ function REC_delete() {
  */
 function FLD_data_change__flag_default(oldValue, newValue, event) {
 	var record = foundset.getRecord(foundset.getSelectedIndex())
-	
+
 	var fsTheme = databaseManager.getFoundSet('sutra_cms','web_theme')
-	
+
 	fsTheme.find()
 	fsTheme.id_site = record.id_site
 	fsTheme.search()
-	
+
 	if (newValue) {
-		
+
 		//fsupdater broken as of 5.1.4??
 //		var fsUpdater = databaseManager.getFoundSetUpdater(fsTheme)
 //		fsUpdater.setColumn('flag_default',0)
 //		fsUpdater.performUpdate()
 //
 //		record.flag_default = 1
-		
+
 		for (var i = 1; i <= fsTheme.getSize(); i++) {
 			var recTheme = fsTheme.getRecord(i)
-			
+
 			if (recTheme.id_theme != record.id_theme) {
 				recTheme.flag_default = 0
 			}
 		}
-		
+
 		databaseManager.saveData()
 	}
 	else {
@@ -251,10 +253,10 @@ function FLD_data_change__flag_default(oldValue, newValue, event) {
 					'Error',
 					'There must be a default theme set'
 			)
-		
+
 		record.flag_default = 1
 	}
-	
+
 	return true
 }
 
@@ -269,19 +271,19 @@ function LAYOUTS_action_list(event) {
 	if (utils.hasRecords(foundset)) {
 		//menu items
 		var valuelist = new Array('Duplicate layout'/*,'-','Re-order editables on pages using selected layout'*/)
-		
+
 		//set up menu with arguments
 		var menu = new Array()
 		for ( var i = 0 ; i < valuelist.length ; i++ ) {
 			menu[i] = plugins.popupmenu.createMenuItem(valuelist[i],LAYOUTS_action_list_control)
-		
+
 			menu[i].setMethodArguments(valuelist[i])
-		
+
 			if (menu[i].text == '----' || i == 1) {
 				menu[i].setEnabled(false)
 			}
 		}
-		
+
 		//popup
 		var elem = forms[event.getFormName()].elements[event.getElementName()]
 		if (elem != null && valuelist.length) {
@@ -304,26 +306,26 @@ function LAYOUTS_action_list_control(selected) {
 	switch (selected) {
 		case "Duplicate layout":  // duplicate layout, areas and blocks
 			if (utils.hasRecords(web_theme_to_layout)) {
-				var record = web_theme_to_layout.getRecord(web_theme_to_layout.getSelectedIndex())	
+				var record = web_theme_to_layout.getRecord(web_theme_to_layout.getSelectedIndex())
 				var relations = new Array("web_layout_to_editable.web_editable_to_editable_default")
 				var override = new Array(null,true,true)
-				
+
 				var dupRecord = globals.CODE_record_duplicate(record, relations, override)
 				dupRecord.flag_default = null
-				
+
 				globals.DIALOGS.showInfoDialog("Complete", "Layout duplicated")
 			}
 			break
 		case "Re-order editables on pages using selected layout":
 			if (utils.hasRecords(forms.WEB_0F_theme_1L_layout)) {
 				var fsPages = databaseManager.getFoundSet('sutra_cms','web_page')
-				
+
 				fsPages.find()
 				fsPages.id_site = forms.WEB_0F_site.id_site
 				fsPages.id_theme = id_theme
 				fsPages.id_theme_layout = forms.WEB_0F_theme_1L_layout.id_layout
 				var results = fsPages.search()
-				
+
 				//prompt to continue
 				if (results) {
 					var input = globals.DIALOGS.showQuestionDialog(
@@ -332,11 +334,11 @@ function LAYOUTS_action_list_control(selected) {
 								'Yes',
 								'No'
 						)
-					
+
 					if (input == 'Yes') {
 						for (var i = 1; i <= fsPages.getSize(); i++) {
 							var thePage = fsPages.getRecord(i)
-							
+
 							//TODO: set global variabls for group/version combo where id_version >= the active version
 //							forms.WEB_0F_page__design_1F_version_2L_area.AREA_reorder(thePage)
 						}
@@ -362,7 +364,7 @@ function LAYOUTS_action_list_control(selected) {
 /**
  * @param {Integer} progress : used by streaming file callbacks to pass control back to this method
  * @param {boolean} _flagRefresh : sudo-parameter/form variable tracks if creating new theme or refreshing current theme
- * 
+ *
  * @properties={typeid:24,uuid:"B757D4CF-18E5-4D51-8A9B-9E4D5686530D"}
  */
 function REC_new(progress,_flagRefresh) {
@@ -414,18 +416,18 @@ function FORM_on_show(firstShow, event) {
 			elements.bean_split_3.dividerLocation = 250
 			elements.bean_split_4.dividerLocation = 250
 		}
-		
+
 		//only do this when not running in data sutra
 		if (!application.__parent__.solutionPrefs) {
 			FILTER_records(event)
 		}
-		
+
 		if (!utils.hasRecords(foundset)) {
 			//make sure that doesn't lock us out of left-side lists
 			if (solutionPrefs.config.activeSpace == 'workflow') {
 				solutionPrefs.config.activeSpace = 'standard'
 			}
-			
+
 			globals.WEB_lock_workflow(true)
 		}
 	}
@@ -433,7 +435,7 @@ function FORM_on_show(firstShow, event) {
 
 /**
  * @param {JSEvent} event the event that triggered the action
- * 
+ *
  * @properties={typeid:24,uuid:"A7C0E994-A29D-4BBA-9677-8F7608F29578"}
  * @AllowToRunInFind
  */
@@ -473,7 +475,7 @@ function FORM_on_hide(event) {
 	if (application.__parent__.solutionPrefs && solutionPrefs.design.statusLockWorkflow && !solutionPrefs.config.prefs.formPreloading) {
 		globals.WEB_lock_workflow(false)
 	}
-	
+
 	return true
 }
 
@@ -499,22 +501,22 @@ function ACTIONS_list(input) {
 	var valuelist = new Array(
 					'Refresh all pages'
 				)
-	
+
 	//called to depress menu
 	if (input instanceof JSEvent) {
 		//set up menu with arguments
 		var menu = new Array()
-		
+
 		for ( var i = 0 ; i < valuelist.length ; i++ ) {
 			menu[i] = plugins.popupmenu.createMenuItem(valuelist[i],ACTIONS_list)
-			
+
 			menu[i].setMethodArguments(i)
-			
+
 			if (menu[i].text == '----') {
 				menu[i].setEnabled(false)
 			}
 		}
-		
+
 		//popup
 		var elem = forms[input.getFormName()].elements[input.getElementName()]
 		if (elem != null) {
@@ -529,7 +531,7 @@ function ACTIONS_list(input) {
 						'Keep data',
 						'Reset data'
 				)
-				
+
 			if (refreshType) {
 				input = globals.DIALOGS.showQuestionDialog(
 							'Auto-activate?',
@@ -537,47 +539,47 @@ function ACTIONS_list(input) {
 							'Yes',
 							'No'
 					)
-				
+
 				var autoActivate = input == 'Yes'
 				var pagesActivated = 0
-				
+
 				//get foundsets
 				var fsPages = forms.WEB_0F_theme_1L_page.foundset
 				var fsVersions = databaseManager.getFoundSet('sutra_cms','web_version')
-				
+
 				//maximum number of pages
 				var maxPages = databaseManager.getFoundSetCount(fsPages)
-				
+
 				globals.CODE_cursor_busy(true)
 				globals.WEBc_sutra_trigger('TRIGGER_progressbar_start',[0,'Refreshing pages...',null,0,maxPages])
-				
+
 				//loop over pages
 				for (var i = 1; i <= fsPages.getSize(); i++) {
 					var pageRec = fsPages.getRecord(i)
-					
+
 					globals.WEBc_sutra_trigger('TRIGGER_progressbar_set',[i])
-					
+
 					//loop all combinations of platform/language/group version stack
 					for (var j = 1; j <= pageRec.web_page_to_platform.getSize(); j++) {
 						var platformRec = pageRec.web_page_to_platform.getRecord(j)
-						
+
 						for (var k = 1; k <= pageRec.web_page_to_language.getSize(); k++) {
 							var languageRec = pageRec.web_page_to_language.getRecord(k)
-							
+
 							for (var m = 1; m <= pageRec.web_page_to_group.getSize(); m++) {
 								var groupRec = pageRec.web_page_to_group.getRecord(m)
-								
+
 								fsVersions.find()
 								fsVersions.id_platform = platformRec.id_platform
 								fsVersions.id_language = languageRec.id_language
 								fsVersions.id_group = groupRec.id_group
 								var results = fsVersions.search()
-								
+
 								if (results) {
 									fsVersions.sort('version_number desc')
-									
+
 									var latestVersion = fsVersions.getRecord(1)
-									
+
 									//check to see that most recent version is actually on the correct layout
 									if (latestVersion.id_layout == forms.WEB_0F_theme_1L_layout.id_layout) {
 										//update theme (no data deleted)
@@ -588,26 +590,26 @@ function ACTIONS_list(input) {
 										else if (refreshType == 'Reset data') {
 											forms.WEB_0F_page__design_1F_version_2L_area.AREA_reset(fsVersions,latestVersion,latestVersion,autoActivate)
 										}
-										
+
 										//record progress
 										pagesActivated ++
 									}
 								}
 							}
 						}
-					}		
+					}
 				}
-				
+
 				globals.DIALOGS.showInfoDialog(
 							'Success',
 							'The selected layout has been updated on ' + pagesActivated + ' page' + (pagesActivated == 1 ? '' : 's')  + '.'
 					)
-				
+
 				globals.WEBc_sutra_trigger('TRIGGER_progressbar_stop')
 				globals.CODE_cursor_busy(false)
 			}
 		}
-	}	
+	}
 }
 
 /**
@@ -620,12 +622,12 @@ function ACTIONS_list(input) {
 function TOGGLE_splits(event) {
 	if (application.getApplicationType() != APPLICATION_TYPES.WEB_CLIENT) {
 		var divSize = (elements.bean_split_1.dividerSize) ? 0 : 10
-		
+
 		if (elements.bean_split_1.dividerSize) {
 			elements.tab_layout.border = 'MatteBorder,0,1,0,0,#a1b0cf'
 			elements.tab_editable.border = 'MatteBorder,0,1,0,0,#a1b0cf'
-			elements.tab_editable_default.border = 'MatteBorder,0,0,0,0,#a1b0cf'		
-				
+			elements.tab_editable_default.border = 'MatteBorder,0,0,0,0,#a1b0cf'
+
 			elements.bean_split_1.dividerSize = 0
 			elements.bean_split_2.dividerSize = 0
 			elements.bean_split_3.dividerLocation = elements.bean_split_1.dividerLocation
@@ -635,8 +637,8 @@ function TOGGLE_splits(event) {
 		else {
 			elements.tab_layout.border = 'MatteBorder,0,1,0,0,#a1b0cf'
 			elements.tab_editable.border = 'MatteBorder,0,1,0,1,#a1b0cf'
-			elements.tab_editable_default.border = 'MatteBorder,0,0,0,1,#a1b0cf'		
-				
+			elements.tab_editable_default.border = 'MatteBorder,0,0,0,1,#a1b0cf'
+
 			elements.bean_split_1.dividerSize = 8
 			elements.bean_split_2.dividerSize = 8
 		}

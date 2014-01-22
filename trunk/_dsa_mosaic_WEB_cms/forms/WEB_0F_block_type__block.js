@@ -20,13 +20,13 @@ var _license_dsa_mosaic_WEB_cms = 'Module: _dsa_mosaic_WEB_cms \
  * @AllowToRunInFind
  */
 function FLD_data_change__block_name(oldValue, newValue, event) {
-	
+
 	var fsBlockType = databaseManager.getFoundSet(controller.getServerName(),controller.getTableName())
 	fsBlockType.find()
 	fsBlockType.id_site = forms.WEB_0F_site.id_site
 	fsBlockType.block_name = newValue
 	var results = fsBlockType.search()
-	
+
 	if (results > 1) {
 		globals.DIALOGS.showErrorDialog(
 					'Error',
@@ -35,8 +35,11 @@ function FLD_data_change__block_name(oldValue, newValue, event) {
 		block_name = oldValue
 		return false
 	}
-	
-	scopes.SLICK.updateUL(oldValue,newValue,event)
+
+	if (scopes.SLICK && scopes.SLICK.CONST.enabled) {
+		scopes.SLICK.updateUL(oldValue,newValue,event)
+	}
+
 	return true
 }
 
@@ -71,12 +74,12 @@ function TAB_key_add(event) {
  */
 function REC_on_select(event) {
 	var fsPages = forms.WEB_0F_block_type__block_1L_page.foundset
-	
+
 	//there is something to do on this page
 	if (utils.hasRecords(foundset)) {
 		globals.CODE_cursor_busy(true)
-		
-		var query = 
+
+		var query =
 "SELECT DISTINCT c.id_page FROM web_platform a, web_version b, web_page c WHERE  \
 b.id_version IN ( \
 SELECT DISTINCT c.id_version from web_block a, web_scope b, web_area c WHERE  \
@@ -86,17 +89,17 @@ a.id_block_type = ? \
 ) AND \
 a.id_platform = b.id_platform AND \
 a.id_page = c.id_page"
-		
+
 		var dataset = databaseManager.getDataSetByQuery(
-					'sutra_cms', 
-					query, 
-					[id_block_type.toString()], 
+					'sutra_cms',
+					query,
+					[id_block_type.toString()],
 					-1
 				)
-		
+
 		//load correct pages that this is used on
 		fsPages.loadRecords(dataset)
-		
+
 		globals.CODE_cursor_busy(false)
 	}
 	//clear out the related pages link
@@ -119,6 +122,6 @@ a.id_page = c.id_page"
 function FLD_data_change__form_name(oldValue, newValue, event) {
 	//get methods for current form
 	var formMethods = (form_name && forms[form_name]) ? forms[form_name].allmethods : new Array()
-	
+
 	application.setValueListItems('WEB_block_type_method', formMethods)
 }
