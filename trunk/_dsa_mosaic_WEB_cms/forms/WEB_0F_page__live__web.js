@@ -310,7 +310,7 @@ function EDIT_on() {
 
 	plugins.WebClientUtils.executeClientSideJS(
 			'setTimeout(function(){if ($("iframe#' + id + '_cms").length) {' +
-				'window.frames["' + id + '_cms"].postMessage({method:"editOn"},"*");' +
+				'document.getElementById("' + id + '_cms").contentWindow.postMessage({method:"editOn"},"*");' +
 				//just to make sure that indicator not stuck on
 				'bigIndicator(false,500);' +
 			'}' +
@@ -335,7 +335,7 @@ function EDIT_off() {
 	else {
 		plugins.WebClientUtils.executeClientSideJS(
 			'setTimeout(function(){if ($("iframe#' + id + '_cms").length) {' +
-				'window.frames["' + id + '_cms"].postMessage({method:"editOff"},"*");' +
+				'document.getElementById("' + id + '_cms").contentWindow.postMessage({method:"editOff"},"*");' +
 				//just to make sure that indicator not stuck on
 				'bigIndicator(false,500);' +
 			'}' +
