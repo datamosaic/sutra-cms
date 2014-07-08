@@ -98,10 +98,10 @@ function LOAD_data(assetType) {
 	var results = fsAsset.search()
 	
 	//set title text
-	elements.lbl_heading.text = 'Choose ' + (assetType ? application.getValueListDisplayValue('WEB_asset_type',assetType) : 'Asset')
+	elements.lbl_heading.text = 'Choose ' + (Number(assetType) == assetType ? application.getValueListDisplayValue('WEB_asset_type',assetType) : 'Asset')
 	
 	//show preview
-	if (assetType == 1 || !assetType) {
+	if (assetType == 1 || assetType[0] == 1 || !assetType) {
 		forms.WEB_P__asset_1L_asset.elements.fld_thumb.visible = true
 	}
 	//hide preview
