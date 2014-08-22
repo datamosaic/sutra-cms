@@ -9,6 +9,7 @@ PAGE LINK|pageLink
 URL|externalURL
 DATE|datePicker
 WYSIWYG|tinyMCE
+VALUELIST|valuelist
 STATIC HTML|staticHTML
 TABLE|table",
 name:"WEB_block_type_type",
