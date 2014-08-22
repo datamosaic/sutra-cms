@@ -520,6 +520,13 @@ function MRKP_datePicker(fieldSet) {
 		
 		for (var i = 0; i < fieldSet.length; i++) {
 			var field = fieldSet[i]
+			
+			// there is a date, try to format it
+			if (field.data) {
+				var format = field.format || 'MMM d, yyyy'
+				
+				markup += MRKP__null_check(field.wrapper.pre) + MRKP__null_check(utils.dateFormat(new Date(field.data),format)) + MRKP__null_check(field.wrapper.post)
+			}
 		}
 	}
 	
