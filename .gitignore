@@ -1,7 +1,6 @@
 # documentation
-website/documentation
-website/_book
-website/node_modules
+website/documentation/_book
+website/documentation/node_modules
 
 
 # Logs
