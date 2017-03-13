@@ -1,1 +1,3 @@
 # Sutra CMS
+
+[Documentation](documentation)
