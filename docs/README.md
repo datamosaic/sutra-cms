@@ -1,3 +1,0 @@
-# Sutra CMS
-
-[Documentation](documentation)
