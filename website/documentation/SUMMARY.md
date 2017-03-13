@@ -17,7 +17,6 @@
     - [Site Hooks](developer/site-hooks.md)
     - [Extending Sutra CMS](developer/extending-cms.md)
 - Architecture
-    - [API](architecture/api.md)
     - [CMS Object](architecture/cms-object.md)
     - [Data Structure](architecture/data-structure.md)
     - [Controller Flow](architecture/controller-flow.md)
