@@ -1,7 +1,5 @@
 # Data Sutra
 
-test insert
-
 > **IMPORTANT:** These are the docs for Sutra CMS **compatible with Servoy version 6**
 
 - [Sutra CMS](sutra-cms.md)
