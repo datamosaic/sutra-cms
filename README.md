@@ -11,6 +11,6 @@ Sutra CMS is full featured CMS with SaaS, multi-site, blogging, versioning, cont
 - [Data Sutra](https://github.com/datamosaic/data-sutra)
 
 
-## Quick Overview
+## Quick Overview Video (2'42")
 
 [![Sutra CMS quick overview](https://img.youtube.com/vi/5jeRwLY1eeI/0.jpg)](https://youtu.be/5jeRwLY1eeI)
