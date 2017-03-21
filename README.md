@@ -13,4 +13,4 @@ Sutra CMS is full featured CMS with SaaS, multi-site, blogging, versioning, cont
 
 ## Quick Overview
 
-[![Sutra CMS quick overview](https://img.youtube.com/vi/5jeRwLY1eeI/0.jpg)](hhttps://youtu.be/5jeRwLY1eeI)
+[![Sutra CMS quick overview](https://img.youtube.com/vi/5jeRwLY1eeI/0.jpg)](https://youtu.be/5jeRwLY1eeI)
